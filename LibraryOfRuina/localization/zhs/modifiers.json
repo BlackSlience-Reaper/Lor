@@ -1,0 +1,4 @@
+{
+  "SPECIAL_GUEST_RUN_STATE.title": "特殊来宾内部状态",
+  "SPECIAL_GUEST_RUN_STATE.description": "保存特殊来宾的解锁、消费、舞台、剧情与抽取状态。"
+}

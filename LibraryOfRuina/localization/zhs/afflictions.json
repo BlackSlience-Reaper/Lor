@@ -1,0 +1,11 @@
+{
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.title": "费用降低",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.description": "[red]攻击[/red]牌和[blue]技能[/blue]牌费用降低{Amount:energyIcons()}，并且每层使基础伤害降低[red]{DamageReduction}[/red]、格挡降低[red]{BlockReduction}[/red]。",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.extraCardText": "[gold]费用降低[/gold]：-{Amount:energyIcons()}，每层基础伤害-[red]{DamageReduction}[/red]、格挡-[red]{BlockReduction}[/red]。",
+  "FUNERAL_SEAL_AFFLICTION.title": "封印",
+  "FUNERAL_SEAL_AFFLICTION.description": "这张牌被封印，无法打出。离开手牌、弃牌、消耗或玩家回合结束时移除此侵蚀。",
+  "FUNERAL_SEAL_AFFLICTION.extraCardText": "被[gold]封印[/gold]，无法打出。",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.title": "封印",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.description": "这张牌被[gold]封印[/gold]侵蚀。可以被打出，但打出数目受[gold]救赎之手[/gold]限制。持续整场战斗。",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.extraCardText": "被[gold]封印[/gold]侵蚀。"
+}

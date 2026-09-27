@@ -1,0 +1,54 @@
+table	key	category	eng	zhs	jpn	kor	note
+card_keywords.json	ETERNAL.title	卡牌关键词	Eternal	永恒	永劫	영구	
+card_keywords.json	ETHEREAL.title	卡牌关键词	Ethereal	虚无	エセリアル	휘발성	
+card_keywords.json	EXHAUST.title	卡牌关键词	Exhaust	消耗	廃棄	소멸	
+card_keywords.json	INNATE.title	卡牌关键词	Innate	固有	天賦	선천성	
+card_keywords.json	RETAIN.title	卡牌关键词	Retain	保留	保留	보존	
+card_keywords.json	SLY.title	卡牌关键词	Sly	奇巧	スライ	교활	
+card_keywords.json	UNPLAYABLE.title	卡牌关键词	Unplayable	不能被打出	プレイ不可	사용불가	
+powers.json	STRENGTH_POWER.title	状态名称	Strength	力量	筋力	힘	
+powers.json	DEXTERITY_POWER.title	状态名称	Dexterity	敏捷	敏捷	민첩	
+powers.json	VULNERABLE_POWER.title	状态名称	Vulnerable	易伤	弱体	취약	
+powers.json	WEAK_POWER.title	状态名称	Weak	虚弱	脱力	약화	
+powers.json	FRAIL_POWER.title	状态名称	Frail	脆弱	脆弱	손상	
+powers.json	POISON_POWER.title	状态名称	Poison	中毒	毒	중독	
+powers.json	FOCUS_POWER.title	状态名称	Focus	集中	集中力	밀집	
+powers.json	ARTIFACT_POWER.title	状态名称	Artifact	人工制品	アーティファクト	인공물	
+powers.json	INTANGIBLE_POWER.title	状态名称	Intangible	无实体	霊体	불가침	
+powers.json	REGEN_POWER.title	状态名称	Regen	再生	再生	재생	
+powers.json	THORNS_POWER.title	状态名称	Thorns	荆棘	トゲ	가시	
+powers.json	VIGOR_POWER.title	状态名称	Vigor	活力	活力	활력	
+static_hover_tips.json	BLOCK.title	资源与机制	Block	格挡	ブロック	방어도	
+static_hover_tips.json	ENERGY.title	资源与机制	Energy	能量	エナジー	에너지	
+static_hover_tips.json	STAR_COUNT.title	资源与机制	Stars	辉星	スター	별	
+static_hover_tips.json	CHANNELING.title	资源与机制	Channel	生成	生成	영창	
+static_hover_tips.json	EVOKE.title	资源与机制	Evoke	激发	解放	발현	
+static_hover_tips.json	FORGE.title	资源与机制	Forge	铸造	鍛造	단조	
+static_hover_tips.json	FATAL.title	资源与机制	Fatal	斩杀	リーサル	치명타	
+static_hover_tips.json	COOK.title	资源与机制	Cook	烹饪	料理	요리	
+static_hover_tips.json	STUN.title	资源与机制	Stun	击晕	スタン	기절	
+static_hover_tips.json	TRANSFORM.title	资源与机制	Transform	变化	変化	변화	
+static_hover_tips.json	SUMMON_STATIC.title	资源与机制	Summon	召唤	召喚	소환	
+static_hover_tips.json	REPLAY_STATIC.title	资源与机制	Replay	重放	リプレイ	재사용	
+static_hover_tips.json	MONEY_POUCH.title	资源与机制	Gold	金币	ゴールド	골드	
+static_hover_tips.json	HIT_POINTS.title	资源与机制	Hit Points (HP)	生命值（HP）	ヒットポイント (HP)	체력	
+static_hover_tips.json	DECK.title	资源与机制	Deck	牌组	デッキ	덱	标题中的快捷键条件已去除；完整原文见来源与例句.json
+static_hover_tips.json	DRAW_PILE.title	资源与机制	Draw Pile	抽牌堆	山札	뽑을 카드 더미	标题中的快捷键条件已去除；完整原文见来源与例句.json
+static_hover_tips.json	DISCARD_PILE.title	资源与机制	Discard Pile	弃牌堆	捨て札	버린 카드 더미	标题中的快捷键条件已去除；完整原文见来源与例句.json
+static_hover_tips.json	EXHAUST_PILE.title	资源与机制	Exhausted Cards	消耗牌堆	廃棄札	소멸된 카드	标题中的快捷键条件已去除；完整原文见来源与例句.json
+gameplay_ui.json	CARD_TYPE.ATTACK	卡牌类型	Attack	攻击	アタック	공격	
+gameplay_ui.json	CARD_TYPE.SKILL	卡牌类型	Skill	技能	スキル	스킬	
+gameplay_ui.json	CARD_TYPE.POWER	卡牌类型	Power	能力	パワー	파워	
+orbs.json	DARK_ORB.title	充能球	Dark	黑暗	ダーク	암흑	
+orbs.json	FROST_ORB.title	充能球	Frost	冰霜	フロスト	냉기	
+orbs.json	GLASS_ORB.title	充能球	Glass	玻璃	グラス	유리	
+orbs.json	LIGHTNING_ORB.title	充能球	Lightning	闪电	ライトニング	전기	
+orbs.json	PLASMA_ORB.title	充能球	Plasma	等离子	プラズマ	플라즈마	
+orbs.json	EMPTY_SLOT.title	充能球	Orb Slot	充能球栏位	オーブスロット	구체 슬롯	
+powers.json	DEMISE_POWER.title	状态名称	Demise	消亡	崩御	종언	
+powers.json	DEBILITATE_POWER.title	状态名称	Debilitate	摧残	衰弱	쇠락	
+powers.json	DOOM_POWER.title	状态名称	Doom	灾厄	破滅	종말	
+cards.json	SCRAWL.description	资源与机制	Hand	手牌	手札	손	取句中高亮词；无独立标题键
+cards.json	ASHEN_STRIKE.description	资源与机制	Exhaust Pile	消耗牌堆	廃棄札	소멸된 카드 더미	效果文本写法；悬浮标题见 EXHAUST_PILE.title
+card_selection.json	TO_ENCHANT	卡牌操作	Enchant	附魔	エンチャント	인챈트	取句中高亮词；附魔名用 [purple]
+card_selection.json	TO_REMOVE	卡牌操作	Remove	移除	削除	제거	取句中高亮词
