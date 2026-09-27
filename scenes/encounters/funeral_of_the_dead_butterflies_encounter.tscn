@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[node name="Encounter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="boss" type="Marker2D" parent="."]
+position = Vector2(1971, 699)
+
+[node name="butterfly_left" type="Marker2D" parent="."]
+position = Vector2(1061, 678)
+
+[node name="butterfly_middle_left" type="Marker2D" parent="."]
+position = Vector2(1240, 697)
+
+[node name="butterfly_middle_right" type="Marker2D" parent="."]
+position = Vector2(1423, 654)
+
+[node name="butterfly_right" type="Marker2D" parent="."]
+position = Vector2(1598, 705)

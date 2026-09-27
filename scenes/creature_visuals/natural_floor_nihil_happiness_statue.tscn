@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://dw5xylqsravtj"]
+
+[ext_resource type="AnimationLibrary" uid="uid://biypseh4ad1eb" path="res://scenes/creature_visuals/natural_floor_nihil_happiness_statue_default_animations.tres" id="default"]
+[ext_resource type="Texture2D" uid="uid://b7g2udxwssg2r" path="res://images/monsters/natural_floor_liberation/nihil/happiness_statue.png" id="idle"]
+
+[node name="Nihil_happiness_statue" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(7.999999, 31)
+scale = Vector2(0.4898, 0.4898)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-229, -508)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.4898, 0.4898)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-229, -508)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"default": ExtResource("default")
+}
+autoplay = "default/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -109.72
+offset_top = -213.0
+offset_right = 37.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-26.2, -120)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-26.2, -280)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-26.2, -199.2)

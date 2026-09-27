@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/visuals/QueenOfHatredCreatureVisuals.cs" id="1_visuals"]
+
+[node name="QueenOfHatred" type="Node2D"]
+script = ExtResource("1_visuals")
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -118)
+scale = Vector2(0.84, 0.84)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -118)
+scale = Vector2(0.84, 0.84)
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -280.0
+offset_right = 150.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -120)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -315)

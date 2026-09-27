@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Texture2D" path="res://images/monsters/king_of_greed/shining_happiness.png" id="idle"]
+[ext_resource type="AnimationLibrary" path="res://scenes/creature_visuals/natural_floor_shining_happiness_animations.tres" id="happiness"]
+[node name="ShiningHappinessTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+scale = Vector2(0.50, 0.50)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-149.0, -356)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.50, 0.50)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-149.0, -356)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {&"happiness": ExtResource("happiness")}
+autoplay = "happiness/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+offset_left = -74.5
+offset_top = -178.0
+offset_right = 74.5
+offset_bottom = 0.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -89.0)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -213.0)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -178.0)

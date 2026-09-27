@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" uid="uid://laty22mfinud" path="res://src/visuals/TechnologyFloorLiberation/TechnologyFloorRegretBossCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Texture2D" uid="uid://qs8qf81xvtbd" path="res://images/monsters/technology_floor/regret_idle.png" id="2_idle"]
+
+[node name="TechnologyFloorRegretBoss" type="Node2D"]
+script = ExtResource("1_visuals")
+
+[node name="Visuals" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -155)
+scale = Vector2(0.576, 0.576)
+texture = ExtResource("2_idle")
+
+[node name="AttackVisuals" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -155)
+scale = Vector2(0.576, 0.576)
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -190.0
+offset_top = -315.0
+offset_right = 190.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -155)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-20, -340)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-20, -280)

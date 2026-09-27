@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=3 uid="uid://cmfjphe2jmwn7"]
+
+[ext_resource type="Texture2D" uid="uid://bgxsgujd6d78h" path="res://images/monsters/smiling_bodies/phase_2_idle.png" id="1_kkj7w"]
+[ext_resource type="Texture2D" uid="uid://b8f76rl0bpyr4" path="res://images/monsters/smiling_bodies/phase_2_scream.png" id="2_g5p8v"]
+[ext_resource type="AnimationLibrary" uid="uid://tdlvt1qh42v0" path="res://scenes/creature_visuals/smiling_bodies_phase_1_animations.tres" id="2_phase_1"]
+[ext_resource type="AnimationLibrary" uid="uid://nlerrkyidcnr" path="res://scenes/creature_visuals/smiling_bodies_phase_2_animations.tres" id="3_phase_2"]
+[ext_resource type="AnimationLibrary" uid="uid://taw5gqkjkqdq" path="res://scenes/creature_visuals/smiling_bodies_phase_3_animations.tres" id="4_phase_3"]
+
+[sub_resource type="Animation" id="Animation_kkj7w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-335.5, -500)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -49.000008)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kkj7w"]
+_data = {
+&"RESET": SubResource("Animation_kkj7w")
+}
+
+[node name="SmilingBodiesTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -1)
+scale = Vector2(0.72, 0.72)
+texture = ExtResource("1_kkj7w")
+centered = false
+offset = Vector2(-221, -253)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -49.000008)
+scale = Vector2(0.72, 0.72)
+texture = ExtResource("2_g5p8v")
+centered = false
+offset = Vector2(-335.5, -500)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_kkj7w"),
+&"phase_1": ExtResource("2_phase_1"),
+&"phase_2": ExtResource("3_phase_2"),
+&"phase_3": ExtResource("4_phase_3")
+}
+autoplay = "phase_2/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, -200)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -231.0
+offset_top = -348.0
+offset_right = 229.0
+offset_bottom = 42.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -34)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -339)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -224)

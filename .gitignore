@@ -1,0 +1,24 @@
+# Godot
+.godot/
+.import/
+*.translation
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.idea/
+.vscode/
+
+# Local machine settings
+local.props
+
+# Build output
+build/
+dist/
+*.pck
+*.zip
+
+.DS_Store

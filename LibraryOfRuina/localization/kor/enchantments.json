@@ -1,0 +1,22 @@
+{
+  "YANAMI_ETHEREAL_ENCHANTMENT.title": "휘발",
+  "YANAMI_ETHEREAL_ENCHANTMENT.description": "이 카드는 [gold]휘발과 소멸[/gold]을 얻습니다.",
+  "MATCH_FLAME_ENCHANTMENT.title": "불꽃",
+  "MATCH_FLAME_ENCHANTMENT.description": "이 카드를 낼 때마다 피해량이 [blue]{Damage}[/blue] 증가합니다. 대상에게 [gold]화상[/gold] [blue]{Burn}[/blue]중첩을 부여합니다. 같은 카드를 이번 전투에서 [blue]{Threshold}[/blue]번째부터 낼 때마다, 자신에게 [gold]화상[/gold] [blue]{SelfBurn}[/blue]중첩을 부여합니다.",
+  "MATCH_FLAME_ENCHANTMENT.extraCardText": "이 카드를 낼 때마다 피해량이 [blue]{Damage}[/blue] 증가합니다. 대상에게 [gold]화상[/gold] [blue]{Burn}[/blue]중첩을 부여합니다. 같은 카드를 이번 전투에서 [blue]{Threshold}[/blue]번째부터 낼 때마다, 자신에게 [gold]화상[/gold] [blue]{SelfBurn}[/blue]중첩을 부여합니다.",
+  "LETICIA_PARTNER_MARK_ENCHANTMENT.title": "동료 표식",
+  "STRANGLING_VINE_ENCHANTMENT.title": "교살 덩굴",
+  "STRANGLING_VINE_ENCHANTMENT.description": "이 카드의 공격 속성은 [img]res://LibraryOfRuinaLib/images/dice/pierce.png[/img]으로 취급된다. 적중할 때마다 대상에게 [blue]{Turns}[/blue]턴 동안 [blue]{Binding}[/blue] [gold]속박[/gold]을 부여한다.",
+  "STRANGLING_VINE_ENCHANTMENT.extraCardText": "공격 속성은 관통으로 취급되며, 적중할 때마다 대상에게 [blue]{Turns}[/blue]턴 동안 [blue]{Binding}[/blue] [gold]속박[/gold]을 부여한다.",
+  "LETICIA_PARTNER_MARK_ENCHANTMENT.description": "매 턴 이 카드를 사용할 때마다 이번 전투 동안 이 카드의 비용에 [blue]-{CostReduction}[/blue]가 적용됩니다. 턴 종료 시 이 카드가 아직 손에 있으면 이번 전투 동안 이 카드의 비용에 [blue]+{CostIncrease}[/blue]가 적용됩니다.",
+  "LETICIA_PARTNER_MARK_ENCHANTMENT.extraCardText": "매 턴 이 카드를 사용할 때마다 이번 전투 동안 이 카드의 비용에 [blue]-{CostReduction}[/blue]가 적용됩니다. 턴 종료 시 이 카드가 아직 손에 있으면 이번 전투 동안 이 카드의 비용에 [blue]+{CostIncrease}[/blue]가 적용됩니다.",
+  "CHAIN_ENCHANTMENT.title": "연쇄",
+  "CHAIN_ENCHANTMENT.description": "이 카드를 낸 후, 다른 적들에게 방어도에 막히지 않은 피해의 [blue]{DamagePercent}%[/blue]만큼 피해를 [blue]{Repeat}[/blue]회 추가로 줍니다.",
+  "CHAIN_ENCHANTMENT.extraCardText": "이 카드를 낸 후, 다른 적들에게 방어도에 막히지 않은 피해의 [blue]{DamagePercent}%[/blue]만큼 피해를 [blue]{Repeat}[/blue]회 추가로 줍니다.",
+  "PEBBLE_MARK_ENCHANTMENT.title": "조약돌 표식",
+  "PEBBLE_MARK_ENCHANTMENT.description": "이 카드는 [gold]소멸[/gold]을 얻습니다. 사용 후, 체력을 [blue]{Heal}[/blue] 회복합니다.",
+  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "사용 후, 체력을 [blue]{Heal}[/blue] 회복합니다. [gold]소멸[/gold]을 얻습니다."
+  ,"IORI_UNPREDICTABLE_ENCHANTMENT.title": "변화무쌍",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.description": "이 카드의 비용을 [blue]0~3[/blue]으로 무작위화한다. 이 카드를 뽑을 때마다 자동으로 사용하고, 이후 [gold]손[/gold]으로 되돌린다.",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.extraCardText": "이 카드의 비용을 [blue]0~3[/blue]으로 무작위화한다. 이 카드를 뽑을 때마다 자동으로 사용하고, 이후 [gold]손[/gold]으로 되돌린다."
+}

@@ -1,0 +1,11 @@
+{
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.title": "コスト削減",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.description": "[red]アタック[/red]カードと[blue]スキル[/blue]カードのコストを{Amount:energyIcons()}減少させ、1スタックにつき基礎ダメージを[red]{DamageReduction}[/red]、基礎ブロックを[red]{BlockReduction}[/red]減少させる。",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.extraCardText": "[gold]コスト削減[/gold]：-{Amount:energyIcons()}、1スタックにつき基礎ダメージ-[red]{DamageReduction}[/red]、基礎ブロック-[red]{BlockReduction}[/red]。",
+  "FUNERAL_SEAL_AFFLICTION.title": "封印",
+  "FUNERAL_SEAL_AFFLICTION.description": "このカードは封印されており、プレイできない。手札から離れたとき、捨て札になったとき、廃棄されたとき、またはプレイヤーのターン終了時に、この侵食を解除する。",
+  "FUNERAL_SEAL_AFFLICTION.extraCardText": "このカードは[gold]封印[/gold]されており、プレイできない。",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.title": "封印",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.description": "このカードは[gold]封印[/gold]の侵食を受けている。プレイできるが、プレイ可能枚数は[gold]贖罪の手[/gold]によって制限される。戦闘終了まで持続する。",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.extraCardText": "このカードは[gold]封印[/gold]の侵食を受けている。"
+}

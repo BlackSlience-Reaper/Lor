@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[node name="Encounter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="helper_left" type="Marker2D" parent="."]
+position = Vector2(820, 770)
+
+[node name="helper_center_left" type="Marker2D" parent="."]
+position = Vector2(1100, 770)
+
+[node name="helper_center_right" type="Marker2D" parent="."]
+position = Vector2(1400, 770)
+
+[node name="mk4_boss" type="Marker2D" parent="."]
+position = Vector2(1670, 750)

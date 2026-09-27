@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://df21t60t3015c"]
+
+[ext_resource type="Texture2D" uid="uid://cj5xjhwogtocq" path="res://images/monsters/natural_floor_liberation/nihil/happiness_slash.png" id="2_54gq8"]
+[ext_resource type="AnimationLibrary" uid="uid://de1kaby1yrnhs" path="res://scenes/creature_visuals/natural_floor_nihil_happiness_default_animations.tres" id="default"]
+[ext_resource type="Texture2D" uid="uid://dh1cog4u6ytrk" path="res://images/monsters/natural_floor_liberation/nihil/happiness_idle.png" id="idle"]
+
+[sub_resource type="Animation" id="Animation_4vndl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-40, 107.99999)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lysop"]
+_data = {
+&"RESET": SubResource("Animation_4vndl")
+}
+
+[node name="Nihil_happiness" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(-1, 1)
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.45156, 0.45156)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-112, -609)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(-40, 107.99999)
+scale = Vector2(0.45156, 0.45156)
+texture = ExtResource("2_54gq8")
+centered = false
+offset = Vector2(-254.5, -830)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_lysop"),
+&"default": ExtResource("default")
+}
+autoplay = "default/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -83.54
+offset_top = -275.0
+offset_right = 50.57
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-16.48, -137.5)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-16.48, -315)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-16.48, -228.25)

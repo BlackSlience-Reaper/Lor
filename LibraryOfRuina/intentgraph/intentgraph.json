@@ -1,0 +1,123 @@
+{
+	"MegaCrit.Sts2.Core.Models.Monsters.CeremonialBeast": {
+		"secondaryInitialStates": [
+            "STUN_MOVE"
+		]
+	},
+	"MegaCrit.Sts2.Core.Models.Monsters.TestSubject": {
+		"secondaryInitialStates": [
+            "RESPAWN_MOVE"
+		],
+		"moveReplacements": {
+			"MULTI_CLAW_MOVE": [
+				{
+					"timesText": "T"
+				}
+			]
+		},
+		"graphPatch": {
+			"labels": [
+				{
+					"x": 3.5,
+					"y": 0.8,
+					"text": "text.MegaCrit.Sts2.Core.Models.Monsters.TestSubject.MULTI_CLAW_MOVE"
+				}
+			]
+		}
+	},
+	"MegaCrit.Sts2.Core.Models.Monsters.TerrorEel": {
+		"graphPatch": {
+			"width": 3.22,
+			"height": 2.5,
+			"moves": [
+				{
+					"x": 0,
+					"y": 1.5,
+					"id": "STUN_MOVE"
+				},
+				{
+					"x": 1.5,
+					"y": 1.5,
+					"id": "TERROR_MOVE"
+				}
+			],
+			"arrows": [
+				{
+					"path": [0, 1, 2, 1.5]
+				},
+				{
+					"path": [1, 2, 1.5, 1.25, 0.5, 1]
+				}
+			]
+		}
+	},
+	"MegaCrit.Sts2.Core.Models.Monsters.HauntedShip": {
+		"graph": {
+			"width": 4.92,
+			"height": 2.4,
+			"moves": [
+				{
+					"x": 0,
+					"y": 0,
+					"id": "HAUNT_MOVE"
+				},
+				{
+					"x": 1.5,
+					"y": 0,
+					"id": "RAMMING_SPEED_MOVE"
+				},
+				{
+					"x": 3.82,
+					"y": 0.20,
+					"id": "SWIPE_MOVE"
+				},
+				{
+					"x": 3.82,
+					"y": 1.30,
+					"id": "STOMP_MOVE"
+				}
+			],
+			"iconGroups": [
+				{
+					"x": 3.72,
+					"y": 0,
+					"width": 1.2,
+					"height": 2.4
+				}
+			],
+			"labels": [
+				{
+					"x": 3.82,
+					"y": 0.25,
+					"text": "50%"
+				},
+				{
+					"x": 3.82,
+					"y": 1.35,
+					"text": "50%"
+				}
+			],
+			"arrows": [
+				{
+					"path": [0, 1, 0.5, 1.5]
+				},
+				{
+					"path": [0, 3.22, 0.3, 3.72]
+				},
+				{
+					"path": [0, 3.72, 0.7, 3.22]
+				}
+			]
+		}
+	},
+	"LibraryOfRuina.monsters.Nosferatu.BloodBat": {
+		"secondaryInitialStates": [
+			"THIRST"
+		]
+	},
+	"LibraryOfRuina.monsters.Nosferatu.Nosferatu": {
+		"secondaryInitialStates": [
+			"GRACEFUL_REST"
+		]
+	}
+}

@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://images/ui/hover_tip.png" id="1"]
+[ext_resource type="FontVariation" path="res://themes/kreon_bold_glyph_space_one.tres" id="2"]
+[ext_resource type="PackedScene" path="res://LibraryOfRuina/intentgraph/scenes/intent_graph.tscn" id="3"]
+[ext_resource type="Script" path="res://src/features/intentgraph/NMonsterIntentGraphPanel.cs" id="4"]
+
+[node name="IntentGraphPanel" type="MarginContainer"]
+mouse_filter = 2
+script = ExtResource("4")
+
+[node name="Shadow" type="NinePatchRect" parent="."]
+modulate = Color(0, 0, 0, 0.25098)
+layout_mode = 2
+texture = ExtResource("1")
+region_rect = Rect2(-8, -8, 328, 104)
+patch_margin_left = 55
+patch_margin_top = 43
+patch_margin_right = 55
+patch_margin_bottom = 32
+
+[node name="Background" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1")
+region_rect = Rect2(0, 0, 328, 104)
+patch_margin_left = 55
+patch_margin_top = 43
+patch_margin_right = 55
+patch_margin_bottom = 32
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MonsterName" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25098)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 22
+text = "Monster"
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 16
+
+[node name="IntentGraph" parent="MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2

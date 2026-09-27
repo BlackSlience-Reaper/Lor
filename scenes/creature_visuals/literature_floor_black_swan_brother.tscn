@@ -1,0 +1,103 @@
+[gd_scene load_steps=11 format=3 uid="uid://s35ewxl22nqp"]
+
+[ext_resource type="Texture2D" uid="uid://b2kx83i4q1ccb" path="res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_6_idle.png" id="1_7445w"]
+[ext_resource type="Texture2D" uid="uid://bc5g31nyrm4mc" path="res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_hit.png" id="2_1gp12"]
+[ext_resource type="AnimationLibrary" uid="uid://dfwrh752fmwqr" path="res://scenes/creature_visuals/literature_floor_black_swan_brother_1_animations.tres" id="lib1"]
+[ext_resource type="AnimationLibrary" uid="uid://dc3t337nwl2ra" path="res://scenes/creature_visuals/literature_floor_black_swan_brother_2_animations.tres" id="lib2"]
+[ext_resource type="AnimationLibrary" uid="uid://dsxwhgbpaq4b3" path="res://scenes/creature_visuals/literature_floor_black_swan_brother_3_animations.tres" id="lib3"]
+[ext_resource type="AnimationLibrary" uid="uid://b7mdgfb5kv0ob" path="res://scenes/creature_visuals/literature_floor_black_swan_brother_4_animations.tres" id="lib4"]
+[ext_resource type="AnimationLibrary" uid="uid://dfmwude5o4x0m" path="res://scenes/creature_visuals/literature_floor_black_swan_brother_5_animations.tres" id="lib5"]
+[ext_resource type="AnimationLibrary" uid="uid://dvynmnoglwyrx" path="res://scenes/creature_visuals/literature_floor_black_swan_brother_6_animations.tres" id="lib6"]
+
+[sub_resource type="Animation" id="Animation_RESET"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/Visuals:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-65.5, -121)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_RESET"]
+_data = {
+&"RESET": SubResource("Animation_RESET")
+}
+
+[node name="LiteratureFloorBlackSwanBrotherTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -126)
+scale = Vector2(0.504, 0.504)
+texture = ExtResource("1_7445w")
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(-65.5, -121)
+scale = Vector2(0.504, 0.504)
+texture = ExtResource("2_1gp12")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_RESET"),
+&"brother_1": ExtResource("lib1"),
+&"brother_2": ExtResource("lib2"),
+&"brother_3": ExtResource("lib3"),
+&"brother_4": ExtResource("lib4"),
+&"brother_5": ExtResource("lib5"),
+&"brother_6": ExtResource("lib6")
+}
+autoplay = "brother_1/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -73.5
+offset_top = -273.0
+offset_right = 73.5
+offset_bottom = 14.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -129.5)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -277)

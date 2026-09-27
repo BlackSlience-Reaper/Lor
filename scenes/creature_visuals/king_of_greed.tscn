@@ -1,0 +1,104 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1i7m2wbguyx3"]
+
+[ext_resource type="Texture2D" uid="uid://cox7pn3xumoph" path="res://images/monsters/king_of_greed/magical_girl_idle.png" id="1_p825k"]
+[ext_resource type="Texture2D" uid="uid://bmwino8qv8jn3" path="res://images/monsters/king_of_greed/king_special_s1.png" id="2_p825k"]
+[ext_resource type="AnimationLibrary" uid="uid://c60mq75v2knej" path="res://scenes/creature_visuals/king_of_greed_magical_girl_animations.tres" id="3_magical_girl"]
+[ext_resource type="AnimationLibrary" uid="uid://csj2fmfvdu7r7" path="res://scenes/creature_visuals/king_of_greed_king_animations.tres" id="4_king"]
+
+[sub_resource type="Animation" id="Animation_p825k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.7, 0.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(24, 126)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MotionRoot/Visuals:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-9.000001, 35.000008)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dmp30"]
+_data = {
+&"RESET": SubResource("Animation_p825k")
+}
+
+[node name="KingOfGreedTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(-9.000001, 35.000008)
+scale = Vector2(0.62, 0.62)
+texture = ExtResource("1_p825k")
+centered = false
+offset = Vector2(-148.5, -609)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(24, 126)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_p825k")
+centered = false
+offset = Vector2(-996, -894)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_dmp30"),
+&"king": ExtResource("4_king"),
+&"magical_girl": ExtResource("3_magical_girl")
+}
+autoplay = "magical_girl/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -160.0
+offset_top = -410.0
+offset_right = 160.0
+offset_bottom = 12.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -205)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-27, -354)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-103, -226)

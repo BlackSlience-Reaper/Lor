@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://dowxmc47mib6j"]
+
+[node name="Encounter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="love_and_hatred" type="Marker2D" parent="."]
+position = Vector2(1560, 740)
+
+[node name="blind_rage" type="Marker2D" parent="."]
+position = Vector2(830, 735)
+
+[node name="staff_left" type="Marker2D" parent="."]
+position = Vector2(1210, 735)
+
+[node name="staff_right" type="Marker2D" parent="."]
+position = Vector2(1500, 735)
+
+[node name="green_stem_hermit" type="Marker2D" parent="."]
+position = Vector2(1780, 735)
+
+[node name="despair_sword_1" type="Marker2D" parent="."]
+position = Vector2(830, 735)
+
+[node name="despair_sword_2" type="Marker2D" parent="."]
+position = Vector2(1140, 735)
+
+[node name="despair_sword_3" type="Marker2D" parent="."]
+position = Vector2(1450, 735)
+
+[node name="tear_edge" type="Marker2D" parent="."]
+position = Vector2(1750, 735)
+
+[node name="gold_rush" type="Marker2D" parent="."]
+position = Vector2(1480, 755)
+
+[node name="greed_happiness_left" type="Marker2D" parent="."]
+position = Vector2(1120, 755)
+
+[node name="greed_happiness_right" type="Marker2D" parent="."]
+position = Vector2(1890, 755)
+
+[node name="nihil_love" type="Marker2D" parent="."]
+position = Vector2(126, 717)
+
+[node name="nihil_justice" type="Marker2D" parent="."]
+position = Vector2(915, 744)
+
+[node name="nihil_happiness" type="Marker2D" parent="."]
+position = Vector2(464, 834)
+
+[node name="nihil_courage" type="Marker2D" parent="."]
+position = Vector2(711, 839)
+
+[node name="nihil_boss" type="Marker2D" parent="."]
+position = Vector2(1603, 763)
+
+[node name="nihil_love_statue" type="Marker2D" parent="."]
+position = Vector2(1299, 741)
+
+[node name="nihil_justice_statue" type="Marker2D" parent="."]
+position = Vector2(1858, 701)
+
+[node name="nihil_happiness_statue" type="Marker2D" parent="."]
+position = Vector2(1050, 798)
+
+[node name="nihil_courage_statue" type="Marker2D" parent="."]
+position = Vector2(2158, 807)

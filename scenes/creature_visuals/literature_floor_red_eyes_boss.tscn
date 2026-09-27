@@ -1,0 +1,109 @@
+[gd_scene load_steps=6 format=3 uid="uid://22pour84hshx"]
+
+[ext_resource type="Texture2D" uid="uid://xspiw3ph8mxt" path="res://images/monsters/literature_floor_liberation/red_eyes/red_eyes_idle.png" id="1_idle"]
+[ext_resource type="Texture2D" uid="uid://cw6ka0l24tthp" path="res://images/monsters/literature_floor_liberation/red_eyes/red_eyes_s1.png" id="2_i0j6o"]
+[ext_resource type="AnimationLibrary" uid="uid://bu1p6m3ywuna7" path="res://scenes/creature_visuals/literature_floor_red_eyes_boss_animations.tres" id="3_library"]
+
+[sub_resource type="Animation" id="Animation_RESET"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -195)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.55, 0.55)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MotionRoot/Visuals:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-144, -76)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_RESET"]
+_data = {
+&"RESET": SubResource("Animation_RESET")
+}
+
+[node name="LiteratureFloorRedEyesBossTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(-144, -76)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("1_idle")
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -195)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("2_i0j6o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_RESET"),
+&"red_eyes": ExtResource("3_library")
+}
+autoplay = "red_eyes/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -93.0
+offset_top = -278.0
+offset_right = 97.0
+offset_bottom = -4.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -195)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-5, -292)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(58, -355)

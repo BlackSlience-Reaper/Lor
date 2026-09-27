@@ -1,0 +1,79 @@
+{
+	"MegaCrit.Sts2.Core.Models.Monsters.HauntedShip": {
+		"graph": {
+			"width": 7.86,
+			"height": 3.6,
+			"moves": [
+				{
+					"x": 0,
+					"y": 0,
+					"id": "RAMMING_SPEED_MOVE"
+				},
+				{
+					"x": 2.22,
+					"y": 0,
+					"id": "HAUNT_MOVE"
+				},
+				{
+					"x": 3.82,
+					"y": 0.20,
+					"id": "RAMMING_SPEED_MOVE"
+				},
+				{
+					"x": 3.82,
+					"y": 1.30,
+					"id": "SWIPE_MOVE"
+				},
+				{
+					"x": 3.82,
+					"y": 2.40,
+					"id": "STOMP_MOVE"
+				},
+				{
+					"x": 6.14,
+					"y": 0,
+					"id": "RAMMING_SPEED_MOVE"
+				}
+			],
+			"iconGroups": [
+				{
+					"x": 3.72,
+					"y": 0,
+					"width": 1.92,
+					"height": 3.6
+				}
+			],
+			"labels": [
+				{
+					"x": 3.82,
+					"y": 0.25,
+					"text": "33%, ≤1"
+				},
+				{
+					"x": 3.82,
+					"y": 1.35,
+					"text": "33%, ≤1"
+				},
+				{
+					"x": 3.82,
+					"y": 2.45,
+					"text": "33%, ≤1"
+				}
+			],
+			"arrows": [
+				{
+					"path": [0, 1.72, 0.5, 2.22]
+				},
+				{
+					"path": [0, 3.22, 0.5, 3.72]
+				},
+				{
+					"path": [0, 5.64, 0.3, 6.14]
+				},
+				{
+					"path": [0, 6.14, 0.7, 5.64]
+				}
+			]
+		}
+	}
+}

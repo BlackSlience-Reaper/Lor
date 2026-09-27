@@ -1,0 +1,45 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>LibraryOfRuina</RootNamespace>
+    <AssemblyName>LibraryOfRuina</AssemblyName>
+    <NoWarn>$(NoWarn);CS0436</NoWarn>
+    <!-- STS2_BETA selects the game 0.111 API branch that the v0.21.2 release was built against.
+         Build with -p:Sts2Beta=false only for the older SavedPropertiesTypeCache API. -->
+    <Sts2Beta Condition="'$(Sts2Beta)' == ''">true</Sts2Beta>
+    <DefineConstants Condition="'$(Sts2Beta)' == 'true'">$(DefineConstants);STS2_BETA</DefineConstants>
+  </PropertyGroup>
+
+  <!-- RitsuLib ships a props file that adds the Runtime/Ui/Shared/Settings reference set
+       for the selected game API version (compat/<version>). -->
+  <Import Project="$(RitsuLibReferencesProps)" Condition="Exists('$(RitsuLibReferencesProps)')" />
+
+  <ItemGroup>
+    <Reference Include="sts2" HintPath="$(Sts2DataDir)/sts2.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(Sts2DataDir)/0Harmony.dll" Private="false" />
+    <Reference Include="ActLikeIt2" HintPath="$(ActLikeIt2Dll)" Private="false" />
+    <Reference Include="LibraryOfRuinaLib" HintPath="$(LibraryOfRuinaLibDll)" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Compile-time only ([UsedImplicitly]); leaves no runtime reference. -->
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="build/**" />
+    <Compile Remove="dist/**" />
+  </ItemGroup>
+
+  <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(Sts2DataDir)/sts2.dll')" Text="sts2.dll not found in $(Sts2DataDir). Set Sts2Dir / Sts2DataDir in local.props." />
+    <Error Condition="!Exists('$(RitsuLibReferencesProps)')" Text="RitsuLib.References.props not found at $(RitsuLibReferencesProps). Set RitsuLibRoot in local.props." />
+    <Error Condition="!Exists('$(ActLikeIt2Dll)')" Text="ActLikeIt2.dll not found at $(ActLikeIt2Dll). Set ActLikeIt2Dll in local.props." />
+    <Error Condition="!Exists('$(LibraryOfRuinaLibDll)')" Text="LibraryOfRuinaLib.dll not found at $(LibraryOfRuinaLibDll). Set LibraryOfRuinaLibDll in local.props." />
+  </Target>
+</Project>

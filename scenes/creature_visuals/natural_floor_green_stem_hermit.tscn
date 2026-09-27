@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnnl6o1837m54"]
+
+[ext_resource type="Texture2D" uid="uid://veb4ubh3w3jb" path="res://images/monsters/green_stem_hermit/idle.png" id="1_idle"]
+[ext_resource type="Texture2D" uid="uid://csyakmh0p2p4b" path="res://images/monsters/natural_floor_liberation/green_stem_hermit/mental.png" id="2_6r5ye"]
+[ext_resource type="AnimationLibrary" uid="uid://v34wjfd3pgbk" path="res://scenes/creature_visuals/natural_floor_green_stem_hermit_animations.tres" id="2_animations"]
+
+[sub_resource type="Animation" id="Animation_vf1tm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-52.000004, 55)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0eadv"]
+_data = {
+&"RESET": SubResource("Animation_vf1tm")
+}
+
+[node name="NaturalFloorHermitVisualsTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.901, 0.901)
+texture = ExtResource("1_idle")
+centered = false
+offset = Vector2(-131.5, -347)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(-52.000004, 55)
+scale = Vector2(0.901, 0.901)
+texture = ExtResource("2_6r5ye")
+centered = false
+offset = Vector2(-99, -346)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_0eadv"),
+&"main": ExtResource("2_animations")
+}
+autoplay = "main/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -127.0
+offset_top = -280.0
+offset_right = 116.0
+offset_bottom = 1.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -140)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -385)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -292)

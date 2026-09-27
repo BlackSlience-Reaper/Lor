@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://chxerws1wv5qb"]
+
+[ext_resource type="Script" uid="uid://c1rxdtb8sicuy" path="res://src/visuals/PhilosophyFloorLiberation/PhilosophyFloorTwilightCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Texture2D" uid="uid://dyvr2r1kakg6o" path="res://images/monsters/philosophy_floor_twilight/default.png" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://4eoorfnph106" path="res://images/monsters/philosophy_floor_twilight/z.png" id="3_attack"]
+[ext_resource type="AnimationLibrary" uid="uid://bv8skhxxi3kl6" path="res://scenes/creature_visuals/philosophy_floor_twilight_animations.tres" id="4_animations"]
+
+[node name="PhilosophyFloorTwilight" type="Node2D"]
+script = ExtResource("1_visuals")
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -316)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("2_idle")
+
+[node name="AttackFrameNormalizer" type="Node2D" parent="MotionRoot"]
+unique_name_in_owner = true
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot/AttackFrameNormalizer"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -316)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("3_attack")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": ExtResource("4_animations")
+}
+autoplay = "Default"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -315.0
+offset_top = -624.0
+offset_right = 315.0
+offset_bottom = 12.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -202)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(36, -508)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-17, -276)

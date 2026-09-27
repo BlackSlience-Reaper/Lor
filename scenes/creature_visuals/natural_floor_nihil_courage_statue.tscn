@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://8eh3awjr1wag"]
+
+[ext_resource type="AnimationLibrary" uid="uid://yw16vpp63gbn" path="res://scenes/creature_visuals/natural_floor_nihil_courage_statue_default_animations.tres" id="default"]
+[ext_resource type="Texture2D" uid="uid://254mrkbfu4vi" path="res://images/monsters/natural_floor_liberation/nihil/courage_statue.png" id="idle"]
+
+[node name="Nihil_courage_statue" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+scale = Vector2(0.31008, 0.31008)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-633, -774)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.31008, 0.31008)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-633, -774)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"default": ExtResource("default")
+}
+autoplay = "default/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -98.0
+offset_top = -240.0
+offset_right = 60.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-34.73, -120)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-34.73, -280)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-34.73, -199.2)

@@ -1,0 +1,4 @@
+{
+  "SPECIAL_GUEST_RUN_STATE.title": "Special Guest Internal State",
+  "SPECIAL_GUEST_RUN_STATE.description": "Stores Special Guest unlock, consumption, stage, story, and draw states."
+}

@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr0jkjjena5hs"]
+
+[ext_resource type="Texture2D" uid="uid://bu41bwlqgbk0w" path="res://images/monsters/natural_floor_liberation/gold_rush/human_attack.png" id="attack"]
+[ext_resource type="AnimationLibrary" uid="uid://cjcp84ndamtwn" path="res://scenes/creature_visuals/natural_floor_gold_rush_human_animations.tres" id="human"]
+[ext_resource type="AnimationLibrary" uid="uid://cyowa7lr3vc6m" path="res://scenes/creature_visuals/natural_floor_gold_rush_human_charging_animations.tres" id="human_charging"]
+[ext_resource type="Texture2D" uid="uid://0yw2tssy1rsw" path="res://images/monsters/natural_floor_liberation/gold_rush/human_idle.png" id="idle"]
+[ext_resource type="AnimationLibrary" uid="uid://bq5ilbb88hcwq" path="res://scenes/creature_visuals/natural_floor_gold_rush_king_animations.tres" id="king"]
+[ext_resource type="AnimationLibrary" uid="uid://c46skximtwflp" path="res://scenes/creature_visuals/natural_floor_gold_rush_king_charging_animations.tres" id="king_charging"]
+
+[node name="GoldRushTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+scale = Vector2(0.53, 0.53)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-256, -665)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.53, 0.53)
+texture = ExtResource("attack")
+centered = false
+offset = Vector2(-700, -538)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"human": ExtResource("human"),
+&"human_charging": ExtResource("human_charging"),
+&"king": ExtResource("king"),
+&"king_charging": ExtResource("king_charging")
+}
+autoplay = "human/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -136.0
+offset_top = -291.0
+offset_right = 140.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -176)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-13, -348)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-10, -260)

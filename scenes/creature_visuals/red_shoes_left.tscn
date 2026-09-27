@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/visuals/RedShoesLeftCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Texture2D" path="res://images/monsters/red_shoes/left_shoe.png" id="2_tex"]
+
+[node name="RedShoesLeft" type="Node2D"]
+script = ExtResource("1_visuals")
+
+[node name="Visuals" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -98)
+scale = Vector2(0.52, 0.52)
+texture = ExtResource("2_tex")
+
+[node name="AttackVisuals" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -98)
+scale = Vector2(0.52, 0.52)
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -255.0
+offset_right = 150.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -98)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -310)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -230)

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddmcgtq3bykic"]
+
+[ext_resource type="Texture2D" uid="uid://b1n42duemkk7k" path="res://images/backgrounds/despair_knight_strong/despair_knight_background.png" id="background"]
+[ext_resource type="PackedScene" path="res://scenes/encounters/natural_floor_liberation_encounter.tscn" id="encounter"]
+
+[node name="NaturalFloorDespairLayoutPreview" type="Node2D"]
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 2560.0
+offset_bottom = 1440.0
+mouse_filter = 2
+texture = ExtResource("background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CameraLayout" type="Node2D" parent="."]
+position = Vector2(128, 72)
+scale = Vector2(0.9, 0.9)
+
+[node name="Encounter" parent="CameraLayout" instance=ExtResource("encounter")]
+offset_right = 2560.0
+offset_bottom = 1440.0

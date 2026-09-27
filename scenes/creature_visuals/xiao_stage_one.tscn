@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://jwwtfjj7gdqj"]
+
+[ext_resource type="Texture2D" uid="uid://ioatxbx4cjbq" path="res://images/special_guests/xiao/monsters/xiao_stage_one/XiaoDistort_Default.png" id="1_idle"]
+[ext_resource type="Texture2D" uid="uid://kiyp50rnssw" path="res://images/special_guests/xiao/monsters/xiao_stage_one/XiaoDistort_Strike.png" id="2_attack"]
+[ext_resource type="AnimationLibrary" uid="uid://mq01lqmw8org" path="res://scenes/creature_visuals/xiao_stage_one_animations.tres" id="3_library"]
+
+[node name="XiaoStageOneTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -120)
+scale = Vector2(1.2, 1.2)
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(25.2101, -50)
+scale = Vector2(0.47, 0.47)
+texture = ExtResource("1_idle")
+centered = false
+offset = Vector2(-521.33, -318)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(25.2101, -50)
+scale = Vector2(0.47, 0.47)
+texture = ExtResource("2_attack")
+centered = false
+offset = Vector2(-482.86, -272)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"stage_1": ExtResource("3_library")
+}
+autoplay = "stage_1/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -128.0
+offset_top = -325.0
+offset_right = 164.0
+offset_bottom = -29.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(20, -174)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(64.270004, -324)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -217)

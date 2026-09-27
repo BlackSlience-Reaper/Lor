@@ -1,0 +1,563 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Texture2D" path="res://images/reverberation/crying_children/child_idle.png" id="idle"]
+[ext_resource type="Texture2D" path="res://images/reverberation/crying_children/child_idle.png" id="child_idle"]
+[ext_resource type="Texture2D" path="res://images/reverberation/crying_children/child_evade.png" id="child_evade"]
+[ext_resource type="Texture2D" path="res://images/reverberation/crying_children/child_hit.png" id="child_hit"]
+[ext_resource type="Texture2D" path="res://images/reverberation/crying_children/child_slash.png" id="child_slash"]
+[ext_resource type="Texture2D" path="res://images/reverberation/crying_children/child_pierce.png" id="child_pierce"]
+
+
+
+
+[sub_resource type="Animation" id="child_Idle"]
+resource_name = "Idle"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/Visuals:visible")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/Visuals:texture")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_idle")]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/Visuals:offset")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-180, -340)]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:scale")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+
+[sub_resource type="Animation" id="child_Attack"]
+resource_name = "Attack"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_slash")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-631, -577)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Slash"]
+resource_name = "Slash"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_slash")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-631, -577)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Pierce"]
+resource_name = "Pierce"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_pierce")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-181, -340)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Strike"]
+resource_name = "Strike"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_idle")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-180, -340)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Guard"]
+resource_name = "Guard"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_idle")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-180, -340)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Ranged"]
+resource_name = "Ranged"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_idle")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-180, -340)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Hit"]
+resource_name = "Hit"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_hit")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-175, -333)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Evade"]
+resource_name = "Evade"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_evade")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-180, -340)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="child_Special"]
+resource_name = "Special"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:texture")
+tracks/0/interp = 0
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("child_idle")]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:offset")
+tracks/1/interp = 0
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-180, -340)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 0
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.58, 0.58)]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 0
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MotionRoot/Visuals:visible")
+tracks/4/interp = 0
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="child_library"]
+_data = {
+&"Idle": SubResource("child_Idle"),
+&"Attack": SubResource("child_Attack"),
+&"Slash": SubResource("child_Slash"),
+&"Pierce": SubResource("child_Pierce"),
+&"Strike": SubResource("child_Strike"),
+&"Guard": SubResource("child_Guard"),
+&"Ranged": SubResource("child_Ranged"),
+&"Hit": SubResource("child_Hit"),
+&"Evade": SubResource("child_Evade"),
+&"Special": SubResource("child_Special")
+}
+
+[node name="CryingChildrenVisualTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+scale = Vector2(0.58, 0.58)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-180, -340)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.58, 0.58)
+texture = ExtResource("idle")
+centered = false
+offset = Vector2(-180, -340)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"normal": SubResource("child_library")
+}
+autoplay = "normal/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -112.5
+offset_right = 112.5
+offset_top = -200.0
+offset_bottom = 0.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -100.0)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -225)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -170)

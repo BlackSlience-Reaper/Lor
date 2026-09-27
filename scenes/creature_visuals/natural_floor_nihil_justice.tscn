@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1i1xfcri4roy"]
+
+[ext_resource type="Texture2D" uid="uid://d4cge4461x6ix" path="res://images/monsters/natural_floor_liberation/nihil/justice_stagger.png" id="1_fua07"]
+[ext_resource type="Texture2D" uid="uid://rm2wrra3wd2u" path="res://images/monsters/natural_floor_liberation/nihil/justice_special.png" id="2_fua07"]
+[ext_resource type="AnimationLibrary" uid="uid://cg7532yeraein" path="res://scenes/creature_visuals/natural_floor_nihil_justice_default_animations.tres" id="default"]
+
+[node name="Nihil_justice" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(-1, 1)
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+scale = Vector2(0.52063, 0.52063)
+texture = ExtResource("1_fua07")
+centered = false
+offset = Vector2(-253, -505)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+scale = Vector2(0.52063, 0.52063)
+texture = ExtResource("2_fua07")
+centered = false
+offset = Vector2(-226, -546)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"default": ExtResource("default")
+}
+autoplay = "default/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -78.0
+offset_top = -265.0
+offset_right = 95.28
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-28.89, -132.5)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(20, -278)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-28.89, -219.95)

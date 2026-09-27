@@ -1,0 +1,11 @@
+{
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.title": "Cost Reduction",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.description": "The costs of [red]Attack[/red] and [blue]Skill[/blue] cards are reduced by {Amount:energyIcons()}, and each stack reduces base damage by [red]{DamageReduction}[/red] and Block by [red]{BlockReduction}[/red].",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.extraCardText": "[gold]Cost Reduction[/gold]: -{Amount:energyIcons()}, base damage -[red]{DamageReduction}[/red] and Block -[red]{BlockReduction}[/red] per stack.",
+  "FUNERAL_SEAL_AFFLICTION.title": "Seal",
+  "FUNERAL_SEAL_AFFLICTION.description": "This card is sealed and cannot be played. Remove this Affliction when the card leaves your hand, is discarded, is Exhausted, or when the player's turn ends.",
+  "FUNERAL_SEAL_AFFLICTION.extraCardText": "Afflicted with [gold]Seal[/gold]; cannot be played.",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.title": "Seal",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.description": "This card is afflicted with [gold]Seal[/gold]. It can be played, but how many such cards can be played is limited by [gold]Hand of Redemption[/gold]. Persists for the entire combat.",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.extraCardText": "Afflicted with [gold]Seal[/gold]."
+}

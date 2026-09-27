@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[node name="Encounter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="scarlet_scar" type="Marker2D" parent="."]
+position = Vector2(800, 735)
+
+[node name="lost_everything_wolf" type="Marker2D" parent="."]
+position = Vector2(1920, 738)
+
+[node name="melting_corpse_1" type="Marker2D" parent="."]
+position = Vector2(750, 735)
+
+[node name="melting_corpse_2" type="Marker2D" parent="."]
+position = Vector2(1010, 738)
+
+[node name="melting_corpse_3" type="Marker2D" parent="."]
+position = Vector2(1270, 738)
+
+[node name="melting_corpse_4" type="Marker2D" parent="."]
+position = Vector2(1530, 735)
+
+[node name="dipsia_bat_left" type="Marker2D" parent="."]
+position = Vector2(1080, 755)
+
+[node name="dipsia" type="Marker2D" parent="."]
+position = Vector2(1450, 755)
+
+[node name="dipsia_bat_right" type="Marker2D" parent="."]
+position = Vector2(1870, 755)
+
+[node name="mimicry" type="Marker2D" parent="."]
+position = Vector2(1600, 755)

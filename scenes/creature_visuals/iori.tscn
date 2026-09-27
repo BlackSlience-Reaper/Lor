@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://duk7cranqdxkj"]
+
+[ext_resource type="Texture2D" uid="uid://cop7wqpltjsjq" path="res://images/special_guests/iori/combat/frames/iori_idle_blunt.png" id="1_1x1l5"]
+[ext_resource type="Texture2D" uid="uid://bfkqbuxuxh362" path="res://images/special_guests/iori/combat/frames/iori_hit.png" id="2_bpt3f"]
+[ext_resource type="AnimationLibrary" uid="uid://br2olmtm1uiah" path="res://scenes/creature_visuals/iori_slash_animations.tres" id="3_slash"]
+[ext_resource type="AnimationLibrary" uid="uid://c26nt3mmoobgb" path="res://scenes/creature_visuals/iori_pierce_animations.tres" id="4_pierce"]
+[ext_resource type="AnimationLibrary" uid="uid://02y330xyrgy5" path="res://scenes/creature_visuals/iori_blunt_animations.tres" id="5_blunt"]
+[ext_resource type="AnimationLibrary" uid="uid://da3i42p6ct5wx" path="res://scenes/creature_visuals/iori_defense_animations.tres" id="6_defense"]
+
+[node name="IoriTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -20)
+scale = Vector2(0.55, 0.55)
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+texture = ExtResource("1_1x1l5")
+centered = false
+offset = Vector2(-768, -900)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+z_index = 1
+position = Vector2(-3.6363544, 9.090956)
+texture = ExtResource("2_bpt3f")
+centered = false
+offset = Vector2(-768, -900)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"blunt": ExtResource("5_blunt"),
+&"defense": ExtResource("6_defense"),
+&"pierce": ExtResource("4_pierce"),
+&"slash": ExtResource("3_slash")
+}
+autoplay = "slash/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -120.0
+offset_top = -307.0
+offset_right = 141.0
+offset_bottom = -29.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -175)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(10, -315)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-17, -220)

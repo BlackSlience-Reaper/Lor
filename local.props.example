@@ -1,0 +1,10 @@
+<Project>
+  <!-- Copy to local.props and adjust. local.props is git-ignored. -->
+  <PropertyGroup>
+    <!-- <SteamRoot>D:/SteamLibrary</SteamRoot> -->
+    <!-- <Sts2Dir>D:/SteamLibrary/steamapps/common/Slay the Spire 2</Sts2Dir> -->
+    <!-- <RitsuLibRoot>D:/SteamLibrary/steamapps/workshop/content/2868840/3747602295</RitsuLibRoot> -->
+    <!-- <ActLikeIt2Dll>D:/path/to/ActLikeIt2.dll</ActLikeIt2Dll> -->
+    <!-- <LibraryOfRuinaLibDll>D:/SteamLibrary/steamapps/workshop/content/2868840/3747541096/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll> -->
+  </PropertyGroup>
+</Project>

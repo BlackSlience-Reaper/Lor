@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://brks086x3b5sg"]
+
+[ext_resource type="Texture2D" uid="uid://c374tnx1y56vk" path="res://images/monsters/red_mist/red_mist_ego_idle.png" id="1_fuxmp"]
+[ext_resource type="Texture2D" uid="uid://bkk3vt1du023s" path="res://images/monsters/red_mist/ego_blunt.png" id="2_lr84n"]
+[ext_resource type="AnimationLibrary" uid="uid://cwus3vi74yemc" path="res://scenes/creature_visuals/kali_normal_animations.tres" id="3_normal"]
+[ext_resource type="AnimationLibrary" uid="uid://0hqbjojsa57m" path="res://scenes/creature_visuals/kali_ego_animations.tres" id="4_ego"]
+
+[sub_resource type="Animation" id="Animation_48568"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-28.373117, -37.49716)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2crqb"]
+_data = {
+&"RESET": SubResource("Animation_48568")
+}
+
+[node name="KaliTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -30)
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(-28.373117, -18.49716)
+scale = Vector2(0.60694, 0.60694)
+texture = ExtResource("1_fuxmp")
+centered = false
+offset = Vector2(-376.8, -498)
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(-28.373117, -37.49716)
+scale = Vector2(1.362, 1.362)
+texture = ExtResource("2_lr84n")
+centered = false
+offset = Vector2(-438.17392, -420.65216)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_2crqb"),
+&"ego": ExtResource("4_ego"),
+&"normal": ExtResource("3_normal")
+}
+autoplay = "normal/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -201.0
+offset_top = -365.0
+offset_right = 22.0
+offset_bottom = -23.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-80, -145)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-30, -375)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-80, -280)

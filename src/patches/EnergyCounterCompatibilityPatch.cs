@@ -1,0 +1,159 @@
+using System;
+using Godot;
+using HarmonyLib;
+using MegaCrit.Sts2.Core.Logging;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+
+namespace LibraryOfRuina.patches;
+
+
+
+
+
+
+[HarmonyPatch(typeof(NEnergyCounter), nameof(NEnergyCounter._Ready))]
+public static class EnergyCounterCompatibilityPatch
+{
+    private static readonly bool ExpectsEnergyVfx = AccessTools.Field(typeof(NEnergyCounter), "_backVfx") != null;
+    private static readonly bool ExpectsBurstVfx = AccessTools.Field(typeof(NEnergyCounter), "_backParticles") != null;
+    private static readonly Type? ParticlesContainerType =
+        AccessTools.TypeByName("MegaCrit.Sts2.Core.Nodes.Vfx.Utilities.NParticlesContainer");
+
+    private static bool _loggedCompatFix;
+
+    [HarmonyPrefix]
+    public static void Prefix(NEnergyCounter __instance)
+    {
+        if (ExpectsEnergyVfx && !ExpectsBurstVfx)
+        {
+            EnsureParticleAlias(__instance, aliasName: "EnergyVfxBack", fallbackName: "BurstBack");
+            EnsureParticleAlias(__instance, aliasName: "EnergyVfxFront", fallbackName: "BurstFront");
+            return;
+        }
+
+        if (ExpectsBurstVfx && !ExpectsEnergyVfx)
+        {
+            EnsureParticleAlias(__instance, aliasName: "BurstBack", fallbackName: "EnergyVfxBack");
+            EnsureParticleAlias(__instance, aliasName: "BurstFront", fallbackName: "EnergyVfxFront");
+            return;
+        }
+
+        
+        EnsureParticleAlias(__instance, aliasName: "EnergyVfxBack", fallbackName: "BurstBack");
+        EnsureParticleAlias(__instance, aliasName: "EnergyVfxFront", fallbackName: "BurstFront");
+        EnsureParticleAlias(__instance, aliasName: "BurstBack", fallbackName: "EnergyVfxBack");
+        EnsureParticleAlias(__instance, aliasName: "BurstFront", fallbackName: "EnergyVfxFront");
+    }
+
+    private static void EnsureParticleAlias(NEnergyCounter counter, string aliasName, string fallbackName)
+    {
+        Type? expectedType = GetExpectedType(aliasName);
+        if (expectedType == null)
+        {
+            return;
+        }
+
+        Node? existingAlias = GetNodeByNameOrUnique(counter, aliasName);
+        if (existingAlias != null && expectedType.IsInstanceOfType(existingAlias))
+        {
+            existingAlias.UniqueNameInOwner = true;
+            return;
+        }
+
+        if (existingAlias != null)
+        {
+            RemoveAliasNode(existingAlias);
+        }
+
+        Node? fallback = GetNodeByNameOrUnique(counter, fallbackName);
+        Node? alias = CreateAliasNode(expectedType, fallback);
+
+        if (alias == null)
+        {
+            return;
+        }
+
+        alias.Name = aliasName;
+        alias.UniqueNameInOwner = true;
+        if (alias is CpuParticles2D cpuParticles)
+        {
+            cpuParticles.Emitting = false;
+        }
+
+        counter.AddChild(alias);
+        alias.Owner = counter;
+
+        if (!_loggedCompatFix)
+        {
+            _loggedCompatFix = true;
+            Log.Warn("[EnergyCounterCompat] Added runtime-compatible energy counter VFX alias nodes.");
+        }
+    }
+
+    private static Type? GetExpectedType(string aliasName)
+    {
+        return aliasName switch
+        {
+            "BurstBack" or "BurstFront" => typeof(CpuParticles2D),
+            "EnergyVfxBack" or "EnergyVfxFront" => ParticlesContainerType,
+            _ => null
+        };
+    }
+
+    private static Node? GetNodeByNameOrUnique(Node parent, string nodeName)
+    {
+        return parent.GetNodeOrNull<Node>("%" + nodeName) ?? parent.GetNodeOrNull<Node>(nodeName);
+    }
+
+    private static Node? CreateAliasNode(Type expectedType, Node? fallback)
+    {
+        if (fallback != null && expectedType.IsInstanceOfType(fallback))
+        {
+            if (fallback.Duplicate() is Node duplicated)
+            {
+                return duplicated;
+            }
+        }
+
+        if (!typeof(Node).IsAssignableFrom(expectedType))
+        {
+            return null;
+        }
+
+        Node? created = Activator.CreateInstance(expectedType) as Node;
+        if (created == null)
+        {
+            return null;
+        }
+
+        InitializeParticlesContainerField(created);
+        return created;
+    }
+
+    private static void InitializeParticlesContainerField(Node node)
+    {
+        var particlesField = AccessTools.Field(node.GetType(), "_particles");
+        if (particlesField == null)
+        {
+            return;
+        }
+
+        object? emptyArray = Activator.CreateInstance(particlesField.FieldType);
+        if (emptyArray != null)
+        {
+            particlesField.SetValue(node, emptyArray);
+        }
+    }
+
+    private static void RemoveAliasNode(Node alias)
+    {
+        Node? parent = alias.GetParent();
+        if (parent == null)
+        {
+            return;
+        }
+
+        parent.RemoveChild(alias);
+        alias.QueueFree();
+    }
+}

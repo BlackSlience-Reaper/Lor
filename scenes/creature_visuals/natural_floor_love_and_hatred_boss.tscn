@@ -1,0 +1,113 @@
+[gd_scene load_steps=8 format=3 uid="uid://bvubwf1tgltcb"]
+
+[ext_resource type="Texture2D" uid="uid://b0h4p7b4l5q44" path="res://images/monsters/natural_floor_liberation/love_and_hatred/human_idle.png" id="1_idle"]
+[ext_resource type="AnimationLibrary" uid="uid://dcofne656bqv5" path="res://scenes/creature_visuals/natural_floor_love_and_hatred_human_animations.tres" id="2_human"]
+[ext_resource type="Texture2D" uid="uid://cyseljjt56m71" path="res://images/monsters/natural_floor_liberation/love_and_hatred/human_strike.png" id="2_jskjg"]
+[ext_resource type="AnimationLibrary" uid="uid://dgers555robcv" path="res://scenes/creature_visuals/natural_floor_love_and_hatred_special_animations.tres" id="3_special"]
+[ext_resource type="AnimationLibrary" uid="uid://bybpuxw1xqft4" path="res://scenes/creature_visuals/natural_floor_love_and_hatred_snake_animations.tres" id="4_snake"]
+
+[sub_resource type="Animation" id="Animation_d6xyg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/Visuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -122.00002)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/Visuals:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.53, 0.53)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MotionRoot/AttackVisuals:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.53, 0.53)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(7, -100.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ecpek"]
+_data = {
+&"RESET": SubResource("Animation_d6xyg")
+}
+
+[node name="NaturalFloorLoveAndHatredTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -122.00002)
+scale = Vector2(0.53, 0.53)
+texture = ExtResource("1_idle")
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(7, -100.5)
+scale = Vector2(0.53, 0.53)
+texture = ExtResource("2_jskjg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_ecpek"),
+&"human": ExtResource("2_human"),
+&"snake": ExtResource("4_snake"),
+&"special": ExtResource("3_special")
+}
+autoplay = "human/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -270.0
+offset_top = -308.0
+offset_right = 226.0
+offset_bottom = 1.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -225)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-27, -333)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-40, -150)

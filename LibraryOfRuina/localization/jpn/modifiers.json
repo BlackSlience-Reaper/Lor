@@ -1,0 +1,4 @@
+{
+  "SPECIAL_GUEST_RUN_STATE.title": "特別ゲスト内部状態",
+  "SPECIAL_GUEST_RUN_STATE.description": "特別ゲストのアンロック、消費、ステージ、ストーリー、抽選の各状態を保存する。"
+}

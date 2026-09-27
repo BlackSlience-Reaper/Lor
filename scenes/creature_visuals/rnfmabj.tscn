@@ -1,0 +1,146 @@
+[gd_scene load_steps=10 format=3 uid="uid://jsx1iij4vuwh"]
+
+[ext_resource type="Texture2D" uid="uid://cx0hthtl63nt7" path="res://images/special_guests/rnfmabj/monsters/Yan_Distort_Default.png" id="1_idle"]
+[ext_resource type="Texture2D" uid="uid://c14838ffaijlq" path="res://images/special_guests/rnfmabj/monsters/Yan_Distort_Move.png" id="2_attack"]
+[ext_resource type="Texture2D" uid="uid://csvf3t4dy53s" path="res://images/special_guests/rnfmabj/vfx/FX_Tex_Mon_Yarn_Sword1.png" id="3_sword"]
+[ext_resource type="Texture2D" uid="uid://2qbtct4cooeo" path="res://images/special_guests/rnfmabj/vfx/FX_Tex_Wave1.png" id="4_wave"]
+[ext_resource type="AnimationLibrary" uid="uid://bj7t7csn2uta4" path="res://scenes/creature_visuals/rnfmabj_distort_animations.tres" id="5_distort"]
+[ext_resource type="AnimationLibrary" uid="uid://dbd6vny68b6cb" path="res://scenes/creature_visuals/rnfmabj_union_animations.tres" id="6_union"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[sub_resource type="Animation" id="Animation_1wafe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/Visuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(240.17307, -487.03845)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(226.26929, -473.00006)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MotionRoot/Visuals:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MotionRoot/AttackVisuals:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("MotionRoot/AttackVisuals:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uobv2"]
+_data = {
+&"RESET": SubResource("Animation_1wafe")
+}
+
+[node name="RnfmabjTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -12)
+scale = Vector2(0.52, 0.52)
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(240.17307, -487.03845)
+scale = Vector2(1.0032678, 1.0131462)
+texture = ExtResource("1_idle")
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(226.26929, -473.00006)
+scale = Vector2(0.873723, 1)
+texture = ExtResource("2_attack")
+
+[node name="BladeVfx" type="Sprite2D" parent="MotionRoot"]
+visible = false
+modulate = Color(0.45, 0.83, 1, 0)
+material = SubResource("CanvasItemMaterial_add")
+position = Vector2(-120, -540)
+rotation = 0.5
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_sword")
+
+[node name="WaveVfx" type="Sprite2D" parent="MotionRoot"]
+visible = false
+modulate = Color(0.55, 0.9, 1, 0)
+material = SubResource("CanvasItemMaterial_add")
+position = Vector2(-50, -300)
+scale = Vector2(10, 10)
+texture = ExtResource("4_wave")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_uobv2"),
+&"distort": ExtResource("5_distort"),
+&"union": ExtResource("6_union")
+}
+autoplay = "distort/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -156.0
+offset_top = -411.0
+offset_right = 169.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -190)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-5, -417)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -350)

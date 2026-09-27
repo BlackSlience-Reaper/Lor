@@ -1,0 +1,223 @@
+[gd_scene load_steps=20 format=3 uid="uid://ca83wrkvu7le8"]
+
+[ext_resource type="Texture2D" uid="uid://dim7hhikhynbe" path="res://images/backgrounds/philosophy_floor_liberation_encounter/apo_bird_sky.png" id="1_sky"]
+[ext_resource type="Texture2D" uid="uid://070s4tx2i8a4" path="res://images/backgrounds/philosophy_floor_liberation_encounter/apo_bird_ground.png" id="2_ground"]
+[ext_resource type="Texture2D" uid="uid://bdvrxorkr36ox" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/body.png" id="3_body"]
+[ext_resource type="Texture2D" uid="uid://c04qcmnmluxi" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/l wing.png" id="4_lwing"]
+[ext_resource type="Texture2D" uid="uid://cvd5b2env3w7u" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/r wing.png" id="5_rwing"]
+[ext_resource type="Texture2D" uid="uid://bo78xhcla26uy" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/l arm.png" id="6_larm"]
+[ext_resource type="Texture2D" uid="uid://clrpq0nceymhk" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/r arm.png" id="7_rarm"]
+[ext_resource type="Texture2D" uid="uid://bfw71xrr2xika" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/neck.png" id="8_neck"]
+[ext_resource type="Texture2D" uid="uid://q80vws28ox1m" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/head.png" id="9_head"]
+[ext_resource type="Texture2D" uid="uid://cn4cbke4l4cti" path="res://images/backgrounds/philosophy_floor_liberation_encounter/end_bird/arm_additional.png" id="10_armadd"]
+[ext_resource type="Texture2D" uid="uid://dsrhvd5drst3f" path="res://images/backgrounds/philosophy_floor_liberation_encounter/eggs/big_eye.png" id="11_big"]
+[ext_resource type="Texture2D" uid="uid://3elm1be14fu6" path="res://images/backgrounds/philosophy_floor_liberation_encounter/eggs/big_eye_broken.png" id="12_big_broken"]
+[ext_resource type="Texture2D" uid="uid://c7vhe2c2brd3" path="res://images/backgrounds/philosophy_floor_liberation_encounter/eggs/small_beak.png" id="13_small"]
+[ext_resource type="Texture2D" uid="uid://h32n20g6s3fe" path="res://images/backgrounds/philosophy_floor_liberation_encounter/eggs/small_beak_broken.png" id="14_small_broken"]
+[ext_resource type="Texture2D" uid="uid://dovcftm0r36f8" path="res://images/backgrounds/philosophy_floor_liberation_encounter/eggs/long_arm.png" id="15_long"]
+[ext_resource type="Texture2D" uid="uid://grrulu1c5au8" path="res://images/backgrounds/philosophy_floor_liberation_encounter/eggs/long_arm_broken.png" id="16_long_broken"]
+[ext_resource type="AnimationLibrary" path="res://scenes/backgrounds/philosophy_floor_liberation_encounter/philosophy_floor_liberation_egg_animations.tres" id="17_egg_animations"]
+[ext_resource type="AnimationLibrary" path="res://scenes/backgrounds/philosophy_floor_liberation_encounter/philosophy_floor_liberation_end_bird_animations.tres" id="18_end_bird_animations"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_glow"]
+blend_mode = 1
+
+[node name="A" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1280.0
+offset_top = -720.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Sky" type="TextureRect" parent="."]
+z_index = -100
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_sky")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Ground" type="TextureRect" parent="."]
+z_index = -60
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_ground")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="PhilosophyEndBird" type="Node2D" parent="."]
+unique_name_in_owner = true
+z_index = -80
+z_as_relative = false
+position = Vector2(1385, 340)
+scale = Vector2(2.82, 2.82)
+
+[node name="FacingRoot" type="Node2D" parent="PhilosophyEndBird"]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Node2D" parent="PhilosophyEndBird/FacingRoot"]
+position = Vector2(-147, -90)
+scale = Vector2(0.22, 0.22)
+
+[node name="RightWing" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(493.478, -276.087)
+scale = Vector2(2.075, 2.166)
+texture = ExtResource("5_rwing")
+centered = false
+
+[node name="LeftWing" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(-1185.87, -288.044)
+scale = Vector2(1.87025, 2.1897)
+texture = ExtResource("4_lwing")
+centered = false
+
+[node name="Neck" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(493.478, -31.522)
+scale = Vector2(2.20011, 1.91925)
+texture = ExtResource("8_neck")
+centered = false
+
+[node name="Body" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(-384.783, -172.826)
+scale = Vector2(1.91067, 1.82504)
+texture = ExtResource("3_body")
+centered = false
+
+[node name="PhilosophyEndBirdLeftArm" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+unique_name_in_owner = true
+position = Vector2(-1091.304, -827.174)
+scale = Vector2(2.373, 2.15587)
+texture = ExtResource("6_larm")
+centered = false
+
+[node name="RightArm" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(980.435, -709.783)
+scale = Vector2(2.24171, 2.02637)
+texture = ExtResource("7_rarm")
+centered = false
+
+[node name="Head" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(196.739, -83.696)
+scale = Vector2(2.12115, 2.21371)
+texture = ExtResource("9_head")
+centered = false
+
+[node name="ArmAdditional" type="Sprite2D" parent="PhilosophyEndBird/FacingRoot/Visuals"]
+position = Vector2(1204.348, -555.435)
+scale = Vector2(1.34808, 1.2292)
+texture = ExtResource("10_armadd")
+centered = false
+
+[node name="PhilosophyEndBirdAnimationPlayer" type="AnimationPlayer" parent="PhilosophyEndBird"]
+unique_name_in_owner = true
+libraries = {
+&"": ExtResource("18_end_bird_animations")
+}
+autoplay = "idle"
+
+[node name="PhilosophyEggs" type="Node2D" parent="."]
+unique_name_in_owner = true
+z_index = -40
+z_as_relative = false
+
+[node name="BigEyes" type="Node2D" parent="PhilosophyEggs"]
+position = Vector2(1160, 868)
+scale = Vector2(0.22, 0.22)
+
+[node name="Normal" type="Sprite2D" parent="PhilosophyEggs/BigEyes"]
+unique_name_in_owner = true
+texture = ExtResource("11_big")
+
+[node name="Broken" type="Sprite2D" parent="PhilosophyEggs/BigEyes"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -35)
+texture = ExtResource("12_big_broken")
+
+[node name="Glow" type="Sprite2D" parent="PhilosophyEggs/BigEyes"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 0.94, 0.38, 0.62)
+material = SubResource("CanvasItemMaterial_glow")
+scale = Vector2(1.12, 1.12)
+texture = ExtResource("11_big")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PhilosophyEggs/BigEyes"]
+libraries = {
+&"": ExtResource("17_egg_animations")
+}
+autoplay = "active"
+
+[node name="SmallBeak" type="Node2D" parent="PhilosophyEggs"]
+position = Vector2(1280, 849)
+scale = Vector2(0.22, 0.22)
+
+[node name="Normal" type="Sprite2D" parent="PhilosophyEggs/SmallBeak"]
+position = Vector2(90.90912, 31.818176)
+texture = ExtResource("13_small")
+
+[node name="Broken" type="Sprite2D" parent="PhilosophyEggs/SmallBeak"]
+visible = false
+position = Vector2(0, 91)
+texture = ExtResource("14_small_broken")
+
+[node name="Glow" type="Sprite2D" parent="PhilosophyEggs/SmallBeak"]
+visible = false
+modulate = Color(1, 0.94, 0.38, 0.62)
+material = SubResource("CanvasItemMaterial_glow")
+position = Vector2(95.45454, 4.545454)
+scale = Vector2(1.12, 1.12)
+texture = ExtResource("13_small")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PhilosophyEggs/SmallBeak"]
+libraries = {
+&"": ExtResource("17_egg_animations")
+}
+autoplay = "inactive"
+
+[node name="LongArms" type="Node2D" parent="PhilosophyEggs"]
+position = Vector2(1400, 869)
+scale = Vector2(0.22, 0.22)
+
+[node name="Normal" type="Sprite2D" parent="PhilosophyEggs/LongArms"]
+position = Vector2(163.63635, 13.635895)
+texture = ExtResource("15_long")
+
+[node name="Broken" type="Sprite2D" parent="PhilosophyEggs/LongArms"]
+visible = false
+position = Vector2(0, 22)
+texture = ExtResource("16_long_broken")
+
+[node name="Glow" type="Sprite2D" parent="PhilosophyEggs/LongArms"]
+visible = false
+modulate = Color(1, 0.94, 0.38, 0.62)
+material = SubResource("CanvasItemMaterial_glow")
+position = Vector2(168.18188, 0)
+scale = Vector2(1.12, 1.12)
+texture = ExtResource("15_long")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PhilosophyEggs/LongArms"]
+libraries = {
+&"": ExtResource("17_egg_animations")
+}
+autoplay = "inactive"

@@ -1,0 +1,11 @@
+{
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.title": "비용 감소",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.description": "[red]공격[/red] 카드와 [blue]스킬[/blue] 카드의 비용이 {Amount:energyIcons()} 감소하며, 중첩당 기본 피해가 [red]{DamageReduction}[/red], 방어도가 [red]{BlockReduction}[/red] 감소합니다.",
+  "LIBRARY_OF_RUINA_COST_REDUCTION_AFFLICTION.extraCardText": "[gold]비용 절감[/gold]: -{Amount:energyIcons()}, 중첩당 기본 피해 -[red]{DamageReduction}[/red], 방어도 -[red]{BlockReduction}[/red].",
+  "FUNERAL_SEAL_AFFLICTION.title": "봉인",
+  "FUNERAL_SEAL_AFFLICTION.description": "이 카드는 봉인되어 사용할 수 없습니다. 손에서 벗어나거나, 버려지거나, 소멸되거나, 플레이어의 턴이 끝나면 이 침식이 제거됩니다.",
+  "FUNERAL_SEAL_AFFLICTION.extraCardText": "[gold]봉인[/gold]되어 사용할 수 없습니다.",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.title": "봉인",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.description": "이 카드는 [gold]봉인[/gold] 침식에 걸려 있습니다. 사용할 수 있지만, 사용할 수 있는 횟수는 [gold]구원의 손[/gold]에 의해 제한됩니다. 전투가 끝날 때까지 지속됩니다.",
+  "SOLEMN_MOURNING_PERSISTENT_SEAL_AFFLICTION.extraCardText": "이 카드는 [gold]봉인[/gold] 침식에 걸려 있습니다."
+}

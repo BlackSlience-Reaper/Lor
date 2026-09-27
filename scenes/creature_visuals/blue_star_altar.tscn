@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://ckeocmh6f2pkj"]
+
+[ext_resource type="Texture2D" uid="uid://bp4i5ine43gnh" path="res://images/monsters/blue_star_altar/nova.png" id="2_nova"]
+[ext_resource type="AnimationLibrary" uid="uid://g4ock67jf3jb" path="res://scenes/creature_visuals/blue_star_altar_normal_animations.tres" id="3_normal"]
+[ext_resource type="AnimationLibrary" uid="uid://c0o5pp7ua4md8" path="res://scenes/creature_visuals/blue_star_altar_nova_animations.tres" id="4_nova"]
+
+[sub_resource type="Animation" id="Animation_eir2l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MotionRoot/Visuals:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -244.99998)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MotionRoot/AttackVisuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.9999998, -245.99998)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6o5et"]
+_data = {
+&"RESET": SubResource("Animation_eir2l")
+}
+
+[node name="BlueStarAltarTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -244.99998)
+scale = Vector2(0.62, 0.62)
+texture = ExtResource("2_nova")
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(1.9999998, -245.99998)
+scale = Vector2(0.62, 0.62)
+texture = ExtResource("2_nova")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_6o5et"),
+&"normal": ExtResource("3_normal"),
+&"nova": ExtResource("4_nova")
+}
+autoplay = "normal/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -199.0
+offset_top = -516.0
+offset_right = 185.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -240)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -530)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -500)

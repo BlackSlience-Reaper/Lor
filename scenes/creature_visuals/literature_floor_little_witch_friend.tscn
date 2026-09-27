@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://images/monsters/literature_floor_liberation/little_witch_friend_idle.png" id="1_idle"]
+[ext_resource type="Texture2D" path="res://images/monsters/literature_floor_liberation/little_witch_friend_attack.png" id="2_attack"]
+[ext_resource type="AnimationLibrary" path="res://scenes/creature_visuals/literature_floor_little_witch_friend_animations.tres" id="3_library"]
+
+[node name="LiteratureFloorLittleWitchFriendTemplate" type="Node2D"]
+
+[node name="MotionRoot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Visuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+position = Vector2(0, -94)
+scale = Vector2(0.43, 0.43)
+texture = ExtResource("1_idle")
+
+[node name="AttackVisuals" type="Sprite2D" parent="MotionRoot"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(20, -102)
+scale = Vector2(0.54, 0.54)
+texture = ExtResource("2_attack")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"friend": ExtResource("3_library")
+}
+autoplay = "friend/Idle"
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -126.0
+offset_top = -202.0
+offset_right = 126.0
+offset_bottom = 8.0
+mouse_filter = 2
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -98)
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -242)
+
+[node name="TalkPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -190)

@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://images/backgrounds/forsaken_murderer_weak/forsaken_murderer_fear_filter.webp" id="2_filter"]
+
+[node name="FearOverlay" type="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Filter" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_filter")
+expand_mode = 1
+stretch_mode = 5
