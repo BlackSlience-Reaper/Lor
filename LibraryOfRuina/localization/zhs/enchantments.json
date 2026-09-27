@@ -1,0 +1,22 @@
+{
+  "YANAMI_ETHEREAL_ENCHANTMENT.title": "虚化",
+  "YANAMI_ETHEREAL_ENCHANTMENT.description": "这张牌获得[gold]虚无、消耗[/gold]。",
+  "MATCH_FLAME_ENCHANTMENT.title": "火苗",
+  "MATCH_FLAME_ENCHANTMENT.description": "每当打出这张牌，伤害+[blue]{Damage}[/blue]。对目标施加[blue]{Burn}[/blue]层[gold]烧伤[/gold]。\n此牌在本场第[blue]{Threshold}[/blue]次及以后打出时，对自己施加[blue]{SelfBurn}[/blue]层[gold]烧伤[/gold]。",
+  "MATCH_FLAME_ENCHANTMENT.extraCardText": "每当打出这张牌，伤害+[blue]{Damage}[/blue]。对目标施加[blue]{Burn}[/blue]层[gold]烧伤[/gold]。\n此牌在本场第[blue]{Threshold}[/blue]次及以后打出时，对自己施加[blue]{SelfBurn}[/blue]层[gold]烧伤[/gold]。",
+  "LETICIA_PARTNER_MARK_ENCHANTMENT.title": "伙伴标记",
+  "STRANGLING_VINE_ENCHANTMENT.title": "绞杀藤",
+  "STRANGLING_VINE_ENCHANTMENT.description": "攻击类型视为[img]res://LibraryOfRuinaLib/images/dice/pierce.png[/img]。每次命中时，对目标施加持续[blue]{Turns}[/blue]回合的[blue]{Binding}[/blue]层[gold]束缚[/gold]。",
+  "STRANGLING_VINE_ENCHANTMENT.extraCardText": "攻击类型视为突刺\n每次命中施加持续[blue]{Turns}[/blue]回合的[blue]{Binding}[/blue]层[gold]束缚[/gold]。",
+  "LETICIA_PARTNER_MARK_ENCHANTMENT.description": "每回合每当这张牌被使用时，本场战斗其耗能[blue]-{CostReduction}[/blue]。若回合结束时这张牌仍在手牌中，本场战斗其耗能[blue]+{CostIncrease}[/blue]。",
+  "LETICIA_PARTNER_MARK_ENCHANTMENT.extraCardText": "每回合每当这张牌被使用时，本场战斗其耗能[blue]-{CostReduction}[/blue]。若回合结束时这张牌仍在手牌中，本场战斗其耗能[blue]+{CostIncrease}[/blue]。",
+  "CHAIN_ENCHANTMENT.title": "连锁",
+  "CHAIN_ENCHANTMENT.description": "打出后，对其他敌人再次造成未被格挡伤害的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
+  "CHAIN_ENCHANTMENT.extraCardText": "打出后，对其他敌人再次造成未被格挡伤害的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
+  "PEBBLE_MARK_ENCHANTMENT.title": "卵石标记",
+  "PEBBLE_MARK_ENCHANTMENT.description": "这张牌获得[gold]消耗[/gold]。打出后，恢复[blue]{Heal}[/blue]点生命。",
+  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "打出后，恢复[blue]{Heal}[/blue]点生命。获得[gold]消耗[/gold]。",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.title": "变幻莫测",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.description": "这张牌的耗能随机化为[blue]0~3[/blue]。每当你抽到这张牌时自动打出，随后回到[gold]手牌[/gold]。",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.extraCardText": "这张牌的耗能随机化为[blue]0~3[/blue]。每当你抽到这张牌时自动打出，随后回到[gold]手牌[/gold]。"
+}

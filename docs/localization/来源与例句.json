@@ -1,0 +1,1286 @@
+{
+  "checked_on": "2026-09-07",
+  "release": {
+    "commit": "41cef1ea",
+    "version": "v0.111.0",
+    "date": "2026-08-13T17:39:18-07:00",
+    "branch": "v0.111.0",
+    "main_assembly_hash": 1172974615
+  },
+  "pck_path": "/Users/iniad/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources/Slay the Spire 2.pck",
+  "source_scope": "localization/<language>/*.json; excludes patch_notes subdirectories",
+  "source_counts": {
+    "eng": {
+      "files": 46,
+      "entries": 7028
+    },
+    "zhs": {
+      "files": 46,
+      "entries": 6937
+    },
+    "jpn": {
+      "files": 46,
+      "entries": 6937
+    },
+    "kor": {
+      "files": 46,
+      "entries": 6935
+    }
+  },
+  "readme_resource": "localization/README.md",
+  "readme_sha256": "809d1cee1ec00356876c0109c5db829634c09be41db914eef06118d8332c0764",
+  "assembly_path": "/Users/iniad/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_arm64/sts2.dll",
+  "assembly_sha256": "9cb4f1ad8c9f284aa8fec3122ffd6d780bbf543d875c817abdd12ff63fbf12b4",
+  "runtime_members_checked": [
+    "MegaCrit.Sts2.Core.Models.CardModel.GetDescriptionForPile",
+    "MegaCrit.Sts2.Core.Models.PowerModel.HoverTips",
+    "MegaCrit.Sts2.Core.Models.PowerModel.GetDumbHoverTip",
+    "MegaCrit.Sts2.Core.Models.PowerModel.AddDumbVariablesToDescription",
+    "MegaCrit.Sts2.Core.HoverTips.HoverTipFactory.FromPower",
+    "MegaCrit.Sts2.Core.Localization.Formatters.ShowIfUpgradedFormatter.TryEvaluateFormat",
+    "MegaCrit.Sts2.Core.Localization.LocManager.LoadTablesFromPath",
+    "MegaCrit.Sts2.Core.Localization.LocManager._supportedLanguages",
+    "MegaCrit.Sts2.Core.Modding.ModManager.GetModdedLocTables",
+    "MegaCrit.Sts2.Core.Models.CardModel.SelectionScreenPrompt",
+    "MegaCrit.Sts2.Core.Models.PowerModel.SelectionScreenPrompt",
+    "MegaCrit.Sts2.Core.Models.PowerModel.AfterCloned",
+    "MegaCrit.Sts2.Core.Models.PotionModel"
+  ],
+  "source_table_sha256": {
+    "localization/eng/card_keywords.json": "4d84243b0540c06c90f2854d1f757aad2243300f0c6056e39a0cb39225c289cc",
+    "localization/eng/cards.json": "c469a0be87d57c1476b75a5d0d3031cebf47e65d380a4646aae0028a20c993c0",
+    "localization/eng/gameplay_ui.json": "8b420b7427b8ebfb15d888ff0ae876bdcaaeac7e57b0c45b41937ca2627b9a91",
+    "localization/eng/orbs.json": "70ac60d34b872c580409cafba57b149a334dad261c87e26b1801e54409ea5a12",
+    "localization/eng/powers.json": "b1a28215670efc6d427f198a0ef4e58df248c37e9c2893fc3ed9cf3c15cc8f5b",
+    "localization/eng/static_hover_tips.json": "9e695ff2079f01bc4cc28286d70f70bb1d74b720f8bf8bf2fc75ba0185263676",
+    "localization/zhs/card_keywords.json": "697a5680f24ab8d0acb821ee4442f596f79d875bd9605ab743f64ca42ebb32c3",
+    "localization/zhs/cards.json": "f2176b0bfbbb5f1be40dcd86aff8f5572c9c0421d048e88f02bb86d9ce6fa169",
+    "localization/zhs/gameplay_ui.json": "b1198118b4f170e080b9d2f63387fcaca5420597a68c3a4585d2472db8158d98",
+    "localization/zhs/orbs.json": "d212f566af56b5fbc3a0c2ca7b9ad7f18467a17635836f55e5f864b6499d7741",
+    "localization/zhs/powers.json": "059f3b410e11296b6998532d78049b20e8b0027c68e80f41bb20bcd7ee691b3c",
+    "localization/zhs/static_hover_tips.json": "4781f50ef59d28f6faa67a2e88ce47308ec267135e1376d573719ca153171fc5",
+    "localization/jpn/card_keywords.json": "b9d528f697875d0e2abe76e5e78ed0fae97905e107a80033c9399f19206b240e",
+    "localization/jpn/cards.json": "cd18d80c70482ee634a7913e7d3f2bf7928368b8ed4f1b240949b681352012eb",
+    "localization/jpn/gameplay_ui.json": "f0930cd8a99d8f1cf7d8b5deecf7e4bec7c29921ef814ea288ab4876a0033819",
+    "localization/jpn/orbs.json": "e8d9fb97f32a55dbe032830dd226857dd17a527522c6d363718a933f804b8c36",
+    "localization/jpn/powers.json": "c93c6f54335c4e2b7cdde16e2fbda2530b444267f608c97ccf80647cc0b8dd18",
+    "localization/jpn/static_hover_tips.json": "1744b77ab419660d4c241dd404db6c36e2aa0736c1bc8343f8cb980337d20f60",
+    "localization/kor/card_keywords.json": "cefd9286b2cf5b3204dd44bec710a791bdddb67b853eba4275ea04c1d26c16c2",
+    "localization/kor/cards.json": "55c02b621760e062659fbc33bcf69c990bac1547fcb0cff6aae5a85dbc37e756",
+    "localization/kor/gameplay_ui.json": "825aabe0823c44e0e9d63e504e5a3f046e351aa6baf06910c412bee6e2ed8dd4",
+    "localization/kor/orbs.json": "b210091e02f359c2e3749bd077a0a2dcd0bce9faade3f304e43d8a14ac52a3bb",
+    "localization/kor/powers.json": "f4653eb0838494585470cbaac7dec00bd17ffb3e1bad310e31e1cc4e4a6c745f",
+    "localization/kor/static_hover_tips.json": "3468d4000c18a658cc138e6c7fa8643b08a539760c0efa55e0414f889ee76c83",
+    "localization/eng/card_selection.json": "7568f0915ed1887b947dd52d2c2715ac9a34328e61b5a945054b1fc0dcf48b55",
+    "localization/zhs/card_selection.json": "281bf30ea86d33ff9f1f7e2babc06a6e2c2ab46cba7e2605b34961d6c3637f09",
+    "localization/jpn/card_selection.json": "56b871c42627d0be36e88d1132df6c3f561fbce6e12b6f477b5d7a6e00d398a5",
+    "localization/kor/card_selection.json": "57a74828066251afb40ba68a7cbcbee8d07ffb3c0db356b401c3f1b8b9610ae3",
+    "localization/eng/events.json": "5500e566e6951ccfc57ac07dd0b6490264e12391a638c2117d62e74526c94467",
+    "localization/zhs/events.json": "b3d53173c4a12631b8b0f107de8dc1897d6b22f3b3c2085699eb78b4f0f04885",
+    "localization/jpn/events.json": "b462e3cee14777c5af1e8d920588bfc9435af1bec33beb6e1c8ce4e3d202ce4f",
+    "localization/kor/events.json": "33a8717b7cdea9c8589ad93fe6b268d23c77ab20bf53a1e7aac70aa2eafae581",
+    "localization/eng/potions.json": "2b3c5e0f6b80741273f4060444d0b40e9db5115ac3252f8476340858a701f5ca",
+    "localization/zhs/potions.json": "fb4876cf2f9a9507d69fb780594095c2755e27e9ed6248d708997d6346a3f22a",
+    "localization/jpn/potions.json": "6737606f27331dc70c44616c8ff6f225222626967af4bcce184f32732844c53a",
+    "localization/kor/potions.json": "cb81ab6fe881cf18fbbeeb463231186b391f44f9ccf6399dfc54d90d49d7d4f1",
+    "localization/eng/relics.json": "7379d2f141bc507fad392fd38d6d718667c6f55df5d2f6ce50ed0f5649403183",
+    "localization/zhs/relics.json": "40f279be4cdce5ab31a7cac1452fcf0b26c02ad26e4bca479e7f2242968df036",
+    "localization/jpn/relics.json": "253858449f3ea91ab91ee8bb0f1773275b2a5a87817c950c94888739d80c0335",
+    "localization/kor/relics.json": "cea9761d10d79f561633c15940e6c079f114f9ed2b6927c45702f183482c031d"
+  },
+  "term_count": 53,
+  "terms": [
+    {
+      "table": "card_keywords.json",
+      "key": "ETERNAL.title",
+      "category": "卡牌关键词",
+      "eng": "Eternal",
+      "zhs": "永恒",
+      "jpn": "永劫",
+      "kor": "영구",
+      "note": "",
+      "raw": {
+        "eng": "Eternal",
+        "zhs": "永恒",
+        "jpn": "永劫",
+        "kor": "영구"
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "ETHEREAL.title",
+      "category": "卡牌关键词",
+      "eng": "Ethereal",
+      "zhs": "虚无",
+      "jpn": "エセリアル",
+      "kor": "휘발성",
+      "note": "",
+      "raw": {
+        "eng": "Ethereal",
+        "zhs": "虚无",
+        "jpn": "エセリアル",
+        "kor": "휘발성"
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "EXHAUST.title",
+      "category": "卡牌关键词",
+      "eng": "Exhaust",
+      "zhs": "消耗",
+      "jpn": "廃棄",
+      "kor": "소멸",
+      "note": "",
+      "raw": {
+        "eng": "Exhaust",
+        "zhs": "消耗",
+        "jpn": "廃棄",
+        "kor": "소멸"
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "INNATE.title",
+      "category": "卡牌关键词",
+      "eng": "Innate",
+      "zhs": "固有",
+      "jpn": "天賦",
+      "kor": "선천성",
+      "note": "",
+      "raw": {
+        "eng": "Innate",
+        "zhs": "固有",
+        "jpn": "天賦",
+        "kor": "선천성"
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "RETAIN.title",
+      "category": "卡牌关键词",
+      "eng": "Retain",
+      "zhs": "保留",
+      "jpn": "保留",
+      "kor": "보존",
+      "note": "",
+      "raw": {
+        "eng": "Retain",
+        "zhs": "保留",
+        "jpn": "保留",
+        "kor": "보존"
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "SLY.title",
+      "category": "卡牌关键词",
+      "eng": "Sly",
+      "zhs": "奇巧",
+      "jpn": "スライ",
+      "kor": "교활",
+      "note": "",
+      "raw": {
+        "eng": "Sly",
+        "zhs": "奇巧",
+        "jpn": "スライ",
+        "kor": "교활"
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "UNPLAYABLE.title",
+      "category": "卡牌关键词",
+      "eng": "Unplayable",
+      "zhs": "不能被打出",
+      "jpn": "プレイ不可",
+      "kor": "사용불가",
+      "note": "",
+      "raw": {
+        "eng": "Unplayable",
+        "zhs": "不能被打出",
+        "jpn": "プレイ不可",
+        "kor": "사용불가"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "STRENGTH_POWER.title",
+      "category": "状态名称",
+      "eng": "Strength",
+      "zhs": "力量",
+      "jpn": "筋力",
+      "kor": "힘",
+      "note": "",
+      "raw": {
+        "eng": "Strength",
+        "zhs": "力量",
+        "jpn": "筋力",
+        "kor": "힘"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "DEXTERITY_POWER.title",
+      "category": "状态名称",
+      "eng": "Dexterity",
+      "zhs": "敏捷",
+      "jpn": "敏捷",
+      "kor": "민첩",
+      "note": "",
+      "raw": {
+        "eng": "Dexterity",
+        "zhs": "敏捷",
+        "jpn": "敏捷",
+        "kor": "민첩"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "VULNERABLE_POWER.title",
+      "category": "状态名称",
+      "eng": "Vulnerable",
+      "zhs": "易伤",
+      "jpn": "弱体",
+      "kor": "취약",
+      "note": "",
+      "raw": {
+        "eng": "Vulnerable",
+        "zhs": "易伤",
+        "jpn": "弱体",
+        "kor": "취약"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "WEAK_POWER.title",
+      "category": "状态名称",
+      "eng": "Weak",
+      "zhs": "虚弱",
+      "jpn": "脱力",
+      "kor": "약화",
+      "note": "",
+      "raw": {
+        "eng": "Weak",
+        "zhs": "虚弱",
+        "jpn": "脱力",
+        "kor": "약화"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "FRAIL_POWER.title",
+      "category": "状态名称",
+      "eng": "Frail",
+      "zhs": "脆弱",
+      "jpn": "脆弱",
+      "kor": "손상",
+      "note": "",
+      "raw": {
+        "eng": "Frail",
+        "zhs": "脆弱",
+        "jpn": "脆弱",
+        "kor": "손상"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "POISON_POWER.title",
+      "category": "状态名称",
+      "eng": "Poison",
+      "zhs": "中毒",
+      "jpn": "毒",
+      "kor": "중독",
+      "note": "",
+      "raw": {
+        "eng": "Poison",
+        "zhs": "中毒",
+        "jpn": "毒",
+        "kor": "중독"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "FOCUS_POWER.title",
+      "category": "状态名称",
+      "eng": "Focus",
+      "zhs": "集中",
+      "jpn": "集中力",
+      "kor": "밀집",
+      "note": "",
+      "raw": {
+        "eng": "Focus",
+        "zhs": "集中",
+        "jpn": "集中力",
+        "kor": "밀집"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "ARTIFACT_POWER.title",
+      "category": "状态名称",
+      "eng": "Artifact",
+      "zhs": "人工制品",
+      "jpn": "アーティファクト",
+      "kor": "인공물",
+      "note": "",
+      "raw": {
+        "eng": "Artifact",
+        "zhs": "人工制品",
+        "jpn": "アーティファクト",
+        "kor": "인공물"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "INTANGIBLE_POWER.title",
+      "category": "状态名称",
+      "eng": "Intangible",
+      "zhs": "无实体",
+      "jpn": "霊体",
+      "kor": "불가침",
+      "note": "",
+      "raw": {
+        "eng": "Intangible",
+        "zhs": "无实体",
+        "jpn": "霊体",
+        "kor": "불가침"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "REGEN_POWER.title",
+      "category": "状态名称",
+      "eng": "Regen",
+      "zhs": "再生",
+      "jpn": "再生",
+      "kor": "재생",
+      "note": "",
+      "raw": {
+        "eng": "Regen",
+        "zhs": "再生",
+        "jpn": "再生",
+        "kor": "재생"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "THORNS_POWER.title",
+      "category": "状态名称",
+      "eng": "Thorns",
+      "zhs": "荆棘",
+      "jpn": "トゲ",
+      "kor": "가시",
+      "note": "",
+      "raw": {
+        "eng": "Thorns",
+        "zhs": "荆棘",
+        "jpn": "トゲ",
+        "kor": "가시"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "VIGOR_POWER.title",
+      "category": "状态名称",
+      "eng": "Vigor",
+      "zhs": "活力",
+      "jpn": "活力",
+      "kor": "활력",
+      "note": "",
+      "raw": {
+        "eng": "Vigor",
+        "zhs": "活力",
+        "jpn": "活力",
+        "kor": "활력"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "BLOCK.title",
+      "category": "资源与机制",
+      "eng": "Block",
+      "zhs": "格挡",
+      "jpn": "ブロック",
+      "kor": "방어도",
+      "note": "",
+      "raw": {
+        "eng": "Block",
+        "zhs": "格挡",
+        "jpn": "ブロック",
+        "kor": "방어도"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "ENERGY.title",
+      "category": "资源与机制",
+      "eng": "Energy",
+      "zhs": "能量",
+      "jpn": "エナジー",
+      "kor": "에너지",
+      "note": "",
+      "raw": {
+        "eng": "Energy",
+        "zhs": "能量",
+        "jpn": "エナジー",
+        "kor": "에너지"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "STAR_COUNT.title",
+      "category": "资源与机制",
+      "eng": "Stars",
+      "zhs": "辉星",
+      "jpn": "スター",
+      "kor": "별",
+      "note": "",
+      "raw": {
+        "eng": "Stars",
+        "zhs": "辉星",
+        "jpn": "スター",
+        "kor": "별"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "CHANNELING.title",
+      "category": "资源与机制",
+      "eng": "Channel",
+      "zhs": "生成",
+      "jpn": "生成",
+      "kor": "영창",
+      "note": "",
+      "raw": {
+        "eng": "Channel",
+        "zhs": "生成",
+        "jpn": "生成",
+        "kor": "영창"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "EVOKE.title",
+      "category": "资源与机制",
+      "eng": "Evoke",
+      "zhs": "激发",
+      "jpn": "解放",
+      "kor": "발현",
+      "note": "",
+      "raw": {
+        "eng": "Evoke",
+        "zhs": "激发",
+        "jpn": "解放",
+        "kor": "발현"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "FORGE.title",
+      "category": "资源与机制",
+      "eng": "Forge",
+      "zhs": "铸造",
+      "jpn": "鍛造",
+      "kor": "단조",
+      "note": "",
+      "raw": {
+        "eng": "Forge",
+        "zhs": "铸造",
+        "jpn": "鍛造",
+        "kor": "단조"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "FATAL.title",
+      "category": "资源与机制",
+      "eng": "Fatal",
+      "zhs": "斩杀",
+      "jpn": "リーサル",
+      "kor": "치명타",
+      "note": "",
+      "raw": {
+        "eng": "Fatal",
+        "zhs": "斩杀",
+        "jpn": "リーサル",
+        "kor": "치명타"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "COOK.title",
+      "category": "资源与机制",
+      "eng": "Cook",
+      "zhs": "烹饪",
+      "jpn": "料理",
+      "kor": "요리",
+      "note": "",
+      "raw": {
+        "eng": "Cook",
+        "zhs": "烹饪",
+        "jpn": "料理",
+        "kor": "요리"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "STUN.title",
+      "category": "资源与机制",
+      "eng": "Stun",
+      "zhs": "击晕",
+      "jpn": "スタン",
+      "kor": "기절",
+      "note": "",
+      "raw": {
+        "eng": "Stun",
+        "zhs": "击晕",
+        "jpn": "スタン",
+        "kor": "기절"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "TRANSFORM.title",
+      "category": "资源与机制",
+      "eng": "Transform",
+      "zhs": "变化",
+      "jpn": "変化",
+      "kor": "변화",
+      "note": "",
+      "raw": {
+        "eng": "Transform",
+        "zhs": "变化",
+        "jpn": "変化",
+        "kor": "변화"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "SUMMON_STATIC.title",
+      "category": "资源与机制",
+      "eng": "Summon",
+      "zhs": "召唤",
+      "jpn": "召喚",
+      "kor": "소환",
+      "note": "",
+      "raw": {
+        "eng": "Summon",
+        "zhs": "召唤",
+        "jpn": "召喚",
+        "kor": "소환"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "REPLAY_STATIC.title",
+      "category": "资源与机制",
+      "eng": "Replay",
+      "zhs": "重放",
+      "jpn": "リプレイ",
+      "kor": "재사용",
+      "note": "",
+      "raw": {
+        "eng": "Replay",
+        "zhs": "重放",
+        "jpn": "リプレイ",
+        "kor": "재사용"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "MONEY_POUCH.title",
+      "category": "资源与机制",
+      "eng": "Gold",
+      "zhs": "金币",
+      "jpn": "ゴールド",
+      "kor": "골드",
+      "note": "",
+      "raw": {
+        "eng": "Gold",
+        "zhs": "金币",
+        "jpn": "ゴールド",
+        "kor": "골드"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "HIT_POINTS.title",
+      "category": "资源与机制",
+      "eng": "Hit Points (HP)",
+      "zhs": "生命值（HP）",
+      "jpn": "ヒットポイント (HP)",
+      "kor": "체력",
+      "note": "",
+      "raw": {
+        "eng": "Hit Points (HP)",
+        "zhs": "生命值（HP）",
+        "jpn": "ヒットポイント (HP)",
+        "kor": "체력"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "DECK.title",
+      "category": "资源与机制",
+      "eng": "Deck",
+      "zhs": "牌组",
+      "jpn": "デッキ",
+      "kor": "덱",
+      "note": "标题中的快捷键条件已去除；完整原文见来源与例句.json",
+      "raw": {
+        "eng": "Deck {Hotkey:choose(None):| ({})}",
+        "zhs": "牌组{Hotkey:choose(None):|（{}）}",
+        "jpn": "デッキ {Hotkey:choose(None):| ({})}",
+        "kor": "덱 {Hotkey:choose(None):| ({})}"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "DRAW_PILE.title",
+      "category": "资源与机制",
+      "eng": "Draw Pile",
+      "zhs": "抽牌堆",
+      "jpn": "山札",
+      "kor": "뽑을 카드 더미",
+      "note": "标题中的快捷键条件已去除；完整原文见来源与例句.json",
+      "raw": {
+        "eng": "Draw Pile {Hotkey:choose(None):| ({})}",
+        "zhs": "抽牌堆{Hotkey:choose(None):|（{}）}",
+        "jpn": "山札 {Hotkey:choose(None):| ({})}",
+        "kor": "뽑을 카드 더미 {Hotkey:choose(None):| ({})}"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "DISCARD_PILE.title",
+      "category": "资源与机制",
+      "eng": "Discard Pile",
+      "zhs": "弃牌堆",
+      "jpn": "捨て札",
+      "kor": "버린 카드 더미",
+      "note": "标题中的快捷键条件已去除；完整原文见来源与例句.json",
+      "raw": {
+        "eng": "Discard Pile {Hotkey:choose(None):| ({})}",
+        "zhs": "弃牌堆{Hotkey:choose(None):|（{}）}",
+        "jpn": "捨て札 {Hotkey:choose(None):| ({})}",
+        "kor": "버린 카드 더미 {Hotkey:choose(None):| ({})}"
+      }
+    },
+    {
+      "table": "static_hover_tips.json",
+      "key": "EXHAUST_PILE.title",
+      "category": "资源与机制",
+      "eng": "Exhausted Cards",
+      "zhs": "消耗牌堆",
+      "jpn": "廃棄札",
+      "kor": "소멸된 카드",
+      "note": "标题中的快捷键条件已去除；完整原文见来源与例句.json",
+      "raw": {
+        "eng": "Exhausted Cards {Hotkey:choose(None):| ({})}",
+        "zhs": "消耗牌堆{Hotkey:choose(None):|（{}）}",
+        "jpn": "廃棄札 {Hotkey:choose(None):| ({})}",
+        "kor": "소멸된 카드 {Hotkey:choose(None):| ({})}"
+      }
+    },
+    {
+      "table": "gameplay_ui.json",
+      "key": "CARD_TYPE.ATTACK",
+      "category": "卡牌类型",
+      "eng": "Attack",
+      "zhs": "攻击",
+      "jpn": "アタック",
+      "kor": "공격",
+      "note": "",
+      "raw": {
+        "eng": "Attack",
+        "zhs": "攻击",
+        "jpn": "アタック",
+        "kor": "공격"
+      }
+    },
+    {
+      "table": "gameplay_ui.json",
+      "key": "CARD_TYPE.SKILL",
+      "category": "卡牌类型",
+      "eng": "Skill",
+      "zhs": "技能",
+      "jpn": "スキル",
+      "kor": "스킬",
+      "note": "",
+      "raw": {
+        "eng": "Skill",
+        "zhs": "技能",
+        "jpn": "スキル",
+        "kor": "스킬"
+      }
+    },
+    {
+      "table": "gameplay_ui.json",
+      "key": "CARD_TYPE.POWER",
+      "category": "卡牌类型",
+      "eng": "Power",
+      "zhs": "能力",
+      "jpn": "パワー",
+      "kor": "파워",
+      "note": "",
+      "raw": {
+        "eng": "Power",
+        "zhs": "能力",
+        "jpn": "パワー",
+        "kor": "파워"
+      }
+    },
+    {
+      "table": "orbs.json",
+      "key": "DARK_ORB.title",
+      "category": "充能球",
+      "eng": "Dark",
+      "zhs": "黑暗",
+      "jpn": "ダーク",
+      "kor": "암흑",
+      "note": "",
+      "raw": {
+        "eng": "Dark",
+        "zhs": "黑暗",
+        "jpn": "ダーク",
+        "kor": "암흑"
+      }
+    },
+    {
+      "table": "orbs.json",
+      "key": "FROST_ORB.title",
+      "category": "充能球",
+      "eng": "Frost",
+      "zhs": "冰霜",
+      "jpn": "フロスト",
+      "kor": "냉기",
+      "note": "",
+      "raw": {
+        "eng": "Frost",
+        "zhs": "冰霜",
+        "jpn": "フロスト",
+        "kor": "냉기"
+      }
+    },
+    {
+      "table": "orbs.json",
+      "key": "GLASS_ORB.title",
+      "category": "充能球",
+      "eng": "Glass",
+      "zhs": "玻璃",
+      "jpn": "グラス",
+      "kor": "유리",
+      "note": "",
+      "raw": {
+        "eng": "Glass",
+        "zhs": "玻璃",
+        "jpn": "グラス",
+        "kor": "유리"
+      }
+    },
+    {
+      "table": "orbs.json",
+      "key": "LIGHTNING_ORB.title",
+      "category": "充能球",
+      "eng": "Lightning",
+      "zhs": "闪电",
+      "jpn": "ライトニング",
+      "kor": "전기",
+      "note": "",
+      "raw": {
+        "eng": "Lightning",
+        "zhs": "闪电",
+        "jpn": "ライトニング",
+        "kor": "전기"
+      }
+    },
+    {
+      "table": "orbs.json",
+      "key": "PLASMA_ORB.title",
+      "category": "充能球",
+      "eng": "Plasma",
+      "zhs": "等离子",
+      "jpn": "プラズマ",
+      "kor": "플라즈마",
+      "note": "",
+      "raw": {
+        "eng": "Plasma",
+        "zhs": "等离子",
+        "jpn": "プラズマ",
+        "kor": "플라즈마"
+      }
+    },
+    {
+      "table": "orbs.json",
+      "key": "EMPTY_SLOT.title",
+      "category": "充能球",
+      "eng": "Orb Slot",
+      "zhs": "充能球栏位",
+      "jpn": "オーブスロット",
+      "kor": "구체 슬롯",
+      "note": "",
+      "raw": {
+        "eng": "Orb Slot",
+        "zhs": "充能球栏位",
+        "jpn": "オーブスロット",
+        "kor": "구체 슬롯"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "DEMISE_POWER.title",
+      "category": "状态名称",
+      "eng": "Demise",
+      "zhs": "消亡",
+      "jpn": "崩御",
+      "kor": "종언",
+      "note": "",
+      "raw": {
+        "eng": "Demise",
+        "zhs": "消亡",
+        "jpn": "崩御",
+        "kor": "종언"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "DEBILITATE_POWER.title",
+      "category": "状态名称",
+      "eng": "Debilitate",
+      "zhs": "摧残",
+      "jpn": "衰弱",
+      "kor": "쇠락",
+      "note": "",
+      "raw": {
+        "eng": "Debilitate",
+        "zhs": "摧残",
+        "jpn": "衰弱",
+        "kor": "쇠락"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "DOOM_POWER.title",
+      "category": "状态名称",
+      "eng": "Doom",
+      "zhs": "灾厄",
+      "jpn": "破滅",
+      "kor": "종말",
+      "note": "",
+      "raw": {
+        "eng": "Doom",
+        "zhs": "灾厄",
+        "jpn": "破滅",
+        "kor": "종말"
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "SCRAWL.description",
+      "category": "资源与机制",
+      "eng": "Hand",
+      "zhs": "手牌",
+      "jpn": "手札",
+      "kor": "손",
+      "note": "取句中高亮词；无独立标题键",
+      "raw": {
+        "eng": "Draw cards until your [gold]Hand[/gold] is full.",
+        "zhs": "抽牌直到抽满[gold]手牌[/gold]。",
+        "jpn": "[gold]手札[/gold]がいっぱいになるまでカードを引く。",
+        "kor": "[gold]손[/gold]이 가득 찰 때까지\n카드를 뽑습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "ASHEN_STRIKE.description",
+      "category": "资源与机制",
+      "eng": "Exhaust Pile",
+      "zhs": "消耗牌堆",
+      "jpn": "廃棄札",
+      "kor": "소멸된 카드 더미",
+      "note": "效果文本写法；悬浮标题见 EXHAUST_PILE.title",
+      "raw": {
+        "eng": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card in your [gold]Exhaust Pile[/gold].",
+        "zhs": "造成{CalculatedDamage:diff()}点伤害。\n你的[gold]消耗牌堆[/gold]中每有一张牌，伤害增加{ExtraDamage:diff()}。",
+        "jpn": "{CalculatedDamage:diff()}ダメージを与える。\n[gold]廃棄札[/gold]にあるカード1枚につき、追加で{ExtraDamage:diff()}ダメージを与える。",
+        "kor": "피해를 {CalculatedDamage:diff()} 줍니다.\n[gold]소멸된 카드 더미[/gold]에 있는\n카드 1장당 피해량이\n{ExtraDamage:diff()} 증가합니다."
+      }
+    },
+    {
+      "table": "card_selection.json",
+      "key": "TO_ENCHANT",
+      "category": "卡牌操作",
+      "eng": "Enchant",
+      "zhs": "附魔",
+      "jpn": "エンチャント",
+      "kor": "인챈트",
+      "note": "取句中高亮词；附魔名用 [purple]",
+      "raw": {
+        "eng": "Choose {Amount:plural:a card|[blue]{}[/blue] cards} to [purple]Enchant[/purple].",
+        "zhs": "选择[blue]{Amount}[/blue]张牌来[purple]附魔[/purple]。",
+        "jpn": "[purple]エンチャント[/purple]するカードを[blue]{Amount}[/blue]枚選択",
+        "kor": "[purple]인챈트[/purple]할 카드를{Amount:choose(1):| [blue]{}[/blue]장} 선택하세요."
+      }
+    },
+    {
+      "table": "card_selection.json",
+      "key": "TO_REMOVE",
+      "category": "卡牌操作",
+      "eng": "Remove",
+      "zhs": "移除",
+      "jpn": "削除",
+      "kor": "제거",
+      "note": "取句中高亮词",
+      "raw": {
+        "eng": "Choose {Amount:plural:a card|[blue]{}[/blue] cards} to [gold]Remove[/gold].",
+        "zhs": "选择[blue]{Amount}[/blue]张牌来[gold]移除[/gold]。",
+        "jpn": "[gold]削除[/gold]するカードを[blue]{Amount}[/blue]枚選択",
+        "kor": "[gold]제거[/gold]할 카드를{Amount:choose(1):| [blue]{}[/blue]장} 선택하세요."
+      }
+    }
+  ],
+  "examples": [
+    {
+      "table": "cards.json",
+      "key": "STRIKE_IRONCLAD.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.",
+        "zhs": "造成{Damage:diff()}点伤害。",
+        "jpn": "{Damage:diff()}ダメージを与える。",
+        "kor": "피해를 {Damage:diff()} 줍니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "DEFEND_IRONCLAD.description",
+      "values": {
+        "eng": "Gain {Block:diff()} [gold]Block[/gold].",
+        "zhs": "获得{Block:diff()}点[gold]格挡[/gold]。",
+        "jpn": "{Block:diff()}[gold]ブロック[/gold]を得る。",
+        "kor": "[gold]방어도[/gold]를 {Block:diff()} 얻습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "BASH.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold].",
+        "zhs": "造成{Damage:diff()}点伤害。\n给予{VulnerablePower:diff()}层[gold]易伤[/gold]。",
+        "jpn": "{Damage:diff()}ダメージを与える。\n[gold]弱体[/gold]{VulnerablePower:diff()}を付与する。",
+        "kor": "피해를 {Damage:diff()} 줍니다.\n[gold]취약[/gold]을 {VulnerablePower:diff()} 부여합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "POMMEL_STRIKE.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}.",
+        "zhs": "造成{Damage:diff()}点伤害。\n抽{Cards:diff()}张牌。",
+        "jpn": "{Damage:diff()}ダメージを与える。\nカードを{Cards:diff()}枚引く。",
+        "kor": "피해를 {Damage:diff()} 줍니다.\n카드를 {Cards:diff()}장 뽑습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "OFFERING.description",
+      "values": {
+        "eng": "Lose {HpLoss:diff()} HP.\nGain {Energy:energyIcons()}.\nDraw {Cards:diff()} cards.",
+        "zhs": "失去{HpLoss:diff()}点生命。\n获得{Energy:energyIcons()}。\n抽{Cards:diff()}张牌。",
+        "jpn": "HPを{HpLoss:diff()}失う。\n{Energy:energyIcons()}を得る。\nカードを{Cards:diff()}枚引く。",
+        "kor": "체력을 {HpLoss:diff()} 잃습니다.\n{Energy:energyIcons()}를 얻습니다.\n카드를 {Cards:diff()}장 뽑습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "BEGONE.description",
+      "values": {
+        "eng": "Choose a card in your [gold]Hand[/gold] to [gold]Transform[/gold] into [gold]{IfUpgraded:show:Minion Strike+|Minion Strike}[/gold].",
+        "zhs": "选择你[gold]手牌[/gold]中的一张牌，将其[gold]变化[/gold]为[gold]{IfUpgraded:show:仆从打击+|仆从打击}[/gold]。",
+        "jpn": "[gold]手札[/gold]のカードを1枚選び、[gold]{IfUpgraded:show:ミニオンストライク+|ミニオンストライク}[/gold]に[gold]変化[/gold]させる。",
+        "kor": "[gold]손[/gold]에 있는 카드를 1장\n선택해 [gold]{IfUpgraded:show:하수인 타격+|하수인 타격}[/gold]으로\n[gold]변화[/gold]시킵니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "BARRAGE.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage for each [gold]Channeled[/gold] Orb.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}",
+        "zhs": "当前每有一个[gold]充能球[/gold]，造成{Damage:diff()}点伤害。{InCombat:\n（命中{CalculatedHits:diff()}次）|}",
+        "jpn": "[gold]生成[/gold]されたオーブ1つにつき、{Damage:diff()}ダメージを与える。{InCombat:\n(攻撃回数は{CalculatedHits:diff()}回)|}",
+        "kor": "[gold]영창[/gold]된 구체 1개당\n피해를 {Damage:diff()} 줍니다.{InCombat:\n({CalculatedHits:diff()}번 적중합니다)|}"
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "ADAPTABLE_POWER.smartDescription",
+      "values": {
+        "eng": "When [gold]{OwnerName}[/gold] would be defeated, it instead revives even stronger.",
+        "zhs": "当[gold]{OwnerName}[/gold]将要被击败时，它会复活变得更加强大。",
+        "jpn": "[gold]{OwnerName}[/gold]が倒れる際、より強くなって復活する。",
+        "kor": "[gold]{OwnerName}[/gold](은)는 처치될 시 더 강력한 모습으로 부활합니다."
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "STRENGTH_POWER.description",
+      "values": {
+        "eng": "Strength adds additional damage to Attacks.",
+        "zhs": "力量会增加攻击牌造成的伤害。",
+        "jpn": "筋力はアタックのダメージを追加する。",
+        "kor": "힘은 공격 카드의 피해량을 증가시킵니다."
+      }
+    },
+    {
+      "table": "powers.json",
+      "key": "STRENGTH_POWER.smartDescription",
+      "values": {
+        "eng": "{Amount:cond:<0?Decreases|Increases} attack damage by [blue]{Amount:abs()}[/blue].",
+        "zhs": "{Amount:cond:<0?减少|增加}攻击牌造成的伤害值[blue]{Amount:abs()}[/blue]点。",
+        "jpn": "アタックのダメージが[blue]{Amount:abs()}[/blue]{Amount:cond:<0?減少|増加}する。",
+        "kor": "공격 카드의 피해량이 [blue]{Amount:abs()}[/blue] {Amount:cond:<0?감소합니다|증가합니다}."
+      }
+    },
+    {
+      "table": "card_keywords.json",
+      "key": "PERIOD",
+      "values": {
+        "eng": ".",
+        "zhs": "。",
+        "jpn": "。",
+        "kor": "."
+      }
+    },
+    {
+      "table": "card_selection.json",
+      "key": "TO_EXHAUST",
+      "values": {
+        "eng": "Choose {Amount:plural:a card|[blue]{}[/blue] cards} to [gold]Exhaust[/gold].",
+        "zhs": "选择[blue]{Amount}[/blue]张牌来[gold]消耗[/gold]。",
+        "jpn": "[gold]廃棄[/gold]するカードを[blue]{Amount}[/blue]枚選択",
+        "kor": "[gold]소멸[/gold]시킬 카드를{Amount:choose(1):| [blue]{}[/blue]장} 선택하세요."
+      }
+    },
+    {
+      "table": "card_selection.json",
+      "key": "TO_ENCHANT",
+      "values": {
+        "eng": "Choose {Amount:plural:a card|[blue]{}[/blue] cards} to [purple]Enchant[/purple].",
+        "zhs": "选择[blue]{Amount}[/blue]张牌来[purple]附魔[/purple]。",
+        "jpn": "[purple]エンチャント[/purple]するカードを[blue]{Amount}[/blue]枚選択",
+        "kor": "[purple]인챈트[/purple]할 카드를{Amount:choose(1):| [blue]{}[/blue]장} 선택하세요."
+      }
+    },
+    {
+      "table": "card_selection.json",
+      "key": "TO_REMOVE",
+      "values": {
+        "eng": "Choose {Amount:plural:a card|[blue]{}[/blue] cards} to [gold]Remove[/gold].",
+        "zhs": "选择[blue]{Amount}[/blue]张牌来[gold]移除[/gold]。",
+        "jpn": "[gold]削除[/gold]するカードを[blue]{Amount}[/blue]枚選択",
+        "kor": "[gold]제거[/gold]할 카드를{Amount:choose(1):| [blue]{}[/blue]장} 선택하세요."
+      }
+    },
+    {
+      "table": "gameplay_ui.json",
+      "key": "COMBAT_REWARD_CARD_REMOVAL",
+      "values": {
+        "eng": "Remove a card from your deck.",
+        "zhs": "从你的牌组中移除一张牌。",
+        "jpn": "デッキからカードを削除。",
+        "kor": "카드를 덱에서 제거합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "GO_FOR_THE_EYES.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.\nIf the enemy intends to attack, apply {WeakPower:diff()} [gold]Weak[/gold].",
+        "zhs": "造成{Damage:diff()}点伤害。\n如果敌人的意图是攻击，则给予{WeakPower:diff()}层[gold]虚弱[/gold]。",
+        "jpn": "{Damage:diff()}ダメージを与える。\n敵が攻撃を予定している場合、[gold]脱力[/gold]{WeakPower:diff()}を付与する。",
+        "kor": "피해를 {Damage:diff()} 줍니다.\n적이 공격할 의도가 있다면 [gold]약화[/gold]를 {WeakPower:diff()} 부여합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "CALCULATED_GAMBLE.description",
+      "values": {
+        "eng": "Discard your [gold]Hand[/gold],\nthen draw that many cards.",
+        "zhs": "丢弃你的所有[gold]手牌[/gold],\n然后抽相同数量的牌。",
+        "jpn": "[gold]手札[/gold]をすべて捨てる。\n捨てた枚数に等しいカードを引く。",
+        "kor": "[gold]손[/gold]에 있는 모든 카드를\n버린 뒤, 버린 카드의\n수만큼 카드를 뽑습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "SCRAWL.description",
+      "values": {
+        "eng": "Draw cards until your [gold]Hand[/gold] is full.",
+        "zhs": "抽牌直到抽满[gold]手牌[/gold]。",
+        "jpn": "[gold]手札[/gold]がいっぱいになるまでカードを引く。",
+        "kor": "[gold]손[/gold]이 가득 찰 때까지\n카드를 뽑습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "GHOST_EATER.description",
+      "values": {
+        "eng": "Remove all [gold]Doom[/gold].\nGain {Energy:energyIcons()} for every 6 [gold]Doom[/gold] removed.",
+        "zhs": "移除所有[gold]灾厄[/gold]。\n每移除6层[gold]灾厄[/gold]获得{Energy:energyIcons()}。",
+        "jpn": "すべての[gold]破滅[/gold]を取り除く。\n[gold]破滅[/gold]を6取り除くごとに、{Energy:energyIcons()}を得る。",
+        "kor": "모든 [gold]종말[/gold]을 제거합니다.\n제거한 [gold]종말[/gold] 6마다 {Energy:energyIcons()}를 얻습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "KINGLY_KICK.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.\nWhenever you draw this card, reduce its cost by 1.",
+        "zhs": "造成{Damage:diff()}点伤害。\n每当你抽到这张牌时，这张牌的耗能减少1。",
+        "jpn": "{Damage:diff()}ダメージを与える。\nこのカードを引くたび、コストが1減少する。",
+        "kor": "피해를 {Damage:diff()} 줍니다.\n이 카드를 뽑을 때마다,\n이 카드의 비용이\n1 감소합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "ANGER.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.\nAdd a copy of this card into your [gold]Discard Pile[/gold].",
+        "zhs": "造成{Damage:diff()}点伤害。\n将一张此牌的复制品加入你的[gold]弃牌堆[/gold]。",
+        "jpn": "{Damage:diff()}ダメージを与える。\nこのカードのコピーを1枚[gold]捨て札[/gold]に加える。",
+        "kor": "피해를 {Damage:diff()} 줍니다.\n이 카드의 복사본을 1장\n[gold]버린 카드 더미[/gold]에\n추가합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "COUNTDOWN.description",
+      "values": {
+        "eng": "At the start of your turn, apply {CountdownPower:diff()} [gold]Doom[/gold] to a random enemy.",
+        "zhs": "在你的回合开始时，给予随机敌人{CountdownPower:diff()}层[gold]灾厄[/gold]。",
+        "jpn": "ターン開始時、ランダムな敵に[gold]破滅[/gold]{CountdownPower:diff()}を付与する。",
+        "kor": "내 턴 시작 시,\n무작위 적에게\n[gold]종말[/gold]을 {CountdownPower:diff()} 부여합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "VICIOUS.description",
+      "values": {
+        "eng": "Whenever you apply [gold]Vulnerable[/gold], draw {Cards:diff()} {Cards:plural:card|cards}.",
+        "zhs": "每当你给予[gold]易伤[/gold]时，抽{Cards:diff()}张牌。",
+        "jpn": "[gold]弱体[/gold]を付与するたび、カードを{Cards:diff()}枚引く。",
+        "kor": "[gold]취약[/gold]을 부여할 때마다,\n카드를 {Cards:diff()}장 뽑습니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "NOXIOUS_FUMES.description",
+      "values": {
+        "eng": "At the start of your turn, apply {PoisonPerTurn:diff()} [gold]Poison[/gold] to ALL enemies.",
+        "zhs": "在你的回合开始时，给予所有敌人{PoisonPerTurn:diff()}层[gold]中毒[/gold]。",
+        "jpn": "ターン開始時、すべての敵に[gold]毒[/gold]{PoisonPerTurn:diff()}を付与する。",
+        "kor": "내 턴 시작 시, 모든 적에게 [gold]중독[/gold]을 {PoisonPerTurn:diff()} 부여합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "NEOWS_FURY.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage.\nPut up to {Cards:diff()} {Cards:plural:card|cards} from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold].",
+        "zhs": "造成{Damage:diff()}点伤害。\n将你[gold]弃牌堆[/gold]中的至多{Cards:diff()}张牌放入你的[gold]手牌[/gold]。",
+        "jpn": "{Damage:diff()}ダメージを与える。\n[gold]捨て札[/gold]から最大{Cards:diff()}枚のカードを[gold]手札[/gold]に加える。",
+        "kor": "피해를 {Damage:diff()} 줍니다.\n[gold]버린 카드 더미[/gold]에서\n카드를 최대 {Cards:diff()}장까지\n[gold]손[/gold]으로 가져옵니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "NEOWS_FURY.selectionScreenPrompt",
+      "values": {
+        "eng": "Choose up to {Amount} {Amount:plural:card|cards} to put into your [gold]Hand[/gold].",
+        "zhs": "选择至多{Amount}张牌放入你的[gold]手牌[/gold]。",
+        "jpn": "最大{Amount}枚のカードを[gold]手札[/gold]に加える。",
+        "kor": "[gold]손[/gold]으로 가져올 카드를 최대 {Amount}장까지 선택하세요."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "ASHEN_STRIKE.description",
+      "values": {
+        "eng": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card in your [gold]Exhaust Pile[/gold].",
+        "zhs": "造成{CalculatedDamage:diff()}点伤害。\n你的[gold]消耗牌堆[/gold]中每有一张牌，伤害增加{ExtraDamage:diff()}。",
+        "jpn": "{CalculatedDamage:diff()}ダメージを与える。\n[gold]廃棄札[/gold]にあるカード1枚につき、追加で{ExtraDamage:diff()}ダメージを与える。",
+        "kor": "피해를 {CalculatedDamage:diff()} 줍니다.\n[gold]소멸된 카드 더미[/gold]에 있는\n카드 1장당 피해량이\n{ExtraDamage:diff()} 증가합니다."
+      }
+    },
+    {
+      "table": "cards.json",
+      "key": "RICOCHET.description",
+      "values": {
+        "eng": "Deal {Damage:diff()} damage to a random enemy {Repeat:diff()} times.",
+        "zhs": "随机对敌人造成{Damage:diff()}点伤害{Repeat:diff()}次。",
+        "jpn": "ランダムな敵に{Damage:diff()}ダメージを{Repeat:diff()}回与える。",
+        "kor": "무작위 적에게\n피해를 {Damage:diff()}만큼 {Repeat:diff()}번 줍니다."
+      }
+    },
+    {
+      "table": "relics.json",
+      "key": "RED_SKULL.description",
+      "values": {
+        "eng": "While your HP is at or below [blue]{HpThreshold}%[/blue], you have [blue]{StrengthPower}[/blue] additional [gold]Strength[/gold].",
+        "zhs": "当你的生命值低于或等于[blue]{HpThreshold}%[/blue]时，你额外获得[blue]{StrengthPower}[/blue]点[gold]力量[/gold]",
+        "jpn": "HPが[blue]{HpThreshold}%[/blue]以下の間、追加で[gold]筋力[/gold][blue]{StrengthPower}[/blue]を得る。",
+        "kor": "체력이 [blue]{HpThreshold}%[/blue] 이하인 동안, 추가 [gold]힘[/gold]을 [blue]{StrengthPower}[/blue] 지닙니다."
+      }
+    },
+    {
+      "table": "relics.json",
+      "key": "PAELS_EYE.description",
+      "values": {
+        "eng": "The first time each combat you end your turn without playing cards, [gold]Exhaust[/gold] your [gold]Hand[/gold], and take an extra turn.",
+        "zhs": "你在每场战斗中第一次没有打出任何牌就结束回合时，[gold]消耗[/gold]所有[gold]手牌[/gold]然后进行一个额外回合。",
+        "jpn": "各戦闘で、初めてカードをプレイせずにターンを終了したとき、[gold]手札[/gold]をすべて[gold]廃棄[/gold]し、追加のターンを得る。",
+        "kor": "매 전투마다 처음으로 아무 카드도 사용하지 않고 내 턴을 종료 시, [gold]손[/gold]에 있는 모든 카드를 [gold]소멸[/gold]시키고 추가 턴을 진행합니다."
+      }
+    },
+    {
+      "table": "relics.json",
+      "key": "ARCANE_SCROLL.description",
+      "values": {
+        "eng": "Upon pickup, obtain a random [gold]Rare Card[/gold] to add to your [gold]Deck[/gold].",
+        "zhs": "拾起时，将一张随机[gold]稀有牌[/gold]加入你的[gold]牌组[/gold]。",
+        "jpn": "取得時、ランダムな[gold]レアカード[/gold]を1枚[gold]デッキ[/gold]に追加する。",
+        "kor": "획득 시, [gold]덱[/gold]에 무작위 [gold]희귀 카드[/gold]를 1장 추가합니다."
+      }
+    },
+    {
+      "table": "relics.json",
+      "key": "HAPPY_FLOWER.description",
+      "values": {
+        "eng": "Every [blue]{Turns}[/blue] {Turns:plural:turn|turns}, gain {Energy:energyIcons()}.",
+        "zhs": "每[blue]{Turns}[/blue]个回合，获得{Energy:energyIcons()}。",
+        "jpn": "[blue]{Turns}[/blue]ターンごとに、{Energy:energyIcons()}を得る。",
+        "kor": "[blue]{Turns}[/blue]턴마다, {Energy:energyIcons()}를 얻습니다."
+      }
+    },
+    {
+      "table": "events.json",
+      "key": "FIELD_OF_MAN_SIZED_HOLES.pages.INITIAL.options.ENTER_YOUR_HOLE.description",
+      "values": {
+        "eng": "[gold]Enchant[/gold] a card with [purple]{Enchantment}[/purple].",
+        "zhs": "为一张牌[gold]附魔[/gold]：[purple]{Enchantment}[/purple]。",
+        "jpn": "カード1枚に、[purple]{Enchantment}[/purple]を[gold]エンチャント[/gold]する。",
+        "kor": "카드 1장에 [purple]{Enchantment}[/purple]을 [gold]인챈트[/gold]합니다."
+      }
+    },
+    {
+      "table": "potions.json",
+      "key": "ASHWATER.description",
+      "values": {
+        "eng": "[gold]Exhaust[/gold] any number of cards in your [gold]Hand[/gold].",
+        "zhs": "[gold]消耗[/gold]你[gold]手牌[/gold]中的任意张牌。",
+        "jpn": "[gold]手札[/gold]から任意の枚数のカードを[gold]廃棄[/gold]する。",
+        "kor": "[gold]손[/gold]에 있는 카드를 원하는 만큼 [gold]소멸[/gold]시킵니다."
+      }
+    }
+  ],
+  "validation_boundary": "Static source/document inspection only; no official CI validator, native language editorial review, or in-game rendering validation performed.",
+  "supplemented_on": "2026-09-27"
+}
