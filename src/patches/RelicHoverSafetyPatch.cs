@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using HarmonyLib;
+using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
@@ -21,7 +22,8 @@ internal static class RelicInventoryHolderOnFocusSafetyPatch
         Exception? __exception)
     {
         if (__exception is not ObjectDisposedException objectDisposedException
-            || !DisposedGodotResourceSafety.IsKnown(objectDisposedException))
+            || !DisposedGodotResourceSafety.IsKnown(objectDisposedException)
+            || !IsOwnRelic(__instance))
         {
             return __exception;
         }
@@ -48,6 +50,18 @@ internal static class RelicInventoryHolderOnFocusSafetyPatch
         }
         catch
         {
+        }
+    }
+
+    private static bool IsOwnRelic(NRelicInventoryHolder holder)
+    {
+        try
+        {
+            return ModOwnership.IsOwn(holder.Relic?.Model);
+        }
+        catch
+        {
+            return false;
         }
     }
 

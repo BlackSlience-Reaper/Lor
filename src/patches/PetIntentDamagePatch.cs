@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using HarmonyLib;
 using LibraryOfRuina.compat;
+using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
@@ -13,9 +14,10 @@ namespace LibraryOfRuina.patches;
 public static class PetIntentDamagePatch
 {
     [HarmonyPostfix]
+    // Only this mod's allied pets: vanilla and third-party pets compute their own intent damage.
     public static void Postfix(ref int __result, AttackIntent __instance, Creature owner)
     {
-        if (!owner.IsPet) return;
+        if (!owner.IsPet || !ModOwnership.IsOwnMonster(owner)) return;
 
         var CombatState = owner.CombatState;
         if (CombatState == null) return;
