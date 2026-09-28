@@ -227,6 +227,7 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::AfterEnergyReset(MegaCrit.Sts2.Core.Combat.I
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Prefix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Postfix
   Postfix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.AfterEnergyResetLifecyclePatch.Postfix
+  Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::BeforeSideTurnEnd(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Combat.CombatSide,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.BeforeTurnEndLifecyclePatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ChainsOfBindingTurnEndSyncPatch.Postfix
