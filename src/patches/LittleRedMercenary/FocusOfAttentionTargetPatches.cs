@@ -50,21 +50,14 @@ internal static class FocusOfAttentionTargeting
         return GetFocusedTarget(combatState?.Creatures);
     }
 
+    // Replaces rng.NextItem at vanilla random-target call sites. The roll always uses the caller's
+    // own candidate list so that, without a focused target, the result and RNG consumption are
+    // exactly vanilla; a focused target only overrides the rolled result.
     public static Creature? ChooseFocusedTargetAfterRngRoll(Rng rng, IEnumerable<Creature> candidates)
     {
-        Creature[] candidateArray = candidates
-            .Where(c => c != null && c.IsAlive && c.IsHittable)
-            .ToArray();
-
-        if (candidateArray.Length == 0)
-        {
-            
-            Creature? originalTarget = rng.NextItem(candidates);
-            return GetFocusedTarget(candidates) ?? originalTarget;
-        }
-
-        Creature? originalTargetFiltered = rng.NextItem(candidateArray);
-        return GetFocusedTarget(candidateArray) ?? originalTargetFiltered;
+        IReadOnlyList<Creature> candidateList = candidates as IReadOnlyList<Creature> ?? candidates.ToList();
+        Creature? rolled = rng.NextItem(candidateList);
+        return GetFocusedTarget(candidateList) ?? rolled;
     }
 
     private static bool IsValidFocusedTarget(Creature creature)
@@ -194,140 +187,6 @@ internal static class FocusOfAttentionCardCmdAutoPlayPatch
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return FocusOfAttentionPatchTargets.ReplaceCreatureRngNextItem(instructions);
-    }
-}
-
-[HarmonyPatch(typeof(CombatManager), nameof(CombatManager.SetUpCombat))]
-internal static class FocusOfAttentionCombatSetupPatch
-{
-    private static void Prefix()
-    {
-        // 首场战斗前所有模组均已加载，统一安装外部随机选敌补丁，避免加载顺序造成双端覆盖不同。
-        FocusOfAttentionExternalCreatureRngPatches.Apply(new Harmony("FYY.LibraryOfRuina"));
-    }
-}
-
-internal static class FocusOfAttentionExternalCreatureRngPatches
-{
-    private static readonly HarmonyMethod CreatureRngTranspiler = new(
-        AccessTools.Method(
-            typeof(FocusOfAttentionPatchTargets),
-            nameof(FocusOfAttentionPatchTargets.ReplaceCreatureRngNextItem))
-        ?? throw new MissingMethodException(
-            typeof(FocusOfAttentionPatchTargets).FullName,
-            nameof(FocusOfAttentionPatchTargets.ReplaceCreatureRngNextItem)));
-
-    private static bool _applied;
-
-    public static void Apply(Harmony harmony)
-    {
-        if (_applied)
-        {
-            return;
-        }
-
-        _applied = true;
-        Assembly ownAssembly = typeof(FocusOfAttentionExternalCreatureRngPatches).Assembly;
-        int patchedMethodCount = 0;
-
-        foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-        {
-            if (!ShouldScanAssembly(assembly, ownAssembly))
-            {
-                continue;
-            }
-
-            foreach (Type type in GetLoadableTypes(assembly))
-            {
-                foreach (MethodBase method in GetDeclaredMethods(type))
-                {
-                    if (!CallsCreatureRngNextItem(method))
-                    {
-                        continue;
-                    }
-
-                    harmony.Patch(method, transpiler: CreatureRngTranspiler);
-                    patchedMethodCount++;
-                }
-            }
-        }
-
-        Log.Info($"[LibraryOfRuina] Focus of Attention patched {patchedMethodCount} external Creature RNG callsite(s).");
-    }
-
-    private static bool ShouldScanAssembly(Assembly assembly, Assembly ownAssembly)
-    {
-        if (assembly == ownAssembly || assembly.IsDynamic)
-        {
-            return false;
-        }
-
-        string name = assembly.GetName().Name ?? string.Empty;
-        return name != "sts2"
-            && name != "System.Private.CoreLib"
-            && name != "netstandard"
-            && !name.StartsWith("System.", StringComparison.Ordinal)
-            && !name.StartsWith("Microsoft.", StringComparison.Ordinal)
-            && !name.StartsWith("GodotSharp", StringComparison.Ordinal)
-            && !name.StartsWith("Harmony", StringComparison.Ordinal)
-            && !name.StartsWith("Mono.", StringComparison.Ordinal)
-            && !name.StartsWith("MonoMod.", StringComparison.Ordinal);
-    }
-
-    private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
-    {
-        try
-        {
-            return assembly.GetTypes();
-        }
-        catch (ReflectionTypeLoadException e)
-        {
-            return e.Types.Where(static type => type != null)!;
-        }
-        catch
-        {
-            return [];
-        }
-    }
-
-    private static IEnumerable<MethodBase> GetDeclaredMethods(Type type)
-    {
-        const BindingFlags flags =
-            BindingFlags.Public
-            | BindingFlags.NonPublic
-            | BindingFlags.Static
-            | BindingFlags.Instance
-            | BindingFlags.DeclaredOnly;
-
-        return type.GetMethods(flags)
-            .Cast<MethodBase>()
-            .Concat(type.GetConstructors(flags));
-    }
-
-    private static bool CallsCreatureRngNextItem(MethodBase method)
-    {
-        if (method.IsAbstract || method.ContainsGenericParameters)
-        {
-            return false;
-        }
-
-        try
-        {
-            // Android 运行时读取无 IL 方法体时可能直接抛出异常，必须与 IL 解析共用保护边界。
-            if (method.GetMethodBody() == null)
-            {
-                return false;
-            }
-
-            return PatchProcessor.ReadMethodBody(method)
-                .Any(instruction =>
-                    instruction.Value is MethodInfo calledMethod
-                    && FocusOfAttentionPatchTargets.IsCreatureRngNextItem(calledMethod));
-        }
-        catch
-        {
-            return false;
-        }
     }
 }
 

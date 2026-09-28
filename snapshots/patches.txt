@@ -299,7 +299,6 @@ LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionBouncingFlaskPatch	Tra
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionCardCmdAutoPlayPatch	Prepare	Prepare	returns=System.Boolean	target=		HarmonyPrepare()
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionCardCmdAutoPlayPatch	TargetMethod	TargetMethod	returns=System.Reflection.MethodBase	target=		HarmonyTargetMethod()
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionCardCmdAutoPlayPatch	Transpiler	Transpiler	returns=System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction]	target=
-LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionCombatSetupPatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Combat.CombatManager), "SetUpCombat")
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionDarkOrbEvokePatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Orbs.DarkOrb), "Evoke")
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionLightningOrbPatch	TargetMethod	TargetMethod	returns=System.Reflection.MethodBase	target=HarmonyPatch()		HarmonyTargetMethod()
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionLightningOrbPatch	Transpiler	Transpiler	returns=System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction]	target=HarmonyPatch()
