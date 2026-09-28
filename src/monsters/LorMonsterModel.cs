@@ -34,7 +34,10 @@ public abstract class LorMonsterModel : LibraryMonsterModel
         return cachedRoll.Value;
     }
 
-    /// <summary>只读缓存，不掷骰；没有缓存时返回上限（意图显示用）。</summary>
+    /// <summary>
+    /// 只读缓存，不掷骰；没有缓存时返回上限（意图显示用）。意图标签、悬停提示、预览会在本地渲染路径里调用伤害
+    /// 表达式，各端的时机和次数不同，在这里掷骰会让 MonsterAi 随机数流分叉，出招时各端的缓存值不同。
+    /// </summary>
     protected int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
     {
         if (!IsMutable)

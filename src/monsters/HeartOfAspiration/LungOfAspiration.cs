@@ -168,12 +168,6 @@ public sealed class LungOfAspiration : AspirationMonsterBase
     private int GetDisplayDamageRoll(ref int? cachedRoll, int maxInclusive) =>
         IsMutable ? (cachedRoll ?? maxInclusive) : maxInclusive;
 
-    /// <summary>
-    /// Rolls the shared MonsterAi RNG inside the synchronized move execution
-    /// path, mirroring the pattern used by ScarecrowSearchingForWisdom,
-    /// PriceOfSilence and BurrowingHeaven.
-    /// </summary>
-
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
         MonsterMoveStateMachine stateMachine = GenerateMoveStateMachine();
