@@ -56,6 +56,10 @@ public class SettingsIgnoreAttribute : Attribute;
 [AttributeUsage(AttributeTargets.Property)]
 public class SettingsHideInUI : Attribute;
 
+/// <summary>Gameplay setting that is hidden from the settings screen while a run is in progress.</summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class SettingsLockedDuringRunAttribute : Attribute;
+
 public enum TextInputPreset
 {
     Anything,

@@ -20,7 +20,7 @@ internal static class BookShadowEncounterReplacement
         out EncounterModel replacement)
     {
         replacement = current;
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !CanReplaceRoomType(roomType)
             || current is ISpecialGuestEncounterStage
             || LiberationBossRegistry.IsLiberationEncounter(current)

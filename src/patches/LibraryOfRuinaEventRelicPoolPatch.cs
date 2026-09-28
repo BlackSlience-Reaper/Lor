@@ -19,7 +19,7 @@ public static class LibraryOfRuinaEventRelicPoolPatch
     [HarmonyPostfix]
     public static void Postfix(ref IEnumerable<RelicModel> __result)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             return;
         }

@@ -5,6 +5,7 @@ using System.Reflection;
 using Godot;
 using LibraryOfRuina.features.settings.ui;
 using MegaCrit.Sts2.Core.Logging;
+using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.features.settings;
 
@@ -166,6 +167,8 @@ internal class ExtAutoModSettings : ExtModSettings
         var filteredMembers = GetType()
             .GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
             .Where(IsVisibleMember)
+            .Where(static member => member.GetCustomAttribute<SettingsLockedDuringRunAttribute>() == null
+                || !RunManager.Instance.IsInProgress)
             .OrderBy(GetSourceOrder)
             .ToList();
 

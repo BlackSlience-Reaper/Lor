@@ -16,7 +16,7 @@ internal static class GloryWedgeRoomSequenceNormalizer
 
     public static void Normalize(ActModel actModel, bool preserveVisitedPrefix)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsThirdFamily(actModel))
         {
             return;

@@ -74,7 +74,7 @@ internal static class GuestReceptionBackgroundPoolPatch
             return false;
         }
 
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             return true;
         }

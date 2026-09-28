@@ -103,7 +103,7 @@ internal static class AddictedEmployeeEncounterMutualExclusionGenerateRoomsPatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsFirstFamily(__instance))
         {
             return;
@@ -125,7 +125,7 @@ internal static class AddictedEmployeeEncounterMutualExclusionPullNextPatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsFirstFamily(__instance)
             || roomType != RoomType.Monster
             || !AddictedEmployeeEncounterMutualExclusion.IsEmployeeVariant(__result))

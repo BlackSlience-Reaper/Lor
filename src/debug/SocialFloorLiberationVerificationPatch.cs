@@ -224,7 +224,7 @@ internal static class SocialFloorLiberationVerificationPatch
 
     private static void VerifyRegistrationAndActRouting()
     {
-        Require(LibraryOfRuinaSettings.MonsterExtensionActive,
+        Require(LibraryOfRuinaSettings.MonsterExtensionEnabled,
             "Monster extension must be enabled for the verifier.");
         Require(LiberationBossRegistry.RegisterSocialFloorLiberation,
             "Social floor liberation is not registered by default.");

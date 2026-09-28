@@ -103,7 +103,7 @@ internal static class AllAroundHelperEncounterMutualExclusionGenerateRoomsPatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsSecondFamily(__instance))
         {
             return;
@@ -125,7 +125,7 @@ internal static class AllAroundHelperEncounterMutualExclusionPullNextPatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsSecondFamily(__instance)
             || roomType != RoomType.Monster
             || !AllAroundHelperEncounterMutualExclusion.IsHelperVariant(__result))

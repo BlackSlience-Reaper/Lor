@@ -38,7 +38,6 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     private static double _modSfxVolume = 0.25d;
     private static bool _runtimeSideEffectsEnabled;
     private static bool _monsterExtensionEnabled = true;
-    private static bool _monsterExtensionActive = true;
     private static double _resistanceMode = 3d;
 
     [SettingsSection("UpdateLog")]
@@ -99,70 +98,44 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     [SettingsSection("Resistance")]
     [SliderRange(1, 3)]
     [SliderValueLabels("ignore", "weak", "normal")]
+    [SettingsLockedDuringRun]
     public static double ResistanceMode
     {
         get => _resistanceMode;
         set
         {
-            _resistanceMode = Math.Clamp(value, 1d, 3d);
-            Log.Info($"[LibraryOfRuina.Settings] ResistanceMode set to {_resistanceMode:0}.");
-            ApplyRunScopedSettingsIfIdle();
-        }
-    }
-
-    internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && MonsterExtensionActive;
-
-    /// <summary>
-    /// The monster-extension switch gameplay code reads. It follows <see cref="MonsterExtensionEnabled"/>
-    /// only between runs: changing a gameplay setting mid-run used to rewrite the current run's rooms
-    /// and flip dozens of gates on one client only (design philosophy §4).
-    /// </summary>
-    [SettingsIgnore]
-    internal static bool MonsterExtensionActive => _monsterExtensionActive;
-
-    private static void ApplyRunScopedSettingsIfIdle()
-    {
-        if (RunManager.Instance?.IsInProgress == true)
-        {
-            Log.Info("[LibraryOfRuina.Settings] run in progress; gameplay settings apply from the next run.");
-            return;
-        }
-
-        ApplyRunScopedSettings();
-    }
-
-    /// <summary>Applies configured gameplay settings. Called outside runs and on run cleanup.</summary>
-    internal static void ApplyRunScopedSettings()
-    {
-        LibraryResistanceModeState.Current = _resistanceMode switch
-        {
-            1d => LibraryResistanceMode.Ignore,
-            2d => LibraryResistanceMode.Weak,
-            _ => LibraryResistanceMode.Normal
-        };
-
-        if (_monsterExtensionActive == _monsterExtensionEnabled)
-        {
-            return;
-        }
-
-        _monsterExtensionActive = _monsterExtensionEnabled;
-        Log.Info($"[LibraryOfRuina.Settings] MonsterExtension active={_monsterExtensionActive}.");
-        if (!_monsterExtensionActive)
-        {
-            if (_runtimeSideEffectsEnabled)
+            double clamped = Math.Clamp(value, 1d, 3d);
+            if (clamped == _resistanceMode || RejectDuringRun(nameof(ResistanceMode)))
             {
-                MainMenuBgmController.ForceStop();
-                NonCombatRunBgmController.OnSettingChanged();
-                EncounterBgmController.StopRuntimeSession();
-                AbnormalityEliteBgmController.StopRuntimeSession();
+                return;
             }
+
+            _resistanceMode = clamped;
+            LibraryResistanceModeState.Current = _resistanceMode switch
+            {
+                1d => LibraryResistanceMode.Ignore,
+                2d => LibraryResistanceMode.Weak,
+                _ => LibraryResistanceMode.Normal
+            };
+            Log.Info($"[LibraryOfRuina.Settings] ResistanceMode changed to {_resistanceMode:0} ({LibraryResistanceModeState.Current}).");
         }
-        else if (RuntimeSideEffectsEnabled)
+    }
+
+    internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && MonsterExtensionEnabled;
+
+    // Gameplay settings are locked while a run is in progress (the settings screen is reachable
+    // from the pause menu). Changing them mid-run rewrote the current run's rooms and flipped
+    // dozens of gameplay gates on one client only (design philosophy §4). The rows are hidden
+    // in-run; this also covers other writers such as "Restore Defaults".
+    private static bool RejectDuringRun(string setting)
+    {
+        if (!RunManager.Instance.IsInProgress)
         {
-            MainMenuBgmController.OnSettingChanged();
-            NonCombatRunBgmController.OnSettingChanged();
+            return false;
         }
+
+        Log.Warn($"[LibraryOfRuina.Settings] {setting} cannot change while a run is in progress; kept current value.");
+        return true;
     }
 
     internal static void EnableRuntimeSideEffects()
@@ -171,19 +144,34 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     }
 
     [SettingsSection("MonsterExtension")]
+    [SettingsLockedDuringRun]
     public static bool MonsterExtensionEnabled
     {
         get => _monsterExtensionEnabled;
         set
         {
-            if (_monsterExtensionEnabled == value)
+            if (_monsterExtensionEnabled == value || RejectDuringRun(nameof(MonsterExtensionEnabled)))
             {
                 return;
             }
 
             _monsterExtensionEnabled = value;
-            Log.Info($"[LibraryOfRuina.Settings] MonsterExtensionEnabled set to {value}.");
-            ApplyRunScopedSettingsIfIdle();
+            Log.Info($"[LibraryOfRuina.Settings] MonsterExtensionEnabled changed to {value}.");
+            if (!value)
+            {
+                if (_runtimeSideEffectsEnabled)
+                {
+                    MainMenuBgmController.ForceStop();
+                    NonCombatRunBgmController.OnSettingChanged();
+                    EncounterBgmController.StopRuntimeSession();
+                    AbnormalityEliteBgmController.StopRuntimeSession();
+                }
+            }
+            else if (RuntimeSideEffectsEnabled)
+            {
+                MainMenuBgmController.OnSettingChanged();
+                NonCombatRunBgmController.OnSettingChanged();
+            }
         }
     }
 

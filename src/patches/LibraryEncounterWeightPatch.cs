@@ -184,7 +184,7 @@ internal static class LibraryEncounterWeighting
 
     public static void ReweightGeneratedRoomSet(ActModel act, Rng sourceRng)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act))
         {
             return;
@@ -242,7 +242,7 @@ internal static class LibraryEncounterWeighting
         out EncounterModel replacement)
     {
         replacement = current;
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act)
             || (IsModEncounter(current) && current is not IGuestReceptionEncounter)
             || roomType is not (RoomType.Monster or RoomType.Elite or RoomType.Boss))
@@ -284,7 +284,7 @@ internal static class LibraryEncounterWeighting
 
     public static void ReweightBosses(RunState? state)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive || state == null)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || state == null)
         {
             return;
         }
@@ -329,7 +329,7 @@ internal static class LibraryEncounterWeighting
 
     public static void ReweightGeneratedRoomSets(RunState? state)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive || state == null)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || state == null)
         {
             return;
         }
@@ -419,7 +419,7 @@ internal static class LibraryEncounterWeighting
 
     public static void ForceHistoryFloorFirstActBoss(RunState? state)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || state == null
             || state.Acts.Count == 0)
         {
@@ -551,7 +551,7 @@ internal static class LibraryEncounterWeighting
         RoomType roomType,
         EncounterModel current)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act)
             || roomType is not (RoomType.Monster or RoomType.Elite))
         {
@@ -896,7 +896,7 @@ internal static class LibraryEncounterWeighting
 
     internal static void ForceHistoryFloorFirstActBoss(ActModel act, int actIndex)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act)
             || !LiberationBossRegistry.AnyLiberationRegistered)
         {

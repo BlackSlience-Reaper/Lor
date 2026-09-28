@@ -701,7 +701,7 @@ internal static class PhilosophyFloorLiberationVerificationPatch
 
     private static void VerifyRegistrationAndActRouting()
     {
-        Require(LibraryOfRuinaSettings.MonsterExtensionActive,
+        Require(LibraryOfRuinaSettings.MonsterExtensionEnabled,
             "Monster extension must be enabled for the verifier.");
         Require(LiberationBossRegistry.RegisterPhilosophyFloorLiberation,
             "Philosophy floor liberation is not registered by default.");

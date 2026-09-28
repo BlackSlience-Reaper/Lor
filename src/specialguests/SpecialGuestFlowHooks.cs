@@ -44,7 +44,7 @@ internal static class SpecialGuestModifyNextEventPatch
     [HarmonyPostfix]
     private static void Postfix(IRunState runState, ref EventModel __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             __result = SpecialGuestRegistry.TryReplaceNextEvent(runState, __result);
         }
@@ -60,7 +60,7 @@ internal static class SpecialGuestRunStateLoadPatch
     [HarmonyPrefix]
     private static void Prefix(SerializableRun save)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             return;
         }
@@ -72,7 +72,7 @@ internal static class SpecialGuestRunStateLoadPatch
     [HarmonyPostfix]
     private static void Postfix(RunState __result)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             return;
         }
@@ -478,7 +478,7 @@ internal static class SpecialGuestRelicAddedPatch
     [HarmonyPostfix]
     private static void Postfix(Player __instance)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             SpecialGuestRegistry.EnsureUnlocks(__instance.RunState);
         }
@@ -491,7 +491,7 @@ internal static class SpecialGuestRelicRemovedPatch
     [HarmonyPostfix]
     private static void Postfix(Player __instance)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             SpecialGuestRegistry.EnsureUnlocks(__instance.RunState);
         }

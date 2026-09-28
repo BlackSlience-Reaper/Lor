@@ -59,7 +59,7 @@ public static class FtueGuard
     /// </summary>
     public static bool ShouldShow(string ftueId)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionActive)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
             return false;
 
         if (!LibraryOfRuinaSettings.FtueTutorialEnabled)
