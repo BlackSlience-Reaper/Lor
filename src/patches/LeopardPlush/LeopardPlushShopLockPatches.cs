@@ -5,16 +5,16 @@ using LibraryOfRuina.relics.LeopardPlush;
 using MegaCrit.Sts2.Core.Entities.Merchant;
 using MegaCrit.Sts2.Core.Entities.Players;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.LeopardPlush;
 
 internal static class LeopardPlushShopLockPatchHelper
 {
-    private static readonly FieldInfo? PlayerField = AccessTools.Field(typeof(MerchantEntry), "_player");
 
     internal static bool TryBlockPurchase(MerchantEntry entry)
     {
-        Player? player = PlayerField?.GetValue(entry) as Player;
+        Player? player = VanillaPrivate.MerchantEntryPlayer.Get(entry) as Player;
         return LeopardPlushRelic.IsShopLocked(player);
     }
 }

@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Nodes.Screens.Map;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.audio;
 
@@ -27,8 +28,6 @@ internal static class NonCombatRunBgmController
     private const float MinVolumeDb = -80f;
 
     private static readonly StringName StopMusicCallback = new("stop_music");
-    private static readonly FieldInfo? RunMusicProxyField =
-        typeof(NRunMusicController).GetField("_proxy", BindingFlags.Instance | BindingFlags.NonPublic);
     private static Node? _hostNode;
     private static AudioStreamPlayer? _player;
     private static bool _initialized;
@@ -458,7 +457,7 @@ internal static class NonCombatRunBgmController
     {
         try
         {
-            if (RunMusicProxyField?.GetValue(runMusicController) is Node proxy)
+            if (VanillaPrivate.RunMusicControllerProxy.Get(runMusicController) is Node proxy)
             {
                 proxy.Call(StopMusicCallback);
                 _baseRunMusicStoppedByController = true;

@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using ISecondaryDisplayAmountPower = LibraryOfRuina.powers.ISecondaryDisplayAmountPower;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -17,9 +18,6 @@ internal static class PowerSecondaryCounterUi
     private const string SecondaryAmountLabelName = "LibraryOfRuinaSecondaryAmountLabel";
     private const string FallbackLabelFontPath = "res://themes/kreon_bold_glyph_space_one.tres";
 
-    private static readonly FieldInfo? ModelField = AccessTools.Field(typeof(NPower), "_model");
-    private static readonly FieldInfo? ActiveHoverTipsField =
-        typeof(NHoverTipSet).GetField("_activeHoverTips", BindingFlags.Static | BindingFlags.NonPublic);
 
     public static void EnsureAndRefresh(NPower powerNode)
     {
@@ -168,7 +166,7 @@ internal static class PowerSecondaryCounterUi
 
     private static PowerModel? GetModel(NPower powerNode)
     {
-        return ModelField?.GetValue(powerNode) as PowerModel;
+        return VanillaPrivate.PowerNodeModel.Get(powerNode) as PowerModel;
     }
 
     private static bool IsUsablePowerNode(NPower powerNode)
@@ -256,7 +254,7 @@ internal static class PowerSecondaryCounterUi
 
     private static bool HasActiveHoverTips(Control owner)
     {
-        object? activeObj = ActiveHoverTipsField?.GetValue(null);
+        object? activeObj = VanillaPrivate.HoverTipSetActiveHoverTips.Get();
         if (activeObj is IDictionary<Control, NHoverTipSet> activeTyped)
         {
             return activeTyped.ContainsKey(owner);

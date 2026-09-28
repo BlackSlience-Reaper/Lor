@@ -7,19 +7,18 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
 [HarmonyPatch(typeof(NChooseACardSelectionScreen), nameof(NChooseACardSelectionScreen._Ready))]
 public static class ChooseACardScreenBannerPatch
 {
-    private static readonly FieldInfo? CardsField =
-        AccessTools.Field(typeof(NChooseACardSelectionScreen), "_cards");
 
     [HarmonyPostfix]
     public static void Postfix(NChooseACardSelectionScreen __instance)
     {
-        if (CardsField?.GetValue(__instance) is not IReadOnlyList<CardModel> cards || cards.Count == 0)
+        if (VanillaPrivate.ChooseACardScreenCards.Get(__instance) is not IReadOnlyList<CardModel> cards || cards.Count == 0)
         {
             return;
         }

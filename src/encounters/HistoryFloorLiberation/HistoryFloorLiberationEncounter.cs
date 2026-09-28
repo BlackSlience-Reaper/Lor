@@ -24,6 +24,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters.HistoryFloorLiberation;
 
@@ -56,8 +57,6 @@ public sealed class HistoryFloorLiberationEncounter :
     private const string SettlementTriggeredKey = "SettlementTriggered";
     private const string EndedByLethalDamageKey = "EndedByLethalDamage";
     private const float PhaseTransitionAfterTurnWaitSeconds = 0.75f;
-    private static readonly PropertyInfo? CombatRoomEncounterSlotsProperty =
-        typeof(NCombatRoom).GetProperty("EncounterSlots", BindingFlags.Instance | BindingFlags.NonPublic);
     internal const int MaxPhase = 5;
     internal static readonly string[] AngelaLiberationBgmTracks =
     [
@@ -580,12 +579,12 @@ public sealed class HistoryFloorLiberationEncounter :
 
     private static void ReplaceEncounterSceneForFlutteringPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(FlutteringBossSlot) != null
             && existingSlots.GetNodeOrNull<Marker2D>(EndLightSlot) == null)
         {
@@ -602,17 +601,17 @@ public sealed class HistoryFloorLiberationEncounter :
         Control flutteringSlots = InstantiateFlutteringEncounterScene();
         flutteringSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(flutteringSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, flutteringSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, flutteringSlots);
     }
 
     private static void ReplaceEncounterSceneForWaspPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(WorkerBeeSlotThree) != null
             && existingSlots.GetNodeOrNull<Marker2D>(FlutteringBossSlot) == null)
         {
@@ -629,17 +628,17 @@ public sealed class HistoryFloorLiberationEncounter :
         Control waspSlots = InstantiateWaspEncounterScene();
         waspSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(waspSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, waspSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, waspSlots);
     }
 
     internal static void ReplaceEncounterSceneForEmeraldBoughPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(EmeraldBoughSlot) != null
             && existingSlots.GetNodeOrNull<Marker2D>(WaspBossSlot) == null)
         {
@@ -656,7 +655,7 @@ public sealed class HistoryFloorLiberationEncounter :
         Control emeraldBoughSlots = InstantiateEmeraldBoughEncounterScene();
         emeraldBoughSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(emeraldBoughSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, emeraldBoughSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, emeraldBoughSlots);
     }
 
     internal async Task CompletePhaseTransition(ILiberationPhaseBoss boss)

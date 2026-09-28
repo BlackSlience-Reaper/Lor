@@ -6,14 +6,12 @@ using LibraryOfRuina.encounters.WedgeOffice;
 using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.WedgeOffice;
 
 internal static class GloryWedgeRoomSequenceNormalizer
 {
-    private static readonly AccessTools.FieldRef<ActModel, RoomSet> RoomsFieldRef =
-        AccessTools.FieldRefAccess<ActModel, RoomSet>("_rooms");
-
     public static void Normalize(ActModel actModel, bool preserveVisitedPrefix)
     {
         if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
@@ -22,7 +20,7 @@ internal static class GloryWedgeRoomSequenceNormalizer
             return;
         }
 
-        RoomSet rooms = RoomsFieldRef(actModel);
+        RoomSet rooms = VanillaPrivate.ActModelRooms.GetRequired(actModel);
         List<EncounterModel> normalEncounters = rooms.normalEncounters;
         if (normalEncounters.Count < 2)
         {

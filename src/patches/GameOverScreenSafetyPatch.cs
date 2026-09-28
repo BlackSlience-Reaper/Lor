@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -194,8 +195,8 @@ public static class GameOverScoreLineCompatibilityPatch
         __state = null;
         try
         {
-            GridContainer? container = Traverse.Create(__instance).Field("_scoreLineContainer").GetValue<GridContainer>();
-            if (container != null && Traverse.Create(__instance).Field("_scoreLines").GetValue() is IList scoreLines)
+            GridContainer? container = VanillaPrivate.GameOverScreenScoreLineContainer.Get(__instance);
+            if (container != null && VanillaPrivate.GameOverScreenScoreLines.Get(__instance) is { } scoreLines)
             {
                 __state = new Snapshot
                 {

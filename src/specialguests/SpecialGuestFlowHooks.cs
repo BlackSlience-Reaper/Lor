@@ -23,6 +23,7 @@ using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -523,14 +524,12 @@ internal static class SpecialGuestHideRunStateTopBarPatch
 [HarmonyPatch(typeof(NTopBar), nameof(NTopBar.Initialize))]
 internal static class SpecialGuestHideEmptyModifierContainerPatch
 {
-    private static readonly FieldInfo? ModifiersContainerField =
-        AccessTools.Field(typeof(NTopBar), "_modifiersContainer");
 
     [HarmonyPostfix]
     private static void Postfix(NTopBar __instance, IRunState runState)
     {
         if (!runState.Modifiers.Any(static modifier => modifier is SpecialGuestRunStateModifier)
-            || ModifiersContainerField?.GetValue(__instance) is not Control container)
+            || VanillaPrivate.TopBarModifiersContainer.Get(__instance) is not Control container)
         {
             return;
         }

@@ -144,6 +144,7 @@ using WrathServantCreatureVisuals = LibraryOfRuina.visuals.WrathServant.WrathSer
 using YangCreatureVisuals = LibraryOfRuina.visuals.DawnOffice.YangCreatureVisuals;
 using YunaCreatureVisuals = LibraryOfRuina.visuals.DawnOffice.YunaCreatureVisuals;
 using YunCreatureVisuals = LibraryOfRuina.visuals.YunOffice.YunCreatureVisuals;
+using LibraryOfRuina.interop;
 
 // ReSharper disable UnusedType.Global
 
@@ -2704,14 +2705,8 @@ internal static class AttackAnimationHitSuppressionAttackPatch
 
 internal static class AttackAnimationHitSuppression
 {
-    private static readonly FieldInfo? AttackerAnimNameField =
-        AccessTools.Field(typeof(AttackCommand), "_attackerAnimName");
 
-    private static readonly FieldInfo? ShouldPlayAnimationField =
-        AccessTools.Field(typeof(AttackCommand), "_shouldPlayAnimation");
 
-    private static readonly FieldInfo? VisualAttackerField =
-        AccessTools.Field(typeof(AttackCommand), "_visualAttacker");
 
     private static readonly object Gate = new();
     private static readonly Dictionary<Creature, int> ActiveAttackAnimations = new();
@@ -2725,7 +2720,7 @@ internal static class AttackAnimationHitSuppression
 
         List<Creature> creatures = new();
         AddDistinct(command.Attacker);
-        AddDistinct(VisualAttackerField?.GetValue(command) as Creature);
+        AddDistinct(VanillaPrivate.AttackCommandVisualAttacker.Get(command) as Creature);
 
         if (creatures.Count == 0)
         {
@@ -2767,13 +2762,13 @@ internal static class AttackAnimationHitSuppression
 
     private static bool ShouldTrack(AttackCommand command)
     {
-        bool shouldPlayAnimation = ShouldPlayAnimationField?.GetValue(command) as bool? ?? true;
+        bool shouldPlayAnimation = !VanillaPrivate.AttackCommandShouldPlayAnimation.TryGet(command, out bool shouldPlay) || shouldPlay;
         if (!shouldPlayAnimation)
         {
             return false;
         }
 
-        string? attackerAnimName = AttackerAnimNameField?.GetValue(command) as string;
+        string? attackerAnimName = VanillaPrivate.AttackCommandAttackerAnimName.Get(command) as string;
         return !string.IsNullOrWhiteSpace(attackerAnimName);
     }
 
@@ -2826,7 +2821,6 @@ internal static class AttackAnimationHitSuppression
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.SetAnimationTrigger))]
 internal static class NonSpineAnimationTriggerBridgePatch
 {
-    private static readonly FieldInfo? SpineAnimatorField = AccessTools.Field(typeof(NCreature), "_spineAnimator");
 
     private static void Postfix(NCreature __instance, string trigger)
     {
@@ -2899,12 +2893,12 @@ internal static class NonSpineAnimationTriggerBridgePatch
 
     private static bool HasSpineAnimator(NCreature creature)
     {
-        if (SpineAnimatorField == null)
+        if (!VanillaPrivate.CreatureSpineAnimator.IsAvailable)
         {
             return creature.HasSpineAnimation;
         }
 
-        return SpineAnimatorField.GetValue(creature) != null;
+        return VanillaPrivate.CreatureSpineAnimator.Get(creature) != null;
     }
 }
 

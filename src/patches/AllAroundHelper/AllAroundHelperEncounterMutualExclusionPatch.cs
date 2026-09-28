@@ -6,15 +6,15 @@ using LibraryOfRuina.encounters.AllAroundHelper;
 using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.AllAroundHelper;
 
 internal static class AllAroundHelperEncounterMutualExclusion
 {
-    private static readonly FieldInfo RoomsField = AccessTools.Field(typeof(ActModel), "_rooms");
 
     public static RoomSet? GetRoomSet(ActModel act) =>
-        RoomsField.GetValue(act) as RoomSet;
+        VanillaPrivate.ActModelRooms.Get(act) as RoomSet;
 
     public static bool IsHelperWeak(EncounterModel encounter) =>
         encounter is AllAroundHelperWeak;

@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.settings.ui;
 
@@ -188,9 +189,7 @@ internal partial class NExtSettingsSubmenu : NSubmenu
         if (_extBackButton == null) return;
         if (!visible) { _extBackButton.Disable(); return; }
 
-        var isEnabledField = typeof(NClickableControl).GetField("_isEnabled",
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        isEnabledField?.SetValue(_extBackButton, false);
+        VanillaPrivate.ClickableControlIsEnabled.Set(_extBackButton, false);
         _extBackButton.Enable();
     }
 

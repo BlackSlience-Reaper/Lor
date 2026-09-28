@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.events.WarpTrain;
 
@@ -29,8 +30,6 @@ public partial class NWarpTrainEventPresentationController : Node
     private bool _runMusicSuspended;
     private bool _suppressRunMusicRestoreOnExitTree;
 
-    private static readonly FieldInfo? RunMusicCurrentAmbienceField =
-        typeof(NRunMusicController).GetField("_currentAmbience", BindingFlags.Instance | BindingFlags.NonPublic);
 
     public static NWarpTrainEventPresentationController? GetFromCurrentRoom(bool createIfMissing)
     {
@@ -400,7 +399,7 @@ public partial class NWarpTrainEventPresentationController : Node
 
     private static bool ResetRunMusicAmbienceCache(NRunMusicController runMusicController)
     {
-        if (RunMusicCurrentAmbienceField == null)
+        if (!VanillaPrivate.RunMusicControllerCurrentAmbience.IsAvailable)
         {
             Log.Error("[" + LogTag + "] Failed to reset run music ambience cache: field was not found.");
             return false;
@@ -408,7 +407,7 @@ public partial class NWarpTrainEventPresentationController : Node
 
         try
         {
-            RunMusicCurrentAmbienceField.SetValue(runMusicController, null);
+            VanillaPrivate.RunMusicControllerCurrentAmbience.Set(runMusicController, null);
             return true;
         }
         catch (Exception ex)

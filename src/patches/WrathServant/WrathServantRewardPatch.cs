@@ -16,6 +16,7 @@ using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.WrathServant;
 
@@ -85,8 +86,6 @@ internal static class WrathServantRewardHeaderPatch
 [LibraryPatch(Reason = "愤怒仆从之死结局要显示空的终局奖励界面，NCombatUi.OnCombatWon 私有无 Hook；只作用于本模组愤怒仆从遭遇。改为不覆写 ShouldGiveRewards 会改变读档表现，暂缓。")]
 internal static class WrathServantEmptyRewardScreenPatch
 {
-    private static readonly MethodInfo? ShowRewardsMethod =
-        AccessTools.Method(typeof(NCombatUi), "ShowRewards");
 
     private static bool Prefix(NCombatUi __instance, CombatRoom room)
     {
@@ -96,7 +95,7 @@ internal static class WrathServantEmptyRewardScreenPatch
         }
 
         // This encounter intentionally shows an empty terminal rewards screen on servant death.
-        if (ShowRewardsMethod?.Invoke(__instance, [room]) is Task task)
+        if (VanillaPrivate.CombatUiShowRewards.Invoke(__instance, [room]) is Task task)
         {
             TaskHelper.RunSafely(task);
             return false;
