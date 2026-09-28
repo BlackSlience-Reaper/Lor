@@ -99,7 +99,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "PrepareFor
   Postfix LibraryOfRuina.patches.LanguageFloorLiberation.LanguageFloorCobaltScarPostRollPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "ScaleMonsterHpForMultiplayer")
   Prefix LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch.Prefix
-  Prefix LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorMagicalGirlFixedHpPatch.Prefix
   Postfix LibraryOfRuina.monsters.SocialFloorLiberation.SocialFloorLiberationExactVitalsPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "AfterCombatVictory")
   Postfix LibraryOfRuina.specialguests.SpecialGuestAfterCombatVictoryPatch.Postfix
@@ -142,9 +141,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.ActModel), "PullNextEncounter")
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.ActModel), "ValidateRoomsAfterLoad")
   Postfix LibraryOfRuina.patches.LibraryEncounterBossAfterLoadPatch.Postfix
   Postfix LibraryOfRuina.patches.WedgeOffice.GloryWedgeRoomSequenceAfterLoadPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.AncientEventModel), "BeforeEventStarted")
-  Postfix LibraryOfRuina.relics.BookShadow.BookShadowLibraryActAncientGrantPatch.Postfix
-  Prefix LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+SkipAncientHeal.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.CardModel), "IsValidTarget")
   Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTarget.Postfix
   Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTargetLast.Postfix

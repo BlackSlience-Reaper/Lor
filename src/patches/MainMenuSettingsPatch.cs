@@ -14,12 +14,15 @@ using MegaCrit.Sts2.Core.Nodes.Screens.Settings;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NMainMenuSubmenuStack), nameof(NMainMenuSubmenuStack.GetSubmenuType), typeof(Type))]
-public static class InjectExtSettingsSubmenuTypePatch
+/// <summary>
+/// 模组设置子菜单挂在主菜单子菜单栈上，每个栈复用一个实例。原版 GetSubmenuType 不认识这个类型，
+/// 所以不经过 PushSubmenuType，直接 Push 这个实例（原版 PushSubmenuType 本身就是 GetSubmenuType 加 Push）。
+/// </summary>
+internal static class ExtSettingsSubmenuHost
 {
     private static readonly ConditionalWeakTable<NMainMenuSubmenuStack, NExtSettingsSubmenu> SubmenuCache = new();
 
-    private static NExtSettingsSubmenu GetOrCreateSubmenu(NMainMenuSubmenuStack stack)
+    internal static NExtSettingsSubmenu GetOrCreateSubmenu(NMainMenuSubmenuStack stack)
     {
         if (SubmenuCache.TryGetValue(stack, out var existing) && GodotObject.IsInstanceValid(existing))
             return existing;
@@ -29,14 +32,6 @@ public static class InjectExtSettingsSubmenuTypePatch
         stack.AddChild(menu);
         SubmenuCache.AddOrUpdate(stack, menu);
         return menu;
-    }
-
-    [HarmonyPrefix]
-    public static bool Prefix(NMainMenuSubmenuStack __instance, Type type, ref NSubmenu __result)
-    {
-        if (type != typeof(NExtSettingsSubmenu)) return true;
-        __result = GetOrCreateSubmenu(__instance);
-        return false;
     }
 }
 
@@ -102,7 +97,7 @@ public static class InjectSettingsScreenModConfigPatch
                 BindingFlags.NonPublic | BindingFlags.Instance);
             var stack = stackField?.GetValue(settingsScreen);
             if (stack is NMainMenuSubmenuStack stackInstance)
-                stackInstance.PushSubmenuType<NExtSettingsSubmenu>();
+                stackInstance.Push(ExtSettingsSubmenuHost.GetOrCreateSubmenu(stackInstance));
             else
                 Log.Warn("[LibraryOfRuina] Mod Config is only available from the main menu settings.");
         }));

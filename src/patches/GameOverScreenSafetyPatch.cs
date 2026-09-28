@@ -17,7 +17,6 @@ namespace LibraryOfRuina.patches;
 internal static class GameOverScreenPatchHelper
 {
     private static readonly string ScoreLineScenePath = SceneHelper.GetScenePath("screens/game_over_screen/score_line");
-    private static readonly string BadgeScenePath = SceneHelper.GetScenePath("screens/game_over_screen/badge");
 
     public static Texture2D? TryLoadTexture(string? path)
     {
@@ -86,46 +85,6 @@ internal static class GameOverScreenPatchHelper
         }
 
         throw new InvalidOperationException("Unable to create score line control.");
-    }
-
-    public static Control CreateBadgeControl(string label, Texture2D? icon)
-    {
-        try
-        {
-            PackedScene? scene = ResourceLoader.Load<PackedScene>(BadgeScenePath);
-            if (scene != null)
-            {
-                Control badge = scene.Instantiate<Control>();
-                TrySetText(badge, "Label", label);
-                TrySetText(badge, "%Label", label);
-                TrySetIcon(badge, icon);
-                return badge;
-            }
-        }
-        catch (Exception e)
-        {
-            Log.Error($"[GameOverFix] Direct badge scene load failed ({BadgeScenePath}): {e}");
-        }
-
-        Control? reflected = TryCreateControlFromFactory(
-            "MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NBadge",
-            "Create",
-            parameters => parameters.Length >= 1 && parameters[0].ParameterType == typeof(string),
-            parameters =>
-            {
-                if (parameters.Length >= 2)
-                {
-                    return new object?[] { label, icon };
-                }
-                return new object?[] { label };
-            });
-
-        if (reflected != null)
-        {
-            return reflected;
-        }
-
-        throw new InvalidOperationException("Unable to create badge control.");
     }
 
     private static Control? TryCreateControlFromFactory(
@@ -208,22 +167,16 @@ internal static class GameOverScreenPatchHelper
     }
 }
 
+/// <summary>
+/// 结算画面计分行的兜底：原版 AddScoreLine 正常时不介入，只在它抛异常时（例如图标纹理已被释放）
+/// 补建这一行并吞掉异常，免得整个结算画面中断。原版在创建节点之后只剩 <c>_scoreLines.Add</c>，不会留下重复的行。
+/// </summary>
 [HarmonyPatch(typeof(NGameOverScreen), "AddScoreLine")]
 public static class GameOverScoreLineCompatibilityPatch
 {
-    [HarmonyPrepare]
-    public static bool Prepare()
-    {
-        bool exists = AccessTools.Method(typeof(NGameOverScreen), "AddScoreLine") != null;
-        if (!exists)
-        {
-            Log.Info("[GameOverFix] AddScoreLine not found in current game build; skipping legacy score-line patch.");
-        }
-        return exists;
-    }
-
-    [HarmonyPrefix]
-    public static bool Prefix(
+    [HarmonyFinalizer]
+    public static Exception? Finalizer(
+        Exception? __exception,
         NGameOverScreen __instance,
         string locEntryKey,
         string? locAmountKey,
@@ -231,6 +184,12 @@ public static class GameOverScoreLineCompatibilityPatch
         string scoreLabel,
         string? iconPath)
     {
+        if (__exception == null)
+        {
+            return null;
+        }
+
+        Log.Warn($"[GameOverFix] Vanilla AddScoreLine failed; rebuilding the line. entry={locEntryKey} error={__exception.Message}");
         try
         {
             var locString = new LocString("game_over_screen", locEntryKey);
@@ -260,61 +219,6 @@ public static class GameOverScoreLineCompatibilityPatch
                 + $"scoreLabel={scoreLabel} icon={iconPath ?? "null"} error={e}");
         }
 
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(NGameOverScreen), "AddBadge")]
-public static class GameOverBadgeCompatibilityPatch
-{
-    [HarmonyPrepare]
-    public static bool Prepare()
-    {
-        bool exists = AccessTools.Method(typeof(NGameOverScreen), "AddBadge") != null;
-        if (!exists)
-        {
-            Log.Info("[GameOverFix] AddBadge not found in current game build; skipping badge patch.");
-        }
-        return exists;
-    }
-
-    [HarmonyPrefix]
-    public static bool Prefix(
-        NGameOverScreen __instance,
-        string locEntryKey,
-        string? locAmountKey,
-        int amount,
-        string? iconPath)
-    {
-        try
-        {
-            var locString = new LocString("game_over_screen", locEntryKey);
-            if (locAmountKey != null)
-            {
-                locString.Add(locAmountKey, amount);
-            }
-
-            Texture2D? icon = GameOverScreenPatchHelper.TryLoadTexture(iconPath);
-            Control badge = GameOverScreenPatchHelper.CreateBadgeControl(locString.GetFormattedText(), icon);
-
-            Node? containerNode = Traverse.Create(__instance).Field("_badgeContainer").GetValue<Node>();
-            IList? badges = Traverse.Create(__instance).Field("_badges").GetValue() as IList;
-            if (containerNode == null || badges == null)
-            {
-                throw new InvalidOperationException("NGameOverScreen badge fields are unavailable.");
-            }
-
-            containerNode.AddChild(badge);
-            badges.Add(badge);
-        }
-        catch (Exception e)
-        {
-            Log.Error(
-                "[GameOverFix] Failed to add badge. "
-                + $"entry={locEntryKey} amountKey={locAmountKey ?? "null"} amount={amount} "
-                + $"icon={iconPath ?? "null"} error={e}");
-        }
-
-        return false;
+        return null;
     }
 }

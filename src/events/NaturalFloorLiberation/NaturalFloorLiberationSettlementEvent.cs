@@ -17,6 +17,11 @@ namespace LibraryOfRuina.events.NaturalFloorLiberation;
 
 public sealed class NaturalFloorLiberationSettlementEvent : AncientEventModel, ILibrarySettlementEvent
 {
+    // 结算事件不走先古开场回血。仍调用基类（传 isPreFinished: true 让基类跳过回血），
+    // 这样挂在 AncientEventModel.BeforeEventStarted 上的书影遗物授予后缀照常执行。
+    protected override Task BeforeEventStarted(bool isPreFinished) =>
+        base.BeforeEventStarted(isPreFinished: true);
+
     private const string LocId = "NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT";
     private static readonly LiberationSettlementRewardTier[] Tiers = Enumerable.Range(1, 4)
         .Select(i => LiberationSettlementRewardPolicy.CreateTier(i, i, "TIER_" + i, "Tier" + i)).ToArray();

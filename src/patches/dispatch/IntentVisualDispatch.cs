@@ -38,14 +38,13 @@ internal static class IntentVisualDispatch
         }
     }
 
-    /// <summary>两个悬停提示都可能接管原版悬停；前一个接管后后一个不再执行，与原来两个跳过型前缀相同。</summary>
+    /// <summary>带徽记或详细意图时显示多条提示并接管原版悬停。原来还有一个敌方卡牌悬停处理，恒返回 true，已删除。</summary>
     [HarmonyPatch(typeof(NIntent), "OnHovered")]
     private static class Hovered
     {
         [HarmonyPrefix]
         private static bool Prefix(AbstractIntent ____intent, IEnumerable<Creature> ____targets, Creature ____owner) =>
-            EnemyCardIntentHoverPatch.OnIntentHovered(____intent, ____targets, ____owner)
-            && BadgedIntentHoverTipDisplayPatch.OnIntentHovered(____intent, ____targets, ____owner);
+            BadgedIntentHoverTipDisplayPatch.OnIntentHovered(____intent, ____targets, ____owner);
     }
 
     [HarmonyPatch(typeof(NIntent), "UpdateVisuals")]

@@ -844,17 +844,6 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
     }
 }
 
-internal static class EnemyCardIntentHoverPatch
-{
-    internal static bool OnIntentHovered(
-        AbstractIntent ____intent,
-        IEnumerable<Creature> ____targets,
-        Creature ____owner)
-    {
-        return true;
-    }
-}
-
 internal partial class EnemyCardHandController : Control
 {
     private const int HandRowLength = 10;

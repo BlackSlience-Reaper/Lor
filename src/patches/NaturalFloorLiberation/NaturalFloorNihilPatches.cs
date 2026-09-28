@@ -57,14 +57,6 @@ internal static class NaturalFloorNihilChaosStunPatch
     }
 }
 
-[HarmonyPatch(typeof(Creature), nameof(Creature.ScaleMonsterHpForMultiplayer))]
-internal static class NaturalFloorMagicalGirlFixedHpPatch
-{
-    // 终战仅魔法少女同伴保持固定生命；虚无缥缈与石像沿用多人生命缩放。
-    private static bool Prefix(Creature __instance) =>
-        __instance.Monster is not NaturalFloorMagicalGirl;
-}
-
 [HarmonyPatch(typeof(LibraryCreature), nameof(LibraryCreature.SaveAndSetStunResistance))]
 internal static class NaturalFloorNihilRestoreStunWindowPatch
 {
