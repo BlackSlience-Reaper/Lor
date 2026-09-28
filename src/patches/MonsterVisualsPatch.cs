@@ -2258,7 +2258,7 @@ internal sealed partial class CreatureStateDisplayOffset : Node
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
-[LibraryPatch(Reason = "原版 CreateVisuals 非虚，只能实例化按 id 命名的场景；本模组外观多为代码拼装的精灵，只作用于 MonsterVisualCatalog 登记的本模组怪物 id。")]
+[LibraryPatch(Reason = "原版 CreateVisuals 非虚，只会实例化 VisualsPath（可覆写）指向的场景；本模组外观多为运行时用代码拼装的精灵节点，没有对应场景可指，换路径做不到。只作用于 MonsterVisualCatalog 登记的本模组怪物 id。")]
 public static class MonsterModelCreateVisualsPatch
 {
     private static bool Prefix(MonsterModel __instance, ref NCreatureVisuals __result)

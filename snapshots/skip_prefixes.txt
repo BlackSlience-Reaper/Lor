@@ -7,7 +7,7 @@ LibraryOfRuina.features.temporarymaps.TemporaryMapCreateRoomPatch	RunManager.Cre
 LibraryOfRuina.monsters.BigBadWolf.BigBadWolfSwipePowerRewardPatch	原版 SwipePower.BeforeDeath 会先于怪物自身把被吞的牌作为奖励归还，无 Hook；仅在拥有者是本模组大坏狼且死亡者就是拥有者时跳过，由狼自己的 BeforeDeath 归还。可改用自有能力，会新增模型 ID，留到阶段 6。
 LibraryOfRuina.patches.AllyMultiplayerChaoScalingPatch	基础库在多人生命缩放后缀里无条件缩放混乱值，没有扩展点；只对本模组盟友 provider 登记的友方/中立单位跳过多人混乱值缩放。
 LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch	原版多人生命缩放没有 Hook 或虚方法；只对本模组盟友 provider 登记的友方/中立单位跳过，敌对形态仍按原版缩放。
-LibraryOfRuina.patches.AllySkipEnemySideSwitchWhenCombatEndsPatch	原版在玩家回合第二阶段之后无条件切到敌方回合（私有方法，无 Hook）；只在战斗刚被本模组盟友回合结束时跳过这一次切边，其他方式结束的战斗保持原版。
+LibraryOfRuina.patches.AllySkipEnemySideSwitchWhenCombatEndsPatch	原版切边（私有方法，无 Hook）开头只检查回合取消令牌，战斗正常结束不会取消它；调用方在第二阶段之前查过 IsInProgress，之后不再检查，所以盟友回合在第二阶段后打完最后一个敌人时仍会切边并询问额外回合。只在战斗刚被本模组盟友回合结束时跳过这一次，其他方式结束的战斗保持原版。
 LibraryOfRuina.patches.AllySkipOfficialEnemyIntentPatch	原版敌方回合对每个敌方生物无条件播放意图动画，没有 Hook；只对本回合已由本模组盟友回合行动过的单位跳过。
 LibraryOfRuina.patches.AllySkipOfficialEnemyTurnPatch	原版敌方回合无法按单位跳过招式（TakeTurn/PerformMove 非虚、无 Hook）；只对本回合已在盟友回合行动过的本模组盟友跳过，避免行动两次。
 LibraryOfRuina.patches.AnimateRelicSafetyPatch	奖励、商店、宝箱在 await RelicCmd.Obtain 之后才调用 AnimateRelic，遗物若在获得后被移除，原版 _relicNodes.First 会抛异常；方法非虚无 Hook。只在遗物不可变、无主或已不在主人遗物列表时跳过，这些情况原版要么空操作要么崩溃。
@@ -19,7 +19,7 @@ LibraryOfRuina.patches.DodgeDiceHealthBarAnimateInBlockPatch	原版格挡淡入�
 LibraryOfRuina.patches.EgoEnergyIconPathPatch	EnergyIconHelper.GetPath 是静态方法；只处理本模组两个 E.G.O. 卡池的能量颜色名。可改为卡池实现 RitsuLib 的 IModBigEnergyIconPool，暂缓。
 LibraryOfRuina.patches.FourthActMultiplayerScalingPatch	原版多人缩放系数是静态方法，且对第四幕直接抛异常，没有 Hook 或虚方法；只在当前幕是本模组残响乐团幕或遭遇属于本模组时返回本模组系数。
 LibraryOfRuina.patches.GuestReceptionBackgroundPoolPatch	原版自定义背景的标题只能是遭遇 id，且方法私有、没有 Hook；只处理本模组遭遇类型和实现 IGuestReceptionEncounter 的接待遭遇，给它们指定共享背景或抽取接待层。
-LibraryOfRuina.patches.HeavyBluntVfxLifecyclePatch	原版重击特效在异步等待中粒子可能已失效并抛异常，_Ready 流程私有无 Hook；只在本模组遭遇中改用带有效性检查的播放流程。
+LibraryOfRuina.patches.HeavyBluntVfxLifecyclePatch	原版 _Ready 只启动私有的 PlaySequence，它在异步等待之后直接 Restart 冲击粒子、释放节点，不检查节点是否已失效（例如解放战换阶段换场景时）而抛异常；特效节点由原版场景实例化，无法换成子类覆写 _Ready。只在本模组遭遇中改用带有效性检查的播放流程。
 LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于历史层解放遭遇的第 3–5 阶段。
 LibraryOfRuina.patches.LeopardPlush.LeopardPlushMerchantPurchasePatch	商店购买流程无取消 Hook；只拦截本模组豹豹玩偶的商店锁定。随 PR #4 删除八奈见内容一起移除。
 LibraryOfRuina.patches.LeopardPlush.LeopardPlushMerchantRemovalPatch	商店删牌流程无取消 Hook；只拦截本模组豹豹玩偶的商店锁定。随 PR #4 删除八奈见内容一起移除。
@@ -27,7 +27,7 @@ LibraryOfRuina.patches.LiberationBossTopBarHoverPatch	原版 Boss 图标悬停�
 LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于文学层解放遭遇的第 2–5 阶段。
 LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionDarkOrbEvokePatch	DarkOrb 是原版类，无法覆写，原版没有激发目标重定向 Hook；只在存在带本模组集火能力的可命中敌人时改为对它造成伤害。
 LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch	生物已被移出战斗时原版 Hook.ShouldClearBlock 会因 CombatState 为空抛异常，没有监听者可用；只把该异常路径改成与原版结束战斗分支相同的清格挡结果。
-LibraryOfRuina.patches.MonsterModelCreateVisualsPatch	原版 CreateVisuals 非虚，只能实例化按 id 命名的场景；本模组外观多为代码拼装的精灵，只作用于 MonsterVisualCatalog 登记的本模组怪物 id。
+LibraryOfRuina.patches.MonsterModelCreateVisualsPatch	原版 CreateVisuals 非虚，只会实例化 VisualsPath（可覆写）指向的场景；本模组外观多为运行时用代码拼装的精灵节点，没有对应场景可指，换路径做不到。只作用于 MonsterVisualCatalog 登记的本模组怪物 id。
 LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilChaosStunPatch	基础库混乱眩晕没有否决钩子，且 LibraryCreature.StunInternal 强制切招；仅对本模组终战 Boss“虚无”在非愤怒力竭时拦截。
 LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilExternalStunPatch	原版 CreatureCmd.Stun 没有 Hook 或虚方法可否决；仅对本模组终战 Boss“虚无”屏蔽外部眩晕。
 LibraryOfRuina.patches.PetDealerCompatibilityPatch	PersonalHivePower 是 sealed 原版能力，无 Hook 能改伤害来源；把有主人的宠物伤害归到主人。本模组没有宠物，这是给第三方宠物模组的兼容，属于有意的例外。

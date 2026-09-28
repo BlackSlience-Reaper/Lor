@@ -138,6 +138,7 @@ internal static class AllyClearBlockAtPlayerTurnStartPatch
         {
             return;
         }
+        AllyTurnRegistry.ForgetCombatEndedByAllyTurn();
         AllyTurnRegistry.ClearBlockBeforePlayerTurnStart(combatState);
 
     }
@@ -166,7 +167,7 @@ internal static class AllyPreEnemyTurnPatch
 
 [HarmonyPatch]
 [UsedImplicitly]
-[LibraryPatch(Reason = "原版在玩家回合第二阶段之后无条件切到敌方回合（私有方法，无 Hook）；只在战斗刚被本模组盟友回合结束时跳过这一次切边，其他方式结束的战斗保持原版。")]
+[LibraryPatch(Reason = "原版切边（私有方法，无 Hook）开头只检查回合取消令牌，战斗正常结束不会取消它；调用方在第二阶段之前查过 IsInProgress，之后不再检查，所以盟友回合在第二阶段后打完最后一个敌人时仍会切边并询问额外回合。只在战斗刚被本模组盟友回合结束时跳过这一次，其他方式结束的战斗保持原版。")]
 internal static class AllySkipEnemySideSwitchWhenCombatEndsPatch
 {
     private static MethodBase TargetMethod() =>

@@ -16,7 +16,7 @@ namespace LibraryOfRuina.patches;
 // 粒子可能在异步等待期间失效，每次播放时检查，退出场景时结束播放并释放特效。
 // 只在本模组遭遇里替换原版播放流程（例如解放战换阶段场景时）；其他战斗保持原版。
 [HarmonyPatch(typeof(NHeavyBluntVfx), nameof(NHeavyBluntVfx._Ready))]
-[LibraryPatch(Reason = "原版重击特效在异步等待中粒子可能已失效并抛异常，_Ready 流程私有无 Hook；只在本模组遭遇中改用带有效性检查的播放流程。")]
+[LibraryPatch(Reason = "原版 _Ready 只启动私有的 PlaySequence，它在异步等待之后直接 Restart 冲击粒子、释放节点，不检查节点是否已失效（例如解放战换阶段换场景时）而抛异常；特效节点由原版场景实例化，无法换成子类覆写 _Ready。只在本模组遭遇中改用带有效性检查的播放流程。")]
 internal static class HeavyBluntVfxLifecyclePatch
 {
     [HarmonyPrefix]

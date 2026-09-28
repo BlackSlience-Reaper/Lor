@@ -224,8 +224,10 @@ public static class AllyTurnRegistry
         return HasActedThisRound(creature);
     }
 
-    // 本次盟友回合是否结束了战斗。原版在玩家回合第二阶段之后无条件切到敌方回合；只有战斗是被盟友回合
-    // 结束的，AllySkipEnemySideSwitchWhenCombatEndsPatch 才跳过这次切边，其他方式结束的战斗保持原版流程。
+    // 本次盟友回合是否结束了战斗。原版切边不再检查战斗是否结束；只有战斗是被盟友回合结束的，
+    // AllySkipEnemySideSwitchWhenCombatEndsPatch 才跳过这次切边，其他方式结束的战斗保持原版流程。
+    // 只在盟友回合正常跑完时置位：抛异常时原版不会走到切边，置位只会残留到之后的战斗。
+    // 下一次盟友回合开始、玩家回合开始时都会清掉。
     private static bool _combatEndedByAllyTurn;
 
     internal static bool ConsumeCombatEndedByAllyTurn()
@@ -235,6 +237,8 @@ public static class AllyTurnRegistry
         return ended;
     }
 
+    internal static void ForgetCombatEndedByAllyTurn() => _combatEndedByAllyTurn = false;
+
     internal static async Task ExecuteAllyTurn(CombatManager combatManager)
     {
         _combatEndedByAllyTurn = false;
@@ -243,14 +247,8 @@ public static class AllyTurnRegistry
         if (combatState == null) return;
         if (!combatManager.IsInProgress) return;
 
-        try
-        {
-            await ExecuteAllyTurnCore(combatManager, combatState);
-        }
-        finally
-        {
-            _combatEndedByAllyTurn = !combatManager.IsInProgress;
-        }
+        await ExecuteAllyTurnCore(combatManager, combatState);
+        _combatEndedByAllyTurn = !combatManager.IsInProgress;
     }
 
     private static async Task ExecuteAllyTurnCore(CombatManager combatManager, CombatState combatState)
