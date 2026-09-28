@@ -232,7 +232,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
         }
 
         if (__instance.DebugOnlyGetState() is RunState eventRunState
-            && eventRunState.CurrentRoom is EventRoom
+            && eventRunState.CurrentRoom is EventRoom { CanonicalEvent: SpecialGuestEventBase }
             && SpecialGuestRunStateModifier.TryGet(eventRunState) is { ActiveGuestId: { } activeGuestId } eventState
             && eventState.CurrentStageIndex > 0
             && string.Equals(
@@ -461,7 +461,9 @@ internal static class SpecialGuestSuppressIntermediateParentFadeInPatch
     [HarmonyPrefix]
     private static bool Prefix(ref Task __result)
     {
-        if (!SpecialGuestTerminalRewardsProceedPatch.ShouldSuppressParentFadeIn)
+        // 只在特邀嘉宾阶段衔接、且原版已把房间恢复成嘉宾父事件时吞掉淡入；窗口内其他代码的 FadeIn 照常执行。
+        if (!SpecialGuestTerminalRewardsProceedPatch.ShouldSuppressParentFadeIn
+            || RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom { CanonicalEvent: SpecialGuestEventBase })
         {
             return true;
         }

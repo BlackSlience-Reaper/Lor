@@ -173,7 +173,7 @@ internal static class AllySkipEnemySideSwitchWhenCombatEndsPatch
     [HarmonyPrefix]
     private static bool Prefix(CombatManager __instance, ref Task __result)
     {
-        if (__instance.IsInProgress)
+        if (__instance.IsInProgress || !AllyTurnRegistry.ConsumeCombatEndedByAllyTurn())
         {
             return true;
         }

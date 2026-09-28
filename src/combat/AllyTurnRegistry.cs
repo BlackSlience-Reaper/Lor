@@ -224,12 +224,37 @@ public static class AllyTurnRegistry
         return HasActedThisRound(creature);
     }
 
+    // 本次盟友回合是否结束了战斗。原版在玩家回合第二阶段之后无条件切到敌方回合；只有战斗是被盟友回合
+    // 结束的，AllySkipEnemySideSwitchWhenCombatEndsPatch 才跳过这次切边，其他方式结束的战斗保持原版流程。
+    private static bool _combatEndedByAllyTurn;
+
+    internal static bool ConsumeCombatEndedByAllyTurn()
+    {
+        bool ended = _combatEndedByAllyTurn;
+        _combatEndedByAllyTurn = false;
+        return ended;
+    }
+
     internal static async Task ExecuteAllyTurn(CombatManager combatManager)
     {
+        _combatEndedByAllyTurn = false;
         var combatState = combatManager.DebugOnlyGetState();
         
         if (combatState == null) return;
         if (!combatManager.IsInProgress) return;
+
+        try
+        {
+            await ExecuteAllyTurnCore(combatManager, combatState);
+        }
+        finally
+        {
+            _combatEndedByAllyTurn = !combatManager.IsInProgress;
+        }
+    }
+
+    private static async Task ExecuteAllyTurnCore(CombatManager combatManager, CombatState combatState)
+    {
         if (combatState.CurrentSide != CombatSide.Player) return;
         if (WillAnyPlayerTakeExtraTurn(combatState)) return;
 

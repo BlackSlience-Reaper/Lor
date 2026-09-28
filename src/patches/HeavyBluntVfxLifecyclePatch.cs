@@ -7,10 +7,13 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
+using LibraryOfRuina.features.ftue;
+using MegaCrit.Sts2.Core.Combat;
 
 namespace LibraryOfRuina.patches;
 
 // 粒子可能在异步等待期间失效，每次播放时检查，退出场景时结束播放并释放特效。
+// 只在本模组遭遇里替换原版播放流程（例如解放战换阶段场景时）；其他战斗保持原版。
 [HarmonyPatch(typeof(NHeavyBluntVfx), nameof(NHeavyBluntVfx._Ready))]
 internal static class HeavyBluntVfxLifecyclePatch
 {
@@ -21,6 +24,11 @@ internal static class HeavyBluntVfxLifecyclePatch
         Godot.Collections.Array<GpuParticles2D> ____anticipationParticles,
         Godot.Collections.Array<GpuParticles2D> ____impactParticles)
     {
+        if (!FtueGuard.IsLibraryOfRuinaEncounter(CombatManager.Instance.DebugOnlyGetState()?.Encounter))
+        {
+            return true;
+        }
+
         TaskHelper.RunSafely(PlaySequence(
             __instance,
             ____debugPosition,

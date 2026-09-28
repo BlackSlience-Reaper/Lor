@@ -15,6 +15,10 @@ namespace LibraryOfRuina.patches;
 /// and RitsuLib expose equivalent properties through different interfaces, so
 /// this adapter keeps both contracts working without depending on either
 /// implementation's concrete base class.
+/// <para>
+/// 这里处理的是其他模组的内容（本模组的图标走原版约定路径，不需要它），所以只作兜底：排在 BaseLib 与 RitsuLib
+/// 自己的前缀之后，它们已经给出图标（跳过原方法）时本前缀不再执行，外部覆盖与点位过滤按它们的规则生效。
+/// </para>
 /// </summary>
 internal static class RoomIconPathCustomOverride
 {
@@ -70,12 +74,22 @@ internal static class RoomIconPathCustomOverride
     {
         public static IconProperties? Create(Type type)
         {
-            PropertyInfo? main = type.GetProperty(
-                "CustomRunHistoryIconPath",
-                BindingFlags.Instance | BindingFlags.Public);
-            PropertyInfo? outline = type.GetProperty(
-                "CustomRunHistoryIconOutlinePath",
-                BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo? main;
+            PropertyInfo? outline;
+            try
+            {
+                main = type.GetProperty(
+                    "CustomRunHistoryIconPath",
+                    BindingFlags.Instance | BindingFlags.Public);
+                outline = type.GetProperty(
+                    "CustomRunHistoryIconOutlinePath",
+                    BindingFlags.Instance | BindingFlags.Public);
+            }
+            catch (AmbiguousMatchException)
+            {
+                // 派生类用 new 隐藏了同名属性；不猜用哪个，交还原版。
+                return null;
+            }
             if (main == null && outline == null)
             {
                 return null;
@@ -87,7 +101,8 @@ internal static class RoomIconPathCustomOverride
 }
 
 [HarmonyPatch(typeof(ImageHelper), nameof(ImageHelper.GetRoomIconPath))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Last)]
+[HarmonyAfter("BaseLib", "com.ritsukage.sts2-RitsuLib.framework-content-assets")]
 internal static class RoomIconPathCustomOverridePatch
 {
     [HarmonyPrefix]
@@ -99,7 +114,8 @@ internal static class RoomIconPathCustomOverridePatch
 }
 
 [HarmonyPatch(typeof(ImageHelper), nameof(ImageHelper.GetRoomIconOutlinePath))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Last)]
+[HarmonyAfter("BaseLib", "com.ritsukage.sts2-RitsuLib.framework-content-assets")]
 internal static class RoomIconOutlinePathCustomOverridePatch
 {
     [HarmonyPrefix]

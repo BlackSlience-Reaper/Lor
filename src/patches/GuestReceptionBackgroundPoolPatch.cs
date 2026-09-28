@@ -74,11 +74,8 @@ internal static class GuestReceptionBackgroundPoolPatch
             return false;
         }
 
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
-        {
-            return true;
-        }
-
+        // 不看“启用内容”开关：本模组遭遇只要出现（例如关闭内容后继续旧局）就需要这些背景，
+        // 交还原版会按遭遇 id 找背景目录，找不到时原版直接抛异常。
         if (encounterType == typeof(RedMistElite))
         {
             __result = new BackgroundAssets(GuestReceptionPoolRegistry.SharedBackgroundTitle, rng);

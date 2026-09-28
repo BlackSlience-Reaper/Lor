@@ -161,32 +161,23 @@ internal static class FriendlyAllyLibraryAttackTargetsPatch
     nameof(LibraryCreatureCmd.Damage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(LibraryDamageType), typeof(CardPlay), typeof(Func<Task>))]
 internal static class FriendlyAllyLibraryDamageTargetsPatch
 {
+    // 只改写目标、不跳过原方法：过滤后为空时原方法自己返回空结果。若在这里跳过，
+    // 同目标上其他前缀（例如齿轮教会命中上下文）不执行，它们的 Finalizer/后缀拿到空 __state 会抛空引用。
     [HarmonyPrefix]
     [HarmonyPriority(Priority.First)]
-    private static bool Prefix(
+    private static void Prefix(
         ref IEnumerable<Creature> targets,
         Creature? dealer,
-        CardModel? cardSource,
-        ref Task<IEnumerable<DamageResult>> __result)
+        CardModel? cardSource)
     {
         if (MagicBulletShooterPageAttackPatch.IsSeventhBulletAttack(cardSource))
         {
-            return true;
+            return;
         }
 
-        IReadOnlyList<Creature> filteredTargets =
-            UntargetableInteractionFilter.FilterPlayerAttackTargets(
-                targets,
-                dealer);
-        if (filteredTargets.Count == 0)
-        {
-            __result = Task.FromResult<IEnumerable<DamageResult>>(
-                Array.Empty<DamageResult>());
-            return false;
-        }
-
-        targets = filteredTargets;
-        return true;
+        targets = UntargetableInteractionFilter.FilterPlayerAttackTargets(
+            targets,
+            dealer);
     }
 }
 
@@ -195,28 +186,18 @@ internal static class FriendlyAllyLibraryDamageTargetsPatch
     nameof(LibraryCreatureCmd.ChaoDamage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay), typeof(LibraryDamageType), typeof(IEnumerable<DamageResult>))]
 internal static class FriendlyAllyLibraryChaoTargetsPatch
 {
+    // 同上：只改写目标，过滤后为空时由原方法返回空结果，不跳过原方法。
     [HarmonyPrefix]
     [HarmonyPriority(Priority.First)]
-    private static bool Prefix(
+    private static void Prefix(
         ref IEnumerable<Creature> targets,
-        Creature? dealer,
-        ref Task<IEnumerable<LibraryChaoResult>?> __result)
+        Creature? dealer)
     {
         if (!AllyTurnRegistry.IsPlayerAlignedForTargeting(dealer))
         {
-            return true;
+            return;
         }
 
-        IReadOnlyList<Creature> filteredTargets =
-            AllyTurnRegistry.FilterPlayerEnemyTargets(targets);
-        if (filteredTargets.Count == 0)
-        {
-            __result = Task.FromResult<IEnumerable<LibraryChaoResult>?>(
-                Array.Empty<LibraryChaoResult>());
-            return false;
-        }
-
-        targets = filteredTargets;
-        return true;
+        targets = AllyTurnRegistry.FilterPlayerEnemyTargets(targets);
     }
 }

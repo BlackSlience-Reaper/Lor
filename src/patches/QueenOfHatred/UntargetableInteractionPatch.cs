@@ -133,24 +133,16 @@ internal static class UntargetableDamageTargetsPatch
     // 其他模组会在同一重载的普通优先级 Prefix 中改写 targets，因此最终友方过滤
     // 必须在这些改写之后执行。LibraryOfRuinaLib 的 Last Prefix 可能短路原方法，
     // 显式 Before 关系保证它接收到已经过滤的稳定目标集合。
+    // 只改写目标，过滤后为空时原方法自己返回空结果，不跳过原方法。
     [HarmonyPriority(Priority.Last)]
     [HarmonyBefore("LibraryOfRuinaLib")]
-    private static bool Prefix(
+    private static void Prefix(
         ref IEnumerable<Creature> targets,
-        Creature? dealer,
-        ref Task<IEnumerable<DamageResult>> __result)
+        Creature? dealer)
     {
-        IReadOnlyList<Creature> filteredTargets = UntargetableInteractionFilter.FilterPlayerAttackTargets(
+        targets = UntargetableInteractionFilter.FilterPlayerAttackTargets(
             targets,
             dealer);
-        if (filteredTargets.Count == 0)
-        {
-            __result = Task.FromResult<IEnumerable<DamageResult>>(Array.Empty<DamageResult>());
-            return false;
-        }
-
-        targets = filteredTargets;
-        return true;
     }
 }
 
