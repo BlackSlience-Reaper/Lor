@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.HistoryFloorLiberation;
 
@@ -44,6 +45,7 @@ internal static class HistoryFloorLiberationSettlementRedirect
 }
 
 [HarmonyPatch(typeof(EncounterModel), nameof(EncounterModel.CreateScene))]
+[LibraryPatch(Reason = "原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于历史层解放遭遇的第 3–5 阶段。")]
 internal static class HistoryFloorLiberationCreateScenePatch
 {
     private static bool Prefix(EncounterModel __instance, ref Control __result)

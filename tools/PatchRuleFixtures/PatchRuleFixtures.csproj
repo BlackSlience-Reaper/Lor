@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Fixture program for tools/check.sh: patch classes written in every form Harmony installs. Running it
+       checks PatchClassRules against Harmony's own HasHarmonyAttribute on these classes; ModSnapshot then
+       scans the built assembly and check.sh diffs the result with expected_skip_prefixes.txt. Nothing here
+       is ever patched. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony" HintPath="$(Sts2DataDir)/0Harmony.dll" />
+    <Compile Include="../../src/infra/patching/PatchClassRules.cs" Link="PatchClassRules.cs" />
+  </ItemGroup>
+</Project>

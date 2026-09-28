@@ -7,6 +7,7 @@ using LibraryOfRuina.addons.mega_text;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -158,6 +159,7 @@ internal static class DodgeDiceHealthBarRefreshPatch
 }
 
 [HarmonyPatch(typeof(NHealthBar), nameof(NHealthBar.AnimateInBlock))]
+[LibraryPatch(Reason = "原版格挡淡入由 BlockChanged 事件直接驱动血条，没有 Hook；只消耗本模组闪避骰获得格挡时入队的计数，改用闪避图标显示。")]
 internal static class DodgeDiceHealthBarAnimateInBlockPatch
 {
     [HarmonyPrefix]

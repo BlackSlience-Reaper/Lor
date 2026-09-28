@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Models;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -16,6 +17,7 @@ internal static class PowerIconFallbackScope
 
 [HarmonyPatch(typeof(PowerModel), nameof(PowerModel.Icon), MethodType.Getter)]
 [HarmonyAfter("LibraryOfRuinaLib")]
+[LibraryPatch(Reason = "PowerModel.Icon 非虚，本模组能力没有 power_atlas 资源，走原版会报资源缺失；只对本模组与 LibraryOfRuinaLib 的能力用 png。可改用 RitsuLib 纹理 provider，暂缓。")]
 internal static class PowerIconPngFallbackPatch
 {
     private static bool Prefix(
@@ -46,6 +48,7 @@ internal static class PowerIconPngFallbackPatch
 
 [HarmonyPatch(typeof(PowerModel), nameof(PowerModel.BigIcon), MethodType.Getter)]
 [HarmonyAfter("LibraryOfRuinaLib")]
+[LibraryPatch(Reason = "PowerModel.BigIcon 非虚；只对本模组与 LibraryOfRuinaLib 的能力用 png 大图。可改用 RitsuLib 纹理 provider，需要处理基础库图标后缀，暂缓。")]
 internal static class PowerBigIconPngFallbackPatch
 {
     private static bool Prefix(

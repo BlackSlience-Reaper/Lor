@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- The installer's own patch-class rule; see the file for why it only reads CustomAttributeData. -->
+    <Compile Include="../../src/infra/patching/PatchClassRules.cs" Link="PatchClassRules.cs" />
     <PackageReference Include="System.Reflection.MetadataLoadContext" Version="9.0.0" />
   </ItemGroup>
 </Project>

@@ -20,6 +20,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.powers.PhilosophyFloorLiberation;
 
@@ -316,6 +317,7 @@ internal static class PhilosophyFloorTwilightReflectAppliedPowerPatch
 }
 
 [HarmonyPatch(typeof(PowerCmd), nameof(PowerCmd.ModifyAmount))]
+[LibraryPatch(Reason = "原版 Hook 只能修改能力数值，不能改目标；为了在命令入口把叠加型负面效果反弹给施加者，只对本模组强化蛋暮光的碎蛋能力生效。")]
 internal static class PhilosophyFloorTwilightReflectStackedPowerPatch
 {
     private static bool Prefix(

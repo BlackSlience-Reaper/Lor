@@ -24,6 +24,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.TestSupport;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.features.secondascension;
 
@@ -119,6 +120,7 @@ internal static class LibrarySecondAscensionPanelTextPatch
 }
 
 [HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
+[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组二层飞升载体修饰符返回 null（原版 TestMode 同样返回 null）。")]
 internal static class LibrarySecondAscensionHideCarrierTopBarPatch
 {
     [HarmonyPrefix]
@@ -186,6 +188,7 @@ internal static class LibrarySecondAscensionCharacterSelectAscensionChangedPatch
 }
 
 [HarmonyPatch(typeof(NCharacterSelectScreen), nameof(NCharacterSelectScreen.ModifiersChanged))]
+[LibraryPatch(Reason = "标准模式下原版 ModifiersChanged 固定抛 NotImplementedException，二层飞升借大厅修饰符同步时必然触发；接口实现非虚无 Hook，仅在大厅修饰符为空或全为本模组载体时跳过。")]
 internal static class LibrarySecondAscensionCharacterSelectModifiersChangedPatch
 {
     [HarmonyPrefix]

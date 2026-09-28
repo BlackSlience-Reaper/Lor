@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
@@ -45,6 +46,7 @@ internal static class IncomingDamagePreviewModelPatches
     }
 
     [HarmonyPatch]
+    [LibraryPatch(Reason = "缓冲等按次触发的效果无预览标志；仅在本模组受伤预览的同步模拟作用域内按模拟次数截断，正式结算原样执行。")]
     private static class LimitedTriggerPatch
     {
         private static IEnumerable<MethodBase> TargetMethods()
@@ -70,6 +72,7 @@ internal static class IncomingDamagePreviewModelPatches
 
     /// <summary>坚硬外壳按一方回合累计失去生命值；敌方回合开始时清零，玩家回合结束阶段沿用当前累计。</summary>
     [HarmonyPatch(typeof(HardenedShellPower), nameof(HardenedShellPower.ModifyHpLostBeforeOstyLate))]
+    [LibraryPatch(Reason = "坚硬外壳按实际累计失血计算上限且无预览参数；仅在本模组受伤预览的同步模拟作用域内改用模拟累计，正式结算原样执行。")]
     private static class HardenedShellPatch
     {
         private static bool Prefix(
@@ -95,6 +98,7 @@ internal static class IncomingDamagePreviewModelPatches
 
     /// <summary>跳动残骸在拥有者回合开始时清零，敌方回合继续累计玩家回合内已失去的生命值。</summary>
     [HarmonyPatch(typeof(BeatingRemnant), nameof(BeatingRemnant.ModifyHpLostAfterOsty))]
+    [LibraryPatch(Reason = "跳动残骸按实际本回合失血计算上限且无预览参数；仅在本模组受伤预览的同步模拟作用域内叠加模拟失血，正式结算原样执行。")]
     private static class BeatingRemnantPatch
     {
         private static bool Prefix(

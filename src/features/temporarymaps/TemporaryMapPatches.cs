@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.features.temporarymaps;
 
@@ -79,6 +80,7 @@ internal static class TemporaryMapMapScreenPatch
 }
 
 [HarmonyPatch(typeof(RunManager), "CreateRoom")]
+[LibraryPatch(Reason = "RunManager.CreateRoom 私有非虚且无建房 Hook，后缀会先让原版消耗遭遇/事件队列；仅在本模组临时地图会话激活且当前坐标属于临时地图节点时接管。")]
 internal static class TemporaryMapCreateRoomPatch
 {
     [HarmonyPrefix]

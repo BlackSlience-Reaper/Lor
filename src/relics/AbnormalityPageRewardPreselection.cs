@@ -15,6 +15,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Rewards;
 using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.relics;
 
@@ -402,6 +403,7 @@ internal sealed class AbnormalityPagePostObtainEffectAttribute : Attribute
 }
 
 [HarmonyPatch(typeof(RelicReward), "OnSelect")]
+[LibraryPatch(Reason = "RelicReward.OnSelect 无获得前 Hook，书页遗物须在获得前选模式且跳过后保留奖励；仅当奖励遗物为本模组异想体书页遗物时接管。界面异常时的重试路径联机需实测。")]
 internal static class AbnormalityPageRelicRewardSelectPatch
 {
     private static readonly FieldInfo? RelicField = AccessTools.Field(typeof(RelicReward), "_relic");
@@ -438,6 +440,7 @@ internal static class AbnormalityPageRelicRewardSelectPatch
 }
 
 [HarmonyPatch(typeof(RelicCmd), nameof(RelicCmd.Obtain), typeof(RelicModel), typeof(Player), typeof(int))]
+[LibraryPatch(Reason = "RelicCmd.Obtain 无取消获得的 Hook（AfterObtained 时已入背包）；仅对本模组非堆叠书页遗物在已持有同 ID 时复用已有实例，防止对端回放造成重复获得。")]
 internal static class AbnormalityPageRelicObtainPatch
 {
     public static bool Prefix(

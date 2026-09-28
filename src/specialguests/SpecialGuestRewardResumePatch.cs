@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -18,6 +19,7 @@ namespace LibraryOfRuina.specialguests;
 /// </summary>
 [HarmonyPatch(typeof(CombatRoom), nameof(CombatRoom.OfferRoomEndRewards))]
 [HarmonyPriority(Priority.First)]
+[LibraryPatch(Reason = "替代体与 0.111 原版 OfferRoomEndRewards 等价，Priority.First 是为了压住某个改写奖励流程的模组；该模组尚未确认，属于 §3 的例外，待实测后决定删除或保留。")]
 internal static class SpecialGuestRewardResumePatch
 {
     [HarmonyPrefix]

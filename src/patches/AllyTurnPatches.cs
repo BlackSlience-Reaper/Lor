@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models.Singleton;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -137,6 +138,7 @@ internal static class AllyClearBlockAtPlayerTurnStartPatch
         {
             return;
         }
+        AllyTurnRegistry.ForgetCombatEndedByAllyTurn();
         AllyTurnRegistry.ClearBlockBeforePlayerTurnStart(combatState);
 
     }
@@ -165,6 +167,7 @@ internal static class AllyPreEnemyTurnPatch
 
 [HarmonyPatch]
 [UsedImplicitly]
+[LibraryPatch(Reason = "原版切边（私有方法，无 Hook）开头只检查回合取消令牌，战斗正常结束不会取消它；调用方在第二阶段之前查过 IsInProgress，之后不再检查，所以盟友回合在第二阶段后打完最后一个敌人时仍会切边并询问额外回合。只在战斗刚被本模组盟友回合结束时跳过这一次，其他方式结束的战斗保持原版。")]
 internal static class AllySkipEnemySideSwitchWhenCombatEndsPatch
 {
     private static MethodBase TargetMethod() =>
@@ -173,7 +176,7 @@ internal static class AllySkipEnemySideSwitchWhenCombatEndsPatch
     [HarmonyPrefix]
     private static bool Prefix(CombatManager __instance, ref Task __result)
     {
-        if (__instance.IsInProgress)
+        if (__instance.IsInProgress || !AllyTurnRegistry.ConsumeCombatEndedByAllyTurn())
         {
             return true;
         }
@@ -185,6 +188,7 @@ internal static class AllySkipEnemySideSwitchWhenCombatEndsPatch
 
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.PerformIntent))]
 [UsedImplicitly]
+[LibraryPatch(Reason = "原版敌方回合对每个敌方生物无条件播放意图动画，没有 Hook；只对本回合已由本模组盟友回合行动过的单位跳过。")]
 internal static class AllySkipOfficialEnemyIntentPatch
 {
     [HarmonyPrefix]
@@ -202,6 +206,7 @@ internal static class AllySkipOfficialEnemyIntentPatch
 
 [HarmonyPatch(typeof(Creature), nameof(Creature.TakeTurn))]
 [UsedImplicitly]
+[LibraryPatch(Reason = "原版敌方回合无法按单位跳过招式（TakeTurn/PerformMove 非虚、无 Hook）；只对本回合已在盟友回合行动过的本模组盟友跳过，避免行动两次。")]
 internal static class AllySkipOfficialEnemyTurnPatch
 {
     [HarmonyPrefix]
@@ -236,6 +241,7 @@ internal static class AllyTurnStateResetPatch
 
 [HarmonyPatch(typeof(Creature), nameof(Creature.ScaleMonsterHpForMultiplayer))]
 [UsedImplicitly]
+[LibraryPatch(Reason = "原版多人生命缩放没有 Hook 或虚方法；只对本模组盟友 provider 登记的友方/中立单位跳过，敌对形态仍按原版缩放。")]
 internal static class AllyMultiplayerHpScalingPatch
 {
     [HarmonyPrefix]
@@ -246,6 +252,7 @@ internal static class AllyMultiplayerHpScalingPatch
 
 [HarmonyPatch(typeof(LibraryCreature), nameof(LibraryCreature.ScaleMonsterChaoValueForMultiplayer))]
 [UsedImplicitly]
+[LibraryPatch(Reason = "基础库在多人生命缩放后缀里无条件缩放混乱值，没有扩展点；只对本模组盟友 provider 登记的友方/中立单位跳过多人混乱值缩放。")]
 internal static class AllyMultiplayerChaoScalingPatch
 {
     // 基础库在血量缩放的后置补丁中独立缩放混乱值，因此共用血量缩放的豁免判断。

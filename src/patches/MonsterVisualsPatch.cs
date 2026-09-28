@@ -16,6 +16,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 using AddictedEmployeeCreatureVisuals = LibraryOfRuina.visuals.AddictedEmployee.AddictedEmployeeCreatureVisuals;
 using AllAroundHelperCreatureVisuals = LibraryOfRuina.visuals.AllAroundHelper.AllAroundHelperCreatureVisuals;
 using ArnoldCreatureVisuals = LibraryOfRuina.visuals.BrotherhoodOfIron.ArnoldCreatureVisuals;
@@ -2257,6 +2258,7 @@ internal sealed partial class CreatureStateDisplayOffset : Node
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
+[LibraryPatch(Reason = "原版 CreateVisuals 非虚，只会实例化 VisualsPath（可覆写）指向的场景；本模组外观多为运行时用代码拼装的精灵节点，没有对应场景可指，换路径做不到。只作用于 MonsterVisualCatalog 登记的本模组怪物 id。")]
 public static class MonsterModelCreateVisualsPatch
 {
     private static bool Prefix(MonsterModel __instance, ref NCreatureVisuals __result)
@@ -2816,19 +2818,20 @@ internal static class AttackAnimationHitSuppression
     }
 }
 
+/// <summary>
+/// 本模组怪物的外观不是 Spine，原版 SetAnimationTrigger 只驱动 Spine 动画机，对它们不起作用；这里把触发转给
+/// 非 Spine 外观的处理器或 AnimationPlayer。攻击动画进行中收到的 "Hit" 会被忽略，免得打断攻击动作。
+/// 只处理本模组怪物：原来的前缀会对任何 Spine 生物（原版角色、原版与其他模组的怪物）吞掉攻击中的受击触发。
+/// </summary>
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.SetAnimationTrigger))]
 internal static class NonSpineAnimationTriggerBridgePatch
 {
     private static readonly FieldInfo? SpineAnimatorField = AccessTools.Field(typeof(NCreature), "_spineAnimator");
 
-    private static bool Prefix(NCreature __instance, string trigger)
-    {
-        return !AttackAnimationHitSuppression.ShouldSuppress(__instance.Entity, trigger);
-    }
-
     private static void Postfix(NCreature __instance, string trigger)
     {
-        if (AttackAnimationHitSuppression.ShouldSuppress(__instance.Entity, trigger))
+        if (!ModOwnership.IsOwnMonster(__instance.Entity)
+            || AttackAnimationHitSuppression.ShouldSuppress(__instance.Entity, trigger))
         {
             return;
         }

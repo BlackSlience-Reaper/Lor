@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
 using static LibraryOfRuina.reverberation.GearChurch.GearChurchRules;
 
 namespace LibraryOfRuina.reverberation.GearChurch;
@@ -121,6 +122,7 @@ public sealed class GearChurchEncounter : ReverberationEncounterModel
 }
 
 [HarmonyPatch(typeof(ActModel), nameof(ActModel.PullNextEncounter))]
+[LibraryPatch(Reason = "ActModel.PullNextEncounter 非虚无 Hook；只在本模组残响乐团幕的科技层接待精英房返回齿轮教会。可改后缀，但原版 getter 在精英池为空时会除零，暂不改。")]
 internal static class GearChurchTechnologyReceptionPatch
 {
     private static bool Prefix(ActModel __instance, RoomType roomType, ref EncounterModel __result)

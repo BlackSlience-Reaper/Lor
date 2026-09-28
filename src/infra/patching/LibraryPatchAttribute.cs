@@ -3,7 +3,8 @@ using System;
 namespace LibraryOfRuina.infra.patching;
 
 /// <summary>
-/// 补丁类的元数据，由 <see cref="LibraryPatcher"/> 读取。不标注的 <c>[HarmonyPatch]</c> 类按必需补丁安装。
+/// 补丁类的元数据，由 <see cref="LibraryPatcher"/> 读取。不标注的类只要带任一类级 Harmony 特性
+/// （<c>[HarmonyPatch]</c>、<c>[HarmonyPriority]</c> 等，见 <see cref="PatchClassRules"/>）就按必需补丁安装。
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 internal sealed class LibraryPatchAttribute : Attribute

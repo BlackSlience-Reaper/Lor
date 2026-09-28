@@ -6,6 +6,7 @@ using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Xiao;
 
@@ -204,7 +205,8 @@ internal static class XiaoGuestVisualProfile
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
+[LibraryPatch(Reason = "原版 CreateVisuals 非虚，晓与米莉丝的外观由代码或场景拼装；只作用于晓特殊来宾的三只怪物。")]
 internal static class XiaoSpecialGuestCreateVisualsPatch
 {
     private static readonly CreatureVisualLayout MirisLayout = new(

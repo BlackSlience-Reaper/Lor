@@ -104,7 +104,14 @@ internal static class GearChurchHitContext
         return scope;
     }
 
-    internal static void Restore(Scope scope) => Current.Value = scope.Previous;
+    // 其他模组的跳过型前缀可能让本模组的 Enter 前缀不执行，这时 Finalizer/后缀拿到的 __state 为 null。
+    internal static void Restore(Scope? scope)
+    {
+        if (scope != null)
+        {
+            Current.Value = scope.Previous;
+        }
+    }
 
     internal static async Task Commit(PlayerChoiceContext context, Creature target, Creature? dealer, CardModel? source)
     {
@@ -122,9 +129,14 @@ internal static class GearChurchHitContext
     }
 
     internal static async Task<IEnumerable<DamageResult>> RememberResults(
-        Task<IEnumerable<DamageResult>> task, Scope scope)
+        Task<IEnumerable<DamageResult>> task, Scope? scope)
     {
         DamageResult[] results = (await task).ToArray();
+        if (scope == null)
+        {
+            return results;
+        }
+
         foreach (DamageResult result in results)
         {
             if (scope.Hits.TryGetValue(result.Receiver, out Hit? hit) && hit.Committed)

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Models.Monsters;
 using MegaCrit.Sts2.Core.Models.Powers;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -12,6 +13,7 @@ namespace LibraryOfRuina.patches;
 /// Osty keeps the vanilla path untouched.
 /// </summary>
 [HarmonyPatch(typeof(PersonalHivePower), nameof(PersonalHivePower.AfterDamageReceived))]
+[LibraryPatch(Reason = "PersonalHivePower 是 sealed 原版能力，无 Hook 能改伤害来源；把有主人的宠物伤害归到主人。本模组没有宠物，这是给第三方宠物模组的兼容，属于有意的例外。")]
 public static class PetDealerCompatibilityPatch
 {
     [HarmonyPrefix]

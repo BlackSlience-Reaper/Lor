@@ -107,7 +107,6 @@ public static class LibraryOfRuinaInitializer
 
     private static void PatchSettingsUi(Harmony harmony)
     {
-        harmony.CreateClassProcessor(typeof(InjectExtSettingsSubmenuTypePatch)).Patch();
         harmony.CreateClassProcessor(typeof(InjectSettingsScreenModConfigPatch)).Patch();
         harmony.CreateClassProcessor(typeof(SettingsScreenModConfigVisibilityPatch)).Patch();
         harmony.CreateClassProcessor(typeof(MainMenuShowPendingSettingsErrorsPatch)).Patch();

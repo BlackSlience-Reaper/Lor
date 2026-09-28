@@ -271,24 +271,6 @@ internal static class PowerSecondaryCounterUi
     }
 }
 
-/// <summary>
-/// Makes NPower.Model getter safe against third-party patches that access it
-/// before the model is set. Instead of throwing InvalidOperationException,
-/// returns null so callers can handle the uninitialized state gracefully.
-/// </summary>
-[HarmonyPatch(typeof(NPower), "get_Model")]
-public static class NPowerModelSafeGetterPatch
-{
-    private static readonly FieldInfo? ModelBackingField = AccessTools.Field(typeof(NPower), "_model");
-
-    [HarmonyPrefix]
-    public static bool Prefix(NPower __instance, ref PowerModel? __result)
-    {
-        __result = ModelBackingField?.GetValue(__instance) as PowerModel;
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(NPower), nameof(NPower._Ready))]
 public static class PowerSecondaryCounterReadyPatch
 {

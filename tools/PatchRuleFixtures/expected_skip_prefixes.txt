@@ -1,0 +1,6 @@
+PatchRuleFixtures.ClassLevelTargetWithReason	fixture reason
+PatchRuleFixtures.InheritedTarget	MISSING
+PatchRuleFixtures.MethodLevelTarget	MISSING
+PatchRuleFixtures.OptionalTargetMethod	MISSING
+PatchRuleFixtures.Outer+Nested	MISSING
+PatchRuleFixtures.PrefixAttributeOnOtherName	MISSING

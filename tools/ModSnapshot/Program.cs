@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using LibraryOfRuina.infra.patching;
 
 // usage: ModSnapshot <mod.dll> <out-dir> <reference-dir-or-dll>...
 // Writes deterministic, sorted text snapshots so a refactor can be diffed against a baseline.
@@ -51,6 +52,7 @@ WriteLines("saved_properties.txt", SavedProperties());
 WriteLines("patches.txt", Patches(out List<string> order));
 WriteLines("patch_order.txt", order);
 WriteLines("static_fields.txt", StaticFields());
+WriteLines("skip_prefixes.txt", SkipPrefixes());
 WriteLines("unresolved.txt", missing);
 Console.WriteLine($"snapshot written to {outDir} ({types.Length} types, {missing.Count} unresolved)");
 return 0;
@@ -254,6 +256,38 @@ IEnumerable<string> Patches(out List<string> orderLines)
         .Where(static pair => pair.Value.Count > 1)
         .Select(static pair => pair.Key + "\n  " + string.Join("\n  ", pair.Value))
         .ToList();
+    return lines.Order(StringComparer.Ordinal);
+}
+
+// Every bool prefix (it can skip the original) must state why in [LibraryPatch(Reason = ...)] on its class;
+// check.sh fails on MISSING. The reason text is part of the snapshot so a changed rationale shows in review.
+IEnumerable<string> SkipPrefixes()
+{
+    var lines = new List<string>();
+    foreach (Type type in types)
+    {
+        MethodInfo[] methods;
+        try
+        {
+            methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+        }
+        catch (FileNotFoundException)
+        {
+            continue;
+        }
+
+        // Same candidate rule as LibraryPatcher (shared source file), so a class the installer would patch
+        // cannot slip past the reason check because of how its targets are declared.
+        bool isSkipPrefix = methods.Any(PatchClassRules.IsSkipPrefix) && PatchClassRules.IsInstalled(type);
+        if (!isSkipPrefix)
+        {
+            continue;
+        }
+
+        string? reason = PatchClassRules.Reason(type);
+        lines.Add($"{type.FullName}\t{(string.IsNullOrWhiteSpace(reason) ? "MISSING" : reason)}");
+    }
+
     return lines.Order(StringComparer.Ordinal);
 }
 

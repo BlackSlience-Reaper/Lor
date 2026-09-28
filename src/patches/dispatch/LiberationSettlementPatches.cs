@@ -12,51 +12,37 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.dispatch;
 
 /// <summary>
-/// 楼层解放结算流程。原来六个楼层各在四个目标上挂一个跳过型前缀，按结算事件或解放遭遇的类型互斥；
-/// 其中三类在六层完全相同，合并为按 <see cref="ILibrarySettlementEvent"/> 判断，终局奖励跳转保留各层自己的处理，
-/// 按原来的安装顺序依次调用，遇到接管的一层即停止（与多个跳过型前缀时相同）。
-/// 这些仍是跳过型前缀，是否改成后缀或自有覆写在阶段 3c 裁决。
+/// 楼层解放结算流程。允许先古出现是后缀；进入下一幕与终局奖励跳转仍是跳过型前缀（原版无 Hook，理由见各自的
+/// LibraryPatch 元数据），终局奖励跳转按原来的安装顺序依次调用各层处理，遇到接管的一层即停止。
 /// </summary>
 internal static class LiberationSettlementPatches
 {
-    /// <summary>结算事件不走先古开场回血。</summary>
-    [HarmonyPatch(typeof(AncientEventModel), "BeforeEventStarted")]
-    private static class SkipAncientHeal
-    {
-        private static bool Prefix(AncientEventModel __instance, ref Task __result)
-        {
-            if (__instance is not ILibrarySettlementEvent)
-            {
-                return true;
-            }
-
-            __result = Task.CompletedTask;
-            return false;
-        }
-    }
-
-    /// <summary>结算事件总是允许出现，不受先古出现规则限制。</summary>
+    /// <summary>
+    /// 结算事件总是允许出现，不受先古出现规则限制。原版 Hook 体只是询问监听者（0.111 原版没有覆写者），
+    /// 用最后执行的后缀覆盖结果即可，不必跳过原方法。开场回血改由各结算事件覆写 BeforeEventStarted 处理。
+    /// </summary>
     [HarmonyPatch(typeof(Hook), nameof(Hook.ShouldAllowAncient))]
     private static class AllowAncient
     {
-        private static bool Prefix(AncientEventModel ancient, ref bool __result)
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.Last)]
+        private static void Postfix(AncientEventModel ancient, ref bool __result)
         {
-            if (ancient is not ILibrarySettlementEvent)
+            if (ancient is ILibrarySettlementEvent)
             {
-                return true;
+                __result = true;
             }
-
-            __result = true;
-            return false;
         }
     }
 
     /// <summary>结算事件结束后直接进入下一幕。</summary>
     [HarmonyPatch(typeof(NEventRoom), nameof(NEventRoom.Proceed))]
+    [LibraryPatch(Reason = "NEventRoom.Proceed 是被硬编码为事件结束回调的静态方法且无 Hook；仅当前房间为本模组楼层解放结算事件时改为进入下一幕。绕过了换幕投票，联机需实测。")]
     private static class ProceedToNextAct
     {
         private static bool Prefix(ref Task __result)
@@ -73,6 +59,7 @@ internal static class LiberationSettlementPatches
 
     /// <summary>解放战斗胜利后，终局奖励界面继续时转入该层的结算事件。</summary>
     [HarmonyPatch(typeof(RunManager), nameof(RunManager.ProceedFromTerminalRewardsScreen))]
+    [LibraryPatch(Reason = "ProceedFromTerminalRewardsScreen 公开非虚无 Hook，原版体会立即打开地图（后缀无法撤销）；仅当前房间为本模组楼层解放遭遇且满足结算条件时转入结算事件。")]
     private static class RedirectToSettlement
     {
         private static bool Prefix(RunManager __instance, ref Task __result) =>
