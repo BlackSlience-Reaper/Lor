@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -182,18 +181,7 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<RedShoesPageRelic>(
-                room,
-                player,
-                RedShoesPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<RedShoesPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<RedShoesPageRelic>(room, RedShoesPageRelicTitleLocKey);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

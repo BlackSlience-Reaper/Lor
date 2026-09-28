@@ -22,7 +22,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -361,18 +360,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<SpiderBudPageRelic>(
-                room,
-                player,
-                SpiderBudPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<SpiderBudPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<SpiderBudPageRelic>(room, SpiderBudPageRelicTitleLocKey);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

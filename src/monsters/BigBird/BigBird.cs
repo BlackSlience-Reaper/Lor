@@ -26,7 +26,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using BigBirdCreatureVisuals = LibraryOfRuina.visuals.BigBird.BigBirdCreatureVisuals;
@@ -478,18 +477,7 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<BigBirdPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<BigBirdPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<BigBirdPageRelic>(room, PageRelicTitleLocKey);
     }
 
     public override Task AfterDeath(

@@ -26,7 +26,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.PriceOfSilence;
@@ -461,18 +460,7 @@ public sealed class PriceOfSilence : LorMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<PriceOfSilencePageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<PriceOfSilencePageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<PriceOfSilencePageRelic>(room, PageRelicTitleLocKey);
     }
 
     public override async Task AfterDeath(

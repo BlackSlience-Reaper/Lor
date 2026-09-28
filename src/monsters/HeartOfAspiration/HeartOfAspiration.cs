@@ -16,7 +16,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -185,18 +184,7 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<HeartOfAspirationPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<HeartOfAspirationPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<HeartOfAspirationPageRelic>(room, PageRelicTitleLocKey);
     }
 
     private static bool IsHeartOfAspirationEncounter(CombatRoom room)

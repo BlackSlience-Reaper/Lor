@@ -25,7 +25,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -787,18 +786,7 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<WarmheartedWoodsmanPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<WarmheartedWoodsmanPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<WarmheartedWoodsmanPageRelic>(room, PageRelicTitleLocKey);
     }
 
     private static bool IsWarmheartedWoodsmanEncounter(CombatRoom room)

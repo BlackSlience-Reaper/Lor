@@ -202,18 +202,7 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<ForsakenMurdererPageRelic>(
-                room,
-                player,
-                ForsakenMurdererPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<ForsakenMurdererPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<ForsakenMurdererPageRelic>(room, ForsakenMurdererPageRelicTitleLocKey);
     }
 
     private static bool HasForsakenMurdererPageReward(CombatRoom room, Player player)

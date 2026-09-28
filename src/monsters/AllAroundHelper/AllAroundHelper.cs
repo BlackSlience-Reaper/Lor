@@ -284,18 +284,7 @@ public sealed class AllAroundHelper : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<AllAroundHelperPageRelic>(
-                room,
-                player,
-                AllAroundHelperPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<AllAroundHelperPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<AllAroundHelperPageRelic>(room, AllAroundHelperPageRelicTitleLocKey);
     }
 
     private static bool HasAllAroundHelperPageReward(CombatRoom room, Player player)

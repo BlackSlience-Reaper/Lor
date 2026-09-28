@@ -294,18 +294,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<HappyTeddyPageRelic>(
-                room,
-                player,
-                HappyTeddyPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<HappyTeddyPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<HappyTeddyPageRelic>(room, HappyTeddyPageRelicTitleLocKey);
     }
 
     private static bool HasHappyTeddyPageReward(CombatRoom room, Player player)
