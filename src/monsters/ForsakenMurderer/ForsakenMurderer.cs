@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.ForsakenMurderer;
 using LibraryOfRuina.compat;
+using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
@@ -107,6 +108,7 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
         await base.AfterAddedToRoom();
 
         ForsakenMurdererFearBackgroundOverlay.SetOverlayVisible(false);
+        EncounterBgmController.RegisterMonster(Creature);
 
         await PowerCmdCompat.Apply<LibraryOfRuinaForsakenMurdererFearPower>(
             Creature,
