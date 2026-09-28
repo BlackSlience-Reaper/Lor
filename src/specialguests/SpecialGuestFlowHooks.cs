@@ -39,6 +39,7 @@ internal static class SpecialGuestRunCleanup
 
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyNextEvent))]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "第一次抽中嘉宾时载体还不存在（在这里创建），ModifyNextEvent 也没有 runState 参数，载体覆写接不住；必须以 Last 看到含其他模组修改的最终事件，否则消耗标记与实际事件脱节。只在怪物扩展开启时按种子确定性替换。")]
 internal static class SpecialGuestModifyNextEventPatch
 {
     [HarmonyPostfix]
@@ -545,58 +546,9 @@ internal static class SpecialGuestHideEmptyModifierContainerPatch
 }
 
 /// <summary>
-/// Plays an after-victory story inside the native awaited victory hook.  The
-/// combat is not marked pre-finished and rewards are not saved until every
-/// connected player has released the barrier.
+/// 嘉宾战的剧情、阶段推进与奖励增补，由 <see cref="SpecialGuestRunStateModifier"/> 的钩子覆写调用。
+/// 胜利后剧情在原版等待的 AfterCombatVictory 里播放：所有已连接玩家放行之前，战斗不会标记结束，奖励也不会存档。
 /// </summary>
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterCombatVictory))]
-internal static class SpecialGuestAfterCombatVictoryPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(IRunState runState, CombatRoom room, ref Task __result)
-    {
-        __result = Wrap(__result, runState, room);
-    }
-
-    private static async Task Wrap(Task original, IRunState runState, CombatRoom room)
-    {
-        await original;
-        await SpecialGuestStageFlow.AfterCombatVictoryAsync(runState, room);
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.BeforeCombatStart))]
-internal static class SpecialGuestBeforeCombatStartPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(IRunState runState, ref Task __result)
-    {
-        __result = Wrap(__result, runState);
-    }
-
-    private static async Task Wrap(Task original, IRunState runState)
-    {
-        await original;
-        await SpecialGuestStageFlow.BeforeCombatStartAsync(runState);
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.BeforeCombatRewardOffered))]
-internal static class SpecialGuestRewardAugmentPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(RewardsSet rewards, IRunState runState, CombatRoom room, ref Task __result)
-    {
-        __result = Wrap(__result, rewards, runState, room);
-    }
-
-    private static async Task Wrap(Task original, RewardsSet rewards, IRunState runState, CombatRoom room)
-    {
-        await original;
-        await SpecialGuestStageFlow.AugmentRewardsAsync(runState, room, rewards);
-    }
-}
-
 public static class SpecialGuestStageFlow
 {
     public static async Task BeforeCombatStartAsync(IRunState runState)

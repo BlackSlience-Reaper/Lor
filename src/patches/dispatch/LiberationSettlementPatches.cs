@@ -27,6 +27,7 @@ internal static class LiberationSettlementPatches
     /// 用最后执行的后缀覆盖结果即可，不必跳过原方法。开场回血改由各结算事件覆写 BeforeEventStarted 处理。
     /// </summary>
     [HarmonyPatch(typeof(Hook), nameof(Hook.ShouldAllowAncient))]
+    [LibraryPatch(Reason = "ShouldAllowAncient 是全体监听者的与运算，监听者只能否决不能放行，事件本身不是监听者，选项生成方法是 sealed；只对本模组楼层解放结算事件放行，否则第三方先古限制会让结算只剩“继续”。")]
     private static class AllowAncient
     {
         [HarmonyPostfix]

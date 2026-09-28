@@ -100,11 +100,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "PrepareFor
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "ScaleMonsterHpForMultiplayer")
   Prefix LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch.Prefix
   Postfix LibraryOfRuina.monsters.SocialFloorLiberation.SocialFloorLiberationExactVitalsPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "AfterCombatVictory")
-  Postfix LibraryOfRuina.specialguests.SpecialGuestAfterCombatVictoryPatch.Postfix
-  Prefix LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorVictoryPatch.Prefix
-  Prefix LibraryOfRuina.encounters.FloorLiberationVictoryProgressPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "AfterEnergyReset")
+  Finalizer LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Finalizer
   Postfix LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Postfix
   Prefix LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "ModifyDamage")

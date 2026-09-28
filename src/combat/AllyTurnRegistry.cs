@@ -219,9 +219,12 @@ public static class AllyTurnRegistry
         return states.ActedRound == creature?.CombatState?.RoundNumber;
     }
 
+    // 在盟友回合行动后才转为敌对（暴怒）的盟友按敌人处理：玩家回合开始时 ClearBlockBeforePlayerTurnStart 也跳过
+    // 敌对单位，这里若仍阻止清除，格挡会多留一个玩家回合。
     internal static bool ShouldPreventVanillaBlockClearing(Creature? creature)
     {
-        return HasActedThisRound(creature);
+        return HasActedThisRound(creature)
+               && FindProviderFor(creature)?.ResolveAllyType(creature!) != AllyType.Hostile;
     }
 
     // 本次盟友回合是否结束了战斗。原版切边不再检查战斗是否结束；只有战斗是被盟友回合结束的，

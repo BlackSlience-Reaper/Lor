@@ -19,7 +19,10 @@ using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.WrathServant;
 
+// 仆从之死路径先照常生成、填充奖励再清空，会推进药水掉率和奖励 RNG；改为空界面补丁直接用 RewardsSet.EmptyForRoom
+// 可以避免，见重构指导附录 B。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyRewards))]
+[LibraryPatch(Reason = "ModifyRewards 只问局级监听者，怪物、遭遇、能力都不在，没有已有模型能覆写；仆从之死要以 Last 清空（含其他模组追加的奖励），胜利时按最终列表去重补发书页。只作用于本模组 WrathServantStrong 的房间结算奖励。")]
 internal static class WrathServantRewardPatch
 {
     private const string FailedRewardHeaderLocKey = "WRATH_SERVANT_FAILED_REWARD_HEADER";

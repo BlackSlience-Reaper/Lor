@@ -18,6 +18,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
@@ -320,8 +321,10 @@ internal static class DamagePreviewTracePatch
 /// <summary>
 /// 以同一转译观察原版伤害与失去生命值 Hook，供我方受伤预览的详细视图列出各能力与遗物的修正。
 /// 与基础库 Hook 的补丁分开应用，单独失败时不影响敌人伤害预览。
+/// 不能改成预览里自己遍历监听者：那要把原版的三轮/四轮修正再实现一遍并二次调用各模型，还看不到其他模组对 Hook 的补丁。
 /// </summary>
 [HarmonyPatch]
+[LibraryPatch(Optional = true, Reason = "原版修正钩子不暴露逐个监听者的中间值；只在同步预览、有当前轨迹时记录，不改变参数和返回值。失败只丢预览详情里的逐项来源。")]
 internal static class VanillaHookPreviewTracePatch
 {
     private static IEnumerable<MethodBase> TargetMethods()

@@ -122,12 +122,17 @@ internal static class LibraryPatcher
             }
 
             bool ownSkipPrefix = info.Prefixes.Any(patch => patch.owner == harmonyId && IsSkipPrefix(patch));
-            // 离线的 skip_prefixes.txt 靠 PatchClassRules 判定；这里用实际装上的补丁复核，规则漏判时能在日志里看到。
-            foreach (Patch patch in info.Prefixes.Where(patch => patch.owner == harmonyId && IsSkipPrefix(patch)))
+            // 离线的 skip_prefixes.txt / hook_patches.txt 靠静态判定；这里用实际装上的补丁复核，漏判时能在日志里看到。
+            bool hookTarget = original.DeclaringType?.FullName == PatchClassRules.HookTypeFullName;
+            IEnumerable<Patch> needReason = hookTarget
+                ? OwnPatches(info, harmonyId)
+                : info.Prefixes.Where(patch => patch.owner == harmonyId && IsSkipPrefix(patch));
+            foreach (Patch patch in needReason)
             {
                 if (patch.PatchMethod.DeclaringType is { } patchClass && string.IsNullOrWhiteSpace(PatchClassRules.Reason(patchClass)))
                 {
-                    Log.Error(LogPrefix + "Skip prefix without [LibraryPatch(Reason = ...)]: " + patchClass.FullName);
+                    Log.Error(LogPrefix + (hookTarget ? "Hook patch" : "Skip prefix")
+                              + " without [LibraryPatch(Reason = ...)]: " + patchClass.FullName);
                 }
             }
 
@@ -233,6 +238,10 @@ internal static class LibraryPatcher
     }
 
     private static bool IsSkipPrefix(Patch patch) => patch.PatchMethod.ReturnType == typeof(bool);
+
+    private static IEnumerable<Patch> OwnPatches(Patches info, string harmonyId) =>
+        info.Prefixes.Concat(info.Postfixes).Concat(info.Transpilers).Concat(info.Finalizers)
+            .Where(patch => patch.owner == harmonyId);
 
     /// <summary>Harmony 实际执行顺序（<see cref="PatchProcessor.GetSortedPatchMethods"/>，含 before/after）。</summary>
     private static Patch[] Sorted(MethodBase original, IEnumerable<Patch> patches)

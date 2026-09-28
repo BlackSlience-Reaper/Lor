@@ -161,8 +161,7 @@ sts2|MegaCrit.Sts2.Core.Commands.CreatureCmd::Stun(MegaCrit.Sts2.Core.Entities.C
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilExternalStunPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Commands.PlayerCmd::GainEnergy(System.Decimal,MegaCrit.Sts2.Core.Entities.Players.Player)
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.PlayerResources.Patches.PlayerCmdGainEnergyHookPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Prefix
-  Prefix priority=200 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.ConfusionEnergyPatch.Prefix
+  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Prefix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Postfix
   Postfix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.PlayerResources.Patches.PlayerCmdGainEnergyHookPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Commands.PowerCmd::Apply(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Models.PowerModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Boolean)
@@ -222,19 +221,13 @@ sts2|MegaCrit.Sts2.Core.Helpers.ImageHelper::GetRoomIconPath(MegaCrit.Sts2.Core.
   Prefix priority=0 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets after=BaseLib STS2RitsuLib.Scaffolding.Content.Patches.ImageHelperModEncounterRunHistoryIconPathPatch.Prefix
   Prefix priority=0 index=2 owner=FYY.LibraryOfRuina after=BaseLib,com.ritsukage.sts2-RitsuLib.framework-content-assets LibraryOfRuina.patches.RoomIconPathCustomOverridePatch.Prefix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::AfterCombatVictory(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Rooms.CombatRoom)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorVictoryPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.encounters.FloorLiberationVictoryProgressPatch.Prefix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestAfterCombatVictoryPatch.Postfix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.encounters.FloorLiberationVictoryProgressPatch.Prefix
   Postfix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.AfterCombatVictoryLifecyclePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::AfterEnergyReset(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Players.Player)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Prefix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Postfix
   Postfix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.AfterEnergyResetLifecyclePatch.Postfix
-sts2|MegaCrit.Sts2.Core.Hooks.Hook::BeforeCombatRewardOffered(MegaCrit.Sts2.Core.Rewards.RewardsSet,MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Rooms.CombatRoom)
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestRewardAugmentPatch.Postfix
-sts2|MegaCrit.Sts2.Core.Hooks.Hook::BeforeCombatStart(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState)
-  Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.BeforeCombatStartLifecyclePatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestBeforeCombatStartPatch.Postfix
+  Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::BeforeSideTurnEnd(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Combat.CombatSide,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.BeforeTurnEndLifecyclePatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ChainsOfBindingTurnEndSyncPatch.Postfix
@@ -250,9 +243,7 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyDamage(MegaCrit.Sts2.Core.Runs.IRunSta
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyDamageInternal(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardPlay,MegaCrit.Sts2.Core.Hooks.ModifyDamageHookType,System.Collections.Generic.List`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.VanillaHookPreviewTracePatch.Transpiler
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyEnergyCostInCombat(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Models.CardModel,System.Decimal)
-  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina after=LibraryOfRuinaLib LibraryOfRuina.cards.SocialFloorLiberation.SocialFloorMagicalPowderCostPatch.Postfix
-sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyEnergyGain(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Players.Player,System.Decimal,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)
-  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina after=LibraryOfRuinaLib LibraryOfRuina.powers.SocialFloorLiberation.SocialFloorCourageEnergyResetPatch.Postfix
+  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.cards.SocialFloorLiberation.SocialFloorMagicalPowderCostPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyHpLost(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Hooks.HpLossHookPhase,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)
   Prefix priority=400 index=0 owner=LibraryOfRuinaLib LibraryLib.Patches.LibraryVanillaHpLossResolutionPatch.Prefix
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentModifyHpLostPatch.Prefix

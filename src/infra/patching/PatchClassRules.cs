@@ -13,6 +13,9 @@ namespace LibraryOfRuina.infra.patching;
 /// </summary>
 internal static class PatchClassRules
 {
+    /// <summary>原版钩子总线。挂在它上面的补丁都要写 Reason：能改成模型覆写的应该改掉（重构指导 3c-2）。</summary>
+    public const string HookTypeFullName = "MegaCrit.Sts2.Core.Hooks.Hook";
+
     private const string HarmonyAttributeFullName = "HarmonyLib.HarmonyAttribute";
     private const string LibraryPatchAttributeName = "LibraryPatchAttribute";
 
@@ -64,6 +67,13 @@ internal static class PatchClassRules
     {
         return type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
             .Where(IsSkipPrefix);
+    }
+
+    /// <summary>Harmony 会当作补丁方法（前缀、后缀、Transpiler、Finalizer 等）安装的静态方法，只看本类声明的。</summary>
+    public static IEnumerable<MethodInfo> PatchMethods(Type type)
+    {
+        return type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+            .Where(static method => HarmonyPatchType(method) != null);
     }
 
     private static string? HarmonyPatchType(MethodInfo method)

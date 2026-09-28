@@ -40,7 +40,19 @@ public sealed class LibraryOfRuinaConfusionPower : LibraryOfRuinaPowerModel
         return false;
     }
 
-    public bool ShouldBlockExtraEnergyGain(Player player)
+    // 与原版 NoEnergyGainPower 同一写法：GainEnergy 经 Hook.ModifyEnergyGain 链式询问监听者，
+    // 这里把玩家回合内的获得量改成 0；原版只对改过数值的监听者调 AfterModifyingEnergyGain，用来闪光。
+    // 回合开始的能量重置不经过这个钩子，不受影响。
+    public override decimal ModifyEnergyGain(Player player, decimal amount) =>
+        amount > 0m && ShouldBlockExtraEnergyGain(player) ? 0m : amount;
+
+    public override Task AfterModifyingEnergyGain()
+    {
+        Flash();
+        return Task.CompletedTask;
+    }
+
+    private bool ShouldBlockExtraEnergyGain(Player player)
     {
         if (player != Owner.Player || Amount <= 0)
         {
@@ -49,11 +61,6 @@ public sealed class LibraryOfRuinaConfusionPower : LibraryOfRuinaPowerModel
 
         CombatStateLike? CombatState = player.Creature.CombatState;
         return CombatState != null && CombatState.CurrentSide == CombatSide.Player;
-    }
-
-    public void NotifyExtraEnergyGainPrevented()
-    {
-        Flash();
     }
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)

@@ -69,17 +69,10 @@ internal static class NaturalFloorAnimatedBackgroundPatch
     }
 }
 
-// Terminal phase victory can be detected before AfterDeath, so both paths commit the same idempotent result.
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterCombatVictory))]
-internal static class NaturalFloorVictoryPatch
-{
-    private static void Prefix(CombatRoom room)
-    {
-        if (room.Encounter is NaturalFloorLiberationEncounter { SettlementTriggered: true } encounter)
-            NaturalFloorLiberationSettlementStore.Record(encounter);
-    }
-}
-/// <summary>由 <see cref="LibraryOfRuina.patches.dispatch.LiberationSettlementPatches"/> 在终局奖励界面继续时调用；返回 false 表示已接管。</summary>
+/// <summary>
+/// 由 <see cref="LibraryOfRuina.patches.dispatch.LiberationSettlementPatches"/> 在终局奖励界面继续时调用；返回 false 表示已接管。
+/// 结算存储的所有读取方都在这里之后，所以只在这里补记一次：遭遇把 SettlementTriggered 置位时已经记过，读档恢复的遭遇在这里补上。
+/// </summary>
 internal static class NaturalFloorSettlementRedirect
 {
     internal static bool TryRedirect(RunManager __instance, ref Task __result)

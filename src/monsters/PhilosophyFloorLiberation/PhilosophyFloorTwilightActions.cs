@@ -490,7 +490,7 @@ public sealed partial class PhilosophyFloorTwilight
                 .CalculateDamage(target);
             IEnumerable<DamageResult> targetResults;
             using (PhilosophyFloorTwilightJudgmentPowerBypassContext
-                   .EnterJudgmentDamage())
+                   .EnterJudgmentDamage(Creature))
             {
                 targetResults = await CreatureCmd.Damage(
                     choiceContext,
