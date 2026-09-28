@@ -123,17 +123,23 @@ internal static class DodgeDiceFeedbackCombatResetPatch
     private static void Prefix() => DodgeDiceCombatFeedback.Reset();
 }
 
+// 前缀没执行（排在前面的前缀抛异常）时 Finalizer 不能弹栈，否则会弹掉外层嵌套调用压的那一帧。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyDamage))]
+[LibraryPatch(Reason = "闪避骰能力的 ModifyDamageAdditive 拿不到 previewMode，只能由钩子入口传下去，用来区分实战与预览。现在没有内容施加闪避骰；改为能力在 BeforeDamageReceived 提交状态的方案见重构指导附录 B。")]
 internal static class DodgeDiceDamagePreviewModePatch
 {
-    private static void Prefix(CardPreviewMode previewMode)
+    private static void Prefix(CardPreviewMode previewMode, out bool __state)
     {
         DodgeDiceCombatFeedback.PushDamagePreviewMode(previewMode);
+        __state = true;
     }
 
-    private static void Finalizer()
+    private static void Finalizer(bool __state)
     {
-        DodgeDiceCombatFeedback.PopDamagePreviewMode();
+        if (__state)
+        {
+            DodgeDiceCombatFeedback.PopDamagePreviewMode();
+        }
     }
 }
 

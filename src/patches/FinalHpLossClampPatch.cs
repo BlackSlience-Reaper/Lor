@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -53,7 +54,10 @@ internal static class FinalHpLossClamp
     }
 }
 
+// 锁血是最终裁决：若改成各实现者覆写 ModifyHpLostAfterOstyLate，结果取决于监听者顺序，以玩家为目标时锁血能力会先于
+// Late 遗物执行，遗物看到的是钳制后的数值。同目标上没有其他 Last 后缀，暂不需要 HarmonyAfter。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyHpLost))]
+[LibraryPatch(Reason = "原版没有“所有监听者与模组都修正完之后”的扩展点；只对实现 IFinalHpLossClamp 的本模组模型在 AfterOsty 阶段钳制，并把它们补进 modifiers。")]
 internal static class VanillaFinalHpLossClampPatch
 {
     [HarmonyPostfix]

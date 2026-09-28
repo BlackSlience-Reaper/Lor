@@ -24,31 +24,39 @@ using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.powers.PhilosophyFloorLiberation;
 
+/// <summary>
+/// 暮光审判无视能力：审判伤害的三个修正钩子（ModifyDamage、ModifyHpLost、ModifyUnblockedDamageTarget）里，
+/// HookListenerFilterPatch 从监听者中剔除全部 PowerModel。作用域跟着审判伤害的 CreatureCmd.Damage 走，
+/// 但这次调用里的 AfterDamageGiven/AfterDamageReceived 等回调还会引发别的伤害（反伤、受击触发），
+/// 所以修正钩子只在伤害来源正是审判者时才进入剔除作用域，其他伤害照常计算能力。
+/// </summary>
 internal static class PhilosophyFloorTwilightJudgmentPowerBypassContext
 {
-    private static readonly AsyncLocal<int> JudgmentDamageDepth = new();
+    private static readonly AsyncLocal<Creature?> JudgmentDealer = new();
     private static readonly AsyncLocal<int> PowerModifierHookDepth = new();
 
     internal static bool ShouldBypassPowerModifiers =>
-        JudgmentDamageDepth.Value > 0 && PowerModifierHookDepth.Value > 0;
+        JudgmentDealer.Value != null && PowerModifierHookDepth.Value > 0;
 
-    internal static IDisposable EnterJudgmentDamage() =>
-        EnterDepth(JudgmentDamageDepth);
-
-    internal static IDisposable? EnterPowerModifierHook()
+    internal static IDisposable EnterJudgmentDamage(Creature dealer)
     {
-        return JudgmentDamageDepth.Value > 0
-            ? EnterDepth(PowerModifierHookDepth)
-            : null;
+        Creature? previous = JudgmentDealer.Value;
+        JudgmentDealer.Value = dealer;
+        return new Scope(() => JudgmentDealer.Value = previous);
     }
 
-    private static IDisposable EnterDepth(AsyncLocal<int> depth)
+    internal static IDisposable? EnterPowerModifierHook(Creature? dealer)
     {
-        depth.Value++;
-        return new DepthScope(depth);
+        if (dealer == null || JudgmentDealer.Value != dealer)
+        {
+            return null;
+        }
+
+        PowerModifierHookDepth.Value++;
+        return new Scope(() => PowerModifierHookDepth.Value = Math.Max(0, PowerModifierHookDepth.Value - 1));
     }
 
-    private sealed class DepthScope(AsyncLocal<int> depth) : IDisposable
+    private sealed class Scope(Action restore) : IDisposable
     {
         private bool _disposed;
 
@@ -60,7 +68,7 @@ internal static class PhilosophyFloorTwilightJudgmentPowerBypassContext
             }
 
             _disposed = true;
-            depth.Value = Math.Max(0, depth.Value - 1);
+            restore();
         }
     }
 }
@@ -679,14 +687,18 @@ internal static class PhilosophyFloorTwilightBigEyesHookSuspension
         && power is not ArtifactPower;
 }
 
+// 以下三个补丁只标出“正在审判伤害的修正钩子里”，剔除由 HookListenerFilterPatch 完成。原版 IterateHookListeners
+// 不区分调用它的钩子，没有别的办法只在这三个钩子里剔除能力；任何模型覆写都拿不走其他监听者的修正。
+// 基础库的解析前缀跳过原方法时这些前缀不执行（参数是引用类型），那时原版也不遍历监听者，Finalizer 对空状态无操作。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyDamage))]
+[LibraryPatch(Reason = "原版 IterateHookListeners 不区分调用它的钩子；暮光审判只在审判者造成的伤害的修正钩子里剔除全部能力，其余调用不进作用域。")]
 internal static class PhilosophyFloorTwilightJudgmentModifyDamagePatch
 {
     [HarmonyPrefix]
-    private static void Prefix(out IDisposable? __state)
+    private static void Prefix(Creature? dealer, out IDisposable? __state)
     {
         __state = PhilosophyFloorTwilightJudgmentPowerBypassContext
-            .EnterPowerModifierHook();
+            .EnterPowerModifierHook(dealer);
     }
 
     [HarmonyFinalizer]
@@ -700,13 +712,14 @@ internal static class PhilosophyFloorTwilightJudgmentModifyDamagePatch
 }
 
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyHpLost))]
+[LibraryPatch(Reason = "同 PhilosophyFloorTwilightJudgmentModifyDamagePatch；Finalizer 排在锁血后缀之后，锁血遍历同样剔除能力。")]
 internal static class PhilosophyFloorTwilightJudgmentModifyHpLostPatch
 {
     [HarmonyPrefix]
-    private static void Prefix(out IDisposable? __state)
+    private static void Prefix(Creature? dealer, out IDisposable? __state)
     {
         __state = PhilosophyFloorTwilightJudgmentPowerBypassContext
-            .EnterPowerModifierHook();
+            .EnterPowerModifierHook(dealer);
     }
 
     [HarmonyFinalizer]
@@ -720,13 +733,14 @@ internal static class PhilosophyFloorTwilightJudgmentModifyHpLostPatch
 }
 
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyUnblockedDamageTarget))]
+[LibraryPatch(Reason = "同 PhilosophyFloorTwilightJudgmentModifyDamagePatch；审判伤害不被能力转移到其他目标。")]
 internal static class PhilosophyFloorTwilightJudgmentDamageRedirectPatch
 {
     [HarmonyPrefix]
-    private static void Prefix(out IDisposable? __state)
+    private static void Prefix(Creature? dealer, out IDisposable? __state)
     {
         __state = PhilosophyFloorTwilightJudgmentPowerBypassContext
-            .EnterPowerModifierHook();
+            .EnterPowerModifierHook(dealer);
     }
 
     [HarmonyFinalizer]
