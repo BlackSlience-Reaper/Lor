@@ -3,6 +3,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -23,10 +24,7 @@ internal static class CombatUiEnableGuardPatch
     /// <summary>超过节流上限后的周期性提醒间隔，保证长期跳过仍然可见。</summary>
     private const int RepeatLogInterval = 60;
 
-    private static readonly FieldInfo? StateField = AccessTools.Field(typeof(NCombatUi), "_state");
 
-    private static readonly FieldInfo? CombatPilesContainerField =
-        AccessTools.Field(typeof(NCombatUi), "_combatPilesContainer");
 
     private static int _loggedSkips;
 
@@ -52,13 +50,13 @@ internal static class CombatUiEnableGuardPatch
     {
         WarnOnceIfFieldsMissing();
 
-        if (StateField != null && StateField.GetValue(combatUi) == null)
+        if (VanillaPrivate.CombatUiState.IsAvailable && VanillaPrivate.CombatUiState.Get(combatUi) == null)
         {
             reason = "state";
             return false;
         }
 
-        if (CombatPilesContainerField != null && CombatPilesContainerField.GetValue(combatUi) == null)
+        if (VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable && VanillaPrivate.CombatUiCombatPilesContainer.Get(combatUi) == null)
         {
             reason = "combatPilesContainer";
             return false;
@@ -98,7 +96,7 @@ internal static class CombatUiEnableGuardPatch
 
     private static void WarnOnceIfFieldsMissing()
     {
-        if (_loggedMissingFields || (StateField != null && CombatPilesContainerField != null))
+        if (_loggedMissingFields || (VanillaPrivate.CombatUiState.IsAvailable && VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable))
         {
             return;
         }
@@ -106,8 +104,8 @@ internal static class CombatUiEnableGuardPatch
         _loggedMissingFields = true;
         Log.Warn(
             "[LibraryOfRuina] NCombatUi initialization fields are missing in this game build"
-            + " (_state=" + (StateField != null)
-            + ", _combatPilesContainer=" + (CombatPilesContainerField != null)
+            + " (_state=" + (VanillaPrivate.CombatUiState.IsAvailable)
+            + ", _combatPilesContainer=" + (VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable)
             + "); the combat UI enable guard now defers to the vanilla method.");
     }
 

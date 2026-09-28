@@ -57,6 +57,7 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters;
 
@@ -439,8 +440,6 @@ internal static class EncounterBgmController
     private static AudioStreamPlayer? _activePlayer;
     private static AudioStreamPlayer? _inactivePlayer;
     private static Tween? _fadeTween;
-    private static readonly FieldInfo? RunMusicCurrentAmbienceField =
-        typeof(NRunMusicController).GetField("_currentAmbience", BindingFlags.Instance | BindingFlags.NonPublic);
 
     private static bool _isCombatEndSubscribed;
     private static bool _isCombatSetUpSubscribed;
@@ -1259,7 +1258,7 @@ internal static class EncounterBgmController
     
     private static bool ResetRunMusicAmbienceCache(NRunMusicController runMusicController, string logTag)
     {
-        if (RunMusicCurrentAmbienceField == null)
+        if (!VanillaPrivate.RunMusicControllerCurrentAmbience.IsAvailable)
         {
             Log.Error("[" + logTag + "] Failed to reset run music ambience cache: NRunMusicController._currentAmbience field was not found.");
             return false;
@@ -1267,7 +1266,7 @@ internal static class EncounterBgmController
 
         try
         {
-            RunMusicCurrentAmbienceField.SetValue(runMusicController, null);
+            VanillaPrivate.RunMusicControllerCurrentAmbience.Set(runMusicController, null);
             Log.Info("[" + logTag + "] Reset run music ambience cache before restore.");
             return true;
         }

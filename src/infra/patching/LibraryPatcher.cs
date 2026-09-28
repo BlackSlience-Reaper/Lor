@@ -278,11 +278,7 @@ internal static class LibraryPatcher
                + (arity > 0 ? "`" + arity : "") + "(" + parameters + ")";
     }
 
-    internal static string IlHash(MethodBase method)
-    {
-        byte[]? il = method.GetMethodBody()?.GetILAsByteArray();
-        return il == null ? "no-il" : Convert.ToHexString(SHA1.HashData(il)).ToLowerInvariant();
-    }
+    internal static string IlHash(MethodBase method) => IlFingerprint.Hash(method);
 
     private static void WriteDumpIfRequested(List<string> dump, Dictionary<string, MethodBase> guarded)
     {
@@ -303,6 +299,10 @@ internal static class LibraryPatcher
             File.WriteAllText(
                 Path.Combine(directory, "vanilla_copy_guard.txt"),
                 VanillaCopyGuard.Header + string.Join("\n", guarded.Select(static pair => pair.Key + "\t" + IlHash(pair.Value)).Order(StringComparer.Ordinal)) + "\n",
+                new UTF8Encoding(false));
+            File.WriteAllText(
+                Path.Combine(directory, "vanilla_private.txt"),
+                header + string.Join("\n", LibraryOfRuina.interop.VanillaPrivate.DumpLines().Order(StringComparer.Ordinal)) + "\n",
                 new UTF8Encoding(false));
             Log.Info(LogPrefix + "Patch table written to " + directory);
         }

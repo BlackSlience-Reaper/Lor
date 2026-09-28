@@ -8,6 +8,7 @@ using LibraryOfRuina.helpers;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -25,9 +26,7 @@ internal static class DodgeDiceHealthBarReadyPatch
 
     private const string DodgeBlockIconPath = "res://images/ui/combat/dodge_dice_block.png";
 
-    private static readonly FieldInfo? BlockContainerField = AccessTools.Field(typeof(NHealthBar), "_blockContainer");
 
-    private static readonly FieldInfo? BlockLabelField = AccessTools.Field(typeof(NHealthBar), "_blockLabel");
 
     internal static readonly ConditionalWeakTable<NHealthBar, State> States = new();
 
@@ -139,8 +138,8 @@ internal static class DodgeDiceHealthBarReadyPatch
         out Control? blockContainer,
         out MegaLabel? blockLabel)
     {
-        blockContainer = BlockContainerField?.GetValue(healthBar) as Control;
-        blockLabel = BlockLabelField?.GetValue(healthBar) as MegaLabel;
+        blockContainer = VanillaPrivate.HealthBarBlockContainer.Get(healthBar) as Control;
+        blockLabel = VanillaPrivate.HealthBarBlockLabel.Get(healthBar) as MegaLabel;
         return blockContainer != null;
     }
 }

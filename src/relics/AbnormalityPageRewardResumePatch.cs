@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.relics;
 
@@ -19,8 +20,6 @@ namespace LibraryOfRuina.relics;
 internal static class AbnormalityPageRewardResumePatch
 {
     private const string LogPrefix = "[LibraryOfRuina.PageRelicResume] ";
-    private static readonly FieldInfo? RewardsSetField =
-        AccessTools.Field(typeof(NRewardsScreen), "_rewardsSet");
     private static readonly ConditionalWeakTable<CombatRoom, RestoreMarker> RestoredRooms = new();
 
     internal static void MarkRestored(CombatRoom room)
@@ -79,7 +78,7 @@ internal static class AbnormalityPageRewardResumePatch
     private static bool IsRoomRewardsScreenReady(CombatRoom room)
     {
         if (NOverlayStack.Instance?.Peek() is not NRewardsScreen rewardsScreen
-            || RewardsSetField?.GetValue(rewardsScreen) is not RewardsSet rewardsSet
+            || VanillaPrivate.RewardsScreenRewardsSet.Get(rewardsScreen) is not RewardsSet rewardsSet
             || !ReferenceEquals(rewardsSet.Room, room))
         {
             return false;

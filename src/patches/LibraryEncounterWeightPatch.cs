@@ -52,6 +52,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 using LorActModel = LibraryOfRuina.acts.LibraryOfRuinaActModel;
 
 namespace LibraryOfRuina.patches;
@@ -80,9 +81,6 @@ internal static class LibraryEncounterWeighting
     private const string LogPrefix = "[LibraryEncounterWeight]";
 
     private static readonly Assembly ModAssembly = typeof(LibraryOfRuinaInitializer).Assembly;
-
-    private static readonly AccessTools.FieldRef<ActModel, RoomSet> RoomsFieldRef =
-        AccessTools.FieldRefAccess<ActModel, RoomSet>("_rooms");
 
     private static readonly HashSet<Type> PriorityAbnormalityEncounterTypes = new()
     {
@@ -190,7 +188,7 @@ internal static class LibraryEncounterWeighting
             return;
         }
 
-        RoomSet rooms = RoomsFieldRef(act);
+        RoomSet rooms = VanillaPrivate.ActModelRooms.GetRequired(act);
         Rng localRng = CreateLocalRng(sourceRng, act, "rooms");
 
         int weakCount = rooms.normalEncounters.Count(static encounter => encounter.IsWeak);
@@ -250,7 +248,7 @@ internal static class LibraryEncounterWeighting
             return false;
         }
 
-        RoomSet rooms = RoomsFieldRef(act);
+        RoomSet rooms = VanillaPrivate.ActModelRooms.GetRequired(act);
         IReadOnlyList<EncounterModel> candidates = GetRuntimeReplacementCandidates(act, roomType, current);
         if (candidates.Count == 0)
         {
@@ -366,7 +364,7 @@ internal static class LibraryEncounterWeighting
                 .DistinctBy(encounter => encounter.Id)
                 .ToList();
 
-            RoomSet rooms = RoomsFieldRef(act);
+            RoomSet rooms = VanillaPrivate.ActModelRooms.GetRequired(act);
             bool changed = RestoreEncounterSequence(
                 rooms.normalEncounters,
                 vanillaEncounters.Where(encounter => encounter.RoomType == RoomType.Monster).ToList());
@@ -405,7 +403,7 @@ internal static class LibraryEncounterWeighting
             return false;
         }
 
-        RoomSet rooms = RoomsFieldRef(act);
+        RoomSet rooms = VanillaPrivate.ActModelRooms.GetRequired(act);
         encounter = roomType switch
         {
             RoomType.Monster when rooms.normalEncounters.Count > 0 => rooms.NextNormalEncounter,
@@ -628,7 +626,7 @@ internal static class LibraryEncounterWeighting
             return current;
         }
 
-        RoomSet rooms = RoomsFieldRef(act);
+        RoomSet rooms = VanillaPrivate.ActModelRooms.GetRequired(act);
         IReadOnlyList<EncounterModel> scheduled = roomType == RoomType.Elite
             ? rooms.eliteEncounters
             : rooms.normalEncounters;

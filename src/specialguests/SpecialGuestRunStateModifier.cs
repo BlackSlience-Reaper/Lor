@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Rewards;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -255,8 +256,6 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
 
 internal static class SpecialGuestRunStateModifierStore
 {
-    private static readonly FieldInfo? ModifiersField =
-        AccessTools.Field(typeof(RunState), "<Modifiers>k__BackingField");
 
     public static bool TryAppend(RunState runState, SpecialGuestRunStateModifier carrier)
     {
@@ -265,7 +264,7 @@ internal static class SpecialGuestRunStateModifierStore
             return true;
         }
 
-        if (ModifiersField == null)
+        if (!VanillaPrivate.RunStateModifiers.IsAvailable)
         {
             Log.Error("[SpecialGuest] RunState.Modifiers backing field was not found.");
             return false;
@@ -273,7 +272,7 @@ internal static class SpecialGuestRunStateModifierStore
 
         List<ModifierModel> modifiers = runState.Modifiers.ToList();
         modifiers.Add(carrier);
-        ModifiersField.SetValue(runState, modifiers);
+        VanillaPrivate.RunStateModifiers.Set(runState, modifiers);
         return true;
     }
 }

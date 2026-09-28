@@ -12,7 +12,7 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 
 | 模组 | 最低版本 | 地址 |
 | --- | --- | --- |
-| LibraryOfRuinaLib（废墟图书馆基础库） | 1.2.14 | https://github.com/Xuyuha/LibraryOfRuinaLib |
+| LibraryOfRuinaLib（废墟图书馆基础库） | 1.3.0 | https://github.com/Xuyuha/LibraryOfRuinaLib |
 | STS2-RitsuLib | 0.6.2 | https://github.com/BAKAOLC/STS2-RitsuLib |
 | ActLikeIt2 | 0.2.1 | https://github.com/Darkglade1/ActLikeIt2 |
 
@@ -31,6 +31,8 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 | `RitsuLibReferenceTarget` | RitsuLib `compat/` 下的游戏 API 版本，默认 `0.111.0` |
 | `ActLikeIt2Dll` | `ActLikeIt2.dll` 路径 |
 | `LibraryOfRuinaLibDll` | `LibraryOfRuinaLib.dll` 路径 |
+
+基础库按 GitHub 源码编译：`tools/build_lib.sh` 把 https://github.com/Xuyuha/LibraryOfRuinaLib 检出到 `build/LibraryOfRuinaLib` 并编译（上游仓库不提交工程文件，脚本用 `tools/LibraryOfRuinaLib.csproj.template`），之后 `Directory.Build.props` 自动引用它的输出。默认检出脚本里的 `RELEASE_REF`，即 `LibraryOfRuina.json` 要求的已发布版本（现在是 1.3.0）对应的提交，提高最低版本时两处一起改；`tools/build_lib.sh origin/main` 可以试基础库的最新源码。没有运行脚本时回退到 `mods/` 下安装的基础库。玩家装的是基础库作者发布的版本，所以 `check.sh` 找到工坊里已发布的基础库时，还会用它再编译一次本模组。
 
 ### 2. 编译 DLL
 
@@ -75,7 +77,7 @@ dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 
 ### 6. 重构护栏
 
-`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。挂在原版 `Hook.*` 上的补丁同样要写理由，说明为什么不能由已有模型覆写对应的钩子方法。哪些类算补丁类由 `src/infra/patching/PatchClassRules.cs` 判定，安装器和快照工具共用；`tools/PatchRuleFixtures` 是它的测试，也由 `check.sh` 运行。
+`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。挂在原版 `Hook.*` 上的补丁同样要写理由，说明为什么不能由已有模型覆写对应的钩子方法。哪些类算补丁类由 `src/infra/patching/PatchClassRules.cs` 判定，安装器和快照工具共用；`tools/PatchRuleFixtures` 是它的测试，也由 `check.sh` 运行。运行期访问原版非公开成员只能经 `src/interop/VanillaPrivate.cs` 的访问器，`tools/PrivateAccessCheck`（按语法树）检查其余地方不按名字反射，不论成员名是字面量、常量还是变量（例外按“文件、所属成员、API”写在 `tools/private_access_allowlist.txt`，要写理由；`fixtures/` 是它的回归测试）；启动时初始化汇总会列出游戏更新后找不到的成员。
 
 补丁由 `src/infra/patching/LibraryPatcher` 统一安装。主菜单第一次就绪时，它会在日志里报告与其他模组共享的目标，并点名排在本模组跳过型前缀之后的第三方前缀。
 

@@ -25,6 +25,7 @@ using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.TestSupport;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.secondascension;
 
@@ -250,28 +251,6 @@ internal static class LibrarySecondAscensionUi
     private static readonly StringName Value = new("v");
     private static readonly Color GoldOutline = new(LibrarySecondAscensionConfig.GoldOutline);
 
-    private static readonly FieldInfo? NAscensionPanelMaxAscensionField =
-        AccessTools.Field(typeof(NAscensionPanel), "_maxAscension");
-    private static readonly FieldInfo? NAscensionPanelArrowsVisibleField =
-        AccessTools.Field(typeof(NAscensionPanel), "_arrowsVisible");
-    private static readonly FieldInfo? NAscensionPanelIconHsvField =
-        AccessTools.Field(typeof(NAscensionPanel), "_iconHsv");
-    private static readonly FieldInfo? NAscensionPanelAscensionLevelField =
-        AccessTools.Field(typeof(NAscensionPanel), "_ascensionLevel");
-    private static readonly FieldInfo? NAscensionPanelInfoField =
-        AccessTools.Field(typeof(NAscensionPanel), "_info");
-    private static readonly MethodInfo? NAscensionPanelIncrementMethod =
-        AccessTools.Method(typeof(NAscensionPanel), "IncrementAscension");
-    private static readonly MethodInfo? NAscensionPanelDecrementMethod =
-        AccessTools.Method(typeof(NAscensionPanel), "DecrementAscension");
-    private static readonly FieldInfo? TopBarModifiersContainerField =
-        AccessTools.Field(typeof(NTopBar), "_modifiersContainer");
-    private static readonly FieldInfo? TopBarAscensionIconField =
-        AccessTools.Field(typeof(NTopBar), "_ascensionIcon");
-    private static readonly FieldInfo? PortraitTipShowTipField =
-        AccessTools.Field(typeof(NTopBarPortraitTip), "_showTip");
-    private static readonly FieldInfo? PortraitTipHoverTipField =
-        AccessTools.Field(typeof(NTopBarPortraitTip), "_hoverTip");
 
     public static void EnsureSecondPanel(Control screen, MultiplayerUiMode mode)
     {
@@ -331,7 +310,7 @@ internal static class LibrarySecondAscensionUi
     public static void RefreshSecondPanel(NAscensionPanel panel)
     {
         ApplyGoldStyle(panel);
-        RichTextLabel? info = NAscensionPanelInfoField?.GetValue(panel) as RichTextLabel;
+        RichTextLabel? info = VanillaPrivate.AscensionPanelInfo.Get(panel) as RichTextLabel;
         info ??= panel.GetNodeOrNull<RichTextLabel>("HBoxContainer/AscensionDescription/Description");
         info ??= panel.FindChildren("*", string.Empty, recursive: true, owned: false)
             .OfType<RichTextLabel>()
@@ -365,7 +344,7 @@ internal static class LibrarySecondAscensionUi
     public static void AddTopBarSecondAscensionIcon(NTopBar topBar, IRunState runState)
     {
         int level = LibrarySecondAscensionState.GetRunLevel(runState);
-        if (level <= 0 || TopBarAscensionIconField?.GetValue(topBar) is not Control original)
+        if (level <= 0 || VanillaPrivate.TopBarAscensionIcon.Get(topBar) is not Control original)
         {
             RefreshModifiersContainer(topBar, runState);
             return;
@@ -401,8 +380,8 @@ internal static class LibrarySecondAscensionUi
         }
 
         IHoverTip hoverTip = BuildPortraitHoverTip(runState, level);
-        PortraitTipHoverTipField?.SetValue(portraitTip, hoverTip);
-        PortraitTipShowTipField?.SetValue(portraitTip, true);
+        VanillaPrivate.TopBarPortraitTipHoverTip.Set(portraitTip, hoverTip);
+        VanillaPrivate.TopBarPortraitTipShowTip.Set(portraitTip, true);
         portraitTip.FocusMode = Control.FocusModeEnum.All;
     }
 
@@ -498,8 +477,8 @@ internal static class LibrarySecondAscensionUi
     {
         bool interactive = mode is MultiplayerUiMode.Host or MultiplayerUiMode.Singleplayer;
         int level = interactive ? LibrarySecondAscensionState.PreferredLevel : Math.Max(0, lobbyLevel);
-        NAscensionPanelMaxAscensionField?.SetValue(panel, LibrarySecondAscensionConfig.MaxLevel);
-        NAscensionPanelArrowsVisibleField?.SetValue(panel, interactive);
+        VanillaPrivate.AscensionPanelMaxAscension.Set(panel, LibrarySecondAscensionConfig.MaxLevel);
+        VanillaPrivate.AscensionPanelArrowsVisible.Set(panel, interactive);
         RemovePanelHotkeys(panel);
         panel.SetMaxAscension(LibrarySecondAscensionConfig.MaxLevel);
         panel.SetAscensionLevel(level);
@@ -568,7 +547,7 @@ internal static class LibrarySecondAscensionUi
 
     private static void ApplyGoldStyle(NAscensionPanel panel)
     {
-        ShaderMaterial? shader = NAscensionPanelIconHsvField?.GetValue(panel) as ShaderMaterial;
+        ShaderMaterial? shader = VanillaPrivate.AscensionPanelIconHsv.Get(panel) as ShaderMaterial;
         shader ??= panel.GetNodeOrNull<Control>("%AscensionIcon")?.Material as ShaderMaterial;
 
         if (shader != null)
@@ -577,7 +556,7 @@ internal static class LibrarySecondAscensionUi
             shader.SetShaderParameter(Value, LibrarySecondAscensionConfig.GoldValue);
         }
 
-        Label? label = NAscensionPanelAscensionLevelField?.GetValue(panel) as Label;
+        Label? label = VanillaPrivate.AscensionPanelAscensionLevel.Get(panel) as Label;
         label ??= panel.GetNodeOrNull<Label>("HBoxContainer/AscensionIconContainer/AscensionIcon/AscensionLevel");
 
         if (label != null)
@@ -593,12 +572,12 @@ internal static class LibrarySecondAscensionUi
             return;
         }
 
-        if (NAscensionPanelDecrementMethod?.CreateDelegate(typeof(Action), panel) is Action decrement)
+        if (VanillaPrivate.AscensionPanelDecrementAscension.Method?.CreateDelegate(typeof(Action), panel) is Action decrement)
         {
             NHotkeyManager.Instance.RemoveHotkeyPressedBinding(MegaInput.viewDeckAndTabLeft, decrement);
         }
 
-        if (NAscensionPanelIncrementMethod?.CreateDelegate(typeof(Action), panel) is Action increment)
+        if (VanillaPrivate.AscensionPanelIncrementAscension.Method?.CreateDelegate(typeof(Action), panel) is Action increment)
         {
             NHotkeyManager.Instance.RemoveHotkeyPressedBinding(MegaInput.viewExhaustPileAndTabRight, increment);
         }
@@ -658,7 +637,7 @@ internal static class LibrarySecondAscensionUi
 
     private static void RefreshModifiersContainer(NTopBar topBar, IRunState runState)
     {
-        if (TopBarModifiersContainerField?.GetValue(topBar) is Control modifiersContainer)
+        if (VanillaPrivate.TopBarModifiersContainer.Get(topBar) is Control modifiersContainer)
         {
             bool hasVisibleModifierNode = modifiersContainer.GetChildren()
                 .OfType<Control>()
@@ -670,7 +649,7 @@ internal static class LibrarySecondAscensionUi
 
     public static bool HideEmptyModifiersContainer(NTopBar topBar)
     {
-        if (TopBarModifiersContainerField?.GetValue(topBar) is not Control modifiersContainer)
+        if (VanillaPrivate.TopBarModifiersContainer.Get(topBar) is not Control modifiersContainer)
         {
             return false;
         }

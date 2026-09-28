@@ -4,6 +4,7 @@ using LibraryOfRuina.acts;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.Bestiary;
 using MegaCrit.Sts2.Core.Saves;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.reverberation.CryingChildren;
 
@@ -11,7 +12,6 @@ namespace LibraryOfRuina.reverberation.CryingChildren;
 [HarmonyPatch(typeof(NBestiary), "AddAct")]
 internal static class CryingChildrenBestiaryPatch
 {
-    private static readonly MethodInfo AddEntries = AccessTools.Method(typeof(NBestiary), "AddEntries");
 
     private static void Postfix(NBestiary __instance, ActModel act)
     {
@@ -26,6 +26,6 @@ internal static class CryingChildrenBestiaryPatch
         {
             entries.Add(BestiaryEntry.FromMonster(monster, encounter, encounter.RoomType));
         }
-        AddEntries.Invoke(__instance, [entries]);
+        VanillaPrivate.BestiaryAddEntries.Invoke(__instance, [entries]);
     }
 }

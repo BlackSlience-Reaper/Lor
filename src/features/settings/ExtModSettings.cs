@@ -18,6 +18,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Screens.Settings;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.settings;
 
@@ -479,9 +480,7 @@ internal abstract partial class ExtModSettings
         positioner.SizeFlagsHorizontal = Control.SizeFlags.ShrinkEnd;
         positioner.SizeFlagsVertical = Control.SizeFlags.Fill;
 
-        var dropdownNodeField = typeof(NDropdownPositioner).GetField("_dropdownNode",
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        dropdownNodeField?.SetValue(positioner, dropdown);
+        VanillaPrivate.DropdownPositionerDropdownNode.Set(positioner, dropdown);
 
         positioner.AddChild(dropdown);
         positioner.MouseFilter = Control.MouseFilterEnum.Ignore;

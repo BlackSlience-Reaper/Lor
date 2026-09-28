@@ -26,6 +26,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters.TechnologyFloorLiberation;
 
@@ -55,8 +56,6 @@ public sealed class TechnologyFloorLiberationEncounter :
     internal const string MagicBulletEncounterScenePath = "res://scenes/encounters/technology_floor_liberation_magic_bullet_encounter.tscn";
     internal const int MaxPhase = 5;
 
-    private static readonly PropertyInfo? CombatRoomEncounterSlotsProperty =
-        typeof(NCombatRoom).GetProperty("EncounterSlots", BindingFlags.Instance | BindingFlags.NonPublic);
 
     private const string CurrentPhaseKey = "CurrentPhase";
     private const string KilledBossCountKey = "KilledBossCount";
@@ -608,12 +607,12 @@ public sealed class TechnologyFloorLiberationEncounter :
 
     private static void ReplaceEncounterSceneForMk4Phase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(Mk4BossSlot) != null
             && existingSlots.GetNodeOrNull<Marker2D>(CenterSlot) == null)
         {
@@ -630,7 +629,7 @@ public sealed class TechnologyFloorLiberationEncounter :
         Control mk4Slots = InstantiateMk4EncounterScene();
         mk4Slots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(mk4Slots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, mk4Slots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, mk4Slots);
     }
 
     internal static Control InstantiateMk4EncounterScene() =>
@@ -639,12 +638,12 @@ public sealed class TechnologyFloorLiberationEncounter :
 
     private static void ReplaceEncounterSceneForChordPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(ChordBossSlot) != null)
         {
             return;
@@ -660,7 +659,7 @@ public sealed class TechnologyFloorLiberationEncounter :
         Control chordSlots = InstantiateChordEncounterScene();
         chordSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(chordSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, chordSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, chordSlots);
     }
 
     internal static Control InstantiateChordEncounterScene() =>
@@ -669,12 +668,12 @@ public sealed class TechnologyFloorLiberationEncounter :
 
     private static void ReplaceEncounterSceneForSolemnMourningPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(SolemnMourningBossSlot) != null)
         {
             return;
@@ -690,7 +689,7 @@ public sealed class TechnologyFloorLiberationEncounter :
         Control solemnSlots = InstantiateSolemnMourningEncounterScene();
         solemnSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(solemnSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, solemnSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, solemnSlots);
     }
 
     internal static Control InstantiateSolemnMourningEncounterScene() =>
@@ -699,12 +698,12 @@ public sealed class TechnologyFloorLiberationEncounter :
 
     private static void ReplaceEncounterSceneForMagicBulletPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException("NCombatRoom.EncounterSlots could not be found.");
         }
 
-        Control? existingSlots = CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+        Control? existingSlots = VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         if (existingSlots?.GetNodeOrNull<Marker2D>(MagicBulletBossSlot) != null)
         {
             return;
@@ -720,7 +719,7 @@ public sealed class TechnologyFloorLiberationEncounter :
         Control magicBulletSlots = InstantiateMagicBulletEncounterScene();
         magicBulletSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(magicBulletSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, magicBulletSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, magicBulletSlots);
     }
 
     internal static Control InstantiateMagicBulletEncounterScene() =>

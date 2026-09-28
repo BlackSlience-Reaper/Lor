@@ -1,0 +1,10 @@
+# path:line: api in Type.Member — must match PrivateAccessCheck --self-test output exactly.
+Cases.cs:11: AccessTools.Field in Reported.ConstantName
+Cases.cs:15: AccessTools.Field in Reported.Wrapped
+Cases.cs:21: AccessTools.Field in Reported.ByVariable
+Cases.cs:23: .GetMember in Reported.Members
+Cases.cs:25: Expression.Property in Reported.Slots
+Cases.cs:27: Expression.Call in Reported.CallByName
+Cases.cs:29: Traverse.Create in Reported.ViaTraverse
+Cases.cs:34: .GetField in Reported.AfterPrepare
+Cases.cs:37: .GetMethod in Reported.Conditional

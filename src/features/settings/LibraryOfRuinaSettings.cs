@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.settings;
 
@@ -59,13 +60,7 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
         }
 
         NPatchNotesScreen patchNotesScreen = mainMenu.PatchNotesScreen;
-        FieldInfo? pathsField = typeof(NPatchNotesScreen).GetField(
-            "_patchNotePaths",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-        FieldInfo? indexField = typeof(NPatchNotesScreen).GetField(
-            "_index",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-        if (pathsField == null || indexField == null)
+        if (!VanillaPrivate.PatchNotesScreenPatchNotePaths.IsAvailable || !VanillaPrivate.PatchNotesScreenIndex.IsAvailable)
         {
             SettingsLogger.Error("[LibraryOfRuina] The native update-log screen fields could not be found.");
             return;
@@ -84,8 +79,8 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
             return;
         }
 
-        pathsField.SetValue(patchNotesScreen, patchNotePaths);
-        indexField.SetValue(patchNotesScreen, updateLogIndex);
+        VanillaPrivate.PatchNotesScreenPatchNotePaths.Set(patchNotesScreen, patchNotePaths);
+        VanillaPrivate.PatchNotesScreenIndex.Set(patchNotesScreen, updateLogIndex);
         patchNotesScreen.GetNode<NButton>("PrevButton").Visible = updateLogIndex < patchNotePaths.Count - 1;
         patchNotesScreen.GetNode<NButton>("NextButton").Visible = updateLogIndex > 0;
 

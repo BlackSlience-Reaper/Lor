@@ -16,6 +16,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Rewards;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.relics;
 
@@ -172,7 +173,7 @@ internal static class AbnormalityPageRewardPreselection
         MethodInfo setter = registration.ModeProperty.GetSetMethod(nonPublic: true)
             ?? throw new MissingMethodException(relic.GetType().FullName, "set_Mode");
         setter.Invoke(relic, [mode]);
-        AccessTools.Method(typeof(RelicModel), "RelicIconChanged")?.Invoke(relic, []);
+        VanillaPrivate.RelicModelRelicIconChanged.Invoke(relic);
         AccessTools.Method(relic.GetType(), "UpdateModeUiState")?.Invoke(relic, []);
     }
 
@@ -406,14 +407,10 @@ internal sealed class AbnormalityPagePostObtainEffectAttribute : Attribute
 [LibraryPatch(Reason = "RelicReward.OnSelect 无获得前 Hook，书页遗物须在获得前选模式且跳过后保留奖励；仅当奖励遗物为本模组异想体书页遗物时接管。界面异常时的重试路径联机需实测。")]
 internal static class AbnormalityPageRelicRewardSelectPatch
 {
-    private static readonly FieldInfo? RelicField = AccessTools.Field(typeof(RelicReward), "_relic");
-    private static readonly FieldInfo? WasTakenField = AccessTools.Field(typeof(RelicReward), "_wasTaken");
-    private static readonly MethodInfo? ClaimedRelicSetter =
-        AccessTools.PropertySetter(typeof(RelicReward), nameof(RelicReward.ClaimedRelic));
 
     public static bool Prefix(RelicReward __instance, ref Task<bool> __result)
     {
-        if (RelicField?.GetValue(__instance) is not RelicModel relic
+        if (VanillaPrivate.RelicRewardRelic.Get(__instance) is not RelicModel relic
             || !AbnormalityPageRewardPreselection.IsPageRelic(relic))
         {
             return true;
@@ -432,9 +429,9 @@ internal static class AbnormalityPageRelicRewardSelectPatch
 
         Log.Info($"Obtained {relic.Id} from relic reward");
         RelicModel claimedRelic = await RelicCmd.Obtain(relic, reward.Player);
-        ClaimedRelicSetter?.Invoke(reward, [claimedRelic]);
+        VanillaPrivate.RelicRewardClaimedRelic.Set(reward, claimedRelic);
         RewardSyncCompat.SyncObtainedRelicForReward(relic);
-        WasTakenField?.SetValue(reward, true);
+        VanillaPrivate.RelicRewardWasTaken.Set(reward, true);
         return true;
     }
 }

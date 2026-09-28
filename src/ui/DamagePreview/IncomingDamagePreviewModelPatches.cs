@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.ValueProps;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
@@ -21,9 +22,6 @@ namespace LibraryOfRuina.ui.DamagePreview;
 /// </summary>
 internal static class IncomingDamagePreviewModelPatches
 {
-    private static readonly AccessTools.FieldRef<BeatingRemnant, decimal> BeatingRemnantDamageThisTurn =
-        AccessTools.FieldRefAccess<BeatingRemnant, decimal>("_damageReceivedThisTurn");
-
     /// <summary>
     /// 有触发次数的修正在模拟中剩余的次数；返回 null 表示不限次数。
     /// 缓冲每层抵消一次；摩天轮票根按本场剩余保存次数；火柴印记的足迹模式只触发一次；憎恶之页按本回合剩余次数。
@@ -115,7 +113,7 @@ internal static class IncomingDamagePreviewModelPatches
                 return true;
             }
 
-            decimal received = BeatingRemnantDamageThisTurn(__instance) + state!.HpLostSinceOwnerTurnStart;
+            decimal received = VanillaPrivate.BeatingRemnantDamageReceivedThisTurn.Get(__instance) + state!.HpLostSinceOwnerTurnStart;
             __result = Math.Min(amount, __instance.DynamicVars["MaxHpLoss"].BaseValue - received);
             return false;
         }

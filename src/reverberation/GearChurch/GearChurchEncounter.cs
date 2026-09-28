@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using LibraryOfRuina.infra.patching;
 using static LibraryOfRuina.reverberation.GearChurch.GearChurchRules;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.reverberation.GearChurch;
 
@@ -144,7 +145,6 @@ internal static class GearChurchTechnologyReceptionPatch
 [HarmonyPatch(typeof(NBestiary), "AddAct")]
 internal static class GearChurchBestiaryPatch
 {
-    private static readonly MethodInfo AddEntries = AccessTools.Method(typeof(NBestiary), "AddEntries");
 
     private static void Postfix(NBestiary __instance, ActModel act)
     {
@@ -157,6 +157,6 @@ internal static class GearChurchBestiaryPatch
         var entries = encounter.AllPossibleMonsters
             .Select(monster => BestiaryEntry.FromMonster(monster, encounter, encounter.RoomType))
             .ToList();
-        AddEntries.Invoke(__instance, [entries]);
+        VanillaPrivate.BestiaryAddEntries.Invoke(__instance, [entries]);
     }
 }

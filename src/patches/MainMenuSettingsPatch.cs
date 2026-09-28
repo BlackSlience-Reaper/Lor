@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Nodes.Screens.Settings;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -93,9 +94,7 @@ public static class InjectSettingsScreenModConfigPatch
 
         newButton.Connect(NClickableControl.SignalName.Released, Callable.From<NButton>(_ =>
         {
-            var stackField = typeof(NSubmenu).GetField("_stack",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            var stack = stackField?.GetValue(settingsScreen);
+            var stack = VanillaPrivate.SubmenuStack.Get(settingsScreen);
             if (stack is NMainMenuSubmenuStack stackInstance)
                 stackInstance.Push(ExtSettingsSubmenuHost.GetOrCreateSubmenu(stackInstance));
             else
@@ -138,9 +137,7 @@ public static class SettingsScreenModConfigVisibilityPatch
         var button = __instance.FindChild("ExtModConfigButton", true, false) as NButton;
         if (button == null) return;
 
-        var stackField = typeof(NSubmenu).GetField("_stack",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-        var stack = stackField?.GetValue(__instance);
+        var stack = VanillaPrivate.SubmenuStack.Get(__instance);
         if (stack is NMainMenuSubmenuStack)
             button.Enable();
         else

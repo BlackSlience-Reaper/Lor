@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -61,14 +62,6 @@ internal static class LibraryOfRuinaEgoCardLibraryReadyPatch
     private const string CharacterEgoFilterIconPath =
         "ui/cards/character_ego/energy.png";
 
-    private static readonly FieldInfo ColorlessFilterField = AccessTools.Field(typeof(NCardLibrary), "_colorlessFilter")
-        ?? throw new MissingFieldException(nameof(NCardLibrary), "_colorlessFilter");
-    private static readonly FieldInfo PoolFiltersField = AccessTools.Field(typeof(NCardLibrary), "_poolFilters")
-        ?? throw new MissingFieldException(nameof(NCardLibrary), "_poolFilters");
-    private static readonly FieldInfo LastHoveredControlField = AccessTools.Field(typeof(NCardLibrary), "_lastHoveredControl")
-        ?? throw new MissingFieldException(nameof(NCardLibrary), "_lastHoveredControl");
-    private static readonly MethodInfo UpdateCardPoolFilterMethod = AccessTools.Method(typeof(NCardLibrary), "UpdateCardPoolFilter")
-        ?? throw new MissingMethodException(nameof(NCardLibrary), "UpdateCardPoolFilter");
 
     [HarmonyPostfix]
     private static void Postfix(NCardLibrary __instance)
@@ -85,7 +78,7 @@ internal static class LibraryOfRuinaEgoCardLibraryReadyPatch
 
     private static void AddEgoFilter(NCardLibrary cardLibrary)
     {
-        if (ColorlessFilterField.GetValue(cardLibrary) is not NCardPoolFilter colorlessFilter)
+        if (VanillaPrivate.CardLibraryColorlessFilter.Get(cardLibrary) is not NCardPoolFilter colorlessFilter)
         {
             return;
         }
@@ -155,7 +148,7 @@ internal static class LibraryOfRuinaEgoCardLibraryReadyPatch
 
         egoFilter.Loc = new LocString("card_library", locKey);
 
-        if (PoolFiltersField.GetValue(cardLibrary) is not Dictionary<NCardPoolFilter, Func<CardModel, bool>> poolFilters)
+        if (VanillaPrivate.CardLibraryPoolFilters.Get(cardLibrary) is not Dictionary<NCardPoolFilter, Func<CardModel, bool>> poolFilters)
         {
             return;
         }
@@ -169,10 +162,10 @@ internal static class LibraryOfRuinaEgoCardLibraryReadyPatch
         {
             egoFilter.Connect(
                 NCardPoolFilter.SignalName.Toggled,
-                Callable.From<NCardPoolFilter>(filter => UpdateCardPoolFilterMethod.Invoke(cardLibrary, new object[] { filter })));
+                Callable.From<NCardPoolFilter>(filter => VanillaPrivate.CardLibraryUpdateCardPoolFilter.Invoke(cardLibrary, new object[] { filter })));
             egoFilter.Connect(
                 Control.SignalName.FocusEntered,
-                Callable.From(() => LastHoveredControlField.SetValue(cardLibrary, egoFilter)));
+                Callable.From(() => VanillaPrivate.CardLibraryLastHoveredControl.Set(cardLibrary, egoFilter)));
         }
     }
 

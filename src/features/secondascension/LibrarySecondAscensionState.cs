@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Multiplayer.Game.Lobby;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.secondascension;
 
@@ -22,7 +23,6 @@ internal static class LibrarySecondAscensionState
     }
 
     private static readonly ConditionalWeakTable<StartRunLobby, PendingModifiersBox> PendingRunModifiers = new();
-    private static readonly FieldInfo? RunStateModifiersField = AccessTools.Field(typeof(RunState), "<Modifiers>k__BackingField");
     private static int? _pendingSingleplayerStandardLevel;
 
     public static bool IsSelectionEnabled =>
@@ -249,13 +249,13 @@ internal static class LibrarySecondAscensionState
 
         _pendingSingleplayerStandardLevel = null;
         IReadOnlyList<ModifierModel> modifiers = WithCarrier(runState.Modifiers, level);
-        if (RunStateModifiersField == null)
+        if (!VanillaPrivate.RunStateModifiers.IsAvailable)
         {
             Log.Warn("[LibrarySecondAscension] Failed to apply standard singleplayer RunState level: Modifiers backing field missing.");
             return;
         }
 
-        RunStateModifiersField.SetValue(runState, modifiers);
+        VanillaPrivate.RunStateModifiers.Set(runState, modifiers);
         Log.Info("[LibrarySecondAscension] Applied standard singleplayer RunState level=" + level + ".");
     }
 

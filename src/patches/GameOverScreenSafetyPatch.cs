@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -52,19 +53,10 @@ internal static class GameOverScreenPatchHelper
 
     public static Control CreateScoreLineControl(string label, string score, Texture2D? icon)
     {
-        Control? reflected = TryCreateControlFromFactory(
-            "MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NScoreLine",
-            "Create",
-            parameters => parameters.Length >= 2
-                && parameters[0].ParameterType == typeof(string)
-                && parameters[1].ParameterType == typeof(string),
-            parameters => parameters.Length >= 3
-                ? new object?[] { label, score, icon }
-                : new object?[] { label, score });
-
-        if (reflected != null)
+        Control? created = TryCreateNativeScoreLine(label, score, icon);
+        if (created != null)
         {
-            return reflected;
+            return created;
         }
 
         try
@@ -87,49 +79,16 @@ internal static class GameOverScreenPatchHelper
         throw new InvalidOperationException("Unable to create score line control.");
     }
 
-    private static Control? TryCreateControlFromFactory(
-        string typeName,
-        string methodName,
-        Func<ParameterInfo[], bool> parameterFilter,
-        Func<ParameterInfo[], object?[]> argBuilder)
+    private static Control? TryCreateNativeScoreLine(string label, string score, Texture2D? icon)
     {
-        Type? type = AccessTools.TypeByName(typeName);
-        if (type == null)
-        {
-            return null;
-        }
-
-        MethodInfo? factory = type
-            .GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .FirstOrDefault(method =>
-            {
-                if (!string.Equals(method.Name, methodName, StringComparison.Ordinal))
-                {
-                    return false;
-                }
-                ParameterInfo[] parameters = method.GetParameters();
-                return parameterFilter(parameters);
-            });
-
-        if (factory == null)
-        {
-            return null;
-        }
-
-        ParameterInfo[] factoryParams = factory.GetParameters();
         try
         {
-            object? result = factory.Invoke(null, argBuilder(factoryParams));
-            return result as Control;
+            return NScoreLine.Create(label, score, icon);
         }
         catch (Exception e)
         {
-            Exception logged = e is TargetInvocationException { InnerException: { } inner } ? inner : e;
-            Log.Warn(
-                "[GameOverFix] Factory "
-                + typeName + "." + methodName
-                + " failed; falling back to direct scene creation. error="
-                + logged.GetType().Name + ": " + logged.Message);
+            Log.Warn("[GameOverFix] NScoreLine.Create failed; falling back to direct scene creation. error="
+                     + e.GetType().Name + ": " + e.Message);
             return null;
         }
     }
@@ -194,8 +153,8 @@ public static class GameOverScoreLineCompatibilityPatch
         __state = null;
         try
         {
-            GridContainer? container = Traverse.Create(__instance).Field("_scoreLineContainer").GetValue<GridContainer>();
-            if (container != null && Traverse.Create(__instance).Field("_scoreLines").GetValue() is IList scoreLines)
+            GridContainer? container = VanillaPrivate.GameOverScreenScoreLineContainer.Get(__instance);
+            if (container != null && VanillaPrivate.GameOverScreenScoreLines.Get(__instance) is { } scoreLines)
             {
                 __state = new Snapshot
                 {

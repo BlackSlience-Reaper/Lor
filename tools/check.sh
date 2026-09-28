@@ -11,6 +11,17 @@ FIXTURE_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP" "$FIXTURE_OUT"' EXIT
 
 python3 "$ROOT/tools/check_canonical_getters.py" "$ROOT/src"
+# No reflection by name outside src/interop/ (syntax-based); the self-test covers the forms that must be caught.
+dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release -- --self-test "$ROOT/tools/PrivateAccessCheck/fixtures"
+dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release --no-build -- "$ROOT/src" "$ROOT/tools/private_access_allowlist.txt"
+# Players run the library author's release, not our source build: compile once against the published DLL too, so
+# the mod cannot depend on library APIs that are not released yet. The normal build below then restores the output.
+PUBLISHED_LIB="$(dotnet msbuild "$PROJECT" -nologo -getProperty:SteamRoot)/steamapps/workshop/content/2868840/3747541096/LibraryOfRuinaLib.dll"
+if [[ -f "$PUBLISHED_LIB" ]]; then
+  dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly -p:LibraryOfRuinaLibDll="$PUBLISHED_LIB"
+else
+  echo "published LibraryOfRuinaLib not found at $PUBLISHED_LIB; skipping the release-library build" >&2
+fi
 dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 # The verification suites reach into internals; build them too so they do not silently rot.
 dotnet build "$ROOT/verification/LibraryOfRuinaVerification.csproj" -c Release -nologo -v q -clp:ErrorsOnly
@@ -39,5 +50,5 @@ if [[ "${1:-}" == "--accept" ]]; then
   cp "$TMP"/*.txt "$ROOT/snapshots/"
   echo "snapshots updated"
 else
-  diff -ru -x .gdignore -x headless "$ROOT/snapshots" "$TMP" && echo "snapshots unchanged"
+  diff -ru -x .gdignore -x .DS_Store -x headless "$ROOT/snapshots" "$TMP" && echo "snapshots unchanged"
 fi

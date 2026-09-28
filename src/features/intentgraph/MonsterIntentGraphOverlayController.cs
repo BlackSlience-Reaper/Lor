@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.intentgraph;
 
@@ -21,10 +22,6 @@ internal static class MonsterIntentGraphOverlayController
     private const float SideSpacing = 12f;
     private const float ScreenPadding = 8f;
 
-    private static readonly FieldInfo? ActiveHoverTipsField = ResolveActiveHoverTipsField();
-    private static readonly FieldInfo? TextContainerField = ResolveTextContainerField();
-    private static readonly FieldInfo? HoverTipSetOwnerField =
-        typeof(NHoverTipSet).GetField("_owner", BindingFlags.Instance | BindingFlags.NonPublic);
 
     private static readonly Dictionary<NCreature, NMonsterIntentGraphPanel> ActivePanels =
         new Dictionary<NCreature, NMonsterIntentGraphPanel>();
@@ -97,7 +94,7 @@ internal static class MonsterIntentGraphOverlayController
         }
 
         if (tipSet != null
-            && TextContainerField?.GetValue(tipSet) is Control textC
+            && VanillaPrivate.HoverTipSetTextHoverTipContainer.Get(tipSet) is Control textC
             && textC.Size.X > 1f)
         {
             Reposition(panel, tipSet);
@@ -355,15 +352,15 @@ internal static class MonsterIntentGraphOverlayController
     {
         hoverTipSet = null;
 
-        if (ActiveHoverTipsField == null && HoverTipSetOwnerField == null)
+        if (!VanillaPrivate.HoverTipSetActiveHoverTips.IsAvailable && !VanillaPrivate.HoverTipSetOwner.IsAvailable)
         {
             LogReflectionFailure("Cannot resolve NHoverTipSet _activeHoverTips or _owner field.");
             return false;
         }
 
-        if (ActiveHoverTipsField != null)
+        if (VanillaPrivate.HoverTipSetActiveHoverTips.IsAvailable)
         {
-            object? activeObj = ActiveHoverTipsField.GetValue(null);
+            object? activeObj = VanillaPrivate.HoverTipSetActiveHoverTips.Get();
             if (activeObj is IDictionary<Control, NHoverTipSet> activeTyped
                 && activeTyped.TryGetValue(creature.Hitbox, out hoverTipSet))
             {
@@ -380,12 +377,12 @@ internal static class MonsterIntentGraphOverlayController
             }
         }
 
-        if (HoverTipSetOwnerField != null && NGame.Instance?.HoverTipsContainer != null)
+        if (VanillaPrivate.HoverTipSetOwner.IsAvailable && NGame.Instance?.HoverTipsContainer != null)
         {
             foreach (Node child in NGame.Instance.HoverTipsContainer.GetChildren())
             {
                 if (child is NHoverTipSet set
-                    && ReferenceEquals(HoverTipSetOwnerField.GetValue(set), creature.Hitbox))
+                    && ReferenceEquals(VanillaPrivate.HoverTipSetOwner.Get(set), creature.Hitbox))
                 {
                     hoverTipSet = set;
                     return true;
@@ -398,7 +395,7 @@ internal static class MonsterIntentGraphOverlayController
 
     private static void Reposition(NMonsterIntentGraphPanel panel, NHoverTipSet tipSet)
     {
-        if (TextContainerField?.GetValue(tipSet) is not Control textContainer)
+        if (VanillaPrivate.HoverTipSetTextHoverTipContainer.Get(tipSet) is not Control textContainer)
         {
             LogReflectionFailure("Cannot resolve NHoverTipSet text container field.");
             return;
@@ -466,24 +463,6 @@ internal static class MonsterIntentGraphOverlayController
             Mathf.Max(ScreenPadding, viewport.Size.Y - panel.Size.Y - ScreenPadding));
 
         panel.GlobalPosition = new Vector2(panel.GlobalPosition.X, clampedY);
-    }
-
-    private static FieldInfo? ResolveActiveHoverTipsField()
-    {
-        Type t = typeof(NHoverTipSet);
-        return t.GetField("_activeHoverTips", BindingFlags.Static | BindingFlags.NonPublic)
-               ?? t.GetFields(BindingFlags.Static | BindingFlags.NonPublic)
-                   .FirstOrDefault(field => typeof(IDictionary).IsAssignableFrom(field.FieldType));
-    }
-
-    private static FieldInfo? ResolveTextContainerField()
-    {
-        Type t = typeof(NHoverTipSet);
-        return t.GetField("_textHoverTipContainer", BindingFlags.Instance | BindingFlags.NonPublic)
-               ?? t.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-                   .FirstOrDefault(field =>
-                       typeof(Control).IsAssignableFrom(field.FieldType)
-                       && field.Name.Contains("text", StringComparison.OrdinalIgnoreCase));
     }
 
     private static void LogReflectionFailure(string message)

@@ -19,6 +19,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.ValueProps;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
@@ -77,16 +78,12 @@ internal sealed class DamagePreviewTrace : IDisposable
     internal static string Icon(string path) =>
         ResourceLoader.Exists(path) ? $"[img width=24 height=24]{path}[/img]" : "◇";
 
-    // 充能球沿用游戏内充能球栏显示的图标资源。
-    private static readonly Func<OrbModel, string> OrbIconPath =
-        AccessTools.MethodDelegate<Func<OrbModel, string>>(
-            AccessTools.PropertyGetter(typeof(OrbModel), "IconPath"));
-
     internal static string Name(object source) => source switch
     {
         PowerModel power when PowerIconResolver.TryResolve(power, out ResolvedPowerIcon icon) => Icon(icon.Path),
         RelicModel relic => Icon(relic.PackedIconPath),
-        OrbModel orb => Icon(OrbIconPath(orb)),
+        // 充能球沿用游戏内充能球栏显示的图标资源。
+        OrbModel orb => VanillaPrivate.OrbModelIconPath.Get(orb) is { } orbIcon ? Icon(orbIcon) : "◇",
         CardModel => "◇",
         MonsterModel => "◆",
         EnchantmentModel enchantment => Icon(enchantment.IconPath),

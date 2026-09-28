@@ -19,6 +19,7 @@ using LibraryOfRuina.specialguests;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina;
 
@@ -82,6 +83,7 @@ public static class LibraryOfRuinaInitializer
         LibraryPatcher.Result? patchResult = null;
         bool completed = report.RunAll(
         [
+            new("VanillaPrivate", false, VanillaPrivate.Report),
             new("IntentGraphDisplayConfig", false, IntentGraphDisplayConfigRepository.Initialize),
             new("TemporaryMaps", true, TemporaryMapController.Initialize),
             new("MainMenuBgm", false, MainMenuBgmController.Initialize),
@@ -92,6 +94,7 @@ public static class LibraryOfRuinaInitializer
             new("SavedPropertyTypes", true, SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes),
             new("SpecialGuests", true, SpecialGuestAutoRegistrar.Initialize),
             new("CardPools", true, RegisterRuntimeCardPools),
+            new("LibraryExtensionPoints", true, LibraryExtensionPoints.Register),
             new("GameplayPatches", true, () => patchResult = LibraryPatcher.ApplyAll(harmony)),
             new("Cursor", false, LibraryCursorPatch.ApplyToCurrentGame),
         ]);

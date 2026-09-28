@@ -10,12 +10,12 @@ using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Runs.History;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.relics;
 
 internal static class AbnormalityPageRewardHelper
 {
-    private static readonly FieldInfo? PendingRelicField = AccessTools.Field(typeof(RelicReward), "_relic");
 
     public static bool ShouldAddPageReward<TPageRelic>(
         CombatRoom room,
@@ -158,7 +158,7 @@ internal static class AbnormalityPageRewardHelper
             return true;
         }
 
-        if (PendingRelicField?.GetValue(reward) is RelicModel pendingRelic && pendingRelic.Id == relicId)
+        if (VanillaPrivate.RelicRewardRelic.Get(reward) is RelicModel pendingRelic && pendingRelic.Id == relicId)
         {
             return true;
         }

@@ -13,5 +13,8 @@
   <ItemGroup>
     <Reference Include="0Harmony" HintPath="$(Sts2DataDir)/0Harmony.dll" />
     <Compile Include="../../src/infra/patching/PatchClassRules.cs" Link="PatchClassRules.cs" />
+    <Compile Include="../../src/infra/patching/IlFingerprint.cs" Link="IlFingerprint.cs" />
+    <Compile Remove="OtherAssembly/**" />
+    <ProjectReference Include="OtherAssembly/OtherAssembly.csproj" Aliases="other" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.HistoryFloorLiberation;
 
@@ -96,8 +97,6 @@ internal static class HistoryFloorForgottenStateDisplayPatch
 {
     private const float StateDisplayDropY = 32f;
 
-    private static readonly FieldInfo? OriginalPositionField =
-        AccessTools.Field(typeof(NCreatureStateDisplay), "_originalPosition");
 
     private static void Postfix(Creature creature, NCreatureStateDisplay __instance)
     {
@@ -108,6 +107,6 @@ internal static class HistoryFloorForgottenStateDisplayPatch
 
         Vector2 droppedPosition = __instance.Position + Vector2.Down * StateDisplayDropY;
         __instance.Position = droppedPosition;
-        OriginalPositionField?.SetValue(__instance, droppedPosition);
+        VanillaPrivate.CreatureStateDisplayOriginalPosition.Set(__instance, droppedPosition);
     }
 }

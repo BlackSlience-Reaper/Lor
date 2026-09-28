@@ -5,6 +5,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -16,9 +17,6 @@ internal static class LibraryCursorPatch
 
     private static readonly Vector2 CursorHotSpot = new(17f, 17f);
 
-    private static readonly FieldInfo CursorTiltedField = typeof(NCursorManager).GetField("_cursorTilted", BindingFlags.NonPublic | BindingFlags.Instance)!;
-    private static readonly FieldInfo CursorNotTiltedField = typeof(NCursorManager).GetField("_cursorNotTilted", BindingFlags.NonPublic | BindingFlags.Instance)!;
-    private static readonly FieldInfo CursorInspectField = typeof(NCursorManager).GetField("_cursorInspect", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
     private static Image? _defaultCursor;
     private static Image? _tiltedCursor;
@@ -40,9 +38,9 @@ internal static class LibraryCursorPatch
             var tiltedCursor = _tiltedCursor ??= LoadImage(CursorTiltedPath);
             var inspectCursor = _inspectCursor ??= LoadImage(CursorInspectPath);
 
-            CursorTiltedField.SetValue(cursorManager, tiltedCursor);
-            CursorNotTiltedField.SetValue(cursorManager, defaultCursor);
-            CursorInspectField.SetValue(cursorManager, inspectCursor);
+            VanillaPrivate.CursorManagerCursorTilted.Set(cursorManager, tiltedCursor);
+            VanillaPrivate.CursorManagerCursorNotTilted.Set(cursorManager, defaultCursor);
+            VanillaPrivate.CursorManagerCursorInspect.Set(cursorManager, inspectCursor);
 
             Input.SetCustomMouseCursor(inspectCursor, Input.CursorShape.Help, CursorHotSpot);
             cursorManager.OverrideCursor(tiltedCursor, defaultCursor, CursorHotSpot);
