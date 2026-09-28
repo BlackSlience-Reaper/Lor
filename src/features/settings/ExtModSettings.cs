@@ -1,9 +1,11 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,7 +51,8 @@ internal abstract partial class ExtModSettings
     private const int SchemaVersion = 1;
     // Keys this build does not know (removed settings, or settings from a newer build) are
     // written back unchanged.
-    private readonly Dictionary<string, string> _unknownValues = new();
+    // Kept as raw JSON so a newer build's non-string values survive the round trip.
+    private readonly Dictionary<string, JsonNode?> _unknownValues = new();
 
     protected readonly List<PropertyInfo> ConfigProperties = [];
     private readonly Dictionary<string, object?> _defaultValues = new();
@@ -208,7 +211,7 @@ internal abstract partial class ExtModSettings
             return;
         }
 
-        Dictionary<string, string> values = [];
+        var values = new JsonObject();
         try
         {
             foreach (var property in ConfigProperties)
@@ -229,8 +232,11 @@ internal abstract partial class ExtModSettings
         }
 
         foreach (var (key, value) in _unknownValues)
-            values.TryAdd(key, value);
-        values[SchemaVersionKey] = SchemaVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        {
+            if (!values.ContainsKey(key))
+                values.Add(key, value?.DeepClone());
+        }
+        values[SchemaVersionKey] = SchemaVersion.ToString(CultureInfo.InvariantCulture);
 
         try
         {
@@ -271,23 +277,36 @@ internal abstract partial class ExtModSettings
 
         try
         {
-            Dictionary<string, string>? values;
+            // Parse to a JSON tree first: a newer build may store non-string values, which must be
+            // detected as "newer" rather than treated as a corrupt file and replaced.
+            JsonNode? root;
             using (var fs = File.OpenRead(_path))
-                values = JsonSerializer.Deserialize<Dictionary<string, string>>(fs);
+                root = JsonNode.Parse(fs);
 
-            if (values == null)
+            if (root == null)
             {
                 SettingsLogger.Warn($"Config file {_configName} was empty. Re-saving defaults.");
                 hasSoftErrors = true;
             }
+            else if (root is not JsonObject values)
+            {
+                throw new JsonException("The config root is not a JSON object.");
+            }
             else
             {
+                var fileSchema = ReadSchemaVersion(values[SchemaVersionKey]);
                 foreach (var property in ConfigProperties)
                 {
-                    if (!values.TryGetValue(property.Name, out var value))
+                    if (!values.TryGetPropertyValue(property.Name, out var node) || node == null)
                     {
                         SettingsLogger.Warn($"Config {_configName} missing {property.Name}; will re-save.");
                         _lastMissingProperties.Add(property.Name);
+                        hasSoftErrors = true;
+                        continue;
+                    }
+                    if (node is not JsonValue jsonValue || !jsonValue.TryGetValue(out string? value))
+                    {
+                        SettingsLogger.Warn($"Config {_configName}.{property.Name} is not a string value; ignored.");
                         hasSoftErrors = true;
                         continue;
                     }
@@ -295,20 +314,18 @@ internal abstract partial class ExtModSettings
                 }
 
                 var knownNames = ConfigProperties.Select(static property => property.Name).ToHashSet();
-                foreach (var (key, value) in values)
+                foreach (var (key, node) in values)
                 {
                     if (key != SchemaVersionKey && !knownNames.Contains(key))
-                        _unknownValues[key] = value;
+                        _unknownValues[key] = node?.DeepClone();
                 }
 
-                if (values.TryGetValue(SchemaVersionKey, out var schemaText)
-                    && int.TryParse(schemaText, System.Globalization.NumberStyles.Integer,
-                        System.Globalization.CultureInfo.InvariantCulture, out var fileSchema)
-                    && fileSchema > SchemaVersion)
+                if (fileSchema > SchemaVersion)
                 {
                     SettingsLogger.Warn(
-                        $"Config {_configName} was written by a newer version (schema {fileSchema} > {SchemaVersion}); "
-                        + "changes made in this version are kept in memory only.");
+                        $"Config {_configName} was written by a newer version of the mod (schema {fileSchema} > {SchemaVersion}). "
+                        + "Settings changed in this version are not saved.",
+                        showInGui: true);
                     _savingDisabled = true;
                     return;
                 }
@@ -346,6 +363,18 @@ internal abstract partial class ExtModSettings
             SettingsLogger.Warn($"Saving fresh config for {_configName} to correct soft errors.");
             Save();
         }
+    }
+
+    private static int ReadSchemaVersion(JsonNode? node)
+    {
+        if (node is not JsonValue value)
+            return 0;
+        if (value.TryGetValue(out int number))
+            return number;
+        return value.TryGetValue(out string? text)
+               && int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed)
+            ? parsed
+            : 0;
     }
 
     private static bool TryApplyPropertyValue(PropertyInfo property, string value)

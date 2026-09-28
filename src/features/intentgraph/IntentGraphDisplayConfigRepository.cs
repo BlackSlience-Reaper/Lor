@@ -19,7 +19,9 @@ internal static class IntentGraphDisplayConfigRepository
     private const string LegacyConfigPathInPack = "res://LibraryOfRuina/config/intentgraph_display.json";
     private const string ConfigPathInUser = "user://LibraryOfRuina/config/intentgraph_display.jsonc";
     private const string LegacyConfigPathInUser = "user://LibraryOfRuina/config/intentgraph_display.json";
-    // 旧版把可编辑副本生成在模组安装目录；首次运行时复制到 user://，原文件不动。
+    // 旧版把可编辑副本生成在模组安装目录，并且优先于 user:// 读取。新版首次运行时以安装目录那份为准
+    // 迁移到 user://（原 user 文件先备份），写下标记后只读 user://；安装目录里的文件不动。
+    private const string MigrationMarkerInUser = "user://LibraryOfRuina/config/intentgraph_display.migrated";
     private const string LegacyConfigPathInModsRelative = "config/intentgraph_display.jsonc";
     private const string OlderConfigPathInModsRelative = "config/intentgraph_display.json";
     private const string DefaultConfigTemplate = "{\n  \"enabled\": false\n}\n";
@@ -134,23 +136,58 @@ internal static class IntentGraphDisplayConfigRepository
         }
 
         _editableConfigEnsured = true;
+        if (!FileAccess.FileExists(MigrationMarkerInUser))
+        {
+            bool migrated = true;
+            if (TryReadLegacyModsConfig(out string legacyText))
+            {
+                BackUpUserConfigBeforeMigration();
+                // 旧版的 enabled=true 默认模板已改为默认关闭；玩家手改过的内容原样保留。
+                migrated = TryWriteUserText(
+                    ConfigPathInUser,
+                    IsLegacyEnabledTrueTemplate(legacyText) ? DefaultConfigTemplate : legacyText);
+            }
+
+            if (migrated)
+            {
+                TryWriteUserText(MigrationMarkerInUser, "");
+            }
+        }
+
         if (FileAccess.FileExists(ConfigPathInUser) || FileAccess.FileExists(LegacyConfigPathInUser))
         {
             return;
         }
 
         string content = DefaultConfigTemplate;
-        if (TryReadLegacyModsConfig(out string? legacyText))
-        {
-            // 旧版的 enabled=true 默认模板已改为默认关闭；玩家手改过的内容原样保留。
-            content = IsLegacyEnabledTrueTemplate(legacyText) ? DefaultConfigTemplate : legacyText;
-        }
-        else if (TryReadTextFromPath(ConfigPathInPack, out string? packText) && !string.IsNullOrWhiteSpace(packText))
+        if (TryReadTextFromPath(ConfigPathInPack, out string? packText) && !string.IsNullOrWhiteSpace(packText))
         {
             content = packText;
         }
 
-        TryWriteUserConfig(content);
+        TryWriteUserText(ConfigPathInUser, content);
+    }
+
+    private static void BackUpUserConfigBeforeMigration()
+    {
+        foreach (string path in new[] { ConfigPathInUser, LegacyConfigPathInUser })
+        {
+            if (!FileAccess.FileExists(path))
+            {
+                continue;
+            }
+
+            string absolutePath = ProjectSettings.GlobalizePath(path);
+            try
+            {
+                File.Copy(absolutePath, absolutePath + ".before-migration.bak", overwrite: true);
+                Log.Info("[IntentGraph] Backed up " + absolutePath + " before migrating the mod-directory config.");
+            }
+            catch (Exception exception)
+            {
+                Log.Warn("[IntentGraph] Failed to back up " + absolutePath + ": " + exception.Message);
+            }
+        }
     }
 
     private static bool TryReadLegacyModsConfig(out string text)
@@ -200,9 +237,9 @@ internal static class IntentGraphDisplayConfigRepository
         }
     }
 
-    private static void TryWriteUserConfig(string content)
+    private static bool TryWriteUserText(string userPath, string content)
     {
-        string absolutePath = ProjectSettings.GlobalizePath(ConfigPathInUser);
+        string absolutePath = ProjectSettings.GlobalizePath(userPath);
         try
         {
             string? parent = Path.GetDirectoryName(absolutePath);
@@ -214,11 +251,13 @@ internal static class IntentGraphDisplayConfigRepository
             string temporaryPath = absolutePath + ".tmp";
             File.WriteAllText(temporaryPath, content, Encoding.UTF8);
             File.Move(temporaryPath, absolutePath, overwrite: true);
-            Log.Info("[IntentGraph] Generated editable display config at: " + absolutePath);
+            Log.Info("[IntentGraph] Wrote " + absolutePath);
+            return true;
         }
         catch (Exception exception)
         {
-            Log.Warn("[IntentGraph] Failed to write default display config: " + exception.Message);
+            Log.Warn("[IntentGraph] Failed to write " + absolutePath + ": " + exception.Message);
+            return false;
         }
     }
 
