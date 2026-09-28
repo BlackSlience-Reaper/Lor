@@ -88,7 +88,6 @@ internal static class AllyTurnProviderVerificationPatch
             "Wrath Servant was not classified as Friendly for player target exclusion.");
 
         Player[] players = await StartFakeMultiplayerFight();
-        TestAllyProvider? friendlyProvider = null;
         try
         {
             CombatState combatState = CombatManager.Instance.DebugOnlyGetState()
@@ -101,33 +100,31 @@ internal static class AllyTurnProviderVerificationPatch
                 ?? throw new InvalidOperationException("Wolf is missing.");
             var littleRed = (LittleRedRidingHoodedMercenary)littleRedCreature.Monster!;
 
-            friendlyProvider = new TestAllyProvider(
-                combatState,
-                wolf,
-                AllyType.Friendly);
-            AllyTurnRegistry.RegisterProvider(friendlyProvider);
+            // Since v0.18.9 Little Red is Friendly outside rage; the wolf is an ordinary enemy.
+            Require(AllyTurnRegistry.GetAllyType(littleRedCreature) == AllyType.Friendly,
+                "Little Red did not begin as Friendly.");
+            Require(AllyTurnRegistry.GetAllyType(wolf) == null,
+                "Wolf was classified as an ally.");
 
             VerifyFriendlyTargeting(
                 combatState,
                 players[0],
-                wolf,
-                littleRedCreature);
+                littleRedCreature,
+                wolf);
             await VerifyFriendlyDamageFinalGuards(
                 players[0],
-                wolf,
-                littleRedCreature);
+                littleRedCreature,
+                wolf);
 
-            Require(AllyTurnRegistry.GetAllyType(littleRedCreature) == AllyType.Neutral,
-                "Little Red did not begin as Neutral.");
             Require(AllyTurnRegistry.IsAllyCreature(littleRedCreature),
-                "Neutral Little Red lost ally-turn identity.");
+                "Friendly Little Red lost ally-turn identity.");
             Require(AllyTurnRegistry.ShouldUseAllyTurn(littleRedCreature),
-                "Neutral Little Red lost the ally-turn route.");
+                "Friendly Little Red lost the ally-turn route.");
             Require(AllyTurnRegistry.CanTransferBlockWith(littleRedCreature),
-                "Neutral Little Red lost block-transfer eligibility.");
+                "Friendly Little Red lost block-transfer eligibility.");
             Require(BlockTransferEncounterTargetHelper.FindPartner(combatState)
                     == littleRedCreature,
-                "Neutral Little Red was not the block-transfer partner.");
+                "Friendly Little Red was not the block-transfer partner.");
 
             await littleRed.EnterRage();
             Require(AllyTurnRegistry.GetAllyType(littleRedCreature) == AllyType.Hostile,
@@ -158,8 +155,8 @@ internal static class AllyTurnProviderVerificationPatch
                 .GetPower<LittleRedRagePower>()
                 ?? throw new InvalidOperationException("Little Red rage power is missing.");
             await PowerCmd.Remove(ragePower);
-            Require(AllyTurnRegistry.GetAllyType(littleRedCreature) == AllyType.Neutral,
-                "Little Red did not return to Neutral after rage.");
+            Require(AllyTurnRegistry.GetAllyType(littleRedCreature) == AllyType.Friendly,
+                "Little Red did not return to Friendly after rage.");
             Require(AllyTurnRegistry.ShouldUseAllyTurn(littleRedCreature),
                 "Little Red did not recover the ally-turn route after rage.");
             Require(BlockTransferEncounterTargetHelper.FindPartner(combatState)
@@ -170,11 +167,6 @@ internal static class AllyTurnProviderVerificationPatch
         }
         finally
         {
-            if (friendlyProvider != null)
-            {
-                AllyTurnRegistry.UnRegisterProvider(friendlyProvider);
-            }
-
             RunManager.Instance.CleanUp(graceful: true);
             await WaitUntil(
                 static () => RunManager.Instance.DebugOnlyGetState() == null,
@@ -232,6 +224,16 @@ internal static class AllyTurnProviderVerificationPatch
             friendly,
             hostileCandidate,
             "LibraryAttackCommand");
+
+        // Single targets skip GetOpponentsOf, so only the final target filters can drop a Friendly ally.
+        Require(GetPossibleTargets(DamageCmd.Attack(1m).FromCard(card, null).Targeting(friendly)).Count == 0
+                && GetPossibleTargets(DamageCmd.Attack(1m).FromCard(card, null).Targeting(hostileCandidate))
+                    .Contains(hostileCandidate),
+            "Single-target AttackCommand retained a Friendly target or removed a hostile target.");
+        Require(GetPossibleTargets(new LibraryAttackCommand(1m).FromCard(card).Targeting(friendly)).Count == 0
+                && GetPossibleTargets(new LibraryAttackCommand(1m).FromCard(card).Targeting(hostileCandidate))
+                    .Contains(hostileCandidate),
+            "Single-target LibraryAttackCommand retained a Friendly target or removed a hostile target.");
 
         VerifyTargetManager(friendly, hostileCandidate);
     }
@@ -434,45 +436,6 @@ internal static class AllyTurnProviderVerificationPatch
         if (!condition)
         {
             throw new InvalidOperationException(message);
-        }
-    }
-
-    private sealed class TestAllyProvider : IAllyTurnProvider
-    {
-        private readonly ICombatState? _combatState;
-        private readonly Creature? _ally;
-
-        public TestAllyProvider()
-        {
-            AllyType = AllyType.Neutral;
-        }
-
-        public TestAllyProvider(
-            ICombatState combatState,
-            Creature ally,
-            AllyType allyType)
-        {
-            _combatState = combatState;
-            _ally = ally;
-            AllyType = allyType;
-        }
-
-        public string AllyId => "ALLY_TYPES_VERIFY_FRIENDLY";
-
-        public AllyType AllyType { get; }
-
-        public AllyPersistence AllyPersistence => AllyPersistence.Encounter;
-
-        public bool IsActiveEncounter(ICombatState combatState) =>
-            _combatState != null && ReferenceEquals(_combatState, combatState);
-
-        public Creature? FindAlly(ICombatState combatState) =>
-            IsActiveEncounter(combatState) ? _ally : null;
-
-        public bool CanTransferBlock => false;
-
-        public void OnCombatReset(Creature? creature)
-        {
         }
     }
 }
