@@ -232,7 +232,7 @@
   "BURROWING_HEAVEN_ATTENTION_AND_FOCUS_CHOICE_CARD.title": "Attention and Focus",
   "BURROWING_HEAVEN_ATTENTION_AND_FOCUS_CHOICE_CARD.description": "Damage you take is increased by [blue]{DamageTakenPercent}%[/blue]. Damage and stagger damage you deal are increased by [blue]{DamageDealtPercent}%[/blue].",
   "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.title": "Pulse",
-  "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description": "At the start of your turn, gain [blue]{Strong}[/blue] [gold]Power Up[/gold]. If you dealt no unblocked damage this turn, lose [red]{HpLoss}[/red] HP at turn end.",
+  "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description": "At combat start, gain [blue]{Strong}[/blue] permanent [gold]Power Up[/gold]. If you dealt no unblocked damage this turn, lose [red]{HpLoss}[/red] HP at turn end.",
   "HEART_OF_ASPIRATION_ASPIRATION_CHOICE_CARD.title": "Aspiration",
   "HEART_OF_ASPIRATION_ASPIRATION_CHOICE_CARD.description": "On pickup, gain max HP equal to [blue]{MaxHpPercent}%[/blue] of your current max HP.",
   "HEART_OF_ASPIRATION_VIOLENT_PULSE_CHOICE_CARD.title": "Violent Pulse",

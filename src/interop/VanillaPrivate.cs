@@ -7,8 +7,6 @@ using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Merchant;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
@@ -83,7 +81,6 @@ internal static class VanillaPrivate
     internal static readonly VanillaPrivateField<NMapScreen, CanvasItem> MapScreenStartingPointNode = new("_startingPointNode");
     internal static readonly VanillaPrivateField<NMapScreen, CanvasItem> MapScreenBossPointNode = new("_bossPointNode");
     internal static readonly VanillaPrivateField<NMapScreen, IDictionary> MapScreenPaths = new("_paths");
-    internal static readonly VanillaPrivateField<MerchantEntry, Player> MerchantEntryPlayer = new("_player");
 
     // 奖励
     internal static readonly VanillaPrivateField<RelicReward, RelicModel> RelicRewardRelic = new("_relic");

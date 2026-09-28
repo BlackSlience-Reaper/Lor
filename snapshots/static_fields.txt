@@ -370,13 +370,6 @@ readonly	LibraryOfRuina.encounters.SocialFloorLiberation.SocialFloorLiberationEn
 readonly	LibraryOfRuina.encounters.SocialFloorLiberation.SocialFloorLiberationEncounter.FaceSlots	System.Collections.Generic.IReadOnlyList`1[System.String]
 readonly	LibraryOfRuina.encounters.WrathServant.WrathServantEncounterHelper.PowerIconPaths	System.String[]
 readonly	LibraryOfRuina.encounters.WrathServant.WrathServantStrong.CameraOffset	Godot.Vector2
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.AdvancedPool	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper+PoolEntry[]
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.CanEnchantFailuresLogged	System.Collections.Generic.HashSet`1[System.String]
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.CanonicalByEntryCache	System.Collections.Generic.Dictionary`2[System.String,MegaCrit.Sts2.Core.Models.EnchantmentModel]
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.EnchantmentCategory	System.String
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.MissingEntriesLogged	System.Collections.Generic.HashSet`1[System.String]
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.NormalPool	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper+PoolEntry[]
-readonly	LibraryOfRuina.events.AltarEnchantment.AltarEnchantmentHelper.ResolveFailuresLogged	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.events.ArtFloorLiberation.ArtFloorLiberationSettlementEvent.RewardTiers	LibraryOfRuina.events.LiberationSettlementRewardTier[]
 readonly	LibraryOfRuina.events.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterfliesEvent.MaxHpLossPercent	System.Decimal
 readonly	LibraryOfRuina.events.HistoryFloorLiberation.HistoryFloorLiberationSettlementEvent.RewardTiers	LibraryOfRuina.events.LiberationSettlementRewardTier[]
@@ -806,7 +799,6 @@ readonly	LibraryOfRuina.interop.VanillaPrivate.HoverTipSetTextHoverTipContainer	
 readonly	LibraryOfRuina.interop.VanillaPrivate.MapScreenBossPointNode	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen,Godot.CanvasItem]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MapScreenPaths	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen,System.Collections.IDictionary]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MapScreenStartingPointNode	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen,Godot.CanvasItem]
-readonly	LibraryOfRuina.interop.VanillaPrivate.MerchantEntryPlayer	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Entities.Merchant.MerchantEntry,MegaCrit.Sts2.Core.Entities.Players.Player]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MonsterModelIsPerformingMove	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Models.MonsterModel,System.Boolean]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MonsterMoveStateMachineInitialState	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine.MonsterMoveStateMachine,MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine.MonsterState]
 readonly	LibraryOfRuina.interop.VanillaPrivate.OrbModelIconPath	LibraryOfRuina.interop.VanillaPrivateProperty`2[MegaCrit.Sts2.Core.Models.OrbModel,System.String]
@@ -1115,10 +1107,6 @@ readonly	LibraryOfRuina.monsters.WrathServant.GreenStemHermit.SfxPaths	System.St
 readonly	LibraryOfRuina.monsters.WrathServant.HermitStaff.AssetPathsStatic	System.Collections.Generic.IReadOnlyList`1[System.String]
 readonly	LibraryOfRuina.monsters.WrathServant.WrathServant.AssetPathsStatic	System.Collections.Generic.IReadOnlyList`1[System.String]
 readonly	LibraryOfRuina.monsters.WrathServant.WrathServant.SfxPaths	System.String[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.AllOptions	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.GroupOne	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.GroupThree	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.GroupTwo	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
 readonly	LibraryOfRuina.networking.LibraryNetwork.InitLock	System.Threading.Lock
 readonly	LibraryOfRuina.networking.LibraryNetwork.LittleRedBlockTransferDescriptor	STS2RitsuLib.Networking.ManagedActions.RitsuLibManagedNetActionDescriptor`1[LibraryOfRuina.networking.LibraryNetwork+LittleRedBlockTransferPayload]
 readonly	LibraryOfRuina.networking.LibraryNetwork.StoryBarrierDescriptor	STS2RitsuLib.Networking.Sidecar.RitsuLibSidecarSyncMessageDescriptor`1[LibraryOfRuina.networking.LibraryNetwork+StoryBarrierPayload]

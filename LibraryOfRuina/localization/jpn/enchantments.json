@@ -1,6 +1,4 @@
 {
-  "YANAMI_ETHEREAL_ENCHANTMENT.title": "エセリアル",
-  "YANAMI_ETHEREAL_ENCHANTMENT.description": "このカードは[gold]エセリアル、廃棄[/gold]を得る。",
   "MATCH_FLAME_ENCHANTMENT.title": "炎",
   "MATCH_FLAME_ENCHANTMENT.description": "このカードをプレイするたび、ダメージ+[blue]{Damage}[/blue]。対象に[blue]{Burn}[/blue]スタックの[gold]火傷[/gold]を付与する。この戦闘中、同じカードを[blue]{Threshold}[/blue]回目以降にプレイしたとき、自分に[blue]{SelfBurn}[/blue]スタックの[gold]火傷[/gold]を付与する。",
   "MATCH_FLAME_ENCHANTMENT.extraCardText": "このカードをプレイするたび、ダメージ+[blue]{Damage}[/blue]。対象に[blue]{Burn}[/blue]スタックの[gold]火傷[/gold]を付与する。この戦闘中、同じカードを[blue]{Threshold}[/blue]回目以降にプレイしたとき、自分に[blue]{SelfBurn}[/blue]スタックの[gold]火傷[/gold]を付与する。",

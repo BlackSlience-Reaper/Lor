@@ -1,6 +1,4 @@
 {
-  "YANAMI_ETHEREAL_ENCHANTMENT.title": "휘발",
-  "YANAMI_ETHEREAL_ENCHANTMENT.description": "이 카드는 [gold]휘발과 소멸[/gold]을 얻습니다.",
   "MATCH_FLAME_ENCHANTMENT.title": "불꽃",
   "MATCH_FLAME_ENCHANTMENT.description": "이 카드를 낼 때마다 피해량이 [blue]{Damage}[/blue] 증가합니다. 대상에게 [gold]화상[/gold] [blue]{Burn}[/blue]중첩을 부여합니다. 같은 카드를 이번 전투에서 [blue]{Threshold}[/blue]번째부터 낼 때마다, 자신에게 [gold]화상[/gold] [blue]{SelfBurn}[/blue]중첩을 부여합니다.",
   "MATCH_FLAME_ENCHANTMENT.extraCardText": "이 카드를 낼 때마다 피해량이 [blue]{Damage}[/blue] 증가합니다. 대상에게 [gold]화상[/gold] [blue]{Burn}[/blue]중첩을 부여합니다. 같은 카드를 이번 전투에서 [blue]{Threshold}[/blue]번째부터 낼 때마다, 자신에게 [gold]화상[/gold] [blue]{SelfBurn}[/blue]중첩을 부여합니다.",
