@@ -9,14 +9,19 @@ using FileAccess = Godot.FileAccess;
 
 namespace LibraryOfRuina.features.intentgraph;
 
+/// <summary>
+/// 意图图的显示开关。玩家可编辑的副本只放在 <c>user://LibraryOfRuina/config/</c>：
+/// 模组安装目录可能只读，创意工坊更新时也会被覆盖或校验，所以这里不写入安装目录。
+/// </summary>
 internal static class IntentGraphDisplayConfigRepository
 {
     private const string ConfigPathInPack = "res://LibraryOfRuina/config/intentgraph_display.jsonc";
     private const string LegacyConfigPathInPack = "res://LibraryOfRuina/config/intentgraph_display.json";
     private const string ConfigPathInUser = "user://LibraryOfRuina/config/intentgraph_display.jsonc";
     private const string LegacyConfigPathInUser = "user://LibraryOfRuina/config/intentgraph_display.json";
-    private const string ConfigPathInModsRelative = "config/intentgraph_display.jsonc";
-    private const string LegacyConfigPathInModsRelative = "config/intentgraph_display.json";
+    // 旧版把可编辑副本生成在模组安装目录；首次运行时复制到 user://，原文件不动。
+    private const string LegacyConfigPathInModsRelative = "config/intentgraph_display.jsonc";
+    private const string OlderConfigPathInModsRelative = "config/intentgraph_display.json";
     private const string DefaultConfigTemplate = "{\n  \"enabled\": false\n}\n";
     private const string LegacyDefaultEnabledTemplate = "{\n  \"enabled\": true\n}\n";
 
@@ -110,39 +115,12 @@ internal static class IntentGraphDisplayConfigRepository
 
     private static string? ResolveConfigPathLocked()
     {
-        string? modsConfigPath = ResolveModsConfigAbsolutePathLocked();
-        string? legacyModsConfigPath = ResolveLegacyModsConfigAbsolutePathLocked();
-        TryMigrateLegacyConfigFile(legacyModsConfigPath, modsConfigPath);
-        TryMigrateLegacyEnabledTrueTemplate(modsConfigPath);
-
-        if (!string.IsNullOrWhiteSpace(modsConfigPath) && File.Exists(modsConfigPath))
+        foreach (string path in new[] { ConfigPathInUser, LegacyConfigPathInUser, ConfigPathInPack, LegacyConfigPathInPack })
         {
-            return modsConfigPath;
-        }
-
-        if (!string.IsNullOrWhiteSpace(legacyModsConfigPath) && File.Exists(legacyModsConfigPath))
-        {
-            return legacyModsConfigPath;
-        }
-
-        if (FileAccess.FileExists(ConfigPathInUser))
-        {
-            return ConfigPathInUser;
-        }
-
-        if (FileAccess.FileExists(LegacyConfigPathInUser))
-        {
-            return LegacyConfigPathInUser;
-        }
-
-        if (FileAccess.FileExists(ConfigPathInPack))
-        {
-            return ConfigPathInPack;
-        }
-
-        if (FileAccess.FileExists(LegacyConfigPathInPack))
-        {
-            return LegacyConfigPathInPack;
+            if (FileAccess.FileExists(path))
+            {
+                return path;
+            }
         }
 
         return null;
@@ -156,26 +134,43 @@ internal static class IntentGraphDisplayConfigRepository
         }
 
         _editableConfigEnsured = true;
-
-        string? modsConfigPath = ResolveModsConfigAbsolutePathLocked();
-        string? legacyModsConfigPath = ResolveLegacyModsConfigAbsolutePathLocked();
-        TryMigrateLegacyConfigFile(legacyModsConfigPath, modsConfigPath);
-        TryMigrateLegacyEnabledTrueTemplate(modsConfigPath);
-
-        if (string.IsNullOrWhiteSpace(modsConfigPath) || File.Exists(modsConfigPath))
+        if (FileAccess.FileExists(ConfigPathInUser) || FileAccess.FileExists(LegacyConfigPathInUser))
         {
             return;
         }
 
-        if (TryReadTextFromPath(ConfigPathInPack, out string? defaultJson) && !string.IsNullOrWhiteSpace(defaultJson))
+        string content = DefaultConfigTemplate;
+        if (TryReadLegacyModsConfig(out string? legacyText))
         {
-            if (TryWriteDefaultConfig(modsConfigPath, defaultJson))
+            // 旧版的 enabled=true 默认模板已改为默认关闭；玩家手改过的内容原样保留。
+            content = IsLegacyEnabledTrueTemplate(legacyText) ? DefaultConfigTemplate : legacyText;
+        }
+        else if (TryReadTextFromPath(ConfigPathInPack, out string? packText) && !string.IsNullOrWhiteSpace(packText))
+        {
+            content = packText;
+        }
+
+        TryWriteUserConfig(content);
+    }
+
+    private static bool TryReadLegacyModsConfig(out string text)
+    {
+        foreach (string relative in new[] { LegacyConfigPathInModsRelative, OlderConfigPathInModsRelative })
+        {
+            string? path = ResolveModsDirectoryPath(relative);
+            if (path != null
+                && File.Exists(path)
+                && TryReadTextFromPath(path, out string? content)
+                && !string.IsNullOrWhiteSpace(content))
             {
-                return;
+                text = content;
+                Log.Info("[IntentGraph] Copying display config from the mod directory to " + ConfigPathInUser + ": " + path);
+                return true;
             }
         }
 
-        TryWriteDefaultConfig(modsConfigPath, DefaultConfigTemplate);
+        text = "";
+        return false;
     }
 
     private static bool TryReadTextFromPath(string path, out string? text)
@@ -205,8 +200,9 @@ internal static class IntentGraphDisplayConfigRepository
         }
     }
 
-    private static bool TryWriteDefaultConfig(string absolutePath, string content)
+    private static void TryWriteUserConfig(string content)
     {
+        string absolutePath = ProjectSettings.GlobalizePath(ConfigPathInUser);
         try
         {
             string? parent = Path.GetDirectoryName(absolutePath);
@@ -215,14 +211,14 @@ internal static class IntentGraphDisplayConfigRepository
                 Directory.CreateDirectory(parent);
             }
 
-            File.WriteAllText(absolutePath, content, Encoding.UTF8);
+            string temporaryPath = absolutePath + ".tmp";
+            File.WriteAllText(temporaryPath, content, Encoding.UTF8);
+            File.Move(temporaryPath, absolutePath, overwrite: true);
             Log.Info("[IntentGraph] Generated editable display config at: " + absolutePath);
-            return true;
         }
         catch (Exception exception)
         {
             Log.Warn("[IntentGraph] Failed to write default display config: " + exception.Message);
-            return false;
         }
     }
 
@@ -232,17 +228,7 @@ internal static class IntentGraphDisplayConfigRepository
                || path.StartsWith("user://", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static string? ResolveModsConfigAbsolutePathLocked()
-    {
-        return ResolveModsConfigAbsolutePathLocked(ConfigPathInModsRelative);
-    }
-
-    private static string? ResolveLegacyModsConfigAbsolutePathLocked()
-    {
-        return ResolveModsConfigAbsolutePathLocked(LegacyConfigPathInModsRelative);
-    }
-
-    private static string? ResolveModsConfigAbsolutePathLocked(string relativeConfigPath)
+    private static string? ResolveModsDirectoryPath(string relativeConfigPath)
     {
         try
         {
@@ -269,74 +255,6 @@ internal static class IntentGraphDisplayConfigRepository
         }
     }
 
-    private static void TryMigrateLegacyConfigFile(string? legacyPath, string? currentPath)
-    {
-        if (string.IsNullOrWhiteSpace(legacyPath)
-            || string.IsNullOrWhiteSpace(currentPath)
-            || !File.Exists(legacyPath))
-        {
-            return;
-        }
-
-        if (string.Equals(
-                Path.GetFullPath(legacyPath),
-                Path.GetFullPath(currentPath),
-                StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        try
-        {
-            string? parent = Path.GetDirectoryName(currentPath);
-            if (!string.IsNullOrWhiteSpace(parent))
-            {
-                Directory.CreateDirectory(parent);
-            }
-
-            if (!File.Exists(currentPath))
-            {
-                File.Move(legacyPath, currentPath);
-            }
-            else
-            {
-                File.Delete(legacyPath);
-            }
-        }
-        catch (Exception exception)
-        {
-            Log.Warn("[IntentGraph] Failed to migrate legacy config file: " + exception.Message);
-        }
-    }
-
-    private static void TryMigrateLegacyEnabledTrueTemplate(string? configPath)
-    {
-        if (string.IsNullOrWhiteSpace(configPath) || !File.Exists(configPath))
-        {
-            return;
-        }
-
-        if (!TryReadTextFromPath(configPath, out string? currentText) || string.IsNullOrWhiteSpace(currentText))
-        {
-            return;
-        }
-
-        if (!IsLegacyEnabledTrueTemplate(currentText))
-        {
-            return;
-        }
-
-        try
-        {
-            File.WriteAllText(configPath, DefaultConfigTemplate, Encoding.UTF8);
-            Log.Info("[IntentGraph] Migrated legacy default display config to enabled=false at: " + configPath);
-        }
-        catch (Exception exception)
-        {
-            Log.Warn("[IntentGraph] Failed to migrate legacy default display config: " + exception.Message);
-        }
-    }
-
     private static bool IsLegacyEnabledTrueTemplate(string text)
     {
         string normalizedCurrent = NormalizeTemplateText(text);
@@ -346,7 +264,7 @@ internal static class IntentGraphDisplayConfigRepository
 
     private static string NormalizeTemplateText(string text)
     {
-        if (!string.IsNullOrEmpty(text) && text[0] == '\uFEFF')
+        if (!string.IsNullOrEmpty(text) && text[0] == '﻿')
         {
             text = text.Substring(1);
         }

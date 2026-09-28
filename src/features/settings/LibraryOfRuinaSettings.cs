@@ -282,6 +282,7 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     }
 
     [SettingsHideInUI]
+    [SettingsKeepOnRestoreDefaults]
     public static bool StringTheocracyRunBgmDefaultApplied { get; set; } = true;
 
     [SettingsSection("MoonText")]
@@ -291,9 +292,11 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     public static bool FtueTutorialEnabled { get; set; } = true;
 
     [SettingsHideInUI]
+    [SettingsKeepOnRestoreDefaults]
     public static string FtueTutorialShownIds { get; set; } = "";
 
     [SettingsHideInUI]
+    [SettingsKeepOnRestoreDefaults]
     public static string FtueTutorialDefaultFingerprint { get; set; } =
         LibraryOfRuinaFtueIds.CurrentUpdateLogTutorialFingerprint;
 
@@ -338,12 +341,6 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
 
     [SettingsHideInUI]
     public static bool DebugMode { get; set; }
-
-    [SettingsIgnore]
-    public static double InternalCounter { get; set; }
-
-    [SettingsHideInUI]
-    public static string CachedToken { get; set; } = "";
 
     public LibraryOfRuinaSettings()
     {

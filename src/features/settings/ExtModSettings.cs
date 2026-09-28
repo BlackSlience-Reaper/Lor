@@ -39,8 +39,17 @@ internal abstract partial class ExtModSettings
     private bool _savingDisabled;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
     private CancellationTokenSource? _saveDebounceToken;
-    private readonly SemaphoreSlim _saveLock = new(1, 1);
+    // Debounced saves run on the thread pool; every writer (debounce, UI, quit) takes this lock.
+    private readonly object _saveLock = new();
     private readonly HashSet<string> _lastMissingProperties = [];
+
+    // Written into every config file. A file written by a newer build is applied but never
+    // saved over, so launching an older build does not strip settings it does not know.
+    private const string SchemaVersionKey = "__schemaVersion";
+    private const int SchemaVersion = 1;
+    // Keys this build does not know (removed settings, or settings from a newer build) are
+    // written back unchanged.
+    private readonly Dictionary<string, string> _unknownValues = new();
 
     protected readonly List<PropertyInfo> ConfigProperties = [];
     private readonly Dictionary<string, object?> _defaultValues = new();
@@ -131,6 +140,7 @@ internal abstract partial class ExtModSettings
     {
         foreach (var property in ConfigProperties)
         {
+            if (property.GetCustomAttribute<SettingsKeepOnRestoreDefaultsAttribute>() != null) continue;
             var defaultValue = GetDefaultValue<object?>(property.Name);
             property.SetValue(null, defaultValue);
         }
@@ -173,9 +183,7 @@ internal abstract partial class ExtModSettings
             _saveDebounceToken = new CancellationTokenSource();
             var token = _saveDebounceToken.Token;
             await Task.Delay(delayMs, token);
-            await _saveLock.WaitAsync(token);
-            try { Save(); }
-            finally { _saveLock.Release(); }
+            Save();
         }
         catch (OperationCanceledException) { }
         catch (Exception ex)
@@ -185,6 +193,14 @@ internal abstract partial class ExtModSettings
     }
 
     public void Save()
+    {
+        lock (_saveLock)
+        {
+            SaveLocked();
+        }
+    }
+
+    private void SaveLocked()
     {
         if (_savingDisabled)
         {
@@ -212,11 +228,19 @@ internal abstract partial class ExtModSettings
             return;
         }
 
+        foreach (var (key, value) in _unknownValues)
+            values.TryAdd(key, value);
+        values[SchemaVersionKey] = SchemaVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
         try
         {
             new FileInfo(_path).Directory?.Create();
-            using var fs = File.Create(_path);
-            JsonSerializer.Serialize(fs, values, JsonOptions);
+            // Write a sibling file and rename it over the config, so a crash mid-write
+            // cannot leave a truncated config behind.
+            var temporaryPath = _path + ".tmp";
+            using (var fs = File.Create(temporaryPath))
+                JsonSerializer.Serialize(fs, values, JsonOptions);
+            File.Move(temporaryPath, _path, overwrite: true);
         }
         catch (Exception e)
         {
@@ -225,6 +249,14 @@ internal abstract partial class ExtModSettings
     }
 
     public void Load()
+    {
+        lock (_saveLock)
+        {
+            LoadLocked();
+        }
+    }
+
+    private void LoadLocked()
     {
         if (!File.Exists(_path))
         {
@@ -235,6 +267,7 @@ internal abstract partial class ExtModSettings
         var hasSoftErrors = false;
         _savingDisabled = false;
         _lastMissingProperties.Clear();
+        _unknownValues.Clear();
 
         try
         {
@@ -259,6 +292,25 @@ internal abstract partial class ExtModSettings
                         continue;
                     }
                     if (!TryApplyPropertyValue(property, value)) hasSoftErrors = true;
+                }
+
+                var knownNames = ConfigProperties.Select(static property => property.Name).ToHashSet();
+                foreach (var (key, value) in values)
+                {
+                    if (key != SchemaVersionKey && !knownNames.Contains(key))
+                        _unknownValues[key] = value;
+                }
+
+                if (values.TryGetValue(SchemaVersionKey, out var schemaText)
+                    && int.TryParse(schemaText, System.Globalization.NumberStyles.Integer,
+                        System.Globalization.CultureInfo.InvariantCulture, out var fileSchema)
+                    && fileSchema > SchemaVersion)
+                {
+                    SettingsLogger.Warn(
+                        $"Config {_configName} was written by a newer version (schema {fileSchema} > {SchemaVersion}); "
+                        + "changes made in this version are kept in memory only.");
+                    _savingDisabled = true;
+                    return;
                 }
 
                 if (hasSoftErrors)
