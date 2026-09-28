@@ -6,6 +6,7 @@ using LibraryOfRuina.monsters;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
@@ -37,7 +38,8 @@ public interface IAllyTurnProvider
     /// <summary>
     /// 返回的生物必须是 <see cref="LorMonsterModel"/>：盟友保留格挡、不吃玩家方敌方范围卡的能力，
     /// 是由它的覆写按本注册表判断实现的，其他怪物类型的盟友不会得到这两条规则。
-    /// 泛型接口的约束在编译期保证这一点。
+    /// 泛型参数的约束只限制 <c>TMonster</c>，不约束这里的返回值；现有实现都已核对，新增实现要自己遵守，
+    /// 注册表查到不符合的盟友时每个 provider 记一次警告。
     /// </summary>
     Creature? FindAlly(CombatStateLike combatState);
 
@@ -112,11 +114,26 @@ public static class AllyTurnRegistry
             var ally = provider.FindAlly(creature.CombatState);
             if (ally == creature)
             {
+                WarnIfNotLorMonster(provider, ally);
                 return provider;
             }
         }
 
         return null;
+    }
+
+    private static readonly HashSet<IAllyTurnProvider> WarnedNonLorProviders = [];
+
+    private static void WarnIfNotLorMonster(IAllyTurnProvider provider, Creature ally)
+    {
+        if (ally.Monster is LorMonsterModel || !WarnedNonLorProviders.Add(provider))
+        {
+            return;
+        }
+
+        Log.Warn("[LibraryOfRuina.Ally] Provider " + provider.AllyId + " returned "
+            + (ally.Monster?.GetType().FullName ?? "a non-monster creature")
+            + ", which is not a LorMonsterModel; it will not keep block as an ally or ignore enemy-range powers from players.");
     }
 
     internal static bool IsAllyCreature(Creature? creature)

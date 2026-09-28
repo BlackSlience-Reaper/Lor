@@ -47,7 +47,8 @@ public abstract class LorMonsterModel : LibraryMonsterModel
 
     /// <summary>
     /// 玩家方用敌方范围的卡给本怪物施加能力、而本怪物此时是友方盟友时，数值作废（强化、标记等非减益也一样）。
-    /// 原版的给予修正先加后乘，乘法一轮是连乘，×0 与其他监听者的先后无关。
+    /// 原版的给予修正先加后乘，乘法一轮是连乘，所以最终数值是 0 与其他监听者的先后无关；
+    /// 但每个乘法监听者收到的是当前累计值，排在本怪物之后的监听者会收到 0。
     /// </summary>
     public override decimal ModifyPowerAmountGivenMultiplicative(
         PowerModel power,
