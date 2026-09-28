@@ -10,7 +10,6 @@ using LibraryOfRuina.powers.LanguageFloorLiberation;
 using LibraryOfRuina.scene_transitions;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
