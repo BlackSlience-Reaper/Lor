@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.cards;
 using LibraryOfRuina.compat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
@@ -43,6 +44,11 @@ internal static class AbnormalityPageRewardPreselection
         if (card == null)
         {
             return false;
+        }
+
+        if (card is IPageChoiceCard)
+        {
+            return true;
         }
 
         return PageChoiceCardTypeCache.GetOrAdd(
@@ -157,7 +163,13 @@ internal static class AbnormalityPageRewardPreselection
         CardModel chosenCard,
         PageRelicRegistration registration)
     {
-        object? mode = registration.ResolveModeFromChoiceCard.Invoke(null, [chosenCard]);
+        if (relic is IModalPageRelic modalRelic)
+        {
+            modalRelic.ApplyPreselectedChoice(chosenCard);
+            return;
+        }
+
+        object? mode = registration.ResolveModeFromChoiceCard!.Invoke(null, [chosenCard]);
         if (mode == null)
         {
             throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(chosenCard);
@@ -181,11 +193,21 @@ internal static class AbnormalityPageRewardPreselection
         RelicModel relic,
         PageRelicRegistration registration)
     {
-        return (IReadOnlyList<CardModel>)registration.CreateModeChoiceCards.Invoke(relic, [])!;
+        if (relic is IModalPageRelic modalRelic)
+        {
+            return modalRelic.CreateModeChoiceCards();
+        }
+
+        return (IReadOnlyList<CardModel>)registration.CreateModeChoiceCards!.Invoke(relic, [])!;
     }
 
     private static bool HasConcreteMode(RelicModel relic, PageRelicRegistration registration)
     {
+        if (relic is IModalPageRelic modalRelic)
+        {
+            return modalRelic.HasSelectedMode;
+        }
+
         object? mode = registration.ModeProperty.GetValue(relic);
         if (mode == null)
         {
@@ -210,6 +232,11 @@ internal static class AbnormalityPageRewardPreselection
     {
         foreach (PageRelicRegistration registration in PageRelicsById.Value.Values)
         {
+            if (registration.ResolveModeFromChoiceCard == null)
+            {
+                continue;
+            }
+
             try
             {
                 object? mode = registration.ResolveModeFromChoiceCard.Invoke(
@@ -240,9 +267,11 @@ internal static class AbnormalityPageRewardPreselection
             }
 
             PropertyInfo? modeProperty = AccessTools.Property(type, "Mode");
-            MethodInfo? createModeChoiceCards = FindCreateModeChoiceCards(type);
-            MethodInfo? resolveModeFromChoiceCard = FindResolveModeFromChoiceCard(type, modeProperty);
-            if (modeProperty == null || createModeChoiceCards == null || resolveModeFromChoiceCard == null)
+            bool isModalRelic = typeof(IModalPageRelic).IsAssignableFrom(type);
+            MethodInfo? createModeChoiceCards = isModalRelic ? null : FindCreateModeChoiceCards(type);
+            MethodInfo? resolveModeFromChoiceCard = isModalRelic ? null : FindResolveModeFromChoiceCard(type, modeProperty);
+            if (modeProperty == null
+                || (!isModalRelic && (createModeChoiceCards == null || resolveModeFromChoiceCard == null)))
             {
                 continue;
             }
@@ -359,16 +388,16 @@ internal static class AbnormalityPageRewardPreselection
 
     private sealed class PageRelicRegistration(
         Type relicType,
-        MethodInfo createModeChoiceCards,
-        MethodInfo resolveModeFromChoiceCard,
+        MethodInfo? createModeChoiceCards,
+        MethodInfo? resolveModeFromChoiceCard,
         PropertyInfo modeProperty,
         IReadOnlyList<PageRelicPostObtainedEffect> postObtainedEffects)
     {
         public Type RelicType { get; } = relicType;
 
-        public MethodInfo CreateModeChoiceCards { get; } = createModeChoiceCards;
+        public MethodInfo? CreateModeChoiceCards { get; } = createModeChoiceCards;
 
-        public MethodInfo ResolveModeFromChoiceCard { get; } = resolveModeFromChoiceCard;
+        public MethodInfo? ResolveModeFromChoiceCard { get; } = resolveModeFromChoiceCard;
 
         public PropertyInfo ModeProperty { get; } = modeProperty;
 

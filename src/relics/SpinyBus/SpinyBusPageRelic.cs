@@ -9,9 +9,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -20,7 +18,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.SpinyBus;
 
-public sealed class SpinyBusPageRelic : LibraryRelicModel
+public sealed class SpinyBusPageRelic : ModalPageRelic<SpinyBusPageMode>
 {
     internal const int ThornsDamageBonus = 5;
     internal const int PleasureFlawStacks = 1;
@@ -58,43 +56,10 @@ public sealed class SpinyBusPageRelic : LibraryRelicModel
     [SavedProperty]
     public SpinyBusPageMode Mode { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override SpinyBusPageMode SelectedMode
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != SpinyBusPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
+        get => Mode;
+        set => Mode = value;
     }
 
     public override async Task BeforeCombatStart()
@@ -199,7 +164,7 @@ public sealed class SpinyBusPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -209,65 +174,7 @@ public sealed class SpinyBusPageRelic : LibraryRelicModel
         ];
     }
 
-    private static SpinyBusPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            SpinyBusThornsChoiceCard => SpinyBusPageMode.Thorns,
-            SpinyBusPleasureChoiceCard => SpinyBusPageMode.Pleasure,
-            SpinyBusLaughingPowderChoiceCard => SpinyBusPageMode.LaughingPowder,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(SpinyBusPageMode mode)
-    {
-        return mode is SpinyBusPageMode.None
-            or SpinyBusPageMode.Thorns
-            or SpinyBusPageMode.Pleasure
-            or SpinyBusPageMode.LaughingPowder;
-    }
-
-    private static bool IsConcreteMode(SpinyBusPageMode mode)
-    {
-        return mode is SpinyBusPageMode.Thorns
-            or SpinyBusPageMode.Pleasure
-            or SpinyBusPageMode.LaughingPowder;
-    }
-
-    private void SetMode(SpinyBusPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        SpinyBusPageMode oldMode = Mode;
-        Mode = SpinyBusPageMode.Thorns;
-        Log.Warn("[LibraryOfRuina.PageRelic] SpinyBusPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Thorns.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == SpinyBusPageMode.LaughingPowder && CombatManager.Instance.IsInProgress
@@ -284,26 +191,5 @@ public sealed class SpinyBusPageRelic : LibraryRelicModel
         }
 
         return dealer == Owner.Creature || dealer == Owner.Osty;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
