@@ -31,14 +31,12 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorRedEyesBoss :
-    LorMonsterModel,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster
 {
     public const int Phase = 2;
     public const string FlickeringEyesMoveId = "FLICKERING_EYES";
     public const string UnknownMoveId = "UNKNOWN";
     public const string ScreechMoveId = "SCREECH";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     public const int FlickeringEyesBlock = 8;
     public const int ScreechHits = 3;
@@ -90,14 +88,13 @@ public sealed class LiteratureFloorRedEyesBoss :
     private MoveState? _flickeringEyesState;
     private MoveState? _unknownState;
     private MoveState? _screechState;
-    private MoveState? _reviveAndEmpowerState;
     private bool _backgroundTextStarted;
     private bool _backgroundTextHuntMode;
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool HuntPending { get; private set; }
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     private int ScreechDamage => AscensionHelper.GetValueIfAscension(
         AscensionLevel.DeadlyEnemies,
@@ -347,22 +344,6 @@ public sealed class LiteratureFloorRedEyesBoss :
         LocalOggOneShotPlayer.Play(VigilanceSfxPath, -1.5f);
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         _flickeringEyesState = new MoveState(
@@ -381,14 +362,7 @@ public sealed class LiteratureFloorRedEyesBoss :
             ScreechMove,
             new MultiAttackIntent(ScreechDamage, ScreechHits),
             new BadgedDebuffIntent(IntentBadge.FromPower<LiteratureFloorCocoonBindPower>(), 1));
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var afterScreech = new ConditionalBranchState("AFTER_SCREECH");
         afterScreech.AddState(_screechState, ShouldUseScreech);
@@ -397,14 +371,14 @@ public sealed class LiteratureFloorRedEyesBoss :
         _flickeringEyesState.FollowUpState = _unknownState;
         _unknownState.FollowUpState = _flickeringEyesState;
         _screechState.FollowUpState = afterScreech;
-        _reviveAndEmpowerState.FollowUpState = _flickeringEyesState;
+        reviveAndEmpower.FollowUpState = _flickeringEyesState;
 
         return new MonsterMoveStateMachine(
             [
                 _flickeringEyesState,
                 _unknownState,
                 _screechState,
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 afterScreech
             ],
             _flickeringEyesState);
@@ -542,21 +516,11 @@ public sealed class LiteratureFloorRedEyesBoss :
         StartBackgroundText(huntMode: false);
     }
 
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-        if (Creature.CombatState?.Encounter
-            is LiteratureFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LiteratureFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private bool ShouldUseScreech() =>
         !HasLivingEnhancedSpiders()

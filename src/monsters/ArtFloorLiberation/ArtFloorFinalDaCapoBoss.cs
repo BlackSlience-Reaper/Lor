@@ -46,7 +46,7 @@ internal enum ArtFloorFinalDaCapoSupportCard
     AdagioCantabile
 }
 
-public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 6;
 
@@ -57,7 +57,6 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
     private const string FourthMovementMoveId = "FOURTH_MOVEMENT";
     private const string FinaleMoveId = "FINALE";
     private const string CurtainCallMoveId = "CURTAIN_CALL";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     private const string ModeratoDescriptionKey = "ART_FLOOR_FINAL_DA_CAPO_BOSS.special.moderato.description";
     private const string PrestoDescriptionKey = "ART_FLOOR_FINAL_DA_CAPO_BOSS.special.presto_passionato.description";
@@ -93,7 +92,6 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
     private Dictionary<string, MoveState> _movementStates = [];
 
     private ConditionalBranchState? _routerState;
-    private MoveState? _reviveAndEmpowerState;
 
     private ArtFloorFinalDaCapoMovement _currentMovement = ArtFloorFinalDaCapoMovement.First;
     private string? _currentStateKey;
@@ -104,11 +102,11 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
         base.DeepCloneFields();
         _movementStates = [];
         _routerState = null;
-        _reviveAndEmpowerState = null;
+        ClearReviveAndEmpowerState();
         _currentSupportCards = [.. _currentSupportCards];
     }
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -197,20 +195,6 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         _movementStates.Clear();
@@ -218,14 +202,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
         _currentStateKey = null;
         _currentSupportCards = Array.Empty<ArtFloorFinalDaCapoSupportCard>();
 
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         CreateMovementStates(ArtFloorFinalDaCapoMovement.First, 1, FirstMovementMoveId, FirstMovementMove);
         CreateMovementStates(ArtFloorFinalDaCapoMovement.Second, 2, SecondMovementMoveId, SecondMovementMove);
@@ -243,12 +220,12 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
             state.FollowUpState = _routerState;
         }
 
-        _reviveAndEmpowerState.FollowUpState = _routerState;
+        reviveAndEmpower.FollowUpState = _routerState;
         SelectMovementStateForCurrentMovement();
 
         List<MonsterState> states =
         [
-            _reviveAndEmpowerState,
+            reviveAndEmpower,
             _routerState
         ];
         states.AddRange(_movementStates.Values);
@@ -453,20 +430,10 @@ public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimar
         await AdvanceMovement(new ThrowingPlayerChoiceContext());
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task PerformModerato(PlayerChoiceContext choiceContext)
     {

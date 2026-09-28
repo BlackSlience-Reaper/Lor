@@ -26,14 +26,13 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorPleasureBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 4;
     private const string GrinningMoveId = "GRINNING";
     private const string TrustGameMoveId = "TRUST_GAME";
     private const string PiercingPleasureMoveId = "PIERCING_PLEASURE";
     private const string PleasureEgoMoveId = "PLEASURE_EGO";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
     private const int GrinningBlock = 16;
@@ -55,9 +54,8 @@ public sealed class ArtFloorPleasureBoss : LorMonsterModel, ILiberationPrimaryPh
     private int _baseCadenceIndex;
     private bool _egoQueued;
     private MoveState? _egoState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -156,30 +154,9 @@ public sealed class ArtFloorPleasureBoss : LorMonsterModel, ILiberationPrimaryPh
         return Task.CompletedTask;
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var grinning = new MoveState(
             GrinningMoveId,
@@ -226,12 +203,12 @@ public sealed class ArtFloorPleasureBoss : LorMonsterModel, ILiberationPrimaryPh
         trustGame.FollowUpState = chooser;
         piercingPleasure.FollowUpState = chooser;
         _egoState.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 grinning,
                 trustGame,
                 piercingPleasure,
@@ -241,20 +218,10 @@ public sealed class ArtFloorPleasureBoss : LorMonsterModel, ILiberationPrimaryPh
             chooser);
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task GrinningMove(IReadOnlyList<Creature> targets)
     {

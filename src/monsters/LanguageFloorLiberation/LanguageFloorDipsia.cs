@@ -25,7 +25,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -47,8 +46,7 @@ internal enum LanguageFloorDipsiaMove
 }
 
 public sealed class LanguageFloorDipsia :
-    LorMonsterModel,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster
 {
     public const int MaxHp = 350;
     public const int MaxChaoResistance = 120;
@@ -82,7 +80,6 @@ public sealed class LanguageFloorDipsia :
     public const string ViolentGestureMoveId = "VIOLENT_GESTURE";
     public const string UnbearableThirstMoveId = "UNBEARABLE_THIRST";
     public const string ExtremeBloodthirstMoveId = "EXTREME_BLOODTHIRST";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const string RouterMoveId = "LANGUAGE_FLOOR_DIPSIA_ROUTER";
 
     public const string TextureRoot =
@@ -178,9 +175,10 @@ public sealed class LanguageFloorDipsia :
 
     internal IReadOnlyList<string> LastAttackAnimationTriggers { get; private set; } = [];
 
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => 4;
+    public override int LiberationPhase => 4;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -460,14 +458,7 @@ public sealed class LanguageFloorDipsia :
                 () => 1,
                 "LANGUAGE_FLOOR_DIPSIA_EXTREME_BLOODTHIRST.description",
                 ResolveLivingPlayers));
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
@@ -484,7 +475,7 @@ public sealed class LanguageFloorDipsia :
                      violentGesture,
                      unbearableThirst,
                      extremeBloodthirst,
-                     _reviveAndEmpowerState
+                     reviveAndEmpower
                  })
         {
             state.FollowUpState = router;
@@ -502,47 +493,17 @@ public sealed class LanguageFloorDipsia :
                 violentGesture,
                 unbearableThirst,
                 extremeBloodthirst,
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 router
             ],
             router);
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-        if (Creature.CombatState?.Encounter
-            is LanguageFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LanguageFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private int ElegantDinnerDamage =>
         AscensionHelper.GetValueIfAscension(
