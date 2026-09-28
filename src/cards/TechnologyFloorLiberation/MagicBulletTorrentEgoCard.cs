@@ -17,15 +17,11 @@ public sealed class MagicBulletTorrentEgoCard : EgoCardBase
     public const int HitCount = 3;
     public const int ChaosHealPerHit = 5;
 
-    private int _previewDamage = BaseDamage;
-
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", HitCount),
         new DynamicVar("ChaosHeal", ChaosHealPerHit)
     ];
@@ -36,25 +32,13 @@ public sealed class MagicBulletTorrentEgoCard : EgoCardBase
     ];
 
     public MagicBulletTorrentEgoCard()
-        : base(1)
+        : base(1, previewDamage: BaseDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.BaseValue = UpgradedDamage;
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

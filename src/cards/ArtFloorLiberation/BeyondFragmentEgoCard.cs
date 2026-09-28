@@ -20,8 +20,6 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     public const int StrengthLoss = 3;
     public const int DexterityLoss = 3;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -29,7 +27,7 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(Damage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", HitCount),
         new PowerVar<StrengthPower>("StrengthLoss", StrengthLoss),
         new PowerVar<DexterityPower>("DexterityLoss", DexterityLoss)
@@ -42,14 +40,8 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     ];
 
     public BeyondFragmentEgoCard()
-        : base(3, TargetType.AllEnemies)
+        : base(3, TargetType.AllEnemies, previewDamage: Damage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

@@ -15,10 +15,6 @@ namespace LibraryOfRuina.cards.HistoryFloorLiberation;
 
 public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
 {
-    private int _previewDamage = HistoryFloorForgottenBoss.LongingEmbraceBaseDamage;
-
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorForgottenBoss.LongingEmbraceSfxPath
@@ -26,7 +22,7 @@ public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", HistoryFloorForgottenBoss.LongingEmbraceConfusion)
     ];
 
@@ -40,21 +36,9 @@ public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
     }
 
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
-    }
-
     public ForgottenLongingEmbraceEgoCard()
-        : base(2)
+        : base(2, previewDamage: HistoryFloorForgottenBoss.LongingEmbraceBaseDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

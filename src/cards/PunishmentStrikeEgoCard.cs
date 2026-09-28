@@ -15,10 +15,6 @@ namespace LibraryOfRuina.cards;
 
 public sealed class PunishmentStrikeEgoCard : EgoCardBase
 {
-    private int _previewDamage = HistoryFloorWaspBoss.PunishmentStrikeBaseDamage;
-
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorWaspBoss.AttackBuffSfxPath
@@ -31,7 +27,7 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", HistoryFloorWaspBoss.PunishmentStrikeConfusionAmount),
         new PowerVar<LibraryVulnerablePower>("Vulnerable", HistoryFloorWaspBoss.PunishmentStrikeVulnerableAmount)
     ];
@@ -43,25 +39,13 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
     ];
 
     public PunishmentStrikeEgoCard()
-        : base(3)
+        : base(3, previewDamage: HistoryFloorWaspBoss.PunishmentStrikeBaseDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
     {
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

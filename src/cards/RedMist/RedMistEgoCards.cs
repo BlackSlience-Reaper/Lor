@@ -12,46 +12,30 @@ namespace LibraryOfRuina.cards.RedMist;
 
 public abstract class RedMistEgoCardBase : EgoCardBase
 {
-    protected RedMistEgoCardBase(int cost, TargetType targetType = TargetType.AnyEnemy)
-        : base(cost, targetType)
+    protected RedMistEgoCardBase(int cost, TargetType targetType = TargetType.AnyEnemy, int previewDamage = 0)
+        : base(cost, targetType, previewDamage)
     {
     }
-
-    public override int MaxUpgradeLevel => 1;
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override void OnUpgrade()
     {
     }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
-    }
 }
 
 public sealed class RedMistVerticalSplitEgoCard : RedMistEgoCardBase
 {
-    private int _previewDamage = Kali.VerticalSplitDamage;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", Kali.VerticalSplitHits),
         new DynamicVar("Threshold", Kali.RepeatUnblockedDamageThreshold)
     ];
 
     public RedMistVerticalSplitEgoCard()
-        : base(2)
+        : base(2, previewDamage: Kali.VerticalSplitDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -65,7 +49,7 @@ public sealed class RedMistVerticalSplitEgoCard : RedMistEgoCardBase
             choiceContext,
             this,
             cardPlay.Target,
-            _previewDamage,
+            PreviewDamage,
             Kali.VerticalSplitHits,
             Kali.SlashHitVfx,
             "AttackSlash");
@@ -74,24 +58,16 @@ public sealed class RedMistVerticalSplitEgoCard : RedMistEgoCardBase
 
 public sealed class RedMistThrustEgoCard : RedMistEgoCardBase
 {
-    private int _previewDamage = Kali.ThrustDamage;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", Kali.ThrustHits),
         new DynamicVar("Threshold", Kali.RepeatUnblockedDamageThreshold)
     ];
 
     public RedMistThrustEgoCard()
-        : base(2)
+        : base(2, previewDamage: Kali.ThrustDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -105,7 +81,7 @@ public sealed class RedMistThrustEgoCard : RedMistEgoCardBase
             choiceContext,
             this,
             cardPlay.Target,
-            _previewDamage,
+            PreviewDamage,
             Kali.ThrustHits,
             Kali.PierceHitVfx,
             "AttackPierce");
@@ -114,11 +90,9 @@ public sealed class RedMistThrustEgoCard : RedMistEgoCardBase
 
 public sealed class RedMistHorizontalSlashEgoCard : RedMistEgoCardBase
 {
-    private int _previewDamage = Kali.HorizontalSlashDamage;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", Kali.HorizontalSlashHits),
         new DynamicVar("Threshold", Kali.RepeatUnblockedDamageThreshold),
         new PowerVar<LibraryBleedingPower>("Bleed", Kali.HorizontalSlashBleed)
@@ -130,14 +104,8 @@ public sealed class RedMistHorizontalSlashEgoCard : RedMistEgoCardBase
     ];
 
     public RedMistHorizontalSlashEgoCard()
-        : base(2)
+        : base(2, previewDamage: Kali.HorizontalSlashDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -151,7 +119,7 @@ public sealed class RedMistHorizontalSlashEgoCard : RedMistEgoCardBase
             choiceContext,
             this,
             cardPlay.Target,
-            _previewDamage,
+            PreviewDamage,
             Kali.HorizontalSlashHits,
             Kali.SlashHitVfx,
             "AttackSlash");
@@ -166,23 +134,15 @@ public sealed class RedMistHorizontalSlashEgoCard : RedMistEgoCardBase
 
 public sealed class RedMistBloodMistEgoCard : RedMistEgoCardBase
 {
-    private int _previewDamage = Kali.BloodMistDamage;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Cards", 1m)
     ];
 
     public RedMistBloodMistEgoCard()
-        : base(5)
+        : base(5, previewDamage: Kali.BloodMistDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -196,7 +156,7 @@ public sealed class RedMistBloodMistEgoCard : RedMistEgoCardBase
             choiceContext,
             this,
             cardPlay.Target,
-            _previewDamage,
+            PreviewDamage,
             1,
             Kali.SlashHitVfx,
             "BloodMist",
@@ -206,22 +166,14 @@ public sealed class RedMistBloodMistEgoCard : RedMistEgoCardBase
 
 public sealed class RedMistBattleWillEgoCard : RedMistEgoCardBase
 {
-    private int _previewDamage = Kali.BattleWillDamage;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move)
+        new DamageVar(PreviewDamage, ValueProp.Move)
     ];
 
     public RedMistBattleWillEgoCard()
-        : base(3)
+        : base(3, previewDamage: Kali.BattleWillDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -236,7 +188,7 @@ public sealed class RedMistBattleWillEgoCard : RedMistEgoCardBase
             choiceContext,
             this,
             cardPlay.Target,
-            _previewDamage,
+            PreviewDamage,
             1,
             Kali.BluntHitVfx,
             "AttackBlunt",
@@ -252,7 +204,7 @@ public sealed class RedMistBattleWillEgoCard : RedMistEgoCardBase
                     choiceContext,
                     this,
                     target,
-                    _previewDamage,
+                    PreviewDamage,
                     1,
                     Kali.BluntHitVfx,
                     "AttackBlunt");
@@ -296,11 +248,9 @@ public sealed class RedMistFocusBreathEgoCard : RedMistEgoCardBase
 
 public sealed class RedMistFieldOfCorpsesEgoCard : RedMistEgoCardBase
 {
-    private int _previewDamage = Kali.FieldOfCorpsesDamage;
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new PowerVar<LibraryBleedingPower>("Bleed", Kali.FieldOfCorpsesBleed)
     ];
 
@@ -310,14 +260,8 @@ public sealed class RedMistFieldOfCorpsesEgoCard : RedMistEgoCardBase
     ];
 
     public RedMistFieldOfCorpsesEgoCard()
-        : base(6)
+        : base(6, previewDamage: Kali.FieldOfCorpsesDamage)
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -331,7 +275,7 @@ public sealed class RedMistFieldOfCorpsesEgoCard : RedMistEgoCardBase
             choiceContext,
             this,
             cardPlay.Target,
-            _previewDamage,
+            PreviewDamage,
             1,
             Kali.SlashHitVfx,
             "FieldOfCorpses",

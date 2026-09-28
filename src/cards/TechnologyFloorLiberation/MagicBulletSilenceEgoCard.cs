@@ -22,15 +22,11 @@ public sealed class MagicBulletSilenceEgoCard : EgoCardBase
     public const int WeakStacks = 3;
     public const int DebuffTurns = 1;
 
-    private int _previewDamage = BaseDamage;
-
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Burn", BurnStacks),
         new PowerVar<FrailPower>("Frail", FrailStacks),
         new PowerVar<WeakPower>("Weak", WeakStacks),
@@ -50,25 +46,13 @@ public sealed class MagicBulletSilenceEgoCard : EgoCardBase
     ];
 
     public MagicBulletSilenceEgoCard()
-        : base(2)
+        : base(2, previewDamage: BaseDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.BaseValue = UpgradedDamage;
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

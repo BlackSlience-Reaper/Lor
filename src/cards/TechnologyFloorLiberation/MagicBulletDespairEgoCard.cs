@@ -12,15 +12,11 @@ public sealed class MagicBulletDespairEgoCard : EgoCardBase
     public const int BaseDamage = 150;
     public const int ChaosLoss = 50;
 
-    private int _previewDamage = BaseDamage;
-
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("ChaosLoss", ChaosLoss)
     ];
 
@@ -30,24 +26,12 @@ public sealed class MagicBulletDespairEgoCard : EgoCardBase
     ];
 
     public MagicBulletDespairEgoCard()
-        : base(1)
+        : base(1, previewDamage: BaseDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
     {
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
