@@ -36,7 +36,7 @@ public enum SocialFloorTrial
 }
 
 public sealed class SocialFloorLiberationEncounter :
-    EncounterModel,
+    LiberationEncounterBase,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
@@ -311,36 +311,36 @@ public sealed class SocialFloorLiberationEncounter :
         CaptureRuntimeState();
         return new Dictionary<string, string>
         {
-            [StateVersionKey] = FormatInt(CurrentStateVersion),
-            [TrialKey] = FormatInt((int)Trial),
-            [TrialRoundKey] = FormatInt(TrialRound),
+            [StateVersionKey] = EncounterStateBag.FormatInvariant(CurrentStateVersion),
+            [TrialKey] = EncounterStateBag.FormatInvariant((int)Trial),
+            [TrialRoundKey] = EncounterStateBag.FormatInvariant(TrialRound),
             [SetupCompleteKey] = SetupComplete.ToString(),
             [PlayersHealedKey] = PlayersHealed.ToString(),
-            [DestroyedCrystalMaskKey] = FormatInt(DestroyedCrystalMask),
-            [DestroyedFaceMaskKey] = FormatInt(DestroyedFaceMask),
+            [DestroyedCrystalMaskKey] = EncounterStateBag.FormatInvariant(DestroyedCrystalMask),
+            [DestroyedFaceMaskKey] = EncounterStateBag.FormatInvariant(DestroyedFaceMask),
             [HasPendingTrialKey] = HasPendingTrial.ToString(),
-            [PendingTrialKey] = FormatInt((int)PendingTrial),
-            [ScaredyCatPlayerNetIdKey] = FormatNullableUlong(
+            [PendingTrialKey] = EncounterStateBag.FormatInvariant((int)PendingTrial),
+            [ScaredyCatPlayerNetIdKey] = EncounterStateBag.FormatInvariant(
                 ScaredyCatPlayerNetId),
-            [OzmaPlayerNetIdKey] = FormatNullableUlong(OzmaPlayerNetId),
+            [OzmaPlayerNetIdKey] = EncounterStateBag.FormatInvariant(OzmaPlayerNetId),
             [CowardAppliedKey] = CowardApplied.ToString(),
             [OzmaReplacementPendingKey] =
                 OzmaReplacementPending.ToString(),
-            [PowderCostKey] = FormatInt(PowderCost),
+            [PowderCostKey] = EncounterStateBag.FormatInvariant(PowderCost),
             [TransformedKey] = Transformed.ToString(),
             [FinalStrikeTriggeredKey] = FinalStrikeTriggered.ToString(),
-            [PlannedMoveKey] = FormatInt((int)PlannedMove),
-            [ParticipantCountKey] = FormatInt(ParticipantCount),
-            [BossHpKey] = FormatInt(SavedBossHp),
-            [BossChaoKey] = FormatInt(SavedBossChao),
+            [PlannedMoveKey] = EncounterStateBag.FormatInvariant((int)PlannedMove),
+            [ParticipantCountKey] = EncounterStateBag.FormatInvariant(ParticipantCount),
+            [BossHpKey] = EncounterStateBag.FormatInvariant(SavedBossHp),
+            [BossChaoKey] = EncounterStateBag.FormatInvariant(SavedBossChao),
             [SummonVitalsKey] = SavedSummonVitals,
             [WisdomStacksKey] = SavedWisdomStacks,
             [WisdomCardsKey] = SavedWisdomCards,
-            [LionCardsSubmittedKey] = FormatInt(LionCardsSubmitted),
+            [LionCardsSubmittedKey] = EncounterStateBag.FormatInvariant(LionCardsSubmitted),
             [CouragePlayedKey] = CouragePlayed.ToString(),
             [CouragePowerPresentKey] = CouragePowerPresent.ToString(),
             [CouragePendingActivationsKey] =
-                FormatInt(CouragePendingActivations),
+                EncounterStateBag.FormatInvariant(CouragePendingActivations),
             [CourageEnergyActiveKey] = CourageEnergyActive.ToString(),
             [CourageRemoveAtTurnEndKey] =
                 CourageRemoveAtTurnEnd.ToString()
@@ -349,60 +349,53 @@ public sealed class SocialFloorLiberationEncounter :
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        Trial = ReadEnum(state, TrialKey, SocialFloorTrial.Initial);
+        var bag = new EncounterStateBag(state);
+        Trial = bag.ReadInvariantEnum(TrialKey, SocialFloorTrial.Initial);
         TrialRound = Math.Clamp(
-            ReadInt(state, TrialRoundKey),
+            bag.ReadInvariantInt(TrialRoundKey),
             0,
             1_000_000);
-        SetupComplete = ReadBool(state, SetupCompleteKey);
-        PlayersHealed = ReadBool(state, PlayersHealedKey);
+        SetupComplete = bag.ReadBool(SetupCompleteKey);
+        PlayersHealed = bag.ReadBool(PlayersHealedKey);
         DestroyedCrystalMask =
-            ReadInt(state, DestroyedCrystalMaskKey) & AllCrystalsMask;
+            bag.ReadInvariantInt(DestroyedCrystalMaskKey) & AllCrystalsMask;
         DestroyedFaceMask =
-            ReadInt(state, DestroyedFaceMaskKey) & AllFacesMask;
-        HasPendingTrial = ReadBool(state, HasPendingTrialKey);
-        PendingTrial = ReadEnum(state, PendingTrialKey, Trial);
-        ScaredyCatPlayerNetId = ReadNullableUlong(
-            state,
-            ScaredyCatPlayerNetIdKey);
-        OzmaPlayerNetId = ReadNullableUlong(state, OzmaPlayerNetIdKey);
-        CowardApplied = ReadBool(state, CowardAppliedKey);
-        OzmaReplacementPending = ReadBool(
-            state,
-            OzmaReplacementPendingKey);
-        PowderCost = Math.Max(0, ReadInt(
-            state,
-            PowderCostKey,
-            InitialPowderCost));
-        Transformed = ReadBool(state, TransformedKey);
-        FinalStrikeTriggered = ReadBool(state, FinalStrikeTriggeredKey);
-        PlannedMove = ReadEnum(
-            state,
+            bag.ReadInvariantInt(DestroyedFaceMaskKey) & AllFacesMask;
+        HasPendingTrial = bag.ReadBool(HasPendingTrialKey);
+        PendingTrial = bag.ReadInvariantEnum(PendingTrialKey, Trial);
+        ScaredyCatPlayerNetId = bag.ReadInvariantNullableUlong(ScaredyCatPlayerNetIdKey);
+        OzmaPlayerNetId = bag.ReadInvariantNullableUlong(OzmaPlayerNetIdKey);
+        CowardApplied = bag.ReadBool(CowardAppliedKey);
+        OzmaReplacementPending = bag.ReadBool(OzmaReplacementPendingKey);
+        PowderCost = Math.Max(
+            0,
+            bag.ReadInvariantInt(PowderCostKey, InitialPowderCost));
+        Transformed = bag.ReadBool(TransformedKey);
+        FinalStrikeTriggered = bag.ReadBool(FinalStrikeTriggeredKey);
+        PlannedMove = bag.ReadInvariantEnum(
             PlannedMoveKey,
             ResolveDefaultMove(Trial, TrialRound));
         ParticipantCount = Math.Clamp(
-            ReadInt(state, ParticipantCountKey, 1),
+            bag.ReadInvariantInt(ParticipantCountKey, 1),
             1,
             4);
-        SavedBossHp = ReadInt(state, BossHpKey, -1);
-        SavedBossChao = ReadInt(state, BossChaoKey, -1);
-        SavedSummonVitals = ReadString(state, SummonVitalsKey);
-        SavedWisdomStacks = ReadString(state, WisdomStacksKey);
-        SavedWisdomCards = ReadString(state, WisdomCardsKey);
+        SavedBossHp = bag.ReadInvariantInt(BossHpKey, -1);
+        SavedBossChao = bag.ReadInvariantInt(BossChaoKey, -1);
+        SavedSummonVitals = bag.ReadString(SummonVitalsKey);
+        SavedWisdomStacks = bag.ReadString(WisdomStacksKey);
+        SavedWisdomCards = bag.ReadString(WisdomCardsKey);
         LionCardsSubmitted = Math.Clamp(
-            ReadInt(state, LionCardsSubmittedKey),
+            bag.ReadInvariantInt(LionCardsSubmittedKey),
             0,
             SocialFloorScaredyCatPower.CardLimit);
-        CouragePlayed = ReadBool(state, CouragePlayedKey);
-        CouragePowerPresent = ReadBool(state, CouragePowerPresentKey);
+        CouragePlayed = bag.ReadBool(CouragePlayedKey);
+        CouragePowerPresent = bag.ReadBool(CouragePowerPresentKey);
         CouragePendingActivations = Math.Clamp(
-            ReadInt(state, CouragePendingActivationsKey),
+            bag.ReadInvariantInt(CouragePendingActivationsKey),
             0,
             SocialFloorCouragePower.TotalActivations);
-        CourageEnergyActive = ReadBool(state, CourageEnergyActiveKey);
-        CourageRemoveAtTurnEnd = ReadBool(
-            state,
-            CourageRemoveAtTurnEndKey);
+        CourageEnergyActive = bag.ReadBool(CourageEnergyActiveKey);
+        CourageRemoveAtTurnEnd = bag.ReadBool(CourageRemoveAtTurnEndKey);
         if (HasPendingTrial && PendingTrial <= Trial)
         {
             HasPendingTrial = false;
@@ -431,9 +424,6 @@ public sealed class SocialFloorLiberationEncounter :
         _enemyVitalsRestored = false;
         _enemyStunStateRestored = false;
     }
-
-    public void RefreshLiberationPhaseBgm() =>
-        EncounterBgmController.RefreshCurrentEncounterTrack();
 
     internal async Task InitializeCombat(
         PlayerChoiceContext choiceContext,
@@ -1555,62 +1545,5 @@ public sealed class SocialFloorLiberationEncounter :
             }
         }
         return -1;
-    }
-
-    private static string FormatInt(int value) =>
-        value.ToString(CultureInfo.InvariantCulture);
-
-    private static string FormatNullableUlong(ulong? value) =>
-        value?.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
-
-    private static int ReadInt(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        int fallback = 0) =>
-        state.TryGetValue(key, out string? text)
-        && int.TryParse(
-            text,
-            NumberStyles.Integer,
-            CultureInfo.InvariantCulture,
-            out int value)
-            ? value
-            : fallback;
-
-    private static bool ReadBool(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        bool fallback = false) =>
-        state.TryGetValue(key, out string? text)
-        && bool.TryParse(text, out bool value)
-            ? value
-            : fallback;
-
-    private static string ReadString(
-        IReadOnlyDictionary<string, string> state,
-        string key) =>
-        state.TryGetValue(key, out string? value)
-            ? value ?? string.Empty
-            : string.Empty;
-
-    private static ulong? ReadNullableUlong(
-        IReadOnlyDictionary<string, string> state,
-        string key) =>
-        state.TryGetValue(key, out string? text)
-        && ulong.TryParse(
-            text,
-            NumberStyles.Integer,
-            CultureInfo.InvariantCulture,
-            out ulong value)
-            ? value
-            : null;
-
-    private static T ReadEnum<T>(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        T fallback) where T : struct, Enum
-    {
-        int raw = ReadInt(state, key, Convert.ToInt32(fallback));
-        T value = (T)Enum.ToObject(typeof(T), raw);
-        return Enum.IsDefined(value) ? value : fallback;
     }
 }
