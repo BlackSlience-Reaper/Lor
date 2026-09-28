@@ -8,6 +8,7 @@ using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.compat;
 
@@ -33,9 +34,7 @@ public static class SavedPropertiesTypeCacheCompat
             return _cachedAutoDiscoveredTypes;
         }
 
-        var assembly = Assembly.GetExecutingAssembly();
-        _cachedAutoDiscoveredTypes = assembly
-            .GetTypes()
+        _cachedAutoDiscoveredTypes = LibraryAssemblyTypes.All
             .Where(static type =>
                 !type.IsAbstract
                 && typeof(AbstractModel).IsAssignableFrom(type)

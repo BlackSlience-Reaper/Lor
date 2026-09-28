@@ -767,6 +767,7 @@ readonly	LibraryOfRuina.guests.DawnOffice.Yuna.BattleStartLines	System.String[]
 readonly	LibraryOfRuina.guests.DawnOffice.Yuna.EnemyDeathLines	System.String[]
 readonly	LibraryOfRuina.guests.DawnOffice.Yuna.VictoryLines	System.String[]
 readonly	LibraryOfRuina.helpers.GodotTextureSafety.SourcePaths	System.Runtime.CompilerServices.ConditionalWeakTable`2[Godot.Texture2D,LibraryOfRuina.helpers.GodotTextureSafety+TextureSourcePath]
+readonly	LibraryOfRuina.helpers.LibraryAssemblyTypes.Scan	System.Lazy`1[System.ValueTuple`2[System.Type[],System.Reflection.ReflectionTypeLoadException]]
 readonly	LibraryOfRuina.helpers.ModOwnership.Assembly	System.Reflection.Assembly
 readonly	LibraryOfRuina.helpers.PatchFailureLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]
 readonly	LibraryOfRuina.helpers.PresentationGuard.ReportedSurfaces	System.Collections.Generic.HashSet`1[System.String]
