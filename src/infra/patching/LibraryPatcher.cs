@@ -278,11 +278,7 @@ internal static class LibraryPatcher
                + (arity > 0 ? "`" + arity : "") + "(" + parameters + ")";
     }
 
-    internal static string IlHash(MethodBase method)
-    {
-        byte[]? il = method.GetMethodBody()?.GetILAsByteArray();
-        return il == null ? "no-il" : Convert.ToHexString(SHA1.HashData(il)).ToLowerInvariant();
-    }
+    internal static string IlHash(MethodBase method) => IlFingerprint.Hash(method);
 
     private static void WriteDumpIfRequested(List<string> dump, Dictionary<string, MethodBase> guarded)
     {
