@@ -1,11 +1,7 @@
 # mod ActLikeIt2 v0.2.1
 # mod LibraryOfRuina v0.21.2
-# mod LibraryOfRuinaLib 1.2.14
+# mod LibraryOfRuinaLib 1.3.0
 # mod STS2-RitsuLib 0.6.2
-LibraryOfRuinaLib|LibraryLib.Commands.LibraryAttackCommand::Execute(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Entities.Cards.CardPlay)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.StranglingVineLibraryAttackDamageTypePatch.Prefix
-LibraryOfRuinaLib|LibraryLib.Commands.LibraryAttackCommand::GetPossibleTargets()
-  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+LibraryAttackTargetsLast.Postfix
 LibraryOfRuinaLib|LibraryLib.Commands.LibraryCreatureCmd::ChaoDamage(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardPlay,LibraryLib.Utils.Resistance.LibraryDamageType,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.DamageResult, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
   Prefix priority=800 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyLibraryChaoTargetsPatch.Prefix
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.reverberation.GearChurch.GearChurchChaoHitPatch.Prefix
@@ -53,10 +49,6 @@ LibraryOfRuinaLib|LibraryLib.Hooks.LibraryHooks::ModifyHpLostAfterOsty(MegaCrit.
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.Transpiler
 LibraryOfRuinaLib|LibraryLib.Hooks.LibraryHooks::ModifyHpLostBeforeOsty(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&,LibraryLib.Utils.Resistance.LibraryDamageType)
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.Transpiler
-LibraryOfRuinaLib|LibraryLib.Patches.AttackExecuteContext::ResolveVanillaDamageTypeUnsafe(System.Object)
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriAttackDamageTypePatch.Postfix
-LibraryOfRuinaLib|LibraryLib.Patches.LibraryDamagePreviewFeedback::ResolveVanillaPreviewDamageType(MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature)
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.StranglingVineVanillaDamageTypePatch.Postfix
 LibraryOfRuina|LibraryOfRuina.addons.mega_text.MegaLabelHelper::EstimateTextSize(Godot.TextParagraph,System.Collections.Generic.List`1[[MegaCrit.Sts2.Core.Entities.Text.BbcodeObject, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],Godot.Font,System.Int32,System.Single,System.Single)
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch.Transpiler
 LibraryOfRuina|LibraryOfRuina.addons.mega_text.MegaLabelHelper::ParseBbcode(System.String)
