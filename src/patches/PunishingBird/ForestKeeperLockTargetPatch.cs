@@ -10,12 +10,9 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 namespace LibraryOfRuina.patches.PunishingBird;
 
 // 锁链只限制自身的目标，不能通过全战斗 Hook 阻止卡牌和药水选中玩家。
-[HarmonyPatch(typeof(CardModel), nameof(CardModel.IsValidTarget))]
 internal static class ForestKeeperLockTargetPatch
 {
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(CardModel __instance, Creature? target, ref bool __result)
+    internal static void FilterIsValidTarget(CardModel __instance, Creature? target, ref bool __result)
     {
         if (__instance is ForestKeeperLockStatusCard)
         {
@@ -24,14 +21,9 @@ internal static class ForestKeeperLockTargetPatch
     }
 }
 
-[HarmonyPatch(
-    typeof(NTargetManager),
-    nameof(NTargetManager.StartTargeting),
-    typeof(TargetType), typeof(Control), typeof(TargetMode), typeof(Func<bool>), typeof(Func<Node, bool>))]
 internal static class ForestKeeperLockTargetSelectionPatch
 {
-    [HarmonyPrefix]
-    private static void Prefix(Control control, ref Func<Node, bool>? nodeFilter)
+    internal static void OnStartTargetingFromCard(Control control, ref Func<Node, bool>? nodeFilter)
     {
         if (control is not NCard { Model: ForestKeeperLockStatusCard })
         {

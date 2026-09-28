@@ -30,9 +30,6 @@ HarmonyPatch()
   Postfix LibraryOfRuina.localization.PowerInlineIconSizing+PreserveInlineDimensionsPatch.Postfix
   Transpiler LibraryOfRuina.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch.Transpiler
   Postfix LibraryOfRuina.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch.Postfix
-HarmonyPatch(typeof(LibraryLib.Commands.LibraryAttackCommand), "GetPossibleTargets")
-  Postfix LibraryOfRuina.patches.FriendlyAllyLibraryAttackTargetsPatch.Postfix
-  Postfix LibraryOfRuina.patches.TechnologyFloorLiberation.MagicBulletShooterLibraryAttackTargetsPatch.Postfix
 HarmonyPatch(typeof(LibraryLib.Commands.LibraryCreatureCmd), "Damage", [typeof(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext), typeof(System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]), typeof(System.Decimal), typeof(MegaCrit.Sts2.Core.ValueProps.ValueProp), typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), typeof(MegaCrit.Sts2.Core.Models.CardModel), typeof(LibraryLib.Utils.Resistance.LibraryDamageType), typeof(MegaCrit.Sts2.Core.Entities.Cards.CardPlay), typeof(System.Func`1[[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])])
   Prefix LibraryOfRuina.patches.FriendlyAllyLibraryDamageTargetsPatch.Prefix
   Postfix LibraryOfRuina.patches.LibraryPowerDamageHealthLockChaosPatch.Postfix
@@ -67,13 +64,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.Builders.AttackCommand), "Execut
   Postfix LibraryOfRuina.patches.AttackAnimationHitSuppressionAttackPatch.Postfix
   Prefix LibraryOfRuina.patches.AttackAnimationHitSuppressionAttackPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.Builders.AttackCommand), "GetPossibleTargets")
-  Postfix LibraryOfRuina.patches.TargetedMonsterAttackTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.TechnologyFloorLiberation.MagicBulletShooterAttackTargetsPatch.Postfix
-  Postfix LibraryOfRuina.patches.QueenOfHatred.UntargetableAttackTargetsPatch.Postfix
-  Postfix LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch.Postfix
-  Postfix LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+AttackTargets.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+AttackTargetsLast.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Damage", [typeof(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext), typeof(System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]), typeof(System.Decimal), typeof(MegaCrit.Sts2.Core.ValueProps.ValueProp), typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), typeof(MegaCrit.Sts2.Core.Models.CardModel), typeof(MegaCrit.Sts2.Core.Entities.Cards.CardPlay)])
   Finalizer LibraryOfRuina.reverberation.GearChurch.GearChurchVanillaHitPatch.Finalizer
   Postfix LibraryOfRuina.reverberation.GearChurch.GearChurchVanillaHitPatch.Postfix
@@ -154,13 +146,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.AncientEventModel), "BeforeEventSt
   Postfix LibraryOfRuina.relics.BookShadow.BookShadowLibraryActAncientGrantPatch.Postfix
   Prefix LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+SkipAncientHeal.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.CardModel), "IsValidTarget")
-  Postfix LibraryOfRuina.patches.SocialFloorMagicalPowderTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.QueenOfHatred.UntargetableCardTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.PunishingBird.ForestKeeperLockTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+CardModelIsValidTargetPatch.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTarget.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTargetLast.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.EncounterModel), "CreateBackgroundAssetsForCustom")
   Prefix LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBackgroundAssetsPatch.Prefix
   Prefix LibraryOfRuina.specialguests.Rnfmabj.RnfmabjSpecialGuestBackgroundAssetsPatch.Prefix
@@ -251,28 +238,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NIntent), "UpdateVisuals")
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NIntent), "_Process")
   Postfix LibraryOfRuina.patches.CombinedIntentVisualPatch.Postfix
   Postfix LibraryOfRuina.patches.CounterIntentVisualPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager), "AllowedToTargetCreature")
-  Postfix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-  Postfix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-  Postfix LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-  Postfix LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager), "FinishTargeting")
-  Postfix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerFinishTargetingPatch.Postfix
-  Postfix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerFinishTargetingPatch.Postfix
-  Postfix LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerFinishTargetingPatch.Postfix
-  Postfix LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerFinishTargetingPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager), "StartTargeting", [typeof(MegaCrit.Sts2.Core.Entities.Cards.TargetType), typeof(Godot.Control), typeof(MegaCrit.Sts2.Core.Nodes.Combat.TargetMode), typeof(System.Func`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]), typeof(System.Func`2[[Godot.Node, GodotSharp, Version=4.5.1.0, Culture=neutral, PublicKeyToken=null],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])])
-  Prefix LibraryOfRuina.patches.SocialFloorMagicalPowderTargetSelectionPatch.Prefix
-  Prefix LibraryOfRuina.patches.PunishingBird.ForestKeeperLockTargetSelectionPatch.Prefix
-  Prefix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-  Prefix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-  Prefix LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-  Prefix LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager), "StartTargeting", [typeof(MegaCrit.Sts2.Core.Entities.Cards.TargetType), typeof(Godot.Vector2), typeof(MegaCrit.Sts2.Core.Nodes.Combat.TargetMode), typeof(System.Func`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]), typeof(System.Func`2[[Godot.Node, GodotSharp, Version=4.5.1.0, Culture=neutral, PublicKeyToken=null],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])])
-  Prefix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
-  Prefix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
-  Prefix LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
-  Prefix LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.CommonUi.NTopBar), "Initialize")
   Postfix LibraryOfRuina.specialguests.SpecialGuestHideEmptyModifierContainerPatch.Postfix
   Postfix LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarPatch.Postfix

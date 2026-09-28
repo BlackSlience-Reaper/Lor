@@ -79,12 +79,9 @@ internal static class MagicBulletShooterPageAttackPatch
     }
 }
 
-[HarmonyPatch(typeof(AttackCommand), "GetPossibleTargets")]
 internal static class MagicBulletShooterAttackTargetsPatch
 {
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(
+    internal static void FilterAttackTargets(
         AttackCommand __instance,
         ref IReadOnlyList<Creature> __result)
     {
@@ -96,12 +93,9 @@ internal static class MagicBulletShooterAttackTargetsPatch
     }
 }
 
-[HarmonyPatch(typeof(LibraryAttackCommand), "GetPossibleTargets")]
 internal static class MagicBulletShooterLibraryAttackTargetsPatch
 {
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(
+    internal static void FilterLibraryAttackTargets(
         LibraryAttackCommand __instance,
         ref IReadOnlyList<Creature> __result)
     {
