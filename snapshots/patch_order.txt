@@ -247,6 +247,9 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "SetUpBackgroun
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Bestiary.NBestiary), "AddAct")
   Postfix LibraryOfRuina.reverberation.GearChurch.GearChurchBestiaryPatch.Postfix
   Postfix LibraryOfRuina.reverberation.CryingChildren.CryingChildrenBestiaryPatch.Postfix
+HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScreen), "AddScoreLine")
+  Finalizer LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Finalizer
+  Prefix LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
   Postfix LibraryOfRuina.patches.MainMenuShowPendingSettingsErrorsPatch.Postfix
   Postfix LibraryOfRuina.infra.patching.LibraryPatchReportPatch.Postfix

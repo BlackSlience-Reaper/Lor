@@ -168,30 +168,70 @@ internal static class GameOverScreenPatchHelper
 }
 
 /// <summary>
-/// 结算画面计分行的兜底：原版 AddScoreLine 正常时不介入，只在它抛异常时（例如图标纹理已被释放）
-/// 补建这一行并吞掉异常，免得整个结算画面中断。原版在创建节点之后只剩 <c>_scoreLines.Add</c>，不会留下重复的行。
+/// 结算画面计分行的兜底：原版 AddScoreLine 抛异常（例如图标纹理已被释放）、这一行没建成时，补建这一行并吞掉异常，
+/// 免得整个结算画面中断。Finalizer 收到的异常也可能来自其他模组的前缀或后缀，所以前缀先记下调用前的状态：
+/// <list type="bullet">
+/// <item>原版最后一步 <c>_scoreLines.Add</c> 已经执行（行已建成，异常来自之后的后缀）：原样抛出，不补建。</item>
+/// <item>没记下状态（前缀没执行）或补建本身失败：原样抛出，与没有本补丁时一致。</item>
+/// </list>
+/// 原版 <c>AddChildSafely</c> 在节点未就绪时会延迟添加，所以是否建成只看 <c>_scoreLines</c>；已同步挂上容器、
+/// 却没进列表的半成品在补建前移除。
 /// </summary>
 [HarmonyPatch(typeof(NGameOverScreen), "AddScoreLine")]
 public static class GameOverScoreLineCompatibilityPatch
 {
+    public sealed class Snapshot
+    {
+        public required GridContainer Container { get; init; }
+        public required IList ScoreLines { get; init; }
+        public required int LineCount { get; init; }
+        public required int ChildCount { get; init; }
+    }
+
+    [HarmonyPrefix]
+    public static void Prefix(NGameOverScreen __instance, out Snapshot? __state)
+    {
+        __state = null;
+        try
+        {
+            GridContainer? container = Traverse.Create(__instance).Field("_scoreLineContainer").GetValue<GridContainer>();
+            if (container != null && Traverse.Create(__instance).Field("_scoreLines").GetValue() is IList scoreLines)
+            {
+                __state = new Snapshot
+                {
+                    Container = container,
+                    ScoreLines = scoreLines,
+                    LineCount = scoreLines.Count,
+                    ChildCount = container.GetChildCount()
+                };
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Warn("[GameOverFix] Could not read NGameOverScreen score line fields: " + e.Message);
+        }
+    }
+
     [HarmonyFinalizer]
     public static Exception? Finalizer(
         Exception? __exception,
-        NGameOverScreen __instance,
+        Snapshot? __state,
         string locEntryKey,
         string? locAmountKey,
         int amount,
         string scoreLabel,
         string? iconPath)
     {
-        if (__exception == null)
+        if (__exception == null || __state == null || __state.ScoreLines.Count > __state.LineCount)
         {
-            return null;
+            return __exception;
         }
 
-        Log.Warn($"[GameOverFix] Vanilla AddScoreLine failed; rebuilding the line. entry={locEntryKey} error={__exception.Message}");
+        Log.Warn($"[GameOverFix] AddScoreLine failed before the line was recorded; rebuilding it. entry={locEntryKey} error={__exception.Message}");
         try
         {
+            RemoveUnrecordedLines(__state);
+
             var locString = new LocString("game_over_screen", locEntryKey);
             if (locAmountKey != null)
             {
@@ -200,25 +240,30 @@ public static class GameOverScoreLineCompatibilityPatch
 
             Texture2D? icon = GameOverScreenPatchHelper.TryLoadTexture(iconPath);
             Control scoreLine = GameOverScreenPatchHelper.CreateScoreLineControl(locString.GetFormattedText(), scoreLabel, icon);
-
-            GridContainer? container = Traverse.Create(__instance).Field("_scoreLineContainer").GetValue<GridContainer>();
-            IList? scoreLines = Traverse.Create(__instance).Field("_scoreLines").GetValue() as IList;
-            if (container == null || scoreLines == null)
-            {
-                throw new InvalidOperationException("NGameOverScreen score line fields are unavailable.");
-            }
-
-            container.AddChild(scoreLine);
-            scoreLines.Add(scoreLine);
+            __state.Container.AddChild(scoreLine);
+            __state.ScoreLines.Add(scoreLine);
+            return null;
         }
         catch (Exception e)
         {
             Log.Error(
-                "[GameOverFix] Failed to add score line. "
+                "[GameOverFix] Failed to rebuild score line; rethrowing the original exception. "
                 + $"entry={locEntryKey} amountKey={locAmountKey ?? "null"} amount={amount} "
                 + $"scoreLabel={scoreLabel} icon={iconPath ?? "null"} error={e}");
+            return __exception;
         }
+    }
 
-        return null;
+    private static void RemoveUnrecordedLines(Snapshot state)
+    {
+        for (int index = state.Container.GetChildCount() - 1; index >= state.ChildCount; index--)
+        {
+            Node child = state.Container.GetChild(index);
+            if (!state.ScoreLines.Contains(child))
+            {
+                state.Container.RemoveChild(child);
+                child.QueueFree();
+            }
+        }
     }
 }
