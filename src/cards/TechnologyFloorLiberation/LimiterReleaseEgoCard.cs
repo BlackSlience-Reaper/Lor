@@ -19,8 +19,6 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
     public const int HitCount = 3;
     public const int BleedPerHit = 1;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         TechnologyFloorRegretBoss.AttackSfxPath
@@ -46,12 +44,6 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
     public LimiterReleaseEgoCard()
         : base(1)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

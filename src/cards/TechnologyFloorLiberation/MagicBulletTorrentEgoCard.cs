@@ -19,8 +19,6 @@ public sealed class MagicBulletTorrentEgoCard : EgoCardBase
 
     private int _previewDamage = BaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -38,12 +36,6 @@ public sealed class MagicBulletTorrentEgoCard : EgoCardBase
     public MagicBulletTorrentEgoCard()
         : base(1)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

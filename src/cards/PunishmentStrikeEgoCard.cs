@@ -17,8 +17,6 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
 {
     private int _previewDamage = HistoryFloorWaspBoss.PunishmentStrikeBaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorWaspBoss.AttackBuffSfxPath
@@ -45,12 +43,6 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
     public PunishmentStrikeEgoCard()
         : base(3)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

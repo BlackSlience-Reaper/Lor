@@ -14,8 +14,6 @@ public sealed class MagicBulletDespairEgoCard : EgoCardBase
 
     private int _previewDamage = BaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -32,12 +30,6 @@ public sealed class MagicBulletDespairEgoCard : EgoCardBase
     public MagicBulletDespairEgoCard()
         : base(1)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

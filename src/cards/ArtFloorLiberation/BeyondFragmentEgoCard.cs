@@ -20,8 +20,6 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     public const int StrengthLoss = 3;
     public const int DexterityLoss = 3;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -44,12 +42,6 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     public BeyondFragmentEgoCard()
         : base(3, TargetType.AllEnemies)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

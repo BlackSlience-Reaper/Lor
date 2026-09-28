@@ -22,8 +22,6 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     public const int FinalDamage = 5;
     public const int BleedAmount = 3;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorFlutteringBoss.BossAttackSfxPath
@@ -51,12 +49,6 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     public FlutteringHungerFrenzyEgoCard()
         : base(3)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

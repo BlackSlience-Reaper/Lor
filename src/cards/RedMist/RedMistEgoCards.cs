@@ -17,18 +17,10 @@ public abstract class RedMistEgoCardBase : EgoCardBase
     {
     }
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override void OnUpgrade()
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 }
 

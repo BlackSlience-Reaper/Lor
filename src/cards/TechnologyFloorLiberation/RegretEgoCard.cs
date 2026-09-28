@@ -22,8 +22,6 @@ public sealed class RegretEgoCard : EgoCardBase
     public const int FinalUpgradedDamage = 14;
     public const int ConfusionAmount = 1;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         TechnologyFloorRegretBoss.AttackSfxPath
@@ -50,12 +48,6 @@ public sealed class RegretEgoCard : EgoCardBase
     public RegretEgoCard()
         : base(3)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

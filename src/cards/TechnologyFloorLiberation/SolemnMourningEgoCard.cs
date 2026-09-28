@@ -18,8 +18,6 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
 
     private int _previewDamage = HitDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Retain
@@ -39,12 +37,6 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
     public SolemnMourningEgoCard()
         : base(2, TargetType.AllEnemies)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

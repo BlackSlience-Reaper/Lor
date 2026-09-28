@@ -16,8 +16,6 @@ public sealed class EndLightEgoCard : EgoCardBase
 {
     private int _previewDamage = HistoryFloorEndLightBoss.EndLightBaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorEndLightBoss.EndLightAttackSfxPath
@@ -37,12 +35,6 @@ public sealed class EndLightEgoCard : EgoCardBase
     public EndLightEgoCard()
         : base(2)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

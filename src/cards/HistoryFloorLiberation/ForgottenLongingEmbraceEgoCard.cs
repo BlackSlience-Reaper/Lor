@@ -17,8 +17,6 @@ public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
 {
     private int _previewDamage = HistoryFloorForgottenBoss.LongingEmbraceBaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorForgottenBoss.LongingEmbraceSfxPath
@@ -38,12 +36,6 @@ public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
     protected override void OnUpgrade()
     {
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     public ForgottenLongingEmbraceEgoCard()

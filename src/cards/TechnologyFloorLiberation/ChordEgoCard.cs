@@ -21,8 +21,6 @@ public sealed class ChordEgoCard : EgoCardBase
     private int _previewDamageB = HitBBaseDamage;
     private int _previewDamageC = HitCBaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -38,12 +36,6 @@ public sealed class ChordEgoCard : EgoCardBase
     public ChordEgoCard()
         : base(1)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

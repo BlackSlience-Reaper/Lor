@@ -15,8 +15,6 @@ public sealed class ShatteredLifeEgoCard : EgoCardBase
 
     private int _previewDamage = HistoryFloorEmeraldBoughBoss.ShatteredLifeBaseDamage;
 
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -31,12 +29,6 @@ public sealed class ShatteredLifeEgoCard : EgoCardBase
     public ShatteredLifeEgoCard()
         : base(1)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()

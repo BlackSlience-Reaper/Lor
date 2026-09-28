@@ -12,6 +12,10 @@ internal interface IEnemyAttackPreviewCard
     void SetEnemyAttackPreview(IReadOnlyList<int> damages, int hits);
 }
 
+/// <summary>
+/// E.G.O. 页：敌方意图用它的可变副本展示“要打出的卡”（<c>ModelDb.Card&lt;T&gt;().ToMutable()</c> 后调用
+/// <see cref="UpgradePreview"/> 与 <see cref="SetEnemyAttackPreview"/>），同一个类型也是图鉴里的卡和玩家可得的卡。
+/// </summary>
 public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
 {
     private string? _portraitResourcePath;
@@ -28,6 +32,8 @@ public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
         PortraitPath
     ];
 
+    public override int MaxUpgradeLevel => 1;
+
     protected EgoCardBase(int cost)
         : base(cost, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
@@ -36,6 +42,16 @@ public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
     protected EgoCardBase(int cost, TargetType targetType)
         : base(cost, CardType.Attack, CardRarity.Rare, targetType)
     {
+    }
+
+    /// <summary>
+    /// 把预览卡显示为升级后的样子。直接调用原版 UpgradeInternal/FinalizeUpgradeInternal，不走
+    /// CardCmd.Upgrade 的 Hook 与表现；只能用于可变副本（UpgradeInternal 会断言可变）。
+    /// </summary>
+    public void UpgradePreview()
+    {
+        UpgradeInternal();
+        FinalizeUpgradeInternal();
     }
 
     public virtual void SetEnemyAttackPreview(IReadOnlyList<int> damages, int hits)
