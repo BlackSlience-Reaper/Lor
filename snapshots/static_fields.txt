@@ -1210,7 +1210,6 @@ readonly	LibraryOfRuina.powers.TechnologyFloorLiberation.TechnologyFloorMagicBul
 readonly	LibraryOfRuina.powers.WedgeOffice.WedgePiercingPower.PiercingDamage	System.Decimal
 readonly	LibraryOfRuina.powers.WrathServant.WrathServantDamageSourceContext.SourceDepth	System.Threading.AsyncLocal`1[System.Int32]
 readonly	LibraryOfRuina.powers.WrathServant.WrathServantDeathContext.DealersByDeadCreature	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Entities.Creatures.Creature]
-readonly	LibraryOfRuina.relics.AbnormalityPageRewardPreselection.PageChoiceCardTypeCache	System.Collections.Concurrent.ConcurrentDictionary`2[System.Type,System.Boolean]
 readonly	LibraryOfRuina.relics.AbnormalityPageRewardPreselection.PageRelicsById	System.Lazy`1[System.Collections.Generic.IReadOnlyDictionary`2[MegaCrit.Sts2.Core.Models.ModelId,LibraryOfRuina.relics.AbnormalityPageRewardPreselection+PageRelicRegistration]]
 readonly	LibraryOfRuina.relics.AbnormalityPageRewardResumePatch.RestoredRooms	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Rooms.CombatRoom,LibraryOfRuina.relics.AbnormalityPageRewardResumePatch+RestoreMarker]
 readonly	LibraryOfRuina.relics.BigBadWolf.BigBadWolfPageRelic.PredatoryInstinctDamageMultiplier	System.Decimal
