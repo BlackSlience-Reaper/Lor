@@ -1,14 +1,18 @@
 #!/bin/bash
-# Build LibraryOfRuinaLib from its GitHub source so the mod compiles against the library's latest API.
-# The checkout lives in build/LibraryOfRuinaLib (git-ignored); Directory.Build.props picks up the DLL from
-# build/LibraryOfRuinaLib/bin/out/ when local.props does not set LibraryOfRuinaLibDll.
-# usage: tools/build_lib.sh [git-ref]      default ref: origin/main
+# Build LibraryOfRuinaLib from its GitHub source. The checkout lives in build/LibraryOfRuinaLib (git-ignored);
+# Directory.Build.props picks up the DLL from build/LibraryOfRuinaLib/bin/out/ when local.props does not set
+# LibraryOfRuinaLibDll.
+# usage: tools/build_lib.sh [git-ref]
+#   default: RELEASE_REF, the commit of the release LibraryOfRuina.json requires. Raise both together.
+#   tools/build_lib.sh origin/main   — try the library's latest source (may use APIs not yet published).
 set -euo pipefail
+
+RELEASE_REF="859415e"   # LibraryOfRuinaLib 1.3.0
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/build/LibraryOfRuinaLib"
 REPO="https://github.com/Xuyuha/LibraryOfRuinaLib.git"
-REF="${1:-origin/main}"
+REF="${1:-$RELEASE_REF}"
 
 if [[ ! -d "$SRC/.git" ]]; then
   git clone -q "$REPO" "$SRC"

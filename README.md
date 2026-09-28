@@ -32,7 +32,7 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 | `ActLikeIt2Dll` | `ActLikeIt2.dll` 路径 |
 | `LibraryOfRuinaLibDll` | `LibraryOfRuinaLib.dll` 路径 |
 
-基础库默认按 GitHub 上的最新源码编译：`tools/build_lib.sh` 把 https://github.com/Xuyuha/LibraryOfRuinaLib 检出到 `build/LibraryOfRuinaLib` 并编译（上游仓库不提交工程文件，脚本用 `tools/LibraryOfRuinaLib.csproj.template`），之后 `Directory.Build.props` 自动引用它的输出；可以传入 git 引用编译指定版本，例如 `tools/build_lib.sh 6e8a24b`。没有运行脚本时回退到 `mods/` 下安装的基础库。玩家装的是基础库作者发布的版本，`LibraryOfRuina.json` 的最低版本仍以已发布版本为准。
+基础库按 GitHub 源码编译：`tools/build_lib.sh` 把 https://github.com/Xuyuha/LibraryOfRuinaLib 检出到 `build/LibraryOfRuinaLib` 并编译（上游仓库不提交工程文件，脚本用 `tools/LibraryOfRuinaLib.csproj.template`），之后 `Directory.Build.props` 自动引用它的输出。默认检出脚本里的 `RELEASE_REF`，即 `LibraryOfRuina.json` 要求的已发布版本（现在是 1.3.0）对应的提交，提高最低版本时两处一起改；`tools/build_lib.sh origin/main` 可以试基础库的最新源码。没有运行脚本时回退到 `mods/` 下安装的基础库。玩家装的是基础库作者发布的版本，所以 `check.sh` 找到工坊里已发布的基础库时，还会用它再编译一次本模组。
 
 ### 2. 编译 DLL
 
