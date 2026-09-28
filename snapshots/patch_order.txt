@@ -17,7 +17,6 @@ HarmonyPatch()
   Postfix LibraryOfRuina.patches.HistoryFloorMapBackgroundPatch.Postfix
   Postfix LibraryOfRuina.patches.LanguageFloorMapBackgroundPatch.Postfix
   Postfix LibraryOfRuina.patches.LiteratureFloorMapBackgroundPatch.Postfix
-  Prefix LibraryOfRuina.patches.ModelIdSerializationCacheDuplicateWarningPatch.Prefix
   Postfix LibraryOfRuina.patches.NaturalFloorMapBackgroundPatch.Postfix
   Postfix LibraryOfRuina.patches.PageRelicHoverTipsPatch.Postfix
   Postfix LibraryOfRuina.patches.PhilosophyFloorMapBackgroundPatch.Postfix
