@@ -225,6 +225,16 @@ internal static class AllyTurnProviderVerificationPatch
             hostileCandidate,
             "LibraryAttackCommand");
 
+        // Single targets skip GetOpponentsOf, so only the final target filters can drop a Friendly ally.
+        Require(GetPossibleTargets(DamageCmd.Attack(1m).FromCard(card, null).Targeting(friendly)).Count == 0
+                && GetPossibleTargets(DamageCmd.Attack(1m).FromCard(card, null).Targeting(hostileCandidate))
+                    .Contains(hostileCandidate),
+            "Single-target AttackCommand retained a Friendly target or removed a hostile target.");
+        Require(GetPossibleTargets(new LibraryAttackCommand(1m).FromCard(card).Targeting(friendly)).Count == 0
+                && GetPossibleTargets(new LibraryAttackCommand(1m).FromCard(card).Targeting(hostileCandidate))
+                    .Contains(hostileCandidate),
+            "Single-target LibraryAttackCommand retained a Friendly target or removed a hostile target.");
+
         VerifyTargetManager(friendly, hostileCandidate);
     }
 
