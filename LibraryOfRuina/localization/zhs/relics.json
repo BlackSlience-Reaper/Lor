@@ -110,7 +110,7 @@
   "BURROWING_HEAVEN_PAGE_RELIC.flavor": "只要视线仍在，天堂便会渗入。",
   "BURROWING_HEAVEN_PAGE_RELIC.selectionScreenPrompt": "选择渗透天堂书页",
   "HEART_OF_ASPIRATION_PAGE_RELIC.title": "渴望之心之页",
-  "HEART_OF_ASPIRATION_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]脉动[/gold]：获得[blue]{Strong}[/blue]层永久[gold]强壮[/gold]。若本回合未造成[gold]未被格挡伤害[/gold]，回合结束时失去[red]{HpLoss}[/red]点生命。|[gold]渴望[/gold]：获得时，增加[blue]{MaxHpPercent}%[/blue]的最大生命。|[gold]剧烈脉动[/gold]：[[gold]右键点击[/gold]]\n获得永久[blue]{RightClickBuffs}[/blue]点[gold]强壮[/gold]、[gold]忍耐[/gold]、[gold]守护[/gold]与[gold]迅捷[/gold]。[blue]{DeathTurns}[/blue]回合后死亡。|获得时选择一种书页效果。}",
+  "HEART_OF_ASPIRATION_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]脉动[/gold]：战斗开始时，获得[blue]{Strong}[/blue]层永久[gold]强壮[/gold]。若本回合未造成[gold]未被格挡伤害[/gold]，回合结束时失去[red]{HpLoss}[/red]点生命。|[gold]渴望[/gold]：获得时，增加[blue]{MaxHpPercent}%[/blue]的最大生命。|[gold]剧烈脉动[/gold]：[[gold]右键点击[/gold]]\n获得永久[blue]{RightClickBuffs}[/blue]点[gold]强壮[/gold]、[gold]忍耐[/gold]、[gold]守护[/gold]与[gold]迅捷[/gold]。[blue]{DeathTurns}[/blue]回合后死亡。|获得时选择一种书页效果。}",
   "HEART_OF_ASPIRATION_PAGE_RELIC.flavor": "渴望，仍在纸页中搏动。",
   "HEART_OF_ASPIRATION_PAGE_RELIC.selectionScreenPrompt": "选择一种书页效果",
   "WARMHEARTED_WOODSMAN_PAGE_RELIC.title": "热心的樵夫之页",

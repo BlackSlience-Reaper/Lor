@@ -232,7 +232,7 @@
   "BURROWING_HEAVEN_ATTENTION_AND_FOCUS_CHOICE_CARD.title": "注目と集中",
   "BURROWING_HEAVEN_ATTENTION_AND_FOCUS_CHOICE_CARD.description": "受けるダメージが[blue]{DamageTakenPercent}%[/blue]増加する。与えるダメージと混乱ダメージが[blue]{DamageDealtPercent}%[/blue]増加する。",
   "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.title": "鼓動",
-  "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description": "自分のターン開始時、[blue]{Strong}[/blue]層の[gold]威力増加[/gold]を得る。このターンに未ブロックダメージを与えていなければ、ターン終了時に[red]{HpLoss}[/red]HPを失う。",
+  "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description": "戦闘開始時、[blue]{Strong}[/blue]層の永続[gold]威力増加[/gold]を得る。このターンに未ブロックダメージを与えていなければ、ターン終了時に[red]{HpLoss}[/red]HPを失う。",
   "HEART_OF_ASPIRATION_ASPIRATION_CHOICE_CARD.title": "渇望",
   "HEART_OF_ASPIRATION_ASPIRATION_CHOICE_CARD.description": "獲得時、現在の最大HPの[blue]{MaxHpPercent}%[/blue]分、最大HPを得る。",
   "HEART_OF_ASPIRATION_VIOLENT_PULSE_CHOICE_CARD.title": "激しい鼓動",
