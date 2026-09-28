@@ -332,6 +332,7 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Bestiary.NBestiary), "AddAc
   Postfix LibraryOfRuina.reverberation.CryingChildren.CryingChildrenBestiaryPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
   Postfix LibraryOfRuina.patches.MainMenuShowPendingSettingsErrorsPatch.Postfix
+  Postfix LibraryOfRuina.infra.patching.LibraryPatchReportPatch.Postfix
   Postfix LibraryOfRuina.compat.MainMenuIncompatibleModNoticePatch.Postfix
   Postfix LibraryOfRuina.audio.MainMenuBgmReadyPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rewards.RewardsSet), "WithRewardsFromRoom")

@@ -43,6 +43,11 @@
     <InternalsVisibleTo Include="LibraryOfRuinaVerification" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- IL hashes of vanilla methods behind skip prefixes and transpilers; see VanillaCopyGuard. -->
+    <EmbeddedResource Include="src/infra/patching/vanilla_copy_guard.txt" LogicalName="LibraryOfRuina.vanilla_copy_guard.txt" />
+  </ItemGroup>
+
   <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">
     <Error Condition="!Exists('$(Sts2DataDir)/sts2.dll')" Text="sts2.dll not found in $(Sts2DataDir). Set Sts2Dir / Sts2DataDir in local.props." />
     <Error Condition="!Exists('$(RitsuLibReferencesProps)')" Text="RitsuLib.References.props not found at $(RitsuLibReferencesProps). Set RitsuLibRoot in local.props." />

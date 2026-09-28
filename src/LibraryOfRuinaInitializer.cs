@@ -11,6 +11,7 @@ using LibraryOfRuina.features.intentgraph;
 using LibraryOfRuina.features.settings;
 using LibraryOfRuina.features.temporarymaps;
 using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.networking;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.LittleRedMercenary;
@@ -51,7 +52,7 @@ public static class LibraryOfRuinaInitializer
             return;
         }
 
-        var harmony = new Harmony("FYY.LibraryOfRuina");
+        var harmony = new Harmony(LibraryPatcher.HarmonyId);
         bool blockedByIncompatibleMod = false;
         if (!report.RunAll(
             [
@@ -78,7 +79,7 @@ public static class LibraryOfRuinaInitializer
 
         LibraryOfRuinaSettings.EnableRuntimeSideEffects();
 
-        IReadOnlyList<string> failedPatchClasses = [];
+        LibraryPatcher.Result? patchResult = null;
         bool completed = report.RunAll(
         [
             new("IntentGraphDisplayConfig", false, IntentGraphDisplayConfigRepository.Initialize),
@@ -91,49 +92,17 @@ public static class LibraryOfRuinaInitializer
             new("SavedPropertyTypes", true, SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes),
             new("SpecialGuests", true, SpecialGuestAutoRegistrar.Initialize),
             new("CardPools", true, RegisterRuntimeCardPools),
-            new("GameplayPatches", true, () => failedPatchClasses = ApplyGameplayPatches(harmony)),
+            new("GameplayPatches", true, () => patchResult = LibraryPatcher.ApplyAll(harmony)),
             new("Cursor", false, LibraryCursorPatch.ApplyToCurrentGame),
-            new("OptionalPatches", false, () => TryApplyOptionalPatches(harmony)),
         ]);
 
-        if (failedPatchClasses.Count > 0)
+        if (patchResult != null)
         {
-            report.AddFailure(
-                failedPatchClasses.Count + " Harmony patch class(es) skipped: " + string.Join(", ", failedPatchClasses));
+            report.AddPatchResult(patchResult);
         }
 
         report.LogSummary(completed ? null : "a required step failed; later steps were skipped");
         report.RethrowRequiredFailure();
-    }
-
-    // 逐个补丁类应用，等价于 Harmony.PatchAll 的遍历顺序。单个补丁类失败（例如 Android 的 Mono 运行时
-    // 无法为某些方法生成替换体）时只记录并跳过该类，其余补丁照常生效，避免整个模组停在部分初始化。
-    private static IReadOnlyList<string> ApplyGameplayPatches(Harmony harmony)
-    {
-        var failedPatchClasses = new List<string>();
-        foreach (Type type in LibraryAssemblyTypes.Loadable)
-        {
-            try
-            {
-                if (!type.HasHarmonyAttribute())
-                {
-                    continue;
-                }
-
-                harmony.CreateClassProcessor(type).Patch();
-            }
-            catch (Exception e)
-            {
-                failedPatchClasses.Add(type.FullName ?? type.Name);
-                Log.Error(
-                    LogPrefix + "Harmony patch class "
-                    + type.FullName
-                    + " failed to apply and was skipped: "
-                    + e);
-            }
-        }
-
-        return failedPatchClasses;
     }
 
     private static void PatchSettingsUi(Harmony harmony)
@@ -155,19 +124,6 @@ public static class LibraryOfRuinaInitializer
             {
                 ModHelper.AddModelToPool(attr.PoolType, type);
             }
-        }
-    }
-
-    // 可选补丁：安装失败只记一条 Info，不计入初始化失败。
-    private static void TryApplyOptionalPatches(Harmony harmony)
-    {
-        try
-        {
-            harmony.CreateClassProcessor(typeof(FocusOfAttentionCardCmdAutoPlayPatch)).Patch();
-        }
-        catch (Exception e)
-        {
-            Log.Info(LogPrefix + "Optional patch FocusOfAttentionCardCmdAutoPlayPatch skipped: " + e.Message);
         }
     }
 
@@ -215,7 +171,24 @@ public static class LibraryOfRuinaInitializer
             return true;
         }
 
-        public void AddFailure(string description) => _failures.Add(description);
+        /// <summary>
+        /// 单个必需补丁类失败只记入汇总，不中断初始化（例如 Android 的 Mono 运行时无法为某些方法生成
+        /// 替换体），与拆分前逐类 try/catch 的行为一致。可选补丁未安装只在汇总里列出。
+        /// </summary>
+        public void AddPatchResult(LibraryPatcher.Result result)
+        {
+            if (result.FailedRequired.Count > 0)
+            {
+                _failures.Add(result.FailedRequired.Count + " patch class(es) skipped: "
+                              + string.Join(", ", result.FailedRequired));
+            }
+
+            if (result.SkippedOptional.Count > 0 || result.NotApplied.Count > 0)
+            {
+                Log.Info(LogPrefix + "Patch classes not applied (optional or Prepare=false): "
+                         + string.Join(", ", result.SkippedOptional.Concat(result.NotApplied)));
+            }
+        }
 
         /// <summary>必需步骤失败时按原堆栈重新抛出，让游戏的模组加载器记录初始化失败。</summary>
         public void RethrowRequiredFailure() => _requiredFailure?.Throw();

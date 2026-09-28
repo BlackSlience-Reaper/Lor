@@ -18,6 +18,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Orbs;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.LittleRedMercenary;
 
@@ -144,6 +145,10 @@ internal static class FocusOfAttentionBouncingFlaskPatch
     }
 }
 
+[LibraryPatch(
+    Optional = true,
+    Reason = "CardCmd.AutoPlay 的随机选敌改为尊重集火。目标是 async 状态机，签名随游戏版本变化；"
+             + "Prepare 按 ResourceInfo.EnergySpent 的签名判断是否为适配的版本，不匹配时不安装。")]
 internal static class FocusOfAttentionCardCmdAutoPlayPatch
 {
     [HarmonyPrepare]
