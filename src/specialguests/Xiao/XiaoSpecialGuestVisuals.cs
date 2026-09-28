@@ -204,7 +204,7 @@ internal static class XiaoGuestVisualProfile
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
 internal static class XiaoSpecialGuestCreateVisualsPatch
 {
     private static readonly CreatureVisualLayout MirisLayout = new(

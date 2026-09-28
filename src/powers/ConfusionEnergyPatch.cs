@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 namespace LibraryOfRuina.powers;
 
 [HarmonyPatch(typeof(PlayerCmd), nameof(PlayerCmd.GainEnergy))]
+[HarmonyPriority(Priority.Low)]
 public static class ConfusionEnergyPatch
 {
     [HarmonyPrefix]

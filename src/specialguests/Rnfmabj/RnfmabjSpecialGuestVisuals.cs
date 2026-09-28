@@ -144,7 +144,7 @@ internal sealed partial class RnfmabjHandCreatureVisuals :
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
 internal static class RnfmabjSpecialGuestCreateVisualsPatch
 {
     private const float HandIntentRightOffset = 60f;

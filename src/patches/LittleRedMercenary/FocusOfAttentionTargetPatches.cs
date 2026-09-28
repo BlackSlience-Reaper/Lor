@@ -223,6 +223,8 @@ internal static class FocusOfAttentionDarkOrbEvokePatch
         Creature focusedTarget)
     {
         _playEvokeSfxMethod?.Invoke(orb, null);
+        // 与原版 DarkOrb.Evoke 相同：触发激发事件，充能球特效据此指向目标。
+        orb.ActivateEvoke([focusedTarget]);
         await CreatureCmdCompat.Damage(
             playerChoiceContext,
             focusedTarget,

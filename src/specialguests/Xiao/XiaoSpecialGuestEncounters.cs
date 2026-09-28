@@ -82,7 +82,7 @@ public sealed class XiaoSpecialGuestStageTwoEncounter :
 }
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
 internal static class XiaoSpecialGuestBackgroundAssetsPatch
 {
     internal const string StageOneLayerValueKey = "xiao.stage-one-layer";

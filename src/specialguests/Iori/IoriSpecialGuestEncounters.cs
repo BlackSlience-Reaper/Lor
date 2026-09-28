@@ -82,7 +82,7 @@ public sealed class IoriSpecialGuestStageTwoEncounter :
 }
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
 internal static class IoriSpecialGuestBackgroundAssetsPatch
 {
     [HarmonyPrefix]

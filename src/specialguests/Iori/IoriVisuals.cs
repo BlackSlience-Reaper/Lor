@@ -225,7 +225,7 @@ internal static class IoriAnimationContract
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
 internal static class IoriSpecialGuestCreateVisualsPatch
 {
     [HarmonyPrefix]

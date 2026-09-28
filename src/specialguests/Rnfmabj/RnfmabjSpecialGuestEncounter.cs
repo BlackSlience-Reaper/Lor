@@ -67,7 +67,7 @@ public sealed class RnfmabjSpecialGuestEncounter :
 }
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
 internal static class RnfmabjSpecialGuestBackgroundAssetsPatch
 {
     [HarmonyPrefix]
