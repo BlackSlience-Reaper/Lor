@@ -105,7 +105,9 @@ public sealed class TechnologyFloorMk4IdentificationMk2Power : LibraryOfRuinaPow
         public int DamageDealtThisTurn;
     }
 
-    public override int DisplayAmount => DamageThreshold - GetInternalData<Data>().DamageDealtThisTurn;
+    // Internal data only exists on mutable instances; canonical models show the full threshold.
+    public override int DisplayAmount =>
+        IsMutable ? DamageThreshold - GetInternalData<Data>().DamageDealtThisTurn : DamageThreshold;
 
     protected override string LegacyPowerId => "TECHNOLOGY_FLOOR_MK4_IDENTIFICATION_MK2_POWER";
 

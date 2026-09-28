@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.helpers;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.PhilosophyFloorLiberation;
 using LibraryOfRuina.combat;
@@ -306,7 +307,10 @@ public sealed partial class PhilosophyFloorTwilight :
         }
 
         _victoryCgPlayed = true;
-        await PhilosophyFloorLiberationCgController.PlayVictoryAsync();
+        // Awaited inside the AfterDeath hook chain: a CG failure must not skip later listeners.
+        await PresentationGuard.RunAsync(
+            () => PhilosophyFloorLiberationCgController.PlayVictoryAsync(),
+            "PhilosophyFloorTwilight victory CG");
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -383,10 +387,12 @@ public sealed partial class PhilosophyFloorTwilight :
             await ApplyEggResistances(choiceContext);
             await PhilosophyFloorTwilightPowerController.SyncPeacePower(this);
             await RemoveVisibleDebuffsIfLongArmsActive();
-            PhilosophyFloorLiberationBackgroundController.SetEggState(
-                ActiveEgg,
-                AliveEggMask,
-                flash: eggChanged);
+            PresentationGuard.Run(
+                () => PhilosophyFloorLiberationBackgroundController.SetEggState(
+                    ActiveEgg,
+                    AliveEggMask,
+                    flash: eggChanged),
+                "PhilosophyFloorTwilight egg state");
         }
 
         await base.BeforeSideTurnStart(
@@ -465,16 +471,20 @@ public sealed partial class PhilosophyFloorTwilight :
         await ApplyEggResistances(choiceContext);
         await PhilosophyFloorTwilightPowerController.SyncPeacePower(this);
         await RemoveVisibleDebuffsIfLongArmsActive();
-        PhilosophyFloorLiberationBackgroundController.SetEggState(
-            ActiveEgg,
-            AliveEggMask,
-            flash: true);
-        Task eggBreakTask =
-            PhilosophyFloorLiberationBackgroundController.PlayEggBreak(
-                brokenEgg);
-        Task eggBreakCgTask =
-            PhilosophyFloorLiberationCgController.PlayEggBreakAsync(
-                brokenEgg);
+        PresentationGuard.Run(
+            () => PhilosophyFloorLiberationBackgroundController.SetEggState(
+                ActiveEgg,
+                AliveEggMask,
+                flash: true),
+            "PhilosophyFloorTwilight egg state");
+        // Started before the HP loss and awaited after it; guarded so neither a synchronous throw
+        // nor a faulted task can skip the damage or surface into the AfterStun hook chain.
+        Task eggBreakTask = PresentationGuard.RunAsync(
+            () => PhilosophyFloorLiberationBackgroundController.PlayEggBreak(brokenEgg),
+            "PhilosophyFloorTwilight egg break");
+        Task eggBreakCgTask = PresentationGuard.RunAsync(
+            () => PhilosophyFloorLiberationCgController.PlayEggBreakAsync(brokenEgg),
+            "PhilosophyFloorTwilight egg break CG");
 
         int hpLoss = Math.Max(
             1,
@@ -487,7 +497,7 @@ public sealed partial class PhilosophyFloorTwilight :
             ValueProp.Unblockable | ValueProp.Unpowered,
             null,
             null);
-        EncounterBgmController.RefreshCurrentEncounterTrack();
+        PresentationGuard.Run(EncounterBgmController.RefreshCurrentEncounterTrack, "PhilosophyFloorTwilight bgm");
         await Task.WhenAll(eggBreakTask, eggBreakCgTask);
     }
 

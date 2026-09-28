@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Remove="build/**" />
     <Compile Remove="dist/**" />
+    <Compile Remove="tools/**" />
   </ItemGroup>
 
   <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">

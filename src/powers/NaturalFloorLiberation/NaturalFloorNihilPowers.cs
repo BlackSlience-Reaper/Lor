@@ -184,7 +184,9 @@ public sealed class NaturalFloorNihilHatredPower : NaturalFloorNihilFormPower
     {
         get
         {
-            if (Owner?.Monster is NaturalFloorNihilBoss boss)
+            // The Owner getter asserts mutability, so Owner?.X alone still throws on canonical models;
+            // mutable instances have no Owner until applied.
+            if (IsMutable && Owner?.Monster is NaturalFloorNihilBoss boss)
             {
                 return Math.Min(boss.HatredHitCount, boss.HatredThreshold);
             }
@@ -292,7 +294,7 @@ public sealed class NaturalFloorLovePower : NaturalFloorGreenPassivePower
     internal void RefreshCounter() => InvokeDisplayAmountChanged();
 
     public override int DisplayAmount =>
-        Math.Min((Owner?.Monster as NaturalFloorMagicalGirl)?.LoveHitCount ?? 0,
+        Math.Min(((IsMutable ? Owner?.Monster : null) as NaturalFloorMagicalGirl)?.LoveHitCount ?? 0,
             NaturalFloorNihilMoves.LoveHitThreshold);
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Threshold", NaturalFloorNihilMoves.LoveHitThreshold)];

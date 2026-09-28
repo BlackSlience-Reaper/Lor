@@ -38,7 +38,11 @@ public sealed class PunishingBirdPunishPower : PunishingBirdBasePower, IHealthBa
 
     public override PowerStackType StackType => PowerStackType.Counter;
     
-    public override int DisplayAmount => Math.Max(0, CalculateHpLossThreshold(Owner.MaxHp) - AccumulatedPlayerHpLoss);
+    // Canonical models throw on Owner; a mutable instance has no Owner until it is applied.
+    public override int DisplayAmount =>
+        IsMutable && Owner is { } owner
+            ? Math.Max(0, CalculateHpLossThreshold(owner.MaxHp) - AccumulatedPlayerHpLoss)
+            : 0;
 
     protected override string? LegacyPowerId => "PUNISHING_BIRD_PUNISH_POWER";
 

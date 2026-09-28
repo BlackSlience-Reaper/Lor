@@ -1,6 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.backgrounds.HistoryFloorLiberation;
 
@@ -26,8 +27,9 @@ internal static class HistoryFloorLiberationBackgroundController
             _ => PhaseOneTexturePath
         };
 
+    // Called by the encounter right before a phase spawn; a failed node lookup must not skip it.
     public static TextureRect? GetCurrentBackgroundImage() =>
-        FindBackgroundImage();
+        PresentationGuard.Get(FindBackgroundImage, "HistoryFloorLiberation background lookup");
 
     public static void SetPhaseBackground(int phase)
     {

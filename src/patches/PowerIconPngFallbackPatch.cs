@@ -5,6 +5,15 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.patches;
 
+internal static class PowerIconFallbackScope
+{
+    // Vanilla and third-party powers keep their own icons: vanilla ships powers/<id>.png as the big
+    // art, so resolving it for Icon would swap every vanilla small icon for the large image.
+    // Checked by defining assembly: third-party powers may derive from LibraryPowerModel too.
+    internal static bool IsLibraryPower(PowerModel power) =>
+        ModOwnership.IsOwn(power) || power.GetType().Assembly == typeof(LibraryPowerModel).Assembly;
+}
+
 [HarmonyPatch(typeof(PowerModel), nameof(PowerModel.Icon), MethodType.Getter)]
 [HarmonyAfter("LibraryOfRuinaLib")]
 internal static class PowerIconPngFallbackPatch
@@ -15,7 +24,8 @@ internal static class PowerIconPngFallbackPatch
         out Texture2D? __state)
     {
         __state = null;
-        if (!PowerIconResolver.TryResolve(__instance, out ResolvedPowerIcon resolved))
+        if (!PowerIconFallbackScope.IsLibraryPower(__instance)
+            || !PowerIconResolver.TryResolve(__instance, out ResolvedPowerIcon resolved))
         {
             return true;
         }
@@ -44,7 +54,8 @@ internal static class PowerBigIconPngFallbackPatch
         out Texture2D? __state)
     {
         __state = null;
-        if (!PowerIconResolver.TryResolve(__instance, out ResolvedPowerIcon resolved))
+        if (!PowerIconFallbackScope.IsLibraryPower(__instance)
+            || !PowerIconResolver.TryResolve(__instance, out ResolvedPowerIcon resolved))
         {
             return true;
         }

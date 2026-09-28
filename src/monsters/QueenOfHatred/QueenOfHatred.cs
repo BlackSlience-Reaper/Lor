@@ -421,7 +421,9 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
             return;
         }
 
-        await QueenOfHatredInversionVideoController.PlayAsync();
+        await PresentationGuard.RunAsync(
+            () => QueenOfHatredInversionVideoController.PlayAsync(),
+            "QueenOfHatred inversion video");
 
         _isSnakeForm = true;
         _formTurnCounter = SnakeOpeningFormTurnCounter;
@@ -429,13 +431,16 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         _queuedArcanaTarget = null;
         _forcedTarget = null;
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is QueenOfHatredCreatureVisuals visuals)
+        PresentationGuard.Run(() =>
         {
-            visuals.SetSnakeForm(true);
-        }
+            if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is QueenOfHatredCreatureVisuals visuals)
+            {
+                visuals.SetSnakeForm(true);
+            }
 
-        LocalOggOneShotPlayer.Play(QueenTransformEndSfxPath, LocalSfxVolumeDb);
-        StartBackgroundMoonTextLoop(HysteriaBackgroundTextLineKeys);
+            LocalOggOneShotPlayer.Play(QueenTransformEndSfxPath, LocalSfxVolumeDb);
+            StartBackgroundMoonTextLoop(HysteriaBackgroundTextLineKeys);
+        }, "QueenOfHatred snake form visuals");
 
         if (_arcanaBeatsState != null)
         {
@@ -892,7 +897,9 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
 
     private async Task ExecuteMagicMassAttackSegment(int damage)
     {
-        await LocalOggOneShotPlayer.PlayAsync(QueenMagicSummonSfxPath, LocalSfxVolumeDb);
+        await PresentationGuard.RunAsync(
+            () => LocalOggOneShotPlayer.PlayAsync(QueenMagicSummonSfxPath, LocalSfxVolumeDb),
+            "QueenOfHatred magic summon sfx");
         using LocalOggLoopPlayer.LoopHandle? loop = LocalOggLoopPlayer.StartLoop(QueenMagicLoopSfxPath, LocalSfxVolumeDb);
         try
         {

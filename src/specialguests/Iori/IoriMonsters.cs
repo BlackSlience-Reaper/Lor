@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using LibraryOfRuina.helpers;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -1393,7 +1394,7 @@ public abstract class IoriMonsterBase :
             return;
         }
 
-        await PlayGuardAnimation();
+        await PresentationGuard.RunAsync(PlayGuardAnimation, "Iori guard animation");
         await CompleteStageOneEscape();
     }
 
@@ -1411,7 +1412,7 @@ public abstract class IoriMonsterBase :
             && !EscapeCompleted
             && !IsSecondStage)
         {
-            await PlayGuardAnimation();
+            await PresentationGuard.RunAsync(PlayGuardAnimation, "Iori guard animation");
             await CompleteStageOneEscape();
         }
     }

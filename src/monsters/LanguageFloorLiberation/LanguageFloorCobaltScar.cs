@@ -1,5 +1,6 @@
 using LibraryLib.Models;
 using System;
+using LibraryOfRuina.helpers;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -238,10 +239,14 @@ public sealed class LanguageFloorCobaltScar :
             await encounter.EnsureControllerPowers(Creature.CombatState);
         }
 
-        LanguageFloorLiberationBackgroundController.SetPhaseBackground(2);
+        PresentationGuard.Run(
+            () => LanguageFloorLiberationBackgroundController.SetPhaseBackground(2),
+            "LanguageFloorCobaltScar phase background");
         await EnsureFormPowers();
         EnsureShadowCardCounters();
-        await ApplyVisualState();
+        // ResolveOpeningSwallow below consumes the card-generation RNG and moves cards; it must run
+        // on every client even if this client's visuals fail.
+        await PresentationGuard.RunAsync(ApplyVisualState, "LanguageFloorCobaltScar form visuals");
         if (!OpeningResolved)
         {
             await ResolveOpeningSwallow();

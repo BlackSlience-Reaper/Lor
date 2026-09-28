@@ -17,6 +17,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.encounters.NaturalFloorLiberation;
 
@@ -194,12 +195,19 @@ public sealed partial class NaturalFloorLiberationEncounter : EncounterModel,
         }
 
         _transitionInProgress = true;
-        NaturalFloorLiberationBackground? background = NaturalFloorLiberationBackground.GetCurrent();
-        background?.BeginPhaseReveal();
+        NaturalFloorLiberationBackground? background = null;
         try
         {
+            // The flag is reset in finally; node lookups and reveal preparation are presentation
+            // and must not skip the phase spawn below on one client.
+            background = PresentationGuard.Get(
+                NaturalFloorLiberationBackground.GetCurrent,
+                "NaturalFloorLiberation background lookup");
+            PresentationGuard.Run(() => background?.BeginPhaseReveal(), "NaturalFloorLiberation reveal prepare");
             await LiberationPhaseCleanup.RemovePhaseCreatures(state);
-            TextureRect? image = background ?? NCombatRoom.Instance?.Background?.GetNodeOrNull<TextureRect>("Layer_00/A");
+            TextureRect? image = background ?? PresentationGuard.Get(
+                () => NCombatRoom.Instance?.Background?.GetNodeOrNull<TextureRect>("Layer_00/A"),
+                "NaturalFloorLiberation fallback background lookup");
             await LorexSceneTransitionController.PlayPhaseBackgroundRevealAsync(
                 image,
                 NaturalFloorLiberationBackground.GetPhaseTexturePath(CurrentPhase),
@@ -437,23 +445,30 @@ public sealed partial class NaturalFloorLiberationEncounter : EncounterModel,
         }
 
         bool exists = Staffs().Length > 0;
+        // SynchronizeStaffMode / ReplaceIllegalCorrosionMove are synchronized state; only the intent
+        // node refresh between them is presentation, so a UI failure cannot skip the hermit's sync.
         if (Rage?.Monster is NaturalFloorBlindRageBoss rage)
         {
             rage.SynchronizeStaffMode(exists);
             rage.ReplaceIllegalCorrosionMove();
-            if (rage.Creature.GetCreatureNode() is { } node)
-            {
-                await node.RefreshIntents();
-            }
+            await RefreshIntentNode(rage.Creature);
         }
         if (Hermit?.Monster is NaturalFloorGreenStemHermit hermit)
         {
             hermit.SynchronizeStaffMode(exists);
-            if (hermit.Creature.GetCreatureNode() is { } node)
+            await RefreshIntentNode(hermit.Creature);
+        }
+    }
+
+    private static Task RefreshIntentNode(Creature creature)
+    {
+        return PresentationGuard.RunAsync(async () =>
+        {
+            if (creature.GetCreatureNode() is { } node)
             {
                 await node.RefreshIntents();
             }
-        }
+        }, "NaturalFloorLiberation intent refresh");
     }
 
     internal async Task SummonStaffs()
@@ -728,7 +743,9 @@ public sealed partial class NaturalFloorLiberationEncounter : EncounterModel,
         }
     }
 
-    public void RefreshLiberationPhaseBgm() => EncounterBgmController.RefreshCurrentEncounterTrack();
+    // Called between phase state writes (e.g. before RefreshStaffMode); audio is local presentation.
+    public void RefreshLiberationPhaseBgm() =>
+        PresentationGuard.Run(EncounterBgmController.RefreshCurrentEncounterTrack, "NaturalFloorLiberation bgm");
 
     public override Dictionary<string, string> SaveCustomState()
     {

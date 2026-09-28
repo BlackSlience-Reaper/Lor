@@ -287,7 +287,9 @@ public sealed class BeyondFragmentIncomprehensiblePower : LibraryOfRuinaPowerMod
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    public override int DisplayAmount => Math.Max(0, TriggerTurns - GetInternalData<Data>().NoDamageTurns);
+    // Internal data only exists on mutable instances; canonical models show the full count.
+    public override int DisplayAmount =>
+        IsMutable ? Math.Max(0, TriggerTurns - GetInternalData<Data>().NoDamageTurns) : TriggerTurns;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

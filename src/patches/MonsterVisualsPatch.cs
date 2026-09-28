@@ -2259,17 +2259,8 @@ internal sealed partial class CreatureStateDisplayOffset : Node
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
 public static class MonsterModelCreateVisualsPatch
 {
-    private static readonly string GlobeHeadFixScenePath = SceneHelper.GetScenePath("creature_visuals/globe_head_fix");
-
     private static bool Prefix(MonsterModel __instance, ref NCreatureVisuals __result)
     {
-        if (__instance.Id.Entry == "GLOBE_HEAD")
-        {
-            MonsterVisualDebug.Write($"Create special id=GLOBE_HEAD scenePath={GlobeHeadFixScenePath}");
-            __result = WrappedMonsterVisualFactory.CreateFromScene(GlobeHeadFixScenePath);
-            return false;
-        }
-
         if (!WrappedMonsterVisualFactory.ShouldWrap(__instance))
             return true;
 

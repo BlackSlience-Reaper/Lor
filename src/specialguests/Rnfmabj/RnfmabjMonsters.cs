@@ -211,12 +211,17 @@ public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
 
     protected async Task RefreshPlanDisplay()
     {
+        // RevealPlan switches the move state machine (SetMoveImmediate) and stays on the normal
+        // exception path; only the intent node refresh is local presentation.
         RefreshPlannedIntents();
         RevealPlan();
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        await PresentationGuard.RunAsync(async () =>
         {
-            await node.RefreshIntents();
-        }
+            if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+            {
+                await node.RefreshIntents();
+            }
+        }, "Rnfmabj intent refresh");
     }
 
     protected void HidePlan()
@@ -891,7 +896,9 @@ public sealed class Rnfmabj : RnfmabjMonsterBase
             if (IsUnited)
             {
                 IsUnited = false;
-                await CreatureCmd.TriggerAnim(Creature, "Split", 0.75f);
+                await PresentationGuard.RunAsync(
+                    () => CreatureCmd.TriggerAnim(Creature, "Split", 0.75f),
+                    "Rnfmabj split animation");
                 await FakeDeathDebuffHelper.ClearDebuffs(Creature);
 
                 if (Creature is LibraryCreature libraryCreature)
@@ -1563,7 +1570,9 @@ public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.helpe
     internal void ApplySavedCombatAvailability()
     {
         bool interactable = CanPerformMoves;
-        NCombatRoom.Instance?.SetCreatureIsInteractable(Creature, interactable);
+        PresentationGuard.Run(
+            () => NCombatRoom.Instance?.SetCreatureIsInteractable(Creature, interactable),
+            "Rnfmabj interactable state");
         if (!interactable)
         {
             ClearPlanAndHide();

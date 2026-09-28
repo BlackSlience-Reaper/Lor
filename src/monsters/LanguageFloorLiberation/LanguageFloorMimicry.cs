@@ -354,7 +354,9 @@ public sealed class LanguageFloorMimicry :
             await encounter.EnsureControllerPowers(Creature.CombatState);
         }
 
-        LanguageFloorLiberationBackgroundController.SetPhaseBackground(5);
+        PresentationGuard.Run(
+            () => LanguageFloorLiberationBackgroundController.SetPhaseBackground(5),
+            "LanguageFloorMimicry phase background");
         if (!Initialized)
         {
             Initialized = true;
@@ -945,9 +947,9 @@ public sealed class LanguageFloorMimicry :
             ? EnhancedMultiplier
             : 1;
         IReadOnlyList<Creature> players = PlannedAttackTargets();
-        await LanguageFloorMimicrySpecialEffects.PlayGoodbyeAsync(
-            Creature,
-            players);
+        await PresentationGuard.RunAsync(
+            () => LanguageFloorMimicrySpecialEffects.PlayGoodbyeAsync(Creature, players),
+            "LanguageFloorMimicry goodbye effect");
         await DamageAllPlayers(GoodbyeDamage * multiplier);
         await PowerCmdCompat.Apply<LibraryBleedingPower>(
             players.Where(static player => player.IsAlive),
@@ -1083,8 +1085,9 @@ public sealed class LanguageFloorMimicry :
         }
 
         await RemoveFormPowers();
-        await LanguageFloorMimicrySpecialEffects
-            .PlayTransformationAsync(Creature);
+        await PresentationGuard.RunAsync(
+            () => LanguageFloorMimicrySpecialEffects.PlayTransformationAsync(Creature),
+            "LanguageFloorMimicry transformation effect");
     }
 
     private async Task FinishTransition()
@@ -1110,7 +1113,7 @@ public sealed class LanguageFloorMimicry :
         }
 
         await RefreshFormPowers();
-        await ApplyVisualState();
+        await PresentationGuard.RunAsync(ApplyVisualState, "LanguageFloorMimicry form visuals");
         ResetStateMachine();
         SetUpForCombat();
         if (Creature.CombatState is { } combatState)

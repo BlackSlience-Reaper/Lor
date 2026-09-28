@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using HarmonyLib;
+using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Cards;
@@ -30,7 +31,9 @@ internal static class CardVisualDisposedResourceSafety
 
     public static Exception? Finalize(NCard card, Exception? exception, string surface)
     {
-        if (exception == null || !DisposedGodotResourceSafety.IsKnown(exception))
+        // Only this mod's cards: their textures are the ones the disposed-resource issue affects,
+        // and other cards' failures must stay visible.
+        if (exception == null || !DisposedGodotResourceSafety.IsKnown(exception) || !IsOwnCard(card))
         {
             return exception;
         }
@@ -45,6 +48,18 @@ internal static class CardVisualDisposedResourceSafety
         }
 
         return null;
+    }
+
+    private static bool IsOwnCard(NCard card)
+    {
+        try
+        {
+            return ModOwnership.IsOwn(card.Model);
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static string ResolveCardId(NCard card)
