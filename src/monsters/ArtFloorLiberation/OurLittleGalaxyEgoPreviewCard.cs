@@ -7,7 +7,6 @@ using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -15,38 +14,22 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
 [CardPool(typeof(LibraryOfRuinaEgoCardPool))]
-public sealed class OurLittleGalaxyEgoPreviewCard : CardModel, IEnemyAttackPreviewCard
+public sealed class OurLittleGalaxyEgoPreviewCard()
+    : EgoCardBase(
+        3,
+        TargetType.AllEnemies,
+        previewDamage: ArtFloorEgoNumbers.OurLittleGalaxyDamage,
+        shouldShowInCardLibrary: false)
 {
-    private const string PortraitResourcePath = "packed/card_portraits/ego/our_little_galaxy_ego_preview_card.png";
-
-    public override int MaxUpgradeLevel => 1;
-
     public override CardPoolModel VisualCardPool => ModelDb.CardPool<LibraryOfRuinaEgoCardPool>();
-
-    public override string PortraitPath => ImageHelper.GetImagePath(PortraitResourcePath);
-
-    public override string BetaPortraitPath => PortraitPath;
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(ArtFloorEgoNumbers.OurLittleGalaxyDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", ArtFloorEgoNumbers.OurLittleGalaxyHitCount)
     ];
 
-    public OurLittleGalaxyEgoPreviewCard()
-        : base(3, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies, shouldShowInCardLibrary: false)
-    {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
-    }
-
-    public void SetEnemyAttackPreview(IReadOnlyList<int> damages, int hits)
+    public override void SetEnemyAttackPreview(IReadOnlyList<int> damages, int hits)
     {
         IReadOnlyList<int> safeDamages = damages ?? [];
         if (safeDamages.Count > 0)
@@ -84,5 +67,5 @@ public sealed class OurLittleGalaxyEgoPreviewCard : CardModel, IEnemyAttackPrevi
         }
     }
 
-    public static string GetPortraitResourcePath() => PortraitResourcePath;
+    public static string GetPortraitResourcePath() => GetPortraitResourcePath<OurLittleGalaxyEgoPreviewCard>();
 }
