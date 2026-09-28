@@ -19,7 +19,7 @@ using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.events.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorLiberationSettlementEvent : AncientEventModel
+public sealed class TechnologyFloorLiberationSettlementEvent : AncientEventModel, ILibrarySettlementEvent
 {
     private static readonly LiberationSettlementRewardTier[] RewardTiers =
     [
