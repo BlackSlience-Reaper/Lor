@@ -15,10 +15,12 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyPowerAmountGiven))]
+[LibraryPatch(Reason = "可改为 8 个友方盟友怪物各自覆写 ModifyPowerAmountGivenMultiplicative（×0 与顺序无关，结果等价），没有共同基类，放到阶段 4 与盟友基类一起做。只对玩家方用敌方范围卡施加到本模组友方盟友的能力置 0。")]
 internal static class FriendlyAllyEnemyPowerTargetPatch
 {
     [HarmonyPostfix]
@@ -40,6 +42,7 @@ internal static class FriendlyAllyEnemyPowerTargetPatch
 }
 
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyPowerAmountReceived))]
+[LibraryPatch(Reason = "ModifyPowerAmountReceived 是串行链，覆写不能保证最后执行，排在盟友之后的第三方接收修正可以把 0 改回；Last 后缀保证本模组友方盟友不吃玩家方减益。改为盟友覆写与否在阶段 4 裁决。")]
 internal static class FriendlyAllyEnemyDebuffPatch
 {
     [HarmonyPostfix]
