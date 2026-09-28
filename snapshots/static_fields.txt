@@ -160,7 +160,6 @@ mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._mainMenuBgmEnab
 mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._mainMenuBgmVolume	System.Double
 mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._modSfxEnabled	System.Boolean
 mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._modSfxVolume	System.Double
-mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._monsterExtensionActive	System.Boolean
 mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._monsterExtensionEnabled	System.Boolean
 mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._nonCombatRunBgmEnabled	System.Boolean
 mutable	LibraryOfRuina.features.settings.LibraryOfRuinaSettings._nonCombatRunBgmVolume	System.Double
@@ -350,7 +349,6 @@ readonly	LibraryOfRuina.cards.RoadHome.RoadHomePageChoiceCardBase.PortraitResour
 readonly	LibraryOfRuina.combat.AllyTurnRegistry.Providers	System.Collections.Generic.List`1[LibraryOfRuina.combat.IAllyTurnProvider]
 readonly	LibraryOfRuina.combat.AllyTurnRegistry.States	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,LibraryOfRuina.combat.AllyTurnState]
 readonly	LibraryOfRuina.combat.CombatSafetyNet.MonsterIsPerformingMoveField	System.Reflection.FieldInfo
-readonly	LibraryOfRuina.combat.CombatSafetyNet.OverlayStackOverlaysField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker.BlockBreakRatio	System.Decimal
 readonly	LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker.SuppressedNextDamageHooks	System.Collections.Generic.HashSet`1[LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker+BlockBreakSuppression]
 readonly	LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker.SuppressionSync	System.Object

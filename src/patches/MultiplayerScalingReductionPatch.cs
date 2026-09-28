@@ -122,8 +122,8 @@ internal sealed class ScaledMonsterHealVar : HealVar
 
     protected override decimal GetBaseValueForIConvertible()
     {
-        // Canonical powers have no Owner; fall back to the unscaled base value.
-        return _owner is PowerModel { IsMutable: true } power
+        // Canonical powers throw on Owner and unapplied ones have none; use the unscaled base value.
+        return _owner is PowerModel { IsMutable: true, Owner: not null } power
             ? MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(power.Owner, BaseValue)
             : base.GetBaseValueForIConvertible();
     }

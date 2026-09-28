@@ -97,6 +97,9 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "GainBlock", [type
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Heal")
   Postfix LibraryOfRuina.patches.SmilingBodies.SmilingBodiesAbsorptionHealPatch.Postfix
   Prefix LibraryOfRuina.patches.SmilingBodies.SmilingBodiesAbsorptionHealPatch.Prefix
+HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Kill", [typeof(System.Collections.Generic.IReadOnlyCollection`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]), typeof(System.Boolean)])
+  Postfix LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Postfix
+  Prefix LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Stun", [typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), typeof(System.Func`2[[System.Collections.Generic.IReadOnlyList`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]), typeof(System.String)])
   Prefix LibraryOfRuina.patches.QueenOfHatred.UntargetableCreatureStunPatch.Prefix
   Prefix LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilExternalStunPatch.Prefix
@@ -380,7 +383,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rooms.CombatRoom), "OfferRoomEndRewards")
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "CleanUp", [typeof(System.Boolean)])
   Prefix LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBgmRunCleanupPatch.Prefix
   Prefix LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmRunCleanupPatch.Prefix
-  Postfix LibraryOfRuina.patches.RunScopedSettingsApplyPatch.Postfix
   Prefix LibraryOfRuina.encounters.EncounterBgmRunCleanupPatch.Prefix
   Prefix LibraryOfRuina.audio.AbnormalityEliteBgmRunCleanupPatch.Prefix
   Prefix LibraryOfRuina.audio.ReverberationEnsembleMusicCleanupPatch.Prefix

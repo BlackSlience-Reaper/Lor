@@ -469,8 +469,9 @@ public sealed class WolfHowlPassivePower : LibraryOfRuinaPowerModel
 
         protected override decimal GetBaseValueForIConvertible()
         {
-            // Canonical powers (compendium, hover tips via FromPower) have no Owner.
-            return _owner is WolfHowlPassivePower { IsMutable: true } power
+            // Canonical powers (compendium, hover tips via FromPower) throw on Owner, and mutable
+            // ones have no Owner until applied.
+            return _owner is WolfHowlPassivePower { IsMutable: true, Owner: not null } power
                 ? WolfPhaseTwoThreshold.Calculate(power.Owner)
                 : base.GetBaseValueForIConvertible();
         }
@@ -505,7 +506,7 @@ public sealed class WolfHowlingNightmarePower : LibraryOfRuinaPowerModel
 
         protected override decimal GetBaseValueForIConvertible()
         {
-            return _owner is WolfHowlingNightmarePower { IsMutable: true } power
+            return _owner is WolfHowlingNightmarePower { IsMutable: true, Owner: not null } power
                 ? WolfPhaseTwoThreshold.Calculate(power.Owner)
                 : base.GetBaseValueForIConvertible();
         }

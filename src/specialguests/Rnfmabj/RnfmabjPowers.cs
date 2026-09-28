@@ -193,7 +193,7 @@ public sealed class RnfmabjTwistedBladePassivePower : LibraryOfRuinaPowerModel
     ];
 
     public override int DisplayAmount =>
-        IsMutable && Owner.Monster is Rnfmabj boss ? Math.Max(0, boss.BladeCooldown) : 0;
+        IsMutable && Owner?.Monster is Rnfmabj boss ? Math.Max(0, boss.BladeCooldown) : 0;
 
     public override string PackedIconPath =>
         ImageHelper.GetImagePath("powers/rnfmabj_twisted_blade_passive_power.png");

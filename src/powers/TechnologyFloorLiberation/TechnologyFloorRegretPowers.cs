@@ -76,8 +76,9 @@ public sealed class RegretExtremeViolencePower : LibraryOfRuinaPowerModel
     {
         get
         {
-            // Owner throws on canonical models; the player-count helper already handles a null state.
-            int playerCount = MultiplayerScalingPatchHelper.ResolveRunPlayerCount(IsMutable ? Owner.CombatState : null);
+            // Owner throws on canonical models and is null before the power is applied; the
+            // player-count helper already handles a null state.
+            int playerCount = MultiplayerScalingPatchHelper.ResolveRunPlayerCount(IsMutable ? Owner?.CombatState : null);
             decimal multiplier = playerCount switch
             {
                 <= 1 => 1m,
@@ -290,7 +291,7 @@ public sealed class RegretEndBeginEndPower : LibraryOfRuinaPowerModel
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    public override int DisplayAmount => IsMutable ? Owner.GetPower<RegretFearPower>()?.TriggerCount ?? 0 : 0;
+    public override int DisplayAmount => IsMutable ? Owner?.GetPower<RegretFearPower>()?.TriggerCount ?? 0 : 0;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
