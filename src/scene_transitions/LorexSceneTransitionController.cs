@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
+using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 
@@ -61,28 +62,37 @@ internal static class LorexSceneTransitionController
         Func<Task> updatePhaseAsync,
         Action fallbackSetBackground)
     {
-        await WaitForActiveRevealAsync();
+        // updatePhaseAsync carries synchronized state (spawning the next phase boss) and must run
+        // exactly once on every client; everything around it is local presentation, so a failure
+        // there is logged instead of skipping the spawn on one client only.
+        await PresentationGuard.RunAsync(WaitForActiveRevealAsync, "Lorex reveal wait");
 
         LorexSceneRevealOverlay? preparedReveal = null;
-        Texture2D? oldBackgroundTexture = backgroundImage?.Texture;
-        if (backgroundImage != null && oldBackgroundTexture != null)
+        PresentationGuard.Run(() =>
         {
-            preparedReveal = LorexSceneRevealOverlay.CreatePrimed(backgroundImage, oldBackgroundTexture);
-        }
+            Texture2D? oldBackgroundTexture = backgroundImage?.Texture;
+            if (backgroundImage != null && oldBackgroundTexture != null)
+            {
+                preparedReveal = LorexSceneRevealOverlay.CreatePrimed(backgroundImage, oldBackgroundTexture);
+            }
+        }, "Lorex reveal prime");
 
         try
         {
             await updatePhaseAsync();
-            fallbackSetBackground();
-            Texture2D? newBackgroundTexture = LoadTexture(newBackgroundTexturePath);
-            if (backgroundImage != null
-                && GodotObject.IsInstanceValid(backgroundImage)
-                && preparedReveal != null
-                && newBackgroundTexture != null)
+            PresentationGuard.Run(fallbackSetBackground, "Lorex phase background");
+            await PresentationGuard.RunAsync(async () =>
             {
-                await PlayPreparedRevealAsync(backgroundImage, preparedReveal, newBackgroundTexture);
-                preparedReveal = null;
-            }
+                Texture2D? newBackgroundTexture = LoadTexture(newBackgroundTexturePath);
+                if (backgroundImage != null
+                    && GodotObject.IsInstanceValid(backgroundImage)
+                    && preparedReveal != null
+                    && newBackgroundTexture != null)
+                {
+                    await PlayPreparedRevealAsync(backgroundImage, preparedReveal, newBackgroundTexture);
+                    preparedReveal = null;
+                }
+            }, "Lorex reveal");
         }
         finally
         {

@@ -891,7 +891,9 @@ public sealed class Rnfmabj : RnfmabjMonsterBase
             if (IsUnited)
             {
                 IsUnited = false;
-                await CreatureCmd.TriggerAnim(Creature, "Split", 0.75f);
+                await PresentationGuard.RunAsync(
+                    () => CreatureCmd.TriggerAnim(Creature, "Split", 0.75f),
+                    "Rnfmabj split animation");
                 await FakeDeathDebuffHelper.ClearDebuffs(Creature);
 
                 if (Creature is LibraryCreature libraryCreature)
@@ -1248,7 +1250,8 @@ public sealed class Rnfmabj : RnfmabjMonsterBase
             SetPlannedTarget(targetSlot, targets[targetSlot + 1]);
         }
         SetPlannedTarget(StoredIntentSlots - 1, -1);
-        await RefreshPlanDisplay();
+        // The caller advances directive progress after this returns; a display failure must not skip it.
+        await PresentationGuard.RunAsync(RefreshPlanDisplay, "Rnfmabj plan display");
         return true;
     }
 
@@ -1563,7 +1566,9 @@ public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.helpe
     internal void ApplySavedCombatAvailability()
     {
         bool interactable = CanPerformMoves;
-        NCombatRoom.Instance?.SetCreatureIsInteractable(Creature, interactable);
+        PresentationGuard.Run(
+            () => NCombatRoom.Instance?.SetCreatureIsInteractable(Creature, interactable),
+            "Rnfmabj interactable state");
         if (!interactable)
         {
             ClearPlanAndHide();

@@ -715,13 +715,16 @@ public sealed class KingOfGreed : LibraryMonsterModel
         _isMagicalGirl = false;
         _cycleIndex = 0;
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is KingOfGreedCreatureVisuals visuals)
+        PresentationGuard.Run(() =>
         {
-            visuals.SetKingForm(true);
-        }
+            if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is KingOfGreedCreatureVisuals visuals)
+            {
+                visuals.SetKingForm(true);
+            }
 
-        LocalOggOneShotPlayer.Play(GoldenAmber.SfxRoot + "transform_to_king.ogg", LocalSfxVolumeDb);
-        StartBackgroundMoonTextLoop(KingBackgroundTextLineKeys);
+            LocalOggOneShotPlayer.Play(GoldenAmber.SfxRoot + "transform_to_king.ogg", LocalSfxVolumeDb);
+            StartBackgroundMoonTextLoop(KingBackgroundTextLineKeys);
+        }, "KingOfGreed king form visuals");
 
         await PowerCmd.Remove(Creature.GetPower<LibraryOfRuinaFlickeringDesirePower>());
         await PowerCmd.Remove(Creature.GetPower<LibraryOfRuinaSelfIntoxicationPower>());
