@@ -1,9 +1,11 @@
-"""Compare two headless patch tables for dispatcher equivalence.
+"""Compare two headless patch tables (LOR_DUMP_PATCHES) for dispatcher equivalence.
 
-For every target, the sequence of patches per kind is reduced to (owner, priority, before, after) and
-consecutive LibraryOfRuina entries with identical (priority, before, after) are collapsed into one.
-If the collapsed sequences match, every third-party patch keeps its position relative to ours.
-usage: tools/compare_patch_table.py snapshots/headless/patch_table.txt <new_table>"""
+For every target and patch kind, consecutive LibraryOfRuina entries with identical (priority, before, after)
+are collapsed into one slot; third-party entries keep their full identity (owner and patch method). If the
+resulting sequences match, no third-party patch moved relative to ours or to each other. It does not prove
+that a dispatcher calls every handler it replaced; review the dispatcher body for that.
+usage: tools/compare_patch_table.py snapshots/headless/patch_table.txt <new_table>
+exit code: 0 when equivalent, 1 otherwise."""
 import re
 import sys
 
@@ -29,12 +31,13 @@ def parse(path):
 def collapse(patches):
     out = []
     for kind, prio, owner, before, after, method in patches:
-        key = (kind, prio, owner, before, after)
-        if owner == OWN and out and out[-1][0] == key:
-            out[-1][1].append(method)
+        if owner == OWN:
+            key = (kind, prio, OWN, before, after)
+            if not out or out[-1] != key:
+                out.append(key)
         else:
-            out.append((key, [method]))
-    return [k for k, _ in out]
+            out.append((kind, prio, owner, before, after, method))
+    return out
 
 
 old, new = parse(sys.argv[1]), parse(sys.argv[2])
@@ -52,7 +55,10 @@ for target in sorted(set(old) | set(new)):
             print("   old", line)
         for line in collapse(b):
             print("   new", line)
-    elif [p[5] for p in a] != [p[5] for p in b]:
+    elif a != b:
+        own_a = sum(1 for p in a if p[2] == OWN)
+        own_b = sum(1 for p in b if p[2] == OWN)
         print("MERGED " + target.split("|", 1)[1][:110])
-        print("   " + str(len(a)) + " -> " + str(len(b)) + " patches")
+        print(f"   LibraryOfRuina patches {own_a} -> {own_b}")
 print("EQUIVALENT" if ok else "DIFFERENCES FOUND")
+sys.exit(0 if ok else 1)
