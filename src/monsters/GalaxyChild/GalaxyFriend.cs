@@ -41,7 +41,7 @@ internal enum GalaxyFriendInitialMove
     Twinkle
 }
 
-public sealed class GalaxyFriend : LibraryMonsterModel
+public sealed class GalaxyFriend : LorMonsterModel
 {
     public const string IdleTexturePath = "res://images/monsters/galaxy_friend/idle.png";
     public const string AttackTexturePath = "res://images/monsters/galaxy_friend/attack.png";
@@ -183,7 +183,6 @@ public sealed class GalaxyFriend : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
         StopAllGalaxyChildPresentation();
         base.BeforeRemovedFromRoom();
     }

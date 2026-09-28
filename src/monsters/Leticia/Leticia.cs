@@ -28,7 +28,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.Leticia;
 
-public sealed class Leticia : LibraryMonsterModel
+public sealed class Leticia : LorMonsterModel
 {
     private const string SendGiftMoveId = "SEND_GIFT";
     private const string DontGetHurtMoveId = "DONT_GET_HURT";

@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.monsters;
 
 namespace LibraryOfRuina.intents;
 
@@ -178,7 +179,7 @@ internal interface ICounterIntentQueueMultiplicity
     int CounterQueueCount { get; }
 }
 
-public abstract class CounterIntentMonsterModel : LibraryMonsterModel, ICounterIntentQueueOwner
+public abstract class CounterIntentMonsterModel : LorMonsterModel, ICounterIntentQueueOwner
 {
     private CounterIntentQueue _counterIntentQueue = CreateCounterIntentQueue();
     private MoveState? _counterIntentMoveState;

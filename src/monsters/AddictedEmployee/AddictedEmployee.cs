@@ -34,7 +34,7 @@ internal enum AddictedEmployeeInitialMove
     Move3 = 3
 }
 
-public sealed class AddictedEmployee : LibraryMonsterModel
+public sealed class AddictedEmployee : LorMonsterModel
 {
     private static readonly string[] NormalBackgroundTextLineKeys =
     [
@@ -126,12 +126,6 @@ public sealed class AddictedEmployee : LibraryMonsterModel
             Creature,
             null,
             silent: false);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task BeforeCombatStart()

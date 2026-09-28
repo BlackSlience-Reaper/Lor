@@ -25,7 +25,7 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorBloodlustBoss :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ILiberationPrimaryPhaseBoss
 {
     public const int Phase = 3;
@@ -224,12 +224,6 @@ public sealed class LiteratureFloorBloodlustBoss :
             Creature,
             null,
             silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDeath(

@@ -20,7 +20,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public abstract class LiteratureFloorBlackSwanBrotherBase :
-    LibraryMonsterModel
+    LorMonsterModel
 {
     public const string GreenFilthMoveId = "GREEN_FILTH";
     public const string BluffMoveId = "BLUFF";
@@ -129,12 +129,6 @@ public abstract class LiteratureFloorBlackSwanBrotherBase :
             Creature,
             null,
             silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDeath(

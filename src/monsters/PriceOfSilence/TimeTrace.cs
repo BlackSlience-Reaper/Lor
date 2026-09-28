@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.PriceOfSilence;
 
-public sealed class TimeTrace : LibraryMonsterModel
+public sealed class TimeTrace : LorMonsterModel
 {
     internal const string TimeRecoilMoveId = "TIME_RECOIL";
     internal const string TimeTorrentMoveId = "TIME_TORRENT";
@@ -151,7 +151,6 @@ public sealed class TimeTrace : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
         _markedPower = null;
         base.BeforeRemovedFromRoom();
     }

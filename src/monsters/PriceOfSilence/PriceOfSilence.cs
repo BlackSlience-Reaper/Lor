@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.PriceOfSilence;
 
-public sealed class PriceOfSilence : LibraryMonsterModel
+public sealed class PriceOfSilence : LorMonsterModel
 {
     internal const string InevitableDoomMoveId = "INEVITABLE_DOOM";
     internal const string UnknownMoveId = "UNKNOWN";
@@ -143,7 +143,6 @@ public sealed class PriceOfSilence : LibraryMonsterModel
     public override void BeforeRemovedFromRoom()
     {
         StopAmbient();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

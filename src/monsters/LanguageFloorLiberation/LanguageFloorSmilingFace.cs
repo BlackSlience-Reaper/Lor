@@ -54,7 +54,7 @@ internal enum LanguageFloorSmilingFaceMove
 }
 
 public sealed class LanguageFloorSmilingFace :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ITargetedMonsterAttackProvider,
     ILiberationPrimaryPhaseBoss
 {
@@ -288,12 +288,6 @@ public sealed class LanguageFloorSmilingFace :
         }
         await RefreshFormPowers();
         LanguageFloorLiberationBackgroundController.SetPhaseThreeBackground();
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

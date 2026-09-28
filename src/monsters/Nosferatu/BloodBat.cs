@@ -19,7 +19,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.Nosferatu;
 
-public abstract class NosferatuBloodBatBase : LibraryMonsterModel
+public abstract class NosferatuBloodBatBase : LorMonsterModel
 {
     protected const string ThirstMoveId = "THIRST";
     protected const string VampirismMoveId = "VAMPIRISM";
@@ -73,12 +73,6 @@ public abstract class NosferatuBloodBatBase : LibraryMonsterModel
             Creature,
             null,
             silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected abstract Task ApplyHydrophobiaPassive();

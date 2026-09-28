@@ -97,12 +97,6 @@ public sealed class HistoryFloorLastMatch : CounterIntentMonsterModel
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         var ember = new MoveState(

@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorForgottenBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 2;
 
@@ -190,7 +190,6 @@ public sealed class HistoryFloorForgottenBoss : LibraryMonsterModel, ILiberation
     public override void BeforeRemovedFromRoom()
     {
         StopBackgroundMoonTextLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

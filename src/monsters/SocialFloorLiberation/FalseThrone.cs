@@ -71,7 +71,7 @@ internal static class FalseThroneWoodsmanMaxEnergyPatch
 }
 
 public sealed class FalseThrone :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ISocialFloorMagicalPowderTarget, LibraryOfRuina.helpers.IFinalHpLossClamp
 {
     public const int NormalHp = 888;
@@ -208,12 +208,6 @@ public sealed class FalseThrone :
         }
         ForcePlannedMove(
             Encounter?.PlannedMove ?? FalseThroneMove.InitialSequence);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

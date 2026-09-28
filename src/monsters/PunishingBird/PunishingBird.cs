@@ -29,7 +29,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.PunishingBird;
 
-public sealed class PunishingBird : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class PunishingBird : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     internal const string TextureRoot = "res://images/monsters/punishing_bird/";
     internal const string IdleTexturePath = TextureRoot + "idle.png";
@@ -139,12 +139,6 @@ public sealed class PunishingBird : LibraryMonsterModel, ITargetedMonsterAttackP
                 addedByPlayer: false,
                 CardPilePosition.Top);
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -413,7 +407,7 @@ public sealed class PunishingBird : LibraryMonsterModel, ITargetedMonsterAttackP
 
 }
 
-public abstract class ForestKeeperBirdBase : LibraryMonsterModel
+public abstract class ForestKeeperBirdBase : LorMonsterModel
 {
     internal const string TextureRoot = "res://images/monsters/forest_keeper_bird/";
     internal const string IdleTexturePath = TextureRoot + "idle.png";

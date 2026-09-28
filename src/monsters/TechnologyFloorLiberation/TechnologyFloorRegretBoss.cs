@@ -30,7 +30,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorRegretBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 1;
 
@@ -206,7 +206,6 @@ public sealed class TechnologyFloorRegretBoss : LibraryMonsterModel, ILiberation
     public override void BeforeRemovedFromRoom()
     {
         StopBackgroundMoonTextLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

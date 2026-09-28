@@ -18,7 +18,7 @@ namespace LibraryOfRuina.monsters.WrathServant;
 /// 隐士之杖 — 攻击愤怒侍从的辅助小怪。
 /// 招式: 咯吱咯吱(多段) / 喀嚓喀嚓(单段+格挡)
 /// </summary>
-public sealed class HermitStaff : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class HermitStaff : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     private const string CreakCreakMoveId = "CREAK_CREAK";
     private const string CrackCrackMoveId = "CRACK_CRACK";
@@ -88,12 +88,6 @@ public sealed class HermitStaff : LibraryMonsterModel, ITargetedMonsterAttackPro
     {
         await base.AfterAddedToRoom();
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

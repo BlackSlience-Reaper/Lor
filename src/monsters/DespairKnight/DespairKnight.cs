@@ -28,7 +28,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.DespairKnight;
 
-public sealed class DespairKnight : LibraryMonsterModel
+public sealed class DespairKnight : LorMonsterModel
 {
     public const string MoveId = "SHELTERING_UNKNOWN";
     public const string GrantTeardropMoveId = "GRANT_TEARDROP";
@@ -174,7 +174,6 @@ public sealed class DespairKnight : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
         StopCryingLoop();
         base.BeforeRemovedFromRoom();
     }

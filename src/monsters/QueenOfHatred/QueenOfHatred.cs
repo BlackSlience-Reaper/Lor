@@ -252,12 +252,6 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         return !_isSnakeForm || NextMove.Id != ArcanaBeatsMoveId;
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override Task AfterDeath(
         PlayerChoiceContext choiceContext,
         Creature creature,

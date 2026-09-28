@@ -11,7 +11,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorFirstPerformer : LibraryMonsterModel
+public sealed class ArtFloorFirstPerformer : LorMonsterModel
 {
     private const string SilentMoveId = "SILENT_PERFORMANCE";
     private const int StaggerResistanceMax = 40;
@@ -35,12 +35,6 @@ public sealed class ArtFloorFirstPerformer : LibraryMonsterModel
         EncounterBgmController.RegisterMonster(Creature);
         await PowerCmdCompat.Apply<SilentPerformancePower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

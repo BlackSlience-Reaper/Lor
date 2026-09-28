@@ -26,7 +26,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.CosmicFragment;
 
-public sealed class CosmicFragment : LibraryMonsterModel
+public sealed class CosmicFragment : LorMonsterModel
 {
     public const string IdleTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_idle.png";
     public const string AttackTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_attack.png";
@@ -96,12 +96,6 @@ public sealed class CosmicFragment : LibraryMonsterModel
         await base.AfterAddedToRoom();
         SaveManager.Instance.MarkCardAsSeen(ModelDb.Card<CosmicFragmentEpiphanyCard>());
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDeath(

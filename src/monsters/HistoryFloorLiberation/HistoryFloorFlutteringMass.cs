@@ -23,7 +23,7 @@ public enum HistoryFloorFlutteringMassPattern
     WingbeatFirst
 }
 
-public sealed class HistoryFloorFlutteringMass : LibraryMonsterModel
+public sealed class HistoryFloorFlutteringMass : LorMonsterModel
 {
     private const string GluttonyMoveId = "GLUTTONY";
     private const string WingbeatMoveId = "WINGBEAT";

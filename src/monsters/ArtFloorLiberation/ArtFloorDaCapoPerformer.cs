@@ -30,7 +30,7 @@ public enum ArtFloorDaCapoPerformerVariant
     Fourth = 4
 }
 
-public sealed class ArtFloorDaCapoPerformer : LibraryMonsterModel
+public sealed class ArtFloorDaCapoPerformer : LorMonsterModel
 {
     private const string LogTag = "LibraryOfRuina.ArtFloorDaCapoPerformer";
     private const string PerformMoveId = "PERFORM";
@@ -168,12 +168,6 @@ public sealed class ArtFloorDaCapoPerformer : LibraryMonsterModel
             + ",isDead=" + creature.IsDead
             + ",hasPassive=" + creature.HasPower<ArtFloorFinalDaCapoPerformerPassivePower>()
             + "," + combatState;
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

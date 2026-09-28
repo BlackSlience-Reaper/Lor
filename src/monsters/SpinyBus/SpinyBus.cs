@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.SpinyBus;
 
-public sealed class SpinyBus : LibraryMonsterModel
+public sealed class SpinyBus : LorMonsterModel
 {
     private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
@@ -141,7 +141,6 @@ public sealed class SpinyBus : LibraryMonsterModel
     public override void BeforeRemovedFromRoom()
     {
         StopBackgroundMoonTextLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

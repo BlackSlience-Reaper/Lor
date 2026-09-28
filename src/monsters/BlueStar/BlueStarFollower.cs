@@ -24,7 +24,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.BlueStar;
 
-public sealed class BlueStarFollower : LibraryMonsterModel
+public sealed class BlueStarFollower : LorMonsterModel
 {
     public const int RequiredFollowerCount = 3;
     public const int MaxHp = 500;
@@ -138,7 +138,6 @@ public sealed class BlueStarFollower : LibraryMonsterModel
     public override void BeforeRemovedFromRoom()
     {
         UnsubscribeFromChaoValueChanges();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

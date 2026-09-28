@@ -42,7 +42,7 @@ public enum SmilingBodiesPhase
     Third
 }
 
-public sealed class SmilingBodies : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class SmilingBodies : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     public const int MaxCorpseCount = 1;
 
@@ -245,12 +245,6 @@ public sealed class SmilingBodies : LibraryMonsterModel, ITargetedMonsterAttackP
         ResetCorpseSpawnThreshold();
         await RefreshPhasePowers();
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

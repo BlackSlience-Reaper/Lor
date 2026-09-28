@@ -33,7 +33,7 @@ public enum ForgottenKnightSwordSpecial
     RuiningHeart
 }
 
-public sealed class ForgottenKnightSword : LibraryMonsterModel
+public sealed class ForgottenKnightSword : LorMonsterModel
 {
     public const int RequiredSwordCount = 3;
 
@@ -195,12 +195,6 @@ public sealed class ForgottenKnightSword : LibraryMonsterModel
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ForgottenKnightSwordFalseDeathPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ForgottenKnightSwordPierceDespairPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public string ResolveIdleTexturePath()

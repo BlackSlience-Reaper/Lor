@@ -26,7 +26,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.ScaredyCat;
 
-public sealed class ScaredyCatCompanion : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class ScaredyCatCompanion : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     internal const string BlockMoveId = "SCAREDY_CAT_COMPANION_BLOCK";
     internal const string AttackMoveId = "SCAREDY_CAT_COMPANION_ATTACK";

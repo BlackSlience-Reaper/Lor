@@ -153,12 +153,6 @@ public sealed class SpiderBud : CounterIntentMonsterModel
         return Task.CompletedTask;
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
         if (side != CombatSide.Player && _smallSpiderKilledTextActive)

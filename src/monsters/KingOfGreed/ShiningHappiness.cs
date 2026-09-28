@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.KingOfGreed;
 
-public sealed class ShiningHappiness : LibraryMonsterModel
+public sealed class ShiningHappiness : LorMonsterModel
 {
     public const string IdleTexturePath = GoldenAmber.Root + "shining_happiness.png";
     public const string SummonSfxPath = GoldenAmber.SfxRoot + "summon_shining_happiness.ogg";

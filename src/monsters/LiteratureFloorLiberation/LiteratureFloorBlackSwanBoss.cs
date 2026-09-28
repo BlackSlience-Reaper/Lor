@@ -29,7 +29,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorBlackSwanBoss :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ILiberationPrimaryPhaseBoss
 {
     public const int Phase = 5;
@@ -267,12 +267,6 @@ public sealed class LiteratureFloorBlackSwanBoss :
                     silent: true);
             vanishing?.InitializeCounter();
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDeath(

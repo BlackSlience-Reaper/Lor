@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
-public sealed class LanguageFloorMeltingCorpse : LibraryMonsterModel
+public sealed class LanguageFloorMeltingCorpse : LorMonsterModel
 {
     public const string MoanMoveId = "MOAN";
     public const int MoanHits = 2;

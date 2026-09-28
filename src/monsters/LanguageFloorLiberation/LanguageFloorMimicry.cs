@@ -57,7 +57,7 @@ internal enum LanguageFloorMimicryMove
 }
 
 public sealed class LanguageFloorMimicry :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ILiberationPrimaryPhaseBoss
 {
     public const int FormOneMaxHpBase = 750;
@@ -377,12 +377,6 @@ public sealed class LanguageFloorMimicry :
         {
             ForceReviveAndEmpowerState();
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

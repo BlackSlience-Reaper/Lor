@@ -126,12 +126,6 @@ public sealed class HeavenThorn : CounterIntentMonsterModel
         _sleepState = null;
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     protected override bool ShouldQueueCounterIntentsForCurrentMove()
     {
         return _isAwake && base.ShouldQueueCounterIntentsForCurrentMove();

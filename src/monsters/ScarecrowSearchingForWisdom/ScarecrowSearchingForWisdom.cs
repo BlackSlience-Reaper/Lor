@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.ScarecrowSearchingForWisdom;
 
-public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
+public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
 {
     private static readonly string[] BattleStartLines =
     {
@@ -155,12 +155,6 @@ public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
 
             await AddOpeningWisdomToEachPlayer();
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeHandDraw(

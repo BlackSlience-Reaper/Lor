@@ -283,7 +283,6 @@ public sealed partial class PhilosophyFloorTwilight :
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
         PhilosophyFloorLiberationCgController.ResetPresentation();
         base.BeforeRemovedFromRoom();
     }

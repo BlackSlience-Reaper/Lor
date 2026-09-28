@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.WarmheartedWoodsman;
 
-public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     internal const string EmptyHeartMoveId = "EMPTY_HEART";
     internal const string GiantAxeSlashMoveId = "GIANT_AXE_SLASH";
@@ -178,7 +178,6 @@ public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterA
     public override void BeforeRemovedFromRoom()
     {
         StopWarmAmbientLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 
@@ -846,7 +845,7 @@ public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterA
 
 }
 
-public sealed class WoodsmanTree : LibraryMonsterModel
+public sealed class WoodsmanTree : LorMonsterModel
 {
     internal const string HelpMeMoveId = "HELP_ME";
     internal const int HelpMeBlock = 6;

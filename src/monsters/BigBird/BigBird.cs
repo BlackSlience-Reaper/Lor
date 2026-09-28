@@ -143,7 +143,6 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
     public override void BeforeRemovedFromRoom()
     {
         BigBirdFilterOverlay.Clear();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 
@@ -509,7 +508,7 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
 
 }
 
-public sealed class EyeballBird : LibraryMonsterModel
+public sealed class EyeballBird : LorMonsterModel
 {
     internal const string TextureRoot = "res://images/monsters/eyeball_bird/";
     internal const string IdleTexturePath = TextureRoot + "idle.png";

@@ -168,12 +168,6 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
         await BurrowingHeavenEncounterHelper.RefreshEncounterState(new ThrowingPlayerChoiceContext(), Creature.CombatState);
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override async Task BeforeSideTurnStart(
         PlayerChoiceContext choiceContext,
         CombatSide side,

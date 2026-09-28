@@ -33,7 +33,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.Nosferatu;
 
-public sealed class Nosferatu : LibraryMonsterModel
+public sealed class Nosferatu : LorMonsterModel
 {
     private const string GracefulRestMoveId = "GRACEFUL_REST";
     private const string ElegantDinnerMoveId = "ELEGANT_DINNER";
@@ -133,12 +133,6 @@ public sealed class Nosferatu : LibraryMonsterModel
         EncounterBgmController.RegisterMonster(Creature);
         await PowerCmdCompat.Apply<NosferatuHydrophobiaPassivePower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<NosferatuTransformPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

@@ -88,12 +88,6 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
         EncounterBgmController.RegisterMonster(Creature);
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override Task AfterDeath(
         PlayerChoiceContext choiceContext,
         Creature creature,
@@ -297,12 +291,6 @@ public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterA
             Creature,
             null,
             silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

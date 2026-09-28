@@ -262,12 +262,6 @@ public sealed class LanguageFloorCobaltScar :
         }
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public async Task TriggerReviveAndEmpowerState()
     {
         if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)

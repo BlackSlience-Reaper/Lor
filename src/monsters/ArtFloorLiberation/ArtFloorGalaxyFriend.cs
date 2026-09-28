@@ -32,7 +32,7 @@ internal enum ArtFloorGalaxyFriendInitialMove
     Twinkle
 }
 
-public sealed class ArtFloorGalaxyFriend : LibraryMonsterModel
+public sealed class ArtFloorGalaxyFriend : LorMonsterModel
 {
     private const string WaitMoveId = "WAIT";
     private const string StarlightFallMoveId = "STARLIGHT_FALL";
@@ -122,12 +122,6 @@ public sealed class ArtFloorGalaxyFriend : LibraryMonsterModel
 
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorGalaxyDoNotLeaveMePower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

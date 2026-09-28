@@ -25,7 +25,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorEndLightBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class HistoryFloorEndLightBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const string EndLightMoveId = "END_LIGHT";
     private const string MatchEnhancementMoveId = "MATCH_ENHANCEMENT";
@@ -131,7 +131,6 @@ public sealed class HistoryFloorEndLightBoss : LibraryMonsterModel, ILiberationP
     public override void BeforeRemovedFromRoom()
     {
         StopBackgroundMoonTextLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

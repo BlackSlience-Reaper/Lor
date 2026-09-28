@@ -21,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
 
-public abstract class NaturalFloorWrathMonster : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public abstract class NaturalFloorWrathMonster : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     internal const string SfxRoot = "res://audio/sfx/natural_floor_liberation/blind_rage/";
     internal const float HitTime = 0.96f; // 自然层怒火阶段：攻击结算等待秒数。
@@ -176,12 +176,6 @@ public abstract class NaturalFloorWrathMonster : LibraryMonsterModel, ITargetedM
 
             stunned.SetCurrentChaoValueInternal(ReadInt(_restoredState, "Chao", stunned.MaxChaoValue));
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected static void Sound(string file) => LocalOggOneShotPlayer.Play(SfxRoot + file + ".ogg", -2f);

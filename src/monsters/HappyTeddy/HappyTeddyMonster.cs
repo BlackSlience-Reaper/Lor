@@ -152,12 +152,6 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
         return Task.CompletedTask;
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override Task AfterDeath(
         PlayerChoiceContext choiceContext,
         Creature creature,

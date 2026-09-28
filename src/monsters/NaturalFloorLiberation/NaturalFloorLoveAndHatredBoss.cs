@@ -28,7 +28,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
 
-public sealed class NaturalFloorLoveAndHatredBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const string ReviveMoveId = "REVIVE_AND_EMPOWER";
 
@@ -184,12 +184,6 @@ public sealed class NaturalFloorLoveAndHatredBoss : LibraryMonsterModel, ILibera
             library.SetMaxChaoValueInternal(ReadInt(_restoredState, "BossMaxChao", library.MaxChaoValue));
             library.SetCurrentChaoValueInternal(ReadInt(_restoredState, "BossChao", library.MaxChaoValue));
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature,

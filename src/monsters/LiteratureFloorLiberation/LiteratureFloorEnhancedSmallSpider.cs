@@ -134,12 +134,6 @@ public sealed class LiteratureFloorEnhancedSmallSpider :
             silent: true);
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override async Task AfterDeath(
         PlayerChoiceContext choiceContext,
         Creature creature,
