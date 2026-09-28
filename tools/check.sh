@@ -24,12 +24,15 @@ dotnet run --project "$ROOT/tools/ModSnapshot/ModSnapshot.csproj" -c Release -- 
   "$FIXTURES/bin/Release/net9.0/PatchRuleFixtures.dll" "$FIXTURE_OUT" "$FIXTURES/bin/Release/net9.0" >/dev/null
 diff -u "$FIXTURES/expected_skip_prefixes.txt" "$FIXTURE_OUT/skip_prefixes.txt"
 
-# Every bool prefix must say why it has to skip the original (design philosophy §1/§3).
-if grep -q $'\tMISSING$' "$TMP/skip_prefixes.txt"; then
-  echo "skip prefixes without [LibraryPatch(Reason = ...)]:" >&2
-  grep $'\tMISSING$' "$TMP/skip_prefixes.txt" | cut -f1 >&2
-  exit 1
-fi
+# Every bool prefix must say why it has to skip the original, and every Hook.* patch why it is not a model
+# override (design philosophy §1/§3).
+for list in skip_prefixes hook_patches; do
+  if grep -q $'\tMISSING$' "$TMP/$list.txt"; then
+    echo "$list without [LibraryPatch(Reason = ...)]:" >&2
+    grep $'\tMISSING$' "$TMP/$list.txt" | cut -f1 >&2
+    exit 1
+  fi
+done
 
 if [[ "${1:-}" == "--accept" ]]; then
   cp "$TMP"/*.txt "$ROOT/snapshots/"

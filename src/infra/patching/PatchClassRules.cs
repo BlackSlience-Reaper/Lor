@@ -13,6 +13,9 @@ namespace LibraryOfRuina.infra.patching;
 /// </summary>
 internal static class PatchClassRules
 {
+    /// <summary>原版钩子总线。挂在它上面的补丁都要写 Reason：能改成模型覆写的应该改掉（重构指导 3c-2）。</summary>
+    public const string HookTypeFullName = "MegaCrit.Sts2.Core.Hooks.Hook";
+
     private const string HarmonyAttributeFullName = "HarmonyLib.HarmonyAttribute";
     private const string LibraryPatchAttributeName = "LibraryPatchAttribute";
 

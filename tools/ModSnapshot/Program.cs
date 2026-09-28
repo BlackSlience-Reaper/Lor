@@ -53,6 +53,7 @@ WriteLines("patches.txt", Patches(out List<string> order));
 WriteLines("patch_order.txt", order);
 WriteLines("static_fields.txt", StaticFields());
 WriteLines("skip_prefixes.txt", SkipPrefixes());
+WriteLines("hook_patches.txt", HookPatches());
 WriteLines("unresolved.txt", missing);
 Console.WriteLine($"snapshot written to {outDir} ({types.Length} types, {missing.Count} unresolved)");
 return 0;
@@ -286,6 +287,38 @@ IEnumerable<string> SkipPrefixes()
 
         string? reason = PatchClassRules.Reason(type);
         lines.Add($"{type.FullName}\t{(string.IsNullOrWhiteSpace(reason) ? "MISSING" : reason)}");
+    }
+
+    return lines.Order(StringComparer.Ordinal);
+}
+
+// Every patch class that targets the vanilla Hook bus by attribute must also state why it is not a model override.
+// Classes that pick Hook methods in TargetMethod(s) are caught at runtime by LibraryPatcher's report instead.
+IEnumerable<string> HookPatches()
+{
+    var lines = new List<string>();
+    foreach (Type type in types)
+    {
+        bool targetsHook;
+        try
+        {
+            targetsHook = PatchClassRules.IsInstalled(type)
+                && type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+                    .SelectMany(static method => method.GetCustomAttributesData())
+                    .Concat(type.GetCustomAttributesData())
+                    .Any(static data => data.AttributeType.Name == "HarmonyPatch"
+                        && data.ConstructorArguments.FirstOrDefault().Value is Type { FullName: PatchClassRules.HookTypeFullName });
+        }
+        catch (FileNotFoundException)
+        {
+            continue;
+        }
+
+        if (targetsHook)
+        {
+            string? reason = PatchClassRules.Reason(type);
+            lines.Add($"{type.FullName}\t{(string.IsNullOrWhiteSpace(reason) ? "MISSING" : reason)}");
+        }
     }
 
     return lines.Order(StringComparer.Ordinal);
