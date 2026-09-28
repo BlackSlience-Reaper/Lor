@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.acts;
 using LibraryOfRuina.events;
-using MegaCrit.Sts2.Core.DevConsole;
-using MegaCrit.Sts2.Core.DevConsole.ConsoleCommands;
-using MegaCrit.Sts2.Core.Entities.Players;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Events;
 using MegaCrit.Sts2.Core.Rooms;
@@ -22,7 +16,6 @@ internal static class ReverberationEnsembleEntryRoomPatch
     private static void Prefix(RunManager __instance, ref AbstractRoom room, bool isRestoringRoomStackBase)
     {
         RunState? state = __instance.DebugOnlyGetState();
-        ReverberationEnsemblePreviewGodMode.Update(state);
 
         // 选幕及地图生成完成后，用序幕事件接替首次地图房间；先古仍是地图起点。
         // 直接使用原版淡入、事件投票与房间生命周期，读档也根据当前幕和已走节点判断。
@@ -32,76 +25,6 @@ internal static class ReverberationEnsembleEntryRoomPatch
             && state.VisitedMapCoords.Count == 0)
         {
             room = new EventRoom(ModelDb.Event<ReverberationEnsembleEntryEvent>());
-        }
-    }
-}
-
-/// <summary>
-/// 临时预览补丁：进入残响乐团幕后，为每位玩家启用原版 godmode 命令。
-/// </summary>
-internal static class ReverberationEnsemblePreviewGodMode
-{
-    private static readonly Dictionary<Player, GodModeConsoleCmd> ActiveCommands = new();
-
-    private static RunState? _activeRunState;
-
-    internal static void Update(RunState? state)
-    {
-        if (state?.Act is not ReverberationEnsembleAct)
-        {
-            DeactivateAll();
-            _activeRunState = null;
-            return;
-        }
-
-        if (!ReferenceEquals(state, _activeRunState))
-        {
-            DeactivateAll();
-            _activeRunState = state;
-        }
-
-        foreach (Player player in state.Players)
-        {
-            if (ActiveCommands.ContainsKey(player))
-            {
-                continue;
-            }
-
-            GodModeConsoleCmd command = new();
-            CmdResult result = command.Process(player, Array.Empty<string>());
-            if (!result.success)
-            {
-                continue;
-            }
-
-            ActiveCommands.Add(player, command);
-            if (result.task != null)
-            {
-                TaskHelper.RunSafely(result.task);
-            }
-        }
-    }
-
-    private static void DeactivateAll()
-    {
-        if (!RunManager.Instance.IsInProgress)
-        {
-            return;
-        }
-
-        foreach (KeyValuePair<Player, GodModeConsoleCmd> entry in new List<KeyValuePair<Player, GodModeConsoleCmd>>(ActiveCommands))
-        {
-            CmdResult result = entry.Value.Process(entry.Key, Array.Empty<string>());
-            if (!result.success)
-            {
-                continue;
-            }
-
-            ActiveCommands.Remove(entry.Key);
-            if (result.task != null)
-            {
-                TaskHelper.RunSafely(result.task);
-            }
         }
     }
 }
