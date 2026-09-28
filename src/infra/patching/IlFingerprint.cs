@@ -133,10 +133,40 @@ internal static class IlFingerprint
         Type type => TypeName(type),
         MethodBase method => TypeName(method.DeclaringType) + "::" + method.Name
                              + (method.IsGenericMethod ? "<" + string.Join(",", method.GetGenericArguments().Select(TypeName)) + ">" : "")
-                             + "(" + string.Join(",", method.GetParameters().Select(p => TypeName(p.ParameterType))) + ")",
-        FieldInfo field => TypeName(field.DeclaringType) + "::" + field.Name,
+                             + "(" + string.Join(",", method.GetParameters().Select(p => TypeName(p.ParameterType))) + ")"
+                             + (method is MethodInfo info ? ":" + TypeName(info.ReturnType) : ""),
+        FieldInfo field => TypeName(field.DeclaringType) + "::" + field.Name + ":" + TypeName(field.FieldType),
         _ => member.ToString() ?? "?",
     };
 
-    private static string TypeName(Type? type) => type == null ? "?" : type.ToString();
+    // 类型身份带程序集简单名（两个程序集里同名的类型是不同的调用目标），递归处理泛型实参、数组、引用与指针；
+    // 不带程序集版本、MVID 或令牌，这些会随构建变化。
+    private static string TypeName(Type? type)
+    {
+        if (type == null)
+        {
+            return "?";
+        }
+
+        if (type.IsGenericParameter)
+        {
+            return (type.DeclaringMethod != null ? "!!" : "!") + type.GenericParameterPosition;
+        }
+
+        if (type.HasElementType)
+        {
+            string element = TypeName(type.GetElementType());
+            return type.IsArray ? element + "[" + new string(',', type.GetArrayRank() - 1) + "]"
+                : type.IsByRef ? element + "&"
+                : type.IsPointer ? element + "*"
+                : element;
+        }
+
+        if (type.IsGenericType && !type.IsGenericTypeDefinition)
+        {
+            return TypeName(type.GetGenericTypeDefinition()) + "<" + string.Join(",", type.GetGenericArguments().Select(TypeName)) + ">";
+        }
+
+        return "[" + type.Assembly.GetName().Name + "]" + (type.FullName ?? type.Name);
+    }
 }
