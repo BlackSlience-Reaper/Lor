@@ -24,7 +24,6 @@ namespace LibraryOfRuina.relics.HeartOfAspiration;
 public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
 {
     public const int PulseStrongStacks = 4;
-    //public const int PulseStrongTurns = 1;
     public const int PulseHpLoss = 1;
     public const int AspirationMaxHpPercent = 30;
     public const int ViolentPulseBuffStacks = 8;
@@ -122,7 +121,7 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    public override Task BeforeCombatStart()
+    public override async Task BeforeCombatStart()
     {
         EnsureValidModeOrFallback(nameof(BeforeCombatStart));
         PulseDealtLifeDamageThisTurn = false;
@@ -131,10 +130,21 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
         ViolentPulseTurnsRemaining = 0;
         ViolentPulseActivated = false;
         UpdateModeUiState();
-        return Task.CompletedTask;
+
+        if (Mode == HeartOfAspirationPageMode.Pulse
+            && Owner.Creature is { IsAlive: true } owner)
+        {
+            Flash();
+            await LibraryPowerCmd.Apply<LibraryStrongPower>(
+                owner,
+                PulseStrongStacks,
+                turns: -1,
+                owner,
+                null);
+        }
     }
 
-    public override async Task AfterPlayerTurnStart(
+    public override Task AfterPlayerTurnStart(
         PlayerChoiceContext choiceContext,
         Player player)
     {
@@ -143,17 +153,11 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
             || Owner.Creature == null
             || Owner.Creature.IsDead)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         PulseDealtLifeDamageThisTurn = false;
-        Flash();
-        await LibraryPowerCmd.Apply<LibraryStrongPower>(
-            Owner.Creature,
-            PulseStrongStacks,
-            0,
-            Owner.Creature,
-            null);
+        return Task.CompletedTask;
     }
 
     public override Task AfterCombatEnd(CombatRoom room)

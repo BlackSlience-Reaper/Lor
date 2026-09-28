@@ -9,8 +9,8 @@
   "LETICIA_PARTNER_MARK_ENCHANTMENT.description": "每回合每当这张牌被使用时，本场战斗其耗能[blue]-{CostReduction}[/blue]。若回合结束时这张牌仍在手牌中，本场战斗其耗能[blue]+{CostIncrease}[/blue]。",
   "LETICIA_PARTNER_MARK_ENCHANTMENT.extraCardText": "每回合每当这张牌被使用时，本场战斗其耗能[blue]-{CostReduction}[/blue]。若回合结束时这张牌仍在手牌中，本场战斗其耗能[blue]+{CostIncrease}[/blue]。",
   "CHAIN_ENCHANTMENT.title": "连锁",
-  "CHAIN_ENCHANTMENT.description": "打出后，对其他敌人再次造成未被格挡伤害的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
-  "CHAIN_ENCHANTMENT.extraCardText": "打出后，对其他敌人再次造成未被格挡伤害的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
+  "CHAIN_ENCHANTMENT.description": "打出后，对其他敌人再次造成[gold]未被格挡伤害[/gold]的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
+  "CHAIN_ENCHANTMENT.extraCardText": "打出后，对其他敌人再次造成[gold]未被格挡伤害[/gold]的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
   "PEBBLE_MARK_ENCHANTMENT.title": "卵石标记",
   "PEBBLE_MARK_ENCHANTMENT.description": "这张牌获得[gold]消耗[/gold]。打出后，恢复[blue]{Heal}[/blue]点生命。",
   "PEBBLE_MARK_ENCHANTMENT.extraCardText": "打出后，恢复[blue]{Heal}[/blue]点生命。获得[gold]消耗[/gold]。"

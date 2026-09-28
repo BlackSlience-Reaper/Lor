@@ -1,5 +1,87 @@
 # zhs 本地化草稿校对记录
 
+## 人工校对决定（2026-09-28）
+
+本节的确认结果优先于下方原审阅记录。原记录的 UPDATE 标记不代表当前文件已经应用，当前中文内容须逐项复核。
+
+- 全文校对基准（用户最新确认）：以现有 `zhs` 为主。保留中文命名、对白、风味和表达习惯，不因英日韩措辞不同推断作者已改写中文；仅以跨语言差异为理由的改写不采用。效果事实、遗漏条件和格式问题须结合当前代码核对，实际冲突继续逐项提问。已明确批准的术语统一继续保留。
+- 中文效果文本标签规则（用户最新确认）：未格挡伤害使用 `[gold]`，攻击伤害使用 `[red]`，保留原文是否含“被”“的”。“未被格挡的攻击伤害”分别标记为 `[gold]未被格挡[/gold]的[red]攻击伤害[/red]`；原先仅标记“攻击”的标签扩展到完整“攻击伤害”，避免重复嵌套。本轮统一了中文 JSON 中 186 个文本键的颜色标签，其他文字、变量与格式标签保持不变；后续文案修改沿用本规则。
+- 已确认并保留：语言层与艺术层结算事件各 4 句对白及 `pages.DONE.description` 沿用现有中文，不采用按新版英文重写的方案。
+
+- 已确认：保留 `Laetitia`，不执行全表汉化；现有“蕾蒂希娅”条目与“蕾蒂希娅之页”暂按原文保留。
+- 已确认：保留专名的繁体字形“蒲牢鳴鍾”“饕餮饗食”“伊織”“潤”“楊”“銀”，不批量转为简体。
+- 已确认并保留：“归家的路途”的招式与被动名称继续使用“你这个……坏巫师！／你这个……坏巫师……！”。原记录建议的“坏女巫”不采用。
+- 已确认并应用：“黄蜂”统一为“蜂后”，“终末鸟之蛋”统一为“终末鸟之卵”，“眩晕”统一为“晕眩”。覆盖中文本地化表及中文更新日志中的相关用词，保留键名、变量、标签和玩法逻辑。
+- 已确认并保留：`SILENT_ORCHESTRA_FERVENT_ADORATION_CHOICE_CARD.title` 继续使用“狂热崇拜”，不采用“热烈崇敬”；对应卡牌及遗物的叠加说明保留“允许叠加”。
+- 已确认并保留：`MATCH_MARK_RELIC.title` 继续使用“焦化少女之页”，不采用“火柴印记”。
+- 已确认并保留：“污秽”的卡牌与遗物原文“你每回合第一次给予的所有[gold]负面效果[/gold]变为原本的[blue]{DebuffMultiplier}[/blue]倍。”；本轮不修改其代码。原记录的“所有负面效果→第一个负面效果”建议不采用。
+- 已确认并修改代码：“脉动”在每场战斗开始时施加 `PulseStrongStacks` 层永久强壮（`turns: -1`），移除回合开始时施加当回合强壮的逻辑；每回合伤害记录重置及未造成未格挡伤害时扣血的机制保留。中文卡牌、遗物原文的“永久强壮”保留，原记录要求删除“永久”及改成每回合获得的建议作废。
+- “脉动”代码验证：本地 `Release` 构建通过，0 警告、0 错误；使用显式 Windows 游戏 DLL 路径及已安装的基础库引用。尚未部署、未做战斗内验证。
+- 已确认并保留：“剧烈脉动”的卡牌与遗物文案保持原样，不补写“每场战斗一次”，现有使用次数限制不变。
+- 已确认并应用：魔弹 E.G.O.「沉默」的 `FrailPower` 名称由“破防”改为“脆弱”；「泪剑」选项卡两个分支及「泪剑+」遗物描述补明追加伤害按“目标最大生命值”计算（普通遗物原文已写明）；「猎物」选项卡与遗物描述统一修正为“每场战斗中，你首次对目标造成未被格挡伤害时，对其施加[gold]猎物[/gold]。”。本批共修改 5 个文本键，保留变量、标签和玩法代码。
+- 当前代码复核：“委托”在 `MagicBulletShooterPageRelic.HandleCommissionDamage` 中通过 `CommissionMarkedThisCombat` 限制每场只标记一次，目标死亡或标记消失后也不重新选取；原校对记录要求补“目标死亡后重新指定”的建议与当前实现不符，不采用。金币在 `AfterCombatVictory` 发放，用户确认保留当前发放时机文案。
+- 已确认并应用：“委托”的卡牌与遗物描述仅将“伤害”补为“攻击伤害”，保留原有金币描述，不补写战斗胜利后的发放时机。
+- 已确认并保留：“破伞”卡牌与遗物描述不补跨战斗回合计数说明；“毒刺屏障”卡牌与遗物描述不补回合开始时、存活敌人、中毒总层数及跨战斗计数说明。两项现有实现保持不变。
+- 已确认并应用：“朋友”选项卡两个分支、普通遗物及增强遗物的标记条件统一为“将你每回合首次造成[gold]未被格挡伤害[/gold]的目标标记为[gold]朋友[/gold]。”，共 3 个文本键；能量、抽牌及标记数量说明保持原样。
+- 已确认并保留：“鸟之摇篮曲”文案不补“目标为大鸟”条件及移除全部格挡的说明，现有实现保持不变。
+- 已确认并保留：审判鸟「罪孽的砝码」不补“可被格挡、不受伤害加成、若存活”；「审判」不补“不可转移、当前生命值、向下取整”；「倾斜的天平」不补“受击前、存活玩家”。对应选项卡与遗物文案均保留，玩法代码不变。
+- 十二项批次已应用（3、5、6、9、10、11、12）：碧蓝新星「赎罪」补“当前生命值”；魔弹「黑焰」抗性转换补“分别”；憎恨女王「博爱」改为攻击首次击破格挡时触发；「同行之路」写“若其在战斗内死亡”，按用户指定使用“其”；「思念之声」限定“攻击命中”；首次解放教学补全第二段句子；大鸟之页两处字面量换行修为实际换行。相关卡牌与遗物同步，共修改 11 个文本键。
+- 十二项批次确认保留（1、2、4、7、8）：勾魂不补“只能指定大鸟”；指令之意仍显示“失败。”；蜂后「忠诚」不补“可叠加”；红舞鞋「利斧」不补“命中格挡”条件；热心樵夫「心脏」不补“非 X 费”。现有玩法实现不变。
+- B 余项/C 首批已应用（6、7、8、10、11、12）：联奏“混沌伤害”改为“混乱伤害”；着魔职员渴望旋律补“敌方”回合；即兴鼓点普通描述删除写死的“1层”；修正渗透天堂与天堂之刺的沉眠普通、动态描述对应关系；青林隐士保护明确敌方回合结束；愤怒侍从腐蚀按用户指定写为“[gold]{OwnerName}[/gold]的回合结束时”。共修改 9 个文本键，`OwnerName` 由原版 `PowerModel.HoverTips` 的动态说明上下文提供。
+- B 余项/C 首批确认保留（1、2、3、4、5、9）：尸山、审判鸟、碧蓝新星之页的风味省略号保持；旧更新日志贪婪国王表格原文保持；游戏章节的“层”称呼保持；庄严哀悼敌方封印不补攻击意图及跳过攻击段说明。
+- C 能力说明第二批已应用（4、9）：遗忘骑士之剑「刺入绝望」写“若未对玩家造成生命损失”；殷红迷雾 E.G.O. 阈值写“每回合通过直接攻击造成的生命损失总计不足……点”。“生命损失”为用户指定用词，仅改这两处文案，玩法代码不变。
+- C 能力说明第二批确认保留（1、2、3、5、6、7、8、10、11、12）：悲恸不补可见意图；饥饿狂乱不补每战一次；闪烁的欲望不补循环重置；金色琥珀不补无法行动或改苏醒时机；Mk4 不补充能重置；小红帽愤怒不补逐段结算；噩梦终结不扩写；鲜血吸引不补目标规则或改招式称呼；悔恨不补计数重置；闪耀的幸福不补移除加成。
+- C 能力说明第三批已应用（4、10）：艺术层泥塑人偶补“及死亡效果”；树木「心脏」普通描述将樵夫“没有温暖的心”改为“拥有温暖的心”。共修改 2 个文本键，玩法代码不变。
+- C 能力说明第三批确认保留（1、2、3、5、6、7、8、9、11、12）：蜘蛛巢狩猎普通、动态描述及无法选中说明保持；Da Capo 演奏者仍写无法行动；渗透天堂羽翼不补玩家回合和反击者；天堂之刺不补多根限制；樵夫暴力的心普通描述及空虚的心动态描述保持；沉默的代价「你的时间」保持；嚎叫的噩梦不补第二阶段。
+- D 块已复核：奥兹玛 `OZMA_FORGOTTEN_POWER` 与 `OZMA_TAKE_OR_BE_TAKEN_POWER` 的普通、动态描述共 4 键，当前已写明全体玩家共享击中进度，后者已使用 `{RequiredHits}`、`{Turns}`、`{HpLossPercent}`，记录为当前已满足，无需重复修改。
+- D 第一批已应用（8、9、12，含用户最新纠正）：东方杰克补“苏醒时”；奥兹玛痛苦补“首次”与“下个敌方回合”。“躲入黑暗”最终仍为跨回合累计：未达标伤害保留，达到潜狼阈值后清零。已完整撤回此前单回合计数的代码修改；普通描述改为“累计承受足够伤害后”，动态描述恢复“若累计承受的伤害达到……”。阈值基准、结算时机及潜狼期间不计伤害的实现均保持原样。
+- “躲入黑暗”撤回验证：`LanguageFloorCobaltScar.cs` 与本分支 HEAD 无差异；此前单回合构建结果不作为最终机制的实机验证。尚未部署或做战斗内验证。
+- D 第一批确认保留（1、2、3、4、5、6、7、10、11）：沉默、大鸟安眠的原台词保持；滴答攻击与防御不补基础值；守林鸟不补存活期间和每名玩家；猫咪胆小不改主体；失落的记忆不扩写；奥兹玛悲伤不补反复与强力；语言层惩恶的抗性文案保持。
+- D 第二批已应用（2、5、11）：躲入黑暗补“进入大坏狼阶段时体力”的百分比基准，继续跨回合累计；拟态第二、第三形态的普通、动态再生描述均补“最大体力”；终末鸟之卵第二进阶描述修正“薄冥”为“薄暝”。共修改 6 个文本键。
+- D 第二批确认保留（1、3、4、6、7、8、9、10、12）：狼的咆哮不补招式名；笑脸呕吐不改玩家回合时机；迪普西亚变身不补锁定体力或玩家回合；拟态模仿不补生命损失条件；薄暝巨目、小喙、长臂与全卵破坏后的说明不扩写，巨目的“玩家”范围保持；晓两栖能力保留“能力伤害”。
+- D 第三批全部确认保留（1–12）：虚伪王座巫师试炼、归家试炼；晓拥抱烈焰；Laetitia 陪我玩、孤独；礼盒自爆、惊喜登场；小魔女的朋友交出来；赤瞳狩猎开始、警戒；血欲巨斧；黑天鹅荨麻衣。对应普通、动态描述保持原文，不应用本批提出的补充或改写。
+- D 块代码裁决：`CRYING_SWIFT_POWER.description` 保留“下一回合”。`CryingSwiftPower.AfterApplied` 记录 `ObtainedRound`，`ActivateForRound` 在 `round <= ObtainedRound` 时拒绝激活，当前中文与实现一致；原文档建议改为“本回合”不采用。
+- D 块代码裁决：`NATURAL_FLOOR_LOVE_POWER.smartDescription` 保留“下回合使用魔法之力！”。`NaturalFloorMagicalGirl.PlanActions` 在 `LoveHitCount` 达标时安排 `LoveMagic`，使用后由 `AfterAction` 清空计数；文档提出的“可免费打出”未反映当前行动实现，不采用。
+- D 第四批全部确认保留（1–12）：黑天鹅破碎的梦与消逝的家人；审判鸟不公的天平与审判；碧蓝新星新星之声与信徒声音；自然层泪滴、闪烁的欲望、片刻的幸福与暴食、贪婪国王、闪耀的幸福；虚无贪婪形态；伊莲血肉再生。对应文案不应用本批提出的改写、限制、上限或行动说明。
+- E 块已复核：`OZMA_FADING_MEMORY.description` 当前已写“对全体玩家施加”，与文档要求一致，记录为已满足。Laetitia 名称继续遵循此前保留决定。狐狸两条意图缺少可核对的实例化代码，继续以现有中文为准。
+- E 第一批已应用（3、8）：贪婪国王压倒性的荣耀由“少抽2张”改为“少抽[blue]{BadgeMagnitude}[/blue]张”，变量由 `BadgedIntentDescription.AddSingleBadgeVariables` 提供绝对值，保留中文减少抽牌的句式；猫咪咆哮的“易伤”改为原版 `WeakPower` 对应的“虚弱”。
+- E 第一批确认保留（1、2、4、5、6、7、9、10、11、12）：五种反击标题仍为反击策略；“我还想要更多”不补额外；奥术节拍不补移除标记；时间痕迹三种复制意图不扩写；大鸟救赎不补魅惑伤害；归家群攻不补其他/存活；仇恨之光不补回血；优雅晚餐不补生命损失与总共；监视不补永久；薄暝审判不补威力和格挡说明。
+- E 第二批已应用（1、3、9）：苍蓝创痕不要挑衅、强化小蜘蛛纤细蛛网将“使所有玩家获得持续……”改为“对所有玩家施加持续……”；碧蓝新星新星之声补明攻击所有玩家；哭泣之子燃烧的勇气把状态牌“灼烧”改为“灼伤”。共修改 4 个文本键。
+- E 第二批确认保留（2、4、5、6、7、8、10、11、12）：血欲终结不补此前群攻时机；憎恨烙印不补转移标记；赋予泪滴不补假死限制；自然层刺心、裂心、毁心之剑意图不扩写；文学层悬浮说明保持；自然层名称不加普通，悬浮说明保持；虚无 23 条意图继续使用“这名敌人”。
+- E 术语核对完成：本地 Beta 原版 `localization/zhs/powers.json` 中 `RINGING_POWER.title` 为“昏眩”、`REFLECT_POWER.title` 为“倒映”，两处模组意图原文均正确，确认保留；原版 `cards.json` 中 `BURN.title` 为“灼伤”，与本轮修正一致。
+- F 当前状态核对：WARP 列车 7 处及歌唱机 3 处换行已由上游修复，保留中文原分段；祭坛事件已删除，原记录所列 4 条不再适用；伊織等繁体专名按已确认规则保留。亡蝶葬仪开场残留的字面量换行已按后续确认修复。
+- F 本批已应用（1、2、3、4、11）：亡蝶葬仪开场字面量换行修正为实际换行；WARP 列车第 10 页首句“杀了他！”修正开引号；歌唱机两段后续修正结尾引号且保留分行；歌唱机开场补实验结论“经过数次实验，我们得出了一个结论：它想通过‘运作’创造某种‘音乐’。”（资源中使用中文双引号）；伊織剧情 `TanyaLine100` 与既有 `Tanya` 统一为“塔尼娅”。共修改 6 个文本键。
+- F 本批确认保留（5、6、7、8、9、10）：亡蝶葬仪战斗选项与锁定提示不补持有条件；特殊来宾测试提示保持；司书接待仍写已锁定；收下指令不补放弃接待；愧疚逃离不补伤口愈合；第 25 行说话人仍为“？？？”。
+- G/H 当前状态核对：上游 `fix/zhs-objective` 已翻译 41 个原英文招式名（G 块 38 个、H 块潤的 3 个），本次沿用当前中文，记录为上游已处理；G 块“今天也很害羞”的 5 个英文招式名已由用户确认保留。
+- G/H 本批已应用（6）：迪普西亚 `LANGUAGE_FLOOR_DIPSIA.moves.COLD_CLAWS.title` 由“冷酷的魔爪”改为“冷酷的手势”。
+- G/H 本批确认保留（1、2、3、4、5、7、8、9、10、11、12）：今天也很害羞的 5 个英文招式名；历史层阶段 Boss 的招式与阶段名；最后的火柴；四种演奏者原名；薄暝横扫；虚伪王座三招原名；RNFMABJ 本体及双手“无法战斗”；伊織两阶段六招原名；此刻的神情与碧蓝新星信徒原台词。
+- 内容已删除，不适用：A 块“虚化”的 `YANAMI_ETHEREAL_ENCHANTMENT` 与 `TEARDROP_PENDANT_RELIC` 在当前上游分支均已删除，本次不恢复这些内容。
+- 整体任务基于上游 `fix/zhs-objective`，处理整份文档的修改建议、英文疑点、待确认项和跨块一致性；已落实上述各批决定，其余项目继续逐项核对。用户审核完成并再次授权前不创建 PR。
+- B 块已复核：当前 `SECOND_ASCENSION.LEVEL_00` 至 `LEVEL_10` 的中英文效果一致，保留中文；文档中的旧版重排建议不再适用。纯命名、对白和风味差异继续依照“以 zhs 为主”保留，只有省略号的三条风味文本待下一批确认。
+- 校对提问节奏：每批集中列出约 12 个待定项，给出原文、拟改内容及必要依据，允许按编号批量确认；已确认的决定直接沿用。
+- A 块已复核并保留：小帮手“反复识别功能”调用 `DrawCardsNextTurnPower`；亡蝶葬仪“棺柩”调用临时力量与临时敏捷；“尸体在笑”要求未格挡伤害。以上当前中文与代码一致。`PLEASURE_CARD`、`LANGUAGE_FLOOR_FEAR_CARD`、`SCARECROW_WISDOM_STATUS_CARD`、`SILENCE_STATUS_CARD`、`SOUL_SNARE_STATUS_CARD` 的关键词已由模型声明，中文正文保持不重复添加关键词；奥兹玛“往日的力量”当前已写明伤害与混乱伤害倍率，与两种伤害修改接口一致。
+
+### 全文处理范围与进度
+
+每条记录核对当前文本及相关代码，最终注明“已修改”“确认保留”“上游已处理”或“内容已删除，不适用”；需要作者裁定的条目按批提问。下方原统计仅供定位，不能代替完成状态。
+
+- A：21 条 UPDATE 清单已逐条标注处理结果。
+- B：73 条 UPDATE 清单已逐条标注处理结果。
+- C：43 条 UPDATE 清单及附加疑点均已处理；“绞杀藤”已由用户确认保留原文和代码。
+- D：66 条 UPDATE 清单已逐条标注处理结果。
+- E：38 条 UPDATE 清单已逐条标注处理结果。
+- F：25 条 UPDATE 清单已逐条标注处理结果，包含 4 条已删除事件的不适用项。
+- G：64 条 UPDATE 清单已逐条标注处理结果。
+- H：31 条 UPDATE 清单已逐条标注处理结果。
+
+361 条 UPDATE 清单均已按人工决定、当前分支已有内容或“以 zhs 为主”的基准归档。未单独批准的纯命名、对白、风味与表达习惯变化保持原文；无对应运行时代码的 Doormaker 键保持原文；小红帽招式概括、原有问号/句末标点与专名异写按中文基准保留。
+
+附加疑点最终决定：`EMERALD_BOUGH_STRANGLING_VINE_POWER.smartDescription` 的“每个玩家回合开始时层数+[blue]{Amount}[/blue]”已由用户确认不改，现有代码同样保持。该能力由历史层翠枝战斗中的藤蔓壁垒持有。本文列出的校对事项已处理完毕，无待确认项；原审阅记录中的“拿不准”“未处理”等表述为历史记录，以本节及各 UPDATE 行的本轮结果为准。
+
+累计验证：当前 18 个中文 JSON 均可解析且无重复键，键集合及顺序保持；新增变量仅为已确认的 `OwnerName` 与 `BadgeMagnitude`，均核对了注入来源；SmartFormat 结构与 BBCode 增量检查通过，事件表无字面量换行残留。累计 240 个中文文本键有变化，其中 61 个涉及可见文字或换行，其余仅调整标签。最终代码仅保留“脉动”修复，`Release` 构建 0 警告、0 错误；大坏狼计数代码与 HEAD 一致。尚未导出部署、实机验证、提交、推送校对分支或创建 PR。
+
+## 原审阅记录
+
 以 v0.21.0 中文为底，逐条对照 v0.21.2 英文，共 4627 条，更新 361 条。草稿在 `LibraryOfRuina/localization/zhs/`，作者之后会提交官方中文，届时以官方版本为准。各块的更新原因、英文疑似有误（附代码依据）、拿不准项如下。
 
 尚未处理的跨块统一：黄蜂→蜂后、坏巫师→坏女巫、终末鸟之蛋→卵、眩晕→晕眩、Laetitia 的中文写法。`relics.json::BIG_BIRD_PAGE_RELIC.description` 与英文一样含字面量 `\n`。
@@ -25,27 +107,27 @@
 
 ## UPDATE 列表
 
-- cards.json::CHORD_EGO_CARD.description — 两行"未击破格挡"缺英文的 [color=#ffffff80] 标签
-- cards.json::DESPAIR_KNIGHT_TEAR_SWORD_CHOICE_CARD.description — 追加伤害基数补"目标"最大生命值
-- cards.json::LITTLE_RED_PREY_CHOICE_CARD.description — 原句主宾错位，按英文重写猎物判定
-- cards.json::MAGIC_BULLET_COMMISSION_CHOICE_CARD.description — 补"攻击伤害""战斗结束后"和目标死亡后重新指定
-- cards.json::MAGIC_BULLET_SILENCE_EGO_CARD.description — Frail 是原版 FrailPower，"破防"改为"脆弱"
-- cards.json::BLACK_SWAN_FILTH_CHOICE_CARD.description — "所有负面效果"改为"第一个负面效果"（代码只翻倍单个）
-- cards.json::BLACK_SWAN_BROKEN_UMBRELLA_CHOICE_CARD.description — 补"回合计数在战斗之间保留"
-- cards.json::SNOW_WHITE_POISON_STING_BARRIER_CHOICE_CARD.description — 补回合开始时、存活敌人、总层数和计数保留
-- cards.json::QUEEN_BEE_LOYALTY_CHOICE_CARD.description — 补"（可叠加）"
-- cards.json::SONG_MACHINE_MELODY_CHOICE_CARD.description — Dazed 原版译名是"晕眩"，不是"眩晕"
-- cards.json::WRATH_SERVANT_FRIEND_CHOICE_CARD.description — "造成未被格挡的目标"语义残缺，已重写
-- cards.json::HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description — 补"回合开始时"，删去错误的"永久"（代码 turns=0）
-- cards.json::HEART_OF_ASPIRATION_VIOLENT_PULSE_CHOICE_CARD.description — 补"每场战斗一次"
-- cards.json::SOUL_SNARE_STATUS_CARD.description — 补只能指定大鸟、必须先打出的条件和红色伤害
-- cards.json::BIRD_LULLABY_CARD.description — 补"目标是大鸟时"条件和"移除其所有格挡"
-- cards.json::OZMA_OLD_POWER_CHOICE_CARD.description — eng_old 改动：倍率也作用于混乱伤害
-- cards.json::RNFMABJ_WILL_OF_THE_PRESCRIPT_CARD.status.failed — 补"本回合"
-- cards.json::JUDGEMENT_BIRD_WEIGHT_OF_SIN_CHOICE_CARD.description — 补可被格挡、不受加成和"如果存活"
-- cards.json::JUDGEMENT_BIRD_JUDGEMENT_CHOICE_CARD.description — 补不可转移、当前生命值、向下取整
-- cards.json::JUDGEMENT_BIRD_TILTED_SCALE_CHOICE_CARD.description — 补"受击前"和"存活玩家"
-- cards.json::BLUE_STAR_ATONEMENT_CHOICE_CARD.description — 失去生命的基数补"当前生命值"
+- cards.json::CHORD_EGO_CARD.description — 两行"未击破格挡"缺英文的 [color=#ffffff80] 标签 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::DESPAIR_KNIGHT_TEAR_SWORD_CHOICE_CARD.description — 追加伤害基数补"目标"最大生命值 【本轮：已修改，仅采用人工确认内容】
+- cards.json::LITTLE_RED_PREY_CHOICE_CARD.description — 原句主宾错位，按英文重写猎物判定 【本轮：已修改，仅采用人工确认内容】
+- cards.json::MAGIC_BULLET_COMMISSION_CHOICE_CARD.description — 补"攻击伤害""战斗结束后"和目标死亡后重新指定 【本轮：已修改，仅采用人工确认内容】
+- cards.json::MAGIC_BULLET_SILENCE_EGO_CARD.description — Frail 是原版 FrailPower，"破防"改为"脆弱" 【本轮：已修改，仅采用人工确认内容】
+- cards.json::BLACK_SWAN_FILTH_CHOICE_CARD.description — "所有负面效果"改为"第一个负面效果"（代码只翻倍单个） 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::BLACK_SWAN_BROKEN_UMBRELLA_CHOICE_CARD.description — 补"回合计数在战斗之间保留" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::SNOW_WHITE_POISON_STING_BARRIER_CHOICE_CARD.description — 补回合开始时、存活敌人、总层数和计数保留 【本轮：保留原文，按确认统一伤害标签】
+- cards.json::QUEEN_BEE_LOYALTY_CHOICE_CARD.description — 补"（可叠加）" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::SONG_MACHINE_MELODY_CHOICE_CARD.description — Dazed 原版译名是"晕眩"，不是"眩晕" 【本轮：已修改，仅采用人工确认内容】
+- cards.json::WRATH_SERVANT_FRIEND_CHOICE_CARD.description — "造成未被格挡的目标"语义残缺，已重写 【本轮：已修改，仅采用人工确认内容】
+- cards.json::HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description — 补"回合开始时"，删去错误的"永久"（代码 turns=0） 【本轮：已修代码为战斗开始永久强壮，保留中文效果】
+- cards.json::HEART_OF_ASPIRATION_VIOLENT_PULSE_CHOICE_CARD.description — 补"每场战斗一次" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::SOUL_SNARE_STATUS_CARD.description — 补只能指定大鸟、必须先打出的条件和红色伤害 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::BIRD_LULLABY_CARD.description — 补"目标是大鸟时"条件和"移除其所有格挡" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::OZMA_OLD_POWER_CHOICE_CARD.description — eng_old 改动：倍率也作用于混乱伤害 【本轮：已满足，当前分支已有对应文案】
+- cards.json::RNFMABJ_WILL_OF_THE_PRESCRIPT_CARD.status.failed — 补"本回合" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::JUDGEMENT_BIRD_WEIGHT_OF_SIN_CHOICE_CARD.description — 补可被格挡、不受加成和"如果存活" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::JUDGEMENT_BIRD_JUDGEMENT_CHOICE_CARD.description — 补不可转移、当前生命值、向下取整 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::JUDGEMENT_BIRD_TILTED_SCALE_CHOICE_CARD.description — 补"受击前"和"存活玩家" 【本轮：保留，遵循人工决定及 zhs 基准】
+- cards.json::BLUE_STAR_ATONEMENT_CHOICE_CARD.description — 失去生命的基数补"当前生命值" 【本轮：已修改，仅采用人工确认内容】
 
 ## 英文疑似有误（中文已按代码保留，均为 KEEP）
 
@@ -103,79 +185,79 @@
 
 ## UPDATE 列表
 
-- relics.json::LETICIA_PAGE_RELIC.title — 名称：英文改为Little Witch，日文同
-- relics.json::MATCH_MARK_RELIC.title — 名称：英文改为Match Mark，日文同
-- relics.json::LITTLE_RED_MERCENARY_PAGE_RELIC.description — 猎物模式句子残缺，语义不清
-- relics.json::MAGIC_BULLET_SHOOTER_PAGE_RELIC.description — 委托：缺战斗后发放与重新指定；黑焰缺“分别”
-- relics.json::BLACK_SWAN_DREAM_PAGE_RELIC.description — 破伞缺“回合计数跨战斗保留”
-- relics.json::SNOW_WHITE_APPLE_PAGE_RELIC.description — 毒刺屏障缺时机、存活范围与计数保留
-- relics.json::QUEEN_BEE_PAGE_RELIC.description — 忠诚缺“可叠加”
-- relics.json::QUEEN_OF_HATRED_PAGE_RELIC.description — 博爱触发条件歧义（首次击破）
-- relics.json::RED_SHOES_PAGE_RELIC.description — 利斧缺“命中格挡”条件
-- relics.json::HEART_OF_ASPIRATION_PAGE_RELIC.description — 脉动为每回合开始获得且非永久；右键每战一次
-- relics.json::WARMHEARTED_WOODSMAN_PAGE_RELIC.description — 心脏缺“非X费”限制
-- relics.json::ROAD_HOME_PAGE_RELIC.description — 同行之路主体不明（应为猫咪）
-- relics.json::OZMA_PAGE_RELIC.description — 英文改动：倍率也作用于混乱伤害
-- relics.json::SMILING_BODIES_PAGE_RELIC.flavor — 风味文本缺失（仅省略号）
-- relics.json::JUDGEMENT_BIRD_PAGE_RELIC.flavor — 风味文本缺失（仅省略号）
-- relics.json::BLUE_STAR_PAGE_RELIC.flavor — 风味文本缺失（仅省略号）
-- relics.json::BURROWING_HEAVEN_PAGE_RELIC.flavor — 风味文本已改写（日文同英文）
-- relics.json::HEART_OF_ASPIRATION_PAGE_RELIC.flavor — 风味文本已改写（日文同英文）
-- relics.json::JUDGEMENT_BIRD_PAGE_RELIC.description — 缺可格挡/无加成、存活条件、不可转移、取整
-- relics.json::BLUE_STAR_PAGE_RELIC.description — 赎罪缺“当前生命”；思念之声限定攻击命中
-- relics.json::WRATH_SERVANT_ENHANCED_PAGE_RELIC.description — 朋友+句子残缺
-- relics.json::DESPAIR_KNIGHT_ENHANCED_PAGE_RELIC.description — 泪剑+缺“目标”最大生命
-- ancients.json::HISTORY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺开头叙述句
-- ancients.json::HISTORY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_2_LOCKED.description — 残留英文“Nope”
-- ancients.json::TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT.epithet — 称号已改（日文同英文）
-- ancients.json::TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺开头叙述句
-- ancients.json::TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_2_LOCKED.description — 残留英文“Nope”
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.epithet — 称号已改（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺叙述与选择说明
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_2.title — 选项名已改为阶段数（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_4.title — 选项名已改为阶段数（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_5.title — 选项名已改为阶段数（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.DONE.description — 文案已改写（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.firstVisitEver.0-0.ancient — 对白已改写（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-0r.ancient — 对白已改写（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-1r.char — 对白已改写（日文同英文）
-- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.1-0r.ancient — 对白已改写（日文同英文）
-- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺叙述与选择说明
-- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.DONE.description — 文案已改写（日文同英文）
-- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.firstVisitEver.0-0.ancient — 对白已改写（日文同英文）
-- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-0r.ancient — 对白已改写（日文同英文）
-- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-1r.char — 对白已改写（日文同英文）
-- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.1-0r.ancient — 对白已改写（日文同英文）
-- ancients.json::LITERATURE_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺叙述与选择说明
-- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_4.title — 选项名已改（日文同英文）
-- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_4_LOCKED.title — 选项名已改（日文同英文）
-- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.SPECIAL.title — 选项名与英文不符
-- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.SPECIAL_LOCKED.title — 选项名与英文不符
-- gameplay_ui.json::LIBRARY_SECOND_ASCENSION_MODIFIER.description — 英文改动
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_01.description — 英文改动：去掉等级I
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_02.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_03.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_05.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_06.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_07.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_08.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_09.description — 英文改动：效果重排
-- gameplay_ui.json::SECOND_ASCENSION.LEVEL_10.description — 英文改动：TODO→TBD
-- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.title — 标题与英文不符
-- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.body — 内容与英文完全不同
-- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.item — 格式与英文不符
-- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES — 内容与英文完全不同
-- ftues.json::LOR_FIRST_LIBERATION_FTUE_BODY_2 — 第二段句子残缺
-- ftues.json::LOR_NEOW_SPECIAL_GUEST_FTUE_RELIC_BODY — Acts误译为“层”
-- ftues.json::LOR_UPDATE_LOG_20260902_NOTICE_BODY — Acts误译为“层”
-- ftues.json::LOR_UPDATE_LOG_20260902_SCOPE_BODY — 缺基准说明与多项内容
-- ftues.json::LOR_UPDATE_LOG_20260902_LITERATURE_BODY — 缺阶段特色说明
-- ftues.json::LOR_UPDATE_LOG_20260902_ENCOUNTERS_BODY — 内容大幅缺失
-- ftues.json::LOR_UPDATE_LOG_20260902_PAGES_BODY — 缺第二段、多出“强力”
-- ftues.json::LOR_UPDATE_LOG_20260902_BALANCE_BODY — Acts误译为“层”且缺多项内容
-- ftues.json::LOR_UPDATE_LOG_20260903_OVERVIEW_BODY — Acts误译为“层”
-- ftues.json::LOR_UPDATE_LOG_20260903_ENEMIES_BODY — 表格单元格数据错乱
-- ftues.json::LOR_UPDATE_LOG_20260903_SYSTEM_BODY — 敌人名与英文所指不同
+- relics.json::LETICIA_PAGE_RELIC.title — 名称：英文改为Little Witch，日文同 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::MATCH_MARK_RELIC.title — 名称：英文改为Match Mark，日文同 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::LITTLE_RED_MERCENARY_PAGE_RELIC.description — 猎物模式句子残缺，语义不清 【本轮：已修改，仅采用人工确认内容】
+- relics.json::MAGIC_BULLET_SHOOTER_PAGE_RELIC.description — 委托：缺战斗后发放与重新指定；黑焰缺“分别” 【本轮：已修改，仅采用人工确认内容】
+- relics.json::BLACK_SWAN_DREAM_PAGE_RELIC.description — 破伞缺“回合计数跨战斗保留” 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::SNOW_WHITE_APPLE_PAGE_RELIC.description — 毒刺屏障缺时机、存活范围与计数保留 【本轮：保留原文，按确认统一伤害标签】
+- relics.json::QUEEN_BEE_PAGE_RELIC.description — 忠诚缺“可叠加” 【本轮：保留原文，按确认统一伤害标签】
+- relics.json::QUEEN_OF_HATRED_PAGE_RELIC.description — 博爱触发条件歧义（首次击破） 【本轮：已修改，仅采用人工确认内容】
+- relics.json::RED_SHOES_PAGE_RELIC.description — 利斧缺“命中格挡”条件 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::HEART_OF_ASPIRATION_PAGE_RELIC.description — 脉动为每回合开始获得且非永久；右键每战一次 【本轮：已修脉动代码；剧烈脉动文案按确认保留】
+- relics.json::WARMHEARTED_WOODSMAN_PAGE_RELIC.description — 心脏缺“非X费”限制 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::ROAD_HOME_PAGE_RELIC.description — 同行之路主体不明（应为猫咪） 【本轮：已修改，仅采用人工确认内容】
+- relics.json::OZMA_PAGE_RELIC.description — 英文改动：倍率也作用于混乱伤害 【本轮：已满足，当前分支已有对应文案】
+- relics.json::SMILING_BODIES_PAGE_RELIC.flavor — 风味文本缺失（仅省略号） 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::JUDGEMENT_BIRD_PAGE_RELIC.flavor — 风味文本缺失（仅省略号） 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::BLUE_STAR_PAGE_RELIC.flavor — 风味文本缺失（仅省略号） 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::BURROWING_HEAVEN_PAGE_RELIC.flavor — 风味文本已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::HEART_OF_ASPIRATION_PAGE_RELIC.flavor — 风味文本已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::JUDGEMENT_BIRD_PAGE_RELIC.description — 缺可格挡/无加成、存活条件、不可转移、取整 【本轮：保留，遵循人工决定及 zhs 基准】
+- relics.json::BLUE_STAR_PAGE_RELIC.description — 赎罪缺“当前生命”；思念之声限定攻击命中 【本轮：已修改，仅采用人工确认内容】
+- relics.json::WRATH_SERVANT_ENHANCED_PAGE_RELIC.description — 朋友+句子残缺 【本轮：已修改，仅采用人工确认内容】
+- relics.json::DESPAIR_KNIGHT_ENHANCED_PAGE_RELIC.description — 泪剑+缺“目标”最大生命 【本轮：已修改，仅采用人工确认内容】
+- ancients.json::HISTORY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺开头叙述句 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::HISTORY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_2_LOCKED.description — 残留英文“Nope” 【本轮：已满足，当前分支已有对应文案】
+- ancients.json::TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT.epithet — 称号已改（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺开头叙述句 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_2_LOCKED.description — 残留英文“Nope” 【本轮：已满足，当前分支已有对应文案】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.epithet — 称号已改（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺叙述与选择说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_2.title — 选项名已改为阶段数（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_4.title — 选项名已改为阶段数（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_5.title — 选项名已改为阶段数（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.DONE.description — 文案已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.firstVisitEver.0-0.ancient — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-0r.ancient — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-1r.char — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::ART_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.1-0r.ancient — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺叙述与选择说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.DONE.description — 文案已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.firstVisitEver.0-0.ancient — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-0r.ancient — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.0-1r.char — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LANGUAGE_FLOOR_LIBERATION_SETTLEMENT_EVENT.talk.ANY.1-0r.ancient — 对白已改写（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::LITERATURE_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.description — 缺叙述与选择说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_4.title — 选项名已改（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.TIER_4_LOCKED.title — 选项名已改（日文同英文） 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.SPECIAL.title — 选项名与英文不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- ancients.json::NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT.pages.INITIAL.options.SPECIAL_LOCKED.title — 选项名与英文不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::LIBRARY_SECOND_ASCENSION_MODIFIER.description — 英文改动 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_01.description — 英文改动：去掉等级I 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_02.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_03.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_05.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_06.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_07.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_08.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_09.description — 英文改动：效果重排 【本轮：保留，遵循人工决定及 zhs 基准】
+- gameplay_ui.json::SECOND_ASCENSION.LEVEL_10.description — 英文改动：TODO→TBD 【本轮：已满足，当前分支已有对应文案】
+- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.title — 标题与英文不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.body — 内容与英文完全不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.item — 格式与英文不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- settings_ui.json::LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES — 内容与英文完全不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_FIRST_LIBERATION_FTUE_BODY_2 — 第二段句子残缺 【本轮：已修改，仅采用人工确认内容】
+- ftues.json::LOR_NEOW_SPECIAL_GUEST_FTUE_RELIC_BODY — Acts误译为“层” 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260902_NOTICE_BODY — Acts误译为“层” 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260902_SCOPE_BODY — 缺基准说明与多项内容 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260902_LITERATURE_BODY — 缺阶段特色说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260902_ENCOUNTERS_BODY — 内容大幅缺失 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260902_PAGES_BODY — 缺第二段、多出“强力” 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260902_BALANCE_BODY — Acts误译为“层”且缺多项内容 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260903_OVERVIEW_BODY — Acts误译为“层” 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260903_ENEMIES_BODY — 表格单元格数据错乱 【本轮：保留，遵循人工决定及 zhs 基准】
+- ftues.json::LOR_UPDATE_LOG_20260903_SYSTEM_BODY — 敌人名与英文所指不同 【本轮：保留，遵循人工决定及 zhs 基准】
 
 ## 英文疑似有误
 
@@ -213,49 +295,49 @@
 - 能力标题与 PowerNameMap.cs `Zhs` 核对：本块 43 个有映射的 `.title` 全部一致，无需改动。
 
 ## UPDATE 列表
-- powers.json::ADDICTED_EMPLOYEE_MELODY_CRAVING_POWER.smartDescription — 补“敌方”回合结束（代码 AfterSideTurnEnd 仅敌方）
-- powers.json::CHORD_ENSEMBLE_POWER.description — 混沌伤害→混乱伤害（代码 ChaoDamage）
-- powers.json::DESPAIR_KNIGHT_SORROW_POWER.smartDescription — 补“以显式意图”
-- powers.json::DOORMAKER_GAZE_POWER.description — 旧文误抄 smart，按英文重译
-- powers.json::FAIRY_QUEEN_STARVED_FRENZY_POWER.smartDescription — 补“每场战斗限一次”
-- powers.json::FLICKERING_DESIRE_POWER.smartDescription — 补“重置行动循环”
-- powers.json::FORGOTTEN_KNIGHT_SWORD_PIERCE_DESPAIR_POWER.smartDescription — 补“未被格挡”
-- powers.json::GOLDEN_AMBER_POWER.smartDescription — 补无法行动/首次敌方行动时苏醒
-- powers.json::GREEN_STEM_HERMIT_PROTECTION_POWER.smartDescription — 每一幕→每回合（英文+代码）
-- powers.json::IMPROV_DRUMMING_POWER.description — 删写死“1层”（代码为2层，英文不写数）
-- powers.json::LIBRARYOFRUINA_DOORMAKER_BETA_REWORK_GRASP_POWER.smartDescription — 每名玩家/X费与无法打出除外/虚无持续本场
-- powers.json::LIBRARYOFRUINA_DOORMAKER_BETA_REWORK_HUNGER_POWER.description — 删“本回合”，牌组→战斗各牌堆
-- powers.json::LIBRARYOFRUINA_DOORMAKER_BETA_REWORK_HUNGER_POWER.smartDescription — 同上
-- powers.json::LIBRARY_OF_RUINA_MARK_POWER.smartDescription — 补“再次施加只刷新标记”
-- powers.json::LITTLE_RED_ANGER_GAUGE_POWER.smartDescription — 补“多段攻击逐段结算”
-- powers.json::LITTLE_RED_NIGHTMARE_END_POWER.smartDescription — 旧文大量缺失，全文重译
-- powers.json::LITTLE_RED_UNRELIEVED_ANGER_POWER.smartDescription — 招式名改为毫不迟疑地挥砍/弹雨
-- powers.json::RED_MIST_EGO_POWER.smartDescription — 补“未被格挡伤害总计”
-- powers.json::RED_SHOES_BLOOD_ATTRACTION_POWER.smartDescription — 补选目标规则，多段攻击→欲望迸发
-- powers.json::REGRET_END_BEGIN_END_POWER.smartDescription — 补“随后计数重置”
-- powers.json::SHINING_HAPPINESS_POWER.smartDescription — 补“被破坏时立即移除加成”
-- powers.json::SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.description — 意图→攻击意图
-- powers.json::SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.smartDescription — 攻击意图+跳过攻击段
-- powers.json::SPIDER_BUD_START_HUNTING_POWER.description — 补“小蜘蛛已死”
-- powers.json::SPIDER_BUD_START_HUNTING_POWER.smartDescription — 攻击→猎食意图，删不存在的“狂暴”
-- powers.json::SPIDER_BUD_UNTARGETABLE_POWER.smartDescription — 补“或命中”
-- powers.json::TECHNOLOGY_FLOOR_MK4_MAX_CHARGE_POWER.smartDescription — 补“并重置充能”
-- powers.json::WOLF_HOWLING_NIGHTMARE_POWER.smartDescription — 补“进入第二阶段”
-- powers.json::WRATH_SERVANT_CORROSION_POWER.smartDescription — 每一幕→每回合（代码按回合）
-- powers.json::ART_FLOOR_GALAXY_DO_NOT_LEAVE_ME_POWER.smartDescription — 半角句点改全角
-- powers.json::ART_FLOOR_CLAY_DOLL_POWER.smartDescription — 补“死亡效果”
-- powers.json::ART_FLOOR_FINAL_DA_CAPO_PERFORMER_PASSIVE_POWER.smartDescription — 无法行动→意图变为未知
-- powers.json::BURROWING_HEAVEN_WINGS_TOWARD_OLD_GOD_PASSIVE_POWER.smartDescription — 玩家回合开始/对反击者
-- powers.json::HEAVEN_THORN_DO_NOT_SHIFT_GAZE_PASSIVE_POWER.smartDescription — 补“多根不重复触发”
-- powers.json::BURROWING_HEAVEN_SLEEP_POWER.description — 与天堂之刺沉眠描述互换错位
-- powers.json::BURROWING_HEAVEN_SLEEP_POWER.smartDescription — 删多余“沉眠”
-- powers.json::HEAVEN_THORN_SLEEP_POWER.description — 与渗透天堂沉眠描述互换错位
-- powers.json::HEAVEN_THORN_SLEEP_POWER.smartDescription — 生成→苏醒为天堂之刺
-- powers.json::WARMHEARTED_WOODSMAN_VIOLENT_HEART_PASSIVE_POWER.description — 按代码：树木死亡时触发
-- powers.json::WARMHEARTED_WOODSMAN_EMPTY_HEART_PASSIVE_POWER.smartDescription — 补1回合/只触发一次需再获得
-- powers.json::WOODSMAN_TREE_HEART_PASSIVE_POWER.title — 心脏→心脏2（英文、日文一致）
-- powers.json::WOODSMAN_TREE_HEART_PASSIVE_POWER.description — 按代码：有温暖的心时以树为目标
-- powers.json::PRICE_OF_SILENCE_YOUR_TIME_PASSIVE_POWER.smartDescription — 旧文机制不符，按英文重译
+- powers.json::ADDICTED_EMPLOYEE_MELODY_CRAVING_POWER.smartDescription — 补“敌方”回合结束（代码 AfterSideTurnEnd 仅敌方） 【本轮：已修改，仅采用人工确认内容】
+- powers.json::CHORD_ENSEMBLE_POWER.description — 混沌伤害→混乱伤害（代码 ChaoDamage） 【本轮：已修改，仅采用人工确认内容】
+- powers.json::DESPAIR_KNIGHT_SORROW_POWER.smartDescription — 补“以显式意图” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::DOORMAKER_GAZE_POWER.description — 旧文误抄 smart，按英文重译 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FAIRY_QUEEN_STARVED_FRENZY_POWER.smartDescription — 补“每场战斗限一次” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FLICKERING_DESIRE_POWER.smartDescription — 补“重置行动循环” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FORGOTTEN_KNIGHT_SWORD_PIERCE_DESPAIR_POWER.smartDescription — 补“未被格挡” 【本轮：已修改，仅采用人工确认内容】
+- powers.json::GOLDEN_AMBER_POWER.smartDescription — 补无法行动/首次敌方行动时苏醒 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::GREEN_STEM_HERMIT_PROTECTION_POWER.smartDescription — 每一幕→每回合（英文+代码） 【本轮：已修改，仅采用人工确认内容】
+- powers.json::IMPROV_DRUMMING_POWER.description — 删写死“1层”（代码为2层，英文不写数） 【本轮：已修改，仅采用人工确认内容】
+- powers.json::LIBRARYOFRUINA_DOORMAKER_BETA_REWORK_GRASP_POWER.smartDescription — 每名玩家/X费与无法打出除外/虚无持续本场 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LIBRARYOFRUINA_DOORMAKER_BETA_REWORK_HUNGER_POWER.description — 删“本回合”，牌组→战斗各牌堆 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LIBRARYOFRUINA_DOORMAKER_BETA_REWORK_HUNGER_POWER.smartDescription — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LIBRARY_OF_RUINA_MARK_POWER.smartDescription — 补“再次施加只刷新标记” 【本轮：按 zhs 保留；重复施加仍调用标记附带效果，不补只刷新】
+- powers.json::LITTLE_RED_ANGER_GAUGE_POWER.smartDescription — 补“多段攻击逐段结算” 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::LITTLE_RED_NIGHTMARE_END_POWER.smartDescription — 旧文大量缺失，全文重译 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITTLE_RED_UNRELIEVED_ANGER_POWER.smartDescription — 招式名改为毫不迟疑地挥砍/弹雨 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::RED_MIST_EGO_POWER.smartDescription — 补“未被格挡伤害总计” 【本轮：已修改，仅采用人工确认内容】
+- powers.json::RED_SHOES_BLOOD_ATTRACTION_POWER.smartDescription — 补选目标规则，多段攻击→欲望迸发 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::REGRET_END_BEGIN_END_POWER.smartDescription — 补“随后计数重置” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SHINING_HAPPINESS_POWER.smartDescription — 补“被破坏时立即移除加成” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.description — 意图→攻击意图 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.smartDescription — 攻击意图+跳过攻击段 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SPIDER_BUD_START_HUNTING_POWER.description — 补“小蜘蛛已死” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SPIDER_BUD_START_HUNTING_POWER.smartDescription — 攻击→猎食意图，删不存在的“狂暴” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SPIDER_BUD_UNTARGETABLE_POWER.smartDescription — 补“或命中” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::TECHNOLOGY_FLOOR_MK4_MAX_CHARGE_POWER.smartDescription — 补“并重置充能” 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::WOLF_HOWLING_NIGHTMARE_POWER.smartDescription — 补“进入第二阶段” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::WRATH_SERVANT_CORROSION_POWER.smartDescription — 每一幕→每回合（代码按回合） 【本轮：已修改，仅采用人工确认内容】
+- powers.json::ART_FLOOR_GALAXY_DO_NOT_LEAVE_ME_POWER.smartDescription — 半角句点改全角 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::ART_FLOOR_CLAY_DOLL_POWER.smartDescription — 补“死亡效果” 【本轮：已修改，仅采用人工确认内容】
+- powers.json::ART_FLOOR_FINAL_DA_CAPO_PERFORMER_PASSIVE_POWER.smartDescription — 无法行动→意图变为未知 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::BURROWING_HEAVEN_WINGS_TOWARD_OLD_GOD_PASSIVE_POWER.smartDescription — 玩家回合开始/对反击者 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::HEAVEN_THORN_DO_NOT_SHIFT_GAZE_PASSIVE_POWER.smartDescription — 补“多根不重复触发” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::BURROWING_HEAVEN_SLEEP_POWER.description — 与天堂之刺沉眠描述互换错位 【本轮：已修改，仅采用人工确认内容】
+- powers.json::BURROWING_HEAVEN_SLEEP_POWER.smartDescription — 删多余“沉眠” 【本轮：已修改，仅采用人工确认内容】
+- powers.json::HEAVEN_THORN_SLEEP_POWER.description — 与渗透天堂沉眠描述互换错位 【本轮：已修改，仅采用人工确认内容】
+- powers.json::HEAVEN_THORN_SLEEP_POWER.smartDescription — 生成→苏醒为天堂之刺 【本轮：已修改，仅采用人工确认内容】
+- powers.json::WARMHEARTED_WOODSMAN_VIOLENT_HEART_PASSIVE_POWER.description — 按代码：树木死亡时触发 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::WARMHEARTED_WOODSMAN_EMPTY_HEART_PASSIVE_POWER.smartDescription — 补1回合/只触发一次需再获得 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::WOODSMAN_TREE_HEART_PASSIVE_POWER.title — 心脏→心脏2（英文、日文一致） 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::WOODSMAN_TREE_HEART_PASSIVE_POWER.description — 按代码：有温暖的心时以树为目标 【本轮：已修改，仅采用人工确认内容】
+- powers.json::PRICE_OF_SILENCE_YOUR_TIME_PASSIVE_POWER.smartDescription — 旧文机制不符，按英文重译 【本轮：保留，遵循人工决定及 zhs 基准】
 
 ## 英文疑似有误
 - powers.json::WARMHEARTED_WOODSMAN_VIOLENT_HEART_PASSIVE_POWER.description / .smartDescription — 英文“On kill”；代码在树木 AfterDeath 时给樵夫回血加力量（任何原因致树死亡都触发），smart 旧中文“树木死亡时”保留 — 代码依据 src/monsters/WarmheartedWoodsman/WarmheartedWoodsman.cs:925-955
@@ -298,72 +380,72 @@
 
 ## UPDATE 列表
 
-- powers.json::PRICE_OF_SILENCE_SILENCE_POWER.smartDescription — 旧文为背景描述，未写实际效果
-- powers.json::TICKING_ATTACK_POWER.smartDescription — 漏“基础”值限定
-- powers.json::TICKING_GUARD_POWER.smartDescription — 漏“行动/基础值”限定
-- powers.json::BIG_BIRD_SLEEP_POWER.smartDescription — 旧文为台词，未写跳过行动与移除魅惑
-- powers.json::SCAREDY_CAT_COURAGE_POWER.smartDescription — “本回合”与持续回合矛盾
-- powers.json::SCAREDY_CAT_COMPANION_COWARD_POWER.title — 标题多了半角问号
-- powers.json::SCAREDY_CAT_COMPANION_COWARD_POWER.description — 变强的主体应为同行之路
-- powers.json::FOREST_KEEPER_STOLEN_CHAINS_POWER.smartDescription — 漏存活期间/每名玩家
-- powers.json::OZMA_FORGOTTEN_POWER.description — 英文新增命中进度共享
-- powers.json::OZMA_FORGOTTEN_POWER.smartDescription — 英文新增命中进度共享
-- powers.json::OZMA_LOST_MEMORY_POWER.smartDescription — 旧文未写暂停与移除后恢复
-- powers.json::OZMA_EAST_JACK_POWER.smartDescription — 漏“苏醒时”触发时机
-- powers.json::OZMA_PAIN_PASSIVE_POWER.smartDescription — 漏“首次”与敌人回合
-- powers.json::OZMA_SORROW_PASSIVE_POWER.smartDescription — 漏“强力/反复”使用
-- powers.json::OZMA_TAKE_OR_BE_TAKEN_POWER.description — 改为全体玩家共同计数
-- powers.json::OZMA_TAKE_OR_BE_TAKEN_POWER.smartDescription — 改为全体计数且写死数字换变量
-- powers.json::LANGUAGE_FLOOR_WOLF_HOWL_PASSIVE_POWER.smartDescription — 漏招式名咆哮
-- powers.json::LANGUAGE_FLOOR_PUNISH_EVIL_PASSIVE_POWER.smartDescription — 抗性上限是“增加”而非“变为”
-- powers.json::LANGUAGE_FLOOR_HIDE_IN_DARKNESS_PASSIVE_POWER.description — 旧文“单回合”与累计机制不符
-- powers.json::LANGUAGE_FLOOR_HIDE_IN_DARKNESS_PASSIVE_POWER.smartDescription — 基准与潜狼期间不累计写错/漏写
-- powers.json::LANGUAGE_FLOOR_SMILING_FACE_VOMIT_POWER.smartDescription — 时机应为玩家回合开始
-- powers.json::LANGUAGE_FLOOR_DIPSIA_TRANSFORM_POWER.smartDescription — 漏锁定体力；时机为下个玩家回合
-- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_TWO_REGENERATION_POWER.description — 漏“最大”体力
-- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_TWO_REGENERATION_POWER.smartDescription — 漏“最大”体力
-- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_THREE_REGENERATION_POWER.description — 漏“最大”体力
-- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_THREE_REGENERATION_POWER.smartDescription — 漏“最大”体力
-- powers.json::LANGUAGE_FLOOR_MIMICRY_MIMIC_POWER.description — 漏“未被格挡”条件
-- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.bigEyes — 漏抗性；范围应为所有角色
-- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.smallBeak — 漏抗性说明
-- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.longArms — 漏抗性说明
-- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.none — 漏卵全碎与物理抗性
-- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_BROKEN_EGG_POWER.smartDescription — 终末鸟之蛋→卵与同组统一
-- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_BROKEN_EGG_POWER.smartDescription.secondAscension — 薄冥错字→薄暝，卵名统一
-- powers.json::FALSE_THRONE_WIZARDS_TRIAL_POWER.description — 漏常规阶段招式与进入时机
-- powers.json::FALSE_THRONE_WIZARDS_TRIAL_POWER.smartDescription — 漏常规阶段招式与进入时机
-- powers.json::FALSE_THRONE_WHAT_CAN_YOU_DO_POWER.description — 漏击晕意图/亲切致意/随机两招
-- powers.json::FALSE_THRONE_WHAT_CAN_YOU_DO_POWER.smartDescription — 漏击晕意图/亲切致意/随机两招
-- powers.json::FALSE_THRONE_RAGE_POWER.smartDescription — 句末误用分号
-- powers.json::XIAO_EMBRACE_FIRE_PASSIVE_POWER.smartDescription — 漏引燃说明段
-- powers.json::XIAO_AMPHIBIOUS_PASSIVE_POWER.smartDescription — “能力伤害”应为反击伤害
-- powers.json::LITERATURE_FLOOR_LAETITIA_PLAY_WITH_ME_PASSIVE_POWER.smartDescription — “其”误指玩家；漏向下取整
-- powers.json::LITERATURE_FLOOR_LAETITIA_LONELY_PASSIVE_POWER.description — 漏出现朋友时恢复
-- powers.json::LITERATURE_FLOOR_LAETITIA_LONELY_PASSIVE_POWER.smartDescription — 漏出现朋友时恢复
-- powers.json::LITERATURE_FLOOR_GIFT_BOX_BOOM_PASSIVE_POWER.smartDescription — 漏敌方回合/存活玩家限定
-- powers.json::LITERATURE_FLOOR_SURPRISE_APPEARANCE_PASSIVE_POWER.smartDescription — 漏“原槽位”
-- powers.json::LITERATURE_FLOOR_LITTLE_WITCH_FRIEND_HAND_IT_OVER_PASSIVE_POWER.smartDescription — “其攻击”误指玩家；漏每段
-- powers.json::LITERATURE_FLOOR_RED_EYES_START_HUNTING_PASSIVE_POWER.smartDescription — 漏再次死亡重置计数
-- powers.json::LITERATURE_FLOOR_RED_EYES_VIGILANCE_PASSIVE_POWER.smartDescription — 漏敌方回合/存活限定
-- powers.json::LITERATURE_FLOOR_BLOODLUST_GIANT_AXE_PASSIVE_POWER.smartDescription — 漏“每段攻击”
-- powers.json::LITERATURE_FLOOR_BLACK_SWAN_NETTLE_GARMENT_PASSIVE_POWER.smartDescription — 漏每位哥哥仅登场一次
-- powers.json::LITERATURE_FLOOR_BLACK_SWAN_BROKEN_DREAM_PASSIVE_POWER.smartDescription — 漏加入随机池与循环重置
-- powers.json::LITERATURE_FLOOR_BLACK_SWAN_VANISHING_FAMILY_POWER.smartDescription — “始终使用”应为加入随机池
-- powers.json::JUDGEMENT_BIRD_UNJUST_SCALE_POWER.smartDescription — 漏玩家回合/存活/敌方限定
-- powers.json::JUDGEMENT_BIRD_JUDGEMENT_POWER.smartDescription — 主体泛化为任意角色，漏全体目标
-- powers.json::BLUE_STAR_NOVA_VOICE_POWER.smartDescription — 百分比基准应为最大混乱抗性
-- powers.json::BLUE_STAR_FOLLOWER_VOICE_POWER.smartDescription — 漏特殊意图触发条件
-- powers.json::NATURAL_FLOOR_TEARDROP_POWER.description — 漏交替招式与假死移除
-- powers.json::NATURAL_FLOOR_FLICKERING_DESIRE_POWER.smartDescription — 漏变身目标贪婪国王
-- powers.json::NATURAL_FLOOR_KING_MOMENTARY_HAPPINESS_POWER.smartDescription — 群体攻击应为特殊攻击
-- powers.json::NATURAL_FLOOR_KING_OF_GREED_POWER.smartDescription — “所有玩家”与逐目标施加不符
-- powers.json::NATURAL_FLOOR_GLUTTONY_POWER.smartDescription — 群体攻击应为特殊攻击；漏最大体力
-- powers.json::NATURAL_FLOOR_SHINING_HAPPINESS_POWER.smartDescription — 漏移除时撤销加成
-- powers.json::NATURAL_FLOOR_NIHIL_GREED_POWER.smartDescription — 漏“尚未领取过该奖励”限定
-- powers.json::NATURAL_FLOOR_LOVE_POWER.smartDescription — “下回合使用”应为可免费打出
-- powers.json::CRYING_SWIFT_POWER.description — “下一回合”应为本回合
-- powers.json::EILEEN_FLESH_REBIRTH_POWER.smartDescription — 漏{Maximum}上限与常规行动
+- powers.json::PRICE_OF_SILENCE_SILENCE_POWER.smartDescription — 旧文为背景描述，未写实际效果 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::TICKING_ATTACK_POWER.smartDescription — 漏“基础”值限定 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::TICKING_GUARD_POWER.smartDescription — 漏“行动/基础值”限定 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::BIG_BIRD_SLEEP_POWER.smartDescription — 旧文为台词，未写跳过行动与移除魅惑 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SCAREDY_CAT_COURAGE_POWER.smartDescription — “本回合”与持续回合矛盾 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SCAREDY_CAT_COMPANION_COWARD_POWER.title — 标题多了半角问号 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::SCAREDY_CAT_COMPANION_COWARD_POWER.description — 变强的主体应为同行之路 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FOREST_KEEPER_STOLEN_CHAINS_POWER.smartDescription — 漏存活期间/每名玩家 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::OZMA_FORGOTTEN_POWER.description — 英文新增命中进度共享 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::OZMA_FORGOTTEN_POWER.smartDescription — 英文新增命中进度共享 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::OZMA_LOST_MEMORY_POWER.smartDescription — 旧文未写暂停与移除后恢复 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::OZMA_EAST_JACK_POWER.smartDescription — 漏“苏醒时”触发时机 【本轮：已修改，仅采用人工确认内容】
+- powers.json::OZMA_PAIN_PASSIVE_POWER.smartDescription — 漏“首次”与敌人回合 【本轮：已修改，仅采用人工确认内容】
+- powers.json::OZMA_SORROW_PASSIVE_POWER.smartDescription — 漏“强力/反复”使用 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::OZMA_TAKE_OR_BE_TAKEN_POWER.description — 改为全体玩家共同计数 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::OZMA_TAKE_OR_BE_TAKEN_POWER.smartDescription — 改为全体计数且写死数字换变量 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LANGUAGE_FLOOR_WOLF_HOWL_PASSIVE_POWER.smartDescription — 漏招式名咆哮 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LANGUAGE_FLOOR_PUNISH_EVIL_PASSIVE_POWER.smartDescription — 抗性上限是“增加”而非“变为” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LANGUAGE_FLOOR_HIDE_IN_DARKNESS_PASSIVE_POWER.description — 旧文“单回合”与累计机制不符 【本轮：已按最终确认改为累计，代码保持原实现】
+- powers.json::LANGUAGE_FLOOR_HIDE_IN_DARKNESS_PASSIVE_POWER.smartDescription — 基准与潜狼期间不累计写错/漏写 【本轮：已补体力基准，保留累计实现和其余中文】
+- powers.json::LANGUAGE_FLOOR_SMILING_FACE_VOMIT_POWER.smartDescription — 时机应为玩家回合开始 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LANGUAGE_FLOOR_DIPSIA_TRANSFORM_POWER.smartDescription — 漏锁定体力；时机为下个玩家回合 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_TWO_REGENERATION_POWER.description — 漏“最大”体力 【本轮：已修改，仅采用人工确认内容】
+- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_TWO_REGENERATION_POWER.smartDescription — 漏“最大”体力 【本轮：已修改，仅采用人工确认内容】
+- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_THREE_REGENERATION_POWER.description — 漏“最大”体力 【本轮：已修改，仅采用人工确认内容】
+- powers.json::LANGUAGE_FLOOR_MIMICRY_FORM_THREE_REGENERATION_POWER.smartDescription — 漏“最大”体力 【本轮：已修改，仅采用人工确认内容】
+- powers.json::LANGUAGE_FLOOR_MIMICRY_MIMIC_POWER.description — 漏“未被格挡”条件 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.bigEyes — 漏抗性；范围应为所有角色 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.smallBeak — 漏抗性说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.longArms — 漏抗性说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_THREE_BIRDS_POWER.smartDescription.none — 漏卵全碎与物理抗性 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_BROKEN_EGG_POWER.smartDescription — 终末鸟之蛋→卵与同组统一 【本轮：已修改，仅采用人工确认内容】
+- powers.json::PHILOSOPHY_FLOOR_TWILIGHT_BROKEN_EGG_POWER.smartDescription.secondAscension — 薄冥错字→薄暝，卵名统一 【本轮：已修改，仅采用人工确认内容】
+- powers.json::FALSE_THRONE_WIZARDS_TRIAL_POWER.description — 漏常规阶段招式与进入时机 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FALSE_THRONE_WIZARDS_TRIAL_POWER.smartDescription — 漏常规阶段招式与进入时机 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FALSE_THRONE_WHAT_CAN_YOU_DO_POWER.description — 漏击晕意图/亲切致意/随机两招 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FALSE_THRONE_WHAT_CAN_YOU_DO_POWER.smartDescription — 漏击晕意图/亲切致意/随机两招 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::FALSE_THRONE_RAGE_POWER.smartDescription — 句末误用分号 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::XIAO_EMBRACE_FIRE_PASSIVE_POWER.smartDescription — 漏引燃说明段 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::XIAO_AMPHIBIOUS_PASSIVE_POWER.smartDescription — “能力伤害”应为反击伤害 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_LAETITIA_PLAY_WITH_ME_PASSIVE_POWER.smartDescription — “其”误指玩家；漏向下取整 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_LAETITIA_LONELY_PASSIVE_POWER.description — 漏出现朋友时恢复 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_LAETITIA_LONELY_PASSIVE_POWER.smartDescription — 漏出现朋友时恢复 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_GIFT_BOX_BOOM_PASSIVE_POWER.smartDescription — 漏敌方回合/存活玩家限定 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_SURPRISE_APPEARANCE_PASSIVE_POWER.smartDescription — 漏“原槽位” 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_LITTLE_WITCH_FRIEND_HAND_IT_OVER_PASSIVE_POWER.smartDescription — “其攻击”误指玩家；漏每段 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::LITERATURE_FLOOR_RED_EYES_START_HUNTING_PASSIVE_POWER.smartDescription — 漏再次死亡重置计数 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_RED_EYES_VIGILANCE_PASSIVE_POWER.smartDescription — 漏敌方回合/存活限定 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_BLOODLUST_GIANT_AXE_PASSIVE_POWER.smartDescription — 漏“每段攻击” 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::LITERATURE_FLOOR_BLACK_SWAN_NETTLE_GARMENT_PASSIVE_POWER.smartDescription — 漏每位哥哥仅登场一次 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_BLACK_SWAN_BROKEN_DREAM_PASSIVE_POWER.smartDescription — 漏加入随机池与循环重置 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::LITERATURE_FLOOR_BLACK_SWAN_VANISHING_FAMILY_POWER.smartDescription — “始终使用”应为加入随机池 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::JUDGEMENT_BIRD_UNJUST_SCALE_POWER.smartDescription — 漏玩家回合/存活/敌方限定 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::JUDGEMENT_BIRD_JUDGEMENT_POWER.smartDescription — 主体泛化为任意角色，漏全体目标 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::BLUE_STAR_NOVA_VOICE_POWER.smartDescription — 百分比基准应为最大混乱抗性 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::BLUE_STAR_FOLLOWER_VOICE_POWER.smartDescription — 漏特殊意图触发条件 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_TEARDROP_POWER.description — 漏交替招式与假死移除 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_FLICKERING_DESIRE_POWER.smartDescription — 漏变身目标贪婪国王 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_KING_MOMENTARY_HAPPINESS_POWER.smartDescription — 群体攻击应为特殊攻击 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_KING_OF_GREED_POWER.smartDescription — “所有玩家”与逐目标施加不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_GLUTTONY_POWER.smartDescription — 群体攻击应为特殊攻击；漏最大体力 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_SHINING_HAPPINESS_POWER.smartDescription — 漏移除时撤销加成 【本轮：保留，遵循人工决定及 zhs 基准】
+- powers.json::NATURAL_FLOOR_NIHIL_GREED_POWER.smartDescription — 漏“尚未领取过该奖励”限定 【本轮：保留原文，按确认统一伤害标签】
+- powers.json::NATURAL_FLOOR_LOVE_POWER.smartDescription — “下回合使用”应为可免费打出 【本轮：代码按计划行动使用招式，保留中文】
+- powers.json::CRYING_SWIFT_POWER.description — “下一回合”应为本回合 【本轮：代码核对支持下一回合，保留中文】
+- powers.json::EILEEN_FLESH_REBIRTH_POWER.smartDescription — 漏{Maximum}上限与常规行动 【本轮：保留，遵循人工决定及 zhs 基准】
 
 ## 英文疑似有误
 
@@ -395,44 +477,44 @@
 
 ## UPDATE 列表
 
-- `intents.json::COUNTER_BUFF.title` — 名称：标题笼统为“策略”，英文为Buff
-- `intents.json::COUNTER_CARD_DEBUFF.title` — 名称：标题笼统为“策略”，英文为Erosion
-- `intents.json::COUNTER_DEBUFF.title` — 名称：标题笼统为“策略”，英文为Debuff
-- `intents.json::COUNTER_STATUS.title` — 名称：标题笼统为“策略”，英文为Status Cards
-- `intents.json::COUNTER_SUMMON.title` — 名称：标题笼统为“策略”，英文为Summon
-- `intents.json::FOX_DEFEND.description` — 事实：缺“本回合”
-- `intents.json::FOX_ENERGY.description` — 事实：缺“下回合”
-- `intents.json::I_WANT_MORE_DEBUFF.description` — 事实：缺“额外”
-- `intents.json::KING_OF_GREED_OVERWHELMING_GLORY.description` — 变量：写死“少抽2张”，英文用{BadgeSignedMagnitude}
-- `intents.json::QUEEN_ARCANA_BEATS.description` — 事实：缺“先移除之前的标记”
-- `intents.json::TIME_TRACE_COPY_OFFENSE_TRIPLE.description` — 事实：缺复制上一玩家回合伤害的说明
-- `intents.json::TIME_TRACE_COPY_DEFENSE_SINGLE.description` — 事实：缺复制上一玩家回合格挡的说明
-- `intents.json::TIME_TRACE_COPY_DEFENSE_STRENGTH.description` — 事实：缺复制一半格挡的说明
-- `intents.json::BIG_BIRD_RESCUE.description` — 代码：缺被魅惑时的伤害；代码为60(英文写50)
-- `intents.json::ROAD_HOME_BAD_WIZARD_GROUP.description` — 事实：目标缺“其他”“存活”
-- `intents.json::SCAREDY_CAT_GROWL.description` — 代码：代码施加的是虚弱(WeakPower)，非易伤
-- `intents.json::OZMA_FADING_MEMORY.description` — 英文改动：英文改为对所有玩家施加
-- `intents.json::LANGUAGE_FLOOR_COBALT_DO_NOT_PROVOKE.description` — 事实：“使玩家获得”应为施加
-- `intents.json::LANGUAGE_FLOOR_DIPSIA_ELEGANT_DINNER.description` — 事实：缺未被格挡条件与“总共”
-- `intents.json::PHILOSOPHY_FLOOR_TWILIGHT_SURVEILLANCE.description` — 事实：缺“永久”
-- `intents.json::PHILOSOPHY_FLOOR_TWILIGHT_JUDGMENT.description` — 事实：缺“不受威力影响、可被格挡”
-- `intents.json::LITERATURE_FLOOR_ENHANCED_SMALL_SPIDER_SLENDER_WEB.description` — 事实：“使玩家获得”应为施加
-- `intents.json::LITERATURE_FLOOR_BLOODLUST_UNBEARABLE_FINISHER.description` — 事实：缺“在之前的群体攻击后”时机
-- `intents.json::BLUE_STAR_NOVA_VOICE.description` — 事实：缺攻击目标“所有玩家”
-- `intents.json::NATURAL_FLOOR_HATRED_BRAND.description` — 事实：缺攻击后转移坏蛋标记
-- `intents.json::NATURAL_FLOOR_LIGHT_OF_HATRED.description` — 事实：缺按未被格挡伤害总量回复生命
-- `intents.json::NATURAL_HERMIT_MY_FRIEND.description` — 其他：半角句点笔误
-- `intents.json::NATURAL_TEAR_GRANT.description` — 事实：缺“未处于假死”限制
-- `intents.json::NATURAL_SWORD_PIERCING_HEART_SWORD.description` — 事实：缺“即使被格挡”“任何玩家”“直接”
-- `intents.json::NATURAL_SWORD_RENDING_HEART_SWORD.description` — 事实：缺“总共”“即使被格挡”“任何玩家”
-- `intents.json::NATURAL_SWORD_RUINING_HEART_SWORD.description` — 事实：缺“总共”“即使被格挡”“任何玩家”
-- `intents.json::CRYING_CHILDREN_BURNINGCOURAGE` — 名称：原版Burn状态牌应为“灼伤”
-- `encounters.json::LITERATURE_FLOOR_LIBERATION_ENCOUNTER.loss` — 残留英文：人名残留英文Laetitia
-- `encounters.json::LITERATURE_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description` — 事实：英文为推进解放战，非完成解放
-- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.title` — 名称：缺“（普通）”
-- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.topBarHover.title` — 名称：缺“（普通）”
-- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.loss` — 事实：英文为倒在爱与憎恨之下，内容不同
-- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description` — 事实：英文为挑战普通解放战，非阶段末解放
+- `intents.json::COUNTER_BUFF.title` — 名称：标题笼统为“策略”，英文为Buff 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::COUNTER_CARD_DEBUFF.title` — 名称：标题笼统为“策略”，英文为Erosion 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::COUNTER_DEBUFF.title` — 名称：标题笼统为“策略”，英文为Debuff 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::COUNTER_STATUS.title` — 名称：标题笼统为“策略”，英文为Status Cards 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::COUNTER_SUMMON.title` — 名称：标题笼统为“策略”，英文为Summon 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::FOX_DEFEND.description` — 事实：缺“本回合” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::FOX_ENERGY.description` — 事实：缺“下回合” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::I_WANT_MORE_DEBUFF.description` — 事实：缺“额外” 【本轮：保留原文，按确认统一伤害标签】
+- `intents.json::KING_OF_GREED_OVERWHELMING_GLORY.description` — 变量：写死“少抽2张”，英文用{BadgeSignedMagnitude} 【本轮：已修改，仅采用人工确认内容】
+- `intents.json::QUEEN_ARCANA_BEATS.description` — 事实：缺“先移除之前的标记” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::TIME_TRACE_COPY_OFFENSE_TRIPLE.description` — 事实：缺复制上一玩家回合伤害的说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::TIME_TRACE_COPY_DEFENSE_SINGLE.description` — 事实：缺复制上一玩家回合格挡的说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::TIME_TRACE_COPY_DEFENSE_STRENGTH.description` — 事实：缺复制一半格挡的说明 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::BIG_BIRD_RESCUE.description` — 代码：缺被魅惑时的伤害；代码为60(英文写50) 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::ROAD_HOME_BAD_WIZARD_GROUP.description` — 事实：目标缺“其他”“存活” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::SCAREDY_CAT_GROWL.description` — 代码：代码施加的是虚弱(WeakPower)，非易伤 【本轮：已修改，仅采用人工确认内容】
+- `intents.json::OZMA_FADING_MEMORY.description` — 英文改动：英文改为对所有玩家施加 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::LANGUAGE_FLOOR_COBALT_DO_NOT_PROVOKE.description` — 事实：“使玩家获得”应为施加 【本轮：已修改，仅采用人工确认内容】
+- `intents.json::LANGUAGE_FLOOR_DIPSIA_ELEGANT_DINNER.description` — 事实：缺未被格挡条件与“总共” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::PHILOSOPHY_FLOOR_TWILIGHT_SURVEILLANCE.description` — 事实：缺“永久” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::PHILOSOPHY_FLOOR_TWILIGHT_JUDGMENT.description` — 事实：缺“不受威力影响、可被格挡” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::LITERATURE_FLOOR_ENHANCED_SMALL_SPIDER_SLENDER_WEB.description` — 事实：“使玩家获得”应为施加 【本轮：已修改，仅采用人工确认内容】
+- `intents.json::LITERATURE_FLOOR_BLOODLUST_UNBEARABLE_FINISHER.description` — 事实：缺“在之前的群体攻击后”时机 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::BLUE_STAR_NOVA_VOICE.description` — 事实：缺攻击目标“所有玩家” 【本轮：已修改，仅采用人工确认内容】
+- `intents.json::NATURAL_FLOOR_HATRED_BRAND.description` — 事实：缺攻击后转移坏蛋标记 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::NATURAL_FLOOR_LIGHT_OF_HATRED.description` — 事实：缺按未被格挡伤害总量回复生命 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::NATURAL_HERMIT_MY_FRIEND.description` — 其他：半角句点笔误 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::NATURAL_TEAR_GRANT.description` — 事实：缺“未处于假死”限制 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::NATURAL_SWORD_PIERCING_HEART_SWORD.description` — 事实：缺“即使被格挡”“任何玩家”“直接” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::NATURAL_SWORD_RENDING_HEART_SWORD.description` — 事实：缺“总共”“即使被格挡”“任何玩家” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::NATURAL_SWORD_RUINING_HEART_SWORD.description` — 事实：缺“总共”“即使被格挡”“任何玩家” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `intents.json::CRYING_CHILDREN_BURNINGCOURAGE` — 名称：原版Burn状态牌应为“灼伤” 【本轮：已修改，仅采用人工确认内容】
+- `encounters.json::LITERATURE_FLOOR_LIBERATION_ENCOUNTER.loss` — 残留英文：人名残留英文Laetitia 【本轮：保留，遵循人工决定及 zhs 基准】
+- `encounters.json::LITERATURE_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description` — 事实：英文为推进解放战，非完成解放 【本轮：保留，遵循人工决定及 zhs 基准】
+- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.title` — 名称：缺“（普通）” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.topBarHover.title` — 名称：缺“（普通）” 【本轮：保留，遵循人工决定及 zhs 基准】
+- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.loss` — 事实：英文为倒在爱与憎恨之下，内容不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- `encounters.json::NATURAL_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description` — 事实：英文为挑战普通解放战，非阶段末解放 【本轮：保留，遵循人工决定及 zhs 基准】
 
 ## 英文疑似有误
 
@@ -471,31 +553,31 @@
 - 其余 452 条 KEEP。剧情对白（邵/阳与莫伊莱/伊織等）是废墟图书馆官方中文文本，与英文措辞差异属官方译法，不改。
 
 ## UPDATE 列表
-- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.INITIAL.description — 字面量\n改真换行
-- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.AGREE_LITTLE.description — 字面量\n改真换行
-- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.AGREE_MUCH.description — 字面量\n改真换行
-- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.REFUSE.description — 字面量\n改真换行
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_4.description — 字面量\n改真换行
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_5.description — 字面量\n改真换行
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_6.description — 字面量\n改真换行
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_7.description — 字面量\n改真换行
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_9.description — 字面量\n改真换行
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_10.description — 字面量\n改真换行；第一句“杀了他”开引号误为”
-- events.json::WARP_TRAIN_EVENT.pages.PAGE_11.description — 字面量\n改真换行
-- events.json::SINGING_MACHINE_EVENT.pages.INITIAL.description — 缺英文第三段“实验结论”；字面量\n
-- events.json::SINGING_MACHINE_EVENT.pages.APPROACH_FOLLOWUP.description — 字面量\n，按英文合为一段；结尾引号方向错
-- events.json::SINGING_MACHINE_EVENT.pages.OBSERVE_FOLLOWUP.description — 字面量\n，按英文合为一段；结尾引号方向错
-- events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.description — 字面量\n改真换行（英文同样有此问题）
-- events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.options.FIGHT.description — 旧为“进入战斗”，缺亡蝶之书/联机全员条件
-- events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.options.FIGHT_LOCKED.description — 旧为模糊“特殊信物”，补遗物名与联机条件
-- events.json::XIAO_SPECIAL_GUEST_EVENT.pages.COMPLETE.description — 旧文本与英文结算描述完全不同
-- events.json::KALI_SPECIAL_GUEST_EVENT.title — 英文为“Reception —”，非“都市之星邀请函”
-- events.json::SPECIAL_GUEST_EVENT.pages.INITIAL.description — 删除英文已无的“测试阶段”提示
-- events.json::SPECIAL_GUEST_EVENT.pages.INITIAL.options.RECEIVE_WITH_LIBRARIAN_LOCKED.description — “已锁定”改为“尚未开放”
-- events.json::RNFMABJ_SPECIAL_GUEST_EVENT.pages.TOOK_DIRECTIVE.description — 缺“放弃接待”
-- events.json::RNFMABJ_SPECIAL_GUEST_EVENT.pages.FLED_WITH_GUILT.description — 缺“伤口愈合”（回满生命）
-- events.json::RNFMABJ_SPECIAL_GUEST_STORY.speakers.line_25 — 英文说话人为 Moirai，旧为？？？
-- events.json::IORI_SPECIAL_GUEST_STORY.speakers.TanyaLine100 — 同一人“塔尼亚/塔尼娅”统一为塔尼娅
+- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.INITIAL.description — 字面量\n改真换行 【本轮：不适用：上游已删除该事件】
+- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.AGREE_LITTLE.description — 字面量\n改真换行 【本轮：不适用：上游已删除该事件】
+- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.AGREE_MUCH.description — 字面量\n改真换行 【本轮：不适用：上游已删除该事件】
+- events.json::ANCIENT_MAGIC_ALTAR_EVENT.pages.REFUSE.description — 字面量\n改真换行 【本轮：不适用：上游已删除该事件】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_4.description — 字面量\n改真换行 【本轮：已满足，当前分支已有对应文案】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_5.description — 字面量\n改真换行 【本轮：已满足，当前分支已有对应文案】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_6.description — 字面量\n改真换行 【本轮：已满足，当前分支已有对应文案】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_7.description — 字面量\n改真换行 【本轮：已满足，当前分支已有对应文案】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_9.description — 字面量\n改真换行 【本轮：已满足，当前分支已有对应文案】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_10.description — 字面量\n改真换行；第一句“杀了他”开引号误为” 【本轮：已修改，仅采用人工确认内容】
+- events.json::WARP_TRAIN_EVENT.pages.PAGE_11.description — 字面量\n改真换行 【本轮：已满足，当前分支已有对应文案】
+- events.json::SINGING_MACHINE_EVENT.pages.INITIAL.description — 缺英文第三段“实验结论”；字面量\n 【本轮：已修改，仅采用人工确认内容】
+- events.json::SINGING_MACHINE_EVENT.pages.APPROACH_FOLLOWUP.description — 字面量\n，按英文合为一段；结尾引号方向错 【本轮：已修改，仅采用人工确认内容】
+- events.json::SINGING_MACHINE_EVENT.pages.OBSERVE_FOLLOWUP.description — 字面量\n，按英文合为一段；结尾引号方向错 【本轮：已修改，仅采用人工确认内容】
+- events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.description — 字面量\n改真换行（英文同样有此问题） 【本轮：已修改，仅采用人工确认内容】
+- events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.options.FIGHT.description — 旧为“进入战斗”，缺亡蝶之书/联机全员条件 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.options.FIGHT_LOCKED.description — 旧为模糊“特殊信物”，补遗物名与联机条件 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::XIAO_SPECIAL_GUEST_EVENT.pages.COMPLETE.description — 旧文本与英文结算描述完全不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::KALI_SPECIAL_GUEST_EVENT.title — 英文为“Reception —”，非“都市之星邀请函” 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::SPECIAL_GUEST_EVENT.pages.INITIAL.description — 删除英文已无的“测试阶段”提示 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::SPECIAL_GUEST_EVENT.pages.INITIAL.options.RECEIVE_WITH_LIBRARIAN_LOCKED.description — “已锁定”改为“尚未开放” 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::RNFMABJ_SPECIAL_GUEST_EVENT.pages.TOOK_DIRECTIVE.description — 缺“放弃接待” 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::RNFMABJ_SPECIAL_GUEST_EVENT.pages.FLED_WITH_GUILT.description — 缺“伤口愈合”（回满生命） 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::RNFMABJ_SPECIAL_GUEST_STORY.speakers.line_25 — 英文说话人为 Moirai，旧为？？？ 【本轮：保留，遵循人工决定及 zhs 基准】
+- events.json::IORI_SPECIAL_GUEST_STORY.speakers.TanyaLine100 — 同一人“塔尼亚/塔尼娅”统一为塔尼娅 【本轮：已修改，仅采用人工确认内容】
 
 ## 英文疑似有误
 - events.json::FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.description — 英文里是字面量 `\\n\\n`（`LibraryOfRuina/localization/eng/events.json:71`），游戏会显示反斜杠；jpn/kor 同表也各有 11/12 处字面量 `\n`。中文已用真换行。
@@ -522,70 +604,70 @@
 - 变量/BBCode 问题：0（本块描述类条目 8 条均无变量，语义一致）
 
 ## UPDATE 列表
-- monsters.json::ARNOLD.moves.CHARGE_UP.title — 旧中文为英文原文
-- monsters.json::ARNOLD.moves.CHOP_IT_OFF.title — 旧中文为英文原文
-- monsters.json::ARNOLD.moves.ENDURE.title — 旧中文为英文原文
-- monsters.json::CONSTA.moves.DRIED_UP.title — 旧中文为英文原文
-- monsters.json::CONSTA.moves.ENDURE.title — 旧中文为英文原文
-- monsters.json::CONSTA.moves.YOU_ONLY_LIVE_ONCE.title — 旧中文为英文原文
-- monsters.json::ERI.moves.FEELIN_GOOD.title — 旧中文为英文原文
-- monsters.json::ERI.moves.TIME_FOR_A_LITTLE_TEST.title — 旧中文为英文原文
-- monsters.json::ERI.moves.WALLOP.title — 旧中文为英文原文（沿用芬恩的“猛击”）
-- monsters.json::MCCULLIN.moves.OVERPOWER.title — 旧中文为英文原文
-- monsters.json::MCCULLIN.moves.PREEMPTIVE_STRIKE.title — 旧中文为英文原文
-- monsters.json::MCCULLIN.moves.TRACK.title — 旧中文为英文原文
-- monsters.json::MO.moves.BLOW_IT_UP.title — 旧中文为英文原文
-- monsters.json::MO.moves.DODGE_AND_STRIKE.title — 旧中文为英文原文
-- monsters.json::MO.moves.ENDURE.title — 旧中文为英文原文
-- monsters.json::NAOKI.moves.FEND_THIS_OFF_IF_YOU_CAN.title — 旧中文为英文原文
-- monsters.json::NAOKI.moves.MUTILATE.title — 旧中文为英文原文
-- monsters.json::NAOKI.moves.QUICKNESS.title — 旧中文为英文原文（沿用能力名“迅捷”）
-- monsters.json::OSCAR.moves.HIGH_SPEED_STABBING.title — 旧中文为英文原文
-- monsters.json::OSCAR.moves.SPARKING_SPEAR.title — 旧中文为英文原文
-- monsters.json::OSCAR.moves.TRANSPIERCE.title — 旧中文为英文原文
-- monsters.json::PAMELA.moves.COLLISION.title — 旧中文为英文原文
-- monsters.json::PAMELA.moves.HIGH_SPEED_STABBING.title — 旧中文为英文原文
-- monsters.json::PAMELA.moves.SPEARED_SWEEP.title — 旧中文为英文原文
-- monsters.json::PAMELI.moves.COLLISION.title — 旧中文为英文原文
-- monsters.json::PAMELI.moves.HIGH_SPEED_STABBING.title — 旧中文为英文原文
-- monsters.json::PAMELI.moves.SPEARED_SWEEP.title — 旧中文为英文原文
-- monsters.json::TAEIN.moves.GOIN_FIRST.title — 旧中文为英文原文
-- monsters.json::TAEIN.moves.MUTILATE.title — 旧中文为英文原文
-- monsters.json::TAEIN.moves.RAMPAGE.title — 旧中文为英文原文
-- monsters.json::TODAYS_SHY_LOOK.moves.SHYNESS_1.title — 旧中文为英文；沿用卡牌名“害羞”
-- monsters.json::TODAYS_SHY_LOOK.moves.SHYNESS_2.title — 旧中文为英文；沿用卡牌名“害羞”
-- monsters.json::TODAYS_SHY_LOOK.moves.TODAYS_EXPRESSION_1.title — 旧中文为英文；沿用卡牌名“今日的表情”
-- monsters.json::TODAYS_SHY_LOOK.moves.TODAYS_EXPRESSION_2.title — 同上
-- monsters.json::TODAYS_SHY_LOOK.moves.TODAYS_EXPRESSION_3.title — 同上
-- monsters.json::TOMERRY.moves.LETS_PLAY.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.LETS_PLAY_1.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.LETS_PLAY_2.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.LETS_PLAY_3.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.LOVE_TOWN_WELCOMES_ALL.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.RUCKUS.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.TRIANGLE_SOUNDS_BETTER.title — 旧中文为英文原文
-- monsters.json::TOMERRY.moves.WOULDA_SQUARE_LOOK_NICE.title — 旧中文为英文原文
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.moves.ATTACK.title — 招式名改为 Page Slash（旧：历史突刺）
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.moves.GUARD.title — 招式名改为 Sort Pages（旧：书架守势）
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.moves.SPECIAL.title — 招式名改为 Runaway Chapter（旧：焰色书页）
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase1.name — 阶段名改为焦化少女之页
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase2.name — 阶段名改为快乐泰迪之页
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase3.name — 阶段名改为小帮手之页
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase4.name — 阶段名改为精灵女王之页
-- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase5.name — 阶段名改为红舞鞋之页（沿用遗物名）
-- monsters.json::HISTORY_FLOOR_WASP_BOSS.name — 英文 Queen Bee，旧中文“黄蜂”，改为蜂后
-- monsters.json::THE_FOURTH_MATCH_FLAME.name — 英文第四根火柴，旧中文“最后的火柴”
-- monsters.json::SCORCHED_GIRL_MONSTER.backgroundText.2 — 旧中文多出壁炉/晚餐/装饰三句
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.attack.0 — 台词已改写，含义不同
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.attack.1 — 台词已改写，含义不同
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.attack.2 — 台词已改写，含义不同
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.0 — 旧中文误抄 backgroundText
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.1 — 旧中文误抄 backgroundText
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.2 — 旧中文误抄 backgroundText
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.3 — 旧中文误抄 backgroundText
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.4 — 旧中文误抄 backgroundText
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.lostHope.0 — 台词已改写，含义不同
-- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.lostHope.1 — 台词已改写，含义不同
+- monsters.json::ARNOLD.moves.CHARGE_UP.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::ARNOLD.moves.CHOP_IT_OFF.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::ARNOLD.moves.ENDURE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::CONSTA.moves.DRIED_UP.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::CONSTA.moves.ENDURE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::CONSTA.moves.YOU_ONLY_LIVE_ONCE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::ERI.moves.FEELIN_GOOD.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::ERI.moves.TIME_FOR_A_LITTLE_TEST.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::ERI.moves.WALLOP.title — 旧中文为英文原文（沿用芬恩的“猛击”） 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::MCCULLIN.moves.OVERPOWER.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::MCCULLIN.moves.PREEMPTIVE_STRIKE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::MCCULLIN.moves.TRACK.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::MO.moves.BLOW_IT_UP.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::MO.moves.DODGE_AND_STRIKE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::MO.moves.ENDURE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::NAOKI.moves.FEND_THIS_OFF_IF_YOU_CAN.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::NAOKI.moves.MUTILATE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::NAOKI.moves.QUICKNESS.title — 旧中文为英文原文（沿用能力名“迅捷”） 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::OSCAR.moves.HIGH_SPEED_STABBING.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::OSCAR.moves.SPARKING_SPEAR.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::OSCAR.moves.TRANSPIERCE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::PAMELA.moves.COLLISION.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::PAMELA.moves.HIGH_SPEED_STABBING.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::PAMELA.moves.SPEARED_SWEEP.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::PAMELI.moves.COLLISION.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::PAMELI.moves.HIGH_SPEED_STABBING.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::PAMELI.moves.SPEARED_SWEEP.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TAEIN.moves.GOIN_FIRST.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TAEIN.moves.MUTILATE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TAEIN.moves.RAMPAGE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TODAYS_SHY_LOOK.moves.SHYNESS_1.title — 旧中文为英文；沿用卡牌名“害羞” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::TODAYS_SHY_LOOK.moves.SHYNESS_2.title — 旧中文为英文；沿用卡牌名“害羞” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::TODAYS_SHY_LOOK.moves.TODAYS_EXPRESSION_1.title — 旧中文为英文；沿用卡牌名“今日的表情” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::TODAYS_SHY_LOOK.moves.TODAYS_EXPRESSION_2.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::TODAYS_SHY_LOOK.moves.TODAYS_EXPRESSION_3.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::TOMERRY.moves.LETS_PLAY.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.LETS_PLAY_1.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.LETS_PLAY_2.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.LETS_PLAY_3.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.LOVE_TOWN_WELCOMES_ALL.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.RUCKUS.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.TRIANGLE_SOUNDS_BETTER.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::TOMERRY.moves.WOULDA_SQUARE_LOOK_NICE.title — 旧中文为英文原文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.moves.ATTACK.title — 招式名改为 Page Slash（旧：历史突刺） 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.moves.GUARD.title — 招式名改为 Sort Pages（旧：书架守势） 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.moves.SPECIAL.title — 招式名改为 Runaway Chapter（旧：焰色书页） 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase1.name — 阶段名改为焦化少女之页 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase2.name — 阶段名改为快乐泰迪之页 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase3.name — 阶段名改为小帮手之页 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase4.name — 阶段名改为精灵女王之页 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_PHASE_BOSS.phase5.name — 阶段名改为红舞鞋之页（沿用遗物名） 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::HISTORY_FLOOR_WASP_BOSS.name — 英文 Queen Bee，旧中文“黄蜂”，改为蜂后 【本轮：已修改，仅采用人工确认内容】
+- monsters.json::THE_FOURTH_MATCH_FLAME.name — 英文第四根火柴，旧中文“最后的火柴” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.backgroundText.2 — 旧中文多出壁炉/晚餐/装饰三句 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.attack.0 — 台词已改写，含义不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.attack.1 — 台词已改写，含义不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.attack.2 — 台词已改写，含义不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.0 — 旧中文误抄 backgroundText 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.1 — 旧中文误抄 backgroundText 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.2 — 旧中文误抄 backgroundText 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.3 — 旧中文误抄 backgroundText 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.battleStart.4 — 旧中文误抄 backgroundText 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.lostHope.0 — 台词已改写，含义不同 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::SCORCHED_GIRL_MONSTER.dialogue.lostHope.1 — 台词已改写，含义不同 【本轮：保留，遵循人工决定及 zhs 基准】
 
 ## 英文疑似有误
 - 无。本块描述类条目（DESPAIR_KNIGHT 覆甲、FLUTTERING 流血、FORGOTTEN_KNIGHT_SWORD 刺入、HERMIT/STAFF 攻击愤怒侍从、RED_MIST_CARD_SEQUENCE）中英文一致，未发现需要以代码裁决的冲突。
@@ -615,37 +697,37 @@
   - 台词含义与英文不一致（条件1）：2（此刻的神情背景台词、碧蓝新星信徒开场台词）
 
 ## UPDATE 列表
-- monsters.json::YUN.moves.COMMANDEERING.title — 残留英文，译为征用
-- monsters.json::YUN.moves.PREPARATION.title — 残留英文，沿用芬恩同名招式“备战”
-- monsters.json::YUN.moves.YOU_RE_TOO_SLOW.title — 残留英文
-- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant1.name — Performer I 与 First Performer 撞名“第一演奏者”
-- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant2.name — 同上，按 Performer II 编号
-- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant3.name — 同上，按 Performer III 编号
-- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant4.name — 同上，按 Performer IV 编号
-- monsters.json::ROAD_HOME.moves.ROAD_HOME_PATTERN_THREE.title — wicked witch 是女巫，非巫师（韩日同）
-- monsters.json::ROAD_HOME.moves.ROAD_HOME_BAD_WIZARD_GROUP.title — 同上
-- monsters.json::LANGUAGE_FLOOR_DIPSIA.moves.COLD_CLAWS.title — Merciless Gesture 是手势非魔爪
-- monsters.json::PHILOSOPHY_FLOOR_TWILIGHT.moves.PHILOSOPHY_FLOOR_TWILIGHT_TALON.title — Talon 利爪，旧译“横扫”不符
-- monsters.json::FALSE_THRONE.moves.FALSE_THRONE_INSOLENCE.title — How Noisy，旧译“安敢放肆”不符
-- monsters.json::FALSE_THRONE.moves.FALSE_THRONE_ALL_SILENT.title — Please Be Gentle，旧译“全员肃静”不符
-- monsters.json::FALSE_THRONE.moves.FALSE_THRONE_MANNERS.title — Behave Yourself, Will You? 语义调整
-- monsters.json::RNFMABJ.moves.RNFMABJ_HIDDEN.title — Unable to Act 是无法行动
-- monsters.json::RNFMABJ_LEFT_HAND.moves.RNFMABJ_HIDDEN.title — 同上
-- monsters.json::RNFMABJ_RIGHT_HAND.moves.RNFMABJ_HIDDEN.title — 同上
-- monsters.json::IORI_STAGE_ONE.moves.PREY_LOCK.title — Snake’s Prey，旧译“猎物锁定”
-- monsters.json::IORI_STAGE_TWO.moves.PREY_LOCK.title — 同上
-- monsters.json::IORI_STAGE_ONE.moves.FANG_PENETRATION.title — Venomous Fangs，旧译“尖牙穿透”
-- monsters.json::IORI_STAGE_TWO.moves.FANG_PENETRATION.title — 同上
-- monsters.json::IORI_STAGE_ONE.moves.PENETRATING_WOUND.title — Laceration，旧译“贯通创伤”
-- monsters.json::IORI_STAGE_TWO.moves.PENETRATING_WOUND.title — 同上
-- monsters.json::IORI_STAGE_ONE.moves.ENDLESS_FLOW.title — Parry，旧译“流转不息”
-- monsters.json::IORI_STAGE_TWO.moves.ENDLESS_FLOW.title — 同上
-- monsters.json::IORI_STAGE_ONE.moves.NO_ESCAPE.title — Identify Weakpoint，旧译“无所遁形”
-- monsters.json::IORI_STAGE_TWO.moves.NO_ESCAPE.title — 同上
-- monsters.json::IORI_STAGE_ONE.moves.PHANTOM_DANCE.title — Mirage Storm，按日韩“幻影乱舞”
-- monsters.json::IORI_STAGE_TWO.moves.PHANTOM_DANCE.title — 同上
-- monsters.json::LITERATURE_FLOOR_TODAYS_EXPRESSION_BOSS.backgroundText.normal.2 — generosity 是宽容，非“特权”
-- monsters.json::BLUE_STAR_FOLLOWER.banter.START_1 — 苦苦寻觅的主体是“你”，旧译为“我”
+- monsters.json::YUN.moves.COMMANDEERING.title — 残留英文，译为征用 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::YUN.moves.PREPARATION.title — 残留英文，沿用芬恩同名招式“备战” 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::YUN.moves.YOU_RE_TOO_SLOW.title — 残留英文 【本轮：已满足，当前分支已有对应文案】
+- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant1.name — Performer I 与 First Performer 撞名“第一演奏者” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant2.name — 同上，按 Performer II 编号 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant3.name — 同上，按 Performer III 编号 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::ART_FLOOR_DA_CAPO_PERFORMER.variant4.name — 同上，按 Performer IV 编号 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::ROAD_HOME.moves.ROAD_HOME_PATTERN_THREE.title — wicked witch 是女巫，非巫师（韩日同） 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::ROAD_HOME.moves.ROAD_HOME_BAD_WIZARD_GROUP.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::LANGUAGE_FLOOR_DIPSIA.moves.COLD_CLAWS.title — Merciless Gesture 是手势非魔爪 【本轮：已修改，仅采用人工确认内容】
+- monsters.json::PHILOSOPHY_FLOOR_TWILIGHT.moves.PHILOSOPHY_FLOOR_TWILIGHT_TALON.title — Talon 利爪，旧译“横扫”不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::FALSE_THRONE.moves.FALSE_THRONE_INSOLENCE.title — How Noisy，旧译“安敢放肆”不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::FALSE_THRONE.moves.FALSE_THRONE_ALL_SILENT.title — Please Be Gentle，旧译“全员肃静”不符 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::FALSE_THRONE.moves.FALSE_THRONE_MANNERS.title — Behave Yourself, Will You? 语义调整 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::RNFMABJ.moves.RNFMABJ_HIDDEN.title — Unable to Act 是无法行动 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::RNFMABJ_LEFT_HAND.moves.RNFMABJ_HIDDEN.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::RNFMABJ_RIGHT_HAND.moves.RNFMABJ_HIDDEN.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_ONE.moves.PREY_LOCK.title — Snake’s Prey，旧译“猎物锁定” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_TWO.moves.PREY_LOCK.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_ONE.moves.FANG_PENETRATION.title — Venomous Fangs，旧译“尖牙穿透” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_TWO.moves.FANG_PENETRATION.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_ONE.moves.PENETRATING_WOUND.title — Laceration，旧译“贯通创伤” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_TWO.moves.PENETRATING_WOUND.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_ONE.moves.ENDLESS_FLOW.title — Parry，旧译“流转不息” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_TWO.moves.ENDLESS_FLOW.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_ONE.moves.NO_ESCAPE.title — Identify Weakpoint，旧译“无所遁形” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_TWO.moves.NO_ESCAPE.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_ONE.moves.PHANTOM_DANCE.title — Mirage Storm，按日韩“幻影乱舞” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::IORI_STAGE_TWO.moves.PHANTOM_DANCE.title — 同上 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::LITERATURE_FLOOR_TODAYS_EXPRESSION_BOSS.backgroundText.normal.2 — generosity 是宽容，非“特权” 【本轮：保留，遵循人工决定及 zhs 基准】
+- monsters.json::BLUE_STAR_FOLLOWER.banter.START_1 — 苦苦寻觅的主体是“你”，旧译为“我” 【本轮：保留，遵循人工决定及 zhs 基准】
 
 伊织招式的依据：英文、韩文（뱀의 표적/독니/열상/흘려보내기/약점 파악/환영난무）、日文三者一致，只有旧中文不同，说明作者后来改过这些招式名。
 
