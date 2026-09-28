@@ -11,6 +11,7 @@ FIXTURE_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP" "$FIXTURE_OUT"' EXIT
 
 python3 "$ROOT/tools/check_canonical_getters.py" "$ROOT/src"
+python3 "$ROOT/tools/check_private_access.py" "$ROOT/src"
 dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 # The verification suites reach into internals; build them too so they do not silently rot.
 dotnet build "$ROOT/verification/LibraryOfRuinaVerification.csproj" -c Release -nologo -v q -clp:ErrorsOnly

@@ -1,0 +1,40 @@
+# Reflection by name that tools/check_private_access.py lets through outside src/interop/.
+# Columns are tab-separated: path under src/, a substring of the line, why it is not a vanilla private member.
+# Vanilla non-public members belong in src/interop/VanillaPrivate.cs instead of here.
+
+# Harmony target resolution in helpers called from TargetMethod(s)/Prepare; failures are reported by LibraryPatcher.
+features/ftue/LibraryOfRuinaRewardsFtuePatch.cs	AccessTools.Method(typeof(NRewardsScreen), "SetRewards",	补丁目标解析（ResolveTargetMethod 由 Prepare 调用）
+features/ftue/LibraryOfRuinaRewardsFtuePatch.cs	method ??= AccessTools.Method(typeof(NRewardsScreen), "SetRewards");	补丁目标解析
+features/ftue/LibraryOfRuinaRewardsFtuePatch.cs	method ??= AccessTools.Method(typeof(NRewardsScreen), "_Ready");	补丁目标解析
+patches/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	return AccessTools.Method(stateMachineType, "MoveNext")	补丁目标解析：async 方法的状态机 MoveNext
+
+# Public vanilla members looked up by name because the name or declaring type differs between versions or node types.
+events/SongMachine/SingingMachineEvent.cs	type.GetProperty("IsUpgradable"	探测卡牌的公开“可升级”成员，各版本名字不同
+events/SongMachine/SingingMachineEvent.cs	type.GetProperty("CanUpgrade"	同上
+events/SongMachine/SingingMachineEvent.cs	type.GetProperty("Upgradeable"	同上
+events/SongMachine/SingingMachineEvent.cs	type.GetMethod("CanUpgrade"	同上
+events/SongMachine/SingingMachineEvent.cs	type.GetMethod("Upgrade"	同上
+features/secondascension/LibrarySecondAscensionUiPatch.cs	label.GetType().GetMethod("SetTextAutoSize"	公开方法 SetTextAutoSize，声明在 MegaLabel 与 MegaRichTextLabel 两个不相关的类型上，按运行时类型调用
+
+# This mod's own page relics (members are declared per relic class).
+patches/RelicSavedModeDescriptionPatch.cs	AccessTools.Property(__result.GetType(), "Mode")	本模组书页遗物的 Mode 属性
+relics/AbnormalityPageRewardPreselection.cs	AccessTools.Method(relic.GetType(), "SetMode"	本模组书页遗物的 SetMode
+relics/AbnormalityPageRewardPreselection.cs	AccessTools.Method(relic.GetType(), "UpdateModeUiState")	本模组书页遗物的 UpdateModeUiState
+relics/AbnormalityPageRewardPreselection.cs	AccessTools.Property(type, "Mode")	本模组书页遗物的 Mode 属性
+
+# LibraryOfRuinaLib non-public members; removed once the library ships Xuyuha/LibraryOfRuinaLib#1 (branch refactor/phase3d-lib-api).
+patches/HistoryFloorLiberation/StranglingVineDamageTypePatch.cs	AccessTools.Field(typeof(LibraryAttackCommand), "_damageType")	基础库私有字段，等基础库公开伤害类型改判接口
+ui/DamagePreview/DamagePreviewCalculator.cs	GetType("LibraryLib.Patches.LibraryDamagePreviewFeedback")	基础库 internal 类，等基础库公开 LibraryDamageTypes.ResolveForCard
+ui/DamagePreview/DamagePreviewSpeedDieSource.cs	AccessTools.Property(typeof(LibrarySpeedDiceCombatState), "Registration")	基础库 internal 属性，等基础库公开 GetTargetLineTargets
+
+# Other mods (optional compatibility; the mod may not be installed).
+ui/DamagePreview/RolandDicePreviewModifiers.cs	AccessTools.TypeByName("RolandMod.Cards.RolandDiceValueModifiers")	第三方模组 RolandMod 的类型
+ui/DamagePreview/RolandDicePreviewModifiers.cs	AccessTools.Method(modifiers, "GetPreview"	第三方模组 RolandMod 的方法
+
+# Infrastructure that walks compiler-generated or third-party types.
+infra/patching/LibraryPatcher.cs	MethodInfo? moveNext = stateMachine?.GetMethod(	原版拷贝守卫：取任意 async/迭代器方法的编译器生成状态机 MoveNext
+patches/RoomIconPathCustomOverridePatch.cs	main = type.GetProperty(	BaseLib/RitsuLib 内容类型上的公开图标属性，按类型探测
+patches/RoomIconPathCustomOverridePatch.cs	outline = type.GetProperty(	同上
+patches/HistoryFloorLiberation/StranglingVineDamageTypePatch.cs	Type? type = AccessTools.TypeByName(	补丁目标解析（FindTargetMethod 由 Prepare/TargetMethod 调用），基础库 internal 类，等基础库公开接口
+patches/HistoryFloorLiberation/StranglingVineDamageTypePatch.cs	: AccessTools.DeclaredMethod(	同上
+ui/DamagePreview/DamagePreviewCalculator.cs	AccessTools.MethodDelegate<Func<CardModel, Creature?, LibraryDamageType>>(	基础库 internal 类，等基础库公开 LibraryDamageTypes.ResolveForCard
