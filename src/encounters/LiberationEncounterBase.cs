@@ -14,10 +14,12 @@ namespace LibraryOfRuina.encounters;
 /// <list type="bullet">
 /// <item>阶段推进后刷新 BGM（<see cref="RefreshLiberationPhaseBgm"/>）。基类不实现 <see cref="ILiberationPhaseBgmSource"/>：
 /// 按阶段选曲的遭遇自己声明这个接口，基类的方法作为它的实现。</item>
-/// <item>致死结算时以胜利结束战斗（<see cref="EndCombatAsLiberationVictory"/>），以及它用到的末位存活判断与延迟胜负复核。</item>
+/// <item>最后一名玩家受致死伤害时的结算：末位存活判断（<see cref="IsLastAlivePlayer"/>）、以胜利结束战斗
+/// （<see cref="EndCombatAsLiberationVictory"/>）与延迟胜负复核（<see cref="ScheduleDeferredWinConditionCheck"/>）。</item>
 /// </list>
 /// 阶段、击杀数等状态的字段与存读档仍由各楼层自己声明：各楼层的键集合、写入顺序、缺省值与读旧档的兼容分支都不同，
-/// 解析交给 <see cref="EncounterStateBag"/>。哲学层只有一个阶段、不按阶段选曲也不走致死结算，不继承本类。
+/// 解析交给 <see cref="EncounterStateBag"/>。语言层挂在这些属性上的 <c>[SavedProperty]</c> 也不能挪到这里：声明类型会变。
+/// 哲学层只有一个阶段、不按阶段选曲也不走致死结算，不继承本类。
 /// </summary>
 public abstract class LiberationEncounterBase : EncounterModel
 {
@@ -56,7 +58,7 @@ public abstract class LiberationEncounterBase : EncounterModel
         bool deferRecheckIfNotEnded = false)
     {
         if (combatState == null
-            || requireCombatInProgress && !CombatManager.Instance.IsInProgress)
+            || (requireCombatInProgress && !CombatManager.Instance.IsInProgress))
         {
             return;
         }
