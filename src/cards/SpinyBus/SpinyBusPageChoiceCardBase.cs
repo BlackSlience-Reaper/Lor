@@ -1,5 +1,4 @@
 using LibraryOfRuina.relics.SpinyBus;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 

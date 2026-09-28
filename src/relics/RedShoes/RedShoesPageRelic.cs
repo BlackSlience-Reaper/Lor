@@ -4,13 +4,11 @@ using LibraryOfRuina.cards.RedShoes;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes;
@@ -22,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.RedShoes;
 
-public sealed class RedShoesPageRelic : LibraryRelicModel
+public sealed class RedShoesPageRelic : ModalPageRelic<RedShoesPageMode>
 {
     internal const int GlitterStrength = 2;
     internal const int GlitterEndTurnHpLoss = 1;
@@ -66,49 +64,16 @@ public sealed class RedShoesPageRelic : LibraryRelicModel
     [SavedProperty]
     public RedShoesPageMode Mode { get; private set; }
 
+    protected override RedShoesPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool BloodThirstTriggeredThisCombat { get; private set; }
 
     private CardModel? _bloodThirstActiveCard;
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != RedShoesPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -269,7 +234,7 @@ public sealed class RedShoesPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -279,73 +244,17 @@ public sealed class RedShoesPageRelic : LibraryRelicModel
         ];
     }
 
-    private static RedShoesPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            RedShoesGlitterChoiceCard => RedShoesPageMode.Glitter,
-            RedShoesBloodThirstChoiceCard => RedShoesPageMode.BloodThirst,
-            RedShoesAxeChoiceCard => RedShoesPageMode.Axe,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(RedShoesPageMode mode)
-    {
-        return mode is RedShoesPageMode.None
-            or RedShoesPageMode.Glitter
-            or RedShoesPageMode.BloodThirst
-            or RedShoesPageMode.Axe;
-    }
-
-    private static bool IsConcreteMode(RedShoesPageMode mode)
-    {
-        return mode is RedShoesPageMode.Glitter
-            or RedShoesPageMode.BloodThirst
-            or RedShoesPageMode.Axe;
-    }
-
-    private void SetMode(RedShoesPageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        RedShoesPageMode oldMode = Mode;
-        Mode = RedShoesPageMode.Glitter;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] RedShoesPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Glitter.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
     private void ResetTransientCombatState()
     {
         BloodThirstTriggeredThisCombat = false;
         _bloodThirstActiveCard = null;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(RedShoesPageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == RedShoesPageMode.BloodThirst && CombatManager.Instance.IsInProgress
@@ -373,26 +282,5 @@ public sealed class RedShoesPageRelic : LibraryRelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

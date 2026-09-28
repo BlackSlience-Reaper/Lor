@@ -7,11 +7,8 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -29,7 +26,7 @@ public enum OzmaPageMode
     LifePowder = 3
 }
 
-public sealed class OzmaPageRelic : LibraryRelicModel
+public sealed class OzmaPageRelic : ModalPageRelic<OzmaPageMode>
 {
     // 旧日之力：攻击牌费用增加量
     public const int CostIncrease = 1;
@@ -61,53 +58,25 @@ public sealed class OzmaPageRelic : LibraryRelicModel
     [SavedProperty]
     public OzmaPageMode Mode { get; private set; }
 
+    protected override OzmaPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool LifePowderUsedThisCombat { get; private set; }
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool ForgetCardGranted { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(OzmaPageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != OzmaPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
+        SetMode(mode);
         if (Mode == OzmaPageMode.Forget)
         {
             await GrantForgetCard();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
     }
 
     public override Task BeforeCombatStart()
@@ -206,7 +175,7 @@ public sealed class OzmaPageRelic : LibraryRelicModel
         await CreatureCmd.Heal(creature, LifePowderHeal);
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -214,17 +183,6 @@ public sealed class OzmaPageRelic : LibraryRelicModel
             Owner.RunState.CreateCard<OzmaForgetChoiceCard>(Owner),
             Owner.RunState.CreateCard<OzmaLifePowderChoiceCard>(Owner)
         ];
-    }
-
-    private static OzmaPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            OzmaOldPowerChoiceCard => OzmaPageMode.OldPower,
-            OzmaForgetChoiceCard => OzmaPageMode.Forget,
-            OzmaLifePowderChoiceCard => OzmaPageMode.LifePowder,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
     }
 
     [AbnormalityPagePostObtainEffect((int)OzmaPageMode.Forget)]
@@ -241,76 +199,11 @@ public sealed class OzmaPageRelic : LibraryRelicModel
         CardCmd.PreviewCardPileAdd(await CardPileCmd.Add(forgetCard, PileType.Deck));
     }
 
-    private static bool IsKnownMode(OzmaPageMode mode)
-    {
-        return mode is OzmaPageMode.None
-            or OzmaPageMode.OldPower
-            or OzmaPageMode.Forget
-            or OzmaPageMode.LifePowder;
-    }
+    protected override void ResetStateOnFallback() => LifePowderUsedThisCombat = false;
 
-    private static bool IsConcreteMode(OzmaPageMode mode)
-    {
-        return mode is OzmaPageMode.OldPower
-            or OzmaPageMode.Forget
-            or OzmaPageMode.LifePowder;
-    }
-
-    private void SetMode(OzmaPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (!IsConcreteMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(context);
-        }
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        OzmaPageMode oldMode = Mode;
-        Mode = OzmaPageMode.OldPower;
-        LifePowderUsedThisCombat = false;
-        Log.Warn("[LibraryOfRuina.PageRelic] OzmaPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to OldPower.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = IsUsedUp ? RelicStatus.Disabled : RelicStatus.Normal;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

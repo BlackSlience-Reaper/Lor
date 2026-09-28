@@ -38,13 +38,12 @@ public abstract class ModalPageRelic<TMode> : LibraryRelicModel, IModalPageRelic
     protected abstract void UpdateModeUiState();
 
     /// <summary>
-    /// 切换或回退模式时是否通知图标变化并刷新背包里的图标节点。
-    /// 迁移前有一部分书页遗物从不刷新图标（它们的图标不随模式变化）；保持各自原来的做法。
+    /// 为 false 的书页在切换、回退模式时只刷新界面状态，不通知图标变化；进房间和以已有模式获得时也不刷新背包图标节点。
     /// </summary>
     protected virtual bool RefreshIconOnModeChange => true;
 
     /// <summary>
-    /// 获得时是否在判断“已有模式”之前先刷新一次界面状态（迁移前两种写法都有，区别只在尚未选择时多刷新一次）。
+    /// 为 true 的书页在获得时先刷新界面状态、再判断是否已有模式，因此尚未选择时也会刷新一次。
     /// </summary>
     protected virtual bool RefreshUiBeforeModeChoice => false;
 

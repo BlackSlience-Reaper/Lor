@@ -10,9 +10,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -21,7 +19,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.HeartOfAspiration;
 
-public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
+public sealed class HeartOfAspirationPageRelic : ModalPageRelic<HeartOfAspirationPageMode>
 {
     public const int PulseStrongStacks = 4;
     public const int PulseHpLoss = 1;
@@ -70,6 +68,12 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
     [SavedProperty]
     public HeartOfAspirationPageMode Mode { get; private set; }
 
+    protected override HeartOfAspirationPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool PulseDealtLifeDamageThisTurn { get; private set; }
 
@@ -82,44 +86,10 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int ViolentPulseTurnsRemaining { get; private set; }
 
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
+    protected override Task ApplyObtainedChoiceAsync(HeartOfAspirationPageMode mode) => SetModeAsync(mode);
 
-        if (Mode != HeartOfAspirationPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        await SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
+    // 预选只写模式、通知图标变化并刷新界面；清状态与拾取效果由获得后作为 AbnormalityPagePostObtainEffect 执行的 SetModeAsync 完成。
+    protected override void ApplyPreselectedMode(HeartOfAspirationPageMode mode) => AssignPreselectedModeOnly(mode);
 
     public override async Task BeforeCombatStart()
     {
@@ -348,7 +318,7 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
             null);
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -358,34 +328,8 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
         ];
     }
 
-    private static HeartOfAspirationPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            HeartOfAspirationPulseChoiceCard => HeartOfAspirationPageMode.Pulse,
-            HeartOfAspirationAspirationChoiceCard => HeartOfAspirationPageMode.Aspiration,
-            HeartOfAspirationViolentPulseChoiceCard => HeartOfAspirationPageMode.ViolentPulse,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(HeartOfAspirationPageMode mode)
-    {
-        return mode is HeartOfAspirationPageMode.None
-            or HeartOfAspirationPageMode.Pulse
-            or HeartOfAspirationPageMode.Aspiration
-            or HeartOfAspirationPageMode.ViolentPulse;
-    }
-
-    private static bool IsConcreteMode(HeartOfAspirationPageMode mode)
-    {
-        return mode is HeartOfAspirationPageMode.Pulse
-            or HeartOfAspirationPageMode.Aspiration
-            or HeartOfAspirationPageMode.ViolentPulse;
-    }
-
     [AbnormalityPagePostObtainEffect]
-    private async Task SetMode(HeartOfAspirationPageMode mode)
+    private async Task SetModeAsync(HeartOfAspirationPageMode mode)
     {
         Mode = mode;
         RelicIconChanged();
@@ -405,30 +349,6 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
         await CreatureCmd.GainMaxHp(Owner.Creature, amount);
     }
 
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        HeartOfAspirationPageMode oldMode = Mode;
-        Mode = HeartOfAspirationPageMode.Pulse;
-        Log.Warn("[LibraryOfRuina.PageRelic] HeartOfAspirationPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Pulse.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
     private bool IsOwnerDamageSource(Creature? dealer, CardModel? cardSource)
     {
         if (dealer == null || Owner.Creature == null)
@@ -444,7 +364,7 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
         return cardSource == null || cardSource.Owner == Owner;
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["RemainingTurns"].BaseValue = ViolentPulseTurnsRemaining;
@@ -456,27 +376,6 @@ public sealed class HeartOfAspirationPageRelic : LibraryRelicModel
             _ => RelicStatus.Normal
         };
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

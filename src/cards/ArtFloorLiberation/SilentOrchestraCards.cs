@@ -6,7 +6,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
@@ -101,21 +100,8 @@ public sealed class EverRepeatingPerformanceCard() :
     }
 }
 
-public abstract class SilentOrchestraPageChoiceCardBase : CardModel
+public abstract class SilentOrchestraPageChoiceCardBase : PageChoiceCard<SilentOrchestraPageMode>
 {
-    public const string EverRepeatingPerformanceChoiceId =
-        "SILENT_ORCHESTRA_EVER_REPEATING_PERFORMANCE_CHOICE_CARD";
-    public const string FerventAdorationChoiceId =
-        "SILENT_ORCHESTRA_FERVENT_ADORATION_CHOICE_CARD";
-    public const string FinaleChoiceId =
-        "SILENT_ORCHESTRA_FINALE_CHOICE_CARD";
-
-    protected abstract string PortraitFileName { get; }
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         ..HoverTipFactory.FromCardWithCardHoverTips<
@@ -134,36 +120,14 @@ public abstract class SilentOrchestraPageChoiceCardBase : CardModel
             "StunTurns",
             SilentOrchestraPageRelic.FinaleStunTurns)
     ];
-
-    public override string PortraitPath =>
-        ImageHelper.GetImagePath(
-            $"packed/card_portraits/colorless/{PortraitFileName}");
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
-
-    protected SilentOrchestraPageChoiceCardBase()
-        : base(
-            -1,
-            CardType.Skill,
-            CardRarity.Ancient,
-            TargetType.None,
-            shouldShowInCardLibrary: false)
-    {
-    }
-
-    public static bool IsSilentOrchestraChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is EverRepeatingPerformanceChoiceId
-            or FerventAdorationChoiceId
-            or FinaleChoiceId;
-    }
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class SilentOrchestraEverRepeatingPerformanceChoiceCard :
     SilentOrchestraPageChoiceCardBase
 {
+    public override SilentOrchestraPageMode PageMode => SilentOrchestraPageMode.EverRepeatingPerformance;
+
     protected override string PortraitFileName =>
         "ever_repeating_performance.png";
 }
@@ -172,6 +136,8 @@ public sealed class SilentOrchestraEverRepeatingPerformanceChoiceCard :
 public sealed class SilentOrchestraFerventAdorationChoiceCard :
     SilentOrchestraPageChoiceCardBase
 {
+    public override SilentOrchestraPageMode PageMode => SilentOrchestraPageMode.FerventAdoration;
+
     protected override string PortraitFileName =>
         "silent_orchestra_fervent_adoration_choice_card.png";
 }
@@ -180,6 +146,8 @@ public sealed class SilentOrchestraFerventAdorationChoiceCard :
 public sealed class SilentOrchestraFinaleChoiceCard :
     SilentOrchestraPageChoiceCardBase
 {
+    public override SilentOrchestraPageMode PageMode => SilentOrchestraPageMode.Finale;
+
     protected override string PortraitFileName =>
         "silent_orchestra_finale_choice_card.png";
 }

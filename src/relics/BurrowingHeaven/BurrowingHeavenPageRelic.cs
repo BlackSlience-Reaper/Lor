@@ -5,16 +5,13 @@ using LibraryOfRuina.cards.BurrowingHeaven;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.BurrowingHeaven;
 
-public sealed class BurrowingHeavenPageRelic : LibraryRelicModel
+public sealed class BurrowingHeavenPageRelic : ModalPageRelic<BurrowingHeavenPageMode>
 {
     internal const int WitheringBloodWingsReflectPercent = 100;
     internal const int OthersGazeHandCards = 1;
@@ -69,43 +66,10 @@ public sealed class BurrowingHeavenPageRelic : LibraryRelicModel
     [SavedProperty]
     public BurrowingHeavenPageMode Mode { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override BurrowingHeavenPageMode SelectedMode
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != BurrowingHeavenPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
+        get => Mode;
+        set => Mode = value;
     }
 
     public override Task BeforeCombatStart()
@@ -258,7 +222,7 @@ public sealed class BurrowingHeavenPageRelic : LibraryRelicModel
         return 1m;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -268,65 +232,7 @@ public sealed class BurrowingHeavenPageRelic : LibraryRelicModel
         ];
     }
 
-    private static BurrowingHeavenPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            BurrowingHeavenWitheringBloodWingsChoiceCard => BurrowingHeavenPageMode.WitheringBloodWings,
-            BurrowingHeavenOthersGazeChoiceCard => BurrowingHeavenPageMode.OthersGaze,
-            BurrowingHeavenAttentionAndFocusChoiceCard => BurrowingHeavenPageMode.AttentionAndFocus,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(BurrowingHeavenPageMode mode)
-    {
-        return mode is BurrowingHeavenPageMode.None
-            or BurrowingHeavenPageMode.WitheringBloodWings
-            or BurrowingHeavenPageMode.OthersGaze
-            or BurrowingHeavenPageMode.AttentionAndFocus;
-    }
-
-    private static bool IsConcreteMode(BurrowingHeavenPageMode mode)
-    {
-        return mode is BurrowingHeavenPageMode.WitheringBloodWings
-            or BurrowingHeavenPageMode.OthersGaze
-            or BurrowingHeavenPageMode.AttentionAndFocus;
-    }
-
-    private void SetMode(BurrowingHeavenPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        BurrowingHeavenPageMode oldMode = Mode;
-        Mode = BurrowingHeavenPageMode.WitheringBloodWings;
-        Log.Warn("[LibraryOfRuina.PageRelic] BurrowingHeavenPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to WitheringBloodWings.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode != BurrowingHeavenPageMode.None && CombatManager.Instance.IsInProgress
@@ -348,27 +254,6 @@ public sealed class BurrowingHeavenPageRelic : LibraryRelicModel
         }
 
         return cardSource == null || cardSource.Owner == Owner;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

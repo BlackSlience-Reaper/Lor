@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.cards.WarmheartedWoodsman;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -12,9 +11,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.WarmheartedWoodsman;
 
-public sealed class WarmheartedWoodsmanPageRelic : LibraryRelicModel
+public sealed class WarmheartedWoodsmanPageRelic : ModalPageRelic<WarmheartedWoodsmanPageMode>
 {
     public const int WarmHeartEnergyThreshold = 4;
     public const int WarmHeartStrongStacks = 3;
@@ -85,49 +82,16 @@ public sealed class WarmheartedWoodsmanPageRelic : LibraryRelicModel
     [SavedProperty]
     public WarmheartedWoodsmanPageMode Mode { get; private set; }
 
+    protected override WarmheartedWoodsmanPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int HeartHpLossCounter { get; private set; }
 
     public int EnergyReductionThisTurn { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != WarmheartedWoodsmanPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override Task BeforeCombatStart()
     {
@@ -288,7 +252,7 @@ public sealed class WarmheartedWoodsmanPageRelic : LibraryRelicModel
             cardSource);
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -296,66 +260,6 @@ public sealed class WarmheartedWoodsmanPageRelic : LibraryRelicModel
             Owner.RunState.CreateCard<WarmheartedWoodsmanHeartChoiceCard>(Owner),
             Owner.RunState.CreateCard<WarmheartedWoodsmanLoggingChoiceCard>(Owner)
         ];
-    }
-
-    private static WarmheartedWoodsmanPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            WarmheartedWoodsmanWarmHeartChoiceCard => WarmheartedWoodsmanPageMode.WarmHeart,
-            WarmheartedWoodsmanHeartChoiceCard => WarmheartedWoodsmanPageMode.Heart,
-            WarmheartedWoodsmanLoggingChoiceCard => WarmheartedWoodsmanPageMode.Logging,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(WarmheartedWoodsmanPageMode mode)
-    {
-        return mode is WarmheartedWoodsmanPageMode.None
-            or WarmheartedWoodsmanPageMode.WarmHeart
-            or WarmheartedWoodsmanPageMode.Heart
-            or WarmheartedWoodsmanPageMode.Logging;
-    }
-
-    private static bool IsConcreteMode(WarmheartedWoodsmanPageMode mode)
-    {
-        return mode is WarmheartedWoodsmanPageMode.WarmHeart
-            or WarmheartedWoodsmanPageMode.Heart
-            or WarmheartedWoodsmanPageMode.Logging;
-    }
-
-    private void SetMode(WarmheartedWoodsmanPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        WarmheartedWoodsmanPageMode oldMode = Mode;
-        Mode = WarmheartedWoodsmanPageMode.WarmHeart;
-        HeartHpLossCounter = 0;
-        LoggingStrongGivenThisCombat = 0;
-        Log.Warn("[LibraryOfRuina.PageRelic] WarmheartedWoodsmanPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to WarmHeart.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
     private bool IsOwnerDamageSource(Creature? dealer, CardModel? cardSource)
@@ -373,7 +277,13 @@ public sealed class WarmheartedWoodsmanPageRelic : LibraryRelicModel
         return cardSource == null || cardSource.Owner == Owner;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnFallback()
+    {
+        HeartHpLossCounter = 0;
+        LoggingStrongGivenThisCombat = 0;
+    }
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["RemainingHpLoss"].BaseValue = Math.Max(0, HeartHpLossThreshold - HeartHpLossCounter);
@@ -385,27 +295,6 @@ public sealed class WarmheartedWoodsmanPageRelic : LibraryRelicModel
             _ => RelicStatus.Normal
         };
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

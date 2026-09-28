@@ -14,9 +14,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -33,7 +31,7 @@ public enum JudgementBirdPageMode
     TiltedScale = 3
 }
 
-public sealed class JudgementBirdPageRelic : LibraryRelicModel
+public sealed class JudgementBirdPageRelic : ModalPageRelic<JudgementBirdPageMode>
 {
     public const int WeightOfSinSelfDamage = 1;
     public const int WeightOfSinStrong = 5;
@@ -104,48 +102,14 @@ public sealed class JudgementBirdPageRelic : LibraryRelicModel
     [SavedProperty]
     public JudgementBirdPageMode Mode { get; private set; }
 
+    protected override JudgementBirdPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int TiltedScaleTriggersThisTurn { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != JudgementBirdPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        CardModel? chosenCard =
-            await CardSelectCmd.FromChooseACardScreen(
-                new BlockingPlayerChoiceContext(),
-                CreateModeChoiceCards(),
-                Owner,
-                canSkip: true);
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override Task BeforeCombatStart()
     {
@@ -366,7 +330,7 @@ public sealed class JudgementBirdPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<
             JudgementBirdWeightOfSinChoiceCard>(Owner),
@@ -375,66 +339,6 @@ public sealed class JudgementBirdPageRelic : LibraryRelicModel
         Owner.RunState.CreateCard<
             JudgementBirdTiltedScaleChoiceCard>(Owner)
     ];
-
-    private static JudgementBirdPageMode ResolveModeFromChoiceCard(
-        CardModel? card) => card switch
-    {
-        JudgementBirdWeightOfSinChoiceCard =>
-            JudgementBirdPageMode.WeightOfSin,
-        JudgementBirdJudgementChoiceCard =>
-            JudgementBirdPageMode.Judgement,
-        JudgementBirdTiltedScaleChoiceCard =>
-            JudgementBirdPageMode.TiltedScale,
-        _ => throw AbnormalityPageRewardHelper
-            .UnexpectedPageChoiceCard(card)
-    };
-
-    private void SetMode(JudgementBirdPageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private static bool IsKnownMode(JudgementBirdPageMode mode) =>
-        mode is JudgementBirdPageMode.None
-            or JudgementBirdPageMode.WeightOfSin
-            or JudgementBirdPageMode.Judgement
-            or JudgementBirdPageMode.TiltedScale;
-
-    private static bool IsConcreteMode(JudgementBirdPageMode mode) =>
-        mode is JudgementBirdPageMode.WeightOfSin
-            or JudgementBirdPageMode.Judgement
-            or JudgementBirdPageMode.TiltedScale;
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        JudgementBirdPageMode oldMode = Mode;
-        Mode = JudgementBirdPageMode.WeightOfSin;
-        ResetTransientCombatState();
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] JudgementBirdPageRelic "
-            + "recovered mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to WeightOfSin.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
 
     private void ResetTransientCombatState()
     {
@@ -479,7 +383,11 @@ public sealed class JudgementBirdPageRelic : LibraryRelicModel
             || command.ModelSource is CardModel card
                 && card.Owner == Owner);
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(JudgementBirdPageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["Remaining"].BaseValue = DisplayAmount;
@@ -487,27 +395,5 @@ public sealed class JudgementBirdPageRelic : LibraryRelicModel
             ? RelicStatus.Disabled
             : RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory =
-            NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

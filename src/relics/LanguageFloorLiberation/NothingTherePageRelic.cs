@@ -13,7 +13,6 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -22,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.LanguageFloorLiberation;
 
-public sealed class NothingTherePageRelic : LibraryRelicModel
+public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
 {
     public const int GoodbyeDamageMultiplier = 2;
 
@@ -58,6 +57,16 @@ public sealed class NothingTherePageRelic : LibraryRelicModel
     [SavedProperty]
     public NothingTherePageMode Mode { get; private set; }
 
+    protected override NothingTherePageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool HelloUsedThisTurn { get; private set; }
 
@@ -66,38 +75,6 @@ public sealed class NothingTherePageRelic : LibraryRelicModel
         base.DeepCloneFields();
         _goodbyeActiveCard = null;
         _helloActiveCard = null;
-    }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != NothingTherePageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
     }
 
     public override Task AfterRoomEntered(AbstractRoom room)
@@ -349,65 +326,12 @@ public sealed class NothingTherePageRelic : LibraryRelicModel
             ? 0m
             : amount;
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<NothingThereGoodbyeChoiceCard>(Owner),
         Owner.RunState.CreateCard<NothingThereHelloChoiceCard>(Owner),
         Owner.RunState.CreateCard<NothingThereShellChoiceCard>(Owner)
     ];
-
-    private static NothingTherePageMode ResolveModeFromChoiceCard(
-        CardModel? card) => card switch
-    {
-        NothingThereGoodbyeChoiceCard => NothingTherePageMode.Goodbye,
-        NothingThereHelloChoiceCard => NothingTherePageMode.Hello,
-        NothingThereShellChoiceCard => NothingTherePageMode.Shell,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    private static bool IsKnownMode(NothingTherePageMode mode) =>
-        mode is NothingTherePageMode.None
-            or NothingTherePageMode.Goodbye
-            or NothingTherePageMode.Hello
-            or NothingTherePageMode.Shell;
-
-    private static bool IsConcreteMode(NothingTherePageMode mode) =>
-        mode is NothingTherePageMode.Goodbye
-            or NothingTherePageMode.Hello
-            or NothingTherePageMode.Shell;
-
-    private void SetMode(NothingTherePageMode mode)
-    {
-        Mode = mode;
-        HelloUsedThisTurn = false;
-        ResetTransientCardState();
-        UpdateModeUiState();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        NothingTherePageMode oldMode = Mode;
-        Mode = NothingTherePageMode.Goodbye;
-        HelloUsedThisTurn = false;
-        ResetTransientCardState();
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] NothingTherePageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Goodbye.");
-        UpdateModeUiState();
-    }
 
     private void ResetTransientCardState()
     {
@@ -415,7 +339,15 @@ public sealed class NothingTherePageRelic : LibraryRelicModel
         _helloActiveCard = null;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(NothingTherePageMode mode)
+    {
+        HelloUsedThisTurn = false;
+        ResetTransientCardState();
+    }
+
+    protected override void ResetStateOnFallback() => ResetStateOnModeSet(FallbackMode);
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch

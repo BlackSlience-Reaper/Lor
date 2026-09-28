@@ -12,9 +12,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.CosmicFragment;
 
-public sealed class CosmicFragmentPageRelic : LibraryRelicModel
+public sealed class CosmicFragmentPageRelic : ModalPageRelic<CosmicFragmentPageMode>
 {
     internal const int OtherworldlyEchoChaosLoss = 13;
     internal const int OtherworldlyEchoHeal = 3;
@@ -66,47 +64,14 @@ public sealed class CosmicFragmentPageRelic : LibraryRelicModel
     [SavedProperty]
     public CosmicFragmentPageMode Mode { get; private set; }
 
+    protected override CosmicFragmentPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int IncomprehensibleAttackCount { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != CosmicFragmentPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -226,7 +191,7 @@ public sealed class CosmicFragmentPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -236,69 +201,15 @@ public sealed class CosmicFragmentPageRelic : LibraryRelicModel
         ];
     }
 
-    private static CosmicFragmentPageMode ResolveModeFromChoiceCard(CardModel? card)
+    protected override void ResetStateOnModeSet(CosmicFragmentPageMode mode)
     {
-        return card switch
-        {
-            CosmicFragmentOtherworldlyEchoChoiceCard => CosmicFragmentPageMode.OtherworldlyEcho,
-            CosmicFragmentTentacleChoiceCard => CosmicFragmentPageMode.Tentacle,
-            CosmicFragmentIncomprehensibleChoiceCard => CosmicFragmentPageMode.Incomprehensible,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(CosmicFragmentPageMode mode)
-    {
-        return mode is CosmicFragmentPageMode.None
-            or CosmicFragmentPageMode.OtherworldlyEcho
-            or CosmicFragmentPageMode.Tentacle
-            or CosmicFragmentPageMode.Incomprehensible;
-    }
-
-    private static bool IsConcreteMode(CosmicFragmentPageMode mode)
-    {
-        return mode is CosmicFragmentPageMode.OtherworldlyEcho
-            or CosmicFragmentPageMode.Tentacle
-            or CosmicFragmentPageMode.Incomprehensible;
-    }
-
-    private void SetMode(CosmicFragmentPageMode mode)
-    {
-        Mode = mode;
         IncomprehensibleAttackCount = 0;
         _incomprehensibleBonusesByActiveCard.Clear();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
+    protected override void ResetStateOnFallback() => ResetStateOnModeSet(FallbackMode);
 
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        CosmicFragmentPageMode oldMode = Mode;
-        Mode = CosmicFragmentPageMode.OtherworldlyEcho;
-        IncomprehensibleAttackCount = 0;
-        _incomprehensibleBonusesByActiveCard.Clear();
-        Log.Warn("[LibraryOfRuina.PageRelic] CosmicFragmentPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to OtherworldlyEcho.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == CosmicFragmentPageMode.Incomprehensible && CombatManager.Instance.IsInProgress
@@ -356,26 +267,5 @@ public sealed class CosmicFragmentPageRelic : LibraryRelicModel
             cardSource,
             null,
             LibraryDamageType.Pierce);
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

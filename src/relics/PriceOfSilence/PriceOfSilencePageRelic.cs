@@ -10,9 +10,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -20,7 +18,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.relics.PriceOfSilence;
 
-public sealed class PriceOfSilencePageRelic : LibraryRelicModel
+public sealed class PriceOfSilencePageRelic : ModalPageRelic<PriceOfSilencePageMode>
 {
     public const int TimeEnergy = 2;
     public const int TimeDraw = 2;
@@ -80,6 +78,12 @@ public sealed class PriceOfSilencePageRelic : LibraryRelicModel
     [SavedProperty]
     public PriceOfSilencePageMode Mode { get; private set; }
 
+    protected override PriceOfSilencePageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int CardsPlayedThisTurn { get; private set; }
 
@@ -88,45 +92,6 @@ public sealed class PriceOfSilencePageRelic : LibraryRelicModel
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int SilenceCooldownRemaining { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != PriceOfSilencePageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override Task BeforeCombatStart()
     {
@@ -269,7 +234,7 @@ public sealed class PriceOfSilencePageRelic : LibraryRelicModel
             && CombatManager.Instance.IsInProgress;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -279,68 +244,14 @@ public sealed class PriceOfSilencePageRelic : LibraryRelicModel
         ];
     }
 
-    private static PriceOfSilencePageMode ResolveModeFromChoiceCard(CardModel? card)
+    protected override void ResetStateOnFallback()
     {
-        return card switch
-        {
-            PriceOfSilenceTimeChoiceCard => PriceOfSilencePageMode.Time,
-            PriceOfSilenceThirteenthTollChoiceCard => PriceOfSilencePageMode.ThirteenthToll,
-            PriceOfSilenceSilenceChoiceCard => PriceOfSilencePageMode.Silence,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(PriceOfSilencePageMode mode)
-    {
-        return mode is PriceOfSilencePageMode.None
-            or PriceOfSilencePageMode.Time
-            or PriceOfSilencePageMode.ThirteenthToll
-            or PriceOfSilencePageMode.Silence;
-    }
-
-    private static bool IsConcreteMode(PriceOfSilencePageMode mode)
-    {
-        return mode is PriceOfSilencePageMode.Time
-            or PriceOfSilencePageMode.ThirteenthToll
-            or PriceOfSilencePageMode.Silence;
-    }
-
-    private void SetMode(PriceOfSilencePageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        PriceOfSilencePageMode oldMode = Mode;
-        Mode = PriceOfSilencePageMode.Time;
         CardsPlayedThisTurn = 0;
         CardsPlayedThisCombat = 0;
         SilenceCooldownRemaining = 0;
-        Log.Warn("[LibraryOfRuina.PageRelic] PriceOfSilencePageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Time.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["Remaining"].BaseValue = DisplayAmount;
@@ -351,27 +262,6 @@ public sealed class PriceOfSilencePageRelic : LibraryRelicModel
             _ => RelicStatus.Normal
         };
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

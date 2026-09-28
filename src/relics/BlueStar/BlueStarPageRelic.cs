@@ -11,9 +11,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.BlueStar;
 
-public sealed class BlueStarPageRelic : LibraryRelicModel
+public sealed class BlueStarPageRelic : ModalPageRelic<BlueStarPageMode>
 {
     public const int AtonementPercent = 15;
     public const int VoiceTurnInterval = 3;
@@ -71,51 +69,22 @@ public sealed class BlueStarPageRelic : LibraryRelicModel
     [SavedProperty]
     public BlueStarPageMode Mode { get; private set; }
 
+    protected override BlueStarPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int VoiceTurnsSeen { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(BlueStarPageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != BlueStarPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
+        SetMode(mode);
         if (Mode == BlueStarPageMode.Martyrdom)
         {
             await AddMartyrdomCardOnPickup();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
     }
 
     public override Task BeforeCombatStart()
@@ -247,23 +216,12 @@ public sealed class BlueStarPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<BlueStarMartyrdomChoiceCard>(Owner),
         Owner.RunState.CreateCard<BlueStarAtonementChoiceCard>(Owner),
         Owner.RunState.CreateCard<BlueStarVoiceOfRemembranceChoiceCard>(Owner)
     ];
-
-    private static BlueStarPageMode ResolveModeFromChoiceCard(
-        CardModel? card) => card switch
-    {
-        BlueStarMartyrdomChoiceCard => BlueStarPageMode.Martyrdom,
-        BlueStarAtonementChoiceCard => BlueStarPageMode.Atonement,
-        BlueStarVoiceOfRemembranceChoiceCard =>
-            BlueStarPageMode.VoiceOfRemembrance,
-        _ => throw AbnormalityPageRewardHelper
-            .UnexpectedPageChoiceCard(card)
-    };
 
     [AbnormalityPagePostObtainEffect((int)BlueStarPageMode.Martyrdom)]
     private async Task AddMartyrdomCardOnPickup()
@@ -275,57 +233,22 @@ public sealed class BlueStarPageRelic : LibraryRelicModel
         SaveManager.Instance.MarkCardAsSeen(card);
     }
 
-    private void SetMode(BlueStarPageMode mode)
+    protected override void ResetStateOnModeSet(BlueStarPageMode mode)
     {
-        Mode = mode;
         _voiceTriggerTurn = false;
         if (mode != BlueStarPageMode.VoiceOfRemembrance)
         {
             VoiceTurnsSeen = 0;
         }
-
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private static bool IsKnownMode(BlueStarPageMode mode) =>
-        mode is BlueStarPageMode.None
-            or BlueStarPageMode.Martyrdom
-            or BlueStarPageMode.Atonement
-            or BlueStarPageMode.VoiceOfRemembrance;
-
-    private static bool IsConcreteMode(BlueStarPageMode mode) =>
-        mode is BlueStarPageMode.Martyrdom
-            or BlueStarPageMode.Atonement
-            or BlueStarPageMode.VoiceOfRemembrance;
-
-    private void EnsureValidModeOrFallback(string context)
+    protected override void ResetStateOnFallback()
     {
-        if (!IsConcreteMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(context);
-        }
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        BlueStarPageMode oldMode = Mode;
-        Mode = BlueStarPageMode.Martyrdom;
         VoiceTurnsSeen = 0;
         _voiceTriggerTurn = false;
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] BlueStarPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Martyrdom.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == BlueStarPageMode.VoiceOfRemembrance
@@ -334,27 +257,6 @@ public sealed class BlueStarPageRelic : LibraryRelicModel
             ? RelicStatus.Active
             : RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

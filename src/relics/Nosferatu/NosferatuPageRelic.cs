@@ -10,9 +10,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -29,7 +27,7 @@ public enum NosferatuPageMode
     Wine = 3
 }
 
-public sealed class NosferatuPageRelic : LibraryRelicModel
+public sealed class NosferatuPageRelic : ModalPageRelic<NosferatuPageMode>
 {
     internal const int HydrophobiaBleed = 3;
     internal const int VampirismDamageBonus = 5;
@@ -60,51 +58,20 @@ public sealed class NosferatuPageRelic : LibraryRelicModel
     [SavedProperty]
     public NosferatuPageMode Mode { get; private set; }
 
+    protected override NosferatuPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     private HashSet<uint> _wineHealedCombatIds = [];
 
     protected override void DeepCloneFields()
     {
         base.DeepCloneFields();
         _wineHealedCombatIds = [.. _wineHealedCombatIds];
-    }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != NosferatuPageMode.None)
-        {
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
     }
 
     public override Task BeforeCombatStart()
@@ -208,7 +175,7 @@ public sealed class NosferatuPageRelic : LibraryRelicModel
         }
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -218,67 +185,11 @@ public sealed class NosferatuPageRelic : LibraryRelicModel
         ];
     }
 
-    private static NosferatuPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            NosferatuHydrophobiaChoiceCard => NosferatuPageMode.Hydrophobia,
-            NosferatuVampirismChoiceCard => NosferatuPageMode.Vampirism,
-            NosferatuWineChoiceCard => NosferatuPageMode.Wine,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
+    protected override void ResetStateOnModeSet(NosferatuPageMode mode) => _wineHealedCombatIds.Clear();
 
-    private static bool IsKnownMode(NosferatuPageMode mode)
-    {
-        return mode is NosferatuPageMode.None
-            or NosferatuPageMode.Hydrophobia
-            or NosferatuPageMode.Vampirism
-            or NosferatuPageMode.Wine;
-    }
+    protected override void ResetStateOnFallback() => _wineHealedCombatIds.Clear();
 
-    private static bool IsConcreteMode(NosferatuPageMode mode)
-    {
-        return mode is NosferatuPageMode.Hydrophobia
-            or NosferatuPageMode.Vampirism
-            or NosferatuPageMode.Wine;
-    }
-
-    private void SetMode(NosferatuPageMode mode)
-    {
-        Mode = mode;
-        _wineHealedCombatIds.Clear();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        NosferatuPageMode oldMode = Mode;
-        Mode = NosferatuPageMode.Hydrophobia;
-        _wineHealedCombatIds.Clear();
-        Log.Warn("[LibraryOfRuina.PageRelic] NosferatuPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Hydrophobia.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = RelicStatus.Normal;
@@ -315,25 +226,4 @@ public sealed class NosferatuPageRelic : LibraryRelicModel
 
     private static bool HasBleeding(Creature target) =>
         target.GetPower<LibraryBleedingPower>()?.Amount > 0;
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
-    }
 }

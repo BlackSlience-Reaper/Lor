@@ -12,9 +12,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.BigBird;
 
-public sealed class BigBirdPageRelic : LibraryRelicModel
+public sealed class BigBirdPageRelic : ModalPageRelic<BigBirdPageMode>
 {
     public const int WatchfulEyeCooldown = 2;
     public const int WatchfulEyeEnergyPenalty = 1;
@@ -74,6 +72,12 @@ public sealed class BigBirdPageRelic : LibraryRelicModel
     [SavedProperty]
     public BigBirdPageMode Mode { get; private set; }
 
+    protected override BigBirdPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int WatchfulEyeCooldownRemaining { get; private set; }
 
@@ -85,45 +89,6 @@ public sealed class BigBirdPageRelic : LibraryRelicModel
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PendingWatchfulEyeTargetCombatId { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != BigBirdPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -315,7 +280,7 @@ public sealed class BigBirdPageRelic : LibraryRelicModel
         EverBurningLampCooldownRemaining = EverBurningLampCooldown;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -325,68 +290,14 @@ public sealed class BigBirdPageRelic : LibraryRelicModel
         ];
     }
 
-    private static BigBirdPageMode ResolveModeFromChoiceCard(CardModel? card)
+    protected override void ResetStateOnFallback()
     {
-        return card switch
-        {
-            BigBirdWatchfulEyeChoiceCard => BigBirdPageMode.WatchfulEye,
-            BigBirdEverBurningLampChoiceCard => BigBirdPageMode.EverBurningLamp,
-            BigBirdSalvationChoiceCard => BigBirdPageMode.Salvation,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(BigBirdPageMode mode)
-    {
-        return mode is BigBirdPageMode.None
-            or BigBirdPageMode.WatchfulEye
-            or BigBirdPageMode.EverBurningLamp
-            or BigBirdPageMode.Salvation;
-    }
-
-    private static bool IsConcreteMode(BigBirdPageMode mode)
-    {
-        return mode is BigBirdPageMode.WatchfulEye
-            or BigBirdPageMode.EverBurningLamp
-            or BigBirdPageMode.Salvation;
-    }
-
-    private void SetMode(BigBirdPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        BigBirdPageMode oldMode = Mode;
-        Mode = BigBirdPageMode.WatchfulEye;
         WatchfulEyeCooldownRemaining = 0;
         EverBurningLampCooldownRemaining = 0;
         PendingExtraTurns = 0;
-        Log.Warn("[LibraryOfRuina.PageRelic] BigBirdPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to WatchfulEye.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["Remaining"].BaseValue = DisplayAmount;
@@ -394,27 +305,6 @@ public sealed class BigBirdPageRelic : LibraryRelicModel
             ? RelicStatus.Disabled
             : RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes;
@@ -30,7 +29,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.HistoryFloorLiberation;
 
-public sealed class SnowWhiteApplePageRelic : LibraryRelicModel
+public sealed class SnowWhiteApplePageRelic : ModalPageRelic<SnowWhiteApplePageMode>
 {
     internal const int StranglingVineSelectionMax = 3;
     internal const int StranglingVineBinding = 6;
@@ -102,51 +101,26 @@ public sealed class SnowWhiteApplePageRelic : LibraryRelicModel
     [SavedProperty]
     public SnowWhiteApplePageMode Mode { get; private set; }
 
+    protected override SnowWhiteApplePageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PoisonBarrierTurnsSeenAcrossCombats { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(SnowWhiteApplePageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != SnowWhiteApplePageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
+        SetMode(mode);
         if (Mode == SnowWhiteApplePageMode.StranglingVine)
         {
             await ApplyStranglingVineEnchantmentSelection();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        _ = room;
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        return Task.CompletedTask;
     }
 
     public override async Task BeforeCombatStart()
@@ -278,7 +252,7 @@ public sealed class SnowWhiteApplePageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -288,65 +262,15 @@ public sealed class SnowWhiteApplePageRelic : LibraryRelicModel
         ];
     }
 
-    private static SnowWhiteApplePageMode ResolveModeFromChoiceCard(
-        CardModel? card)
+    protected override void ResetStateOnModeSet(SnowWhiteApplePageMode mode)
     {
-        return card switch
-        {
-            SnowWhiteStranglingVineChoiceCard =>
-                SnowWhiteApplePageMode.StranglingVine,
-            SnowWhitePoisonStingBarrierChoiceCard =>
-                SnowWhiteApplePageMode.PoisonStingBarrier,
-            SnowWhiteMaliceChoiceCard => SnowWhiteApplePageMode.Malice,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(SnowWhiteApplePageMode mode) =>
-        mode is SnowWhiteApplePageMode.None
-            or SnowWhiteApplePageMode.StranglingVine
-            or SnowWhiteApplePageMode.PoisonStingBarrier
-            or SnowWhiteApplePageMode.Malice;
-
-    private static bool IsConcreteMode(SnowWhiteApplePageMode mode) =>
-        mode is SnowWhiteApplePageMode.StranglingVine
-            or SnowWhiteApplePageMode.PoisonStingBarrier
-            or SnowWhiteApplePageMode.Malice;
-
-    private void SetMode(SnowWhiteApplePageMode mode)
-    {
-        Mode = mode;
         PoisonBarrierTurnsSeenAcrossCombats = 0;
         _poisonBarrierTriggerTurn = false;
-        UpdateModeUiState();
     }
 
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
+    protected override void ResetStateOnFallback() => ResetStateOnModeSet(FallbackMode);
 
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        SnowWhiteApplePageMode oldMode = Mode;
-        Mode = SnowWhiteApplePageMode.StranglingVine;
-        PoisonBarrierTurnsSeenAcrossCombats = 0;
-        _poisonBarrierTriggerTurn = false;
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] SnowWhiteApplePageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to StranglingVine.");
-        UpdateModeUiState();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == SnowWhiteApplePageMode.PoisonStingBarrier

@@ -93,23 +93,8 @@ public sealed class SilenceStatusCard : CardModel
     }
 }
 
-public abstract class PriceOfSilencePageChoiceCardBase : CardModel
+public abstract class PriceOfSilencePageChoiceCardBase : PageChoiceCard<PriceOfSilencePageMode>
 {
-    public const string TimeChoiceId = "PRICE_OF_SILENCE_TIME_CHOICE_CARD";
-    public const string ThirteenthTollChoiceId = "PRICE_OF_SILENCE_THIRTEENTH_TOLL_CHOICE_CARD";
-    public const string SilenceChoiceId = "PRICE_OF_SILENCE_SILENCE_CHOICE_CARD";
-
-    protected abstract string PortraitFileName { get; }
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
-    public override string PortraitPath =>
-        ImageHelper.GetImagePath($"packed/card_portraits/colorless/{PortraitFileName}");
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
-
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.ForEnergy(this),
@@ -128,33 +113,28 @@ public abstract class PriceOfSilencePageChoiceCardBase : CardModel
         new DynamicVar("Turns", PriceOfSilencePageRelic.SilenceWeakTurns),
         new DynamicVar("Cooldown", PriceOfSilencePageRelic.SilenceCooldown)
     ];
-
-    protected PriceOfSilencePageChoiceCardBase()
-        : base(-1, CardType.Skill, CardRarity.Ancient, TargetType.None, shouldShowInCardLibrary: false)
-    {
-    }
-
-    public static bool IsPriceOfSilencePageChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is TimeChoiceId or ThirteenthTollChoiceId or SilenceChoiceId;
-    }
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class PriceOfSilenceTimeChoiceCard : PriceOfSilencePageChoiceCardBase
 {
+    public override PriceOfSilencePageMode PageMode => PriceOfSilencePageMode.Time;
+
     protected override string PortraitFileName => "price_of_silence_time_choice_card.png";
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class PriceOfSilenceThirteenthTollChoiceCard : PriceOfSilencePageChoiceCardBase
 {
+    public override PriceOfSilencePageMode PageMode => PriceOfSilencePageMode.ThirteenthToll;
+
     protected override string PortraitFileName => "price_of_silence_thirteenth_toll_choice_card.png";
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class PriceOfSilenceSilenceChoiceCard : PriceOfSilencePageChoiceCardBase
 {
+    public override PriceOfSilencePageMode PageMode => PriceOfSilencePageMode.Silence;
+
     protected override string PortraitFileName => "price_of_silence_silence_choice_card.png";
 }

@@ -17,7 +17,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -27,7 +26,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.ArtFloorLiberation;
 
-public sealed class SilentOrchestraPageRelic : LibraryRelicModel
+public sealed class SilentOrchestraPageRelic : ModalPageRelic<SilentOrchestraPageMode>
 {
     internal const int FerventAdorationDamagePercent = 200;
     internal const int FinaleStunTurns = 1;
@@ -80,6 +79,16 @@ public sealed class SilentOrchestraPageRelic : LibraryRelicModel
     [SavedProperty]
     public SilentOrchestraPageMode Mode { get; private set; }
 
+    protected override SilentOrchestraPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FinaleTrackedRound { get; private set; }
 
@@ -102,48 +111,13 @@ public sealed class SilentOrchestraPageRelic : LibraryRelicModel
         _applyingFinaleStun = false;
     }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(SilentOrchestraPageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != SilentOrchestraPageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
+        SetMode(mode);
         if (Mode == SilentOrchestraPageMode.EverRepeatingPerformance)
         {
             await AddEverRepeatingPerformanceCardOnPickup();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        _ = room;
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        return Task.CompletedTask;
     }
 
     public override Task BeforeCombatStart()
@@ -335,7 +309,7 @@ public sealed class SilentOrchestraPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<
             SilentOrchestraEverRepeatingPerformanceChoiceCard>(Owner),
@@ -343,58 +317,6 @@ public sealed class SilentOrchestraPageRelic : LibraryRelicModel
             SilentOrchestraFerventAdorationChoiceCard>(Owner),
         Owner.RunState.CreateCard<SilentOrchestraFinaleChoiceCard>(Owner)
     ];
-
-    private static SilentOrchestraPageMode ResolveModeFromChoiceCard(
-        CardModel? card) => card switch
-    {
-        SilentOrchestraEverRepeatingPerformanceChoiceCard =>
-            SilentOrchestraPageMode.EverRepeatingPerformance,
-        SilentOrchestraFerventAdorationChoiceCard =>
-            SilentOrchestraPageMode.FerventAdoration,
-        SilentOrchestraFinaleChoiceCard =>
-            SilentOrchestraPageMode.Finale,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    private static bool IsKnownMode(SilentOrchestraPageMode mode) =>
-        mode is SilentOrchestraPageMode.None
-            or SilentOrchestraPageMode.EverRepeatingPerformance
-            or SilentOrchestraPageMode.FerventAdoration
-            or SilentOrchestraPageMode.Finale;
-
-    private static bool IsConcreteMode(SilentOrchestraPageMode mode) =>
-        mode is SilentOrchestraPageMode.EverRepeatingPerformance
-            or SilentOrchestraPageMode.FerventAdoration
-            or SilentOrchestraPageMode.Finale;
-
-    private void SetMode(SilentOrchestraPageMode mode)
-    {
-        Mode = mode;
-        ResetFinaleCombatState();
-        UpdateModeUiState();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (!IsConcreteMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(context);
-        }
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        SilentOrchestraPageMode oldMode = Mode;
-        Mode = SilentOrchestraPageMode.EverRepeatingPerformance;
-        ResetFinaleCombatState();
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] SilentOrchestraPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to EverRepeatingPerformance.");
-        UpdateModeUiState();
-    }
 
     private static bool IsHostileEnemyAttack(AttackCommand command)
     {
@@ -460,7 +382,11 @@ public sealed class SilentOrchestraPageRelic : LibraryRelicModel
         _applyingFinaleStun = false;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(SilentOrchestraPageMode mode) => ResetFinaleCombatState();
+
+    protected override void ResetStateOnFallback() => ResetFinaleCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == SilentOrchestraPageMode.Finale
