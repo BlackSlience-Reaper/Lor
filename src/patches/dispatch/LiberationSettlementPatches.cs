@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.dispatch;
 
@@ -41,6 +42,7 @@ internal static class LiberationSettlementPatches
 
     /// <summary>结算事件结束后直接进入下一幕。</summary>
     [HarmonyPatch(typeof(NEventRoom), nameof(NEventRoom.Proceed))]
+    [LibraryPatch(Reason = "NEventRoom.Proceed 是被硬编码为事件结束回调的静态方法且无 Hook；仅当前房间为本模组楼层解放结算事件时改为进入下一幕。绕过了换幕投票，联机需实测。")]
     private static class ProceedToNextAct
     {
         private static bool Prefix(ref Task __result)
@@ -57,6 +59,7 @@ internal static class LiberationSettlementPatches
 
     /// <summary>解放战斗胜利后，终局奖励界面继续时转入该层的结算事件。</summary>
     [HarmonyPatch(typeof(RunManager), nameof(RunManager.ProceedFromTerminalRewardsScreen))]
+    [LibraryPatch(Reason = "ProceedFromTerminalRewardsScreen 公开非虚无 Hook，原版体会立即打开地图（后缀无法撤销）；仅当前房间为本模组楼层解放遭遇且满足结算条件时转入结算事件。")]
     private static class RedirectToSettlement
     {
         private static bool Prefix(RunManager __instance, ref Task __result) =>

@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -103,6 +104,7 @@ internal static class RoomIconPathCustomOverride
 [HarmonyPatch(typeof(ImageHelper), nameof(ImageHelper.GetRoomIconPath))]
 [HarmonyPriority(Priority.Last)]
 [HarmonyAfter("BaseLib", "com.ritsukage.sts2-RitsuLib.framework-content-assets")]
+[LibraryPatch(Reason = "兼容其他模组（BaseLib/RitsuLib 内容）的对局历史图标属性，本模组图标走原版约定路径；作为兜底排在两者之后，它们已给出结果时本前缀不执行。")]
 internal static class RoomIconPathCustomOverridePatch
 {
     [HarmonyPrefix]
@@ -116,6 +118,7 @@ internal static class RoomIconPathCustomOverridePatch
 [HarmonyPatch(typeof(ImageHelper), nameof(ImageHelper.GetRoomIconOutlinePath))]
 [HarmonyPriority(Priority.Last)]
 [HarmonyAfter("BaseLib", "com.ritsukage.sts2-RitsuLib.framework-content-assets")]
+[LibraryPatch(Reason = "兼容其他模组（BaseLib/RitsuLib 内容）的对局历史图标描边属性，本模组图标走原版约定路径；作为兜底排在两者之后，它们已给出结果时本前缀不执行。")]
 internal static class RoomIconOutlinePathCustomOverridePatch
 {
     [HarmonyPrefix]

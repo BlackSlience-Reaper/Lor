@@ -22,6 +22,7 @@ using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -195,6 +196,7 @@ internal static class SpecialGuestRunStateLoadPatch
 /// </summary>
 [HarmonyPatch(typeof(RunManager), nameof(RunManager.ProceedFromTerminalRewardsScreen))]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "ProceedFromTerminalRewardsScreen 无 Hook；仅在本模组特邀嘉宾阶段衔接中吞掉重复/过期的继续调用，其余放行原版以复用其出栈与父事件恢复。")]
 internal static class SpecialGuestTerminalRewardsProceedPatch
 {
     private static readonly ConditionalWeakTable<CombatRoom, ProceedGate> Gates = new();
@@ -456,6 +458,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
 }
 
 [HarmonyPatch(typeof(RunManager), "FadeIn", typeof(bool))]
+[LibraryPatch(Reason = "RunManager.FadeIn 公开非虚且无 Hook；仅在本模组特邀嘉宾阶段衔接、当前房间为嘉宾父事件时抑制中间淡入，避免父事件闪现。")]
 internal static class SpecialGuestSuppressIntermediateParentFadeInPatch
 {
     [HarmonyPrefix]
@@ -500,6 +503,7 @@ internal static class SpecialGuestRelicRemovedPatch
 }
 
 [HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
+[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组特邀嘉宾状态载体修饰符返回 null（原版 TestMode 同样返回 null）。")]
 internal static class SpecialGuestHideRunStateTopBarPatch
 {
     [HarmonyPrefix]

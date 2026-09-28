@@ -2,10 +2,12 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using MegaCrit.Sts2.Core.Models;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.LiteratureFloorLiberation;
 
 [HarmonyPatch(typeof(EncounterModel), nameof(EncounterModel.CreateScene))]
+[LibraryPatch(Reason = "原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于文学层解放遭遇的第 2–5 阶段。")]
 internal static class LiteratureFloorLiberationCreateScenePatch
 {
     private static bool Prefix(

@@ -196,6 +196,7 @@ internal static class FocusOfAttentionCardCmdAutoPlayPatch
 }
 
 [HarmonyPatch(typeof(DarkOrb), nameof(DarkOrb.Evoke))]
+[LibraryPatch(Reason = "DarkOrb 是原版类，无法覆写，原版没有激发目标重定向 Hook；只在存在带本模组集火能力的可命中敌人时改为对它造成伤害。")]
 internal static class FocusOfAttentionDarkOrbEvokePatch
 {
     private static readonly MethodInfo? _playEvokeSfxMethod =

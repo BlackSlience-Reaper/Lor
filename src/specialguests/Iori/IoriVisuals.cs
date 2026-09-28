@@ -6,6 +6,7 @@ using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Iori;
 
@@ -226,6 +227,7 @@ internal static class IoriAnimationContract
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
 [HarmonyPriority(Priority.Low)]
+[LibraryPatch(Reason = "原版 CreateVisuals 非虚，伊织外观由代码拼装；只作用于 IoriMonsterBase。")]
 internal static class IoriSpecialGuestCreateVisualsPatch
 {
     [HarmonyPrefix]

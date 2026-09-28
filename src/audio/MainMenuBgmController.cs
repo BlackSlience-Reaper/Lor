@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.audio;
 
@@ -512,6 +513,7 @@ internal static class MainMenuBgmReadyPatch
 }
 
 [HarmonyPatch(typeof(NAudioManager), nameof(NAudioManager.PlayMusic), typeof(string))]
+[LibraryPatch(Reason = "原版在 NMainMenu._Ready 内联调用 PlayMusic 播放菜单曲，无 Hook 或虚方法；仅在本模组主菜单 BGM 开关开启且自有播放器接管时跳过 menu_update，其余曲目放行。")]
 internal static class MainMenuBgmPlayMusicPatch
 {
     private static bool Prefix(string music)
@@ -521,6 +523,7 @@ internal static class MainMenuBgmPlayMusicPatch
 }
 
 [HarmonyPatch(typeof(NAudioManager), nameof(NAudioManager.UpdateMusicParameter), typeof(string), typeof(string))]
+[LibraryPatch(Reason = "原版 NMainMenu 切换子菜单时直接调用 UpdateMusicParameter(\"menu_progress\")，无 Hook；仅在本模组主菜单 BGM 接管播放时丢弃该参数。")]
 internal static class MainMenuBgmMusicParameterPatch
 {
     private static bool Prefix(string parameter)

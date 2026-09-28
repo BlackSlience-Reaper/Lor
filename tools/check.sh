@@ -15,6 +15,13 @@ dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 dotnet build "$ROOT/verification/LibraryOfRuinaVerification.csproj" -c Release -nologo -v q -clp:ErrorsOnly
 "$ROOT/tools/snapshot.sh" "$TMP" Debug >/dev/null
 
+# Every bool prefix must say why it has to skip the original (design philosophy §1/§3).
+if grep -q $'\tMISSING$' "$TMP/skip_prefixes.txt"; then
+  echo "skip prefixes without [LibraryPatch(Reason = ...)]:" >&2
+  grep $'\tMISSING$' "$TMP/skip_prefixes.txt" | cut -f1 >&2
+  exit 1
+fi
+
 if [[ "${1:-}" == "--accept" ]]; then
   cp "$TMP"/*.txt "$ROOT/snapshots/"
   echo "snapshots updated"

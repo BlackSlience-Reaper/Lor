@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.QueenOfHatred;
 
@@ -169,6 +170,7 @@ internal static class UntargetableCardTargetPatch
 [HarmonyPatch(
     typeof(CreatureCmd),
     nameof(CreatureCmd.Stun), typeof(Creature), typeof(Func<IReadOnlyList<Creature>, Task>), typeof(string))]
+[LibraryPatch(Reason = "原版 CreatureCmd.Stun 没有否决 Hook；对不可命中的生物跳过眩晕。判断用 IsHittable，也会作用于第三方“存活但不可命中”的生物，收窄见重构指导附录 A。")]
 internal static class UntargetableCreatureStunPatch
 {
     private static bool Prefix(Creature creature, ref Task __result)
@@ -186,6 +188,7 @@ internal static class UntargetableCreatureStunPatch
 [HarmonyPatch(
     typeof(LibraryCreatureCmd),
     "Stun", typeof(LibraryCreature), typeof(Func<IReadOnlyList<Creature>, Task>), typeof(string))]
+[LibraryPatch(Reason = "基础库 LibraryCreatureCmd.Stun 没有否决点；对不可命中的生物跳过眩晕。判断用 IsHittable，收窄见重构指导附录 A。")]
 internal static class UntargetableLibraryCreatureStunPatch
 {
     private static bool Prefix(LibraryCreature creature, ref Task __result)

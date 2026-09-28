@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Xiao;
 
@@ -83,6 +84,7 @@ public sealed class XiaoSpecialGuestStageTwoEncounter :
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
 [HarmonyPriority(Priority.Low)]
+[LibraryPatch(Reason = "原版背景标题只能是遭遇 id，晓两阶段需要共用按种子抽取的接待层；只作用于晓特殊来宾遭遇。")]
 internal static class XiaoSpecialGuestBackgroundAssetsPatch
 {
     internal const string StageOneLayerValueKey = "xiao.stage-one-layer";

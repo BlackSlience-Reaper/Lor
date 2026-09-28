@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 
@@ -68,6 +69,7 @@ public sealed class RnfmabjSpecialGuestEncounter :
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
 [HarmonyPriority(Priority.Low)]
+[LibraryPatch(Reason = "原版背景标题只能是遭遇 id，本模组背景资源目录另有命名；只作用于 Rnfmabj 特殊来宾遭遇。")]
 internal static class RnfmabjSpecialGuestBackgroundAssetsPatch
 {
     [HarmonyPrefix]

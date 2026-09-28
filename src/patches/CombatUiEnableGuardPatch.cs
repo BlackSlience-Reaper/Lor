@@ -2,6 +2,7 @@ using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -13,6 +14,7 @@ namespace LibraryOfRuina.patches;
 /// 跳过时必须补刷结束回合按钮，且无法判断初始化进度时一律放行原方法。
 /// </summary>
 [HarmonyPatch(typeof(NCombatUi), nameof(NCombatUi.Enable))]
+[LibraryPatch(Reason = "NCombatRoom 在界面上下文更新时无条件调用 NCombatUi.Enable，Activate 前字段为空必抛空引用，原版无 Hook；只在读到未初始化字段时跳过并补刷结束回合按钮，范围限于原版必然崩溃的窗口。")]
 internal static class CombatUiEnableGuardPatch
 {
     /// <summary>反射失败时记录一次告警的节流上限，避免日志被战斗每帧刷屏。</summary>

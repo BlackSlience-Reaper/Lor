@@ -8,12 +8,14 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
 using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
 [HarmonyPatch(
     typeof(NTopBarBossIcon),
     "OnFocus")]
+[LibraryPatch(Reason = "原版 Boss 图标悬停文本固定为通用 BOSS 提示且方法受保护，没有扩展点；只在可见 Boss 为本模组解放战时替换提示。")]
 internal static class LiberationBossTopBarHoverPatch
 {
     private const string DoubleHoverLocalizationPrefix =

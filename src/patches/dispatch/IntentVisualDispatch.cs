@@ -3,6 +3,7 @@ using LibraryOfRuina.patches.TechnologyFloorLiberation;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.dispatch;
 
@@ -40,6 +41,7 @@ internal static class IntentVisualDispatch
 
     /// <summary>带徽记或详细意图时显示多条提示并接管原版悬停。原来还有一个敌方卡牌悬停处理，恒返回 true，已删除。</summary>
     [HarmonyPatch(typeof(NIntent), "OnHovered")]
+    [LibraryPatch(Reason = "AbstractIntent.GetHoverTip 非虚无 Hook；带本模组徽记或详细意图时显示多条提示并接管原版悬停。")]
     private static class Hovered
     {
         [HarmonyPrefix]

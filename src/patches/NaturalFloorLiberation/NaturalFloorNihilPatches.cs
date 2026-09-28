@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.NaturalFloorLiberation;
 
@@ -27,6 +28,7 @@ internal static class NaturalFloorNihilEntryPatch
 }
 
 [HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Stun), typeof(Creature), typeof(Func<IReadOnlyList<Creature>, Task>), typeof(string))]
+[LibraryPatch(Reason = "原版 CreatureCmd.Stun 没有 Hook 或虚方法可否决；仅对本模组终战 Boss“虚无”屏蔽外部眩晕。")]
 internal static class NaturalFloorNihilExternalStunPatch
 {
     private static bool Prefix(Creature creature, ref Task __result)
@@ -42,6 +44,7 @@ internal static class NaturalFloorNihilExternalStunPatch
 }
 
 [HarmonyPatch(typeof(LibraryCreatureCmd), nameof(LibraryCreatureCmd.Stun), typeof(LibraryCreature), typeof(Func<IReadOnlyList<Creature>, Task>), typeof(string))]
+[LibraryPatch(Reason = "基础库混乱眩晕没有否决钩子，且 LibraryCreature.StunInternal 强制切招；仅对本模组终战 Boss“虚无”在非愤怒力竭时拦截。")]
 internal static class NaturalFloorNihilChaosStunPatch
 {
     private static bool Prefix(LibraryCreature creature, ref Task __result)

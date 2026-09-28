@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -17,6 +18,7 @@ namespace LibraryOfRuina.specialguests;
 /// the native `event` developer command to open their event pages directly.
 /// </summary>
 [HarmonyPatch(typeof(EventConsoleCmd), nameof(EventConsoleCmd.Process))]
+[LibraryPatch(Reason = "原版 event 命令只在 ModelDb 事件表里查找，特邀嘉宾事件不在其中；只在参数是特邀嘉宾事件 ID 时接管，属于开发者控制台命令。")]
 internal static class SpecialGuestEventConsoleProcessPatch
 {
     [HarmonyPrefix]

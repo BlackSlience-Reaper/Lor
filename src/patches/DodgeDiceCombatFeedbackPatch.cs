@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -137,6 +138,7 @@ internal static class DodgeDiceDamagePreviewModePatch
 }
 
 [HarmonyPatch(typeof(SfxCmd), nameof(SfxCmd.Play), typeof(string), typeof(float))]
+[LibraryPatch(Reason = "原版在 CreatureCmd.Damage 完全格挡后硬编码播放 block_hit，没有 Hook；只消耗本模组闪避骰在同一次命中里入队的计数，其余调用原样放行。")]
 internal static class DodgeDiceBlockHitSfxPatch
 {
     private static bool Prefix(string sfx) =>
@@ -144,6 +146,7 @@ internal static class DodgeDiceBlockHitSfxPatch
 }
 
 [HarmonyPatch(typeof(NBlockSparkVfx), nameof(NBlockSparkVfx.Create))]
+[LibraryPatch(Reason = "原版完全格挡火花在 CreatureCmd.Damage 内直接创建，没有 Hook；只对本模组闪避骰在同一次命中里入队的受击者跳过一次创建。")]
 internal static class DodgeDiceBlockSparkVfxPatch
 {
     private static bool Prefix(Creature target, ref NBlockSparkVfx? __result)
@@ -159,6 +162,7 @@ internal static class DodgeDiceBlockSparkVfxPatch
 }
 
 [HarmonyPatch(typeof(NDamageBlockedVfx), nameof(NDamageBlockedVfx.Create))]
+[LibraryPatch(Reason = "原版“已格挡”飘字在 CreatureCmd.Damage 内直接创建，没有 Hook；只对本模组闪避骰入队的受击者跳过一次。")]
 internal static class DodgeDiceBlockedTextVfxPatch
 {
     private static bool Prefix(Creature target, ref NDamageBlockedVfx? __result)
