@@ -10,10 +10,9 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 namespace LibraryOfRuina.patches;
 
 // 神奇粉末的目标限制只属于该牌，不能通过全战斗 ShouldAllowTargeting Hook 限制队友。
-[HarmonyPatch(typeof(CardModel), nameof(CardModel.IsValidTarget))]
 internal static class SocialFloorMagicalPowderTargetPatch
 {
-    private static void Postfix(CardModel __instance, Creature? target, ref bool __result)
+    internal static void FilterIsValidTarget(CardModel __instance, Creature? target, ref bool __result)
     {
         if (__instance is SocialFloorMagicalPowderCard)
         {
@@ -22,13 +21,9 @@ internal static class SocialFloorMagicalPowderTargetPatch
     }
 }
 
-[HarmonyPatch(
-    typeof(NTargetManager),
-    nameof(NTargetManager.StartTargeting),
-    typeof(TargetType), typeof(Control), typeof(TargetMode), typeof(Func<bool>), typeof(Func<Node, bool>))]
 internal static class SocialFloorMagicalPowderTargetSelectionPatch
 {
-    private static void Prefix(Control control, ref Func<Node, bool>? nodeFilter)
+    internal static void OnStartTargetingFromCard(Control control, ref Func<Node, bool>? nodeFilter)
     {
         if (control is not NCard { Model: SocialFloorMagicalPowderCard })
         {

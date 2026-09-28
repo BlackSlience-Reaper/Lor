@@ -115,11 +115,9 @@ internal static class UntargetableInteractionFilter
     }
 }
 
-[HarmonyPatch(typeof(AttackCommand), "GetPossibleTargets")]
 internal static class UntargetableAttackTargetsPatch
 {
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(AttackCommand __instance, ref IReadOnlyList<Creature> __result)
+    internal static void FilterAttackTargets(AttackCommand __instance, ref IReadOnlyList<Creature> __result)
     {
         __result = UntargetableInteractionFilter.FilterPlayerAttackTargets(
             __result,
@@ -156,11 +154,9 @@ internal static class UntargetableDamageTargetsPatch
     }
 }
 
-[HarmonyPatch(typeof(CardModel), nameof(CardModel.IsValidTarget))]
 internal static class UntargetableCardTargetPatch
 {
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(CardModel __instance, Creature? target, ref bool __result)
+    internal static void FilterIsValidTarget(CardModel __instance, Creature? target, ref bool __result)
     {
         if (!__result || target == null)
         {

@@ -54,13 +54,12 @@ internal interface IEnemyCardRuntimeOwner
         [card.CreateIntentInstance()];
 }
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
 internal static class EnemyCardIntentRuntimePatch
 {
     private static readonly HashSet<string> LoggedRuntimeIntentRefreshes = [];
     private static readonly HashSet<string> LoggedMoveIntentRefreshes = [];
 
-    private static void Postfix(NCreature __instance, IEnumerable<Creature> targets)
+    internal static void OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
         {
@@ -845,11 +844,9 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
     }
 }
 
-[HarmonyPatch(typeof(NIntent), "OnHovered")]
 internal static class EnemyCardIntentHoverPatch
 {
-    [HarmonyPrefix]
-    private static bool Prefix(
+    internal static bool OnIntentHovered(
         AbstractIntent ____intent,
         IEnumerable<Creature> ____targets,
         Creature ____owner)

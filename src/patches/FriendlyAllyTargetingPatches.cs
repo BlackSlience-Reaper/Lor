@@ -138,12 +138,9 @@ internal static class FriendlyAllyTargetManagerPatch
     }
 }
 
-[HarmonyPatch(typeof(LibraryAttackCommand), "GetPossibleTargets")]
 internal static class FriendlyAllyLibraryAttackTargetsPatch
 {
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(
+    internal static void FilterLibraryAttackTargets(
         LibraryAttackCommand __instance,
         ref IReadOnlyList<Creature> __result)
     {

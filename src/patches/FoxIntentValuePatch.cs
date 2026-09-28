@@ -5,11 +5,9 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NIntent), "UpdateVisuals")]
 public static class FoxIntentValuePatch
 {
-    [HarmonyPostfix]
-    public static void Postfix(NIntent __instance, AbstractIntent ____intent)
+    internal static void OnUpdateVisuals(NIntent __instance, AbstractIntent ____intent)
     {
         string? text = null;
 

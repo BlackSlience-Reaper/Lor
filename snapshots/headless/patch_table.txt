@@ -5,8 +5,7 @@
 LibraryOfRuinaLib|LibraryLib.Commands.LibraryAttackCommand::Execute(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Entities.Cards.CardPlay)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.StranglingVineLibraryAttackDamageTypePatch.Prefix
 LibraryOfRuinaLib|LibraryLib.Commands.LibraryAttackCommand::GetPossibleTargets()
-  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyLibraryAttackTargetsPatch.Postfix
-  Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.MagicBulletShooterLibraryAttackTargetsPatch.Postfix
+  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+LibraryAttackTargetsLast.Postfix
 LibraryOfRuinaLib|LibraryLib.Commands.LibraryCreatureCmd::ChaoDamage(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardPlay,LibraryLib.Utils.Resistance.LibraryDamageType,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.DamageResult, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
   Prefix priority=800 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyLibraryChaoTargetsPatch.Prefix
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.reverberation.GearChurch.GearChurchChaoHitPatch.Prefix
@@ -134,13 +133,8 @@ sts2|MegaCrit.Sts2.Core.Commands.Builders.AttackCommand::Execute(MegaCrit.Sts2.C
   Finalizer priority=400 index=0 owner=LibraryOfRuinaLib LibraryLib.Patches.LibraryAttackExecuteFlagPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Commands.Builders.AttackCommand::GetPossibleTargets()
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.CardTargeting.Patches.AttackCommandGetPossibleTargetsCustomTargetTypePatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TargetedMonsterAttackTargetPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch.Postfix
-  Postfix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch.Postfix
-  Postfix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch.Postfix
-  Postfix priority=0 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.MagicBulletShooterAttackTargetsPatch.Postfix
-  Postfix priority=0 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.QueenOfHatred.UntargetableAttackTargetsPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+AttackTargets.Postfix
+  Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+AttackTargetsLast.Postfix
 sts2|MegaCrit.Sts2.Core.Commands.CardCmd+<AutoPlay>d__0::MoveNext()
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionCardCmdAutoPlayPatch.Transpiler
 sts2|MegaCrit.Sts2.Core.Commands.CreatureCmd::Damage(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardPlay)
@@ -346,13 +340,8 @@ sts2|MegaCrit.Sts2.Core.Models.AncientEventModel::SetInitialEventState(System.Bo
 sts2|MegaCrit.Sts2.Core.Models.CardModel::IsValidTarget(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.CardTargeting.Patches.CardModelIsValidTargetAnyPlayerPatch.Prefix
   Prefix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.CardTargeting.Patches.CardModelIsValidTargetCustomTargetTypePatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.SocialFloorMagicalPowderTargetPatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+CardModelIsValidTargetPatch.Postfix
-  Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.QueenOfHatred.UntargetableCardTargetPatch.Postfix
-  Postfix priority=0 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PunishingBird.ForestKeeperLockTargetPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTarget.Postfix
+  Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTargetLast.Postfix
 sts2|MegaCrit.Sts2.Core.Models.CardModel::OnPlayWrapper(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean,MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo,System.Boolean)
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.SecondaryResources.Patches.CardModelOnPlayWrapperSecondaryResourcesPatch.Prefix
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Cards.FreePlay.Patches.CardModelFreeAfterPlayedCleanupPatch.Postfix
@@ -548,12 +537,8 @@ sts2|MegaCrit.Sts2.Core.Nodes.Combat.NCreature::StartDeathAnim(System.Boolean)
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorBlackSwanBrotherDeathVisualPatch.Prefix
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-character-assets STS2RitsuLib.Scaffolding.Characters.Patches.NCreatureNonSpineDeathAnimationTriggerPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NCreature::UpdateIntent(System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
-  Postfix priority=800 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CombinedIntentDisplayPatch.Postfix
-  Postfix priority=800 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CounterIntentAppendPatch.Postfix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.EnemyCardIntentRuntimePatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TargetedIntentIndicatorPatch.Postfix
-  Postfix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.ChordEgoIntentDimPatch.Postfix
-  Postfix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.SolemnMourningSealIntentPatch.Postfix
+  Postfix priority=800 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntentFirst.Postfix
+  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntent.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NCreature::_Ready()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-character-assets STS2RitsuLib.Scaffolding.Characters.Patches.CharacterCombatSpineOverridePatch.Postfix
   Postfix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-character-assets STS2RitsuLib.Scaffolding.Characters.Patches.NCreatureCombatAnimationInitialBootstrapPatch.Postfix
@@ -595,19 +580,15 @@ sts2|MegaCrit.Sts2.Core.Nodes.Combat.NHealthBar::_Ready()
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.DodgeDiceHealthBarReadyPatch.Postfix
   Postfix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core after=BaseLib STS2RitsuLib.Combat.HealthBars.Patches.NHealthBarReadyForecastPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NIntent::OnHovered()
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.EnemyCardIntentHoverPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BadgedIntentHoverTipDisplayPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.IntentVisualDispatch+Hovered.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TargetedIntentHoverPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NIntent::OnUnhovered()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TargetedIntentUnhoverPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NIntent::UpdateVisuals()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.Ui.Patches.NIntentExtraCornerAmountLabelsPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BadgedIntentVisualPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CombinedIntentAnimationRefreshPatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FoxIntentValuePatch.Postfix
+  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateVisuals.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NIntent::_Process(System.Double)
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CombinedIntentVisualPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CounterIntentVisualPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.IntentVisualDispatch+Process.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NPower::RefreshAmount()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.Ui.Patches.NPowerExtraCornerAmountLabelsPatch.Postfix
   Postfix priority=400 index=1 owner=LibraryOfRuinaLib LibraryLib.Patches.PowerSecondaryCounterRefreshPatch.Postfix
@@ -621,29 +602,15 @@ sts2|MegaCrit.Sts2.Core.Nodes.Combat.NPower::get_Model()
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NPowerModelSafeGetterPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager::AllowedToTargetCreature(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.CardTargeting.Patches.NTargetManagerAllowedToTargetCreatureCustomTargetTypePatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerAllowedToTargetCreaturePatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+AllowedToTargetCreature.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager::AllowedToTargetNode(Godot.Node)
   Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyTargetManagerPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager::FinishTargeting(System.Boolean)
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerFinishTargetingPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerFinishTargetingPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerFinishTargetingPatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerFinishTargetingPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+FinishTargeting.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager::StartTargeting(MegaCrit.Sts2.Core.Entities.Cards.TargetType,Godot.Control,MegaCrit.Sts2.Core.Nodes.Combat.TargetMode,System.Func`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]],System.Func`2[[Godot.Node, GodotSharp, Version=4.5.1.0, Culture=neutral, PublicKeyToken=null],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.SocialFloorMagicalPowderTargetSelectionPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PunishingBird.ForestKeeperLockTargetSelectionPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-  Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerStartTargetingFromCardPatch.Prefix
-  Prefix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerStartTargetingFromCardPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+StartTargetingFromCard.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager::StartTargeting(MegaCrit.Sts2.Core.Entities.Cards.TargetType,Godot.Vector2,MegaCrit.Sts2.Core.Nodes.Combat.TargetMode,System.Func`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]],System.Func`2[[Godot.Node, GodotSharp, Version=4.5.1.0, Culture=neutral, PublicKeyToken=null],[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.BigBird.BigBirdTargetingPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorAtonementTargetPatch+TargetManagerStartTargetingFromPositionPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+StartTargetingFromPosition.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.CommonUi.NCursorManager::StopOverridingCursor()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LibraryCursorManagerStopOverridingCursorPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.CommonUi.NCursorManager::_EnterTree()
