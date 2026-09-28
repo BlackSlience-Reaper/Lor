@@ -9,7 +9,8 @@ namespace LibraryOfRuina.monsters;
 /// <list type="bullet">
 /// <item>离开房间时从遭遇 BGM 的登记里移除（<see cref="EncounterBgmController.UnregisterMonster"/> 只移出集合、
 /// 解绑死亡事件，没登记过的怪物是空操作）。登记（<c>RegisterMonster</c>）仍由各怪物在 <c>AfterAddedToRoom</c> 里自己调用：
-/// 它会立即按遭遇当前状态（阶段、背景层）选曲，时机因怪物而异。</item>
+/// 它会立即按遭遇当前状态（阶段、背景层）选曲，时机因怪物而异。离场时还要清理表现层的子类先调用 base：
+/// 清理抛异常时注销已经完成，不会留下死亡事件订阅。</item>
 /// <item>按回合缓存的伤害骰（<see cref="EnsureDamageRoll"/>、<see cref="GetOrRollDamage"/>）。</item>
 /// </list>
 /// </summary>

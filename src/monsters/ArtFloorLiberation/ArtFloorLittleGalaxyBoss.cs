@@ -167,8 +167,8 @@ public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrima
 
     public override void BeforeRemovedFromRoom()
     {
-        ArtFloorLiberationBackgroundController.SetGalaxyCryingMode(false);
         base.BeforeRemovedFromRoom();
+        ArtFloorLiberationBackgroundController.SetGalaxyCryingMode(false);
     }
 
     public override Task AfterDeath(

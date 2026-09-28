@@ -151,8 +151,8 @@ public sealed class TimeTrace : LorMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        _markedPower = null;
         base.BeforeRemovedFromRoom();
+        _markedPower = null;
     }
 
     public override async Task BeforeSideTurnStart(

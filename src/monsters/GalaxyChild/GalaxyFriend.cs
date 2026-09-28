@@ -182,8 +182,8 @@ public sealed class GalaxyFriend : LorMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        StopAllGalaxyChildPresentation();
         base.BeforeRemovedFromRoom();
+        StopAllGalaxyChildPresentation();
     }
 
     public override Task AfterCombatEnd(CombatRoom room)

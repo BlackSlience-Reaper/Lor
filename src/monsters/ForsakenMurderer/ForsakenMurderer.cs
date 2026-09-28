@@ -103,12 +103,19 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
         }
     }
 
-    public override async Task AfterAddedToRoom()
+    public override Task AfterAddedToRoom()
+    {
+        // BGM 登记在入场流程返回任务之后（原先是补在本方法上的后缀）：恐惧能力的施加已经开始，登记抛异常也不会拦住它。
+        Task added = AddedToRoomAsync();
+        EncounterBgmController.RegisterMonster(Creature);
+        return added;
+    }
+
+    private async Task AddedToRoomAsync()
     {
         await base.AfterAddedToRoom();
 
         ForsakenMurdererFearBackgroundOverlay.SetOverlayVisible(false);
-        EncounterBgmController.RegisterMonster(Creature);
 
         await PowerCmdCompat.Apply<LibraryOfRuinaForsakenMurdererFearPower>(
             Creature,
@@ -130,8 +137,8 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        ForsakenMurdererFearBackgroundOverlay.SetOverlayVisible(false);
         base.BeforeRemovedFromRoom();
+        ForsakenMurdererFearBackgroundOverlay.SetOverlayVisible(false);
     }
 
     public override Task AfterDeath(

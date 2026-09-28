@@ -174,8 +174,8 @@ public sealed class DespairKnight : LorMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        StopCryingLoop();
         base.BeforeRemovedFromRoom();
+        StopCryingLoop();
     }
 
     public override Task AfterCombatEnd(CombatRoom room)

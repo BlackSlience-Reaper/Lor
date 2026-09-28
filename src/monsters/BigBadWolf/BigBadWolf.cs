@@ -190,9 +190,9 @@ public sealed class BigBadWolf : LorMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
+        base.BeforeRemovedFromRoom();
         ClearStolenCardMarker();
         ClearPendingCardStateOnly();
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeDeath(Creature creature)

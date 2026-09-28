@@ -283,8 +283,8 @@ public sealed partial class PhilosophyFloorTwilight :
 
     public override void BeforeRemovedFromRoom()
     {
-        PhilosophyFloorLiberationCgController.ResetPresentation();
         base.BeforeRemovedFromRoom();
+        PhilosophyFloorLiberationCgController.ResetPresentation();
     }
 
     public override async Task AfterDeath(
