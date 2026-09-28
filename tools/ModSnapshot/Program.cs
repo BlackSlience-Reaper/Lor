@@ -293,7 +293,9 @@ IEnumerable<string> SkipPrefixes()
 }
 
 // Every patch class that targets the vanilla Hook bus by attribute must also state why it is not a model override.
-// Classes that pick Hook methods in TargetMethod(s) are caught at runtime by LibraryPatcher's report instead.
+// Class-level targets count from base classes too (Harmony reads them with inherit: true), and the target type may
+// be given as typeof(...) or as a type-name string. Classes that pick Hook methods in TargetMethod(s) are caught at
+// runtime by LibraryPatcher's report instead.
 IEnumerable<string> HookPatches()
 {
     var lines = new List<string>();
@@ -302,12 +304,18 @@ IEnumerable<string> HookPatches()
         bool targetsHook;
         try
         {
-            targetsHook = PatchClassRules.IsInstalled(type)
-                && type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
-                    .SelectMany(static method => method.GetCustomAttributesData())
-                    .Concat(type.GetCustomAttributesData())
-                    .Any(static data => data.AttributeType.Name == "HarmonyPatch"
-                        && data.ConstructorArguments.FirstOrDefault().Value is Type { FullName: PatchClassRules.HookTypeFullName });
+            IEnumerable<CustomAttributeData> classAttributes = [];
+            for (Type? current = type; current != null; current = current.BaseType)
+            {
+                classAttributes = classAttributes.Concat(current.GetCustomAttributesData());
+            }
+
+            MethodInfo[] patchMethods = PatchClassRules.PatchMethods(type).ToArray();
+            targetsHook = patchMethods.Length > 0
+                && PatchClassRules.IsInstalled(type)
+                && patchMethods.SelectMany(static method => method.GetCustomAttributesData())
+                    .Concat(classAttributes)
+                    .Any(static data => data.AttributeType.Name == "HarmonyPatch" && TargetsHookType(data));
         }
         catch (FileNotFoundException)
         {
@@ -322,6 +330,18 @@ IEnumerable<string> HookPatches()
     }
 
     return lines.Order(StringComparer.Ordinal);
+}
+
+static bool TargetsHookType(CustomAttributeData data)
+{
+    object? first = data.ConstructorArguments.FirstOrDefault().Value;
+    return first switch
+    {
+        Type type => type.FullName == PatchClassRules.HookTypeFullName,
+        // [HarmonyPatch("Namespace.Type, Assembly", "Method")]: the assembly part is optional.
+        string typeName => typeName.Split(',')[0].Trim() == PatchClassRules.HookTypeFullName,
+        _ => false
+    };
 }
 
 IEnumerable<string> StaticFields()

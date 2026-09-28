@@ -23,6 +23,7 @@ dotnet run --project "$FIXTURES/PatchRuleFixtures.csproj" -c Release
 dotnet run --project "$ROOT/tools/ModSnapshot/ModSnapshot.csproj" -c Release -- \
   "$FIXTURES/bin/Release/net9.0/PatchRuleFixtures.dll" "$FIXTURE_OUT" "$FIXTURES/bin/Release/net9.0" >/dev/null
 diff -u "$FIXTURES/expected_skip_prefixes.txt" "$FIXTURE_OUT/skip_prefixes.txt"
+diff -u "$FIXTURES/expected_hook_patches.txt" "$FIXTURE_OUT/hook_patches.txt"
 
 # Every bool prefix must say why it has to skip the original, and every Hook.* patch why it is not a model
 # override (design philosophy §1/§3).

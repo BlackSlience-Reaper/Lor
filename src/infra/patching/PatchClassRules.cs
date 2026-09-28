@@ -69,6 +69,13 @@ internal static class PatchClassRules
             .Where(IsSkipPrefix);
     }
 
+    /// <summary>Harmony 会当作补丁方法（前缀、后缀、Transpiler、Finalizer 等）安装的静态方法，只看本类声明的。</summary>
+    public static IEnumerable<MethodInfo> PatchMethods(Type type)
+    {
+        return type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+            .Where(static method => HarmonyPatchType(method) != null);
+    }
+
     private static string? HarmonyPatchType(MethodInfo method)
     {
         var attributes = new HashSet<string>(method.GetCustomAttributesData().Select(static data => data.AttributeType.FullName ?? ""),
