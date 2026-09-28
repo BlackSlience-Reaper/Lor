@@ -22,8 +22,9 @@ internal static class LiberationBossTopBarHoverPatch
     private static bool Prefix(
         NTopBarBossIcon __instance)
     {
-        // 悬停是本地 UI 事件，这里不能改写本局的房间序列；内容关闭时换回原版遭遇由
-        // MonsterExtensionPullNextEncounterGatePatch 在进房间（两端对称）时处理，Boss 房同样经过它。
+        // 悬停是本地 UI 事件，只在悬停的一端执行，这里不能改写本局的房间序列。内容关闭时，普通地图进房
+        // （含 Boss 房）经过 PullNextEncounter，由 MonsterExtensionPullNextEncounterGatePatch 对称地换回原版遭遇；
+        // 显式指定遭遇的进房路径与顶栏显示不经过它，关闭内容后继续旧局的一致性另行处理（重构指导阶段 3a）。
         if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             return true;
