@@ -173,16 +173,6 @@ public sealed class LungOfAspiration : AspirationMonsterBase
     /// path, mirroring the pattern used by ScarecrowSearchingForWisdom,
     /// PriceOfSilence and BurrowingHeaven.
     /// </summary>
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
-    }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {

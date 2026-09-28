@@ -539,16 +539,6 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         return GetOrRollDamage(ref _harvestDamageRoll, HarvestMinDamage, HarvestMaxDamage);
     }
 
-    private int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        return cachedRoll ?? maxInclusive;
-    }
-
     private int EnsureCultivateDamageRoll()
     {
         return EnsureDamageRoll(ref _cultivateDamageRoll, CultivateMinDamage, CultivateMaxDamage);
@@ -567,17 +557,6 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
     private int EnsureHarvestDamageRoll()
     {
         return EnsureDamageRoll(ref _harvestDamageRoll, HarvestMinDamage, HarvestMaxDamage);
-    }
-
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

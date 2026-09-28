@@ -353,27 +353,6 @@ public sealed class HeavenThorn : CounterIntentMonsterModel
     private int GetBloodyDamageRoll() =>
         GetOrRollDamage(ref _bloodyDamageRoll, BloodyThornMinDamage, BloodyThornMaxDamage);
 
-    private int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        return cachedRoll ?? maxInclusive;
-    }
-
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
-    }
-
     private void EnsureRollForMove(string moveId)
     {
         switch (moveId)
