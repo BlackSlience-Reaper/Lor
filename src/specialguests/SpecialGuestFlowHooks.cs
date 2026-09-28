@@ -25,11 +25,10 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.specialguests;
 
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp))]
-internal static class SpecialGuestRunCleanupPatch
+internal static class SpecialGuestRunCleanup
 {
-    [HarmonyPrefix]
-    private static void Prefix()
+    /// <summary>由 <see cref="LibraryOfRuina.patches.dispatch.RunLifecycle"/> 在局结束清理时调用。</summary>
+    internal static void OnRunCleaningUp()
     {
         SpecialGuestStoryPlayer.AbortActiveStory();
         StoryReadySynchronizer.Reset();

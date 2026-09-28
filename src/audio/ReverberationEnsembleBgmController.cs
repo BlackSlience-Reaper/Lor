@@ -299,12 +299,6 @@ internal static class ReverberationEnsembleTrackPatch
     private static void Postfix() => ReverberationEnsembleBgmController.Sync();
 }
 
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class ReverberationEnsembleMusicCleanupPatch
-{
-    private static void Prefix() => ReverberationEnsembleBgmController.OnRunCleaningUp();
-}
-
 [HarmonyPatch(typeof(CombatManager), nameof(CombatManager.LoseCombat))]
 internal static class ReverberationEnsembleMusicLossPatch
 {

@@ -383,12 +383,3 @@ internal static class AbnormalityEliteBgmVolumePatch
         AbnormalityEliteBgmController.RefreshVolumeFromSettings();
     }
 }
-
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class AbnormalityEliteBgmRunCleanupPatch
-{
-    private static void Prefix()
-    {
-        AbnormalityEliteBgmController.OnRunCleaningUp();
-    }
-}

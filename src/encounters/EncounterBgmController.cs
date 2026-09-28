@@ -1469,12 +1469,3 @@ internal static class EncounterBgmController
         Math.Clamp((Math.Max(1, phase) - 1) / 2, 0, 2);
 
 }
-
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class EncounterBgmRunCleanupPatch
-{
-    private static void Prefix(bool graceful)
-    {
-        EncounterBgmController.OnRunCleaningUp(graceful);
-    }
-}

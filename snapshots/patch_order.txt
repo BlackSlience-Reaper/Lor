@@ -341,12 +341,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rewards.RewardsSet), "WithRewardsFromRoom
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rooms.CombatRoom), "OfferRoomEndRewards")
   Prefix LibraryOfRuina.specialguests.SpecialGuestRewardResumePatch.Prefix
   Postfix LibraryOfRuina.relics.AbnormalityPageRewardResumePatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "CleanUp", [typeof(System.Boolean)])
-  Prefix LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBgmRunCleanupPatch.Prefix
-  Prefix LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmRunCleanupPatch.Prefix
-  Prefix LibraryOfRuina.encounters.EncounterBgmRunCleanupPatch.Prefix
-  Prefix LibraryOfRuina.audio.AbnormalityEliteBgmRunCleanupPatch.Prefix
-  Prefix LibraryOfRuina.audio.ReverberationEnsembleMusicCleanupPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "ProceedFromTerminalRewardsScreen")
   Postfix LibraryOfRuina.specialguests.SpecialGuestTerminalRewardsProceedPatch.Postfix
   Prefix LibraryOfRuina.specialguests.SpecialGuestTerminalRewardsProceedPatch.Prefix
