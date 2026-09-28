@@ -28,6 +28,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.monsters.SocialFloorLiberation;
 
@@ -60,20 +61,12 @@ internal readonly record struct FalseThroneHomeMovePlan(
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyMaxEnergy))]
 [HarmonyAfter("LibraryOfRuinaLib")]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "樵夫试炼的能量上限是最终上限，要排在 LibraryOfRuinaLib 只有后缀的情感能量加成之后，FalseThrone 自身的 ModifyMaxEnergy 覆写排不到那里；只在本模组社会层解放遭遇的樵夫试炼中封顶。")]
 internal static class FalseThroneWoodsmanMaxEnergyPatch
 {
     private static void Postfix(Player player, ref decimal __result)
     {
-        if (player.Creature.CombatState?.Encounter is
-            SocialFloorLiberationEncounter
-            {
-                Trial: SocialFloorTrial.Woodsman
-            } encounter)
-        {
-            __result = Math.Min(
-                __result,
-                1m + encounter.DestroyedCrystalCount);
-        }
+        __result = FalseThrone.CapWoodsmanTrialMaxEnergy(player.Creature.CombatState?.Encounter, __result);
     }
 }
 
@@ -490,16 +483,14 @@ public sealed class FalseThrone :
         }
     }
 
-    public override decimal ModifyMaxEnergy(Player player, decimal amount)
-    {
-        if (Encounter is not { Trial: SocialFloorTrial.Woodsman }
-            encounter)
-        {
-            return amount;
-        }
+    public override decimal ModifyMaxEnergy(Player player, decimal amount) =>
+        CapWoodsmanTrialMaxEnergy(Encounter, amount);
 
-        return Math.Min(amount, 1m + encounter.DestroyedCrystalCount);
-    }
+    // 樵夫试炼：能量上限降为 1，每摧毁一个翡翠水晶解除 1 点。覆写与 FalseThroneWoodsmanMaxEnergyPatch 共用。
+    internal static decimal CapWoodsmanTrialMaxEnergy(EncounterModel? encounter, decimal amount) =>
+        encounter is SocialFloorLiberationEncounter { Trial: SocialFloorTrial.Woodsman } socialFloor
+            ? Math.Min(amount, 1m + socialFloor.DestroyedCrystalCount)
+            : amount;
 
     public decimal ClampFinalHpLoss(
         Creature target,

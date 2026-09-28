@@ -19,8 +19,6 @@ sts2|MegaCrit.Sts2.Core.Combat.CombatManager::SwitchFromPlayerToEnemySide(MegaCr
 sts2|MegaCrit.Sts2.Core.Commands.Builders.AttackCommand+<Execute>d__90::MoveNext()	0c7e3c5b51ff70f8e70ca48403cdcfbb4c116112
 sts2|MegaCrit.Sts2.Core.Commands.CardCmd+<AutoPlay>d__0::MoveNext()	0e1b00234dfdfa0a20918ab8db25509322f0981a
 sts2|MegaCrit.Sts2.Core.Commands.CreatureCmd::Stun(MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Func`2[[System.Collections.Generic.IReadOnlyList`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]],System.String)	381ba1a97acad829b5bfe3c8e8bd95ba373332b2
-sts2|MegaCrit.Sts2.Core.Commands.PlayerCmd+<GainEnergy>d__3::MoveNext()	b85dafa46f98b9b3959340158eeb00652f3da337
-sts2|MegaCrit.Sts2.Core.Commands.PlayerCmd::GainEnergy(System.Decimal,MegaCrit.Sts2.Core.Entities.Players.Player)	6d19c6b366caa334b8c638cdac7e029a9a808196
 sts2|MegaCrit.Sts2.Core.Commands.PowerCmd+<ModifyAmount>d__6::MoveNext()	c43444b969b39391df4f313401fe354c58440d72
 sts2|MegaCrit.Sts2.Core.Commands.PowerCmd::ModifyAmount(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Models.PowerModel,System.Decimal,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Boolean)	4435d3ea9620c9df65bd8aeeed9bbe2e5400859a
 sts2|MegaCrit.Sts2.Core.Commands.RelicCmd+<Obtain>d__1::MoveNext()	729297221e8f06e197353561dc25793a3d58ee4f

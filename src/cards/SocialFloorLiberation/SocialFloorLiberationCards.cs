@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.cards.SocialFloorLiberation;
 
@@ -244,13 +245,12 @@ public sealed class SocialFloorMagicalPowderCard() : CardModel(DefaultInternalCo
 }
 
 /// <summary>
-/// Internal cost is authoritative after every local/global cost modifier.
-/// This prevents unrelated cost reduction powers, relics, and afflictions from
-/// making Magical Powder playable before its Ozma counter reaches zero.
+/// 魔法粉末显示和支付的费用始终是 InternalCost。卡牌自己的 TryModifyEnergyCostInCombatLate 已经压过原版的
+/// 玩家侧 Late 修正；这个后缀再压过排在这张牌之后的监听者和其他模组的后缀。能否打出由 IsPlayable 单独把关。
 /// </summary>
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyEnergyCostInCombat))]
-[HarmonyAfter("LibraryOfRuinaLib")]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "卡面规则是费用只能由奥兹玛计数改变，原版 Late 一遍按监听者顺序执行，不能保证本卡排在最后；只作用于 SocialFloorMagicalPowderCard。")]
 internal static class SocialFloorMagicalPowderCostPatch
 {
     private static void Postfix(CardModel card, ref decimal __result)

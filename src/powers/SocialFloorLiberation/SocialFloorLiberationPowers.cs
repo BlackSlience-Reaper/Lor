@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryLib.Light;
 using LibraryOfRuina.cards.SocialFloorLiberation;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -37,8 +37,6 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
     public const int EnergyMaximum = 5;
     public const int StrongStacks = 10;
     public const int TotalActivations = 2;
-
-    private static readonly AsyncLocal<ulong?> ExactEnergyResetPlayer = new();
 
     protected override string LegacyPowerId => "SOCIAL_FLOOR_COURAGE_POWER";
 
@@ -139,8 +137,9 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         return Activate(new ThrowingPlayerChoiceContext(), player, null);
     }
 
+    // 文案是“增至 5”：只抬高，不压低本来更高的上限。最终值由 SocialFloorCourageMaxEnergyPatch 保证。
     public override decimal ModifyMaxEnergy(Player player, decimal amount) =>
-        IsActiveFor(player) ? EnergyMaximum : amount;
+        IsActiveFor(player) ? Math.Max(amount, EnergyMaximum) : amount;
 
     public override bool TryModifyPowerAmountReceived(
         PowerModel canonicalPower,
@@ -205,10 +204,7 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         return Task.CompletedTask;
     }
 
-    internal static bool IsExactEnergyResetActive(Player player) =>
-        ExactEnergyResetPlayer.Value == player.NetId;
-
-    private bool IsActiveFor(Player player) =>
+    internal bool IsActiveFor(Player player) =>
         IsEnergyOverrideActive
         && player.NetId == HolderNetId
         && player.Creature == Owner
@@ -228,11 +224,12 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         await RemoveAll<LibraryWeakPower>();
         await RemoveAll<LibraryDisarmPower>();
 
-        using (BeginExactEnergyReset(player))
+        // “恢复全部能量”与原版回合开始的 ResetEnergy 同语义：直接写状态，不经 Hook.ModifyEnergyGain，
+        // 所以不受混乱、NoEnergyGain 等获得修正影响，也不算作“获得能量”。
+        if (!CombatManager.Instance.IsEnding && playerCombatState.Energy < playerCombatState.MaxEnergy)
         {
-            await PlayerCmd.SetEnergy(
-                Math.Max(playerCombatState.Energy, playerCombatState.MaxEnergy),
-                player);
+            SfxCmd.Play("event:/sfx/ui/gain_energy");
+            playerCombatState.ResetEnergy();
         }
 
         if (LibraryLight.TryGetState(player, out LibraryLightState? light)
@@ -257,29 +254,6 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         foreach (TPower power in Owner.GetPowerInstances<TPower>().ToArray())
         {
             await PowerCmd.Remove(power);
-        }
-    }
-
-    private static IDisposable BeginExactEnergyReset(Player player)
-    {
-        ulong? previous = ExactEnergyResetPlayer.Value;
-        ExactEnergyResetPlayer.Value = player.NetId;
-        return new EnergyResetScope(previous);
-    }
-
-    private sealed class EnergyResetScope(ulong? previous) : IDisposable
-    {
-        private bool _disposed;
-
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            _disposed = true;
-            ExactEnergyResetPlayer.Value = previous;
         }
     }
 }
@@ -605,32 +579,14 @@ public sealed class SocialFloorOzmaPower : SocialFloorPowerModel
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyMaxEnergy))]
 [HarmonyAfter("LibraryOfRuinaLib")]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "勇气的上限下限要排在 LibraryOfRuinaLib 只有后缀的情感能量加成之后，能力自身的覆写排不到那里；只对持有勇气且处于生效期的玩家，把最终上限抬到不低于 5。")]
 internal static class SocialFloorCourageMaxEnergyPatch
 {
     private static void Postfix(Player player, ref decimal __result)
     {
-        if (player.Creature.GetPower<SocialFloorCouragePower>() is
-            { IsEnergyOverrideActive: true } courage
-            && courage.HolderNetId == player.NetId)
+        if (player.Creature.GetPower<SocialFloorCouragePower>() is { } courage && courage.IsActiveFor(player))
         {
-            __result = SocialFloorCouragePower.EnergyMaximum;
-        }
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.ModifyEnergyGain))]
-[HarmonyAfter("LibraryOfRuinaLib")]
-[HarmonyPriority(Priority.Last)]
-internal static class SocialFloorCourageEnergyResetPatch
-{
-    private static void Postfix(
-        Player player,
-        decimal originalAmount,
-        ref decimal __result)
-    {
-        if (SocialFloorCouragePower.IsExactEnergyResetActive(player))
-        {
-            __result = originalAmount;
+            __result = Math.Max(__result, SocialFloorCouragePower.EnergyMaximum);
         }
     }
 }
