@@ -79,7 +79,7 @@ dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 
 补丁由 `src/infra/patching/LibraryPatcher` 统一安装。主菜单第一次就绪时，它会在日志里报告与其他模组共享的目标，并点名排在本模组跳过型前缀之后的第三方前缀。
 
-`src/infra/patching/vanilla_copy_guard.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的原版方法的 IL 哈希。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，再把导出的 `vanilla_copy_guard.txt` 复制过来。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。这两份都只能在装好本模组和前置的游戏里生成，`check.sh` 不会重新生成它们。
+`src/infra/patching/vanilla_copy_guard.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的游戏与前置库方法的 IL 哈希（async 方法连同状态机）。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，再把导出的 `vanilla_copy_guard.txt` 复制过来。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。这两份都只能在装好本模组和前置的游戏里生成，`check.sh` 不会重新生成它们。
 
 ## 目录 / Layout
 
