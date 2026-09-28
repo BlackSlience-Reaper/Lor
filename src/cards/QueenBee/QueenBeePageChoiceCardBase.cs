@@ -1,7 +1,6 @@
 using LibraryOfRuina.powers.HistoryFloorLiberation;
 using LibraryOfRuina.powers.QueenBee;
 using LibraryOfRuina.relics.QueenBee;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 

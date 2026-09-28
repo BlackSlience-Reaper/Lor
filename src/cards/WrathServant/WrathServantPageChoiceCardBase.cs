@@ -1,7 +1,6 @@
 using LibraryOfRuina.powers.WrathServant;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using LibraryOfRuina.relics.WrathServant;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 

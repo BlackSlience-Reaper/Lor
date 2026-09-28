@@ -1,7 +1,6 @@
 using LibraryOfRuina.enchantments.HistoryFloorLiberation;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.relics.HistoryFloorLiberation;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 

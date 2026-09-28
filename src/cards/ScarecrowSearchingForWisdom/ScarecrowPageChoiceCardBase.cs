@@ -1,6 +1,5 @@
 using LibraryOfRuina.powers.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.relics.ScarecrowSearchingForWisdom;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;

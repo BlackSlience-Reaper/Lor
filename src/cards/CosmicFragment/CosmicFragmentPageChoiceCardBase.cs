@@ -1,5 +1,4 @@
 using LibraryOfRuina.relics.CosmicFragment;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace LibraryOfRuina.cards.CosmicFragment;

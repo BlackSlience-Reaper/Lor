@@ -1,6 +1,5 @@
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.relics.LanguageFloorLiberation;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
 

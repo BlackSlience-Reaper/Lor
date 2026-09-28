@@ -2,7 +2,6 @@ using LibraryLib.Powers;
 using LibraryOfRuina.powers.QueenOfHatred;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using LibraryOfRuina.relics.QueenOfHatred;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
