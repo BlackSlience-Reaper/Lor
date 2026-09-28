@@ -809,7 +809,6 @@ readonly	LibraryOfRuina.interop.VanillaPrivate.PatchNotesScreenIndex	LibraryOfRu
 readonly	LibraryOfRuina.interop.VanillaPrivate.PatchNotesScreenPatchNotePaths	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NPatchNotesScreen,System.Collections.Generic.List`1[System.String]]
 readonly	LibraryOfRuina.interop.VanillaPrivate.PlayerHandCurrentCardPlay	LibraryOfRuina.interop.VanillaPrivateFieldRef`2[MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand,MegaCrit.Sts2.Core.Nodes.Combat.NCardPlay]
 readonly	LibraryOfRuina.interop.VanillaPrivate.PowerNodeModel	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Combat.NPower,MegaCrit.Sts2.Core.Models.PowerModel]
-readonly	LibraryOfRuina.interop.VanillaPrivate.RelicModelRelicIconChanged	LibraryOfRuina.interop.VanillaPrivateMethod`1[MegaCrit.Sts2.Core.Models.RelicModel]
 readonly	LibraryOfRuina.interop.VanillaPrivate.RelicRewardClaimedRelic	LibraryOfRuina.interop.VanillaPrivateProperty`2[MegaCrit.Sts2.Core.Rewards.RelicReward,MegaCrit.Sts2.Core.Models.RelicModel]
 readonly	LibraryOfRuina.interop.VanillaPrivate.RelicRewardRelic	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Rewards.RelicReward,MegaCrit.Sts2.Core.Models.RelicModel]
 readonly	LibraryOfRuina.interop.VanillaPrivate.RelicRewardWasTaken	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Rewards.RelicReward,System.Boolean]
