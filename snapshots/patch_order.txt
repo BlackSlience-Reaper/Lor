@@ -117,9 +117,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "ModifyMaxEnergy")
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "ModifyUnblockedDamageTarget")
   Finalizer LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentDamageRedirectPatch.Finalizer
   Prefix LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentDamageRedirectPatch.Prefix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "ShouldClearBlock")
-  Postfix LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Postfix
-  Prefix LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.ActModel), "GenerateRooms")
   Postfix LibraryOfRuina.patches.LibraryEncounterGenerateRoomsPatch.Postfix
   Postfix LibraryOfRuina.patches.WedgeOffice.GloryWedgeRoomSequencePatch.Postfix

@@ -1,5 +1,6 @@
 using System.Linq;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.monsters;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
@@ -26,7 +27,7 @@ public abstract class ReverberationEncounterModel : EncounterModel
 
 /// <summary>有真实司书模型后注册具体子类；空槽本身不生成单位或占用回合。</summary>
 public abstract class ReverberationLibrarianTurnProvider<TMonster> : IAllyTurnProvider<TMonster>
-    where TMonster : MonsterModel
+    where TMonster : LorMonsterModel
 {
     public string AllyId => typeof(TMonster).Name;
 

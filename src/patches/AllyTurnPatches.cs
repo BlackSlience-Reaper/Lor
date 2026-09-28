@@ -121,7 +121,7 @@ namespace LibraryOfRuina.patches;
 // }
 [HarmonyPatch(typeof(Hook), nameof(Hook.BeforeSideTurnStart))]
 [UsedImplicitly]
-[LibraryPatch(Reason = "盟友在敌方一侧，原版只在本方回合开始时清格挡；需要在全部玩家侧开场监听者之后清除。改为盟友怪物覆写会把时点提前到怪物在列表中的位置，放到阶段 4 与盟友基类一起做。只作用于已激活 provider 的本模组盟友。")]
+[LibraryPatch(Reason = "盟友在敌方一侧，原版只在本方回合开始时清格挡；需要在全部玩家侧开场监听者之后清除。不能改为怪物覆写：监听者列表在迭代开始时取好，樵夫在同一轮里重生的树不在列表中，覆写清不到它；排在盟友之后的监听者给的格挡也会留下。只作用于已激活 provider 的本模组盟友。")]
 internal static class AllyClearBlockAtPlayerTurnStartPatch
 {
     [HarmonyPostfix]

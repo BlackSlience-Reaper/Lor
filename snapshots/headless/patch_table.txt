@@ -244,8 +244,6 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyMaxEnergy(MegaCrit.Sts2.Core.Combat.IC
   Postfix priority=0 index=2 owner=FYY.LibraryOfRuina after=LibraryOfRuinaLib LibraryOfRuina.monsters.SocialFloorLiberation.FalseThroneWoodsmanMaxEnergyPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyNextEvent(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Models.EventModel)
   Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestModifyNextEventPatch.Postfix
-sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyPowerAmountGiven(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Models.PowerModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)
-  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyEnemyPowerTargetPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyPowerAmountReceived(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Models.PowerModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)
   Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyEnemyDebuffPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyRewards(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Entities.Players.Player,System.Collections.Generic.List`1[[MegaCrit.Sts2.Core.Rewards.Reward, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],MegaCrit.Sts2.Core.Rooms.AbstractRoom)
@@ -257,7 +255,6 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldAllowAncient(MegaCrit.Sts2.Core.Runs.I
   Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+AllowAncient.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldClearBlock(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.AbstractModel&)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Localization.LocManager::SetLanguage(System.String)
   Postfix priority=400 index=0 owner=LibraryOfRuinaLib LibraryLib.Localization.LibraryResistanceLocManagerSetLanguagePatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.MonsterStateMachineHoverTipLayoutPatch.Postfix

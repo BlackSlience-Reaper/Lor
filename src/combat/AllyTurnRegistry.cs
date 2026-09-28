@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.monsters;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
@@ -33,6 +34,11 @@ public interface IAllyTurnProvider
 
     bool IsActiveEncounter(CombatStateLike combatState);
 
+    /// <summary>
+    /// 返回的生物必须是 <see cref="LorMonsterModel"/>：盟友保留格挡、不吃玩家方敌方范围卡的能力，
+    /// 是由它的覆写按本注册表判断实现的，其他怪物类型的盟友不会得到这两条规则。
+    /// 泛型接口的约束在编译期保证这一点。
+    /// </summary>
     Creature? FindAlly(CombatStateLike combatState);
 
     bool HasFullAllyTurn => true;
@@ -53,7 +59,7 @@ public interface IAllyTurnProvider
 }
 
 public interface IAllyTurnProvider<TMonster> : IAllyTurnProvider
-    where TMonster : MonsterModel
+    where TMonster : LorMonsterModel
 {
     bool IAllyTurnProvider.IsAllyMonster(MonsterModel monster) => monster is TMonster;
 }
