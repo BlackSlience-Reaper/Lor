@@ -7,13 +7,22 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT="$ROOT/LibraryOfRuina.csproj"
 TMP="$(mktemp -d)"
-trap 'rm -rf "$TMP"' EXIT
+FIXTURE_OUT="$(mktemp -d)"
+trap 'rm -rf "$TMP" "$FIXTURE_OUT"' EXIT
 
 python3 "$ROOT/tools/check_canonical_getters.py" "$ROOT/src"
 dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 # The verification suites reach into internals; build them too so they do not silently rot.
 dotnet build "$ROOT/verification/LibraryOfRuinaVerification.csproj" -c Release -nologo -v q -clp:ErrorsOnly
 "$ROOT/tools/snapshot.sh" "$TMP" Debug >/dev/null
+
+# The skip-prefix scan must see every patch class form Harmony installs: the fixture program compares the
+# shared PatchClassRules with Harmony itself, then the scan of the fixtures must match the expected list.
+FIXTURES="$ROOT/tools/PatchRuleFixtures"
+dotnet run --project "$FIXTURES/PatchRuleFixtures.csproj" -c Release
+dotnet run --project "$ROOT/tools/ModSnapshot/ModSnapshot.csproj" -c Release -- \
+  "$FIXTURES/bin/Release/net9.0/PatchRuleFixtures.dll" "$FIXTURE_OUT" "$FIXTURES/bin/Release/net9.0" >/dev/null
+diff -u "$FIXTURES/expected_skip_prefixes.txt" "$FIXTURE_OUT/skip_prefixes.txt"
 
 # Every bool prefix must say why it has to skip the original (design philosophy §1/§3).
 if grep -q $'\tMISSING$' "$TMP/skip_prefixes.txt"; then

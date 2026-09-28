@@ -773,6 +773,7 @@ readonly	LibraryOfRuina.helpers.LibraryAssemblyTypes.Scan	System.Lazy`1[System.V
 readonly	LibraryOfRuina.helpers.ModOwnership.Assembly	System.Reflection.Assembly
 readonly	LibraryOfRuina.helpers.PatchFailureLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]
 readonly	LibraryOfRuina.helpers.PresentationGuard.ReportedSurfaces	System.Collections.Generic.HashSet`1[System.String]
+readonly	LibraryOfRuina.infra.patching.PatchClassRules.PatchTypes	System.String[]
 readonly	LibraryOfRuina.intents.BadgedIntentTextureComposer.Cache	System.Collections.Generic.Dictionary`2[System.String,Godot.Texture2D]
 readonly	LibraryOfRuina.intents.BadgedIntentTextureComposer.TextureCompositionEnabled	System.Boolean
 readonly	LibraryOfRuina.intents.CombinedIntentAnimData.AllKinds	System.Collections.Generic.HashSet`1[System.String]

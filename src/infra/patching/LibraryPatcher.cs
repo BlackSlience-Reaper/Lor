@@ -38,13 +38,14 @@ internal static class LibraryPatcher
 
         foreach (Type type in LibraryAssemblyTypes.Loadable)
         {
-            if (type.GetCustomAttribute<LibraryPatchAttribute>() is { Optional: true })
+            // 与 tools/ModSnapshot 共用 PatchClassRules，离线的跳过型前缀清单与实际安装范围一致。
+            if (PatchClassRules.IsOptional(type))
             {
                 optional.Add(type);
                 continue;
             }
 
-            if (type.HasHarmonyAttribute())
+            if (PatchClassRules.HasHarmonyClassAttribute(type))
             {
                 Apply(harmony, type, optional: false, failedRequired, notApplied);
             }
@@ -121,6 +122,15 @@ internal static class LibraryPatcher
             }
 
             bool ownSkipPrefix = info.Prefixes.Any(patch => patch.owner == harmonyId && IsSkipPrefix(patch));
+            // 离线的 skip_prefixes.txt 靠 PatchClassRules 判定；这里用实际装上的补丁复核，规则漏判时能在日志里看到。
+            foreach (Patch patch in info.Prefixes.Where(patch => patch.owner == harmonyId && IsSkipPrefix(patch)))
+            {
+                if (patch.PatchMethod.DeclaringType is { } patchClass && string.IsNullOrWhiteSpace(PatchClassRules.Reason(patchClass)))
+                {
+                    Log.Error(LogPrefix + "Skip prefix without [LibraryPatch(Reason = ...)]: " + patchClass.FullName);
+                }
+            }
+
             bool ownTranspiler = info.Transpilers.Any(patch => patch.owner == harmonyId);
             // 守卫只管别人的代码（游戏与前置库）；本模组自己的方法改动由自己的提交负责。
             if ((ownSkipPrefix || ownTranspiler) && original.DeclaringType?.Assembly != ownAssembly)

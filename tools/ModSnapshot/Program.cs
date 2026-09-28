@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using LibraryOfRuina.infra.patching;
 
 // usage: ModSnapshot <mod.dll> <out-dir> <reference-dir-or-dll>...
 // Writes deterministic, sorted text snapshots so a refactor can be diffed against a baseline.
@@ -275,15 +276,15 @@ IEnumerable<string> SkipPrefixes()
             continue;
         }
 
-        bool isSkipPrefix = methods.Any(method => PatchKind(method) == "Prefix" && SafeTypeName(method.ReturnType) == "System.Boolean")
-                            && type.GetCustomAttributesData().Any(static data => data.AttributeType.Name == "HarmonyPatch");
+        // Same candidate rule as LibraryPatcher (shared source file), so a class the installer would patch
+        // cannot slip past the reason check because of how its targets are declared.
+        bool isSkipPrefix = methods.Any(PatchClassRules.IsSkipPrefix) && PatchClassRules.IsInstalled(type);
         if (!isSkipPrefix)
         {
             continue;
         }
 
-        CustomAttributeData? meta = type.GetCustomAttributesData().FirstOrDefault(static data => data.AttributeType.Name == "LibraryPatchAttribute");
-        string? reason = meta?.NamedArguments.FirstOrDefault(static arg => arg.MemberName == "Reason").TypedValue.Value as string;
+        string? reason = PatchClassRules.Reason(type);
         lines.Add($"{type.FullName}\t{(string.IsNullOrWhiteSpace(reason) ? "MISSING" : reason)}");
     }
 
