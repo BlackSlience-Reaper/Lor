@@ -31,6 +31,20 @@ internal static class PresentationGuard
         }
     }
 
+    /// <summary>Node or resource lookup for presentation; returns null when the lookup throws.</summary>
+    internal static T? Get<T>(Func<T?> lookup, string surface) where T : class
+    {
+        try
+        {
+            return lookup();
+        }
+        catch (Exception exception)
+        {
+            Report(surface, exception);
+            return null;
+        }
+    }
+
     internal static void Run(Action presentation, string surface)
     {
         try

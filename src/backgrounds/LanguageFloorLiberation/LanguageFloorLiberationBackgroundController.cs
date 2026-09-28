@@ -1,5 +1,6 @@
 using Godot;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.backgrounds.LanguageFloorLiberation;
 
@@ -46,7 +47,11 @@ internal static class LanguageFloorLiberationBackgroundController
         SetPhaseBackground(3);
     }
 
-    public static TextureRect? GetCurrentBackgroundImage()
+    // Called by the encounter right before a phase spawn; a failed node lookup must not skip it.
+    public static TextureRect? GetCurrentBackgroundImage() =>
+        PresentationGuard.Get(FindCurrentBackgroundImage, "LanguageFloorLiberation background lookup");
+
+    private static TextureRect? FindCurrentBackgroundImage()
     {
         NCombatBackground? background = NCombatRoom.Instance?.Background;
         return background?.GetNodeOrNull<TextureRect>("%LittleRedMercenaryBackgroundImage")

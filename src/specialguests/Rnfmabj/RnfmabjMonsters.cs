@@ -211,12 +211,17 @@ public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
 
     protected async Task RefreshPlanDisplay()
     {
+        // RevealPlan switches the move state machine (SetMoveImmediate) and stays on the normal
+        // exception path; only the intent node refresh is local presentation.
         RefreshPlannedIntents();
         RevealPlan();
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        await PresentationGuard.RunAsync(async () =>
         {
-            await node.RefreshIntents();
-        }
+            if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+            {
+                await node.RefreshIntents();
+            }
+        }, "Rnfmabj intent refresh");
     }
 
     protected void HidePlan()
@@ -1250,8 +1255,7 @@ public sealed class Rnfmabj : RnfmabjMonsterBase
             SetPlannedTarget(targetSlot, targets[targetSlot + 1]);
         }
         SetPlannedTarget(StoredIntentSlots - 1, -1);
-        // The caller advances directive progress after this returns; a display failure must not skip it.
-        await PresentationGuard.RunAsync(RefreshPlanDisplay, "Rnfmabj plan display");
+        await RefreshPlanDisplay();
         return true;
     }
 
