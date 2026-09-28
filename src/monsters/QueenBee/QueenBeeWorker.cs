@@ -22,7 +22,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.QueenBee;
 
-public sealed class QueenBeeWorker : LibraryMonsterModel
+public sealed class QueenBeeWorker : LorMonsterModel
 {
     private const string GuardQueenMoveId = "QUEEN_BEE_WORKER_GUARD_QUEEN";
     private const string CarryLarvaMoveId = "QUEEN_BEE_WORKER_CARRY_LARVA";

@@ -24,7 +24,6 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
 internal static class CombinedIntentDisplayPatch
 {
     private static readonly HashSet<string> LibraryReceptionMonsterTypeNames = new(StringComparer.Ordinal)
@@ -59,9 +58,7 @@ internal static class CombinedIntentDisplayPatch
             .Distinct(StringComparer.Ordinal)
             .ToArray();
 
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.First)]
-    private static void Postfix(NCreature __instance, IEnumerable<Creature> targets)
+    internal static void OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
         {

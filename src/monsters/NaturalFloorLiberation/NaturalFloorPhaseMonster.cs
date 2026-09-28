@@ -19,7 +19,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
 
-public abstract class NaturalFloorPhaseMonster : LibraryMonsterModel
+public abstract class NaturalFloorPhaseMonster : LorMonsterModel
 {
     protected const string RouterStateId = "NATURAL_DESPAIR_ROUTER";
     private static readonly JsonSerializerOptions StateJson = new() { IncludeFields = true };
@@ -198,12 +198,6 @@ public abstract class NaturalFloorPhaseMonster : LibraryMonsterModel
                 }
             }
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected int ReadInt(string key, int fallback = 0) => NaturalFloorWrathMonster.ReadInt(_restoredState, key, fallback);

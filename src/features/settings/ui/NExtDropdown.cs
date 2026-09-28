@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.Settings;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.settings.ui;
 
@@ -35,9 +36,7 @@ internal partial class NExtDropdown : NSettingsDropdown
         if (_dropdownContainerRef != null && IsInstanceValid(_dropdownContainerRef))
             return _dropdownContainerRef;
 
-        var field = typeof(NSettingsDropdown).GetField("_dropdownContainer",
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        _dropdownContainerRef = field?.GetValue(this) as Control;
+        _dropdownContainerRef = VanillaPrivate.SettingsDropdownDropdownContainer.Get(this);
 
         if (_dropdownContainerRef == null)
         {

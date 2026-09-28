@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.BlueStar;
 
-public sealed class BlueStarAltar : LibraryMonsterModel
+public sealed class BlueStarAltar : LorMonsterModel
 {
     public const int MaxHp = 1000;
     public const int MaxChao = 1000;
@@ -130,12 +130,6 @@ public sealed class BlueStarAltar : LibraryMonsterModel
         await PowerCmdCompat.Apply<BlueStarMartyrPower>(
             Creature, 1m, Creature, null, silent: true);
         ForceRefreshMoveState();
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

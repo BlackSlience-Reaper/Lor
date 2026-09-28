@@ -19,13 +19,11 @@ namespace LibraryOfRuina.patches.TechnologyFloorLiberation;
 /// unlocked AND any alive player's block &gt;= HitB's final damage.
 /// </para>
 /// </summary>
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
 internal static class ChordEgoIntentDimPatch
 {
     private static readonly Color DimColor = new(1f, 1f, 1f, 0.5f);
 
-    [HarmonyPostfix]
-    private static void Postfix(NCreature __instance)
+    internal static void OnUpdateIntent(NCreature __instance)
     {
         try
         {

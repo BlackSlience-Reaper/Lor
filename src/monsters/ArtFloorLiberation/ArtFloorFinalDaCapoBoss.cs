@@ -46,7 +46,7 @@ internal enum ArtFloorFinalDaCapoSupportCard
     AdagioCantabile
 }
 
-public sealed class ArtFloorFinalDaCapoBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorFinalDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 6;
 
@@ -180,12 +180,6 @@ public sealed class ArtFloorFinalDaCapoBoss : LibraryMonsterModel, ILiberationPr
         await PowerCmdCompat.Apply<ArtFloorFinalDaCapoAriaPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorEnsemblePower>(Creature, 1m, Creature, null, silent: true);
         await ApplyMovementResistance(new ThrowingPlayerChoiceContext(), _currentMovement);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

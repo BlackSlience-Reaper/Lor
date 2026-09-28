@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features;
 
@@ -20,19 +21,9 @@ internal static class MonsterStateMachineIntentGraphFeature
     private const float Dx = 1.62f;
     private const float Dy = 1.1f;
 
-    private static readonly PropertyInfo? ConditionalStatesProperty =
-        typeof(ConditionalBranchState).GetProperty("States", BindingFlags.Instance | BindingFlags.NonPublic);
 
-    private static readonly FieldInfo? ConditionalBranchIdField =
-        typeof(ConditionalBranchState)
-            .GetNestedType("ConditionalBranch", BindingFlags.NonPublic)?
-            .GetField("id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-    private static readonly MethodInfo? ConditionalEvaluateStatesMethod =
-        typeof(ConditionalBranchState).GetMethod("EvaluateStates", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-    private static readonly FieldInfo? StateMachineInitialStateField =
-        typeof(MonsterMoveStateMachine).GetField("_initialState", BindingFlags.Instance | BindingFlags.NonPublic);
 
     private static readonly HashSet<string> IntentResolveFailureKeysLogged = new(StringComparer.Ordinal);
 
@@ -386,7 +377,7 @@ internal static class MonsterStateMachineIntentGraphFeature
         IReadOnlyDictionary<string, MoveState> moves)
     {
         List<ConditionalBranchOption> options = new List<ConditionalBranchOption>();
-        if (ConditionalStatesProperty?.GetValue(conditional) is not IEnumerable branches || ConditionalBranchIdField == null)
+        if (VanillaPrivate.ConditionalBranchStateStates.Get(conditional) is not IEnumerable branches || !VanillaPrivate.ConditionalBranchId.IsAvailable)
         {
             return options;
         }
@@ -406,7 +397,7 @@ internal static class MonsterStateMachineIntentGraphFeature
 
         foreach (object? branch in branches)
         {
-            if (branch == null || ConditionalBranchIdField.GetValue(branch) is not string id || !moves.TryGetValue(id, out MoveState? move))
+            if (branch == null || VanillaPrivate.ConditionalBranchId.Get(branch) is not string id || !moves.TryGetValue(id, out MoveState? move))
             {
                 continue;
             }
@@ -523,14 +514,14 @@ internal static class MonsterStateMachineIntentGraphFeature
 
     private static string? TryEvaluateConditionalStateId(ConditionalBranchState conditional)
     {
-        if (ConditionalEvaluateStatesMethod == null)
+        if (!VanillaPrivate.ConditionalBranchStateEvaluateStates.IsAvailable)
         {
             return null;
         }
 
         try
         {
-            return ConditionalEvaluateStatesMethod.Invoke(conditional, null) as string;
+            return VanillaPrivate.ConditionalBranchStateEvaluateStates.Invoke(conditional, null) as string;
         }
         catch
         {
@@ -558,7 +549,7 @@ internal static class MonsterStateMachineIntentGraphFeature
         IReadOnlyDictionary<string, MoveState> moves,
         ICollection<string> roots)
     {
-        if (StateMachineInitialStateField?.GetValue(stateMachine) is not MonsterState initialState)
+        if (VanillaPrivate.MonsterMoveStateMachineInitialState.Get(stateMachine) is not MonsterState initialState)
         {
             return;
         }
@@ -595,8 +586,8 @@ internal static class MonsterStateMachineIntentGraphFeature
                 return;
             }
 
-            if (ConditionalStatesProperty?.GetValue(conditional) is not IEnumerable branches
-                || ConditionalBranchIdField == null)
+            if (VanillaPrivate.ConditionalBranchStateStates.Get(conditional) is not IEnumerable branches
+                || !VanillaPrivate.ConditionalBranchId.IsAvailable)
             {
                 return;
             }
@@ -604,7 +595,7 @@ internal static class MonsterStateMachineIntentGraphFeature
             foreach (object? branch in branches)
             {
                 if (branch == null
-                    || ConditionalBranchIdField.GetValue(branch) is not string branchId
+                    || VanillaPrivate.ConditionalBranchId.Get(branch) is not string branchId
                     || !stateMachine.States.TryGetValue(branchId, out MonsterState? branchState))
                 {
                     continue;

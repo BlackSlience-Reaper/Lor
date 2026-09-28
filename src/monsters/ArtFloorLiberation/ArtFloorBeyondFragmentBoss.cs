@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorBeyondFragmentBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 2;
     private const string MelodiousSongMoveId = "MELODIOUS_SONG";
@@ -120,12 +120,6 @@ public sealed class ArtFloorBeyondFragmentBoss : LibraryMonsterModel, ILiberatio
         await PowerCmdCompat.Apply<ArtFloorErosionPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<BeyondFragmentTentaclePower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<BeyondFragmentIncomprehensiblePower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

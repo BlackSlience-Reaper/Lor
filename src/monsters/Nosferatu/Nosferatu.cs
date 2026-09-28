@@ -27,13 +27,12 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.Nosferatu;
 
-public sealed class Nosferatu : LibraryMonsterModel
+public sealed class Nosferatu : LorMonsterModel
 {
     private const string GracefulRestMoveId = "GRACEFUL_REST";
     private const string ElegantDinnerMoveId = "ELEGANT_DINNER";
@@ -133,12 +132,6 @@ public sealed class Nosferatu : LibraryMonsterModel
         EncounterBgmController.RegisterMonster(Creature);
         await PowerCmdCompat.Apply<NosferatuHydrophobiaPassivePower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<NosferatuTransformPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(
@@ -557,18 +550,7 @@ public sealed class Nosferatu : LibraryMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<NosferatuPageRelic>(
-                    room,
-                    player,
-                    NosferatuPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<NosferatuPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<NosferatuPageRelic>(room, NosferatuPageRelicTitleLocKey);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

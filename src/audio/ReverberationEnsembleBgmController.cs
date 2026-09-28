@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.audio;
 
@@ -270,6 +271,7 @@ internal static class ReverberationEnsembleBgmController
 }
 
 [HarmonyPatch]
+[LibraryPatch(Reason = "残响乐团幕由自有 ogg 播放器接管音乐，切歌、遭遇 CustomBgm、恢复幕曲均无 Hook；仅在当前幕为本模组残响乐团幕且自有曲目生效时跳过原版。UpdateMusic 上会连带跳过 RitsuLib 的映射音乐释放，见重构指导附录 A。")]
 internal static class ReverberationEnsembleNativeMusicPatch
 {
     private static IEnumerable<MethodBase> TargetMethods()
@@ -297,12 +299,6 @@ internal static class ReverberationEnsembleNativeMusicPatch
 internal static class ReverberationEnsembleTrackPatch
 {
     private static void Postfix() => ReverberationEnsembleBgmController.Sync();
-}
-
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class ReverberationEnsembleMusicCleanupPatch
-{
-    private static void Prefix() => ReverberationEnsembleBgmController.OnRunCleaningUp();
 }
 
 [HarmonyPatch(typeof(CombatManager), nameof(CombatManager.LoseCombat))]

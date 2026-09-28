@@ -30,7 +30,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.JudgementBird;
 
-public sealed class JudgementBird : LibraryMonsterModel
+public sealed class JudgementBird : LorMonsterModel
 {
     internal const int LowMinHp = 450;
     internal const int LowMaxHp = 460;
@@ -205,12 +205,6 @@ public sealed class JudgementBird : LibraryMonsterModel
         }
 
         return Task.CompletedTask;
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -532,7 +526,7 @@ public sealed class JudgementBird : LibraryMonsterModel
             lowValue);
 }
 
-public sealed class EscapedBird : LibraryMonsterModel
+public sealed class EscapedBird : LorMonsterModel
 {
     internal const int LowMinHp = 190;
     internal const int LowMaxHp = 193;
@@ -621,12 +615,6 @@ public sealed class EscapedBird : LibraryMonsterModel
             Creature,
             null,
             silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

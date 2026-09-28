@@ -32,6 +32,7 @@ using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.TestSupport;
 using Environment = System.Environment;
 using GodotNode = Godot.Node;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.combat;
 
@@ -46,8 +47,6 @@ internal static class CombatSafetyNet
 {
     private const string LogTag = "LibraryOfRuina.CombatSafety";
 
-    private static readonly FieldInfo? MonsterIsPerformingMoveField =
-        AccessTools.Field(typeof(MonsterModel), "_isPerformingMove");
 
     public static void EnsureReplayInitializedBeforeNestedCombat(AbstractRoom room)
     {
@@ -145,7 +144,7 @@ internal static class CombatSafetyNet
         // Mirrors the part of vanilla MonsterModel.PerformMove that the abort skipped.
         if (resolvedContext.Monster is { } monster)
         {
-            MonsterIsPerformingMoveField?.SetValue(monster, false);
+            VanillaPrivate.MonsterModelIsPerformingMove.Set(monster, false);
             monster.MoveStateMachine?.OnMovePerformed(monster.NextMove);
 
             Creature creature = monster.Creature;

@@ -3,6 +3,8 @@ using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.interop;
+using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 
 namespace LibraryOfRuina.patches;
 
@@ -14,10 +16,9 @@ namespace LibraryOfRuina.patches;
 [HarmonyPatch(typeof(NEnergyCounter), nameof(NEnergyCounter._Ready))]
 public static class EnergyCounterCompatibilityPatch
 {
-    private static readonly bool ExpectsEnergyVfx = AccessTools.Field(typeof(NEnergyCounter), "_backVfx") != null;
-    private static readonly bool ExpectsBurstVfx = AccessTools.Field(typeof(NEnergyCounter), "_backParticles") != null;
-    private static readonly Type? ParticlesContainerType =
-        AccessTools.TypeByName("MegaCrit.Sts2.Core.Nodes.Vfx.Utilities.NParticlesContainer");
+    private static bool ExpectsEnergyVfx => VanillaPrivate.EnergyCounterBackVfx.IsAvailable;
+    private static bool ExpectsBurstVfx => VanillaPrivate.EnergyCounterBackParticles.IsAvailable;
+    private static readonly Type ParticlesContainerType = typeof(NParticlesContainer);
 
     private static bool _loggedCompatFix;
 
@@ -132,16 +133,9 @@ public static class EnergyCounterCompatibilityPatch
 
     private static void InitializeParticlesContainerField(Node node)
     {
-        var particlesField = AccessTools.Field(node.GetType(), "_particles");
-        if (particlesField == null)
+        if (node is NParticlesContainer container)
         {
-            return;
-        }
-
-        object? emptyArray = Activator.CreateInstance(particlesField.FieldType);
-        if (emptyArray != null)
-        {
-            particlesField.SetValue(node, emptyArray);
+            VanillaPrivate.ParticlesContainerParticles.Set(container, []);
         }
     }
 

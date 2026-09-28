@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.SocialFloorLiberation;
 
-public sealed class EmeraldCrystal : LibraryMonsterModel
+public sealed class EmeraldCrystal : LorMonsterModel
 {
     public const int Hp = 50;
     public const int ChaoResistance = 50;

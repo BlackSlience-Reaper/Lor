@@ -16,7 +16,7 @@ using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Runs.History;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using Environment = System.Environment;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.temporarymaps;
 
@@ -129,6 +129,11 @@ internal sealed class TemporaryMapSessionStore
 internal static class TemporaryMapSessionManager
 {
     private static readonly TemporaryMapSessionStore SessionStore = new();
+
+    /// <summary>
+    /// 验证程序集启动套件时置为 true：套件自己开局后再跳入临时地图，开局清理会把刚建立的会话抹掉。
+    /// </summary>
+    internal static bool PreserveSessionsOnRunStarted { get; set; }
 
     public static bool IsActive(IRunState? runState)
     {
@@ -260,8 +265,7 @@ internal static class TemporaryMapSessionManager
 
     public static void OnRunStarted(RunState state)
     {
-        if (Environment.GetCommandLineArgs().Any(static arg =>
-                arg.TrimStart('-').StartsWith("lor-verify-", StringComparison.OrdinalIgnoreCase)))
+        if (PreserveSessionsOnRunStarted)
         {
             return;
         }
@@ -345,8 +349,8 @@ internal static class TemporaryMapSessionManager
             return;
         }
 
-        HideSpecialPoint(screen, "_startingPointNode");
-        HideSpecialPoint(screen, "_bossPointNode");
+        VanillaPrivate.MapScreenStartingPointNode.Get(screen)?.Hide();
+        VanillaPrivate.MapScreenBossPointNode.Get(screen)?.Hide();
         HideSpecialPaths(screen, map.StartingMapPoint.coord, map.BossMapPoint.coord);
     }
 
@@ -472,19 +476,9 @@ internal static class TemporaryMapSessionManager
         return copied;
     }
 
-    private static void HideSpecialPoint(NMapScreen screen, string fieldName)
-    {
-        if (AccessTools.Field(typeof(NMapScreen), fieldName)?.GetValue(screen) is not CanvasItem canvasItem)
-        {
-            return;
-        }
-
-        canvasItem.Hide();
-    }
-
     private static void HideSpecialPaths(NMapScreen screen, params MapCoord[] hiddenCoords)
     {
-        if (AccessTools.Field(typeof(NMapScreen), "_paths")?.GetValue(screen) is not IDictionary paths)
+        if (VanillaPrivate.MapScreenPaths.Get(screen) is not { } paths)
         {
             return;
         }

@@ -5,6 +5,7 @@ using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Cards;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -206,6 +207,7 @@ internal static class EgoCardVisualPatch
 }
 
 [HarmonyPatch(typeof(EnergyIconHelper), nameof(EnergyIconHelper.GetPath), typeof(string))]
+[LibraryPatch(Reason = "EnergyIconHelper.GetPath 是静态方法；只处理本模组两个 E.G.O. 卡池的能量颜色名。可改为卡池实现 RitsuLib 的 IModBigEnergyIconPool，暂缓。")]
 internal static class EgoEnergyIconPathPatch
 {
     [HarmonyPrefix]

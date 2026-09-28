@@ -14,7 +14,6 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NIntent), "_Process")]
 internal static class CounterIntentVisualPatch
 {
     private static readonly ConditionalWeakTable<NIntent, AnimationState> States = new();
@@ -49,8 +48,7 @@ internal static class CounterIntentVisualPatch
         TaskHelper.RunSafely(creatureNode.RefreshIntents());
     }
 
-    [HarmonyPostfix]
-    private static void Postfix(
+    internal static void OnIntentProcess(
         NIntent __instance,
         int? ____animationFrame)
     {
@@ -93,12 +91,9 @@ internal static class CounterIntentVisualPatch
     }
 }
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
 internal static class CounterIntentAppendPatch
 {
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.First)]
-    private static void Postfix(NCreature __instance, IEnumerable<Creature> targets)
+    internal static void OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
         {

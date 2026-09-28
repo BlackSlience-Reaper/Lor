@@ -1,0 +1,4 @@
+PatchRuleFixtures.HookByTypeName	MISSING
+PatchRuleFixtures.HookOnMethod	MISSING
+PatchRuleFixtures.HookWithReason	fixture hook reason
+PatchRuleFixtures.InheritedHookTarget	MISSING

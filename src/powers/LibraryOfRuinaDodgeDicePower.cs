@@ -119,7 +119,13 @@ public sealed class LibraryOfRuinaDodgeDicePower : LibraryOfRuinaPowerModel
         int blockDelta = amount - owner.Block;
         if (blockDelta > 0)
         {
-            DodgeDiceCombatFeedback.QueueDodgeBlockGain(owner);
+            // 原版只在格挡从 0 变为非 0 时播放格挡淡入（NCreatureStateDisplay），其余情况入队会留下没人消耗的计数，
+            // 之后吞掉一次普通格挡的淡入。
+            if (owner.Block == 0)
+            {
+                DodgeDiceCombatFeedback.QueueDodgeBlockGain(owner);
+            }
+
             owner.GainBlockInternal(blockDelta);
         }
         else if (blockDelta < 0)

@@ -15,7 +15,7 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.monsters.KingOfGreed;
 
-public sealed class GoldenAmber : LibraryMonsterModel
+public sealed class GoldenAmber : LorMonsterModel
 {
     public const string Root = "res://images/monsters/king_of_greed/";
     public const string IdleTexturePath = Root + "golden_amber.png";

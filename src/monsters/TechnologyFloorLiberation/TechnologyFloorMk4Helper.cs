@@ -27,7 +27,7 @@ internal enum TechnologyFloorMk4HelperInitialMove
     Rest
 }
 
-public sealed class TechnologyFloorMk4Helper : LibraryMonsterModel
+public sealed class TechnologyFloorMk4Helper : LorMonsterModel
 {
     public override int DefaultChaoResistance => 30;
 
@@ -100,12 +100,6 @@ public sealed class TechnologyFloorMk4Helper : LibraryMonsterModel
             silent: true);
 
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     internal void ConfigureInitialMove(TechnologyFloorMk4HelperInitialMove initialMove)

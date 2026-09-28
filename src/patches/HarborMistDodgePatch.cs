@@ -6,6 +6,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -16,8 +17,7 @@ public static class HarborMistDodgePatch
     private static readonly Dictionary<CardModel, int> PendingDodges = new();
     private static readonly Dictionary<CardModel, int> ResolvedDodges = new();
 
-    private static readonly MethodInfo? OnPlayMethod =
-        AccessTools.Method(typeof(CardModel), "OnPlay", new[] { typeof(PlayerChoiceContext), typeof(CardPlay) });
+    private static MethodInfo? OnPlayMethod => VanillaPrivate.CardModelOnPlay.Method;
 
     private static readonly MethodInfo InvokeOnPlayOrSkipMethod =
         AccessTools.Method(typeof(HarborMistDodgePatch), nameof(InvokeOnPlayOrSkip))!;
@@ -110,16 +110,7 @@ public static class HarborMistDodgePatch
             return Task.CompletedTask;
         }
 
-        try
-        {
-            object? result = OnPlayMethod.Invoke(card, new object?[] { choiceContext, cardPlay });
-            return result as Task ?? Task.CompletedTask;
-        }
-        catch (TargetInvocationException ex) when (ex.InnerException != null)
-        {
-            ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
-            throw;
-        }
+        return VanillaPrivate.CardModelOnPlay.InvokeAsync(card, choiceContext, cardPlay);
     }
 
     private static void MarkResolvedDodge(CardModel card)

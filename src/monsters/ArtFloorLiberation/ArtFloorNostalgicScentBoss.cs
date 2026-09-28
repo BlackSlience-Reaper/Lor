@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public sealed class ArtFloorNostalgicScentBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 5;
     internal const string WinterBeginningMoveId = "WINTER_BEGINNING";
@@ -146,12 +146,6 @@ public sealed class ArtFloorNostalgicScentBoss : LibraryMonsterModel, ILiberatio
         await PowerCmdCompat.Apply<ArtFloorSuffocatingAtonementPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorUnfadingFlowerPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorClayDollPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

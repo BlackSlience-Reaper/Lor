@@ -35,10 +35,11 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.monsters.BigBadWolf;
 
-public sealed class BigBadWolf : LibraryMonsterModel
+public sealed class BigBadWolf : LorMonsterModel
 {
     private const string Root = "res://images/monsters/big_bad_wolf/";
     public const string IdleTexturePath = Root + "idle.png";
@@ -189,10 +190,9 @@ public sealed class BigBadWolf : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
+        base.BeforeRemovedFromRoom();
         ClearStolenCardMarker();
         ClearPendingCardStateOnly();
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeDeath(Creature creature)
@@ -769,6 +769,7 @@ public sealed class BigBadWolf : LibraryMonsterModel
 }
 
 [HarmonyPatch(typeof(SwipePower), nameof(SwipePower.BeforeDeath))]
+[LibraryPatch(Reason = "原版 SwipePower.BeforeDeath 会先于怪物自身把被吞的牌作为奖励归还，无 Hook；仅在拥有者是本模组大坏狼且死亡者就是拥有者时跳过，由狼自己的 BeforeDeath 归还。可改用自有能力，会新增模型 ID，留到阶段 6。")]
 internal static class BigBadWolfSwipePowerRewardPatch
 {
     private static bool Prefix(SwipePower __instance, Creature target, ref Task __result)

@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.QueenOfHatred;
 
@@ -115,11 +116,9 @@ internal static class UntargetableInteractionFilter
     }
 }
 
-[HarmonyPatch(typeof(AttackCommand), "GetPossibleTargets")]
 internal static class UntargetableAttackTargetsPatch
 {
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(AttackCommand __instance, ref IReadOnlyList<Creature> __result)
+    internal static void FilterAttackTargets(AttackCommand __instance, ref IReadOnlyList<Creature> __result)
     {
         __result = UntargetableInteractionFilter.FilterPlayerAttackTargets(
             __result,
@@ -135,32 +134,22 @@ internal static class UntargetableDamageTargetsPatch
     // 其他模组会在同一重载的普通优先级 Prefix 中改写 targets，因此最终友方过滤
     // 必须在这些改写之后执行。LibraryOfRuinaLib 的 Last Prefix 可能短路原方法，
     // 显式 Before 关系保证它接收到已经过滤的稳定目标集合。
+    // 只改写目标，过滤后为空时原方法自己返回空结果，不跳过原方法。
     [HarmonyPriority(Priority.Last)]
     [HarmonyBefore("LibraryOfRuinaLib")]
-    private static bool Prefix(
+    private static void Prefix(
         ref IEnumerable<Creature> targets,
-        Creature? dealer,
-        ref Task<IEnumerable<DamageResult>> __result)
+        Creature? dealer)
     {
-        IReadOnlyList<Creature> filteredTargets = UntargetableInteractionFilter.FilterPlayerAttackTargets(
+        targets = UntargetableInteractionFilter.FilterPlayerAttackTargets(
             targets,
             dealer);
-        if (filteredTargets.Count == 0)
-        {
-            __result = Task.FromResult<IEnumerable<DamageResult>>(Array.Empty<DamageResult>());
-            return false;
-        }
-
-        targets = filteredTargets;
-        return true;
     }
 }
 
-[HarmonyPatch(typeof(CardModel), nameof(CardModel.IsValidTarget))]
 internal static class UntargetableCardTargetPatch
 {
-    [HarmonyPriority(Priority.Last)]
-    private static void Postfix(CardModel __instance, Creature? target, ref bool __result)
+    internal static void FilterIsValidTarget(CardModel __instance, Creature? target, ref bool __result)
     {
         if (!__result || target == null)
         {
@@ -181,6 +170,7 @@ internal static class UntargetableCardTargetPatch
 [HarmonyPatch(
     typeof(CreatureCmd),
     nameof(CreatureCmd.Stun), typeof(Creature), typeof(Func<IReadOnlyList<Creature>, Task>), typeof(string))]
+[LibraryPatch(Reason = "原版 CreatureCmd.Stun 没有否决 Hook；对不可命中的生物跳过眩晕。判断用 IsHittable，也会作用于第三方“存活但不可命中”的生物，收窄见重构指导附录 A。")]
 internal static class UntargetableCreatureStunPatch
 {
     private static bool Prefix(Creature creature, ref Task __result)
@@ -198,6 +188,7 @@ internal static class UntargetableCreatureStunPatch
 [HarmonyPatch(
     typeof(LibraryCreatureCmd),
     "Stun", typeof(LibraryCreature), typeof(Func<IReadOnlyList<Creature>, Task>), typeof(string))]
+[LibraryPatch(Reason = "基础库 LibraryCreatureCmd.Stun 没有否决点；对不可命中的生物跳过眩晕。判断用 IsHittable，收窄见重构指导附录 A。")]
 internal static class UntargetableLibraryCreatureStunPatch
 {
     private static bool Prefix(LibraryCreature creature, ref Task __result)

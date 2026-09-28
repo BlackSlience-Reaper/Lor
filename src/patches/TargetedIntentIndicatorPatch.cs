@@ -13,13 +13,11 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
 internal static class TargetedIntentIndicatorPatch
 {
     private const string OverlayNodeName = "LibraryOfRuinaTargetedIntentLines";
 
-    [HarmonyPostfix]
-    private static void Postfix(NCreature __instance)
+    internal static void OnUpdateIntent(NCreature __instance)
     {
         RemoveOverlay(__instance);
     }

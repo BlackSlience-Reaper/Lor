@@ -19,6 +19,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
@@ -51,22 +52,6 @@ internal sealed partial class DamagePreviewOverlay : Control
     private const float HintGap = 16f;
     // 受伤预览只显示两行数值，面板按内容收窄，保留原版提示背景可正常绘制的最小宽度。
     private const float IncomingMinimumWidth = 150f;
-
-    private static readonly AccessTools.FieldRef<NPlayerHand, NCardPlay?> ActivePlay =
-        AccessTools.FieldRefAccess<NPlayerHand, NCardPlay?>("_currentCardPlay");
-
-    private static readonly AccessTools.FieldRef<NCreature, bool> IsGroupTarget =
-        AccessTools.FieldRefAccess<NCreature, bool>("_isInMultiselect");
-
-    private static readonly AccessTools.FieldRef<NCreature, NCreatureStateDisplay> StateDisplay =
-        AccessTools.FieldRefAccess<NCreature, NCreatureStateDisplay>("_stateDisplay");
-
-    private static readonly AccessTools.FieldRef<NCreatureStateDisplay, NHealthBar> HealthBar =
-        AccessTools.FieldRefAccess<NCreatureStateDisplay, NHealthBar>("_healthBar");
-
-    private static readonly Func<NTargetManager, Node?> HoveredTarget =
-        AccessTools.MethodDelegate<Func<NTargetManager, Node?>>(
-            AccessTools.PropertyGetter(typeof(NTargetManager), "HoveredNode"));
 
     // 移动端没有 Alt 键，只显示简洁预览，不提示键盘切换。
     private static readonly bool HasModeHotkey = !OS.HasFeature("mobile");
@@ -159,13 +144,13 @@ internal sealed partial class DamagePreviewOverlay : Control
             HideAll();
             return;
         }
-        NCardPlay? play = ActivePlay(hand);
+        NCardPlay? play = VanillaPrivate.PlayerHandCurrentCardPlay.Get(hand);
         CardModel? card = play != null && GodotObject.IsInstanceValid(play)
             ? play.Holder?.CardModel
             : null;
         NTargetManager targeting = NTargetManager.Instance;
         LibraryCreature? selectedEnemy = targeting.IsInSelection
-            ? (HoveredTarget(targeting) as NCreature)?.Entity as LibraryCreature
+            ? (VanillaPrivate.TargetManagerHoveredNode.Get(targeting) as NCreature)?.Entity as LibraryCreature
             : null;
         TargetType? targetType = card?.TargetType;
         bool fromSpeedDie = false;
@@ -221,7 +206,7 @@ internal sealed partial class DamagePreviewOverlay : Control
                 : ReferenceEquals(enemy, selectedEnemy)
                     || (groupPreview && hittableEnemies.Contains(enemy)
                         && creatureNode != null && GodotObject.IsInstanceValid(creatureNode)
-                        && IsGroupTarget(creatureNode));
+                        && VanillaPrivate.CreatureIsInMultiselect.Get(creatureNode));
             if (!isPreviewTarget)
             {
                 if (_tips.TryGetValue(enemy, out PreviewTip? unselected))
@@ -459,13 +444,13 @@ internal sealed partial class DamagePreviewOverlay : Control
             return null;
         }
 
-        NCreatureStateDisplay? stateDisplay = StateDisplay(creatureNode);
+        NCreatureStateDisplay? stateDisplay = VanillaPrivate.CreatureStateDisplay.Get(creatureNode);
         if (stateDisplay == null || !GodotObject.IsInstanceValid(stateDisplay))
         {
             return null;
         }
 
-        NHealthBar? healthBar = HealthBar(stateDisplay);
+        NHealthBar? healthBar = VanillaPrivate.CreatureStateDisplayHealthBar.Get(stateDisplay);
         return healthBar != null && GodotObject.IsInstanceValid(healthBar) ? healthBar.HpBarContainer : null;
     }
 

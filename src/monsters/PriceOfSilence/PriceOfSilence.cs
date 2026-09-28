@@ -26,12 +26,11 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.PriceOfSilence;
 
-public sealed class PriceOfSilence : LibraryMonsterModel
+public sealed class PriceOfSilence : LorMonsterModel
 {
     internal const string InevitableDoomMoveId = "INEVITABLE_DOOM";
     internal const string UnknownMoveId = "UNKNOWN";
@@ -143,7 +142,6 @@ public sealed class PriceOfSilence : LibraryMonsterModel
     public override void BeforeRemovedFromRoom()
     {
         StopAmbient();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 
@@ -419,27 +417,6 @@ public sealed class PriceOfSilence : LibraryMonsterModel
     private int EnsureDoomDamageRoll() =>
         EnsureDamageRoll(ref _doomDamageRoll, InevitableDoomMinDamage, InevitableDoomMaxDamage);
 
-    private int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        return cachedRoll ?? maxInclusive;
-    }
-
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
-    }
-
     private void ForceRefreshMoveState()
     {
         if (!IsMutable || MoveStateMachine == null || _statesById.Count == 0)
@@ -483,18 +460,7 @@ public sealed class PriceOfSilence : LibraryMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<PriceOfSilencePageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<PriceOfSilencePageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<PriceOfSilencePageRelic>(room, PageRelicTitleLocKey);
     }
 
     public override async Task AfterDeath(

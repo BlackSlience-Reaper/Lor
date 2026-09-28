@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using HarmonyLib;
 using LibraryLib.Multiplayer;
 using LibraryOfRuina.audio;
@@ -10,6 +11,7 @@ using LibraryOfRuina.features.intentgraph;
 using LibraryOfRuina.features.settings;
 using LibraryOfRuina.features.temporarymaps;
 using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.networking;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.LittleRedMercenary;
@@ -17,119 +19,97 @@ using LibraryOfRuina.specialguests;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina;
 
 [ModInitializer(nameof(Initialize))]
 public static class LibraryOfRuinaInitializer
 {
+    private const string LogPrefix = "[LibraryOfRuina] ";
+
+    /// <summary>
+    /// 一个初始化步骤。必需步骤失败时不再执行后续步骤（尤其不再安装玩法补丁），输出汇总后把异常
+    /// 抛回游戏，由 ModManager 照常记为该模组初始化失败；可选步骤（表现层）失败只记录，继续初始化。
+    /// 已注册的部分内容不会回滚，这一点与拆分前相同。
+    /// </summary>
+    private readonly record struct InitStep(string Name, bool Required, Action Run);
+
     public static void Initialize()
     {
-        try
+        var report = new InitReport();
+
+        // 联机类型与框架必须先于任何内容注册；失败时整个模组不注入内容。
+        // 这一组一直是捕获后返回，不向游戏报告初始化失败，保持原样。
+        if (!report.RunAll(
+            [
+                new("NetTypes", true, static () => LibraryManagedNetTypes.RegisterAssembly(Assembly.GetExecutingAssembly())),
+                new("Network", true, LibraryNetwork.Initialize),
+                new("HealthBarForecast", true, LibraryHealthBarForecastFeature.Initialize),
+                new("MadokaLongbowCompat", true, MadokaLongbowSavedStateCompat.Initialize),
+            ]))
         {
-            LibraryManagedNetTypes.RegisterAssembly(Assembly.GetExecutingAssembly());
-            LibraryNetwork.Initialize();
-            LibraryHealthBarForecastFeature.Initialize();
-            MadokaLongbowSavedStateCompat.Initialize();
-        }
-        catch (Exception exception)
-        {
-            Log.Error(
-                "[LibraryOfRuina] Required multiplayer/UI framework initialization failed; "
-                + "gameplay initialization was skipped: "
-                + exception);
+            report.LogSummary("gameplay initialization was skipped");
             return;
         }
 
-        var settings = new LibraryOfRuinaSettings();
-        ExtSettingsRegistry.Register("LibraryOfRuina", settings);
-        LibrarySfxMixer.Initialize();
-        var harmony = new Harmony("FYY.LibraryOfRuina");
+        var harmony = new Harmony(LibraryPatcher.HarmonyId);
+        bool blockedByIncompatibleMod = false;
+        if (!report.RunAll(
+            [
+                new("Settings", true, static () => ExtSettingsRegistry.Register("LibraryOfRuina", new LibraryOfRuinaSettings())),
+                new("SfxMixer", false, LibrarySfxMixer.Initialize),
+                new("IncompatibleModGuard", true, () => blockedByIncompatibleMod = IncompatibleModGuard.DetectBlockingMods()),
+            ]))
+        {
+            report.LogSummary("gameplay initialization was skipped");
+            report.RethrowRequiredFailure();
+        }
 
         // 检测到已知不兼容模组时与关闭“启用废墟图书馆内容”走同一条路径：不改动玩家的设置值，
         // 仅本次启动不注入内容，并由 MainMenuIncompatibleModNoticePatch 在主菜单弹窗说明。
-        bool blockedByIncompatibleMod = IncompatibleModGuard.DetectBlockingMods();
         if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || blockedByIncompatibleMod)
         {
-            PatchSettingsUi(harmony);
-            Log.Info("[LibraryOfRuina] Library injection disabled; settings UI remains available. Skipping content pools, runtime controllers, BGM, encounters, and gameplay Harmony patches.");
+            report.RunAll([new("SettingsUiPatches", true, () => PatchSettingsUi(harmony))]);
+            report.LogSummary(
+                "library injection disabled; settings UI remains available. Skipped content pools, "
+                + "runtime controllers, BGM, encounters, and gameplay Harmony patches");
+            report.RethrowRequiredFailure();
             return;
         }
 
         LibraryOfRuinaSettings.EnableRuntimeSideEffects();
 
-        IntentGraphDisplayConfigRepository.Initialize();
-        TemporaryMapController.Initialize();
+        LibraryPatcher.Result? patchResult = null;
+        bool completed = report.RunAll(
+        [
+            new("VanillaPrivate", false, VanillaPrivate.Report),
+            new("IntentGraphDisplayConfig", false, IntentGraphDisplayConfigRepository.Initialize),
+            new("TemporaryMaps", true, TemporaryMapController.Initialize),
+            new("MainMenuBgm", false, MainMenuBgmController.Initialize),
+            new("NonCombatRunBgm", false, NonCombatRunBgmController.Initialize),
+            new("AbnormalityEliteBgm", false, AbnormalityEliteBgmController.Initialize),
+            new("ReverberationEnsembleBgm", false, ReverberationEnsembleBgmController.Initialize),
+            new("AllyTurnProviders", true, RegisterAllyTurnProviders),
+            new("SavedPropertyTypes", true, SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes),
+            new("SpecialGuests", true, SpecialGuestAutoRegistrar.Initialize),
+            new("CardPools", true, RegisterRuntimeCardPools),
+            new("LibraryExtensionPoints", true, LibraryExtensionPoints.Register),
+            new("GameplayPatches", true, () => patchResult = LibraryPatcher.ApplyAll(harmony)),
+            new("Cursor", false, LibraryCursorPatch.ApplyToCurrentGame),
+        ]);
 
-        MainMenuBgmController.Initialize();
-        NonCombatRunBgmController.Initialize();
-        AbnormalityEliteBgmController.Initialize();
-        ReverberationEnsembleBgmController.Initialize();
-        RegisterAllyTurnProviders();
-        SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes();
-        SpecialGuestAutoRegistrar.Initialize();
-
-        RegisterRuntimeCardPools();
-        IReadOnlyList<string> failedPatchClasses = ApplyGameplayPatches(harmony);
-        try
+        if (patchResult != null)
         {
-            LibraryCursorPatch.ApplyToCurrentGame();
-        }
-        catch (Exception e)
-        {
-            Log.Error("[LibraryOfRuina] Failed to apply the Library cursor: " + e);
-        }
-
-        if (failedPatchClasses.Count == 0)
-        {
-            Log.Info("LibraryOfRuina loaded successfully.");
-        }
-        else
-        {
-            Log.Error(
-                "LibraryOfRuina loaded with "
-                + failedPatchClasses.Count
-                + " failed Harmony patch class(es): "
-                + string.Join(", ", failedPatchClasses));
-            Log.Warn("LibraryOfRuina will continue with partial initialization.");
+            report.AddPatchResult(patchResult);
         }
 
-        TryApplyOptionalPatches();
-    }
-
-    // 逐个补丁类应用，等价于 Harmony.PatchAll 的遍历顺序。单个补丁类失败（例如 Android 的 Mono 运行时
-    // 无法为某些方法生成替换体）时只记录并跳过该类，其余补丁照常生效，避免整个模组停在部分初始化。
-    private static IReadOnlyList<string> ApplyGameplayPatches(Harmony harmony)
-    {
-        var failedPatchClasses = new List<string>();
-        foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
-        {
-            try
-            {
-                if (!type.HasHarmonyAttribute())
-                {
-                    continue;
-                }
-
-                harmony.CreateClassProcessor(type).Patch();
-            }
-            catch (Exception e)
-            {
-                failedPatchClasses.Add(type.FullName ?? type.Name);
-                Log.Error(
-                    "[LibraryOfRuina] Harmony patch class "
-                    + type.FullName
-                    + " failed to apply and was skipped: "
-                    + e);
-            }
-        }
-
-        return failedPatchClasses;
+        report.LogSummary(completed ? null : "a required step failed; later steps were skipped");
+        report.RethrowRequiredFailure();
     }
 
     private static void PatchSettingsUi(Harmony harmony)
     {
-        harmony.CreateClassProcessor(typeof(InjectExtSettingsSubmenuTypePatch)).Patch();
         harmony.CreateClassProcessor(typeof(InjectSettingsScreenModConfigPatch)).Patch();
         harmony.CreateClassProcessor(typeof(SettingsScreenModConfigVisibilityPatch)).Patch();
         harmony.CreateClassProcessor(typeof(MainMenuShowPendingSettingsErrorsPatch)).Patch();
@@ -139,7 +119,7 @@ public static class LibraryOfRuinaInitializer
 
     private static void RegisterRuntimeCardPools()
     {
-        foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+        foreach (var type in LibraryAssemblyTypes.All)
         {
             var attr = type.GetCustomAttribute<CardPoolAttribute>();
             if (attr != null)
@@ -149,32 +129,93 @@ public static class LibraryOfRuinaInitializer
         }
     }
 
-    private static void TryApplyOptionalPatches()
-    {
-        var harmony = new Harmony("FYY.LibraryOfRuina");
-        try
-        {
-            harmony.CreateClassProcessor(typeof(FocusOfAttentionCardCmdAutoPlayPatch)).Patch();
-        }
-        catch (Exception e)
-        {
-            Log.Warn($"[LibraryOfRuina] Optional patch FocusOfAttentionCardCmdAutoPlayPatch skipped: {e.Message}");
-        }
-    }
-
     private static void RegisterAllyTurnProviders()
     {
-        // AllyTurnRegistry.RegisterProvider(new LittleRedAllyTurnProvider());
-        // AllyTurnRegistry.RegisterProvider(new WrathServantAllyTurnProvider());
-        // AllyTurnRegistry.RegisterProvider(new WoodsmanTreeAllyTurnProvider());
         var providerType = typeof(IAllyTurnProvider);
-        var types = Assembly.GetExecutingAssembly().GetTypes()
+        var types = LibraryAssemblyTypes.All
             .Where(p => providerType.IsAssignableFrom(p)
                         && p is { IsAbstract: false, IsInterface: false });
         foreach (var type in types)
         {
             var provider = (IAllyTurnProvider)Activator.CreateInstance(type)!;
             AllyTurnRegistry.RegisterProvider(provider);
+        }
+    }
+
+    private sealed class InitReport
+    {
+        private readonly List<string> _succeeded = [];
+        private readonly List<string> _failures = [];
+        private ExceptionDispatchInfo? _requiredFailure;
+
+        /// <summary>依次执行步骤；遇到失败的必需步骤时停止并返回 false。</summary>
+        public bool RunAll(IEnumerable<InitStep> steps)
+        {
+            foreach (InitStep step in steps)
+            {
+                try
+                {
+                    step.Run();
+                    _succeeded.Add(step.Name);
+                }
+                catch (Exception exception)
+                {
+                    _failures.Add(step.Name + (step.Required ? " (required)" : ""));
+                    Log.Error(LogPrefix + "Initialization step " + step.Name + " failed: " + exception);
+                    if (step.Required)
+                    {
+                        _requiredFailure = ExceptionDispatchInfo.Capture(exception);
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 单个必需补丁类失败只记入汇总，不中断初始化（例如 Android 的 Mono 运行时无法为某些方法生成
+        /// 替换体），与拆分前逐类 try/catch 的行为一致。可选补丁未安装只在汇总里列出。
+        /// </summary>
+        public void AddPatchResult(LibraryPatcher.Result result)
+        {
+            if (result.FailedRequired.Count > 0)
+            {
+                _failures.Add(result.FailedRequired.Count + " patch class(es) skipped: "
+                              + string.Join(", ", result.FailedRequired));
+            }
+
+            if (result.SkippedOptional.Count > 0 || result.NotApplied.Count > 0)
+            {
+                Log.Info(LogPrefix + "Patch classes not applied (optional or Prepare=false): "
+                         + string.Join(", ", result.SkippedOptional.Concat(result.NotApplied)));
+            }
+        }
+
+        /// <summary>必需步骤失败时按原堆栈重新抛出，让游戏的模组加载器记录初始化失败。</summary>
+        public void RethrowRequiredFailure() => _requiredFailure?.Throw();
+
+        /// <summary>整个初始化只输出这一行结果，失败项与说明都在里面。</summary>
+        public void LogSummary(string? note)
+        {
+            if (_failures.Count == 0 && note == null)
+            {
+                Log.Info("LibraryOfRuina loaded successfully (" + _succeeded.Count + " initialization steps).");
+                return;
+            }
+
+            string summary = LogPrefix + "Initialization finished: " + _succeeded.Count + " step(s) ok"
+                             + (_failures.Count == 0 ? "" : "; failed: " + string.Join("; ", _failures))
+                             + (note == null ? "" : "; " + note)
+                             + ".";
+            if (_failures.Count == 0)
+            {
+                Log.Info(summary);
+            }
+            else
+            {
+                Log.Error(summary);
+            }
         }
     }
 }

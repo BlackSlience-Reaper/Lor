@@ -24,7 +24,7 @@ using VoidCard = MegaCrit.Sts2.Core.Models.Cards.Void;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorDaCapoBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 1;
     private const string FirstMovementMoveId = "FIRST_MOVEMENT";
@@ -101,12 +101,6 @@ public sealed class ArtFloorDaCapoBoss : LibraryMonsterModel, ILiberationPrimary
         await PowerCmdCompat.Apply<ArtFloorEnsemblePower>(Creature, 1m, Creature, null, silent: true);
 
         Log.Info("[LibraryOfRuina.ArtFloor] Da Capo first-phase movement sequence ready.");
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

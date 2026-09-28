@@ -31,7 +31,7 @@ namespace LibraryOfRuina.monsters.WrathServant;
 ///   Move3 "啊啊啊啊！" — (7-8)×3 + 下回合腐蚀 + 自身+2力量
 ///   Move4 "邪恶的化身！！！" — AoE 3段 (4-5+2下回合腐蚀, 6-7+2下回合腐蚀, 9-10+6下回合腐蚀)
 /// </summary>
-public sealed class WrathServant : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class WrathServant : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     private const string UuughMoveId = "UUUGH";
     private const string AaahMoveId = "AAAH";
@@ -158,12 +158,6 @@ public sealed class WrathServant : LibraryMonsterModel, ITargetedMonsterAttackPr
         // 应用异界的罪人累计伤害追踪器
         await PowerCmdCompat.Apply<WrathServantTodayPlayPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<WrathServantSinnerCounterPower>(Creature, WrathServantSinnerCounterPower.DamageThreshold, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDamageReceived(

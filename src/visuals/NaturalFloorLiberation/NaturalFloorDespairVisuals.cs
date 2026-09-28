@@ -3,10 +3,12 @@ using HarmonyLib;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.UI;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.visuals.NaturalFloorLiberation;
 
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.StartDeathAnim))]
+[LibraryPatch(Reason = "原版 StartDeathAnim 非虚，会禁用交互、冻结意图并播放死亡演出，没有跳过的扩展点；只作用于自然层遗忘之剑不移除的假死。")]
 internal static class NaturalFloorSwordFalseDeathVisualPatch
 {
     private static bool Prefix(NCreature __instance, bool shouldRemove, ref float __result)

@@ -20,6 +20,8 @@
     <RitsuLibReferencesProps>$(RitsuLibRoot)/RitsuLib.References.props</RitsuLibReferencesProps>
 
     <ActLikeIt2Dll Condition="'$(ActLikeIt2Dll)' == ''">$(Sts2ModsDir)/ActLikeIt2/ActLikeIt2.dll</ActLikeIt2Dll>
+    <!-- Compile against the library's GitHub source when tools/build_lib.sh has built it; otherwise the installed copy. -->
+    <LibraryOfRuinaLibDll Condition="'$(LibraryOfRuinaLibDll)' == '' and Exists('$(MSBuildThisFileDirectory)build/LibraryOfRuinaLib/bin/out/LibraryOfRuinaLib.dll')">$(MSBuildThisFileDirectory)build/LibraryOfRuinaLib/bin/out/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll>
     <LibraryOfRuinaLibDll Condition="'$(LibraryOfRuinaLibDll)' == ''">$(Sts2ModsDir)/LibraryOfRuinaLib/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll>
   </PropertyGroup>
 </Project>

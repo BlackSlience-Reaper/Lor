@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Headless verification suites for LibraryOfRuina. Built and deployed as a separate mod
+       (mods/LibraryOfRuinaVerification/) only on machines that run the suites; it is never part
+       of the release package. Suites are started from the command line, see README.md. -->
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>LibraryOfRuinaVerification</RootNamespace>
+    <AssemblyName>LibraryOfRuinaVerification</AssemblyName>
+    <NoWarn>$(NoWarn);CS0436;CS1998</NoWarn>
+    <Sts2Beta Condition="'$(Sts2Beta)' == ''">true</Sts2Beta>
+    <DefineConstants Condition="'$(Sts2Beta)' == 'true'">$(DefineConstants);STS2_BETA</DefineConstants>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <Import Project="$(RitsuLibReferencesProps)" Condition="Exists('$(RitsuLibReferencesProps)')" />
+
+  <ItemGroup>
+    <Reference Include="sts2" HintPath="$(Sts2DataDir)/sts2.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(Sts2DataDir)/0Harmony.dll" Private="false" />
+    <Reference Include="GodotSharp" HintPath="$(Sts2DataDir)/GodotSharp.dll" Private="false" />
+    <Reference Include="ActLikeIt2" HintPath="$(ActLikeIt2Dll)" Private="false" />
+    <Reference Include="LibraryOfRuinaLib" HintPath="$(LibraryOfRuinaLibDll)" Private="false" />
+    <ProjectReference Include="../LibraryOfRuina.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Same global usings as the main mod, so the suites moved out of src/debug compile unchanged. -->
+    <Compile Include="../src/compat/GlobalUsings.cs" Link="GlobalUsings.cs" />
+    <None Include="LibraryOfRuinaVerification.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

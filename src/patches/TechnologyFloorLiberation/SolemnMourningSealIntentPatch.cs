@@ -7,11 +7,9 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.patches.TechnologyFloorLiberation;
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
 internal static class SolemnMourningSealIntentPatch
 {
-    [HarmonyPostfix]
-    private static void Postfix(NCreature __instance)
+    internal static void OnUpdateIntent(NCreature __instance)
     {
         try
         {

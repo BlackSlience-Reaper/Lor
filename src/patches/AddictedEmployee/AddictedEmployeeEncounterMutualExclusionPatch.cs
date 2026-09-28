@@ -6,15 +6,15 @@ using LibraryOfRuina.encounters.AddictedEmployee;
 using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.AddictedEmployee;
 
 internal static class AddictedEmployeeEncounterMutualExclusion
 {
-    private static readonly FieldInfo RoomsField = AccessTools.Field(typeof(ActModel), "_rooms");
 
     public static RoomSet? GetRoomSet(ActModel act) =>
-        RoomsField.GetValue(act) as RoomSet;
+        VanillaPrivate.ActModelRooms.Get(act) as RoomSet;
 
     public static bool IsEmployeeWeak(EncounterModel encounter) =>
         encounter is AddictedEmployeeWeak;

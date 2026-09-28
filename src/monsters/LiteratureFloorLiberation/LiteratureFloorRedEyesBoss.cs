@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorRedEyesBoss :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ILiberationPrimaryPhaseBoss
 {
     public const int Phase = 2;
@@ -228,7 +228,6 @@ public sealed class LiteratureFloorRedEyesBoss :
     public override void BeforeRemovedFromRoom()
     {
         StopBackgroundText();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

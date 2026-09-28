@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -34,7 +33,7 @@ internal enum AddictedEmployeeInitialMove
     Move3 = 3
 }
 
-public sealed class AddictedEmployee : LibraryMonsterModel
+public sealed class AddictedEmployee : LorMonsterModel
 {
     private static readonly string[] NormalBackgroundTextLineKeys =
     [
@@ -126,12 +125,6 @@ public sealed class AddictedEmployee : LibraryMonsterModel
             Creature,
             null,
             silent: false);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task BeforeCombatStart()
@@ -279,18 +272,7 @@ public sealed class AddictedEmployee : LibraryMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<SongMachinePageRelic>(
-                room,
-                player,
-                SongMachinePageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<SongMachinePageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<SongMachinePageRelic>(room, SongMachinePageRelicTitleLocKey);
     }
 
     private static Dictionary<Creature, int> SnapshotPlayerHp(IReadOnlyList<Creature> targets)

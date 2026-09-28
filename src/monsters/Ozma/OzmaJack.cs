@@ -27,7 +27,7 @@ public enum JackDirection
     North = 4
 }
 
-public sealed class OzmaJack : LibraryMonsterModel
+public sealed class OzmaJack : LorMonsterModel
 {
     private const string HiddenMoveId = "UNKNOWN";
 

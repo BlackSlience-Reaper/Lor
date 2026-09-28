@@ -16,6 +16,7 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.audio;
 
@@ -35,8 +36,6 @@ internal static class AbnormalityEliteBgmController
         "res://audio/bgm/abnormality_elite/abnormality_elite_act_3.ogg"
     };
 
-    private static readonly FieldInfo? RunMusicCurrentAmbienceField =
-        typeof(NRunMusicController).GetField("_currentAmbience", BindingFlags.Instance | BindingFlags.NonPublic);
 
     private static Node? _hostNode;
     private static AudioStreamPlayer? _player;
@@ -355,7 +354,7 @@ internal static class AbnormalityEliteBgmController
 
         try
         {
-            RunMusicCurrentAmbienceField?.SetValue(runMusicController, null);
+            VanillaPrivate.RunMusicControllerCurrentAmbience.Set(runMusicController, null);
             runMusicController.UpdateMusic();
             runMusicController.UpdateTrack();
             Log.Info("[" + LogTag + "] Restored run music after elite BGM session.");
@@ -381,14 +380,5 @@ internal static class AbnormalityEliteBgmVolumePatch
     private static void Postfix()
     {
         AbnormalityEliteBgmController.RefreshVolumeFromSettings();
-    }
-}
-
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class AbnormalityEliteBgmRunCleanupPatch
-{
-    private static void Prefix()
-    {
-        AbnormalityEliteBgmController.OnRunCleaningUp();
     }
 }

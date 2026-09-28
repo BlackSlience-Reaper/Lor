@@ -34,7 +34,7 @@ internal static class PowerDamageHealthLockChaos
 
     internal static async Task<IEnumerable<DamageResult>> ApplyAfterDamage(
         Task<IEnumerable<DamageResult>> damageTask,
-        PowerDamageHealthLockState state,
+        PowerDamageHealthLockState? state,
         PlayerChoiceContext choiceContext,
         decimal damageAmount,
         ValueProp props,
@@ -42,7 +42,8 @@ internal static class PowerDamageHealthLockChaos
         CardModel? cardSource)
     {
         IReadOnlyList<DamageResult> results = (await damageTask).ToArray();
-        if (!IsPowerClassDamage(props) || damageAmount <= 0m)
+        // state 为 null：其他模组的跳过型前缀让 Capture 前缀没有执行，没有可比较的锁血快照。
+        if (state == null || !IsPowerClassDamage(props) || damageAmount <= 0m)
         {
             return results;
         }

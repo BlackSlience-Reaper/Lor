@@ -31,10 +31,12 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
+[LibraryPatch(Reason = "原版自定义背景的标题只能是遭遇 id，且方法私有、没有 Hook；只处理本模组遭遇类型和实现 IGuestReceptionEncounter 的接待遭遇，给它们指定共享背景或抽取接待层。")]
 internal static class GuestReceptionBackgroundPoolPatch
 {
     private const string QueenOfHatredBackgroundTitle = "queen_of_hatred";
@@ -74,11 +76,8 @@ internal static class GuestReceptionBackgroundPoolPatch
             return false;
         }
 
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
-        {
-            return true;
-        }
-
+        // 不看“启用内容”开关：本模组遭遇只要出现（例如关闭内容后继续旧局）就需要这些背景，
+        // 交还原版会按遭遇 id 找背景目录，找不到时原版直接抛异常。
         if (encounterType == typeof(RedMistElite))
         {
             __result = new BackgroundAssets(GuestReceptionPoolRegistry.SharedBackgroundTitle, rng);

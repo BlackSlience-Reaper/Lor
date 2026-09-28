@@ -12,43 +12,15 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.HistoryFloorLiberation;
 
-[HarmonyPatch(typeof(AncientEventModel), "BeforeEventStarted")]
-internal static class HistoryFloorLiberationSettlementAncientHealPatch
+/// <summary>由 <see cref="LibraryOfRuina.patches.dispatch.LiberationSettlementPatches"/> 在终局奖励界面继续时调用；返回 false 表示已接管。</summary>
+internal static class HistoryFloorLiberationSettlementRedirect
 {
-    private static bool Prefix(AncientEventModel __instance, ref Task __result)
-    {
-        if (__instance is not HistoryFloorLiberationSettlementEvent)
-        {
-            return true;
-        }
-
-        __result = Task.CompletedTask;
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.ShouldAllowAncient))]
-internal static class HistoryFloorLiberationSettlementAncientGatePatch
-{
-    private static bool Prefix(AncientEventModel ancient, ref bool __result)
-    {
-        if (ancient is not HistoryFloorLiberationSettlementEvent)
-        {
-            return true;
-        }
-
-        __result = true;
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.ProceedFromTerminalRewardsScreen))]
-internal static class HistoryFloorLiberationSettlementRedirectPatch
-{
-    private static bool Prefix(RunManager __instance, ref Task __result)
+    internal static bool TryRedirect(RunManager __instance, ref Task __result)
     {
         if (__instance.DebugOnlyGetState()?.CurrentRoom is not CombatRoom { Encounter: HistoryFloorLiberationEncounter encounter })
         {
@@ -73,22 +45,8 @@ internal static class HistoryFloorLiberationSettlementRedirectPatch
     }
 }
 
-[HarmonyPatch(typeof(NEventRoom), nameof(NEventRoom.Proceed))]
-internal static class HistoryFloorLiberationProceedPatch
-{
-    private static bool Prefix(ref Task __result)
-    {
-        if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom { CanonicalEvent: HistoryFloorLiberationSettlementEvent })
-        {
-            return true;
-        }
-
-        __result = RunManager.Instance.EnterNextAct();
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(EncounterModel), nameof(EncounterModel.CreateScene))]
+[LibraryPatch(Reason = "原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于历史层解放遭遇的第 3–5 阶段。")]
 internal static class HistoryFloorLiberationCreateScenePatch
 {
     private static bool Prefix(EncounterModel __instance, ref Control __result)
@@ -139,8 +97,6 @@ internal static class HistoryFloorForgottenStateDisplayPatch
 {
     private const float StateDisplayDropY = 32f;
 
-    private static readonly FieldInfo? OriginalPositionField =
-        AccessTools.Field(typeof(NCreatureStateDisplay), "_originalPosition");
 
     private static void Postfix(Creature creature, NCreatureStateDisplay __instance)
     {
@@ -151,6 +107,6 @@ internal static class HistoryFloorForgottenStateDisplayPatch
 
         Vector2 droppedPosition = __instance.Position + Vector2.Down * StateDisplayDropY;
         __instance.Position = droppedPosition;
-        OriginalPositionField?.SetValue(__instance, droppedPosition);
+        VanillaPrivate.CreatureStateDisplayOriginalPosition.Set(__instance, droppedPosition);
     }
 }

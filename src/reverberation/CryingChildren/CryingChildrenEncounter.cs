@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.reverberation.CryingChildren;
 
@@ -80,6 +81,7 @@ public sealed class CryingChildrenEncounter : ReverberationEncounterModel
 }
 
 [HarmonyPatch(typeof(ActModel), nameof(ActModel.PullNextEncounter))]
+[LibraryPatch(Reason = "ActModel.PullNextEncounter 非虚无 Hook；只在本模组残响乐团幕的历史层接待精英房返回哭泣之子。可改后缀，但原版 getter 在精英池为空时会除零，暂不改。")]
 internal static class CryingChildrenHistoryReceptionPatch
 {
     private static bool Prefix(ActModel __instance, RoomType roomType, ref EncounterModel __result)

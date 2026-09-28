@@ -8,6 +8,10 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using System.Threading.Tasks;
+using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.Rewards;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -71,6 +75,23 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
     protected override void AfterRunCreated(RunState runState) => SpecialGuestRegistry.EnsureUnlocks(runState, this);
 
     protected override void AfterRunLoaded(RunState runState) => SpecialGuestRegistry.EnsureUnlocks(runState, this);
+
+    // 嘉宾战的剧情、阶段推进与奖励增补。载体在进入嘉宾战之前由 GetOrCreate 追加，所以一定在 CombatRoom 构造时的
+    // Modifiers 快照里，是战斗内的监听者。局中追加的载体没有经过 OnRunCreated/OnRunLoaded，基类 RunState 会抛异常，
+    // 运行状态从钩子参数或当前局取。原版覆写这些钩子的都是遗物、牌、能力，排在 Modifiers 之前，与剧情的先后不变；
+    // 排在载体之后的 Modifier、Badge、战斗订阅者及挂在它们身上的 RitsuLib 能力监听者改到剧情之后（重构指导附录 B）。
+
+    // 用 Late：Start 一遍（以及排在前面的 Late，例如石化蟾蜍）结算完再播战前剧情，原版效果的先后与原来的后缀一致。
+    public override Task BeforeCombatStartLate() =>
+        RunManager.Instance.DebugOnlyGetState() is { } runState
+            ? SpecialGuestStageFlow.BeforeCombatStartAsync(runState)
+            : Task.CompletedTask;
+
+    public override Task AfterCombatVictory(CombatRoom room) =>
+        SpecialGuestStageFlow.AfterCombatVictoryAsync(room.CombatState.RunState, room);
+
+    public override Task BeforeCombatRewardOffered(RewardsSet rewards, CombatRoom room) =>
+        SpecialGuestStageFlow.AugmentRewardsAsync(rewards.Player.RunState, room, rewards);
 
     public bool IsUnlocked(string guestId) => ParseSet(LibraryOfRuina_SpecialGuestUnlockedIds).Contains(guestId);
 
@@ -235,8 +256,6 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
 
 internal static class SpecialGuestRunStateModifierStore
 {
-    private static readonly FieldInfo? ModifiersField =
-        AccessTools.Field(typeof(RunState), "<Modifiers>k__BackingField");
 
     public static bool TryAppend(RunState runState, SpecialGuestRunStateModifier carrier)
     {
@@ -245,7 +264,7 @@ internal static class SpecialGuestRunStateModifierStore
             return true;
         }
 
-        if (ModifiersField == null)
+        if (!VanillaPrivate.RunStateModifiers.IsAvailable)
         {
             Log.Error("[SpecialGuest] RunState.Modifiers backing field was not found.");
             return false;
@@ -253,7 +272,7 @@ internal static class SpecialGuestRunStateModifierStore
 
         List<ModifierModel> modifiers = runState.Modifiers.ToList();
         modifiers.Add(carrier);
-        ModifiersField.SetValue(runState, modifiers);
+        VanillaPrivate.RunStateModifiers.Set(runState, modifiers);
         return true;
     }
 }

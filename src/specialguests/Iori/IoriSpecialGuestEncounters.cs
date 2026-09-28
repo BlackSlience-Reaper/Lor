@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Iori;
 
@@ -82,7 +83,8 @@ public sealed class IoriSpecialGuestStageTwoEncounter :
 }
 
 [HarmonyPatch(typeof(EncounterModel), "CreateBackgroundAssetsForCustom")]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
+[LibraryPatch(Reason = "原版背景标题只能是遭遇 id，伊织两阶段需要按种子抽取不同的接待层；只作用于伊织特殊来宾遭遇。")]
 internal static class IoriSpecialGuestBackgroundAssetsPatch
 {
     [HarmonyPrefix]
@@ -309,13 +311,6 @@ public static class IoriSpecialGuestBgmController
                 : 0;
         return tracks[Math.Clamp(trackIndex, 0, tracks.Length - 1)];
     }
-}
-
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class IoriSpecialGuestBgmRunCleanupPatch
-{
-    [HarmonyPrefix]
-    private static void Prefix() => IoriSpecialGuestBgmController.Stop();
 }
 
 [HarmonyPatch]

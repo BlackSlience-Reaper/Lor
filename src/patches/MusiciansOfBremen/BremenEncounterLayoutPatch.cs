@@ -3,6 +3,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.guests.MusiciansOfBremen;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.MusiciansOfBremen;
 
@@ -12,8 +13,6 @@ public static class BremenEncounterLayoutPatch
     private const string MuMuSlotName = "mumu";
     private const float MuMuStateDisplayLiftY = 24f;
 
-    private static readonly FieldInfo? OriginalPositionField =
-        AccessTools.Field(typeof(NCreatureStateDisplay), "_originalPosition");
 
     [HarmonyPostfix]
     public static void Postfix(Creature creature, NCreatureStateDisplay __instance)
@@ -26,6 +25,6 @@ public static class BremenEncounterLayoutPatch
         Vector2 liftedPosition = __instance.Position + Vector2.Up * MuMuStateDisplayLiftY;
         __instance.Position = liftedPosition;
 
-        OriginalPositionField?.SetValue(__instance, liftedPosition);
+        VanillaPrivate.CreatureStateDisplayOriginalPosition.Set(__instance, liftedPosition);
     }
 }

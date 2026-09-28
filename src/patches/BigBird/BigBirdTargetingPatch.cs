@@ -14,7 +14,6 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches.BigBird;
 
-[HarmonyPatch(typeof(AttackCommand), "GetPossibleTargets")]
 internal static class BigBirdTargetingPatch
 {
     private static CardModel? ActiveTargetingCard { get; set; }
@@ -76,7 +75,7 @@ internal static class BigBirdTargetingPatch
         return forcedTarget == null || target == forcedTarget;
     }
 
-    private static void Postfix(AttackCommand __instance, ref IReadOnlyList<Creature> __result)
+    internal static void FilterAttackTargets(AttackCommand __instance, ref IReadOnlyList<Creature> __result)
     {
         if (__instance.ModelSource is not CardModel card
             || card.Type != CardType.Attack
@@ -94,10 +93,9 @@ internal static class BigBirdTargetingPatch
         __result = [forcedTarget];
     }
 
-    [HarmonyPatch(typeof(CardModel), nameof(CardModel.IsValidTarget))]
-    private static class CardModelIsValidTargetPatch
+    internal static class CardModelIsValidTargetPatch
     {
-        private static void Postfix(CardModel __instance, Creature? target, ref bool __result)
+        internal static void FilterIsValidTarget(CardModel __instance, Creature? target, ref bool __result)
         {
             if (!__result && CanManuallyTargetCharmedAlly(__instance, target))
             {
@@ -111,12 +109,9 @@ internal static class BigBirdTargetingPatch
         }
     }
 
-    [HarmonyPatch(
-        typeof(NTargetManager),
-        nameof(NTargetManager.StartTargeting), typeof(TargetType), typeof(Control), typeof(TargetMode), typeof(Func<bool>), typeof(Func<Node, bool>))]
-    private static class TargetManagerStartTargetingFromCardPatch
+    internal static class TargetManagerStartTargetingFromCardPatch
     {
-        private static void Prefix(TargetType validTargetsType, Control control)
+        internal static void OnStartTargetingFromCard(TargetType validTargetsType, Control control)
         {
             ActiveTargetingCard = validTargetsType == TargetType.AnyEnemy && control is NCard cardNode
                 ? cardNode.Model
@@ -124,30 +119,25 @@ internal static class BigBirdTargetingPatch
         }
     }
 
-    [HarmonyPatch(
-        typeof(NTargetManager),
-        nameof(NTargetManager.StartTargeting), typeof(TargetType), typeof(Vector2), typeof(TargetMode), typeof(Func<bool>), typeof(Func<Node, bool>))]
-    private static class TargetManagerStartTargetingFromPositionPatch
+    internal static class TargetManagerStartTargetingFromPositionPatch
     {
-        private static void Prefix()
+        internal static void OnStartTargetingFromPosition()
         {
             ActiveTargetingCard = null;
         }
     }
 
-    [HarmonyPatch(typeof(NTargetManager), "FinishTargeting")]
-    private static class TargetManagerFinishTargetingPatch
+    internal static class TargetManagerFinishTargetingPatch
     {
-        private static void Postfix()
+        internal static void OnFinishTargeting()
         {
             ActiveTargetingCard = null;
         }
     }
 
-    [HarmonyPatch(typeof(NTargetManager), "AllowedToTargetCreature")]
-    private static class TargetManagerAllowedToTargetCreaturePatch
+    internal static class TargetManagerAllowedToTargetCreaturePatch
     {
-        private static void Postfix(
+        internal static void FilterAllowedToTargetCreature(
             Creature creature,
             TargetType ____validTargetsType,
             ref bool __result)

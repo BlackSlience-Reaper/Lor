@@ -28,7 +28,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.RoadHome;
 
-public sealed class RoadHome : LibraryMonsterModel
+public sealed class RoadHome : LorMonsterModel
 {
     internal const string HideAndSeekMoveId = "ROAD_HOME_HIDE_AND_SEEK";
     internal const string PatternOneMoveId = "ROAD_HOME_PATTERN_ONE";
@@ -111,12 +111,6 @@ public sealed class RoadHome : LibraryMonsterModel
         EncounterBgmController.RegisterMonster(Creature);
         await PowerCmdCompat.Apply<RoadHomeFriendPassivePower>(Creature, 1, Creature, null, silent: true);
         ForceRefreshMoveState();
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)

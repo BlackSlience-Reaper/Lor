@@ -1,9 +1,11 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Screens.Settings;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.settings;
 
@@ -39,8 +42,18 @@ internal abstract partial class ExtModSettings
     private bool _savingDisabled;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
     private CancellationTokenSource? _saveDebounceToken;
-    private readonly SemaphoreSlim _saveLock = new(1, 1);
+    // Debounced saves run on the thread pool; every writer (debounce, UI, quit) takes this lock.
+    private readonly object _saveLock = new();
     private readonly HashSet<string> _lastMissingProperties = [];
+
+    // Written into every config file. A file written by a newer build is applied but never
+    // saved over, so launching an older build does not strip settings it does not know.
+    private const string SchemaVersionKey = "__schemaVersion";
+    private const int SchemaVersion = 1;
+    // Keys this build does not know (removed settings, or settings from a newer build) are
+    // written back unchanged.
+    // Kept as raw JSON so a newer build's non-string values survive the round trip.
+    private readonly Dictionary<string, JsonNode?> _unknownValues = new();
 
     protected readonly List<PropertyInfo> ConfigProperties = [];
     private readonly Dictionary<string, object?> _defaultValues = new();
@@ -131,6 +144,7 @@ internal abstract partial class ExtModSettings
     {
         foreach (var property in ConfigProperties)
         {
+            if (property.GetCustomAttribute<SettingsKeepOnRestoreDefaultsAttribute>() != null) continue;
             var defaultValue = GetDefaultValue<object?>(property.Name);
             property.SetValue(null, defaultValue);
         }
@@ -173,9 +187,7 @@ internal abstract partial class ExtModSettings
             _saveDebounceToken = new CancellationTokenSource();
             var token = _saveDebounceToken.Token;
             await Task.Delay(delayMs, token);
-            await _saveLock.WaitAsync(token);
-            try { Save(); }
-            finally { _saveLock.Release(); }
+            Save();
         }
         catch (OperationCanceledException) { }
         catch (Exception ex)
@@ -186,13 +198,21 @@ internal abstract partial class ExtModSettings
 
     public void Save()
     {
+        lock (_saveLock)
+        {
+            SaveLocked();
+        }
+    }
+
+    private void SaveLocked()
+    {
         if (_savingDisabled)
         {
             SettingsLogger.Warn($"Skipping save for {_configName} (corrupted/read-only state).");
             return;
         }
 
-        Dictionary<string, string> values = [];
+        var values = new JsonObject();
         try
         {
             foreach (var property in ConfigProperties)
@@ -212,11 +232,22 @@ internal abstract partial class ExtModSettings
             return;
         }
 
+        foreach (var (key, value) in _unknownValues)
+        {
+            if (!values.ContainsKey(key))
+                values.Add(key, value?.DeepClone());
+        }
+        values[SchemaVersionKey] = SchemaVersion.ToString(CultureInfo.InvariantCulture);
+
         try
         {
             new FileInfo(_path).Directory?.Create();
-            using var fs = File.Create(_path);
-            JsonSerializer.Serialize(fs, values, JsonOptions);
+            // Write a sibling file and rename it over the config, so a crash mid-write
+            // cannot leave a truncated config behind.
+            var temporaryPath = _path + ".tmp";
+            using (var fs = File.Create(temporaryPath))
+                JsonSerializer.Serialize(fs, values, JsonOptions);
+            File.Move(temporaryPath, _path, overwrite: true);
         }
         catch (Exception e)
         {
@@ -225,6 +256,14 @@ internal abstract partial class ExtModSettings
     }
 
     public void Load()
+    {
+        lock (_saveLock)
+        {
+            LoadLocked();
+        }
+    }
+
+    private void LoadLocked()
     {
         if (!File.Exists(_path))
         {
@@ -235,30 +274,61 @@ internal abstract partial class ExtModSettings
         var hasSoftErrors = false;
         _savingDisabled = false;
         _lastMissingProperties.Clear();
+        _unknownValues.Clear();
 
         try
         {
-            Dictionary<string, string>? values;
+            // Parse to a JSON tree first: a newer build may store non-string values, which must be
+            // detected as "newer" rather than treated as a corrupt file and replaced.
+            JsonNode? root;
             using (var fs = File.OpenRead(_path))
-                values = JsonSerializer.Deserialize<Dictionary<string, string>>(fs);
+                root = JsonNode.Parse(fs);
 
-            if (values == null)
+            if (root == null)
             {
                 SettingsLogger.Warn($"Config file {_configName} was empty. Re-saving defaults.");
                 hasSoftErrors = true;
             }
+            else if (root is not JsonObject values)
+            {
+                throw new JsonException("The config root is not a JSON object.");
+            }
             else
             {
+                var fileSchema = ReadSchemaVersion(values[SchemaVersionKey]);
                 foreach (var property in ConfigProperties)
                 {
-                    if (!values.TryGetValue(property.Name, out var value))
+                    if (!values.TryGetPropertyValue(property.Name, out var node) || node == null)
                     {
                         SettingsLogger.Warn($"Config {_configName} missing {property.Name}; will re-save.");
                         _lastMissingProperties.Add(property.Name);
                         hasSoftErrors = true;
                         continue;
                     }
+                    if (node is not JsonValue jsonValue || !jsonValue.TryGetValue(out string? value))
+                    {
+                        SettingsLogger.Warn($"Config {_configName}.{property.Name} is not a string value; ignored.");
+                        hasSoftErrors = true;
+                        continue;
+                    }
                     if (!TryApplyPropertyValue(property, value)) hasSoftErrors = true;
+                }
+
+                var knownNames = ConfigProperties.Select(static property => property.Name).ToHashSet();
+                foreach (var (key, node) in values)
+                {
+                    if (key != SchemaVersionKey && !knownNames.Contains(key))
+                        _unknownValues[key] = node?.DeepClone();
+                }
+
+                if (fileSchema > SchemaVersion)
+                {
+                    SettingsLogger.Warn(
+                        $"Config {_configName} was written by a newer version of the mod (schema {fileSchema} > {SchemaVersion}). "
+                        + "Settings changed in this version are not saved.",
+                        showInGui: true);
+                    _savingDisabled = true;
+                    return;
                 }
 
                 if (hasSoftErrors)
@@ -294,6 +364,18 @@ internal abstract partial class ExtModSettings
             SettingsLogger.Warn($"Saving fresh config for {_configName} to correct soft errors.");
             Save();
         }
+    }
+
+    private static int ReadSchemaVersion(JsonNode? node)
+    {
+        if (node is not JsonValue value)
+            return 0;
+        if (value.TryGetValue(out int number))
+            return number;
+        return value.TryGetValue(out string? text)
+               && int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed)
+            ? parsed
+            : 0;
     }
 
     private static bool TryApplyPropertyValue(PropertyInfo property, string value)
@@ -398,9 +480,7 @@ internal abstract partial class ExtModSettings
         positioner.SizeFlagsHorizontal = Control.SizeFlags.ShrinkEnd;
         positioner.SizeFlagsVertical = Control.SizeFlags.Fill;
 
-        var dropdownNodeField = typeof(NDropdownPositioner).GetField("_dropdownNode",
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        dropdownNodeField?.SetValue(positioner, dropdown);
+        VanillaPrivate.DropdownPositionerDropdownNode.Set(positioner, dropdown);
 
         positioner.AddChild(dropdown);
         positioner.MouseFilter = Control.MouseFilterEnum.Ignore;

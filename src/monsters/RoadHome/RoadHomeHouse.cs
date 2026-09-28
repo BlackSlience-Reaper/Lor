@@ -11,7 +11,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.RoadHome;
 
-public sealed class RoadHomeHouse : LibraryMonsterModel
+public sealed class RoadHomeHouse : LorMonsterModel
 {
     internal const string WaitMoveId = "ROAD_HOME_HOUSE_WAIT";
     public const string IdleTexturePath = RoadHomeEncounterHelper.TextureRoot + "house.png";

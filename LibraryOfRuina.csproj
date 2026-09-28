@@ -35,6 +35,17 @@
     <Compile Remove="build/**" />
     <Compile Remove="dist/**" />
     <Compile Remove="tools/**" />
+    <Compile Remove="verification/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The verification suites (verification/) read Debug* accessors and internal state. -->
+    <InternalsVisibleTo Include="LibraryOfRuinaVerification" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- IL hashes of vanilla methods behind skip prefixes and transpilers; see VanillaCopyGuard. -->
+    <EmbeddedResource Include="src/infra/patching/vanilla_copy_guard.txt" LogicalName="LibraryOfRuina.vanilla_copy_guard.txt" />
   </ItemGroup>
 
   <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">

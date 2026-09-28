@@ -23,7 +23,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -166,12 +165,6 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
     {
         await base.BeforeCombatStart();
         await BurrowingHeavenEncounterHelper.RefreshEncounterState(new ThrowingPlayerChoiceContext(), Creature.CombatState);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(
@@ -591,27 +584,6 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
     private int GetExclusiveSecondDamageRoll() =>
         GetOrRollDamage(ref _exclusiveSecondDamageRoll, ExclusiveHeavenSecondMinDamage, ExclusiveHeavenSecondMaxDamage);
 
-    private int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        return cachedRoll ?? maxInclusive;
-    }
-
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
-    }
-
     private void EnsureRollForMove(string moveId)
     {
         switch (moveId)
@@ -657,18 +629,7 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<BurrowingHeavenPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<BurrowingHeavenPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<BurrowingHeavenPageRelic>(room, PageRelicTitleLocKey);
     }
 
     private static bool IsBurrowingHeavenEncounter(CombatRoom room)

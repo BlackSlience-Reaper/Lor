@@ -19,6 +19,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters.LiteratureFloorLiberation;
 
@@ -91,10 +92,6 @@ public sealed class LiteratureFloorLiberationEncounter :
     private bool _rightFriendWeakened;
     private int _blackSwanRoundStarts;
     private int _nextBlackSwanBrother = 3;
-    private static readonly PropertyInfo? CombatRoomEncounterSlotsProperty =
-        typeof(NCombatRoom).GetProperty(
-            "EncounterSlots",
-            BindingFlags.Instance | BindingFlags.NonPublic);
 
     public override RoomType RoomType => RoomType.Boss;
 
@@ -815,14 +812,14 @@ public sealed class LiteratureFloorLiberationEncounter :
 
     private void ReplaceEncounterSceneForCurrentPhase(NCombatRoom room)
     {
-        if (CombatRoomEncounterSlotsProperty == null)
+        if (!VanillaPrivate.CombatRoomEncounterSlots.IsAvailable)
         {
             throw new InvalidOperationException(
                 "NCombatRoom.EncounterSlots could not be found.");
         }
 
         Control? existingSlots =
-            CombatRoomEncounterSlotsProperty.GetValue(room) as Control;
+            VanillaPrivate.CombatRoomEncounterSlots.Get(room) as Control;
         string requiredMarker = CurrentPhase switch
         {
             5 => BlackSwanSlot,
@@ -856,7 +853,7 @@ public sealed class LiteratureFloorLiberationEncounter :
         };
         phaseSlots.Position -= new Vector2(1920f, 1080f) * 0.5f;
         parent.AddChildSafely(phaseSlots);
-        CombatRoomEncounterSlotsProperty.SetValue(room, phaseSlots);
+        VanillaPrivate.CombatRoomEncounterSlots.Set(room, phaseSlots);
     }
 
     internal async Task AdvanceBlackSwanRoundAndTrySummon(

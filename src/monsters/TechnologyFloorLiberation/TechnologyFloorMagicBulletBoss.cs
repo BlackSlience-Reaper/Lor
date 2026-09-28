@@ -35,7 +35,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorMagicBulletBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss, IEnemyCardRuntimeOwner
+public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss, IEnemyCardRuntimeOwner
 {
     private const int Phase = 5;
     private const int MaxInternalPhase = 7;
@@ -194,12 +194,6 @@ public sealed class TechnologyFloorMagicBulletBoss : LibraryMonsterModel, ILiber
     {
         TechnologyFloorLiberationBackgroundController.SetPhaseBackground(Phase);
         return Task.CompletedTask;
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override void DeepCloneFields()

@@ -54,13 +54,6 @@ internal static class XiaoSpecialGuestPresentation
     }
 }
 
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class XiaoSpecialGuestBgmRunCleanupPatch
-{
-    [HarmonyPrefix]
-    private static void Prefix() => XiaoSpecialGuestBgmController.Stop();
-}
-
 public static class XiaoSpecialGuestBgmController
 {
     private const string LogTag = "XiaoSpecialGuestBGM";

@@ -6,6 +6,7 @@ using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Events;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.secondascension;
 
@@ -45,14 +46,12 @@ internal static class LibrarySecondAscensionNeowOptionsPatch
 
 internal static class LibrarySecondAscensionNeowModifierFilter
 {
-    private static readonly FieldInfo? RunStateModifiersField =
-        AccessTools.Field(typeof(RunState), "<Modifiers>k__BackingField");
 
     public static void HideInternalCarriers(Neow neow, out IReadOnlyList<ModifierModel>? original)
     {
         original = null;
 
-        if (RunStateModifiersField == null || neow.Owner?.RunState is not RunState runState)
+        if (!VanillaPrivate.RunStateModifiers.IsAvailable || neow.Owner?.RunState is not RunState runState)
         {
             return;
         }
@@ -66,7 +65,7 @@ internal static class LibrarySecondAscensionNeowModifierFilter
         }
 
         original = modifiers;
-        RunStateModifiersField.SetValue(runState, filtered);
+        VanillaPrivate.RunStateModifiers.Set(runState, filtered);
     }
 
     internal static IReadOnlyList<ModifierModel> FilterForNeow(
@@ -78,11 +77,11 @@ internal static class LibrarySecondAscensionNeowModifierFilter
 
     public static void RestoreModifiers(Neow neow, IReadOnlyList<ModifierModel>? original)
     {
-        if (original == null || RunStateModifiersField == null || neow.Owner?.RunState is not RunState runState)
+        if (original == null || !VanillaPrivate.RunStateModifiers.IsAvailable || neow.Owner?.RunState is not RunState runState)
         {
             return;
         }
 
-        RunStateModifiersField.SetValue(runState, original);
+        VanillaPrivate.RunStateModifiers.Set(runState, original);
     }
 }

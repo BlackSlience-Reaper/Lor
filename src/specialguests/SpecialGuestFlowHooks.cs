@@ -22,14 +22,15 @@ using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.specialguests;
 
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp))]
-internal static class SpecialGuestRunCleanupPatch
+internal static class SpecialGuestRunCleanup
 {
-    [HarmonyPrefix]
-    private static void Prefix()
+    /// <summary>由 <see cref="LibraryOfRuina.patches.dispatch.RunLifecycle"/> 在局结束清理时调用。</summary>
+    internal static void OnRunCleaningUp()
     {
         SpecialGuestStoryPlayer.AbortActiveStory();
         StoryReadySynchronizer.Reset();
@@ -39,6 +40,7 @@ internal static class SpecialGuestRunCleanupPatch
 
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyNextEvent))]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "第一次抽中嘉宾时载体还不存在（在这里创建），ModifyNextEvent 也没有 runState 参数，载体覆写接不住；必须以 Last 看到含其他模组修改的最终事件，否则消耗标记与实际事件脱节。只在怪物扩展开启时按种子确定性替换。")]
 internal static class SpecialGuestModifyNextEventPatch
 {
     [HarmonyPostfix]
@@ -196,6 +198,7 @@ internal static class SpecialGuestRunStateLoadPatch
 /// </summary>
 [HarmonyPatch(typeof(RunManager), nameof(RunManager.ProceedFromTerminalRewardsScreen))]
 [HarmonyPriority(Priority.Last)]
+[LibraryPatch(Reason = "ProceedFromTerminalRewardsScreen 无 Hook；仅在本模组特邀嘉宾阶段衔接中吞掉重复/过期的继续调用，其余放行原版以复用其出栈与父事件恢复。")]
 internal static class SpecialGuestTerminalRewardsProceedPatch
 {
     private static readonly ConditionalWeakTable<CombatRoom, ProceedGate> Gates = new();
@@ -233,7 +236,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
         }
 
         if (__instance.DebugOnlyGetState() is RunState eventRunState
-            && eventRunState.CurrentRoom is EventRoom
+            && eventRunState.CurrentRoom is EventRoom { CanonicalEvent: SpecialGuestEventBase }
             && SpecialGuestRunStateModifier.TryGet(eventRunState) is { ActiveGuestId: { } activeGuestId } eventState
             && eventState.CurrentStageIndex > 0
             && string.Equals(
@@ -457,12 +460,15 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
 }
 
 [HarmonyPatch(typeof(RunManager), "FadeIn", typeof(bool))]
+[LibraryPatch(Reason = "RunManager.FadeIn 公开非虚且无 Hook；仅在本模组特邀嘉宾阶段衔接、当前房间为嘉宾父事件时抑制中间淡入，避免父事件闪现。")]
 internal static class SpecialGuestSuppressIntermediateParentFadeInPatch
 {
     [HarmonyPrefix]
     private static bool Prefix(ref Task __result)
     {
-        if (!SpecialGuestTerminalRewardsProceedPatch.ShouldSuppressParentFadeIn)
+        // 只在特邀嘉宾阶段衔接、且原版已把房间恢复成嘉宾父事件时吞掉淡入；窗口内其他代码的 FadeIn 照常执行。
+        if (!SpecialGuestTerminalRewardsProceedPatch.ShouldSuppressParentFadeIn
+            || RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom { CanonicalEvent: SpecialGuestEventBase })
         {
             return true;
         }
@@ -499,6 +505,7 @@ internal static class SpecialGuestRelicRemovedPatch
 }
 
 [HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
+[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组特邀嘉宾状态载体修饰符返回 null（原版 TestMode 同样返回 null）。")]
 internal static class SpecialGuestHideRunStateTopBarPatch
 {
     [HarmonyPrefix]
@@ -517,14 +524,12 @@ internal static class SpecialGuestHideRunStateTopBarPatch
 [HarmonyPatch(typeof(NTopBar), nameof(NTopBar.Initialize))]
 internal static class SpecialGuestHideEmptyModifierContainerPatch
 {
-    private static readonly FieldInfo? ModifiersContainerField =
-        AccessTools.Field(typeof(NTopBar), "_modifiersContainer");
 
     [HarmonyPostfix]
     private static void Postfix(NTopBar __instance, IRunState runState)
     {
         if (!runState.Modifiers.Any(static modifier => modifier is SpecialGuestRunStateModifier)
-            || ModifiersContainerField?.GetValue(__instance) is not Control container)
+            || VanillaPrivate.TopBarModifiersContainer.Get(__instance) is not Control container)
         {
             return;
         }
@@ -540,58 +545,9 @@ internal static class SpecialGuestHideEmptyModifierContainerPatch
 }
 
 /// <summary>
-/// Plays an after-victory story inside the native awaited victory hook.  The
-/// combat is not marked pre-finished and rewards are not saved until every
-/// connected player has released the barrier.
+/// 嘉宾战的剧情、阶段推进与奖励增补，由 <see cref="SpecialGuestRunStateModifier"/> 的钩子覆写调用。
+/// 胜利后剧情在原版等待的 AfterCombatVictory 里播放：所有已连接玩家放行之前，战斗不会标记结束，奖励也不会存档。
 /// </summary>
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterCombatVictory))]
-internal static class SpecialGuestAfterCombatVictoryPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(IRunState runState, CombatRoom room, ref Task __result)
-    {
-        __result = Wrap(__result, runState, room);
-    }
-
-    private static async Task Wrap(Task original, IRunState runState, CombatRoom room)
-    {
-        await original;
-        await SpecialGuestStageFlow.AfterCombatVictoryAsync(runState, room);
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.BeforeCombatStart))]
-internal static class SpecialGuestBeforeCombatStartPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(IRunState runState, ref Task __result)
-    {
-        __result = Wrap(__result, runState);
-    }
-
-    private static async Task Wrap(Task original, IRunState runState)
-    {
-        await original;
-        await SpecialGuestStageFlow.BeforeCombatStartAsync(runState);
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.BeforeCombatRewardOffered))]
-internal static class SpecialGuestRewardAugmentPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(RewardsSet rewards, IRunState runState, CombatRoom room, ref Task __result)
-    {
-        __result = Wrap(__result, rewards, runState, room);
-    }
-
-    private static async Task Wrap(Task original, RewardsSet rewards, IRunState runState, CombatRoom room)
-    {
-        await original;
-        await SpecialGuestStageFlow.AugmentRewardsAsync(runState, room, rewards);
-    }
-}
-
 public static class SpecialGuestStageFlow
 {
     public static async Task BeforeCombatStartAsync(IRunState runState)

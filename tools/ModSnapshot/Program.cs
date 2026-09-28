@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using LibraryOfRuina.infra.patching;
 
 // usage: ModSnapshot <mod.dll> <out-dir> <reference-dir-or-dll>...
 // Writes deterministic, sorted text snapshots so a refactor can be diffed against a baseline.
@@ -51,6 +52,8 @@ WriteLines("saved_properties.txt", SavedProperties());
 WriteLines("patches.txt", Patches(out List<string> order));
 WriteLines("patch_order.txt", order);
 WriteLines("static_fields.txt", StaticFields());
+WriteLines("skip_prefixes.txt", SkipPrefixes());
+WriteLines("hook_patches.txt", HookPatches());
 WriteLines("unresolved.txt", missing);
 Console.WriteLine($"snapshot written to {outDir} ({types.Length} types, {missing.Count} unresolved)");
 return 0;
@@ -255,6 +258,90 @@ IEnumerable<string> Patches(out List<string> orderLines)
         .Select(static pair => pair.Key + "\n  " + string.Join("\n  ", pair.Value))
         .ToList();
     return lines.Order(StringComparer.Ordinal);
+}
+
+// Every bool prefix (it can skip the original) must state why in [LibraryPatch(Reason = ...)] on its class;
+// check.sh fails on MISSING. The reason text is part of the snapshot so a changed rationale shows in review.
+IEnumerable<string> SkipPrefixes()
+{
+    var lines = new List<string>();
+    foreach (Type type in types)
+    {
+        MethodInfo[] methods;
+        try
+        {
+            methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+        }
+        catch (FileNotFoundException)
+        {
+            continue;
+        }
+
+        // Same candidate rule as LibraryPatcher (shared source file), so a class the installer would patch
+        // cannot slip past the reason check because of how its targets are declared.
+        bool isSkipPrefix = methods.Any(PatchClassRules.IsSkipPrefix) && PatchClassRules.IsInstalled(type);
+        if (!isSkipPrefix)
+        {
+            continue;
+        }
+
+        string? reason = PatchClassRules.Reason(type);
+        lines.Add($"{type.FullName}\t{(string.IsNullOrWhiteSpace(reason) ? "MISSING" : reason)}");
+    }
+
+    return lines.Order(StringComparer.Ordinal);
+}
+
+// Every patch class that targets the vanilla Hook bus by attribute must also state why it is not a model override.
+// Class-level targets count from base classes too (Harmony reads them with inherit: true), and the target type may
+// be given as typeof(...) or as a type-name string. Classes that pick Hook methods in TargetMethod(s) are caught at
+// runtime by LibraryPatcher's report instead.
+IEnumerable<string> HookPatches()
+{
+    var lines = new List<string>();
+    foreach (Type type in types)
+    {
+        bool targetsHook;
+        try
+        {
+            IEnumerable<CustomAttributeData> classAttributes = [];
+            for (Type? current = type; current != null; current = current.BaseType)
+            {
+                classAttributes = classAttributes.Concat(current.GetCustomAttributesData());
+            }
+
+            MethodInfo[] patchMethods = PatchClassRules.PatchMethods(type).ToArray();
+            targetsHook = patchMethods.Length > 0
+                && PatchClassRules.IsInstalled(type)
+                && patchMethods.SelectMany(static method => method.GetCustomAttributesData())
+                    .Concat(classAttributes)
+                    .Any(static data => data.AttributeType.Name == "HarmonyPatch" && TargetsHookType(data));
+        }
+        catch (FileNotFoundException)
+        {
+            continue;
+        }
+
+        if (targetsHook)
+        {
+            string? reason = PatchClassRules.Reason(type);
+            lines.Add($"{type.FullName}\t{(string.IsNullOrWhiteSpace(reason) ? "MISSING" : reason)}");
+        }
+    }
+
+    return lines.Order(StringComparer.Ordinal);
+}
+
+static bool TargetsHookType(CustomAttributeData data)
+{
+    object? first = data.ConstructorArguments.FirstOrDefault().Value;
+    return first switch
+    {
+        Type type => type.FullName == PatchClassRules.HookTypeFullName,
+        // [HarmonyPatch("Namespace.Type, Assembly", "Method")]: the assembly part is optional.
+        string typeName => typeName.Split(',')[0].Trim() == PatchClassRules.HookTypeFullName,
+        _ => false
+    };
 }
 
 IEnumerable<string> StaticFields()

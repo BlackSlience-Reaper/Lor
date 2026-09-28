@@ -18,6 +18,8 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Orbs;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.LittleRedMercenary;
 
@@ -144,6 +146,10 @@ internal static class FocusOfAttentionBouncingFlaskPatch
     }
 }
 
+[LibraryPatch(
+    Optional = true,
+    Reason = "CardCmd.AutoPlay 的随机选敌改为尊重集火。目标是 async 状态机，签名随游戏版本变化；"
+             + "Prepare 按 ResourceInfo.EnergySpent 的签名判断是否为适配的版本，不匹配时不安装。")]
 internal static class FocusOfAttentionCardCmdAutoPlayPatch
 {
     [HarmonyPrepare]
@@ -191,10 +197,9 @@ internal static class FocusOfAttentionCardCmdAutoPlayPatch
 }
 
 [HarmonyPatch(typeof(DarkOrb), nameof(DarkOrb.Evoke))]
+[LibraryPatch(Reason = "DarkOrb 是原版类，无法覆写，原版没有激发目标重定向 Hook；只在存在带本模组集火能力的可命中敌人时改为对它造成伤害。")]
 internal static class FocusOfAttentionDarkOrbEvokePatch
 {
-    private static readonly MethodInfo? _playEvokeSfxMethod =
-        AccessTools.Method(typeof(OrbModel), "PlayEvokeSfx");
 
     [HarmonyPrefix]
     private static bool Prefix(
@@ -217,7 +222,9 @@ internal static class FocusOfAttentionDarkOrbEvokePatch
         PlayerChoiceContext playerChoiceContext,
         Creature focusedTarget)
     {
-        _playEvokeSfxMethod?.Invoke(orb, null);
+        VanillaPrivate.OrbModelPlayEvokeSfx.Invoke(orb, null);
+        // 与原版 DarkOrb.Evoke 相同：触发激发事件，充能球特效据此指向目标。
+        orb.ActivateEvoke([focusedTarget]);
         await CreatureCmdCompat.Damage(
             playerChoiceContext,
             focusedTarget,

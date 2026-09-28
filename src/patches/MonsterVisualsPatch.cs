@@ -16,6 +16,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
 using AddictedEmployeeCreatureVisuals = LibraryOfRuina.visuals.AddictedEmployee.AddictedEmployeeCreatureVisuals;
 using AllAroundHelperCreatureVisuals = LibraryOfRuina.visuals.AllAroundHelper.AllAroundHelperCreatureVisuals;
 using ArnoldCreatureVisuals = LibraryOfRuina.visuals.BrotherhoodOfIron.ArnoldCreatureVisuals;
@@ -143,6 +144,7 @@ using WrathServantCreatureVisuals = LibraryOfRuina.visuals.WrathServant.WrathSer
 using YangCreatureVisuals = LibraryOfRuina.visuals.DawnOffice.YangCreatureVisuals;
 using YunaCreatureVisuals = LibraryOfRuina.visuals.DawnOffice.YunaCreatureVisuals;
 using YunCreatureVisuals = LibraryOfRuina.visuals.YunOffice.YunCreatureVisuals;
+using LibraryOfRuina.interop;
 
 // ReSharper disable UnusedType.Global
 
@@ -1972,7 +1974,7 @@ internal static class MonsterVisualCatalog
         string id = monster.Id.Entry;
         if (SpecialScenePaths.TryGetValue(id, out string? scenePath))
         {
-            MonsterVisualDebug.Write(
+            MonsterVisualDebug.Trace(
                 $"Create id={id} scenePath={scenePath}");
             return WrappedMonsterVisualFactory.CreateFromScene(scenePath);
         }
@@ -2257,6 +2259,7 @@ internal sealed partial class CreatureStateDisplayOffset : Node
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
+[LibraryPatch(Reason = "原版 CreateVisuals 非虚，只会实例化 VisualsPath（可覆写）指向的场景；本模组外观多为运行时用代码拼装的精灵节点，没有对应场景可指，换路径做不到。只作用于 MonsterVisualCatalog 登记的本模组怪物 id。")]
 public static class MonsterModelCreateVisualsPatch
 {
     private static bool Prefix(MonsterModel __instance, ref NCreatureVisuals __result)
@@ -2348,7 +2351,7 @@ internal static class WrappedMonsterVisualFactory
                 + "declared by its sprite visual profile.");
         }
 
-        MonsterVisualDebug.Write(
+        MonsterVisualDebug.Trace(
             $"Create id={id} visualClass={typeof(TVisuals).Name} "
             + $"texturePath={idleTexturePath}");
         var idleSprite = CreateSpriteNode("Visuals", layout, visible: true);
@@ -2367,7 +2370,7 @@ internal static class WrappedMonsterVisualFactory
 
         AddLayoutNodes(visuals, layout, idleSprite, attackSprite, motionRoot);
 
-        MonsterVisualDebug.Write(
+        MonsterVisualDebug.Trace(
             $"Created id={id} visualClass={typeof(TVisuals).Name} children={visuals.GetChildCount()} " +
             $"hasMotionRoot={visuals.HasNode("MotionRoot")} hasVisuals={visuals.HasNode("Visuals")} hasAttackVisuals={visuals.HasNode("AttackVisuals")} " +
             $"hasBounds={visuals.HasNode("Bounds")} hasCenter={visuals.HasNode("CenterPos")} hasIntent={visuals.HasNode("IntentPos")}");
@@ -2400,7 +2403,7 @@ internal static class WrappedMonsterVisualFactory
 
         if (texture != null)
         {
-            MonsterVisualDebug.Write($"Texture loaded id={id} size={texture.GetSize()}");
+            MonsterVisualDebug.Trace($"Texture loaded id={id} size={texture.GetSize()}");
         }
         else
         {
@@ -2568,7 +2571,7 @@ internal static class WrappedMonsterVisualFactory
             }
 
             ValidateSceneBackedNodes(id, visuals);
-            MonsterVisualDebug.Write(
+            MonsterVisualDebug.Trace(
                 $"Create id={id} sceneVisualClass={typeof(TVisuals).Name} "
                 + $"scenePath={scenePath} children={visuals.GetChildCount()}");
             return visuals;
@@ -2638,11 +2641,11 @@ internal static class WrappedMonsterVisualFactory
             throw new InvalidOperationException($"Cannot load scene: {scenePath}");
 
         Node2D templateRoot = packed.Instantiate<Node2D>();
-        MonsterVisualDebug.Write($"Scene instantiated path={scenePath} rootType={templateRoot.GetType().FullName} rootClass={templateRoot.GetClass()}");
+        MonsterVisualDebug.Trace($"Scene instantiated path={scenePath} rootType={templateRoot.GetType().FullName} rootClass={templateRoot.GetClass()}");
 
         if (templateRoot is NCreatureVisuals cv)
         {
-            MonsterVisualDebug.Write($"Scene returned direct NCreatureVisuals path={scenePath} name={cv.Name}");
+            MonsterVisualDebug.Trace($"Scene returned direct NCreatureVisuals path={scenePath} name={cv.Name}");
             return cv;
         }
 
@@ -2655,7 +2658,7 @@ internal static class WrappedMonsterVisualFactory
             AssignOwnerRecursive(child, visuals);
         }
         templateRoot.Free();
-        MonsterVisualDebug.Write($"Scene wrapped into NCreatureVisuals path={scenePath} name={visuals.Name} children={visuals.GetChildCount()}");
+        MonsterVisualDebug.Trace($"Scene wrapped into NCreatureVisuals path={scenePath} name={visuals.Name} children={visuals.GetChildCount()}");
         return visuals;
     }
 
@@ -2702,14 +2705,8 @@ internal static class AttackAnimationHitSuppressionAttackPatch
 
 internal static class AttackAnimationHitSuppression
 {
-    private static readonly FieldInfo? AttackerAnimNameField =
-        AccessTools.Field(typeof(AttackCommand), "_attackerAnimName");
 
-    private static readonly FieldInfo? ShouldPlayAnimationField =
-        AccessTools.Field(typeof(AttackCommand), "_shouldPlayAnimation");
 
-    private static readonly FieldInfo? VisualAttackerField =
-        AccessTools.Field(typeof(AttackCommand), "_visualAttacker");
 
     private static readonly object Gate = new();
     private static readonly Dictionary<Creature, int> ActiveAttackAnimations = new();
@@ -2723,7 +2720,7 @@ internal static class AttackAnimationHitSuppression
 
         List<Creature> creatures = new();
         AddDistinct(command.Attacker);
-        AddDistinct(VisualAttackerField?.GetValue(command) as Creature);
+        AddDistinct(VanillaPrivate.AttackCommandVisualAttacker.Get(command) as Creature);
 
         if (creatures.Count == 0)
         {
@@ -2765,13 +2762,13 @@ internal static class AttackAnimationHitSuppression
 
     private static bool ShouldTrack(AttackCommand command)
     {
-        bool shouldPlayAnimation = ShouldPlayAnimationField?.GetValue(command) as bool? ?? true;
+        bool shouldPlayAnimation = !VanillaPrivate.AttackCommandShouldPlayAnimation.TryGet(command, out bool shouldPlay) || shouldPlay;
         if (!shouldPlayAnimation)
         {
             return false;
         }
 
-        string? attackerAnimName = AttackerAnimNameField?.GetValue(command) as string;
+        string? attackerAnimName = VanillaPrivate.AttackCommandAttackerAnimName.Get(command) as string;
         return !string.IsNullOrWhiteSpace(attackerAnimName);
     }
 
@@ -2816,19 +2813,19 @@ internal static class AttackAnimationHitSuppression
     }
 }
 
+/// <summary>
+/// 本模组怪物的外观不是 Spine，原版 SetAnimationTrigger 只驱动 Spine 动画机，对它们不起作用；这里把触发转给
+/// 非 Spine 外观的处理器或 AnimationPlayer。攻击动画进行中收到的 "Hit" 会被忽略，免得打断攻击动作。
+/// 只处理本模组怪物：原来的前缀会对任何 Spine 生物（原版角色、原版与其他模组的怪物）吞掉攻击中的受击触发。
+/// </summary>
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.SetAnimationTrigger))]
 internal static class NonSpineAnimationTriggerBridgePatch
 {
-    private static readonly FieldInfo? SpineAnimatorField = AccessTools.Field(typeof(NCreature), "_spineAnimator");
-
-    private static bool Prefix(NCreature __instance, string trigger)
-    {
-        return !AttackAnimationHitSuppression.ShouldSuppress(__instance.Entity, trigger);
-    }
 
     private static void Postfix(NCreature __instance, string trigger)
     {
-        if (AttackAnimationHitSuppression.ShouldSuppress(__instance.Entity, trigger))
+        if (!ModOwnership.IsOwnMonster(__instance.Entity)
+            || AttackAnimationHitSuppression.ShouldSuppress(__instance.Entity, trigger))
         {
             return;
         }
@@ -2896,12 +2893,12 @@ internal static class NonSpineAnimationTriggerBridgePatch
 
     private static bool HasSpineAnimator(NCreature creature)
     {
-        if (SpineAnimatorField == null)
+        if (!VanillaPrivate.CreatureSpineAnimator.IsAvailable)
         {
             return creature.HasSpineAnimation;
         }
 
-        return SpineAnimatorField.GetValue(creature) != null;
+        return VanillaPrivate.CreatureSpineAnimator.Get(creature) != null;
     }
 }
 
@@ -2952,22 +2949,33 @@ internal static class MonsterNodeReadyDebugPatch
 
 internal static class MonsterVisualDebug
 {
+    private const long MaxLogBytes = 1024 * 1024;
     private static readonly string LogPath = ProjectSettings.GlobalizePath("user://mods/LibraryOfRuina/monster_visuals_debug.log");
 
+    /// <summary>成功路径的诊断，每只怪生成外观都会走到，只进 Debug 级日志。</summary>
+    public static void Trace(string message)
+    {
+        Log.Debug($"[MonsterVisualDebug] {message}");
+    }
+
+    /// <summary>失败路径：进游戏日志，同时追加到单独文件方便玩家反馈；文件超过 1 MB 时轮换为 .old。</summary>
     public static void Write(string message)
     {
         string text = $"[MonsterVisualDebug {DateTime.Now:HH:mm:ss.fff}] {message}";
-        Log.Info(text);
+        Log.Warn(text);
         try
         {
             string? dir = Path.GetDirectoryName(LogPath);
             if (!string.IsNullOrEmpty(dir))
                 Directory.CreateDirectory(dir);
+            var info = new FileInfo(LogPath);
+            if (info.Exists && info.Length > MaxLogBytes)
+                File.Move(LogPath, LogPath + ".old", overwrite: true);
             File.AppendAllText(LogPath, text + Environment.NewLine);
         }
-        catch
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            // ignored
+            // 日志文件只是反馈辅助，写不进去时游戏日志里已有同一条。
         }
     }
 }

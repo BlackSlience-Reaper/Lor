@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -14,13 +15,11 @@ namespace LibraryOfRuina.specialguests;
 [HarmonyPriority(Priority.Last)]
 internal static class SpecialGuestEmotionUiPatch
 {
-    private static readonly FieldInfo? CreatureField =
-        AccessTools.Field(typeof(NHealthBar), "_creature");
 
     [HarmonyPostfix]
     private static void Postfix(NHealthBar __instance)
     {
-        if (CreatureField?.GetValue(__instance) is not Creature
+        if (VanillaPrivate.HealthBarCreature.Get(__instance) is not Creature
             {
                 Monster: SpecialGuestMonsterBase guest,
             })

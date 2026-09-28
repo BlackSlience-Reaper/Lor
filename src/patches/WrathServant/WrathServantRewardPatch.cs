@@ -15,10 +15,15 @@ using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.WrathServant;
 
+// 仆从之死路径先照常生成、填充奖励再清空，会推进药水掉率和奖励 RNG；改为空界面补丁直接用 RewardsSet.EmptyForRoom
+// 可以避免，见重构指导附录 B。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyRewards))]
+[LibraryPatch(Reason = "ModifyRewards 只问局级监听者，怪物、遭遇、能力都不在，没有已有模型能覆写；仆从之死要以 Last 清空（含其他模组追加的奖励），胜利时按最终列表去重补发书页。只作用于本模组 WrathServantStrong 的房间结算奖励。")]
 internal static class WrathServantRewardPatch
 {
     private const string FailedRewardHeaderLocKey = "WRATH_SERVANT_FAILED_REWARD_HEADER";
@@ -78,10 +83,9 @@ internal static class WrathServantRewardHeaderPatch
 }
 
 [HarmonyPatch(typeof(NCombatUi), "OnCombatWon")]
+[LibraryPatch(Reason = "愤怒仆从之死结局要显示空的终局奖励界面，NCombatUi.OnCombatWon 私有无 Hook；只作用于本模组愤怒仆从遭遇。改为不覆写 ShouldGiveRewards 会改变读档表现，暂缓。")]
 internal static class WrathServantEmptyRewardScreenPatch
 {
-    private static readonly MethodInfo? ShowRewardsMethod =
-        AccessTools.Method(typeof(NCombatUi), "ShowRewards");
 
     private static bool Prefix(NCombatUi __instance, CombatRoom room)
     {
@@ -91,7 +95,7 @@ internal static class WrathServantEmptyRewardScreenPatch
         }
 
         // This encounter intentionally shows an empty terminal rewards screen on servant death.
-        if (ShowRewardsMethod?.Invoke(__instance, [room]) is Task task)
+        if (VanillaPrivate.CombatUiShowRewards.Invoke(__instance, [room]) is Task task)
         {
             TaskHelper.RunSafely(task);
             return false;

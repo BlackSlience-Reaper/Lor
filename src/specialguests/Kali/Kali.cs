@@ -340,12 +340,6 @@ public sealed class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwner, ITar
         }
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     protected override void DeepCloneFields()
     {
         base.DeepCloneFields();

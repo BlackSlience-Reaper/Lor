@@ -26,7 +26,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorPleasureBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorPleasureBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 4;
     private const string GrinningMoveId = "GRINNING";
@@ -128,12 +128,6 @@ public sealed class ArtFloorPleasureBoss : LibraryMonsterModel, ILiberationPrima
         await PowerCmdCompat.Apply<ArtFloorPleasureSoftBodyPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorPleasureUnbearablePleasurePower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorPleasureExplodingHeadPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

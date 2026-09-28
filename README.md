@@ -12,7 +12,7 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 
 | 模组 | 最低版本 | 地址 |
 | --- | --- | --- |
-| LibraryOfRuinaLib（废墟图书馆基础库） | 1.2.14 | https://github.com/Xuyuha/LibraryOfRuinaLib |
+| LibraryOfRuinaLib（废墟图书馆基础库） | 1.3.0 | https://github.com/Xuyuha/LibraryOfRuinaLib |
 | STS2-RitsuLib | 0.6.2 | https://github.com/BAKAOLC/STS2-RitsuLib |
 | ActLikeIt2 | 0.2.1 | https://github.com/Darkglade1/ActLikeIt2 |
 
@@ -32,6 +32,8 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 | `ActLikeIt2Dll` | `ActLikeIt2.dll` 路径 |
 | `LibraryOfRuinaLibDll` | `LibraryOfRuinaLib.dll` 路径 |
 
+基础库按 GitHub 源码编译：`tools/build_lib.sh` 把 https://github.com/Xuyuha/LibraryOfRuinaLib 检出到 `build/LibraryOfRuinaLib` 并编译（上游仓库不提交工程文件，脚本用 `tools/LibraryOfRuinaLib.csproj.template`），之后 `Directory.Build.props` 自动引用它的输出。默认检出脚本里的 `RELEASE_REF`，即 `LibraryOfRuina.json` 要求的已发布版本（现在是 1.3.0）对应的提交，提高最低版本时两处一起改；`tools/build_lib.sh origin/main` 可以试基础库的最新源码。没有运行脚本时回退到 `mods/` 下安装的基础库。玩家装的是基础库作者发布的版本，所以 `check.sh` 找到工坊里已发布的基础库时，还会用它再编译一次本模组。
+
 ### 2. 编译 DLL
 
 ```bash
@@ -50,7 +52,7 @@ dotnet build LibraryOfRuina.csproj -c Release
 godot --headless --path . --export-pack LibraryOfRuina build/LibraryOfRuina.pck
 ```
 
-导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。
+导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。PCK 里的 `.cs` 只保留空占位（场景按路径引用脚本），不附带源码；`docs/`、`tools/`、`snapshots/`、`verification/` 带有 `.gdignore`，不会进包。
 
 ### 4. 安装
 
@@ -61,6 +63,26 @@ mods/LibraryOfRuina/
 └── LibraryOfRuina.pck
 ```
 
+### 5. 验证套件（开发用，可选）
+
+`verification/` 是独立的验证模组 `LibraryOfRuinaVerification`，只在跑 headless 验证的机器上部署，不随发行包分发：
+
+```bash
+dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
+```
+
+把 `verification/bin/Release/` 下的 `LibraryOfRuinaVerification.dll` 和 `LibraryOfRuinaVerification.json` 放进 `mods/LibraryOfRuinaVerification/`，再用 `--lor-verify-<套件>` 启动游戏，例如 `--headless --lor-verify-king-greed-summon-king`。套件通过后以退出码 0 退出，失败时退出码为 1。比对仓库素材的套件需要环境变量 `LOR_PROJECT_ROOT`（仓库根目录）；Laetitia 原图哈希检查另需 `LOR_ART_SOURCE_ROOT`，未设置时跳过。
+
+`multifight`、`multievent`、`tempmap` 控制台命令也在验证模组里。正式模组只保留 `lor_skip`（原名 `skip`），用于强制结算卡住的战斗或事件。
+
+### 6. 重构护栏
+
+`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。挂在原版 `Hook.*` 上的补丁同样要写理由，说明为什么不能由已有模型覆写对应的钩子方法。哪些类算补丁类由 `src/infra/patching/PatchClassRules.cs` 判定，安装器和快照工具共用；`tools/PatchRuleFixtures` 是它的测试，也由 `check.sh` 运行。运行期访问原版非公开成员只能经 `src/interop/VanillaPrivate.cs` 的访问器，`tools/PrivateAccessCheck`（按语法树）检查其余地方不按名字反射，不论成员名是字面量、常量还是变量（例外按“文件、所属成员、API”写在 `tools/private_access_allowlist.txt`，要写理由；`fixtures/` 是它的回归测试）；启动时初始化汇总会列出游戏更新后找不到的成员。
+
+补丁由 `src/infra/patching/LibraryPatcher` 统一安装。主菜单第一次就绪时，它会在日志里报告与其他模组共享的目标，并点名排在本模组跳过型前缀之后的第三方前缀。
+
+`src/infra/patching/vanilla_copy_guard.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的游戏与前置库方法的 IL 哈希（async 方法连同状态机）。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，再把导出的 `vanilla_copy_guard.txt` 复制过来。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。这两份都只能在装好本模组和前置的游戏里生成，`check.sh` 不会重新生成它们。
+
 ## 目录 / Layout
 
 | 目录 | 内容 |
@@ -70,6 +92,9 @@ mods/LibraryOfRuina/
 | `images/` `audio/` `videos/` `fonts/` | 美术、音频、视频与字体素材（Git LFS） |
 | `localization/` `LibraryOfRuina/localization/` | 本地化文本 |
 | `addons/mega_text/` | 游戏自带的 MegaLabel 控件，供场景在编辑器中打开 |
+| `verification/` | headless 验证套件（独立模组，不进发行包） |
+| `docs/` | 设计哲学、本地化规范、重构指导 |
+| `tools/` `snapshots/` | 重构护栏脚本与身份快照基线 |
 
 ## 关于本仓库的来源
 

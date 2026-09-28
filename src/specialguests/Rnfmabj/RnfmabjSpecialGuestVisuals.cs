@@ -8,6 +8,7 @@ using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 
@@ -144,7 +145,8 @@ internal sealed partial class RnfmabjHandCreatureVisuals :
 }
 
 [HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPriority(Priority.Low)]
+[LibraryPatch(Reason = "原版 CreateVisuals 非虚，外观需要额外初始化合体状态与手部偏移；只作用于 Rnfmabj 本体与双手。")]
 internal static class RnfmabjSpecialGuestCreateVisualsPatch
 {
     private const float HandIntentRightOffset = 60f;

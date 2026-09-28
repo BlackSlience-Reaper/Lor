@@ -21,13 +21,12 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.ScarecrowSearchingForWisdom;
 
-public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
+public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
 {
     private static readonly string[] BattleStartLines =
     {
@@ -155,12 +154,6 @@ public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
 
             await AddOpeningWisdomToEachPlayer();
         }
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeHandDraw(
@@ -545,16 +538,6 @@ public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
         return GetOrRollDamage(ref _harvestDamageRoll, HarvestMinDamage, HarvestMaxDamage);
     }
 
-    private int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        return cachedRoll ?? maxInclusive;
-    }
-
     private int EnsureCultivateDamageRoll()
     {
         return EnsureDamageRoll(ref _cultivateDamageRoll, CultivateMinDamage, CultivateMaxDamage);
@@ -573,17 +556,6 @@ public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
     private int EnsureHarvestDamageRoll()
     {
         return EnsureDamageRoll(ref _harvestDamageRoll, HarvestMinDamage, HarvestMaxDamage);
-    }
-
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
@@ -607,18 +579,7 @@ public sealed class ScarecrowSearchingForWisdom : LibraryMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<ScarecrowPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<ScarecrowPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<ScarecrowPageRelic>(room, PageRelicTitleLocKey);
     }
 
     private static bool IsScarecrowEncounter(CombatRoom room)

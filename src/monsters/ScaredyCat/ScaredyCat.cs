@@ -23,7 +23,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.ScaredyCat;
 
-public sealed class ScaredyCat : LibraryMonsterModel
+public sealed class ScaredyCat : LorMonsterModel
 {
     internal const string HowlMoveId = "SCAREDY_CAT_HOWL";
     internal const string PurrMoveId = "SCAREDY_CAT_PURR";
@@ -102,12 +102,6 @@ public sealed class ScaredyCat : LibraryMonsterModel
         await PowerCmdCompat.Apply<ScaredyCatCowardPower>(Creature, 1, Creature, null, silent: true);
         await SetPhysicalResistances(LibraryResistanceLevel.Immune);
         await ForceRefreshMoveState();
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

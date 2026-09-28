@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.ForsakenMurderer;
 using LibraryOfRuina.compat;
+using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
@@ -102,7 +103,15 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
         }
     }
 
-    public override async Task AfterAddedToRoom()
+    public override Task AfterAddedToRoom()
+    {
+        // BGM 登记在入场流程返回任务之后（原先是补在本方法上的后缀）：恐惧能力的施加已经开始，登记抛异常也不会拦住它。
+        Task added = AddedToRoomAsync();
+        EncounterBgmController.RegisterMonster(Creature);
+        return added;
+    }
+
+    private async Task AddedToRoomAsync()
     {
         await base.AfterAddedToRoom();
 
@@ -128,8 +137,8 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        ForsakenMurdererFearBackgroundOverlay.SetOverlayVisible(false);
         base.BeforeRemovedFromRoom();
+        ForsakenMurdererFearBackgroundOverlay.SetOverlayVisible(false);
     }
 
     public override Task AfterDeath(
@@ -200,18 +209,7 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<ForsakenMurdererPageRelic>(
-                room,
-                player,
-                ForsakenMurdererPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<ForsakenMurdererPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<ForsakenMurdererPageRelic>(room, ForsakenMurdererPageRelicTitleLocKey);
     }
 
     private static bool HasForsakenMurdererPageReward(CombatRoom room, Player player)

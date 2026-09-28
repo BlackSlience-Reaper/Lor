@@ -16,7 +16,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorEnhancedLeftShoe :
-    LibraryMonsterModel
+    LorMonsterModel
 {
     public const string WhisperingDesireMoveId = "WHISPERING_DESIRE";
     public const string HiddenDesireMoveId = "HIDDEN_DESIRE";
@@ -92,12 +92,6 @@ public sealed class LiteratureFloorEnhancedLeftShoe :
             Creature,
             null,
             silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

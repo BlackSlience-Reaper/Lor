@@ -44,7 +44,7 @@ public enum OzmaMode
     GroupAttackTwo = 4
 }
 
-public sealed class Ozma : LibraryMonsterModel
+public sealed class Ozma : LorMonsterModel
 {
     // 遗忘：单人时全队需累计击中真杰克的基础次数；联机时先乘以人数，再乘以对应人数倍率。
     internal const int RequiredTrueJackHits = 8;
@@ -187,12 +187,6 @@ public sealed class Ozma : LibraryMonsterModel
         _forgottenOriginalCards = [.. _forgottenOriginalCards];
         ForgottenPlayerCombatIds = [.. ForgottenPlayerCombatIds];
         ForgottenOriginalOwnerCombatIds = [.. ForgottenOriginalOwnerCombatIds];
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

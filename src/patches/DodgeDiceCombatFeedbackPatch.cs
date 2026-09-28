@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
+using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 
@@ -122,21 +123,28 @@ internal static class DodgeDiceFeedbackCombatResetPatch
     private static void Prefix() => DodgeDiceCombatFeedback.Reset();
 }
 
+// 前缀没执行（排在前面的前缀抛异常）时 Finalizer 不能弹栈，否则会弹掉外层嵌套调用压的那一帧。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyDamage))]
+[LibraryPatch(Reason = "闪避骰能力的 ModifyDamageAdditive 拿不到 previewMode，只能由钩子入口传下去，用来区分实战与预览。现在没有内容施加闪避骰；改为能力在 BeforeDamageReceived 提交状态的方案见重构指导附录 B。")]
 internal static class DodgeDiceDamagePreviewModePatch
 {
-    private static void Prefix(CardPreviewMode previewMode)
+    private static void Prefix(CardPreviewMode previewMode, out bool __state)
     {
         DodgeDiceCombatFeedback.PushDamagePreviewMode(previewMode);
+        __state = true;
     }
 
-    private static void Finalizer()
+    private static void Finalizer(bool __state)
     {
-        DodgeDiceCombatFeedback.PopDamagePreviewMode();
+        if (__state)
+        {
+            DodgeDiceCombatFeedback.PopDamagePreviewMode();
+        }
     }
 }
 
 [HarmonyPatch(typeof(SfxCmd), nameof(SfxCmd.Play), typeof(string), typeof(float))]
+[LibraryPatch(Reason = "原版在 CreatureCmd.Damage 完全格挡后硬编码播放 block_hit，没有 Hook；只消耗本模组闪避骰在同一次命中里入队的计数，其余调用原样放行。")]
 internal static class DodgeDiceBlockHitSfxPatch
 {
     private static bool Prefix(string sfx) =>
@@ -144,6 +152,7 @@ internal static class DodgeDiceBlockHitSfxPatch
 }
 
 [HarmonyPatch(typeof(NBlockSparkVfx), nameof(NBlockSparkVfx.Create))]
+[LibraryPatch(Reason = "原版完全格挡火花在 CreatureCmd.Damage 内直接创建，没有 Hook；只对本模组闪避骰在同一次命中里入队的受击者跳过一次创建。")]
 internal static class DodgeDiceBlockSparkVfxPatch
 {
     private static bool Prefix(Creature target, ref NBlockSparkVfx? __result)
@@ -159,6 +168,7 @@ internal static class DodgeDiceBlockSparkVfxPatch
 }
 
 [HarmonyPatch(typeof(NDamageBlockedVfx), nameof(NDamageBlockedVfx.Create))]
+[LibraryPatch(Reason = "原版“已格挡”飘字在 CreatureCmd.Damage 内直接创建，没有 Hook；只对本模组闪避骰入队的受击者跳过一次。")]
 internal static class DodgeDiceBlockedTextVfxPatch
 {
     private static bool Prefix(Creature target, ref NDamageBlockedVfx? __result)

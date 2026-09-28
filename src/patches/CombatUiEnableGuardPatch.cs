@@ -2,6 +2,8 @@ using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 
@@ -13,6 +15,7 @@ namespace LibraryOfRuina.patches;
 /// 跳过时必须补刷结束回合按钮，且无法判断初始化进度时一律放行原方法。
 /// </summary>
 [HarmonyPatch(typeof(NCombatUi), nameof(NCombatUi.Enable))]
+[LibraryPatch(Reason = "NCombatRoom 在界面上下文更新时无条件调用 NCombatUi.Enable，Activate 前字段为空必抛空引用，原版无 Hook；只在读到未初始化字段时跳过并补刷结束回合按钮，范围限于原版必然崩溃的窗口。")]
 internal static class CombatUiEnableGuardPatch
 {
     /// <summary>反射失败时记录一次告警的节流上限，避免日志被战斗每帧刷屏。</summary>
@@ -21,10 +24,7 @@ internal static class CombatUiEnableGuardPatch
     /// <summary>超过节流上限后的周期性提醒间隔，保证长期跳过仍然可见。</summary>
     private const int RepeatLogInterval = 60;
 
-    private static readonly FieldInfo? StateField = AccessTools.Field(typeof(NCombatUi), "_state");
 
-    private static readonly FieldInfo? CombatPilesContainerField =
-        AccessTools.Field(typeof(NCombatUi), "_combatPilesContainer");
 
     private static int _loggedSkips;
 
@@ -50,13 +50,13 @@ internal static class CombatUiEnableGuardPatch
     {
         WarnOnceIfFieldsMissing();
 
-        if (StateField != null && StateField.GetValue(combatUi) == null)
+        if (VanillaPrivate.CombatUiState.IsAvailable && VanillaPrivate.CombatUiState.Get(combatUi) == null)
         {
             reason = "state";
             return false;
         }
 
-        if (CombatPilesContainerField != null && CombatPilesContainerField.GetValue(combatUi) == null)
+        if (VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable && VanillaPrivate.CombatUiCombatPilesContainer.Get(combatUi) == null)
         {
             reason = "combatPilesContainer";
             return false;
@@ -96,7 +96,7 @@ internal static class CombatUiEnableGuardPatch
 
     private static void WarnOnceIfFieldsMissing()
     {
-        if (_loggedMissingFields || (StateField != null && CombatPilesContainerField != null))
+        if (_loggedMissingFields || (VanillaPrivate.CombatUiState.IsAvailable && VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable))
         {
             return;
         }
@@ -104,8 +104,8 @@ internal static class CombatUiEnableGuardPatch
         _loggedMissingFields = true;
         Log.Warn(
             "[LibraryOfRuina] NCombatUi initialization fields are missing in this game build"
-            + " (_state=" + (StateField != null)
-            + ", _combatPilesContainer=" + (CombatPilesContainerField != null)
+            + " (_state=" + (VanillaPrivate.CombatUiState.IsAvailable)
+            + ", _combatPilesContainer=" + (VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable)
             + "); the combat UI enable guard now defers to the vanilla method.");
     }
 

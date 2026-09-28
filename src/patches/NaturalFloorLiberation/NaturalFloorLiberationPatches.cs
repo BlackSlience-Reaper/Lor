@@ -69,40 +69,13 @@ internal static class NaturalFloorAnimatedBackgroundPatch
     }
 }
 
-[HarmonyPatch(typeof(AncientEventModel), "BeforeEventStarted")]
-internal static class NaturalFloorSettlementAncientHealPatch
+/// <summary>
+/// 由 <see cref="LibraryOfRuina.patches.dispatch.LiberationSettlementPatches"/> 在终局奖励界面继续时调用；返回 false 表示已接管。
+/// 结算存储的所有读取方都在这里之后，所以只在这里补记一次：遭遇把 SettlementTriggered 置位时已经记过，读档恢复的遭遇在这里补上。
+/// </summary>
+internal static class NaturalFloorSettlementRedirect
 {
-    private static bool Prefix(AncientEventModel __instance, ref Task __result)
-    {
-        if (__instance is not NaturalFloorLiberationSettlementEvent) return true;
-        __result = Task.CompletedTask;
-        return false;
-    }
-}
-[HarmonyPatch(typeof(Hook), nameof(Hook.ShouldAllowAncient))]
-internal static class NaturalFloorSettlementAncientGatePatch
-{
-    private static bool Prefix(AncientEventModel ancient, ref bool __result)
-    {
-        if (ancient is not NaturalFloorLiberationSettlementEvent) return true;
-        __result = true;
-        return false;
-    }
-}
-// Terminal phase victory can be detected before AfterDeath, so both paths commit the same idempotent result.
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterCombatVictory))]
-internal static class NaturalFloorVictoryPatch
-{
-    private static void Prefix(CombatRoom room)
-    {
-        if (room.Encounter is NaturalFloorLiberationEncounter { SettlementTriggered: true } encounter)
-            NaturalFloorLiberationSettlementStore.Record(encounter);
-    }
-}
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.ProceedFromTerminalRewardsScreen))]
-internal static class NaturalFloorSettlementRedirectPatch
-{
-    private static bool Prefix(RunManager __instance, ref Task __result)
+    internal static bool TryRedirect(RunManager __instance, ref Task __result)
     {
         if (__instance.DebugOnlyGetState()?.CurrentRoom is not CombatRoom
             { Encounter: NaturalFloorLiberationEncounter encounter } || !encounter.SettlementTriggered) return true;
@@ -111,17 +84,6 @@ internal static class NaturalFloorSettlementRedirectPatch
         if (!NaturalFloorLiberationSettlementStore.PendingSettlement) return true;
         NaturalFloorLiberationSettlementStore.Consume();
         __result = __instance.EnterRoom(new EventRoom(ModelDb.AncientEvent<NaturalFloorLiberationSettlementEvent>()));
-        return false;
-    }
-}
-[HarmonyPatch(typeof(NEventRoom), nameof(NEventRoom.Proceed))]
-internal static class NaturalFloorSettlementProceedPatch
-{
-    private static bool Prefix(ref Task __result)
-    {
-        if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom
-            { CanonicalEvent: NaturalFloorLiberationSettlementEvent }) return true;
-        __result = RunManager.Instance.EnterNextAct();
         return false;
     }
 }
