@@ -137,194 +137,94 @@ public sealed class PhilosophyFloorLiberationEncounter :
         PhilosophyFloorTwilightPersistentState value = _persistentState;
         return new Dictionary<string, string>
         {
-            [StateVersionKey] = FormatInt(CurrentStateVersion),
-            [AliveEggMaskKey] = FormatInt(value.AliveEggMask),
-            [ActiveEggKey] = FormatEnum(value.ActiveEgg),
-            [PlannedModeKey] = FormatEnum(value.PlannedMode),
+            [StateVersionKey] = EncounterStateBag.FormatInvariant(CurrentStateVersion),
+            [AliveEggMaskKey] = EncounterStateBag.FormatInvariant(value.AliveEggMask),
+            [ActiveEggKey] = EncounterStateBag.FormatInvariantEnum(value.ActiveEgg),
+            [PlannedModeKey] = EncounterStateBag.FormatInvariantEnum(value.PlannedMode),
             [HasPlannedModeKey] = value.HasPlannedMode.ToString(),
-            [ModeCycleStepKey] = FormatInt(value.ModeCycleStep),
+            [ModeCycleStepKey] = EncounterStateBag.FormatInvariant(value.ModeCycleStep),
             [JudgmentBranchEntriesKey] =
-                FormatInt(value.JudgmentBranchEntries),
+                EncounterStateBag.FormatInvariant(value.JudgmentBranchEntries),
             [SinTraceBranchEntriesKey] =
-                FormatInt(value.SinTraceBranchEntries),
+                EncounterStateBag.FormatInvariant(value.SinTraceBranchEntries),
             [PunishmentBranchEntriesKey] =
-                FormatInt(value.PunishmentBranchEntries),
+                EncounterStateBag.FormatInvariant(value.PunishmentBranchEntries),
             [NextEndFallbackIsOneKey] =
                 value.NextEndFallbackIsOne.ToString(),
             [PlannedBranchCounterKey] =
-                FormatEnum(value.PlannedBranchCounter),
+                EncounterStateBag.FormatInvariantEnum(value.PlannedBranchCounter),
             [PlannedUsesEndFallbackKey] =
                 value.PlannedUsesEndFallback.ToString(),
             [PlannedOtherFirstActionKey] =
-                FormatEnum(value.PlannedOtherFirstAction),
+                EncounterStateBag.FormatInvariantEnum(value.PlannedOtherFirstAction),
             [PlannedOtherSecondActionKey] =
-                FormatEnum(value.PlannedOtherSecondAction),
+                EncounterStateBag.FormatInvariantEnum(value.PlannedOtherSecondAction),
             [LastEggScheduleRoundKey] =
-                FormatInt(value.LastEggScheduleRound),
+                EncounterStateBag.FormatInvariant(value.LastEggScheduleRound),
             [BrokenEggRecoveryPendingKey] =
                 value.BrokenEggRecoveryPending.ToString(),
             [IntroCgPlayedKey] = value.IntroCgPlayed.ToString(),
             [PlannedTargetCombatIdsKey] =
-                FormatIntArray(value.PlannedTargetCombatIds),
+                EncounterStateBag.FormatInvariantIntArray(value.PlannedTargetCombatIds),
             [SmallBeakProcessedRoundKey] =
-                FormatInt(value.SmallBeakProcessedRound),
+                EncounterStateBag.FormatInvariant(value.SmallBeakProcessedRound),
             [SmallBeakProcessedPlayerCombatIdsKey] =
-                FormatIntArray(
+                EncounterStateBag.FormatInvariantIntArray(
                     value.SmallBeakProcessedPlayerCombatIds)
         };
     }
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
+        var bag = new EncounterStateBag(state);
         _persistentState = new PhilosophyFloorTwilightPersistentState
         {
-            AliveEggMask = ReadInt(
-                state,
+            AliveEggMask = bag.ReadInvariantInt(
                 AliveEggMaskKey,
                 PhilosophyFloorTwilight.AllEggMask),
-            ActiveEgg = ReadEnum(
-                state,
+            ActiveEgg = bag.ReadInvariantEnum(
                 ActiveEggKey,
                 PhilosophyFloorTwilightEgg.BigEyes),
-            PlannedMode = ReadEnum(
-                state,
+            PlannedMode = bag.ReadInvariantEnum(
                 PlannedModeKey,
                 PhilosophyFloorTwilightMode.Surveillance),
-            HasPlannedMode = ReadBool(state, HasPlannedModeKey),
-            ModeCycleStep = ReadInt(state, ModeCycleStepKey),
-            JudgmentBranchEntries = ReadInt(
-                state,
-                JudgmentBranchEntriesKey),
-            SinTraceBranchEntries = ReadInt(
-                state,
-                SinTraceBranchEntriesKey),
-            PunishmentBranchEntries = ReadInt(
-                state,
-                PunishmentBranchEntriesKey),
-            NextEndFallbackIsOne = ReadBool(
-                state,
+            HasPlannedMode = bag.ReadBool(HasPlannedModeKey),
+            ModeCycleStep = bag.ReadInvariantInt(ModeCycleStepKey),
+            JudgmentBranchEntries =
+                bag.ReadInvariantInt(JudgmentBranchEntriesKey),
+            SinTraceBranchEntries =
+                bag.ReadInvariantInt(SinTraceBranchEntriesKey),
+            PunishmentBranchEntries =
+                bag.ReadInvariantInt(PunishmentBranchEntriesKey),
+            NextEndFallbackIsOne = bag.ReadBool(
                 NextEndFallbackIsOneKey,
                 fallback: true),
-            PlannedBranchCounter = ReadEnum(
-                state,
+            PlannedBranchCounter = bag.ReadInvariantEnum(
                 PlannedBranchCounterKey,
                 PhilosophyFloorTwilightBranchCounter.None),
-            PlannedUsesEndFallback = ReadBool(
-                state,
-                PlannedUsesEndFallbackKey),
-            PlannedOtherFirstAction = ReadEnum(
-                state,
+            PlannedUsesEndFallback =
+                bag.ReadBool(PlannedUsesEndFallbackKey),
+            PlannedOtherFirstAction = bag.ReadInvariantEnum(
                 PlannedOtherFirstActionKey,
                 PhilosophyFloorTwilightAction.Talon),
-            PlannedOtherSecondAction = ReadEnum(
-                state,
+            PlannedOtherSecondAction = bag.ReadInvariantEnum(
                 PlannedOtherSecondActionKey,
                 PhilosophyFloorTwilightAction.Talon),
-            LastEggScheduleRound = ReadInt(
-                state,
+            LastEggScheduleRound = bag.ReadInvariantInt(
                 LastEggScheduleRoundKey,
                 fallback: -1),
-            BrokenEggRecoveryPending = ReadBool(
-                state,
-                BrokenEggRecoveryPendingKey),
-            IntroCgPlayed = ReadBool(state, IntroCgPlayedKey),
-            PlannedTargetCombatIds = ReadIntArray(
-                state,
+            BrokenEggRecoveryPending =
+                bag.ReadBool(BrokenEggRecoveryPendingKey),
+            IntroCgPlayed = bag.ReadBool(IntroCgPlayedKey),
+            PlannedTargetCombatIds = bag.ReadInvariantIntArray(
                 PlannedTargetCombatIdsKey,
                 [0, 0, 0, 0]),
-            SmallBeakProcessedRound = ReadInt(
-                state,
+            SmallBeakProcessedRound = bag.ReadInvariantInt(
                 SmallBeakProcessedRoundKey,
                 fallback: -1),
-            SmallBeakProcessedPlayerCombatIds = ReadIntArray(
-                state,
+            SmallBeakProcessedPlayerCombatIds = bag.ReadInvariantIntArray(
                 SmallBeakProcessedPlayerCombatIdsKey,
                 [])
         };
-    }
-
-    private static string FormatInt(int value) =>
-        value.ToString(CultureInfo.InvariantCulture);
-
-    private static string FormatEnum<T>(T value) where T : struct, Enum =>
-        Convert.ToInt32(value, CultureInfo.InvariantCulture)
-            .ToString(CultureInfo.InvariantCulture);
-
-    private static string FormatIntArray(IEnumerable<int> values) =>
-        string.Join(",", values.Select(FormatInt));
-
-    private static int ReadInt(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        int fallback = 0) =>
-        state.TryGetValue(key, out string? text)
-        && int.TryParse(
-            text,
-            NumberStyles.Integer,
-            CultureInfo.InvariantCulture,
-            out int value)
-            ? value
-            : fallback;
-
-    private static bool ReadBool(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        bool fallback = false) =>
-        state.TryGetValue(key, out string? text)
-        && bool.TryParse(text, out bool value)
-            ? value
-            : fallback;
-
-    private static T ReadEnum<T>(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        T fallback) where T : struct, Enum
-    {
-        int raw = ReadInt(state, key, Convert.ToInt32(fallback));
-        T value = (T)Enum.ToObject(typeof(T), raw);
-        if (typeof(T).IsDefined(typeof(FlagsAttribute), inherit: false))
-        {
-            int allowedBits = Enum.GetValues<T>()
-                .Aggregate(
-                    0,
-                    static (mask, entry) =>
-                        mask | Convert.ToInt32(entry));
-            return (raw & ~allowedBits) == 0 ? value : fallback;
-        }
-
-        return Enum.IsDefined(value) ? value : fallback;
-    }
-
-    private static int[] ReadIntArray(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        int[] fallback)
-    {
-        if (!state.TryGetValue(key, out string? text))
-        {
-            return [.. fallback];
-        }
-        if (string.IsNullOrWhiteSpace(text))
-        {
-            return [];
-        }
-
-        string[] parts = text.Split(
-            ',',
-            StringSplitOptions.RemoveEmptyEntries
-            | StringSplitOptions.TrimEntries);
-        var values = new int[parts.Length];
-        for (int index = 0; index < parts.Length; index++)
-        {
-            if (!int.TryParse(
-                    parts[index],
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out values[index]))
-            {
-                return [.. fallback];
-            }
-        }
-        return values;
     }
 }
