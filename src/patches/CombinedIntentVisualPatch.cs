@@ -15,7 +15,6 @@ namespace LibraryOfRuina.patches;
 /// The intent's GetAnimation returns a vanilla 30-frame animation so the vanilla
 /// frame counter loops 0..29; we remap each frame to our own PNG sequence.
 /// </summary>
-[HarmonyPatch(typeof(NIntent), "_Process")]
 internal static class CombinedIntentVisualPatch
 {
     private static readonly ConditionalWeakTable<NIntent, AnimationState> States = new();
@@ -38,8 +37,7 @@ internal static class CombinedIntentVisualPatch
         state.Frame = null;
     }
 
-    [HarmonyPostfix]
-    private static void Postfix(NIntent __instance, int? ____animationFrame)
+    internal static void OnIntentProcess(NIntent __instance, int? ____animationFrame)
     {
         try
         {
@@ -83,10 +81,9 @@ internal static class CombinedIntentVisualPatch
     }
 }
 
-[HarmonyPatch(typeof(NIntent), "UpdateVisuals")]
 internal static class CombinedIntentAnimationRefreshPatch
 {
-    private static void Postfix(
+    internal static void OnUpdateVisuals(
         NIntent __instance,
         AbstractIntent ____intent,
         IEnumerable<Creature> ____targets,

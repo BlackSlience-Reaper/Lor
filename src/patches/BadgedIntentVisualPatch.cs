@@ -23,7 +23,6 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NIntent), "UpdateVisuals")]
 internal static class BadgedIntentVisualPatch
 {
     private static ShaderMaterial? _allyCombinedAttackMaterial;
@@ -65,8 +64,7 @@ internal static class BadgedIntentVisualPatch
     private const int PreviewCardHoverZIndex = 0;
     private const int PileIconZIndex = DetailZIndex;
 
-    [HarmonyPostfix]
-    private static void Postfix(
+    internal static void OnUpdateVisuals(
         NIntent __instance,
         AbstractIntent ____intent,
         IEnumerable<Creature> ____targets,
@@ -1216,11 +1214,9 @@ internal static class BadgedIntentHoverTipPatch
     }
 }
 
-[HarmonyPatch(typeof(NIntent), "OnHovered")]
 internal static class BadgedIntentHoverTipDisplayPatch
 {
-    [HarmonyPrefix]
-    private static bool Prefix(
+    internal static bool OnIntentHovered(
         AbstractIntent ____intent,
         IEnumerable<Creature> ____targets,
         Creature ____owner)

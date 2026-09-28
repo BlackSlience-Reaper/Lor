@@ -204,12 +204,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "StartDeathAnim"
   Prefix LibraryOfRuina.visuals.NaturalFloorLiberation.NaturalFloorSwordFalseDeathVisualPatch.Prefix
   Prefix LibraryOfRuina.patches.LiteratureFloorBlackSwanBrotherDeathVisualPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "UpdateIntent")
-  Postfix LibraryOfRuina.ui.EnemyCardIntentRuntimePatch.Postfix
-  Postfix LibraryOfRuina.patches.CombinedIntentDisplayPatch.Postfix
-  Postfix LibraryOfRuina.patches.CounterIntentAppendPatch.Postfix
-  Postfix LibraryOfRuina.patches.TargetedIntentIndicatorPatch.Postfix
-  Postfix LibraryOfRuina.patches.TechnologyFloorLiberation.ChordEgoIntentDimPatch.Postfix
-  Postfix LibraryOfRuina.patches.TechnologyFloorLiberation.SolemnMourningSealIntentPatch.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntentFirst.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntent.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "_Ready")
   Postfix LibraryOfRuina.ui.SocialFloorLiberation.FalseThroneTrialHoverTipReadyPatch.Postfix
   Finalizer LibraryOfRuina.patches.MonsterNodeReadyDebugPatch.Finalizer
@@ -228,16 +224,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NHealthBar), "SetHpBarContai
   Postfix LibraryOfRuina.patches.FairyFestival.FairyMassDevourHealthBarResizePatch.Postfix
   Postfix LibraryOfRuina.patches.BlueStar.BlueStarChaoThresholdForecastResizePatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NIntent), "OnHovered")
-  Prefix LibraryOfRuina.ui.EnemyCardIntentHoverPatch.Prefix
-  Prefix LibraryOfRuina.patches.BadgedIntentHoverTipDisplayPatch.Prefix
   Postfix LibraryOfRuina.patches.TargetedIntentHoverPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NIntent), "UpdateVisuals")
-  Postfix LibraryOfRuina.patches.BadgedIntentVisualPatch.Postfix
-  Postfix LibraryOfRuina.patches.CombinedIntentAnimationRefreshPatch.Postfix
-  Postfix LibraryOfRuina.patches.FoxIntentValuePatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NIntent), "_Process")
-  Postfix LibraryOfRuina.patches.CombinedIntentVisualPatch.Postfix
-  Postfix LibraryOfRuina.patches.CounterIntentVisualPatch.Postfix
+  Prefix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+Hovered.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.CommonUi.NTopBar), "Initialize")
   Postfix LibraryOfRuina.specialguests.SpecialGuestHideEmptyModifierContainerPatch.Postfix
   Postfix LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarPatch.Postfix
