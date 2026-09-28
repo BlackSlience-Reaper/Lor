@@ -174,7 +174,7 @@ public sealed class GalaxyFriend : LibraryMonsterModel
     {
         if (!Creature.IsDead)
         {
-            GalaxyChildBackgroundController.Reset();
+            PresentationGuard.Run(GalaxyChildBackgroundController.Reset, "GalaxyChild background reset");
             StartNormalBackgroundTextLoop();
         }
 
@@ -239,7 +239,7 @@ public sealed class GalaxyFriend : LibraryMonsterModel
         ForceFakeDeathChaoZero();
         ForceFakeDeathHiddenIntent();
 
-        GalaxyChildBackgroundController.SetFakeDeathMode(true);
+        SetFakeDeathBackground(true);
         StartFakeDeathBackgroundTextLoop();
         // Parting Tears victory is triggered once the kill batch completes
         // (GalaxyChildPartingTearsKillBatchPatch); player turn start is the fallback.
@@ -439,7 +439,7 @@ public sealed class GalaxyFriend : LibraryMonsterModel
 
         if (!GetFriends(Creature.CombatState).Any(static friend => friend._isFakeDead))
         {
-            GalaxyChildBackgroundController.SetFakeDeathMode(false);
+            SetFakeDeathBackground(false);
             StartNormalBackgroundTextLoop();
         }
     }
@@ -593,7 +593,9 @@ public sealed class GalaxyFriend : LibraryMonsterModel
     }
 
 
-    private static void StartNormalBackgroundTextLoop()
+    // The presentation helpers below run inside death hooks and right before the Parting Tears
+    // state writes; they are guarded so a local node/resource failure cannot skip those writes.
+    private static void StartNormalBackgroundTextLoop() => PresentationGuard.Run(() =>
     {
         MoonTextService.StopRandomLoop(BackgroundTextOwner, FakeDeathBackgroundTextScope);
         MoonTextService.StartRandomLoop(
@@ -602,9 +604,9 @@ public sealed class GalaxyFriend : LibraryMonsterModel
             NormalBackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
+    }, "GalaxyChild normal moon text");
 
-    private static void StartFakeDeathBackgroundTextLoop()
+    private static void StartFakeDeathBackgroundTextLoop() => PresentationGuard.Run(() =>
     {
         MoonTextService.StopRandomLoop(BackgroundTextOwner, NormalBackgroundTextScope);
         MoonTextService.StartRandomLoop(
@@ -613,14 +615,19 @@ public sealed class GalaxyFriend : LibraryMonsterModel
             FakeDeathBackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
+    }, "GalaxyChild fake-death moon text");
 
-    private static void StopAllGalaxyChildPresentation()
+    private static void StopAllGalaxyChildPresentation() => PresentationGuard.Run(() =>
     {
         MoonTextService.StopRandomLoop(BackgroundTextOwner, NormalBackgroundTextScope);
         MoonTextService.StopRandomLoop(BackgroundTextOwner, FakeDeathBackgroundTextScope);
         GalaxyChildBackgroundController.Reset();
-    }
+    }, "GalaxyChild presentation stop");
+
+    private static void SetFakeDeathBackground(bool enabled) =>
+        PresentationGuard.Run(
+            () => GalaxyChildBackgroundController.SetFakeDeathMode(enabled),
+            "GalaxyChild fake-death background");
 
     private static bool IsGalaxyChildEncounter(CombatRoom room)
     {

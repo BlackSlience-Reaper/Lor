@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.combat;
@@ -74,19 +75,27 @@ internal static class CombatSafetyAttackCommandExecutePatch
 // and vanilla dispatches them for dead vanilla attackers as well.
 
 /// <summary>
-/// Parting Tears victory runs once a whole kill batch has finished. Vanilla routes damage deaths and
-/// single kills through Kill(IReadOnlyCollection), which completes every creature's death pipeline
-/// before returning, so killing both friends here no longer re-enters a death still in progress.
-/// Continuing the awaited task keeps it inside the synchronized action on every client.
+/// Parting Tears victory runs once the outermost kill batch has finished. Vanilla routes damage deaths
+/// and single kills through Kill(IReadOnlyCollection), which completes every creature's death pipeline
+/// before returning. Batches can nest (a death hook draws a card that auto-plays an attack killing the
+/// other friend), so the depth is tracked per combat and victory is only evaluated at depth zero,
+/// when no friend's death is still in progress. Continuing the awaited task keeps it inside the
+/// synchronized action on every client.
 /// </summary>
 [HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Kill), typeof(IReadOnlyCollection<Creature>), typeof(bool))]
 internal static class GalaxyChildPartingTearsKillBatchPatch
 {
+    private static readonly ConditionalWeakTable<CombatStateLike, StrongBox<int>> Depths = new();
+
     private static void Prefix(IReadOnlyCollection<Creature> creatures, out CombatStateLike? __state)
     {
         // Captured before the batch runs: a removed creature no longer knows its combat state.
         __state = creatures.Select(static creature => creature.CombatState)
             .FirstOrDefault(static state => state?.Encounter is GalaxyChildWeak);
+        if (__state != null)
+        {
+            Depths.GetOrCreateValue(__state).Value++;
+        }
     }
 
     private static void Postfix(CombatStateLike? __state, ref Task __result)
@@ -101,8 +110,17 @@ internal static class GalaxyChildPartingTearsKillBatchPatch
 
     private static async Task TriggerAfter(Task killBatch, CombatStateLike combatState)
     {
-        await killBatch;
-        if (GalaxyFriend.ShouldTriggerPartingTears(combatState))
+        StrongBox<int> depth = Depths.GetOrCreateValue(combatState);
+        try
+        {
+            await killBatch;
+        }
+        finally
+        {
+            depth.Value--;
+        }
+
+        if (depth.Value == 0 && GalaxyFriend.ShouldTriggerPartingTears(combatState))
         {
             await GalaxyFriend.TriggerPartingTearsVictory(combatState);
         }
