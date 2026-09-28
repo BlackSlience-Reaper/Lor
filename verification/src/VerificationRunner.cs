@@ -42,6 +42,7 @@ public static class VerificationRunner
         LanguageFloorLiberationVerificationPatch.Start,
         LiberationBossMapIconVerificationPatch.Start,
         LiberationCombatEndGuardVerificationPatch.Start,
+        LiberationPhaseBossTransitionVerificationPatch.Start,
         LiteratureFloorLiberationPhaseFiveVerificationPatch.Start,
         LiteratureFloorLiberationPhaseFourVerificationPatch.Start,
         LiteratureFloorLiberationPhaseOneVerificationPatch.Start,
