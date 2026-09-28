@@ -49,10 +49,6 @@ internal static class CombatSafetyNet
     private static readonly FieldInfo? MonsterIsPerformingMoveField =
         AccessTools.Field(typeof(MonsterModel), "_isPerformingMove");
 
-    private static int _recoveryDepth;
-
-    public static bool IsRecovering => _recoveryDepth > 0;
-
     public static void EnsureReplayInitializedBeforeNestedCombat(AbstractRoom room)
     {
         if (room is not CombatRoom)
@@ -76,7 +72,7 @@ internal static class CombatSafetyNet
 
     public static Task WrapTask(Task task, CombatSafetyContext context)
     {
-        if (task.IsCompletedSuccessfully || IsRecovering)
+        if (task.IsCompletedSuccessfully)
         {
             return task;
         }
@@ -86,9 +82,15 @@ internal static class CombatSafetyNet
 
     public static Task<AttackCommand> WrapMonsterAttackTask(Task<AttackCommand> task, AttackCommand command)
     {
-        if (task.IsCompletedSuccessfully || IsRecovering)
+        // A synchronously completed attack (instant fast mode, non-interactive waits, an attacker
+        // that was already dead) must get the same death check: completion timing differs between
+        // clients and must not decide whether the rest of the move runs.
+        if (task.IsCompletedSuccessfully)
         {
-            return task;
+            Creature? attacker = task.Result?.Attacker ?? command.Attacker;
+            return attacker != null && IsDeadPerformingMonster(attacker)
+                ? Task.FromException<AttackCommand>(new DeadMonsterAttackAbortedException(attacker))
+                : task;
         }
 
         return AwaitMonsterAttackWithDeadAttackerGuard(task, command);
@@ -128,22 +130,41 @@ internal static class CombatSafetyNet
         CombatSafetyContext context,
         DeadMonsterAttackAbortedException exception)
     {
-        var recoveryReport = new CombatRecoveryReport();
         CombatSafetyContext resolvedContext = context with
         {
             CombatState = ResolveCombatState(context),
             Creature = context.Creature ?? exception.Attacker,
             Monster = context.Monster ?? exception.Attacker.Monster
         };
-
-        TryFinalizeFailedMonsterMoves(resolvedContext, recoveryReport);
-        TryUnpauseCombat(recoveryReport);
-        await TryCheckWinCondition(recoveryReport);
-        Log.Warn(
-            "[" + LogTag + "] 消除死亡敌人的攻击后续："
-            + DescribeCaughtError(exception)
-            + "；恢复为：" + recoveryReport.Summary
+        Log.Info(
+            "[" + LogTag + "] 中止死亡敌人的剩余招式：" + DescribeCaughtError(exception)
             + "；context=" + DescribeContext(resolvedContext));
+
+        // Deterministic state work on every client (the death that triggered the abort is
+        // synchronized), so nothing here is caught: a failure must surface like in vanilla.
+        // Mirrors the part of vanilla MonsterModel.PerformMove that the abort skipped.
+        if (resolvedContext.Monster is { } monster)
+        {
+            MonsterIsPerformingMoveField?.SetValue(monster, false);
+            monster.MoveStateMachine?.OnMovePerformed(monster.NextMove);
+
+            Creature creature = monster.Creature;
+            CombatStateLike? combatState = creature.CombatState ?? resolvedContext.CombatState;
+            if (combatState != null
+                && creature.IsDead
+                && combatState.Enemies.Contains(creature)
+                && Hook.ShouldCreatureBeRemovedFromCombatAfterDeath(combatState, creature))
+            {
+                combatState.RemoveCreature(creature);
+            }
+        }
+
+        CombatManager.Instance.Unpause();
+        RunManager.Instance.ActionExecutor.Unpause();
+        if (CombatManager.Instance.IsInProgress)
+        {
+            await CombatManager.Instance.CheckWinCondition();
+        }
     }
 
     private static bool IsDeadPerformingMonster(Creature? attacker)
@@ -366,130 +387,6 @@ internal static class CombatSafetyNet
         catch
         {
             return "unknown";
-        }
-    }
-
-    private static void TryFinalizeFailedMonsterMoves(
-        CombatSafetyContext context,
-        CombatRecoveryReport recoveryReport)
-    {
-        List<MonsterModel> failedMonsters = ResolveFailedMoveMonsters(context).Distinct().ToList();
-        foreach (MonsterModel monster in failedMonsters)
-        {
-            TryFinalizeFailedMonsterMove(context, monster, recoveryReport);
-            TryRemoveDeadFailedMonster(context, monster, recoveryReport);
-        }
-    }
-
-    // Only the monster whose move was aborted; other monsters' moves are not ours to finalize.
-    private static IEnumerable<MonsterModel> ResolveFailedMoveMonsters(CombatSafetyContext context)
-    {
-        MonsterModel? contextMonster = context.Monster ?? context.Creature?.Monster;
-        if (contextMonster != null)
-        {
-            yield return contextMonster;
-        }
-    }
-
-    private static void TryFinalizeFailedMonsterMove(
-        CombatSafetyContext context,
-        MonsterModel monster,
-        CombatRecoveryReport recoveryReport)
-    {
-        try
-        {
-            MonsterIsPerformingMoveField?.SetValue(monster, false);
-            monster.MoveStateMachine?.OnMovePerformed(monster.NextMove);
-            recoveryReport.Add("结束卡住的敌方行动 " + DescribeMonster(monster));
-        }
-        catch (Exception exception)
-        {
-            Log.Warn(
-                "[" + LogTag + "] failed to finalize monster move context="
-                + DescribeContext(context)
-                + " exception=" + exception.Message);
-        }
-    }
-
-    private static void TryRemoveDeadFailedMonster(
-        CombatSafetyContext context,
-        MonsterModel monster,
-        CombatRecoveryReport recoveryReport)
-    {
-        try
-        {
-            Creature creature = monster.Creature;
-            CombatStateLike? combatState = creature.CombatState ?? ResolveCombatState(context);
-            if (combatState == null
-                || creature.IsAlive
-                || !combatState.Enemies.Contains(creature)
-                || !Hook.ShouldCreatureBeRemovedFromCombatAfterDeath(combatState, creature))
-            {
-                return;
-            }
-
-            combatState.RemoveCreature(creature);
-            recoveryReport.Add("从战斗状态移除已死亡敌人 " + DescribeMonster(monster));
-            Log.Warn(
-                "[" + LogTag + "] removed dead failed monster from combat state context="
-                + DescribeContext(context with { CombatState = combatState, Creature = creature, Monster = monster }));
-        }
-        catch (Exception exception)
-        {
-            Log.Warn(
-                "[" + LogTag + "] failed to remove dead failed monster context="
-                + DescribeContext(context)
-                + " exception=" + exception.Message);
-        }
-    }
-
-    private static string DescribeMonster(MonsterModel monster) =>
-        monster.Id.Entry + "/" + (monster.Creature?.Name ?? "unknown");
-
-    private static void TryUnpauseCombat(CombatRecoveryReport recoveryReport)
-    {
-        try
-        {
-            CombatManager.Instance.Unpause();
-            RunManager.Instance.ActionExecutor.Unpause();
-            recoveryReport.Add("确保战斗和行动队列解除暂停");
-        }
-        catch (Exception exception)
-        {
-            Log.Warn("[" + LogTag + "] failed to unpause combat: " + exception.Message);
-        }
-    }
-
-    private static async Task TryCheckWinCondition(CombatRecoveryReport recoveryReport)
-    {
-        try
-        {
-            if (CombatManager.Instance.IsInProgress)
-            {
-                await CombatManager.Instance.CheckWinCondition();
-                recoveryReport.Add("重新检查战斗胜负条件");
-            }
-        }
-        catch (Exception exception)
-        {
-            Log.Error("[" + LogTag + "] CheckWinCondition failed during recovery: " + exception);
-        }
-    }
-
-    private sealed class CombatRecoveryReport
-    {
-        private readonly List<string> _actions = [];
-
-        public string Summary => _actions.Count == 0
-            ? "阻止异常继续打断战斗，未发现需要额外修复的战斗状态"
-            : string.Join("；", _actions);
-
-        public void Add(string action)
-        {
-            if (!string.IsNullOrWhiteSpace(action) && !_actions.Contains(action))
-            {
-                _actions.Add(action);
-            }
         }
     }
 
