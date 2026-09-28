@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using HarmonyLib;
 using LibraryLib.Multiplayer;
 using LibraryOfRuina.audio;
@@ -26,8 +27,9 @@ public static class LibraryOfRuinaInitializer
     private const string LogPrefix = "[LibraryOfRuina] ";
 
     /// <summary>
-    /// 一个初始化步骤。必需步骤失败时不再执行后续步骤（尤其不再安装玩法补丁），
-    /// 避免内容注册了一半却没有补丁；可选步骤（表现层）失败只记录，继续初始化。
+    /// 一个初始化步骤。必需步骤失败时不再执行后续步骤（尤其不再安装玩法补丁），输出汇总后把异常
+    /// 抛回游戏，由 ModManager 照常记为该模组初始化失败；可选步骤（表现层）失败只记录，继续初始化。
+    /// 已注册的部分内容不会回滚，这一点与拆分前相同。
     /// </summary>
     private readonly record struct InitStep(string Name, bool Required, Action Run);
 
@@ -36,6 +38,7 @@ public static class LibraryOfRuinaInitializer
         var report = new InitReport();
 
         // 联机类型与框架必须先于任何内容注册；失败时整个模组不注入内容。
+        // 这一组一直是捕获后返回，不向游戏报告初始化失败，保持原样。
         if (!report.RunAll(
             [
                 new("NetTypes", true, static () => LibraryManagedNetTypes.RegisterAssembly(Assembly.GetExecutingAssembly())),
@@ -58,17 +61,18 @@ public static class LibraryOfRuinaInitializer
             ]))
         {
             report.LogSummary("gameplay initialization was skipped");
-            return;
+            report.RethrowRequiredFailure();
         }
 
         // 检测到已知不兼容模组时与关闭“启用废墟图书馆内容”走同一条路径：不改动玩家的设置值，
         // 仅本次启动不注入内容，并由 MainMenuIncompatibleModNoticePatch 在主菜单弹窗说明。
         if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || blockedByIncompatibleMod)
         {
-            report.RunAll([new("SettingsUiPatches", false, () => PatchSettingsUi(harmony))]);
+            report.RunAll([new("SettingsUiPatches", true, () => PatchSettingsUi(harmony))]);
             report.LogSummary(
                 "library injection disabled; settings UI remains available. Skipped content pools, "
                 + "runtime controllers, BGM, encounters, and gameplay Harmony patches");
+            report.RethrowRequiredFailure();
             return;
         }
 
@@ -99,6 +103,7 @@ public static class LibraryOfRuinaInitializer
         }
 
         report.LogSummary(completed ? null : "a required step failed; later steps were skipped");
+        report.RethrowRequiredFailure();
     }
 
     // 逐个补丁类应用，等价于 Harmony.PatchAll 的遍历顺序。单个补丁类失败（例如 Android 的 Mono 运行时
@@ -183,6 +188,7 @@ public static class LibraryOfRuinaInitializer
     {
         private readonly List<string> _succeeded = [];
         private readonly List<string> _failures = [];
+        private ExceptionDispatchInfo? _requiredFailure;
 
         /// <summary>依次执行步骤；遇到失败的必需步骤时停止并返回 false。</summary>
         public bool RunAll(IEnumerable<InitStep> steps)
@@ -200,6 +206,7 @@ public static class LibraryOfRuinaInitializer
                     Log.Error(LogPrefix + "Initialization step " + step.Name + " failed: " + exception);
                     if (step.Required)
                     {
+                        _requiredFailure = ExceptionDispatchInfo.Capture(exception);
                         return false;
                     }
                 }
@@ -209,6 +216,9 @@ public static class LibraryOfRuinaInitializer
         }
 
         public void AddFailure(string description) => _failures.Add(description);
+
+        /// <summary>必需步骤失败时按原堆栈重新抛出，让游戏的模组加载器记录初始化失败。</summary>
+        public void RethrowRequiredFailure() => _requiredFailure?.Throw();
 
         /// <summary>整个初始化只输出这一行结果，失败项与说明都在里面。</summary>
         public void LogSummary(string? note)
