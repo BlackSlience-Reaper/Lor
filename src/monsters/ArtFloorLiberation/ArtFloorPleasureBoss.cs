@@ -88,9 +88,9 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 4);
 
     private int PleasureEgoDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, PleasureEgoCard.UpgradedDamage, PleasureEgoCard.Damage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, ArtFloorEgoNumbers.PleasureUpgradedDamage, ArtFloorEgoNumbers.PleasureDamage);
 
-    private int PleasureEgoFinalDamage => PleasureEgoCard.FinalDamage;
+    private int PleasureEgoFinalDamage => ArtFloorEgoNumbers.PleasureFinalDamage;
 
     public override IEnumerable<string> AssetPaths =>
         ArtFloorPleasureCreatureVisuals.Profile.AssetPaths
@@ -268,7 +268,7 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
         _egoQueued = false;
 
         var bleedTargets = new HashSet<Creature>();
-        for (int i = 0; i < PleasureEgoCard.HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.PleasureHitCount; i++)
         {
             string anim = i % 2 == 0 ? "EgoS1" : "EgoS2";
             AttackCommand attack = await ExecuteGroupAttack(PleasureEgoDamage, anim, "vfx/vfx_attack_slash");
@@ -282,13 +282,13 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
         {
             await PowerCmdCompat.ApplyDebuff<LibraryBleedingPower>(
                 bleedTargets,
-                PleasureEgoCard.BleedAmount,
+                ArtFloorEgoNumbers.PleasureBleedAmount,
                 Creature,
                 null);
         }
 
         await ExecuteGroupAttack(PleasureEgoFinalDamage, "EgoS2", "vfx/vfx_attack_blunt", SpinyBus.SpinyBus.ParrySfxPath);
-        await PowerCmdCompat.Apply<StrengthPower>(Creature, PleasureEgoCard.Strength, Creature, null);
+        await PowerCmdCompat.Apply<StrengthPower>(Creature, ArtFloorEgoNumbers.PleasureStrength, Creature, null);
     }
 
     private Task<AttackCommand> ExecuteGroupAttack(
@@ -347,10 +347,10 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
             "PLEASURE_EGO_CARD",
             () => PleasureEgoDamage,
             null,
-            () => PleasureEgoCard.HitCount,
+            () => ArtFloorEgoNumbers.PleasureHitCount,
             new[]
             {
-                IntentBadge.Bleed(PleasureEgoCard.BleedAmount)
+                IntentBadge.Bleed(ArtFloorEgoNumbers.PleasureBleedAmount)
             },
             () => PleasureEgoFinalDamage);
     }
@@ -374,7 +374,7 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
             () => PleasureEgoFinalDamage,
             null,
             null,
-            IntentBadge.Strength(PleasureEgoCard.Strength));
+            IntentBadge.Strength(ArtFloorEgoNumbers.PleasureStrength));
     }
 
     private static DefendIntent CreateBlockIntent()

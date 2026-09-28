@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.ArtFloorLiberation;
+using LibraryOfRuina.cards.ArtFloorLiberation;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
@@ -121,7 +122,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
 
     private int OurLittleGalaxyDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, OurLittleGalaxyEgoPreviewCard.UpgradedDamage, OurLittleGalaxyEgoPreviewCard.Damage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, ArtFloorEgoNumbers.OurLittleGalaxyUpgradedDamage, ArtFloorEgoNumbers.OurLittleGalaxyDamage);
 
     public override IEnumerable<string> AssetPaths =>
         ArtFloorLittleGalaxyCreatureVisuals.Profile.AssetPaths
@@ -364,7 +365,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
         _allFriendsDeadEgoUsed = true;
 
         decimal totalDamageDealt = 0m;
-        for (int i = 0; i < OurLittleGalaxyEgoPreviewCard.HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.OurLittleGalaxyHitCount; i++)
         {
             AttackCommand attack = await ExecuteGroupAttack(OurLittleGalaxyDamage, "Ego");
             totalDamageDealt += AttackCommandCompat.Results(attack)
@@ -520,7 +521,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
             "OUR_LITTLE_GALAXY_EGO_PREVIEW_CARD",
             () => OurLittleGalaxyDamage,
             static (card, _) => card.UpgradePreview(),
-            () => OurLittleGalaxyEgoPreviewCard.HitCount,
+            () => ArtFloorEgoNumbers.OurLittleGalaxyHitCount,
             badges: [IndiscriminateAttackIntent.CreateGroupAttackBadge()]);
     }
 

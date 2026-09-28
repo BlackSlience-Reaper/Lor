@@ -17,24 +17,17 @@ namespace LibraryOfRuina.cards.ArtFloorLiberation;
 
 [CardPool(typeof(LibraryOfRuinaEgoCardPool))]
 public sealed class PleasureEgoCard()
-    : EgoCardBase(3, TargetType.AllEnemies, previewDamage: Damage, shouldShowInCardLibrary: false)
+    : EgoCardBase(3, TargetType.AllEnemies, previewDamage: ArtFloorEgoNumbers.PleasureDamage, shouldShowInCardLibrary: false)
 {
-    public const int Damage = 6;
-    public const int UpgradedDamage = 8;
-    public const int HitCount = 3;
-    public const int BleedAmount = 9;
-    public const int FinalDamage = 30;
-    public const int Strength = 5;
-
     public override CardPoolModel VisualCardPool => ModelDb.CardPool<LibraryOfRuinaEgoCardPool>();
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", HitCount),
-        new PowerVar<LibraryBleedingPower>("Bleed", BleedAmount),
-        new DamageVar("FinalDamage", FinalDamage, ValueProp.Move),
-        new PowerVar<StrengthPower>("Strength", Strength)
+        new DynamicVar("Hits", ArtFloorEgoNumbers.PleasureHitCount),
+        new PowerVar<LibraryBleedingPower>("Bleed", ArtFloorEgoNumbers.PleasureBleedAmount),
+        new DamageVar("FinalDamage", ArtFloorEgoNumbers.PleasureFinalDamage, ValueProp.Move),
+        new PowerVar<StrengthPower>("Strength", ArtFloorEgoNumbers.PleasureStrength)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -64,7 +57,7 @@ public sealed class PleasureEgoCard()
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(UpgradedDamage - Damage);
+        DynamicVars.Damage.UpgradeValueBy(ArtFloorEgoNumbers.PleasureUpgradedDamage - ArtFloorEgoNumbers.PleasureDamage);
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
     }
 
@@ -74,7 +67,7 @@ public sealed class PleasureEgoCard()
             ?? Array.Empty<Creature>();
 
         HashSet<Creature> hitTargets = [];
-        for (int i = 0; i < HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.PleasureHitCount; i++)
         {
             foreach (Creature target in targets.Where(static target => target.IsAlive))
             {

@@ -14,12 +14,6 @@ namespace LibraryOfRuina.cards.ArtFloorLiberation;
 
 public sealed class BeyondFragmentEgoCard : EgoCardBase
 {
-    public const int Damage = 8;
-    public const int UpgradedDamage = 9;
-    public const int HitCount = 4;
-    public const int StrengthLoss = 3;
-    public const int DexterityLoss = 3;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -28,9 +22,9 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", HitCount),
-        new PowerVar<StrengthPower>("StrengthLoss", StrengthLoss),
-        new PowerVar<DexterityPower>("DexterityLoss", DexterityLoss)
+        new DynamicVar("Hits", ArtFloorEgoNumbers.BeyondFragmentHitCount),
+        new PowerVar<StrengthPower>("StrengthLoss", ArtFloorEgoNumbers.BeyondFragmentStrengthLoss),
+        new PowerVar<DexterityPower>("DexterityLoss", ArtFloorEgoNumbers.BeyondFragmentDexterityLoss)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -40,13 +34,13 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     ];
 
     public BeyondFragmentEgoCard()
-        : base(3, TargetType.AllEnemies, previewDamage: Damage)
+        : base(3, TargetType.AllEnemies, previewDamage: ArtFloorEgoNumbers.BeyondFragmentDamage)
     {
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(UpgradedDamage - Damage);
+        DynamicVars.Damage.UpgradeValueBy(ArtFloorEgoNumbers.BeyondFragmentUpgradedDamage - ArtFloorEgoNumbers.BeyondFragmentDamage);
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
     }
 
@@ -55,7 +49,7 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
         IReadOnlyList<Creature> targets = Owner.Creature.CombatState?.HittableEnemies.ToArray()
             ?? Array.Empty<Creature>();
 
-        for (int i = 0; i < HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.BeyondFragmentHitCount; i++)
         {
             foreach (Creature target in targets.Where(static target => target.IsAlive))
             {

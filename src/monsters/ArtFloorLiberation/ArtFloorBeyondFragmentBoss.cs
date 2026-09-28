@@ -87,7 +87,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 13, 10);
 
     private int BeyondFragmentEgoDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, BeyondFragmentEgoCard.UpgradedDamage, BeyondFragmentEgoCard.Damage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, ArtFloorEgoNumbers.BeyondFragmentUpgradedDamage, ArtFloorEgoNumbers.BeyondFragmentDamage);
 
     public override IEnumerable<string> AssetPaths =>
         BeyondFragmentCreatureVisuals.Profile.AssetPaths
@@ -286,7 +286,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
     private async Task BeyondFragmentEgoMove(IReadOnlyList<Creature> targets)
     {
         _egoQueued = false;
-        for (int i = 0; i < BeyondFragmentEgoCard.HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.BeyondFragmentHitCount; i++)
         {
             LocalOggOneShotPlayer.Play(CosmicFragment.CosmicFragment.EchoAttackSfxPath, -2f);
             await ExecuteGroupAttack(BeyondFragmentEgoDamage, "Ego", "vfx/vfx_attack_slash");
@@ -295,8 +295,8 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 
         foreach (Creature player in CombatState.PlayerCreatures.Where(static p => p.IsAlive))
         {
-            await PowerCmdCompat.Apply<StrengthPower>(player, -BeyondFragmentEgoCard.StrengthLoss, Creature, null);
-            await PowerCmdCompat.Apply<DexterityPower>(player, -BeyondFragmentEgoCard.DexterityLoss, Creature, null);
+            await PowerCmdCompat.Apply<StrengthPower>(player, -ArtFloorEgoNumbers.BeyondFragmentStrengthLoss, Creature, null);
+            await PowerCmdCompat.Apply<DexterityPower>(player, -ArtFloorEgoNumbers.BeyondFragmentDexterityLoss, Creature, null);
         }
     }
 
@@ -401,7 +401,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
             "BEYOND_FRAGMENT_EGO_CARD",
             () => BeyondFragmentEgoDamage,
             static (card, _) => card.UpgradePreview(),
-            () => BeyondFragmentEgoCard.HitCount,
-            badges: [IntentBadge.StrengthDown(BeyondFragmentEgoCard.StrengthLoss), IntentBadge.FromPower<DexterityPower>(-BeyondFragmentEgoCard.DexterityLoss)]);
+            () => ArtFloorEgoNumbers.BeyondFragmentHitCount,
+            badges: [IntentBadge.StrengthDown(ArtFloorEgoNumbers.BeyondFragmentStrengthLoss), IntentBadge.FromPower<DexterityPower>(-ArtFloorEgoNumbers.BeyondFragmentDexterityLoss)]);
     }
 }

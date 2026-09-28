@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards;
+using LibraryOfRuina.cards.ArtFloorLiberation;
 using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -16,10 +17,6 @@ namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 [CardPool(typeof(LibraryOfRuinaEgoCardPool))]
 public sealed class OurLittleGalaxyEgoPreviewCard : CardModel, IEnemyAttackPreviewCard
 {
-    public const int Damage = 7;
-    public const int UpgradedDamage = 8;
-    public const int HitCount = 4;
-
     private const string PortraitResourcePath = "packed/card_portraits/ego/our_little_galaxy_ego_preview_card.png";
 
     public override int MaxUpgradeLevel => 1;
@@ -34,8 +31,8 @@ public sealed class OurLittleGalaxyEgoPreviewCard : CardModel, IEnemyAttackPrevi
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(Damage, ValueProp.Move),
-        new DynamicVar("Hits", HitCount)
+        new DamageVar(ArtFloorEgoNumbers.OurLittleGalaxyDamage, ValueProp.Move),
+        new DynamicVar("Hits", ArtFloorEgoNumbers.OurLittleGalaxyHitCount)
     ];
 
     public OurLittleGalaxyEgoPreviewCard()
@@ -65,7 +62,7 @@ public sealed class OurLittleGalaxyEgoPreviewCard : CardModel, IEnemyAttackPrevi
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(UpgradedDamage - Damage);
+        DynamicVars.Damage.UpgradeValueBy(ArtFloorEgoNumbers.OurLittleGalaxyUpgradedDamage - ArtFloorEgoNumbers.OurLittleGalaxyDamage);
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
     }
 
@@ -74,7 +71,7 @@ public sealed class OurLittleGalaxyEgoPreviewCard : CardModel, IEnemyAttackPrevi
         IReadOnlyList<Creature> targets = Owner.Creature.CombatState?.HittableEnemies.ToArray()
             ?? Array.Empty<Creature>();
 
-        for (int i = 0; i < HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.OurLittleGalaxyHitCount; i++)
         {
             foreach (Creature target in targets.Where(static target => target.IsAlive))
             {

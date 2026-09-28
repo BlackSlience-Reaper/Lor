@@ -1018,7 +1018,7 @@ internal static class ArtFloorLiberationVerificationPatch
         await boss.PerformMove();
         await WaitFrames(5);
         int expectedMaxHpAfterEgo = maxHpBeforeEgo
-                                    - NostalgicScentEgoCard.HitCount * NostalgicScentEgoCard.MaxHpLossOnFullBlock;
+                                    - ArtFloorEgoNumbers.NostalgicScentHitCount * ArtFloorEgoNumbers.NostalgicScentMaxHpLossOnFullBlock;
         Require(player.MaxHp == expectedMaxHpAfterEgo,
             "Fully blocked EGO did not reduce max HP per segment: " + player.MaxHp + " expected=" + expectedMaxHpAfterEgo);
 
