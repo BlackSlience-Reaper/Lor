@@ -13,7 +13,7 @@
 //     [HarmonyPostfix]
 //     public static void Postfix(ref IEnumerable<AncientEventModel> __result)
 //     {
-//         if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
+//         if (!LibraryOfRuinaSettings.MonsterExtensionActive)
 //         {
 //             return;
 //         }

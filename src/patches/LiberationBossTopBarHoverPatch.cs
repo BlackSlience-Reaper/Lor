@@ -22,7 +22,7 @@ internal static class LiberationBossTopBarHoverPatch
     private static bool Prefix(
         NTopBarBossIcon __instance)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
+        if (!LibraryOfRuinaSettings.MonsterExtensionActive)
         {
             LibraryEncounterWeighting.RestoreVanillaEncounters(
                 RunManager.Instance.DebugOnlyGetState());

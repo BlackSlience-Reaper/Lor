@@ -49,7 +49,7 @@ public static class LibraryOfRuinaInitializer
         // 检测到已知不兼容模组时与关闭“启用废墟图书馆内容”走同一条路径：不改动玩家的设置值，
         // 仅本次启动不注入内容，并由 MainMenuIncompatibleModNoticePatch 在主菜单弹窗说明。
         bool blockedByIncompatibleMod = IncompatibleModGuard.DetectBlockingMods();
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || blockedByIncompatibleMod)
+        if (!LibraryOfRuinaSettings.MonsterExtensionActive || blockedByIncompatibleMod)
         {
             PatchSettingsUi(harmony);
             Log.Info("[LibraryOfRuina] Library injection disabled; settings UI remains available. Skipping content pools, runtime controllers, BGM, encounters, and gameplay Harmony patches.");

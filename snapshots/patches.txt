@@ -381,6 +381,7 @@ LibraryOfRuina.patches.ReverberationEnsembleReceptionTypePatch	Postfix	Postfix	r
 LibraryOfRuina.patches.ReverberationEnsembleTreasureRoomPatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rooms.TreasureRoom), MethodType.Constructor, [typeof(System.Int32)])
 LibraryOfRuina.patches.RoomIconOutlinePathCustomOverridePatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Helpers.ImageHelper), "GetRoomIconOutlinePath")	HarmonyPriority(800)
 LibraryOfRuina.patches.RoomIconPathCustomOverridePatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Helpers.ImageHelper), "GetRoomIconPath")	HarmonyPriority(800)
+LibraryOfRuina.patches.RunScopedSettingsApplyPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "CleanUp", [typeof(System.Boolean)])
 LibraryOfRuina.patches.SettingsScreenModConfigVisibilityPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Settings.NSettingsScreen), "OnSubmenuShown")
 LibraryOfRuina.patches.SmilingBodies.SmilingBodiesAbsorptionHealPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Heal")
 LibraryOfRuina.patches.SmilingBodies.SmilingBodiesAbsorptionHealPatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Heal")

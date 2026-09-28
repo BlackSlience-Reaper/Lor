@@ -30,7 +30,7 @@ internal static class MonsterExtensionPullNextEncounterGatePatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionEnabled)
+        if (LibraryOfRuinaSettings.MonsterExtensionActive)
         {
             if (BookShadowEncounterReplacement.TryReplaceActiveGuestEncounter(
                     __instance,
@@ -78,7 +78,7 @@ internal static class MonsterExtensionPullNextEventGatePatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RunState runState, ref EventModel __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (LibraryOfRuinaSettings.MonsterExtensionActive
             || !MonsterExtensionRuntimeGate.IsInjectedByThisMod(__result))
         {
             return;
@@ -111,7 +111,7 @@ internal static class MonsterExtensionEventRelicPoolGatePatch
     [HarmonyPostfix]
     public static void Postfix(RelicPoolModel __instance, ref IEnumerable<RelicModel> __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionEnabled || __instance is not EventRelicPool)
+        if (LibraryOfRuinaSettings.MonsterExtensionActive || __instance is not EventRelicPool)
         {
             return;
         }
