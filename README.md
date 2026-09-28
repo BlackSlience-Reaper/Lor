@@ -75,7 +75,7 @@ dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 
 ### 6. 重构护栏
 
-`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。
+`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。哪些类算补丁类由 `src/infra/patching/PatchClassRules.cs` 判定，安装器和快照工具共用；`tools/PatchRuleFixtures` 是它的测试，也由 `check.sh` 运行。
 
 补丁由 `src/infra/patching/LibraryPatcher` 统一安装。主菜单第一次就绪时，它会在日志里报告与其他模组共享的目标，并点名排在本模组跳过型前缀之后的第三方前缀。
 

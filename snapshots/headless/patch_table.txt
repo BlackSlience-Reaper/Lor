@@ -699,6 +699,7 @@ sts2|MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen::InitializeSing
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen::ModifiersChanged()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunModifiersChangedPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScreen::AddScoreLine(System.String,System.String,System.Int32,System.String,System.String)
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Prefix
   Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NCustomRunModifiersList::GetModifiersTickedOn()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunModifierListPatch.Postfix
