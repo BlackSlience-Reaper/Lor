@@ -669,35 +669,9 @@ public sealed class PhilosophyFloorTwilightPeace25Power :
     protected override int MinimumHpPercent => OneEggMinimumHpPercent;
 }
 
-[HarmonyPatch(typeof(CombatState), nameof(CombatState.IterateHookListeners))]
-internal static class PhilosophyFloorTwilightBigEyesHookSuspensionPatch
+/// <summary>“大眼”蛋激活时暂停的能力；监听者过滤在 <see cref="LibraryOfRuina.patches.dispatch.HookListenerFilterPatch"/>。</summary>
+internal static class PhilosophyFloorTwilightBigEyesHookSuspension
 {
-    [HarmonyPostfix]
-    private static void Postfix(ref IEnumerable<AbstractModel> __result)
-    {
-        AbstractModel[] models = __result.ToArray();
-        if (PhilosophyFloorTwilightJudgmentPowerBypassContext
-            .ShouldBypassPowerModifiers)
-        {
-            models = models
-                .Where(static model => model is not PowerModel)
-                .ToArray();
-        }
-
-        bool shouldSuspendBuffs = models
-            .OfType<PhilosophyFloorTwilight>()
-            .Any(static boss =>
-                boss.Creature.IsAlive
-                && boss.IsEggActive(
-                    PhilosophyFloorTwilightEgg.BigEyes));
-        __result = shouldSuspendBuffs
-            ? models.Where(static model =>
-                    model is not PowerModel power
-                    || !ShouldSuspendPower(power))
-                .ToArray()
-            : models;
-    }
-
     internal static bool ShouldSuspendPower(PowerModel power) =>
         power.TypeForCurrentAmount == PowerType.Buff
         && power is not ArtifactPower;

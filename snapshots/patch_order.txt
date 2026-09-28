@@ -60,10 +60,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Combat.CombatManager), "Reset", [typeof(S
   Prefix LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmCombatResetPatch.Prefix
   Prefix LibraryOfRuina.patches.DodgeDiceFeedbackCombatResetPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Combat.CombatState), "IterateHookListeners")
-  Postfix LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightBigEyesHookSuspensionPatch.Postfix
-  Postfix LibraryOfRuina.powers.Ozma.OzmaLostMemoryHookSuspensionPatch.Postfix
   Postfix LibraryOfRuina.patches.DetachedAfflictionHookListenerPatch.Postfix
-  Postfix LibraryOfRuina.patches.FriendlyAllyEnemyOnlyPowerPatch.Postfix
+  Postfix LibraryOfRuina.patches.dispatch.HookListenerFilterPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.Builders.AttackCommand), "Execute")
   Postfix LibraryOfRuina.patches.CombatSafetyAttackCommandExecutePatch.Postfix
   Postfix LibraryOfRuina.patches.AttackAnimationHitSuppressionAttackPatch.Postfix

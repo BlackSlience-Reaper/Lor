@@ -126,17 +126,3 @@ public sealed class OzmaTakeOrBeTakenPower : LibraryOfRuinaPowerModel
         }
     }
 }
-
-[HarmonyPatch(typeof(CombatState), nameof(CombatState.IterateHookListeners))]
-internal static class OzmaLostMemoryHookSuspensionPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(ref IEnumerable<AbstractModel> __result)
-    {
-        __result = __result
-            .Where(static model => model is not PowerModel power
-                || power.TypeForCurrentAmount != PowerType.Buff
-                || power.Owner.GetPower<OzmaLostMemoryPower>() == null)
-            .ToArray();
-    }
-}
