@@ -29,6 +29,7 @@ public static class VerificationRunner
         BigBadWolfTargetingVerificationPatch.Start,
         BlueStarStrongVerificationPatch.Start,
         CodeHealthVerificationPatch.Start,
+        EgoCardPreviewVerificationPatch.Start,
         EnemyCardIntentVerificationPatch.Start,
         FairyMassCareVerificationPatch.Start,
         GalaxyDoomVerificationPatch.Start,
