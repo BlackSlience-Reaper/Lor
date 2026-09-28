@@ -50,7 +50,7 @@ dotnet build LibraryOfRuina.csproj -c Release
 godot --headless --path . --export-pack LibraryOfRuina build/LibraryOfRuina.pck
 ```
 
-导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。
+导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。PCK 里的 `.cs` 只保留空占位（场景按路径引用脚本），不附带源码；`docs/`、`tools/`、`snapshots/`、`verification/` 带有 `.gdignore`，不会进包。
 
 ### 4. 安装
 
@@ -61,6 +61,22 @@ mods/LibraryOfRuina/
 └── LibraryOfRuina.pck
 ```
 
+### 5. 验证套件（开发用，可选）
+
+`verification/` 是独立的验证模组 `LibraryOfRuinaVerification`，只在跑 headless 验证的机器上部署，不随发行包分发：
+
+```bash
+dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
+```
+
+把 `verification/bin/Release/` 下的 `LibraryOfRuinaVerification.dll` 和 `LibraryOfRuinaVerification.json` 放进 `mods/LibraryOfRuinaVerification/`，再用 `--lor-verify-<套件>` 启动游戏，例如 `--headless --lor-verify-king-greed-summon-king`。套件通过后以退出码 0 退出，失败时退出码为 1。比对仓库素材的套件需要环境变量 `LOR_PROJECT_ROOT`（仓库根目录）；Laetitia 原图哈希检查另需 `LOR_ART_SOURCE_ROOT`，未设置时跳过。
+
+`multifight`、`multievent`、`tempmap` 控制台命令也在验证模组里。正式模组只保留 `lor_skip`（原名 `skip`），用于强制结算卡住的战斗或事件。
+
+### 6. 重构护栏
+
+`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。
+
 ## 目录 / Layout
 
 | 目录 | 内容 |
@@ -70,6 +86,9 @@ mods/LibraryOfRuina/
 | `images/` `audio/` `videos/` `fonts/` | 美术、音频、视频与字体素材（Git LFS） |
 | `localization/` `LibraryOfRuina/localization/` | 本地化文本 |
 | `addons/mega_text/` | 游戏自带的 MegaLabel 控件，供场景在编辑器中打开 |
+| `verification/` | headless 验证套件（独立模组，不进发行包） |
+| `docs/` | 设计哲学、本地化规范、重构指导 |
+| `tools/` `snapshots/` | 重构护栏脚本与身份快照基线 |
 
 ## 关于本仓库的来源
 

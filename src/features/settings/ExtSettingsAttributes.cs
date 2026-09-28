@@ -56,6 +56,13 @@ public class SettingsIgnoreAttribute : Attribute;
 [AttributeUsage(AttributeTargets.Property)]
 public class SettingsHideInUI : Attribute;
 
+/// <summary>
+/// Progress or migration marker stored in the config file. "Restore Defaults" leaves it alone,
+/// so resetting preferences does not replay tutorials or re-run one-time migrations.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class SettingsKeepOnRestoreDefaultsAttribute : Attribute;
+
 /// <summary>Gameplay setting that is hidden from the settings screen while a run is in progress.</summary>
 [AttributeUsage(AttributeTargets.Property)]
 public class SettingsLockedDuringRunAttribute : Attribute;

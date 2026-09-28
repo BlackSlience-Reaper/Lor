@@ -1972,7 +1972,7 @@ internal static class MonsterVisualCatalog
         string id = monster.Id.Entry;
         if (SpecialScenePaths.TryGetValue(id, out string? scenePath))
         {
-            MonsterVisualDebug.Write(
+            MonsterVisualDebug.Trace(
                 $"Create id={id} scenePath={scenePath}");
             return WrappedMonsterVisualFactory.CreateFromScene(scenePath);
         }
@@ -2348,7 +2348,7 @@ internal static class WrappedMonsterVisualFactory
                 + "declared by its sprite visual profile.");
         }
 
-        MonsterVisualDebug.Write(
+        MonsterVisualDebug.Trace(
             $"Create id={id} visualClass={typeof(TVisuals).Name} "
             + $"texturePath={idleTexturePath}");
         var idleSprite = CreateSpriteNode("Visuals", layout, visible: true);
@@ -2367,7 +2367,7 @@ internal static class WrappedMonsterVisualFactory
 
         AddLayoutNodes(visuals, layout, idleSprite, attackSprite, motionRoot);
 
-        MonsterVisualDebug.Write(
+        MonsterVisualDebug.Trace(
             $"Created id={id} visualClass={typeof(TVisuals).Name} children={visuals.GetChildCount()} " +
             $"hasMotionRoot={visuals.HasNode("MotionRoot")} hasVisuals={visuals.HasNode("Visuals")} hasAttackVisuals={visuals.HasNode("AttackVisuals")} " +
             $"hasBounds={visuals.HasNode("Bounds")} hasCenter={visuals.HasNode("CenterPos")} hasIntent={visuals.HasNode("IntentPos")}");
@@ -2400,7 +2400,7 @@ internal static class WrappedMonsterVisualFactory
 
         if (texture != null)
         {
-            MonsterVisualDebug.Write($"Texture loaded id={id} size={texture.GetSize()}");
+            MonsterVisualDebug.Trace($"Texture loaded id={id} size={texture.GetSize()}");
         }
         else
         {
@@ -2568,7 +2568,7 @@ internal static class WrappedMonsterVisualFactory
             }
 
             ValidateSceneBackedNodes(id, visuals);
-            MonsterVisualDebug.Write(
+            MonsterVisualDebug.Trace(
                 $"Create id={id} sceneVisualClass={typeof(TVisuals).Name} "
                 + $"scenePath={scenePath} children={visuals.GetChildCount()}");
             return visuals;
@@ -2638,11 +2638,11 @@ internal static class WrappedMonsterVisualFactory
             throw new InvalidOperationException($"Cannot load scene: {scenePath}");
 
         Node2D templateRoot = packed.Instantiate<Node2D>();
-        MonsterVisualDebug.Write($"Scene instantiated path={scenePath} rootType={templateRoot.GetType().FullName} rootClass={templateRoot.GetClass()}");
+        MonsterVisualDebug.Trace($"Scene instantiated path={scenePath} rootType={templateRoot.GetType().FullName} rootClass={templateRoot.GetClass()}");
 
         if (templateRoot is NCreatureVisuals cv)
         {
-            MonsterVisualDebug.Write($"Scene returned direct NCreatureVisuals path={scenePath} name={cv.Name}");
+            MonsterVisualDebug.Trace($"Scene returned direct NCreatureVisuals path={scenePath} name={cv.Name}");
             return cv;
         }
 
@@ -2655,7 +2655,7 @@ internal static class WrappedMonsterVisualFactory
             AssignOwnerRecursive(child, visuals);
         }
         templateRoot.Free();
-        MonsterVisualDebug.Write($"Scene wrapped into NCreatureVisuals path={scenePath} name={visuals.Name} children={visuals.GetChildCount()}");
+        MonsterVisualDebug.Trace($"Scene wrapped into NCreatureVisuals path={scenePath} name={visuals.Name} children={visuals.GetChildCount()}");
         return visuals;
     }
 
@@ -2952,22 +2952,33 @@ internal static class MonsterNodeReadyDebugPatch
 
 internal static class MonsterVisualDebug
 {
+    private const long MaxLogBytes = 1024 * 1024;
     private static readonly string LogPath = ProjectSettings.GlobalizePath("user://mods/LibraryOfRuina/monster_visuals_debug.log");
 
+    /// <summary>成功路径的诊断，每只怪生成外观都会走到，只进 Debug 级日志。</summary>
+    public static void Trace(string message)
+    {
+        Log.Debug($"[MonsterVisualDebug] {message}");
+    }
+
+    /// <summary>失败路径：进游戏日志，同时追加到单独文件方便玩家反馈；文件超过 1 MB 时轮换为 .old。</summary>
     public static void Write(string message)
     {
         string text = $"[MonsterVisualDebug {DateTime.Now:HH:mm:ss.fff}] {message}";
-        Log.Info(text);
+        Log.Warn(text);
         try
         {
             string? dir = Path.GetDirectoryName(LogPath);
             if (!string.IsNullOrEmpty(dir))
                 Directory.CreateDirectory(dir);
+            var info = new FileInfo(LogPath);
+            if (info.Exists && info.Length > MaxLogBytes)
+                File.Move(LogPath, LogPath + ".old", overwrite: true);
             File.AppendAllText(LogPath, text + Environment.NewLine);
         }
-        catch
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            // ignored
+            // 日志文件只是反馈辅助，写不进去时游戏日志里已有同一条。
         }
     }
 }

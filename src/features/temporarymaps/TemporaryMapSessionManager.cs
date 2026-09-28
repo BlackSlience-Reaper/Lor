@@ -16,7 +16,6 @@ using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Runs.History;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using Environment = System.Environment;
 
 namespace LibraryOfRuina.features.temporarymaps;
 
@@ -129,6 +128,11 @@ internal sealed class TemporaryMapSessionStore
 internal static class TemporaryMapSessionManager
 {
     private static readonly TemporaryMapSessionStore SessionStore = new();
+
+    /// <summary>
+    /// 验证程序集启动套件时置为 true：套件自己开局后再跳入临时地图，开局清理会把刚建立的会话抹掉。
+    /// </summary>
+    internal static bool PreserveSessionsOnRunStarted { get; set; }
 
     public static bool IsActive(IRunState? runState)
     {
@@ -260,8 +264,7 @@ internal static class TemporaryMapSessionManager
 
     public static void OnRunStarted(RunState state)
     {
-        if (Environment.GetCommandLineArgs().Any(static arg =>
-                arg.TrimStart('-').StartsWith("lor-verify-", StringComparison.OrdinalIgnoreCase)))
+        if (PreserveSessionsOnRunStarted)
         {
             return;
         }

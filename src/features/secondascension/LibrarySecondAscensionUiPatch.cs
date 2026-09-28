@@ -27,16 +27,6 @@ using MegaCrit.Sts2.Core.TestSupport;
 
 namespace LibraryOfRuina.features.secondascension;
 
-[HarmonyPatch(typeof(NMainMenu), nameof(NMainMenu._Ready))]
-internal static class LibrarySecondAscensionUiCheckMainMenuPatch
-{
-    [HarmonyPostfix]
-    private static void Postfix(NMainMenu __instance)
-    {
-        LibrarySecondAscensionUi.OpenCharacterSelectForUiCheck(__instance);
-    }
-}
-
 [HarmonyPatch(typeof(NCharacterSelectScreen), nameof(NCharacterSelectScreen.InitializeMultiplayerAsHost))]
 internal static class LibrarySecondAscensionCharacterSelectHostPatch
 {
@@ -250,7 +240,6 @@ internal static class LibrarySecondAscensionUi
     private const string PanelName = "LibrarySecondAscensionPanel";
     private const string TopBarIconName = "LibrarySecondAscensionTopBarIcon";
     private const string AscensionPanelScenePath = "res://scenes/screens/ascension_panel.tscn";
-    private const string UiCheckArg = "lor-second-ascension-ui-check";
 
     private static readonly StringName FontOutlineTheme = "font_outline_color";
     private static readonly StringName LabelFontTheme = "font";
@@ -280,27 +269,6 @@ internal static class LibrarySecondAscensionUi
         AccessTools.Field(typeof(NTopBarPortraitTip), "_showTip");
     private static readonly FieldInfo? PortraitTipHoverTipField =
         AccessTools.Field(typeof(NTopBarPortraitTip), "_hoverTip");
-
-    public static void OpenCharacterSelectForUiCheck(NMainMenu mainMenu)
-    {
-        if (!CommandLineHelper.HasArg(UiCheckArg))
-        {
-            return;
-        }
-
-        Callable.From(() =>
-        {
-            if (!GodotObject.IsInstanceValid(mainMenu))
-            {
-                return;
-            }
-
-            NCharacterSelectScreen screen = mainMenu.SubmenuStack.GetSubmenuType<NCharacterSelectScreen>();
-            screen.InitializeSingleplayer();
-            mainMenu.SubmenuStack.Push(screen);
-            Log.Info("[LibrarySecondAscension] UI check opened standard character select.");
-        }).CallDeferred();
-    }
 
     public static void EnsureSecondPanel(Control screen, MultiplayerUiMode mode)
     {

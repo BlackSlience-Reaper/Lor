@@ -35,6 +35,12 @@
     <Compile Remove="build/**" />
     <Compile Remove="dist/**" />
     <Compile Remove="tools/**" />
+    <Compile Remove="verification/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The verification suites (verification/) read Debug* accessors and internal state. -->
+    <InternalsVisibleTo Include="LibraryOfRuinaVerification" />
   </ItemGroup>
 
   <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">

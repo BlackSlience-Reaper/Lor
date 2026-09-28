@@ -332,46 +332,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Bestiary.NBestiary), "AddAc
   Postfix LibraryOfRuina.reverberation.CryingChildren.CryingChildrenBestiaryPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
   Postfix LibraryOfRuina.patches.MainMenuShowPendingSettingsErrorsPatch.Postfix
-  Postfix LibraryOfRuina.features.secondascension.LibrarySecondAscensionUiCheckMainMenuPatch.Postfix
-  Postfix LibraryOfRuina.debug.AllyTurnProviderVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.ArtFloorLiberationVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.BigBadWolfTargetingVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.BlueStarStrongVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.CodeHealthVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.EnemyCardIntentVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.FairyMassCareVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.GalaxyDoomVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.JudgementBirdVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.KaliSpecialGuestContractVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.KingOfGreedPageStunVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.KingOfGreedSummonVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LanguageFloorLiberationPhaseFiveVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LanguageFloorLiberationPhaseFourVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LanguageFloorLiberationPhaseThreeVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LanguageFloorLiberationVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiberationBossMapIconVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiberationCombatEndGuardVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiteratureFloorLiberationPhaseFiveVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiteratureFloorLiberationPhaseFourVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiteratureFloorLiberationPhaseOneVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiteratureFloorLiberationPhaseThreeVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiteratureFloorLiberationPhaseTwoVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.LiteratureFloorLiberationSettlementVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.MatchMarkMultiplayerVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.NosferatuDoomLockVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.PhilosophyFloorLiberationVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.PowerIconVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.QueenOfHatredPageMultiplayerVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.RelicRunHistoryDescriptionVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.SceneBackedAbnormalityAnimationVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.SmilingBodiesAnimationVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.SmilingBodiesDeathVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.SmilingBodiesPageMultiplayerVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.SocialFloorLiberationVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.SpecialGuestXiaoContractVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.TargetedIntentLineVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.TechnologyFloorLiberationSettlementVerificationPatch.Postfix
-  Postfix LibraryOfRuina.debug.XiaoIntentAnchorVerificationPatch.Postfix
   Postfix LibraryOfRuina.compat.MainMenuIncompatibleModNoticePatch.Postfix
   Postfix LibraryOfRuina.audio.MainMenuBgmReadyPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rewards.RewardsSet), "WithRewardsFromRoom")

@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Rewards;
+using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.relics;
 
@@ -229,7 +230,7 @@ internal static class AbnormalityPageRewardPreselection
     private static IReadOnlyDictionary<ModelId, PageRelicRegistration> DiscoverPageRelics()
     {
         Dictionary<ModelId, PageRelicRegistration> registrations = [];
-        foreach (Type type in typeof(AbnormalityPageRewardPreselection).Assembly.GetTypes())
+        foreach (Type type in LibraryAssemblyTypes.All)
         {
             if (type.IsAbstract || !typeof(RelicModel).IsAssignableFrom(type))
             {

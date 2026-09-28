@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
+using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -76,24 +77,7 @@ public static class SpecialGuestAutoRegistrar
 
     private static MethodInfo[] DiscoverRegistrationMethods()
     {
-        Assembly assembly = typeof(SpecialGuestAutoRegistrar).Assembly;
-        Type[] types;
-        try
-        {
-            types = assembly.GetTypes();
-        }
-        catch (ReflectionTypeLoadException exception)
-        {
-            string loaderErrors = string.Join(
-                Environment.NewLine,
-                exception.LoaderExceptions.Where(static error => error != null)
-                    .Select(static error => error!.Message));
-            throw new InvalidOperationException(
-                "Unable to enumerate special-guest registration types. " + loaderErrors,
-                exception);
-        }
-
-        return types
+        return LibraryAssemblyTypes.All
             .SelectMany(static type => type.GetMethods(
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
             .Select(static method => new
