@@ -15,7 +15,7 @@ using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.events.NaturalFloorLiberation;
 
-public sealed class NaturalFloorLiberationSettlementEvent : AncientEventModel
+public sealed class NaturalFloorLiberationSettlementEvent : AncientEventModel, ILibrarySettlementEvent
 {
     private const string LocId = "NATURAL_FLOOR_LIBERATION_SETTLEMENT_EVENT";
     private static readonly LiberationSettlementRewardTier[] Tiers = Enumerable.Range(1, 4)

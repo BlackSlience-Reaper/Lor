@@ -30,6 +30,12 @@ internal enum LibraryActFamily
 /// </summary>
 public abstract class LibraryOfRuinaActModel : TemplateActModel
 {
+    internal abstract string MapTopBackground { get; }
+
+    internal abstract string MapMiddleBackground { get; }
+
+    internal abstract string MapBottomBackground { get; }
+
     public abstract override ActModel TemplateAct { get; }
 
     protected abstract EncounterModel FixedBoss { get; }
@@ -90,6 +96,12 @@ public sealed class Malkuth : LibraryOfRuinaActModel
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/malkuth/map_bottom_malkuth.png";
 
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
+
     public override ActModel TemplateAct => ModelDb.Act<Overgrowth>();
 
     public override Color MapTraveledColor => new("30210F");
@@ -113,6 +125,12 @@ public sealed class Yesod : LibraryOfRuinaActModel
 
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/yesod/map_bottom_yesod.png";
+
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
 
     public override ActModel TemplateAct => ModelDb.Act<Underdocks>();
 
@@ -138,6 +156,12 @@ public sealed class Hod : LibraryOfRuinaActModel
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/hod/map_bottom_hod.png";
 
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
+
     public override ActModel TemplateAct => ModelDb.Act<Overgrowth>();
 
     public override Color MapTraveledColor => new("3B2118");
@@ -161,6 +185,12 @@ public sealed class NetZech : LibraryOfRuinaActModel
 
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/netzach/map_bottom_netzach.png";
+
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
 
     public override ActModel TemplateAct => ModelDb.Act<Hive>();
 
@@ -186,6 +216,12 @@ public sealed class Gebura : LibraryOfRuinaActModel
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/gebura/map_bottom_gebura.png";
 
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
+
     public override ActModel TemplateAct => ModelDb.Act<Hive>();
 
     public override Color MapTraveledColor => new("520A09");
@@ -210,6 +246,12 @@ public sealed class Tiphereth : LibraryOfRuinaActModel
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/tiphereth/map_bottom_tiphereth.png";
 
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
+
     public override ActModel TemplateAct => ModelDb.Act<Hive>();
 
     public override Color MapTraveledColor => new("6B3C05");
@@ -232,6 +274,12 @@ public sealed class Chesed : LibraryOfRuinaActModel
 
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/chesed/map_bottom_chesed.png";
+
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
 
     public override ActModel TemplateAct => ModelDb.Act<Glory>();
 
@@ -256,6 +304,12 @@ public sealed class Binah : LibraryOfRuinaActModel
 
     internal const string MapBottomBackgroundPath =
         "res://images/packed/map/map_bgs/binah/map_bottom_binah.png";
+
+    internal override string MapTopBackground => MapTopBackgroundPath;
+
+    internal override string MapMiddleBackground => MapMiddleBackgroundPath;
+
+    internal override string MapBottomBackground => MapBottomBackgroundPath;
 
     public override ActModel TemplateAct => ModelDb.Act<Glory>();
 

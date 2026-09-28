@@ -9,33 +9,6 @@ using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch]
-internal static class ReverberationEnsembleMapBackgroundPatch
-{
-    private static IEnumerable<MethodBase> TargetMethods()
-    {
-        yield return AccessTools.PropertyGetter(typeof(ActModel), nameof(ActModel.MapTopBgPath));
-        yield return AccessTools.PropertyGetter(typeof(ActModel), nameof(ActModel.MapMidBgPath));
-        yield return AccessTools.PropertyGetter(typeof(ActModel), nameof(ActModel.MapBotBgPath));
-    }
-
-    [HarmonyPostfix]
-    private static void Postfix(ActModel __instance, MethodBase __originalMethod, ref string __result)
-    {
-        if (__instance is not ReverberationEnsembleAct)
-        {
-            return;
-        }
-
-        __result = ReverberationEnsembleAct.MapAssetRoot + (__originalMethod.Name switch
-        {
-            "get_MapTopBgPath" => "map_top_reverberation_ensemble.png",
-            "get_MapMidBgPath" => "map_middle_reverberation_ensemble.png",
-            _ => "map_bottom_reverberation_ensemble.png"
-        });
-    }
-}
-
 [HarmonyPatch(typeof(ActModel), nameof(ActModel.GetNumberOfRooms))]
 internal static class ReverberationEnsembleFloorCountPatch
 {

@@ -311,13 +311,6 @@ public static class IoriSpecialGuestBgmController
     }
 }
 
-[HarmonyPatch(typeof(RunManager), nameof(RunManager.CleanUp), typeof(bool))]
-internal static class IoriSpecialGuestBgmRunCleanupPatch
-{
-    [HarmonyPrefix]
-    private static void Prefix() => IoriSpecialGuestBgmController.Stop();
-}
-
 [HarmonyPatch]
 internal static class IoriSpecialGuestBgmCombatEndPatch
 {

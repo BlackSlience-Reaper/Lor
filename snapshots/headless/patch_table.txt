@@ -119,10 +119,8 @@ sts2|MegaCrit.Sts2.Core.Combat.CombatState::GetOpponentsOf(MegaCrit.Sts2.Core.En
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyOpponentsPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Combat.CombatState::IterateHookListeners()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Models.Capabilities.Patches.ModelCapabilityHookListenerPatches+CombatStateHookListenersPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightBigEyesHookSuspensionPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.Ozma.OzmaLostMemoryHookSuspensionPatch.Postfix
-  Postfix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyEnemyOnlyPowerPatch.Postfix
-  Postfix priority=0 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.DetachedAfflictionHookListenerPatch.Postfix
+  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.HookListenerFilterPatch.Postfix
+  Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.DetachedAfflictionHookListenerPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Combat.CombatState::get_HittableEnemies()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.FriendlyAllyHittableEnemiesPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Commands.Builders.AttackCommand+<Execute>d__90::MoveNext()
@@ -286,12 +284,7 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyUnblockedDamageTarget(MegaCrit.Sts2.Co
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentDamageRedirectPatch.Prefix
   Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentDamageRedirectPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldAllowAncient(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Entities.Players.Player,MegaCrit.Sts2.Core.Models.AncientEventModel)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.TechnologyFloorLiberationSettlementAncientGatePatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorSettlementAncientGatePatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationSettlementAncientGatePatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorLiberation.LanguageFloorLiberationSettlementAncientGatePatch.Prefix
-  Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationSettlementAncientGatePatch.Prefix
-  Prefix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorLiberationSettlementAncientGatePatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+AllowAncient.Prefix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldClearBlock(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.AbstractModel&)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Postfix
@@ -330,39 +323,15 @@ sts2|MegaCrit.Sts2.Core.Models.ActModel::ValidateRoomsAfterLoad(MegaCrit.Sts2.Co
 sts2|MegaCrit.Sts2.Core.Models.ActModel::get_MapBotBgPath()
   Prefix priority=800 index=0 owner=ActLikeIt2 ActLikeIt2.Patches.TemplateActAssetPathPatch.Prefix
   Prefix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.ActMapBottomBackgroundPathPatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PhilosophyFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ReverberationEnsembleMapBackgroundPatch.Postfix
-  Postfix priority=400 index=7 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.SocialFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=8 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorMapBackgroundPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.ActMapBackgroundPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.ActModel::get_MapMidBgPath()
   Prefix priority=800 index=0 owner=ActLikeIt2 ActLikeIt2.Patches.TemplateActAssetPathPatch.Prefix
   Prefix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.ActMapMidBackgroundPathPatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PhilosophyFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ReverberationEnsembleMapBackgroundPatch.Postfix
-  Postfix priority=400 index=7 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.SocialFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=8 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorMapBackgroundPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.ActMapBackgroundPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.ActModel::get_MapTopBgPath()
   Prefix priority=800 index=0 owner=ActLikeIt2 ActLikeIt2.Patches.TemplateActAssetPathPatch.Prefix
   Prefix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.ActMapBackgroundPathPatch.Prefix
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PhilosophyFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ReverberationEnsembleMapBackgroundPatch.Postfix
-  Postfix priority=400 index=7 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.SocialFloorMapBackgroundPatch.Postfix
-  Postfix priority=400 index=8 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorMapBackgroundPatch.Postfix
+  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.ActMapBackgroundPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.AfflictionModel::get_DynamicDescription()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Models.Capabilities.Patches.ModelDisplayCapabilityPatches+AfflictionDynamicDescriptionPatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.afflictions.CostReductionDescriptionVarsPatch.Postfix
@@ -370,12 +339,7 @@ sts2|MegaCrit.Sts2.Core.Models.AfflictionModel::get_DynamicExtraCardText()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Models.Capabilities.Patches.ModelDisplayCapabilityPatches+AfflictionDynamicExtraCardTextPatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.afflictions.CostReductionExtraCardTextVarsPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.AncientEventModel::BeforeEventStarted(System.Boolean)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.TechnologyFloorLiberationSettlementAncientHealPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorSettlementAncientHealPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationSettlementAncientHealPatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorLiberation.LanguageFloorLiberationSettlementAncientHealPatch.Prefix
-  Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationSettlementAncientHealPatch.Prefix
-  Prefix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorLiberationSettlementAncientHealPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+SkipAncientHeal.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.relics.BookShadow.BookShadowLibraryActAncientGrantPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.AncientEventModel::SetInitialEventState(System.Boolean)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.audio.NeowEntrySfxSetInitialEventStatePatch.Prefix
@@ -731,12 +695,7 @@ sts2|MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom::SetUpBackground(MegaCrit.Sts2.C
 sts2|MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom::get_AssetPaths()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CombinedIntentCombatRoomAssetPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom::Proceed()
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.TechnologyFloorLiberationProceedPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorSettlementProceedPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationProceedPatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorLiberation.LanguageFloorLiberationProceedPatch.Prefix
-  Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationProceedPatch.Prefix
-  Prefix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorLiberationProceedPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+ProceedToNextAct.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.Rooms.NEventRoom::SetupLayout()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.ftue.LibraryOfRuinaNeowFtuePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.Bestiary.NBestiary::AddAct(MegaCrit.Sts2.Core.Models.ActModel)
@@ -851,12 +810,7 @@ sts2|MegaCrit.Sts2.Core.Rooms.EventRoom::ToSerializable()
 sts2|MegaCrit.Sts2.Core.Rooms.TreasureRoom::.ctor(System.Int32)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ReverberationEnsembleTreasureRoomPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::CleanUp(System.Boolean)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestRunCleanupPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBgmRunCleanupPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmRunCleanupPatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.encounters.EncounterBgmRunCleanupPatch.Prefix
-  Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.audio.AbnormalityEliteBgmRunCleanupPatch.Prefix
-  Prefix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.audio.ReverberationEnsembleMusicCleanupPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.RunLifecycle+CleanUpPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::CreateRoom(MegaCrit.Sts2.Core.Rooms.RoomType,MegaCrit.Sts2.Core.Map.MapPointType,MegaCrit.Sts2.Core.Models.AbstractModel)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.temporarymaps.TemporaryMapCreateRoomPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::EnterRoomInternal(MegaCrit.Sts2.Core.Rooms.AbstractRoom,System.Boolean)
@@ -871,12 +825,7 @@ sts2|MegaCrit.Sts2.Core.Runs.RunManager::GenerateMap()
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::GenerateRooms()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LibraryEncounterBossWeightPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::ProceedFromTerminalRewardsScreen()
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.TechnologyFloorLiberation.TechnologyFloorLiberationSettlementRedirectPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorSettlementRedirectPatch.Prefix
-  Prefix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationSettlementRedirectPatch.Prefix
-  Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorLiberation.LanguageFloorLiberationSettlementRedirectPatch.Prefix
-  Prefix priority=400 index=5 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationSettlementRedirectPatch.Prefix
-  Prefix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ArtFloorLiberation.ArtFloorLiberationSettlementRedirectPatch.Prefix
+  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+RedirectToSettlement.Prefix
   Prefix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestTerminalRewardsProceedPatch.Prefix
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.RewardsScreenContinuingLifecyclePatch.Postfix
   Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.features.temporarymaps.TemporaryMapTerminalRewardsProceedPatch.Postfix

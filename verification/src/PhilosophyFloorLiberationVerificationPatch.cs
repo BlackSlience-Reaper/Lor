@@ -367,10 +367,10 @@ internal static class PhilosophyFloorLiberationVerificationPatch
 
     private static void VerifyBigEyesArtifactBypass()
     {
-        Require(!PhilosophyFloorTwilightBigEyesHookSuspensionPatch
+        Require(!PhilosophyFloorTwilightBigEyesHookSuspension
                 .ShouldSuspendPower(new ArtifactPower()),
             "Big Eyes incorrectly disables Artifact.");
-        Require(PhilosophyFloorTwilightBigEyesHookSuspensionPatch
+        Require(PhilosophyFloorTwilightBigEyesHookSuspension
                 .ShouldSuspendPower(new StrengthPower()),
             "Big Eyes no longer disables ordinary positive powers.");
     }

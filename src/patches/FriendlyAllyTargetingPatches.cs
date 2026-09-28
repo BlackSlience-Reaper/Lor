@@ -67,18 +67,6 @@ internal static class FriendlyAllyEnemyDebuffPatch
     }
 }
 
-[HarmonyPatch(typeof(CombatState), nameof(CombatState.IterateHookListeners))]
-internal static class FriendlyAllyEnemyOnlyPowerPatch
-{
-    private static void Postfix(ref IEnumerable<AbstractModel> __result)
-    {
-        __result = __result.Where(static model =>
-            model is not PowerModel power
-            || power.Id.Entry != "CENSORED_EGO_POWER_EROSION_DESTRUCTION_POWER"
-            || !AllyTurnRegistry.IsFriendlyAlly(power.Owner));
-    }
-}
-
 /// <summary>
 /// Keeps a Friendly ally's monster-backed runtime identity while giving it the
 /// same enemy-target exclusion as a player creature.
