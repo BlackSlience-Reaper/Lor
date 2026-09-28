@@ -97,7 +97,6 @@ public static class LibraryOfRuinaPublicIds
     {
         private const string Prefix = "library_of_ruina.events.";
 
-        public const string AncientMagicAltar = Prefix + "ancient_magic_altar";
         public const string FuneralOfTheDeadButterflies = Prefix + "funeral_of_the_dead_butterflies";
         public const string SingingMachine = Prefix + "singing_machine";
         public const string WarpTrain = Prefix + "warp_train";

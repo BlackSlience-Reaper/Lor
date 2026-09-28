@@ -1,7 +1,6 @@
 using System.Linq;
 using HarmonyLib;
 using LibraryOfRuina.acts;
-using LibraryOfRuina.events.AltarEnchantment;
 using LibraryOfRuina.events.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.events.SongMachine;
 using LibraryOfRuina.events.WarpTrain;
@@ -37,7 +36,6 @@ internal static class LibraryOfRuinaEventPool
     {
         return events.Concat(
         [
-            ModelDb.Event<AncientMagicAltarEvent>(),
             ModelDb.Event<WarpTrainEvent>(),
             ModelDb.Event<SingingMachineEvent>(),
             ModelDb.Event<FuneralOfTheDeadButterfliesEvent>()

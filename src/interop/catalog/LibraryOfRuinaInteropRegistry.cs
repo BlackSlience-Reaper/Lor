@@ -39,7 +39,6 @@ using LibraryOfRuina.encounters.TodaysShyLook;
 using LibraryOfRuina.encounters.Tomerry;
 using LibraryOfRuina.encounters.WedgeOffice;
 using LibraryOfRuina.encounters.YunOffice;
-using LibraryOfRuina.events.AltarEnchantment;
 using LibraryOfRuina.events.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.events.HistoryFloorLiberation;
 using LibraryOfRuina.events.SongMachine;
@@ -190,7 +189,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Encounters.YunOfficeNormal, LibraryOfRuinaInteropCategory.Encounters, RawModelCategories.Encounter, "YUN_OFFICE_NORMAL", typeof(YunOfficeNormal), "YUN_OFFICE_NORMAL"),
 
         
-        Model(LibraryOfRuinaPublicIds.Events.AncientMagicAltar, LibraryOfRuinaInteropCategory.Events, RawModelCategories.Event, "ANCIENT_MAGIC_ALTAR_EVENT", typeof(AncientMagicAltarEvent), "ANCIENT_MAGIC_ALTAR_EVENT"),
         Model(LibraryOfRuinaPublicIds.Events.FuneralOfTheDeadButterflies, LibraryOfRuinaInteropCategory.Events, RawModelCategories.Event, "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT", typeof(FuneralOfTheDeadButterfliesEvent), "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT"),
         Model(LibraryOfRuinaPublicIds.Events.SingingMachine, LibraryOfRuinaInteropCategory.Events, RawModelCategories.Event, "SINGING_MACHINE_EVENT", typeof(SingingMachineEvent), "SINGING_MACHINE_EVENT"),
         Model(LibraryOfRuinaPublicIds.Events.WarpTrain, LibraryOfRuinaInteropCategory.Events, RawModelCategories.Event, "WARP_TRAIN_EVENT", typeof(WarpTrainEvent), "WARP_TRAIN_EVENT"),
