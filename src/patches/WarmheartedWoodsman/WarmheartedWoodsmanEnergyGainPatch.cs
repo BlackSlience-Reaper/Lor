@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Hooks;
+using System;
 
 namespace LibraryOfRuina.patches.WarmheartedWoodsman;
 
@@ -19,16 +20,29 @@ internal static class WarmheartedWoodsmanEnergyGainPatch
     internal static bool IsEnergyResetHookActive(Player player) =>
         EnergyResetDepth.TryGetValue(player, out StrongBox<int>? depth) && depth.Value > 0;
 
-    internal static void BeginEnergyResetHook(Player player)
+    /// <summary>记一层重置；只有拿到令牌的调用才能释放，令牌可重复 Dispose。</summary>
+    internal static IDisposable BeginEnergyResetHook(Player player)
     {
         EnergyResetDepth.GetOrCreateValue(player).Value++;
+        return new EnergyResetToken(player);
     }
 
-    internal static void EndEnergyResetHook(Player player)
+    private sealed class EnergyResetToken(Player player) : IDisposable
     {
-        if (EnergyResetDepth.TryGetValue(player, out StrongBox<int>? depth) && --depth.Value <= 0)
+        private bool _released;
+
+        public void Dispose()
         {
-            EnergyResetDepth.Remove(player);
+            if (_released)
+            {
+                return;
+            }
+
+            _released = true;
+            if (EnergyResetDepth.TryGetValue(player, out StrongBox<int>? depth) && --depth.Value <= 0)
+            {
+                EnergyResetDepth.Remove(player);
+            }
         }
     }
 
@@ -79,17 +93,33 @@ internal static class WarmheartedWoodsmanEnergyGainPatch
 [LibraryPatch(Reason = "“想要一颗心”只算回合内获得的能量，回合开始由 AfterEnergyReset 监听者发的不算；要括住整个钩子（普通与 Late 两遍），原版没有前置扩展点，伐木工作为敌方监听者也排在玩家侧监听者之后。前后缀只记录正在重置的玩家，不改参数和返回值。")]
 internal static class WarmheartedWoodsmanEnergyResetHookPatch
 {
-    private static void Prefix(Player player)
+    // 前缀带引用类型参数，排在前面的前缀跳过原方法时它会被 Harmony 连带跳过，后缀和 Finalizer 却照常执行；
+    // 所以计数只经 __state 令牌释放，没取得令牌的调用什么也不做，不会提前清掉外层调用的计数。
+    private static void Prefix(Player player, out IDisposable? __state)
     {
-        WarmheartedWoodsmanEnergyGainPatch.BeginEnergyResetHook(player);
+        __state = WarmheartedWoodsmanEnergyGainPatch.BeginEnergyResetHook(player);
     }
 
-    private static void Postfix(Player player, ref Task __result)
+    private static void Postfix(IDisposable? __state, ref Task __result)
     {
-        __result = EndEnergyResetHookWhenComplete(__result, player);
+        if (__state != null)
+        {
+            __result = ReleaseWhenComplete(__result, __state);
+        }
     }
 
-    private static async Task EndEnergyResetHookWhenComplete(Task result, Player player)
+    // 原方法或之前的补丁同步抛异常时后缀不执行，由这里释放。
+    private static Exception? Finalizer(Exception? __exception, IDisposable? __state)
+    {
+        if (__exception != null)
+        {
+            __state?.Dispose();
+        }
+
+        return __exception;
+    }
+
+    private static async Task ReleaseWhenComplete(Task result, IDisposable token)
     {
         try
         {
@@ -97,7 +127,7 @@ internal static class WarmheartedWoodsmanEnergyResetHookPatch
         }
         finally
         {
-            WarmheartedWoodsmanEnergyGainPatch.EndEnergyResetHook(player);
+            token.Dispose();
         }
     }
 }

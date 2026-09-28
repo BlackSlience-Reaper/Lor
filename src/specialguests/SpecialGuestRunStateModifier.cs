@@ -77,9 +77,10 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
 
     // 嘉宾战的剧情、阶段推进与奖励增补。载体在进入嘉宾战之前由 GetOrCreate 追加，所以一定在 CombatRoom 构造时的
     // Modifiers 快照里，是战斗内的监听者。局中追加的载体没有经过 OnRunCreated/OnRunLoaded，基类 RunState 会抛异常，
-    // 运行状态从钩子参数或当前局取。原版覆写这些钩子的都是遗物、牌、能力，排在 Modifiers 之前，先后不变。
+    // 运行状态从钩子参数或当前局取。原版覆写这些钩子的都是遗物、牌、能力，排在 Modifiers 之前，与剧情的先后不变；
+    // 排在载体之后的 Modifier、Badge、战斗订阅者及挂在它们身上的 RitsuLib 能力监听者改到剧情之后（重构指导附录 B）。
 
-    // 用 Late：Start 一遍（以及排在前面的 Late，例如石化蟾蜍）结算完再播战前剧情，与原来的后缀时机一致。
+    // 用 Late：Start 一遍（以及排在前面的 Late，例如石化蟾蜍）结算完再播战前剧情，原版效果的先后与原来的后缀一致。
     public override Task BeforeCombatStartLate() =>
         RunManager.Instance.DebugOnlyGetState() is { } runState
             ? SpecialGuestStageFlow.BeforeCombatStartAsync(runState)

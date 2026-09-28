@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.powers.PhilosophyFloorLiberation;
 
 namespace LibraryOfRuina.patches;
 
@@ -76,6 +77,10 @@ internal static class VanillaFinalHpLossClampPatch
         // BeforeOsty 尚有伤害转移与后续减伤；All 预览和 AfterOsty 实战共用末尾锁血。
         if (phases.HasFlag(HpLossHookPhase.AfterOsty))
         {
+            // 锁血自己遍历监听者，所以暮光审判的“剔除能力”作用域在这里自己建立：基础库解析前缀跳过原方法时，
+            // PhilosophyFloorTwilightJudgmentModifyHpLostPatch 的前缀会被连带跳过，但这个后缀照常执行。
+            // 前缀已经建立时这里只是嵌套一层。
+            using IDisposable? judgmentScope = PhilosophyFloorTwilightJudgmentPowerBypassContext.EnterPowerModifierHook(dealer);
             __result = FinalHpLossClamp.Apply(
                 runState, combatState, target, __result, props, dealer, cardSource, ref modifiers);
         }

@@ -137,9 +137,8 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         return Activate(new ThrowingPlayerChoiceContext(), player, null);
     }
 
-    // 文案是“增至 5”：只抬高，不压低本来更高的上限。最终值由 SocialFloorCourageMaxEnergyPatch 保证。
-    public override decimal ModifyMaxEnergy(Player player, decimal amount) =>
-        IsActiveFor(player) ? Math.Max(amount, EnergyMaximum) : amount;
+    // 能量上限“增至 5”只由 SocialFloorCourageMaxEnergyPatch 在最后裁决，能力不覆写 ModifyMaxEnergy：
+    // 覆写排在基础库情感能量后缀之前，先抬到 5 再被加上情感加成会超过 5（例如基础 3、情感 1 得 6）。
 
     public override bool TryModifyPowerAmountReceived(
         PowerModel canonicalPower,
@@ -579,7 +578,7 @@ public sealed class SocialFloorOzmaPower : SocialFloorPowerModel
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyMaxEnergy))]
 [HarmonyAfter("LibraryOfRuinaLib")]
 [HarmonyPriority(Priority.Last)]
-[LibraryPatch(Reason = "勇气的上限下限要排在 LibraryOfRuinaLib 只有后缀的情感能量加成之后，能力自身的覆写排不到那里；只对持有勇气且处于生效期的玩家，把最终上限抬到不低于 5。")]
+[LibraryPatch(Reason = "勇气的上限下限要排在 LibraryOfRuinaLib 只有后缀的情感能量加成之后，能力自身的覆写排不到那里（覆写先抬到 5 会再被加上情感加成）；只对持有勇气且处于生效期的玩家，把最终上限抬到不低于 5。")]
 internal static class SocialFloorCourageMaxEnergyPatch
 {
     private static void Postfix(Player player, ref decimal __result)

@@ -689,7 +689,8 @@ internal static class PhilosophyFloorTwilightBigEyesHookSuspension
 
 // 以下三个补丁只标出“正在审判伤害的修正钩子里”，剔除由 HookListenerFilterPatch 完成。原版 IterateHookListeners
 // 不区分调用它的钩子，没有别的办法只在这三个钩子里剔除能力；任何模型覆写都拿不走其他监听者的修正。
-// 基础库的解析前缀跳过原方法时这些前缀不执行（参数是引用类型），那时原版也不遍历监听者，Finalizer 对空状态无操作。
+// 基础库的解析前缀跳过原方法时这些前缀不执行（参数是引用类型），原版不再遍历监听者，Finalizer 对空状态无操作。
+// 之后仍会遍历监听者的只有 ModifyHpLost 上的锁血后缀（VanillaFinalHpLossClampPatch），它自己建立同样的作用域。
 [HarmonyPatch(typeof(Hook), nameof(Hook.ModifyDamage))]
 [LibraryPatch(Reason = "原版 IterateHookListeners 不区分调用它的钩子；暮光审判只在审判者造成的伤害的修正钩子里剔除全部能力，其余调用不进作用域。")]
 internal static class PhilosophyFloorTwilightJudgmentModifyDamagePatch
