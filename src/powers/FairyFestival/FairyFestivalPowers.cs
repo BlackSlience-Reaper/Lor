@@ -132,7 +132,7 @@ public sealed class FairyMassCarePower : LibraryOfRuinaPowerModel, LibraryOfRuin
 
         protected override decimal GetBaseValueForIConvertible()
         {
-            return _owner is FairyMassCarePower power ? GetHealAmount(power.Owner) : base.GetBaseValueForIConvertible();
+            return _owner is FairyMassCarePower { IsMutable: true } power ? GetHealAmount(power.Owner) : base.GetBaseValueForIConvertible();
         }
 
         public override string ToString()

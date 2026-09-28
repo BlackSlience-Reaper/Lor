@@ -9,6 +9,7 @@ PROJECT="$ROOT/LibraryOfRuina.csproj"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
+python3 "$ROOT/tools/check_canonical_getters.py" "$ROOT/src"
 dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 "$ROOT/tools/snapshot.sh" "$TMP" Debug >/dev/null
 

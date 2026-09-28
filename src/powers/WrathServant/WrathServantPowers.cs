@@ -346,7 +346,7 @@ public sealed class GreenStemHermitProtectionPower : LibraryOfRuinaPowerModel, L
 
         protected override decimal GetBaseValueForIConvertible()
         {
-            return _owner is GreenStemHermitProtectionPower power
+            return _owner is GreenStemHermitProtectionPower { IsMutable: true } power
                 ? GetMinimumHp(power.Owner)
                 : base.GetBaseValueForIConvertible();
         }

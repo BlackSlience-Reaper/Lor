@@ -53,7 +53,7 @@ public sealed class RedMistEgoPower : LibraryOfRuinaPowerModel
 
         protected override decimal GetBaseValueForIConvertible()
         {
-            return _owner is RedMistEgoPower power
+            return _owner is RedMistEgoPower { IsMutable: true } power
                    && power.Owner.Monster is Kali kali
                 ? kali.ScaledMinimumDirectDamagePerRound
                 : base.GetBaseValueForIConvertible();
