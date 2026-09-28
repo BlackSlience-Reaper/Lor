@@ -22,14 +22,13 @@ public sealed class MagicBulletSoulStealEgoCard : EgoCardBase
     public const int BurnStacks = 5;
     public const int WeakStacks = 1;
 
-    private int _previewDamageA = BaseDamageA;
     private int _previewDamageB = BaseDamageB;
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamageA, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("DamageB", _previewDamageB),
         new DynamicVar("Burn", BurnStacks),
         new PowerVar<WeakPower>("Weak", WeakStacks)
@@ -47,7 +46,7 @@ public sealed class MagicBulletSoulStealEgoCard : EgoCardBase
     ];
 
     public MagicBulletSoulStealEgoCard()
-        : base(2)
+        : base(2, previewDamage: BaseDamageA)
     {
     }
 
@@ -59,9 +58,8 @@ public sealed class MagicBulletSoulStealEgoCard : EgoCardBase
 
     public void SetPreviewDamage(int damageA, int damageB)
     {
-        _previewDamageA = damageA;
         _previewDamageB = damageB;
-        DynamicVars.Damage.BaseValue = damageA;
+        base.SetPreviewDamage(damageA);
         DynamicVars["DamageB"].BaseValue = damageB;
     }
 

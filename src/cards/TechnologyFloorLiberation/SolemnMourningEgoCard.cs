@@ -16,8 +16,6 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
     public const int BaseHitCount = 8;
     public const int UpgradedHitCount = 9;
 
-    private int _previewDamage = HitDamage;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Retain
@@ -25,7 +23,7 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", BaseHitCount)
     ];
 
@@ -35,7 +33,7 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
     ];
 
     public SolemnMourningEgoCard()
-        : base(2, TargetType.AllEnemies)
+        : base(2, TargetType.AllEnemies, previewDamage: HitDamage)
     {
     }
 
@@ -45,15 +43,14 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
         DynamicVars["Hits"].BaseValue = UpgradedHitCount;
     }
 
-    public void SetPreviewDamage(int damage)
+    public override void SetPreviewDamage(int damage)
     {
         SetPreviewDamage(damage, IsUpgraded ? UpgradedHitCount : BaseHitCount);
     }
 
     public void SetPreviewDamage(int damage, int hits)
     {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
+        base.SetPreviewDamage(damage);
         DynamicVars["Hits"].BaseValue = hits;
     }
 

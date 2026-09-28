@@ -34,7 +34,7 @@ public sealed class RegretEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(MultiHitDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", MultiHitCount),
         new DamageVar("FinalDamage", FinalDamage, ValueProp.Move),
         new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", ConfusionAmount)
@@ -46,7 +46,7 @@ public sealed class RegretEgoCard : EgoCardBase
     ];
 
     public RegretEgoCard()
-        : base(3)
+        : base(3, previewDamage: MultiHitDamage)
     {
     }
 
@@ -57,7 +57,7 @@ public sealed class RegretEgoCard : EgoCardBase
 
     public void SetPreviewDamage(int multiHitDamage, int finalDamage)
     {
-        DynamicVars.Damage.BaseValue = multiHitDamage;
+        base.SetPreviewDamage(multiHitDamage);
         DynamicVars["FinalDamage"].BaseValue = finalDamage;
     }
 

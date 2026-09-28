@@ -27,7 +27,7 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(Damage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", HitCount),
         new PowerVar<StrengthPower>("StrengthLoss", StrengthLoss),
         new PowerVar<DexterityPower>("DexterityLoss", DexterityLoss)
@@ -40,7 +40,7 @@ public sealed class BeyondFragmentEgoCard : EgoCardBase
     ];
 
     public BeyondFragmentEgoCard()
-        : base(3, TargetType.AllEnemies)
+        : base(3, TargetType.AllEnemies, previewDamage: Damage)
     {
     }
 

@@ -14,11 +14,18 @@ internal interface IEnemyAttackPreviewCard
 
 /// <summary>
 /// E.G.O. 页：敌方意图用它的可变副本展示“要打出的卡”（<c>ModelDb.Card&lt;T&gt;().ToMutable()</c> 后调用
-/// <see cref="UpgradePreview"/> 与 <see cref="SetEnemyAttackPreview"/>），同一个类型也是图鉴里的卡和玩家可得的卡。
+/// <see cref="UpgradePreview"/>、<see cref="SetPreviewDamage"/> 与 <see cref="SetEnemyAttackPreview"/>），
+/// 同一个类型也是图鉴里的卡和玩家可得的卡。
 /// </summary>
 public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
 {
     private string? _portraitResourcePath;
+
+    // 规范 Damage 变量的初值，也是敌方预览写入的单段伤害。读它的只有 CanonicalVars 和红雾各卡的 OnPlay。
+    // CanonicalVars 只在 _dynamicVars 为空时求值：规范模型首次取 DynamicVars，或 ToMutable 时规范模型还没建过
+    // DynamicVars、由副本自己建的那一次（副本字段逐字段复制自规范模型）。预览只写可变副本，所以规范模型上
+    // 的值始终是构造时的初值，写入后也不会回流到已经建好的 DynamicVars。
+    private int _previewDamage;
 
     private string PortraitResourcePath =>
         _portraitResourcePath ??= $"packed/card_portraits/ego/{ToSnakeCase(GetType().Name)}.png";
@@ -34,14 +41,19 @@ public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
 
     public override int MaxUpgradeLevel => 1;
 
-    protected EgoCardBase(int cost)
-        : base(cost, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+    protected int PreviewDamage => _previewDamage;
+
+    protected EgoCardBase(int cost, int previewDamage = 0)
+        : this(cost, TargetType.AnyEnemy, previewDamage)
     {
     }
 
-    protected EgoCardBase(int cost, TargetType targetType)
+    // CardModel 与 AbstractModel 的构造函数不调用虚成员，所以在这里写 _previewDamage，与原来子类字段
+    // 初始化器（先于基类构造执行）对 CanonicalVars 等价。
+    protected EgoCardBase(int cost, TargetType targetType, int previewDamage = 0)
         : base(cost, CardType.Attack, CardRarity.Rare, targetType)
     {
+        _previewDamage = previewDamage;
     }
 
     /// <summary>
@@ -52,6 +64,15 @@ public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
     {
         UpgradeInternal();
         FinalizeUpgradeInternal();
+    }
+
+    /// <summary>
+    /// 敌方意图写入单段预览伤害。没有 Damage 变量的卡只记下数值，不改 DynamicVars。
+    /// </summary>
+    public virtual void SetPreviewDamage(int damage)
+    {
+        _previewDamage = damage;
+        ApplyPreviewDamage("Damage", damage);
     }
 
     public virtual void SetEnemyAttackPreview(IReadOnlyList<int> damages, int hits)

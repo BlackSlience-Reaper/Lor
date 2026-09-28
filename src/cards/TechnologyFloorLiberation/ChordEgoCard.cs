@@ -17,7 +17,6 @@ public sealed class ChordEgoCard : EgoCardBase
     public const int HitCBaseDamage = 6;
     public const int HitCAscensionDamage = 7;
 
-    private int _previewDamageA = HitABaseDamage;
     private int _previewDamageB = HitBBaseDamage;
     private int _previewDamageC = HitCBaseDamage;
 
@@ -28,13 +27,13 @@ public sealed class ChordEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamageA, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("DamageB", _previewDamageB),
         new DynamicVar("DamageC", _previewDamageC)
     ];
 
     public ChordEgoCard()
-        : base(1)
+        : base(1, previewDamage: HitABaseDamage)
     {
     }
 
@@ -45,10 +44,9 @@ public sealed class ChordEgoCard : EgoCardBase
 
     public void SetPreviewDamage(int damageA, int damageB, int damageC)
     {
-        _previewDamageA = damageA;
         _previewDamageB = damageB;
         _previewDamageC = damageC;
-        DynamicVars.Damage.BaseValue = damageA;
+        base.SetPreviewDamage(damageA);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

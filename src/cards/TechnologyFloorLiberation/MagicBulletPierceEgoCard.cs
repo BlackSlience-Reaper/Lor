@@ -15,13 +15,11 @@ public sealed class MagicBulletPierceEgoCard : EgoCardBase
     public const int BaseDamage = 5;
     public const int UpgradedDamage = 6;
 
-    private int _previewDamage = BaseDamage;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move)
+        new DamageVar(PreviewDamage, ValueProp.Move)
     ];
 
     protected override IEnumerable<string> ExtraRunAssetPaths =>
@@ -30,19 +28,13 @@ public sealed class MagicBulletPierceEgoCard : EgoCardBase
     ];
 
     public MagicBulletPierceEgoCard()
-        : base(1)
+        : base(1, previewDamage: BaseDamage)
     {
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.BaseValue = UpgradedDamage;
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

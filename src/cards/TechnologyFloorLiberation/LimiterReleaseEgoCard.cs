@@ -31,7 +31,7 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(HitDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", HitCount),
         new PowerVar<LibraryBleedingPower>("Bleed", BleedPerHit)
     ];
@@ -42,18 +42,13 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
     ];
 
     public LimiterReleaseEgoCard()
-        : base(1)
+        : base(1, previewDamage: HitDamage)
     {
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.BaseValue = HitUpgradedDamage;
-    }
-
-    public void SetPreviewDamage(int hitDamage)
-    {
-        DynamicVars.Damage.BaseValue = hitDamage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

@@ -18,13 +18,11 @@ public sealed class MagicBulletCrueltyEgoCard : EgoCardBase
     public const int VulnerableStacks = 5;
     public const int VulnerableTurns = 1;
 
-    private int _previewDamage = BaseDamage;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new PowerVar<LibraryVulnerablePower>("Vulnerable", VulnerableStacks),
         new DynamicVar("Turns", VulnerableTurns)
     ];
@@ -40,19 +38,13 @@ public sealed class MagicBulletCrueltyEgoCard : EgoCardBase
     ];
 
     public MagicBulletCrueltyEgoCard()
-        : base(2)
+        : base(2, previewDamage: BaseDamage)
     {
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.BaseValue = UpgradedDamage;
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
