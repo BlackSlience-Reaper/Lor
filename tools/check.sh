@@ -40,5 +40,5 @@ if [[ "${1:-}" == "--accept" ]]; then
   cp "$TMP"/*.txt "$ROOT/snapshots/"
   echo "snapshots updated"
 else
-  diff -ru -x .gdignore -x headless "$ROOT/snapshots" "$TMP" && echo "snapshots unchanged"
+  diff -ru -x .gdignore -x .DS_Store -x headless "$ROOT/snapshots" "$TMP" && echo "snapshots unchanged"
 fi
