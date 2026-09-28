@@ -57,7 +57,6 @@ public static class LibraryOfRuinaPublicIds
     {
         private const string Prefix = "library_of_ruina.enchantments.";
 
-        public const string YanamiEthereal = Prefix + "yanami_ethereal";
         public const string LeticiaPartnerMark = Prefix + "leticia_partner_mark";
     }
 
@@ -108,7 +107,6 @@ public static class LibraryOfRuinaPublicIds
 
         public const string HistoryFloorLiberationSettlement = Prefix + "history_floor_liberation_settlement";
         public const string TechnologyFloorLiberationSettlement = Prefix + "technology_floor_liberation_settlement";
-        public const string Yanami = Prefix + "yanami";
     }
 
     public static class Monsters
@@ -274,14 +272,7 @@ public static class LibraryOfRuinaPublicIds
 
         public const string AllAroundHelperPage = Prefix + "all_around_helper_page";
         public const string DeadButterfliesBook = Prefix + "dead_butterflies_book";
-        public const string FerrisWheelTicket = Prefix + "ferris_wheel_ticket";
-        public const string FiveHundredYenBill = Prefix + "five_hundred_yen_bill";
-        public const string FriesKnuckles = Prefix + "fries_knuckles";
-        public const string GhostClubMember = Prefix + "ghost_club_member";
-        public const string LeftoverSoda = Prefix + "leftover_soda";
-        public const string LeopardPlush = Prefix + "leopard_plush";
         public const string LittleRedMercenaryPage = Prefix + "little_red_mercenary_page";
-        public const string LoveBento = Prefix + "love_bento";
         public const string MagicCurse = Prefix + "magic_curse";
         public const string ForsakenMurdererPage = Prefix + "forsaken_murderer_page";
         public const string FuneralOfTheDeadButterfliesPage = Prefix + "funeral_of_the_dead_butterflies_page";
@@ -291,9 +282,6 @@ public static class LibraryOfRuinaPublicIds
         public const string ProofOfExistence = Prefix + "proof_of_existence";
         public const string RedShoesPage = Prefix + "red_shoes_page";
         public const string SongMachinePage = Prefix + "song_machine_page";
-        public const string RestaurantReceipt = Prefix + "restaurant_receipt";
-        public const string SchoolFestivalMagic = Prefix + "school_festival_magic";
-        public const string TeardropPendant = Prefix + "teardrop_pendant";
         public const string SpiderBudPage = Prefix + "spider_bud_page";
         public const string TodaysShyLookPage = Prefix + "todays_shy_look_page";
         public const string LeticiaPage = Prefix + "leticia_page";

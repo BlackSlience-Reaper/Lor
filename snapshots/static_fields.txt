@@ -1111,10 +1111,6 @@ readonly	LibraryOfRuina.monsters.WrathServant.GreenStemHermit.SfxPaths	System.St
 readonly	LibraryOfRuina.monsters.WrathServant.HermitStaff.AssetPathsStatic	System.Collections.Generic.IReadOnlyList`1[System.String]
 readonly	LibraryOfRuina.monsters.WrathServant.WrathServant.AssetPathsStatic	System.Collections.Generic.IReadOnlyList`1[System.String]
 readonly	LibraryOfRuina.monsters.WrathServant.WrathServant.SfxPaths	System.String[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.AllOptions	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.GroupOne	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.GroupThree	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
-readonly	LibraryOfRuina.monsters.Yanami.Yanami.GroupTwo	LibraryOfRuina.monsters.Yanami.Yanami+OptionId[]
 readonly	LibraryOfRuina.networking.LibraryNetwork.InitLock	System.Threading.Lock
 readonly	LibraryOfRuina.networking.LibraryNetwork.LittleRedBlockTransferDescriptor	STS2RitsuLib.Networking.ManagedActions.RitsuLibManagedNetActionDescriptor`1[LibraryOfRuina.networking.LibraryNetwork+LittleRedBlockTransferPayload]
 readonly	LibraryOfRuina.networking.LibraryNetwork.StoryBarrierDescriptor	STS2RitsuLib.Networking.Sidecar.RitsuLibSidecarSyncMessageDescriptor`1[LibraryOfRuina.networking.LibraryNetwork+StoryBarrierPayload]
@@ -1174,7 +1170,6 @@ readonly	LibraryOfRuina.patches.HistoryFloorLiberation.PageRelicChoiceCardUiPatc
 readonly	LibraryOfRuina.patches.HistoryFloorLiberation.PageRelicChoiceCardUiPatch.TypePlaqueField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.patches.HistoryFloorLiberation.StranglingVineLibraryAttackDamageTypePatch.DamageTypeField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.patches.InjectExtSettingsSubmenuTypePatch.SubmenuCache	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenuSubmenuStack,LibraryOfRuina.features.settings.ui.NExtSettingsSubmenu]
-readonly	LibraryOfRuina.patches.LeopardPlush.LeopardPlushShopLockPatchHelper.PlayerField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.patches.LibraryCursorPatch.CursorHotSpot	Godot.Vector2
 readonly	LibraryOfRuina.patches.LibraryCursorPatch.CursorInspectField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.patches.LibraryCursorPatch.CursorNotTiltedField	System.Reflection.FieldInfo

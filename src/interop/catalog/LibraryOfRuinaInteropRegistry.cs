@@ -15,7 +15,6 @@ using LibraryOfRuina.cards.SpiderBud;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
 using LibraryOfRuina.cards.TodaysShyLook;
 using LibraryOfRuina.enchantments.Leticia;
-using LibraryOfRuina.enchantments.Yanami;
 using LibraryOfRuina.encounters.AllAroundHelper;
 using LibraryOfRuina.encounters.BigBadWolf;
 using LibraryOfRuina.encounters.BrotherhoodOfIron;
@@ -69,7 +68,6 @@ using LibraryOfRuina.monsters.SpiderBud;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using LibraryOfRuina.monsters.TodaysShyLook;
 using LibraryOfRuina.monsters.Tomerry;
-using LibraryOfRuina.monsters.Yanami;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.AllAroundHelper;
 using LibraryOfRuina.powers.BigBadWolf;
@@ -94,7 +92,6 @@ using LibraryOfRuina.relics.FairyFestival;
 using LibraryOfRuina.relics.ForsakenMurderer;
 using LibraryOfRuina.relics.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.relics.HappyTeddy;
-using LibraryOfRuina.relics.LeopardPlush;
 using LibraryOfRuina.relics.Leticia;
 using LibraryOfRuina.relics.LittleRedMercenary;
 using LibraryOfRuina.relics.PunishingBird;
@@ -157,7 +154,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Cards.PunishingBirdFlutteringWingsChoice, LibraryOfRuinaInteropCategory.Cards, RawModelCategories.Card, "PUNISHING_BIRD_FLUTTERING_WINGS_CHOICE_CARD", typeof(PunishingBirdFlutteringWingsChoiceCard), "PUNISHING_BIRD_FLUTTERING_WINGS_CHOICE_CARD"),
 
         
-        Model(LibraryOfRuinaPublicIds.Enchantments.YanamiEthereal, LibraryOfRuinaInteropCategory.Enchantments, RawModelCategories.Enchantment, "YANAMI_ETHEREAL_ENCHANTMENT", typeof(YanamiEtherealEnchantment), "YANAMI_ETHEREAL_ENCHANTMENT"),
         Model(LibraryOfRuinaPublicIds.Enchantments.LeticiaPartnerMark, LibraryOfRuinaInteropCategory.Enchantments, RawModelCategories.Enchantment, "LETICIA_PARTNER_MARK_ENCHANTMENT", typeof(LeticiaPartnerMarkEnchantment), "LETICIA_PARTNER_MARK_ENCHANTMENT"),
 
         
@@ -196,7 +192,6 @@ internal static class LibraryOfRuinaInteropRegistry
         
         Model(LibraryOfRuinaPublicIds.Ancients.HistoryFloorLiberationSettlement, LibraryOfRuinaInteropCategory.Ancients, RawModelCategories.AncientEvent, "HISTORY_FLOOR_LIBERATION_SETTLEMENT_EVENT", typeof(HistoryFloorLiberationSettlementEvent), "HISTORY_FLOOR_LIBERATION_SETTLEMENT_EVENT"),
         Model(LibraryOfRuinaPublicIds.Ancients.TechnologyFloorLiberationSettlement, LibraryOfRuinaInteropCategory.Ancients, RawModelCategories.AncientEvent, "TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT", typeof(TechnologyFloorLiberationSettlementEvent), "TECHNOLOGY_FLOOR_LIBERATION_SETTLEMENT_EVENT"),
-        Model(LibraryOfRuinaPublicIds.Ancients.Yanami, LibraryOfRuinaInteropCategory.Ancients, RawModelCategories.AncientEvent, "YANAMI", typeof(Yanami), "YANAMI"),
 
         
         Model(LibraryOfRuinaPublicIds.Monsters.AllAroundHelper, LibraryOfRuinaInteropCategory.Monsters, RawModelCategories.Monster, "ALL_AROUND_HELPER", typeof(AllAroundHelper), "ALL_AROUND_HELPER"),
@@ -333,14 +328,7 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Relics.SpiderBudPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "SPIDER_BUD_PAGE_RELIC", typeof(SpiderBudPageRelic), "SPIDER_BUD_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.AllAroundHelperPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "ALL_AROUND_HELPER_PAGE_RELIC", typeof(AllAroundHelperPageRelic), "ALL_AROUND_HELPER_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.DeadButterfliesBook, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "DEAD_BUTTERFLIES_BOOK_RELIC", typeof(DeadButterfliesBookRelic), "DEAD_BUTTERFLIES_BOOK_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.FerrisWheelTicket, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FERRIS_WHEEL_TICKET_RELIC", typeof(FerrisWheelTicketRelic), "FERRIS_WHEEL_TICKET_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.FiveHundredYenBill, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FIVE_HUNDRED_YEN_BILL_RELIC", typeof(FiveHundredYenBillRelic), "FIVE_HUNDRED_YEN_BILL_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.FriesKnuckles, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FRIES_KNUCKLES_RELIC", typeof(FriesKnucklesRelic), "FRIES_KNUCKLES_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.GhostClubMember, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "GHOST_CLUB_MEMBER_RELIC", typeof(GhostClubMemberRelic), "GHOST_CLUB_MEMBER_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.LeftoverSoda, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "LEFTOVER_SODA_RELIC", typeof(LeftoverSodaRelic), "LEFTOVER_SODA_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.LeopardPlush, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "LEOPARD_PLUSH_RELIC", typeof(LeopardPlushRelic), "LEOPARD_PLUSH_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.LittleRedMercenaryPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "LITTLE_RED_MERCENARY_PAGE_RELIC", typeof(LittleRedMercenaryPageRelic), "LITTLE_RED_MERCENARY_PAGE_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.LoveBento, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "LOVE_BENTO_RELIC", typeof(LoveBentoRelic), "LOVE_BENTO_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.MagicCurse, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "MAGIC_CURSE_RELIC", typeof(MagicCurseRelic), "MAGIC_CURSE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.ForsakenMurdererPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FORSAKEN_MURDERER_PAGE_RELIC", typeof(ForsakenMurdererPageRelic), "FORSAKEN_MURDERER_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.FuneralOfTheDeadButterfliesPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FUNERAL_OF_THE_DEAD_BUTTERFLIES_PAGE_RELIC", typeof(FuneralOfTheDeadButterfliesPageRelic), "FUNERAL_OF_THE_DEAD_BUTTERFLIES_PAGE_RELIC"),
@@ -352,9 +340,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Relics.RedShoesPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "RED_SHOES_PAGE_RELIC", typeof(RedShoesPageRelic), "RED_SHOES_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.SongMachinePage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "SONG_MACHINE_PAGE_RELIC", typeof(SongMachinePageRelic), "SONG_MACHINE_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.ProofOfExistence, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "PROOF_OF_EXISTENCE_RELIC", typeof(ProofOfExistenceRelic), "PROOF_OF_EXISTENCE_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.RestaurantReceipt, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "RESTAURANT_RECEIPT_RELIC", typeof(RestaurantReceiptRelic), "RESTAURANT_RECEIPT_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.SchoolFestivalMagic, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "SCHOOL_FESTIVAL_MAGIC_RELIC", typeof(SchoolFestivalMagicRelic), "SCHOOL_FESTIVAL_MAGIC_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.TeardropPendant, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "TEARDROP_PENDANT_RELIC", typeof(TeardropPendantRelic), "TEARDROP_PENDANT_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.TodaysShyLookPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "TODAYS_SHY_LOOK_PAGE_RELIC", typeof(TodaysShyLookPageRelic), "TODAYS_SHY_LOOK_PAGE_RELIC"),
     ];
 

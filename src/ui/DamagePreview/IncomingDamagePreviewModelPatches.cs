@@ -5,7 +5,6 @@ using HarmonyLib;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.relics.HistoryFloorLiberation;
 using LibraryOfRuina.relics.QueenOfHatred;
-using LibraryOfRuina.relics.StandaloneRelics;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -25,12 +24,11 @@ internal static class IncomingDamagePreviewModelPatches
 
     /// <summary>
     /// 有触发次数的修正在模拟中剩余的次数；返回 null 表示不限次数。
-    /// 缓冲每层抵消一次；摩天轮票根按本场剩余保存次数；火柴印记的足迹模式只触发一次；憎恶之页按本回合剩余次数。
+    /// 缓冲每层抵消一次；火柴印记的足迹模式只触发一次；憎恶之页按本回合剩余次数。
     /// </summary>
     private static int? GetTriggerBudget(AbstractModel model) => model switch
     {
         BufferPower buffer => buffer.Amount,
-        FerrisWheelTicketRelic ferrisWheel => ferrisWheel.DisplayAmount,
         MatchMarkRelic { Mode: MatchMarkMode.Footsteps } => 1,
         QueenOfHatredPageRelic { Mode: QueenOfHatredPageMode.Hatred } queen => queen.HatredTriggersRemainingThisTurn,
         _ => null
@@ -50,7 +48,6 @@ internal static class IncomingDamagePreviewModelPatches
         private static IEnumerable<MethodBase> TargetMethods()
         {
             yield return AccessTools.DeclaredMethod(typeof(BufferPower), nameof(BufferPower.ModifyHpLostAfterOstyLate));
-            yield return AccessTools.DeclaredMethod(typeof(FerrisWheelTicketRelic), nameof(FerrisWheelTicketRelic.ModifyHpLostAfterOstyLate));
             yield return AccessTools.DeclaredMethod(typeof(MatchMarkRelic), nameof(MatchMarkRelic.ModifyHpLostAfterOstyLate));
             yield return AccessTools.DeclaredMethod(typeof(QueenOfHatredPageRelic), nameof(QueenOfHatredPageRelic.ModifyHpLostAfterOstyLate));
         }

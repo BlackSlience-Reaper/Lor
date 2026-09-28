@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.relics.HistoryFloorLiberation;
-using LibraryOfRuina.relics.StandaloneRelics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -24,13 +23,11 @@ public sealed class PreservedDamagePower : LibraryOfRuinaPowerModel
             return Task.CompletedTask;
         }
 
-        // 两种遗物共用一个显示能力，计数必须包含双方尚未结算的伤害。
         int pendingDamage = player.Relics
             .Where(static relic => !relic.IsMelted)
             .Sum(static relic => relic switch
             {
                 MatchMarkRelic matchMark => matchMark.PendingDamage,
-                FerrisWheelTicketRelic ticket => ticket.PendingDamage,
                 _ => 0
             });
 

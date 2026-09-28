@@ -1,6 +1,4 @@
 {
-  "YANAMI_ETHEREAL_ENCHANTMENT.title": "Ethereal",
-  "YANAMI_ETHEREAL_ENCHANTMENT.description": "This card gains [gold]Ethereal and Exhaust[/gold].",
   "MATCH_FLAME_ENCHANTMENT.title": "Match Flame",
   "MATCH_FLAME_ENCHANTMENT.description": "Whenever this card is played, it gains +[blue]{Damage}[/blue] damage. Apply [blue]{Burn}[/blue] stacks of [gold]Burn[/gold] to the target. Starting with the [blue]{Threshold}[/blue]th time the same card is played this combat, apply [blue]{SelfBurn}[/blue] stacks of [gold]Burn[/gold] to yourself.",
   "MATCH_FLAME_ENCHANTMENT.extraCardText": "Whenever this card is played, it gains +[blue]{Damage}[/blue] damage. Apply [blue]{Burn}[/blue] stacks of [gold]Burn[/gold] to the target. Starting with the [blue]{Threshold}[/blue]th time the same card is played this combat, apply [blue]{SelfBurn}[/blue] stacks of [gold]Burn[/gold] to yourself.",

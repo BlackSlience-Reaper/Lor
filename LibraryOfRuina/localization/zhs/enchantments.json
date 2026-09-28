@@ -1,6 +1,4 @@
 {
-  "YANAMI_ETHEREAL_ENCHANTMENT.title": "虚化",
-  "YANAMI_ETHEREAL_ENCHANTMENT.description": "这张牌获得[gold]虚无、消耗[/gold]。",
   "MATCH_FLAME_ENCHANTMENT.title": "火苗",
   "MATCH_FLAME_ENCHANTMENT.description": "每当打出这张牌，伤害+[blue]{Damage}[/blue]。对目标施加[blue]{Burn}[/blue]层[gold]烧伤[/gold]。\n此牌在本场第[blue]{Threshold}[/blue]次及以后打出时，对自己施加[blue]{SelfBurn}[/blue]层[gold]烧伤[/gold]。",
   "MATCH_FLAME_ENCHANTMENT.extraCardText": "每当打出这张牌，伤害+[blue]{Damage}[/blue]。对目标施加[blue]{Burn}[/blue]层[gold]烧伤[/gold]。\n此牌在本场第[blue]{Threshold}[/blue]次及以后打出时，对自己施加[blue]{SelfBurn}[/blue]层[gold]烧伤[/gold]。",
