@@ -17,8 +17,8 @@ namespace LibraryOfRuina.patches.dispatch;
 /// 暮光“大眼”暂停增益、奥兹玛“失忆”暂停增益、友方盟友屏蔽侵蚀破坏能力。
 /// <para>
 /// 原来暮光与奥兹玛两个后缀每次都 <c>ToArray</c>，在调用时就对监听者和过滤条件拍了快照。这里保留快照：
-/// 输入不是已物化的集合时先物化一次；两个过滤条件在调用时立即求值，只在确实要剔除时才分配新数组，
-/// 否则原样传下去。友方盟友的过滤原来就是惰性的，保持惰性。
+/// 入口一律物化成本方法自己的数组（上游补丁可能返回它仍持有、之后会增删的 List）；两个过滤条件在调用时
+/// 立即求值，只在确实要剔除时才另分配数组。友方盟友的过滤原来就是惰性的，保持惰性。
 /// </para>
 /// <c>DetachedAfflictionHookListenerPatch</c> 在 <c>Priority.Last</c>，不在这里合并，以免改变它与其他模组后缀的相对顺序。
 /// </summary>
@@ -28,7 +28,7 @@ internal static class HookListenerFilterPatch
     [HarmonyPostfix]
     private static void Postfix(ref IEnumerable<AbstractModel> __result)
     {
-        IReadOnlyCollection<AbstractModel> models = __result as IReadOnlyCollection<AbstractModel> ?? __result.ToArray();
+        IReadOnlyCollection<AbstractModel> models = __result.ToArray();
 
         if (PhilosophyFloorTwilightJudgmentPowerBypassContext.ShouldBypassPowerModifiers)
         {
