@@ -12,9 +12,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.HappyTeddy;
 
-public sealed class HappyTeddyPageRelic : RelicModel
+public sealed class HappyTeddyPageRelic : ModalPageRelic<HappyTeddyPageMode>
 {
     // 思念的拥抱：每次攻击击破敌方已有格挡时获得的格挡。
     internal const int LongingEmbraceBlockGain = 8;
@@ -78,50 +76,17 @@ public sealed class HappyTeddyPageRelic : RelicModel
     [SavedProperty]
     public HappyTeddyPageMode Mode { get; private set; }
 
+    protected override HappyTeddyPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool HappyMemoryPendingFirstDraw { get; private set; }
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int ExpressAffectionTurnsSeen { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != HappyTeddyPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -249,7 +214,7 @@ public sealed class HappyTeddyPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -257,65 +222,6 @@ public sealed class HappyTeddyPageRelic : RelicModel
             Owner.RunState.CreateCard<HappyTeddyHappyMemoryChoiceCard>(Owner),
             Owner.RunState.CreateCard<HappyTeddyExpressAffectionChoiceCard>(Owner)
         ];
-    }
-
-    private static HappyTeddyPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            HappyTeddyLongingEmbraceChoiceCard => HappyTeddyPageMode.LongingEmbrace,
-            HappyTeddyHappyMemoryChoiceCard => HappyTeddyPageMode.HappyMemory,
-            HappyTeddyExpressAffectionChoiceCard => HappyTeddyPageMode.ExpressAffection,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(HappyTeddyPageMode mode)
-    {
-        return mode is HappyTeddyPageMode.None
-            or HappyTeddyPageMode.LongingEmbrace
-            or HappyTeddyPageMode.HappyMemory
-            or HappyTeddyPageMode.ExpressAffection;
-    }
-
-    private static bool IsConcreteMode(HappyTeddyPageMode mode)
-    {
-        return mode is HappyTeddyPageMode.LongingEmbrace
-            or HappyTeddyPageMode.HappyMemory
-            or HappyTeddyPageMode.ExpressAffection;
-    }
-
-    private void SetMode(HappyTeddyPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        HappyTeddyPageMode oldMode = Mode;
-        Mode = HappyTeddyPageMode.LongingEmbrace;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] HappyTeddyPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to LongingEmbrace.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
     private void ResetTransientCombatState()
@@ -326,7 +232,9 @@ public sealed class HappyTeddyPageRelic : RelicModel
         HappyMemoryPendingFirstDraw = false;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -358,26 +266,5 @@ public sealed class HappyTeddyPageRelic : RelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

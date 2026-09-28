@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
@@ -29,7 +28,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.HistoryFloorLiberation;
 
-public sealed class MatchMarkRelic : RelicModel
+public sealed class MatchMarkRelic : ModalPageRelic<MatchMarkMode>
 {
     internal const int EmberBurnStacks = 12;
     internal const int EmberHpLossReduction = 1;
@@ -72,6 +71,19 @@ public sealed class MatchMarkRelic : RelicModel
     [SavedProperty]
     public MatchMarkMode Mode { get; private set; }
 
+    protected override MatchMarkMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
+    // 预选写入模式时还会通知一次图标变化，获得时选择则不会；Afterglow 的附魔选择在获得后由 AbnormalityPagePostObtainEffect 执行。
+    protected override void ApplyPreselectedMode(MatchMarkMode mode) => AssignPreselectedModeOnly(mode);
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool FootstepsSpent { get; private set; }
 
@@ -84,36 +96,9 @@ public sealed class MatchMarkRelic : RelicModel
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool ResolveAtNextPlayerTurnEnd { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(MatchMarkMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != MatchMarkMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        Mode = ResolveModeFromChoiceCard(chosenCard);
-        UpdateModeUiState();
-
+        SetMode(mode);
         if (Mode == MatchMarkMode.Afterglow)
         {
             await ApplyAfterglowEnchantmentSelection();
@@ -264,7 +249,7 @@ public sealed class MatchMarkRelic : RelicModel
         return PreservedDamagePower.SyncFor(Owner);
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -272,55 +257,6 @@ public sealed class MatchMarkRelic : RelicModel
             Owner.RunState.CreateCard<MatchMarkFootstepsChoiceCard>(Owner),
             Owner.RunState.CreateCard<MatchMarkAfterglowChoiceCard>(Owner)
         ];
-    }
-
-    private static MatchMarkMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            MatchMarkEmberChoiceCard => MatchMarkMode.Ember,
-            MatchMarkFootstepsChoiceCard => MatchMarkMode.Footsteps,
-            MatchMarkAfterglowChoiceCard => MatchMarkMode.Afterglow,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(MatchMarkMode mode)
-    {
-        return mode is MatchMarkMode.None
-            or MatchMarkMode.Ember
-            or MatchMarkMode.Footsteps
-            or MatchMarkMode.Afterglow;
-    }
-
-    private static bool IsConcreteMode(MatchMarkMode mode)
-    {
-        return mode is MatchMarkMode.Ember
-            or MatchMarkMode.Footsteps
-            or MatchMarkMode.Afterglow;
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        MatchMarkMode oldMode = Mode;
-        Mode = MatchMarkMode.Ember;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] MatchMarkRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Ember.");
-        UpdateModeUiState();
     }
 
     private void ResetTransientCombatState()
@@ -333,7 +269,9 @@ public sealed class MatchMarkRelic : RelicModel
         _pendingFootstepsDamage = 0;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         UpdateModeUiStateCore(forceNormalStatus: false);
     }

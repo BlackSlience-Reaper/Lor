@@ -11,7 +11,6 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -28,7 +27,7 @@ public enum KingOfGreedPageMode
     Greed = 3
 }
 
-public sealed class KingOfGreedPageRelic : RelicModel
+public sealed class KingOfGreedPageRelic : ModalPageRelic<KingOfGreedPageMode>
 {
     internal const int IndulgenceRequiredTurns = 6;
     internal const int HappinessPathMaxEndurance = 6;
@@ -75,6 +74,12 @@ public sealed class KingOfGreedPageRelic : RelicModel
     [SavedProperty]
     public KingOfGreedPageMode Mode { get; private set; }
 
+    protected override KingOfGreedPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FullyBlockedTurnCount { get; private set; }
 
@@ -97,44 +102,10 @@ public sealed class KingOfGreedPageRelic : RelicModel
     private bool _receivedAttackThisEnemyTurn;
     private bool _receivedUnblockedAttackThisEnemyTurn;
 
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
+    protected override Task ApplyObtainedChoiceAsync(KingOfGreedPageMode mode) => SetModeAsync(mode);
 
-        if (Mode != KingOfGreedPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        await SetModeAsync(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
+    // 预选只写模式、通知图标变化并刷新界面；清状态与拾取效果由获得后作为 AbnormalityPagePostObtainEffect 执行的 SetModeAsync 完成。
+    protected override void ApplyPreselectedMode(KingOfGreedPageMode mode) => AssignPreselectedModeOnly(mode);
 
     public override Task BeforeCombatStart()
     {
@@ -339,20 +310,12 @@ public sealed class KingOfGreedPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<KingOfGreedIndulgenceChoiceCard>(Owner),
         Owner.RunState.CreateCard<KingOfGreedHappinessPathChoiceCard>(Owner),
         Owner.RunState.CreateCard<KingOfGreedGreedChoiceCard>(Owner)
     ];
-
-    private static KingOfGreedPageMode ResolveModeFromChoiceCard(CardModel? card) => card switch
-    {
-        KingOfGreedIndulgenceChoiceCard => KingOfGreedPageMode.Indulgence,
-        KingOfGreedHappinessPathChoiceCard => KingOfGreedPageMode.HappinessPath,
-        KingOfGreedGreedChoiceCard => KingOfGreedPageMode.Greed,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
 
     [AbnormalityPagePostObtainEffect]
     private async Task SetModeAsync(KingOfGreedPageMode mode)
@@ -384,13 +347,8 @@ public sealed class KingOfGreedPageRelic : RelicModel
         _receivedUnblockedAttackThisEnemyTurn = false;
     }
 
-    private static bool IsKnownMode(KingOfGreedPageMode mode) =>
-        mode is KingOfGreedPageMode.None
-            or KingOfGreedPageMode.Indulgence
-            or KingOfGreedPageMode.HappinessPath
-            or KingOfGreedPageMode.Greed;
-
-    private void EnsureValidModeOrFallback(string context)
+    // 读档时 None 保持不动，只有越界值才回退，而且回退到 None（其他书页回退到第一个模式）。
+    protected override void EnsureValidModeOrFallback(string context)
     {
         if (IsKnownMode(Mode) && Mode != KingOfGreedPageMode.None)
         {
@@ -405,7 +363,7 @@ public sealed class KingOfGreedPageRelic : RelicModel
         FallbackToDefaultModeAfterLoad(context);
     }
 
-    private void FallbackToDefaultModeAfterLoad(string context)
+    protected override void FallbackToDefaultModeAfterLoad(string context)
     {
         Log.Warn("[LibraryOfRuina.PageRelic] KingOfGreedPageRelic invalid mode during " + context + "; resetting to None.");
         Mode = KingOfGreedPageMode.None;
@@ -413,7 +371,7 @@ public sealed class KingOfGreedPageRelic : RelicModel
         UpdateModeUiState();
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == KingOfGreedPageMode.Indulgence
@@ -422,26 +380,5 @@ public sealed class KingOfGreedPageRelic : RelicModel
                 ? RelicStatus.Active
                 : RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

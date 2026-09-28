@@ -5,13 +5,10 @@ using LibraryOfRuina.combat;
 using LibraryOfRuina.compat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -19,7 +16,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.relics.SpiderBud;
 
-public sealed class SpiderBudPageRelic : RelicModel
+public sealed class SpiderBudPageRelic : ModalPageRelic<SpiderBudPageMode>
 {
     internal const int CocoonDeckSizeThreshold = 25;
     internal const int CocoonStrength = 2;
@@ -70,43 +67,10 @@ public sealed class SpiderBudPageRelic : RelicModel
     [SavedProperty]
     public SpiderBudPageMode Mode { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override SpiderBudPageMode SelectedMode
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != SpiderBudPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
+        get => Mode;
+        set => Mode = value;
     }
 
     public override async Task BeforeCombatStart()
@@ -165,7 +129,7 @@ public sealed class SpiderBudPageRelic : RelicModel
         UpdateModeUiState();
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -175,89 +139,10 @@ public sealed class SpiderBudPageRelic : RelicModel
         ];
     }
 
-    private static SpiderBudPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            SpiderBudCocoonBindChoiceCard => SpiderBudPageMode.CocoonBind,
-            SpiderBudFeedingChoiceCard => SpiderBudPageMode.Feeding,
-            SpiderBudVigilanceChoiceCard => SpiderBudPageMode.Vigilance,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(SpiderBudPageMode mode)
-    {
-        return mode is SpiderBudPageMode.None
-            or SpiderBudPageMode.CocoonBind
-            or SpiderBudPageMode.Feeding
-            or SpiderBudPageMode.Vigilance;
-    }
-
-    private static bool IsConcreteMode(SpiderBudPageMode mode)
-    {
-        return mode is SpiderBudPageMode.CocoonBind
-            or SpiderBudPageMode.Feeding
-            or SpiderBudPageMode.Vigilance;
-    }
-
-    private void SetMode(SpiderBudPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        SpiderBudPageMode oldMode = Mode;
-        Mode = SpiderBudPageMode.CocoonBind;
-        Log.Warn("[LibraryOfRuina.PageRelic] SpiderBudPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to CocoonBind.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

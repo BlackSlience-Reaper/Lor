@@ -1,27 +1,15 @@
 using LibraryOfRuina.powers.LittleRedMercenary;
 using LibraryOfRuina.relics.LittleRedMercenary;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.cards.LittleRedMercenary;
 
-public abstract class LittleRedMercenaryPageChoiceCardBase : CardModel
+public abstract class LittleRedMercenaryPageChoiceCardBase : PageChoiceCard<LittleRedMercenaryPageMode>
 {
-    public const string ScarChoiceId = "LITTLE_RED_SCAR_CHOICE_CARD";
-    public const string RevengeChoiceId = "LITTLE_RED_REVENGE_CHOICE_CARD";
-    public const string PreyChoiceId = "LITTLE_RED_PREY_CHOICE_CARD";
-
-    protected abstract string PortraitFileName { get; }
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<StrengthPower>(),
@@ -41,22 +29,4 @@ public abstract class LittleRedMercenaryPageChoiceCardBase : CardModel
         new DynamicVar("MaxTriggers", LittleRedMercenaryPageRelic.RevengeMaxTriggersPerCombat),
         new DamageVar(LittleRedMercenaryPageRelic.PreyDamageBonus, ValueProp.Move)
     ];
-
-    public override string PortraitPath => ImageHelper.GetImagePath($"packed/card_portraits/colorless/{PortraitFileName}");
-
-    public override IEnumerable<string> AllPortraitPaths =>
-    [
-        PortraitPath
-    ];
-
-    protected LittleRedMercenaryPageChoiceCardBase()
-        : base(-1, CardType.Skill, CardRarity.Ancient, TargetType.None, shouldShowInCardLibrary: false)
-    {
-    }
-
-    public static bool IsLittleRedMercenaryPageChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is ScarChoiceId or RevengeChoiceId or PreyChoiceId;
-    }
 }
