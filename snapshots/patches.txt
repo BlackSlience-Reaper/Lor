@@ -78,6 +78,7 @@ LibraryOfRuina.features.temporarymaps.TemporaryMapMapOpenPatch	Postfix	Postfix	r
 LibraryOfRuina.features.temporarymaps.TemporaryMapMapScreenPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen), "SetMap")
 LibraryOfRuina.features.temporarymaps.TemporaryMapSavePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "ToSave")
 LibraryOfRuina.features.temporarymaps.TemporaryMapTerminalRewardsProceedPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "ProceedFromTerminalRewardsScreen")
+LibraryOfRuina.infra.patching.LibraryPatchReportPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
 LibraryOfRuina.localization.PowerIconLocalizationPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Localization.LocTable), "GetRawText")
 LibraryOfRuina.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch()
 LibraryOfRuina.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()
