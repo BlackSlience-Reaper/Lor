@@ -33,8 +33,8 @@
   "LIBRARYOFRUINA-DOORMAKER_BETA_PHASE12_REWORK_ENABLED.title": "启用 Doormaker Beta 一二三阶段改造",
   "LITTLE_RED_BLOCK_TRANSFER.title": "协防",
   "LITTLE_RED_BLOCK_TRANSFER.description": "消耗至多[blue]10[/blue]点你的[gold]格挡[/gold]并转移给协防对象。转移量会按玩家人数降低。",
-  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.title": "废墟图书馆未加载",
-  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.body": "检测到与废墟图书馆不兼容的模组：\n\n{mods}\n\n为保护你的存档，废墟图书馆本次启动跳过了全部内容注入：怪物、遭遇战、书页遗物及相关设置均未生效。\n\n请取消订阅或禁用上述模组，然后重启游戏。",
-  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.item": "· {mod}\n  {reason}",
-  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES": "该模组改写了原版“精神过载”能力的类型判定，并会在书页奖励与三选一选牌界面中抛出异常，导致奖励界面卡死。"
+  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.title": "废墟图书馆：拒绝加载",
+  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.body": "[red]严重不兼容[/red]：{mods}\n若要继续游玩，请关闭这个模组！",
+  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.item": "{mod}：{reason}",
+  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES": "[永久黑名单][red]肆意修改游戏原生内容[/red]\n因此[gold]图书馆mod[/gold]将不会加载。\n如果再有恶意评论造谣，本mod将取消支持简体中文。"
 }

@@ -15,8 +15,8 @@
   "CHAIN_ENCHANTMENT.extraCardText": "打出后，对其他敌人再次造成未被格挡伤害的[blue]{DamagePercent}%[/blue][blue]{Repeat}[/blue]次。",
   "PEBBLE_MARK_ENCHANTMENT.title": "卵石标记",
   "PEBBLE_MARK_ENCHANTMENT.description": "这张牌获得[gold]消耗[/gold]。打出后，恢复[blue]{Heal}[/blue]点生命。",
-  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "打出后，恢复[blue]{Heal}[/blue]点生命。获得[gold]消耗[/gold]。",
-  "IORI_UNPREDICTABLE_ENCHANTMENT.title": "变幻莫测",
+  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "打出后，恢复[blue]{Heal}[/blue]点生命。获得[gold]消耗[/gold]。"
+  ,"IORI_UNPREDICTABLE_ENCHANTMENT.title": "变幻莫测",
   "IORI_UNPREDICTABLE_ENCHANTMENT.description": "这张牌的耗能随机化为[blue]0~3[/blue]。每当你抽到这张牌时自动打出，随后回到[gold]手牌[/gold]。",
   "IORI_UNPREDICTABLE_ENCHANTMENT.extraCardText": "这张牌的耗能随机化为[blue]0~3[/blue]。每当你抽到这张牌时自动打出，随后回到[gold]手牌[/gold]。"
 }
