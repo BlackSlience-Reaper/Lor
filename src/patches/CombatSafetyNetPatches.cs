@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.encounters.GalaxyChild;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.monsters.GalaxyChild;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Hooks;
@@ -66,60 +69,39 @@ internal static class CombatSafetyAttackCommandExecutePatch
     }
 }
 
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterDamageGiven))]
-internal static class CombatSafetyAfterDamageGivenPatch
-{
-    [HarmonyPriority(Priority.Low)]
-    private static bool Prefix(Creature? dealer, ref Task __result)
-    {
-        if (!ModOwnership.IsOwnMonster(dealer) || !CombatSafetyNet.ShouldSkipDeadMonsterAttackFollowup(dealer))
-        {
-            return true;
-        }
-
-        __result = Task.CompletedTask;
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterAttack))]
-internal static class CombatSafetyAfterAttackPatch
-{
-    [HarmonyPriority(Priority.Low)]
-    private static bool Prefix(AttackCommand command, ref Task __result)
-    {
-        if (!ModOwnership.IsOwnMonster(command.Attacker)
-            || !CombatSafetyNet.ShouldSkipDeadMonsterAttackFollowup(command.Attacker))
-        {
-            return true;
-        }
-
-        __result = Task.CompletedTask;
-        return false;
-    }
-}
+// Hook.AfterDamageGiven / AfterAttack keep their full dispatch even when this mod's attacker died
+// mid-attack: the listeners belong to every model in combat (players' powers, relics, other mods),
+// and vanilla dispatches them for dead vanilla attackers as well.
 
 /// <summary>
-/// Parting Tears victory must happen after the second Galaxy Friend's death dispatch has finished
-/// (killing inside AfterDeath re-enters the death pipeline). Continuing the awaited AfterDeath task
-/// keeps it inside the synchronized action on every client, unlike a deferred next-frame call.
+/// Parting Tears victory runs once a whole kill batch has finished. Vanilla routes damage deaths and
+/// single kills through Kill(IReadOnlyCollection), which completes every creature's death pipeline
+/// before returning, so killing both friends here no longer re-enters a death still in progress.
+/// Continuing the awaited task keeps it inside the synchronized action on every client.
 /// </summary>
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterDeath))]
-internal static class GalaxyChildPartingTearsAfterDeathPatch
+[HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Kill), typeof(IReadOnlyCollection<Creature>), typeof(bool))]
+internal static class GalaxyChildPartingTearsKillBatchPatch
 {
-    private static void Postfix(CombatStateLike combatState, ref Task __result)
+    private static void Prefix(IReadOnlyCollection<Creature> creatures, out CombatStateLike? __state)
     {
-        if (combatState?.Encounter is not GalaxyChildWeak)
+        // Captured before the batch runs: a removed creature no longer knows its combat state.
+        __state = creatures.Select(static creature => creature.CombatState)
+            .FirstOrDefault(static state => state?.Encounter is GalaxyChildWeak);
+    }
+
+    private static void Postfix(CombatStateLike? __state, ref Task __result)
+    {
+        if (__state == null)
         {
             return;
         }
 
-        __result = TriggerAfter(__result, combatState);
+        __result = TriggerAfter(__result, __state);
     }
 
-    private static async Task TriggerAfter(Task afterDeath, CombatStateLike combatState)
+    private static async Task TriggerAfter(Task killBatch, CombatStateLike combatState)
     {
-        await afterDeath;
+        await killBatch;
         if (GalaxyFriend.ShouldTriggerPartingTears(combatState))
         {
             await GalaxyFriend.TriggerPartingTearsVictory(combatState);

@@ -48,8 +48,6 @@ internal static class CombatSafetyNet
 
     private static readonly FieldInfo? MonsterIsPerformingMoveField =
         AccessTools.Field(typeof(MonsterModel), "_isPerformingMove");
-    private static readonly FieldInfo? OverlayStackOverlaysField =
-        AccessTools.Field(typeof(NOverlayStack), "_overlays");
 
     private static int _recoveryDepth;
 
@@ -96,9 +94,9 @@ internal static class CombatSafetyNet
         return AwaitMonsterAttackWithDeadAttackerGuard(task, command);
     }
 
-    public static bool ShouldSkipDeadMonsterAttackFollowup(Creature? attacker) =>
-        IsDeadPerformingMonster(attacker);
-
+    // Only the abort signal this class raises itself is handled. Anything else thrown inside a move
+    // can come from any mod's hook listener or from local presentation, so it propagates as in
+    // vanilla instead of being "recovered" on the one client that threw.
     private static async Task AwaitWithGuard(Task task, CombatSafetyContext context)
     {
         try
@@ -108,21 +106,6 @@ internal static class CombatSafetyNet
         catch (DeadMonsterAttackAbortedException exception)
         {
             await RecoverFromDeadMonsterAttackAbort(context, exception);
-        }
-        catch (Exception exception) when (ShouldIgnore(exception))
-        {
-        }
-        catch (Exception exception) when (ShouldTreatAsNonFatalPresentationException(exception, context))
-        {
-            SuppressNonFatalPresentationException(context, exception);
-        }
-        catch (Exception exception) when (IsMultiplayerNonRecoverableException(exception))
-        {
-            LogNonRecoverableMultiplayerException(context, exception);
-        }
-        catch (Exception exception) when (ShouldSuppress(exception, context))
-        {
-            await RecoverAsync(context, exception, checkWinAfterRecovery: true);
         }
     }
 
@@ -175,359 +158,12 @@ internal static class CombatSafetyNet
         }
     }
 
-    private static async Task<bool> RecoverAsync(
-        CombatSafetyContext context,
-        Exception? exception,
-        bool checkWinAfterRecovery)
-    {
-        if (Interlocked.CompareExchange(ref _recoveryDepth, 1, 0) != 0)
-        {
-            Log.Warn(
-                "[" + LogTag + "] nested recovery skipped context="
-                + DescribeContext(context)
-                + (exception == null ? "" : " exception=" + exception));
-            return false;
-        }
-
-        try
-        {
-            CombatSafetyContext resolvedContext = context with { CombatState = ResolveCombatState(context) };
-            var recoveryReport = new CombatRecoveryReport();
-            bool isDeathHookRecovery = IsDeathHookRecoveryContext(resolvedContext);
-            if (exception != null)
-            {
-                if (!isDeathHookRecovery)
-                {
-                    TryFinalizeFailedMonsterMoves(resolvedContext, recoveryReport);
-                }
-                TryUnpauseCombat(recoveryReport);
-            }
-
-            bool recovered = false;
-            if (exception != null && checkWinAfterRecovery && !isDeathHookRecovery)
-            {
-                await TryCheckWinCondition(recoveryReport);
-            }
-
-            if (exception != null)
-            {
-                LogCaughtException(resolvedContext, exception, recoveryReport);
-            }
-
-            return recovered;
-        }
-        finally
-        {
-            Interlocked.Exchange(ref _recoveryDepth, 0);
-        }
-    }
-
-    private static bool ShouldSuppress(Exception exception, CombatSafetyContext context) =>
-        !ShouldIgnore(exception) && IsCombatContext(context);
-
-    /// <summary>
-    /// 真实多人（Host/Client）下不能靠单边修改战斗状态恢复的异常：
-    /// - 玩家选择层（PlayerChoiceResult / PlayerChoiceSynchronizer）的类型不匹配异常：这类异常意味着
-    ///   双端 choice ID 已发生错位，主机单边"解暂停/重查胜负/杀敌"只会把错位固化成分叉（历史上 checksum
-    ///   224 分叉踢人即由此放大）。
-    /// - 栈中不含 LibraryOfRuina 的 UI ObjectDisposedException：属于其他模组的 UI 生命周期噪音，
-    ///   不应触发战斗状态恢复。
-    /// 单人、Replay 与 fake multiplayer 仍走原有恢复路径。
-    /// </summary>
-    private static bool IsMultiplayerNonRecoverableException(Exception exception)
-    {
-        if (!IsRealMultiplayerNetGame())
-        {
-            return false;
-        }
-
-        return IsMultiplayerChoiceLayerException(exception)
-            || IsForeignUiDisposedException(exception);
-    }
-
-    private static bool IsMultiplayerChoiceLayerException(Exception exception)
-    {
-        if (exception is not InvalidOperationException)
-        {
-            return false;
-        }
-
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        return stackTrace.Contains("PlayerChoiceResult.As", StringComparison.Ordinal)
-            || stackTrace.Contains(
-                "MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceSynchronizer",
-                StringComparison.Ordinal);
-    }
-
-    private static bool IsForeignUiDisposedException(Exception exception)
-    {
-        if (exception is not ObjectDisposedException)
-        {
-            return false;
-        }
-
-        return !(exception.StackTrace ?? string.Empty).Contains("LibraryOfRuina", StringComparison.Ordinal);
-    }
-
-    private static bool IsRealMultiplayerNetGame()
-    {
-        try
-        {
-            NetGameType type = RunManager.Instance.NetService.Type;
-            return type is NetGameType.Host or NetGameType.Client;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private static void LogNonRecoverableMultiplayerException(
-        CombatSafetyContext context,
-        Exception exception)
-    {
-        string message =
-            "[" + LogTag + "] multiplayer non-recoverable exception / 多人下不可恢复异常：跳过状态性恢复："
-            + DescribeCaughtError(exception)
-            + "；context=" + DescribeContext(context);
-        if (IsMultiplayerChoiceLayerException(exception))
-        {
-            Log.Error(message + "；details=" + exception);
-        }
-        else
-        {
-            Log.Warn(message);
-        }
-    }
-
-    private static bool IsDeathHookRecoveryContext(CombatSafetyContext context) =>
-        string.Equals(context.Surface, "Hook.BeforeDeath", StringComparison.Ordinal)
-        || string.Equals(context.Surface, "Hook.AfterDeath", StringComparison.Ordinal);
-
-    private static bool ShouldIgnore(Exception exception) =>
-        exception is OperationCanceledException;
-
-    private static bool ShouldTreatAsNonFatalPresentationException(Exception exception, CombatSafetyContext context)
-    {
-        if (!IsCombatContext(context))
-        {
-            return false;
-        }
-
-        if (exception is LocException)
-        {
-            return IsPowerVfxPresentationException(exception);
-        }
-
-        if (exception is InvalidOperationException && IsBbcodePresentationException(exception))
-        {
-            return true;
-        }
-
-        if (exception is InvalidCastException && IsIntentRefreshPresentationException(exception))
-        {
-            return true;
-        }
-
-        if (IsChooseCardOverlayLifecycleException(exception))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static bool IsPowerVfxPresentationException(Exception exception)
-    {
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        return stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Vfx.NPowerAppliedVfx.StartVfx", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Vfx.NPowerRemovedVfx.StartVfx", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Vfx.NPowerFlashVfx.StartVfx", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Combat.NCreature.OnPowerIncreased", StringComparison.Ordinal);
-    }
-
-    private static bool IsBbcodePresentationException(Exception exception)
-    {
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        if (!stackTrace.Contains("MegaCrit.Sts2.addons.mega_text.MegaLabelHelper.ParseBbcode", StringComparison.Ordinal)
-            && !stackTrace.Contains("MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel.AdjustFontSize", StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        return exception.Message.Contains("Found end tag", StringComparison.Ordinal)
-            || exception.Message.Contains("expected", StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static bool IsIntentRefreshPresentationException(Exception exception)
-    {
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        return stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Combat.NIntent.Create", StringComparison.Ordinal)
-            && (stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Combat.NCreature.UpdateIntent", StringComparison.Ordinal)
-                || stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Combat.NCreature.RefreshIntents", StringComparison.Ordinal));
-    }
-
-    private static void SuppressNonFatalPresentationException(CombatSafetyContext context, Exception exception)
-    {
-        CombatSafetyContext resolvedContext = context with { CombatState = ResolveCombatState(context) };
-        bool removedBrokenChooseCardOverlay = TryDismissBrokenChooseCardOverlay(exception);
-        Log.Warn(
-            "[" + LogTag + "] suppressed non-fatal combat presentation exception / 消除战斗表现层错误："
-            + DescribeCaughtError(exception)
-            + (removedBrokenChooseCardOverlay ? "；已清理损坏的选卡界面覆盖层" : string.Empty)
-            + "；恢复为：跳过本次表现刷新，保留战斗逻辑继续运行"
-            + "；context=" + DescribeContext(resolvedContext));
-    }
-
-    private static bool IsChooseCardOverlayLifecycleException(Exception exception)
-    {
-        if (exception is not NullReferenceException && exception is not ObjectDisposedException)
-        {
-            return false;
-        }
-
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        if (!stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NChooseACardSelectionScreen", StringComparison.Ordinal)
-            && !stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Screens.Overlays.NOverlayStack", StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        return stackTrace.Contains("NChooseACardSelectionScreen._Ready", StringComparison.Ordinal)
-            || stackTrace.Contains("NChooseACardSelectionScreen.ShowScreen", StringComparison.Ordinal)
-            || stackTrace.Contains("NChooseACardSelectionScreen.AfterOverlayShown", StringComparison.Ordinal)
-            || stackTrace.Contains("NChooseACardSelectionScreen.AfterOverlayHidden", StringComparison.Ordinal)
-            || stackTrace.Contains("NChooseACardSelectionScreen.get_DefaultFocusedControl", StringComparison.Ordinal)
-            || stackTrace.Contains("NOverlayStack.Push", StringComparison.Ordinal)
-            || stackTrace.Contains("NOverlayStack.Remove", StringComparison.Ordinal)
-            || stackTrace.Contains("NOverlayStack.Clear", StringComparison.Ordinal);
-    }
-
-    private static bool TryDismissBrokenChooseCardOverlay(Exception exception)
-    {
-        if (!IsChooseCardOverlayLifecycleException(exception))
-        {
-            return false;
-        }
-
-        NOverlayStack? overlayStack = NOverlayStack.Instance;
-        if (overlayStack?.Peek() is not NChooseACardSelectionScreen brokenScreen)
-        {
-            return false;
-        }
-
-        try
-        {
-            overlayStack.Remove(brokenScreen);
-            return true;
-        }
-        catch (Exception removeException)
-        {
-            Log.Warn(
-                "[" + LogTag + "] normal choose-card overlay removal failed after lifecycle exception: "
-                + removeException.GetType().Name
-                + ": "
-                + removeException.Message);
-        }
-
-        try
-        {
-            if (OverlayStackOverlaysField?.GetValue(overlayStack) is List<IOverlayScreen> overlays)
-            {
-                overlays.Remove(brokenScreen);
-            }
-
-            GodotNode? parent = brokenScreen.GetParent();
-            if (parent != null)
-            {
-                parent.RemoveChild(brokenScreen);
-            }
-
-            brokenScreen.QueueFree();
-
-            if (overlayStack.Peek() != null)
-            {
-                overlayStack.ShowOverlays();
-            }
-            else
-            {
-                overlayStack.HideBackstop();
-            }
-
-            ActiveScreenContext.Instance.Update();
-            return true;
-        }
-        catch (Exception cleanupException)
-        {
-            Log.Warn(
-                "[" + LogTag + "] forced choose-card overlay cleanup failed after lifecycle exception: "
-                + cleanupException.GetType().Name
-                + ": "
-                + cleanupException.Message);
-            return false;
-        }
-    }
-
-    private static void LogCaughtException(
-        CombatSafetyContext context,
-        Exception exception,
-        CombatRecoveryReport recoveryReport)
-    {
-        if (IsKnownDisposedUiResourceException(exception))
-        {
-            Log.Warn(
-                "[" + LogTag + "] caught disposed UI resource / 消除已释放的战斗UI资源错误："
-                + DescribeCaughtError(exception)
-                + "；尝试恢复为：" + recoveryReport.Summary
-                + "；context=" + DescribeContext(context)
-                + "；details=" + exception);
-            return;
-        }
-
-        Log.Error(
-            "[" + LogTag + "] caught combat exception / 发现战斗异常："
-            + DescribeCaughtError(exception)
-            + "；尝试恢复为：" + recoveryReport.Summary
-            + "；上下文=" + DescribeContext(context)
-            + "；错误细节=" + exception);
-    }
-
     private static string DescribeCaughtError(Exception exception)
     {
         string message = string.IsNullOrWhiteSpace(exception.Message)
             ? "没有错误消息"
             : exception.Message.Replace(Environment.NewLine, " ");
         return exception.GetType().Name + " - " + message;
-    }
-
-    private static bool IsKnownDisposedUiResourceException(Exception exception)
-    {
-        if (exception is not ObjectDisposedException objectDisposedException)
-        {
-            return false;
-        }
-
-        return objectDisposedException.ObjectName?.StartsWith("Godot.", StringComparison.Ordinal) == true
-            || exception.StackTrace?.Contains("MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid", StringComparison.Ordinal) == true
-            || exception.StackTrace?.Contains("MegaCrit.Sts2.Core.Nodes.Relics.NRelicInventoryHolder", StringComparison.Ordinal) == true;
-    }
-
-    private static bool IsCombatContext(CombatSafetyContext context)
-    {
-        CombatStateLike? combatState = ResolveCombatState(context);
-        if (combatState != null)
-        {
-            return true;
-        }
-
-        try
-        {
-            return CombatManager.Instance.IsInProgress;
-        }
-        catch
-        {
-            return false;
-        }
     }
 
     private static CombatStateLike? ResolveCombatState(CombatSafetyContext context)
@@ -745,26 +381,13 @@ internal static class CombatSafetyNet
         }
     }
 
+    // Only the monster whose move was aborted; other monsters' moves are not ours to finalize.
     private static IEnumerable<MonsterModel> ResolveFailedMoveMonsters(CombatSafetyContext context)
     {
         MonsterModel? contextMonster = context.Monster ?? context.Creature?.Monster;
         if (contextMonster != null)
         {
             yield return contextMonster;
-        }
-
-        CombatStateLike? combatState = ResolveCombatState(context);
-        if (combatState == null)
-        {
-            yield break;
-        }
-
-        foreach (Creature enemy in combatState.Enemies)
-        {
-            if (enemy.Monster is { IsPerformingMove: true } monster)
-            {
-                yield return monster;
-            }
         }
     }
 

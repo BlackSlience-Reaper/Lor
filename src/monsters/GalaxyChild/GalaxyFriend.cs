@@ -241,8 +241,8 @@ public sealed class GalaxyFriend : LibraryMonsterModel
 
         GalaxyChildBackgroundController.SetFakeDeathMode(true);
         StartFakeDeathBackgroundTextLoop();
-        // Parting Tears victory is triggered once the AfterDeath dispatch completes
-        // (GalaxyChildPartingTearsAfterDeathPatch); player turn start is the fallback.
+        // Parting Tears victory is triggered once the kill batch completes
+        // (GalaxyChildPartingTearsKillBatchPatch); player turn start is the fallback.
     }
 
     public async Task TickFakeDeathOnPlayerTurnStart()
