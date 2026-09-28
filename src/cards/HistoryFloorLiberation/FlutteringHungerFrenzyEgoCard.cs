@@ -16,12 +16,6 @@ namespace LibraryOfRuina.cards.HistoryFloorLiberation;
 
 public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
 {
-    public const int MultiHitDamage = 3;
-    public const int MultiHitCount = 5;
-    public const int HealAmount = 6;
-    public const int FinalDamage = 5;
-    public const int BleedAmount = 3;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorFlutteringBoss.BossAttackSfxPath
@@ -35,10 +29,10 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", MultiHitCount),
-        new HealVar(HealAmount),
-        new DamageVar("FinalDamage", FinalDamage, ValueProp.Move),
-        new PowerVar<LibraryBleedingPower>("Bleed", BleedAmount)
+        new DynamicVar("Hits", HistoryFloorEgoNumbers.HungerFrenzyHitCount),
+        new HealVar(HistoryFloorEgoNumbers.HungerFrenzyHeal),
+        new DamageVar("FinalDamage", HistoryFloorEgoNumbers.HungerFrenzyCardFinalDamage, ValueProp.Move),
+        new PowerVar<LibraryBleedingPower>("Bleed", HistoryFloorEgoNumbers.HungerFrenzyBleed)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -47,7 +41,7 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     ];
 
     public FlutteringHungerFrenzyEgoCard()
-        : base(3, previewDamage: MultiHitDamage)
+        : base(3, previewDamage: HistoryFloorEgoNumbers.HungerFrenzyCardMultiHitDamage)
     {
     }
 
@@ -66,7 +60,7 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
 
-        for (int i = 0; i < MultiHitCount; i++)
+        for (int i = 0; i < HistoryFloorEgoNumbers.HungerFrenzyHitCount; i++)
         {
             LocalOggOneShotPlayer.Play(HistoryFloorFlutteringBoss.BossAttackSfxPath, -2f);
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)

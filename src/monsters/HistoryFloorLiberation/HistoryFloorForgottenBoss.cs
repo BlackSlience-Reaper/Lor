@@ -51,9 +51,6 @@ public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
     private const int FlawAmount = 1;
     
 
-    public const int LongingEmbraceBaseDamage = 24;
-    public const int LongingEmbraceHighAscensionDamage = 26;
-    public const int LongingEmbraceConfusion = 1;
 
     private const string CautiousLoveMoveId = "CAUTIOUS_LOVE";
     private const string ExpressAffectionMoveId = "EXPRESS_AFFECTION";
@@ -136,7 +133,7 @@ public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
     private int LongingEmbraceDamage => ResolveLongingEmbraceDamage();
 
     public static int ResolveLongingEmbraceDamage() =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, LongingEmbraceHighAscensionDamage, LongingEmbraceBaseDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, HistoryFloorEgoNumbers.LongingEmbraceHighAscensionDamage, HistoryFloorEgoNumbers.LongingEmbraceBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         HistoryFloorForgottenCreatureVisuals.Profile.AssetPaths
@@ -343,7 +340,7 @@ public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
         await ApplyAffectionFromResults(AttackCommandCompat.Results(attack));
         await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(
             targets.Where(static target => target.IsAlive),
-            LongingEmbraceConfusion,
+            HistoryFloorEgoNumbers.LongingEmbraceConfusion,
             Creature,
             null);
 

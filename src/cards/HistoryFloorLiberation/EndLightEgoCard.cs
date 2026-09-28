@@ -22,7 +22,7 @@ public sealed class EndLightEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new PowerVar<LibraryBurnPower>("Burn", HistoryFloorEndLightBoss.EndLightBurnAmount)
+        new PowerVar<LibraryBurnPower>("Burn", HistoryFloorEgoNumbers.EndLightBurnAmount)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -31,7 +31,7 @@ public sealed class EndLightEgoCard : EgoCardBase
     ];
 
     public EndLightEgoCard()
-        : base(2, previewDamage: HistoryFloorEndLightBoss.EndLightBaseDamage)
+        : base(2, previewDamage: HistoryFloorEgoNumbers.EndLightBaseDamage)
     {
     }
 
