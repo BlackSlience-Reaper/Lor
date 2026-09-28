@@ -23,6 +23,7 @@ public static class VerificationRunner
 
     private static readonly Action[] Suites =
     [
+        AllyModelRulesVerificationPatch.Start,
         AllyTurnProviderVerificationPatch.Start,
         ArtFloorLiberationVerificationPatch.Start,
         BigBadWolfTargetingVerificationPatch.Start,
