@@ -53,8 +53,6 @@ LibraryOfRuinaLib|LibraryLib.Hooks.LibraryHooks::ModifyHpLostAfterOsty(MegaCrit.
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.Transpiler
 LibraryOfRuinaLib|LibraryLib.Hooks.LibraryHooks::ModifyHpLostBeforeOsty(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&,LibraryLib.Utils.Resistance.LibraryDamageType)
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.Transpiler
-LibraryOfRuinaLib|LibraryLib.Models.LibraryTurnsPowerModel::AddVariablesToDescription(MegaCrit.Sts2.Core.Localization.LocString,System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LibraryTurnsPowerHoverTipPatch.Prefix
 LibraryOfRuinaLib|LibraryLib.Patches.AttackExecuteContext::ResolveVanillaDamageTypeUnsafe(System.Object)
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriAttackDamageTypePatch.Postfix
 LibraryOfRuinaLib|LibraryLib.Patches.LibraryDamagePreviewFeedback::ResolveVanillaPreviewDamageType(MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature)
@@ -163,8 +161,8 @@ sts2|MegaCrit.Sts2.Core.Commands.CreatureCmd::Stun(MegaCrit.Sts2.Core.Entities.C
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilExternalStunPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Commands.PlayerCmd::GainEnergy(System.Decimal,MegaCrit.Sts2.Core.Entities.Players.Player)
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.PlayerResources.Patches.PlayerCmdGainEnergyHookPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.ConfusionEnergyPatch.Prefix
   Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Prefix
+  Prefix priority=200 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.ConfusionEnergyPatch.Prefix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Postfix
   Postfix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.PlayerResources.Patches.PlayerCmdGainEnergyHookPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Commands.PowerCmd::Apply(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Models.PowerModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Boolean)
@@ -193,7 +191,6 @@ sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::PrepareForNextTurn(System.C
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LanguageFloorLiberation.LanguageFloorCobaltScarPostRollPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::ScaleMonsterHpForMultiplayer(MegaCrit.Sts2.Core.Models.EncounterModel,System.Int32,System.Int32)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorMagicalGirlFixedHpPatch.Prefix
   Postfix priority=400 index=0 owner=LibraryOfRuinaLib LibraryLib.Patches.ChaoSyncScalePatch.Postfix
   Postfix priority=0 index=1 owner=FYY.LibraryOfRuina after=LibraryOfRuinaLib LibraryOfRuina.monsters.SocialFloorLiberation.SocialFloorLiberationExactVitalsPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::StunInternal(System.Func`2[[System.Collections.Generic.IReadOnlyList`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]],System.String)
@@ -217,13 +214,13 @@ sts2|MegaCrit.Sts2.Core.Helpers.EnergyIconHelper::GetPath(System.String)
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.EnergyIconHelperPathPatch.Prefix
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.EgoEnergyIconPathPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Helpers.ImageHelper::GetRoomIconOutlinePath(MegaCrit.Sts2.Core.Map.MapPointType,MegaCrit.Sts2.Core.Rooms.RoomType,MegaCrit.Sts2.Core.Models.ModelId)
-  Prefix priority=800 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.RoomIconOutlinePathCustomOverridePatch.Prefix
   Prefix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets after=BaseLib STS2RitsuLib.Scaffolding.Content.Patches.ImageHelperAncientModRunHistoryIconPathPatch.Prefix
   Prefix priority=0 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets after=BaseLib STS2RitsuLib.Scaffolding.Content.Patches.ImageHelperModEncounterRunHistoryIconPathPatch.Prefix
+  Prefix priority=0 index=2 owner=FYY.LibraryOfRuina after=BaseLib,com.ritsukage.sts2-RitsuLib.framework-content-assets LibraryOfRuina.patches.RoomIconOutlinePathCustomOverridePatch.Prefix
 sts2|MegaCrit.Sts2.Core.Helpers.ImageHelper::GetRoomIconPath(MegaCrit.Sts2.Core.Map.MapPointType,MegaCrit.Sts2.Core.Rooms.RoomType,MegaCrit.Sts2.Core.Models.ModelId)
-  Prefix priority=800 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.RoomIconPathCustomOverridePatch.Prefix
   Prefix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets after=BaseLib STS2RitsuLib.Scaffolding.Content.Patches.ImageHelperAncientModRunHistoryIconPathPatch.Prefix
   Prefix priority=0 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets after=BaseLib STS2RitsuLib.Scaffolding.Content.Patches.ImageHelperModEncounterRunHistoryIconPathPatch.Prefix
+  Prefix priority=0 index=2 owner=FYY.LibraryOfRuina after=BaseLib,com.ritsukage.sts2-RitsuLib.framework-content-assets LibraryOfRuina.patches.RoomIconPathCustomOverridePatch.Prefix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::AfterCombatVictory(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Rooms.CombatRoom)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorVictoryPatch.Prefix
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.encounters.FloorLiberationVictoryProgressPatch.Prefix
@@ -278,7 +275,7 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyUnblockedDamageTarget(MegaCrit.Sts2.Co
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentDamageRedirectPatch.Prefix
   Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightJudgmentDamageRedirectPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldAllowAncient(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Entities.Players.Player,MegaCrit.Sts2.Core.Models.AncientEventModel)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+AllowAncient.Prefix
+  Postfix priority=0 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+AllowAncient.Postfix
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldClearBlock(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.AbstractModel&)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch.Postfix
@@ -333,7 +330,6 @@ sts2|MegaCrit.Sts2.Core.Models.AfflictionModel::get_DynamicExtraCardText()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Models.Capabilities.Patches.ModelDisplayCapabilityPatches+AfflictionDynamicExtraCardTextPatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.afflictions.CostReductionExtraCardTextVarsPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.AncientEventModel::BeforeEventStarted(System.Boolean)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+SkipAncientHeal.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.relics.BookShadow.BookShadowLibraryActAncientGrantPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.AncientEventModel::SetInitialEventState(System.Boolean)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.audio.NeowEntrySfxSetInitialEventStatePatch.Prefix
@@ -356,11 +352,11 @@ sts2|MegaCrit.Sts2.Core.Models.Cards.BeatDown+<OnPlay>d__3::MoveNext()
 sts2|MegaCrit.Sts2.Core.Models.Cards.BouncingFlask+<OnPlay>d__6::MoveNext()
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionBouncingFlaskPatch.Transpiler
 sts2|MegaCrit.Sts2.Core.Models.EncounterModel::CreateBackgroundAssetsForCustom(MegaCrit.Sts2.Core.Random.Rng)
-  Prefix priority=800 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBackgroundAssetsPatch.Prefix
-  Prefix priority=800 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Rnfmabj.RnfmabjSpecialGuestBackgroundAssetsPatch.Prefix
-  Prefix priority=800 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBackgroundAssetsPatch.Prefix
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.EncounterCreateBackgroundAssetsForCustomPatch.Prefix
   Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GuestReceptionBackgroundPoolPatch.Prefix
+  Prefix priority=200 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBackgroundAssetsPatch.Prefix
+  Prefix priority=200 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Rnfmabj.RnfmabjSpecialGuestBackgroundAssetsPatch.Prefix
+  Prefix priority=200 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBackgroundAssetsPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Models.EncounterModel::CreateScene()
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.ModModelRuntimeGodotFactoryPatches+EncounterCombatSceneRuntimeFactoryPatch.Prefix
   Prefix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.EncounterCreateScenePatch.Prefix
@@ -398,10 +394,10 @@ sts2|MegaCrit.Sts2.Core.Models.ModelDb::get_Monsters()
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.acts.LibraryActMonsterCatalogPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.MonsterModel::CreateVisuals()
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-content-assets STS2RitsuLib.Scaffolding.Content.Patches.ModModelRuntimeGodotFactoryPatches+MonsterCreatureVisualsRuntimeFactoryPatch.Prefix
-  Prefix priority=800 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestCreateVisualsPatch.Prefix
-  Prefix priority=800 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Rnfmabj.RnfmabjSpecialGuestCreateVisualsPatch.Prefix
-  Prefix priority=800 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriSpecialGuestCreateVisualsPatch.Prefix
   Prefix priority=400 index=4 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.MonsterModelCreateVisualsPatch.Prefix
+  Prefix priority=200 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestCreateVisualsPatch.Prefix
+  Prefix priority=200 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Rnfmabj.RnfmabjSpecialGuestCreateVisualsPatch.Prefix
+  Prefix priority=200 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Iori.IoriSpecialGuestCreateVisualsPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Models.MonsterModel::PerformMove()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CombatSafetyMonsterPerformMovePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.MonsterModel::get_IntendsToAttack()
@@ -527,7 +523,6 @@ sts2|MegaCrit.Sts2.Core.Nodes.Combat.NCreature::PerformIntent()
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.AllySkipOfficialEnemyIntentPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NCreature::SetAnimationTrigger(System.String)
   Prefix priority=800 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-character-assets STS2RitsuLib.Scaffolding.Characters.Patches.ModCreatureCombatAnimationPlaybackPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NonSpineAnimationTriggerBridgePatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NonSpineAnimationTriggerBridgePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NCreature::ShowHoverTips(System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.HoverTips.IHoverTip, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.CounterIntentHoverTipPatch.Prefix
@@ -597,9 +592,6 @@ sts2|MegaCrit.Sts2.Core.Nodes.Combat.NPower::_Ready()
   Postfix priority=400 index=0 owner=LibraryOfRuinaLib LibraryLib.Patches.PowerSecondaryCounterReadyPatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PowerSecondaryCounterReadyPatch.Postfix
   Postfix priority=400 index=2 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Interactions.RightClick.Patches.ModRightClickPowerPatch.Postfix
-sts2|MegaCrit.Sts2.Core.Nodes.Combat.NPower::get_Model()
-  Prefix priority=400 index=0 owner=LibraryOfRuinaLib LibraryLib.Patches.NPowerModelSafeGetterPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NPowerModelSafeGetterPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.Combat.NTargetManager::AllowedToTargetCreature(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
   Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.CardTargeting.Patches.NTargetManagerAllowedToTargetCreatureCustomTargetTypePatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+AllowedToTargetCreature.Postfix
@@ -707,7 +699,7 @@ sts2|MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen::InitializeSing
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen::ModifiersChanged()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunModifiersChangedPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScreen::AddScoreLine(System.String,System.String,System.Int32,System.String,System.String)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Prefix
+  Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NCustomRunModifiersList::GetModifiersTickedOn()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunModifierListPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu::RefreshButtons()
@@ -722,9 +714,6 @@ sts2|MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu::_Ready()
   Postfix priority=400 index=6 owner=FYY.LibraryOfRuina LibraryOfRuina.audio.MainMenuBgmReadyPatch.Postfix
   Postfix priority=0 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-settings-ui after=BaseLib STS2RitsuLib.Settings.Patches.MainMenuModSettingsButtonPatch.Postfix
   Postfix priority=0 index=2 owner=com.ritsukage.sts2-RitsuLib.framework-settings-ui after=BaseLib STS2RitsuLib.Ui.MainMenu.MainMenuScrollReadyPatch.Postfix
-sts2|MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenuSubmenuStack::GetSubmenuType(System.Type)
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.InjectExtSettingsSubmenuTypePatch.Prefix
-  Prefix priority=0 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-settings-ui after=BaseLib STS2RitsuLib.Settings.Patches.ModSettingsSubmenuPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.Map.NBossMapPoint::RefreshColorInstantly()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LibraryBossMapColorPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.Map.NBossMapPoint::_Ready()
