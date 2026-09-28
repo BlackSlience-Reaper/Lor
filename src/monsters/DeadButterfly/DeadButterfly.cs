@@ -30,7 +30,7 @@ internal enum DeadButterflyInitialMove
     PeacefulRepose = 4
 }
 
-public sealed class DeadButterfly : LibraryMonsterModel
+public sealed class DeadButterfly : LorMonsterModel
 {
     public override int DefaultChaoResistance => 10;
 
@@ -115,12 +115,6 @@ public sealed class DeadButterfly : LibraryMonsterModel
     {
         await base.AfterAddedToRoom();
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDeath(

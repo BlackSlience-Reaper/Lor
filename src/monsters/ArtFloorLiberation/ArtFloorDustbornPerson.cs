@@ -27,7 +27,7 @@ public enum ArtFloorDustbornSide
     Right
 }
 
-public sealed class ArtFloorDustbornPerson : LibraryMonsterModel, ILiberationPhaseBoss
+public sealed class ArtFloorDustbornPerson : LorMonsterModel, ILiberationPhaseBoss
 {
     private const int Phase = 5;
     private const string FlowerBushMoveId = "FLOWER_BUSH";
@@ -120,12 +120,6 @@ public sealed class ArtFloorDustbornPerson : LibraryMonsterModel, ILiberationPha
         await PowerCmdCompat.Apply<ArtFloorClayDollPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ArtFloorDustToDustPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public Task TriggerReviveAndEmpowerState() => Task.CompletedTask;

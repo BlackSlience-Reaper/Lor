@@ -16,7 +16,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -154,22 +153,6 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
     private int GetDisplayDamageRoll(ref int? cachedRoll, int maxInclusive) =>
         IsMutable ? (cachedRoll ?? maxInclusive) : maxInclusive;
 
-    /// <summary>
-    /// Rolls the shared MonsterAi RNG inside the synchronized move execution
-    /// path, mirroring the pattern used by ScarecrowSearchingForWisdom,
-    /// PriceOfSilence and BurrowingHeaven.
-    /// </summary>
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
-    }
-
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
         MonsterMoveStateMachine stateMachine = GenerateMoveStateMachine();
@@ -195,18 +178,7 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<HeartOfAspirationPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<HeartOfAspirationPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<HeartOfAspirationPageRelic>(room, PageRelicTitleLocKey);
     }
 
     private static bool IsHeartOfAspirationEncounter(CombatRoom room)

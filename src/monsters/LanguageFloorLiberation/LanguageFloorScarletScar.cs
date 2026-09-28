@@ -30,7 +30,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 public sealed class LanguageFloorScarletScar :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ITargetedMonsterAttackProvider,
     ILiberationPrimaryPhaseBoss
 {
@@ -143,12 +143,6 @@ public sealed class LanguageFloorScarletScar :
 
         LanguageFloorLiberationBackgroundController.SetRageBackground(UnrelievedAnger || IsRaging);
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterSideTurnStart(

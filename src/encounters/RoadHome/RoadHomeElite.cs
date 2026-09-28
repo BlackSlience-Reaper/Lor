@@ -12,7 +12,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.RoadHome;
@@ -273,14 +272,6 @@ internal static class RoadHomeEncounterHelper
         }
 
         string titleLocKey = $"{ModelDb.GetId<RoadHomePageRelic>().Entry}.title";
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<RoadHomePageRelic>(room, player, titleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<RoadHomePageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<RoadHomePageRelic>(room, titleLocKey);
     }
 }

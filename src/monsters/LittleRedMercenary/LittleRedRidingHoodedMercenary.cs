@@ -30,7 +30,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.LittleRedMercenary;
 
-public sealed class LittleRedRidingHoodedMercenary : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     private static readonly string[] NormalBackgroundTextLineKeys =
     [

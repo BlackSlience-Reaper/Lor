@@ -28,7 +28,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -41,7 +40,7 @@ internal enum GalaxyFriendInitialMove
     Twinkle
 }
 
-public sealed class GalaxyFriend : LibraryMonsterModel
+public sealed class GalaxyFriend : LorMonsterModel
 {
     public const string IdleTexturePath = "res://images/monsters/galaxy_friend/idle.png";
     public const string AttackTexturePath = "res://images/monsters/galaxy_friend/attack.png";
@@ -183,9 +182,8 @@ public sealed class GalaxyFriend : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
-        StopAllGalaxyChildPresentation();
         base.BeforeRemovedFromRoom();
+        StopAllGalaxyChildPresentation();
     }
 
     public override Task AfterCombatEnd(CombatRoom room)
@@ -641,18 +639,7 @@ public sealed class GalaxyFriend : LibraryMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<GalaxyChildPageRelic>(
-                room,
-                player,
-                GalaxyChildPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<GalaxyChildPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<GalaxyChildPageRelic>(room, GalaxyChildPageRelicTitleLocKey);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

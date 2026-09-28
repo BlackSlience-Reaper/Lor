@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryOfRuina.monsters;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -22,7 +23,7 @@ namespace LibraryOfRuina.specialguests;
 /// against this model.
 /// </summary>
 public abstract class SpecialGuestMonsterBase :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ILibraryEmotionBarSource
 {
     protected const int StoredIntentSlots = 5;

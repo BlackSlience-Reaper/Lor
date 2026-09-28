@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.PriceOfSilence;
 
-public sealed class TimeTrace : LibraryMonsterModel
+public sealed class TimeTrace : LorMonsterModel
 {
     internal const string TimeRecoilMoveId = "TIME_RECOIL";
     internal const string TimeTorrentMoveId = "TIME_TORRENT";
@@ -151,9 +151,8 @@ public sealed class TimeTrace : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
-        _markedPower = null;
         base.BeforeRemovedFromRoom();
+        _markedPower = null;
     }
 
     public override async Task BeforeSideTurnStart(
@@ -616,27 +615,6 @@ public sealed class TimeTrace : LibraryMonsterModel
 
     private int GetTimeTorrentDamageRoll() =>
         GetOrRollDamage(ref _timeTorrentDamageRoll, TimeTorrentMinDamage, TimeTorrentMaxDamage);
-
-    private int GetOrRollDamage(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        return cachedRoll ?? maxInclusive;
-    }
-
-    private int EnsureDamageRoll(ref int? cachedRoll, int minInclusive, int maxInclusive)
-    {
-        if (!IsMutable)
-        {
-            return maxInclusive;
-        }
-
-        cachedRoll ??= RunRng.MonsterAi.NextInt(minInclusive, maxInclusive + 1);
-        return cachedRoll.Value;
-    }
 
     private void EnsureRollForMove(string moveId)
     {

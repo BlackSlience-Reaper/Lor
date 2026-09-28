@@ -22,7 +22,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.Leticia;
 
-public sealed class SurpriseGiftBox : LibraryMonsterModel
+public sealed class SurpriseGiftBox : LorMonsterModel
 {
     private const string MoveOneId = "EE_YO_LI_WOO";
     private const string MoveTwoId = "COUGH_OMM_JJI_AO";

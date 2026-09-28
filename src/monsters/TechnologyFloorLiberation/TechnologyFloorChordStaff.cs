@@ -27,7 +27,7 @@ internal enum TechnologyFloorChordStaffInitialMove
     Move4 = 3
 }
 
-public sealed class TechnologyFloorChordStaff : LibraryMonsterModel
+public sealed class TechnologyFloorChordStaff : LorMonsterModel
 {
     public override int DefaultChaoResistance => 30;
 
@@ -108,12 +108,6 @@ public sealed class TechnologyFloorChordStaff : LibraryMonsterModel
         await PowerCmdCompat.Apply<TechnologyFloorErosionPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<ChordStaffMelodyCravingPower>(Creature, 1m, Creature, null, silent: false);
         await PowerCmdCompat.Apply<MinionPower>(Creature, 1m, Creature, null, silent: true);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

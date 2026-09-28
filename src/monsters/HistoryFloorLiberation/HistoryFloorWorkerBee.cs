@@ -18,7 +18,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorWorkerBee : LibraryMonsterModel
+public sealed class HistoryFloorWorkerBee : LorMonsterModel
 {
     private const string GuardQueenMoveId = "GUARD_QUEEN";
     private const string CarryLarvaMoveId = "CARRY_LARVA";

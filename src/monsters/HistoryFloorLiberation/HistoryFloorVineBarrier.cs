@@ -15,7 +15,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorVineBarrier : LibraryMonsterModel
+public sealed class HistoryFloorVineBarrier : LorMonsterModel
 {
     private const string PoisonStingBarrierMoveId = "POISON_STING_BARRIER";
 

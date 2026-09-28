@@ -16,6 +16,20 @@ namespace LibraryOfRuina.relics;
 
 internal static class AbnormalityPageRewardHelper
 {
+    /// <summary>给本场战斗的每名玩家各加一份书页遗物奖励；本局已出现过或房间里已有同一书页奖励的玩家跳过。</summary>
+    public static void AddPageRewardForEachPlayer<TPageRelic>(CombatRoom room, string titleLocKey)
+        where TPageRelic : RelicModel
+    {
+        foreach (Player player in room.CombatState.Players)
+        {
+            if (!ShouldAddPageReward<TPageRelic>(room, player, titleLocKey))
+            {
+                continue;
+            }
+
+            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<TPageRelic>().ToMutable(), player));
+        }
+    }
 
     public static bool ShouldAddPageReward<TPageRelic>(
         CombatRoom room,

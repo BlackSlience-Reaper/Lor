@@ -26,7 +26,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.monsters.FuneralOfTheDeadButterflies;
 
-public sealed class FuneralOfTheDeadButterflies : LibraryMonsterModel
+public sealed class FuneralOfTheDeadButterflies : LorMonsterModel
 {
     private const int MaxSummonedButterflies = 4;
     private const float AnimationDurationScale = 2.25f;
@@ -156,12 +156,6 @@ public sealed class FuneralOfTheDeadButterflies : LibraryMonsterModel
         }
 
         return base.BeforeSideTurnStart(choiceContext, side, participants, combatState);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task AfterDeath(

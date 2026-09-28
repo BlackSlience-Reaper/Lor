@@ -12,7 +12,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.SmilingBodies;
 
-public sealed class MeltingCorpse : LibraryMonsterModel
+public sealed class MeltingCorpse : LorMonsterModel
 {
     private const string MoanMoveId = "MOAN";
     private const int MoanBaseDamage = 1;

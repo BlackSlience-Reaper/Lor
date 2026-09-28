@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HeartOfAspiration;
 
-public abstract class AspirationMonsterBase : LibraryMonsterModel
+public abstract class AspirationMonsterBase : LorMonsterModel
 {
     public bool HasDealtLifeDamageThisEnemyTurn { get; private set; }
 
@@ -34,12 +34,6 @@ public abstract class AspirationMonsterBase : LibraryMonsterModel
         EncounterBgmController.RegisterMonster(Creature);
         await ApplyFlankingPowers();
         await ApplyAspirationPassive();
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override Task BeforeSideTurnStart(

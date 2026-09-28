@@ -55,10 +55,6 @@ LibraryOfRuina|LibraryOfRuina.addons.mega_text.MegaLabelHelper::ParseBbcode(Syst
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.localization.PowerInlineIconSizing+PreserveInlineDimensionsPatch.Postfix
 LibraryOfRuina|LibraryOfRuina.addons.mega_text.MegaRichTextLabel::SetFontSize(System.Int32)
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch.Postfix
-LibraryOfRuina|LibraryOfRuina.monsters.ForsakenMurderer.ForsakenMurderer::AfterAddedToRoom()
-  Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.monsters.ForsakenMurderer.ForsakenMurdererAfterAddedToRoomBgmPatch.Postfix
-LibraryOfRuina|LibraryOfRuina.monsters.ForsakenMurderer.ForsakenMurderer::BeforeRemovedFromRoom()
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.monsters.ForsakenMurderer.ForsakenMurdererBeforeRemovedFromRoomBgmPatch.Prefix
 LibraryOfRuina|LibraryOfRuina.patches.FinalHpLossClamp::Apply(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)
   Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.Transpiler
 LibraryOfRuina|LibraryOfRuina.relics.HistoryFloorLiberation.MatchMarkRelic::ModifyHpLostAfterOstyLate(MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel)

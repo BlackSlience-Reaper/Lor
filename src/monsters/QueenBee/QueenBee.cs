@@ -21,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.QueenBee;
 
-public sealed class QueenBee : LibraryMonsterModel
+public sealed class QueenBee : LorMonsterModel
 {
     private const string RouterId = "QUEEN_BEE_ROUTER";
     private const string VigilanceMoveId = "QUEEN_BEE_VIGILANCE_MOVE";

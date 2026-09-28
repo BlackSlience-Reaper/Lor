@@ -252,12 +252,6 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         return !_isSnakeForm || NextMove.Id != ArcanaBeatsMoveId;
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     public override Task AfterDeath(
         PlayerChoiceContext choiceContext,
         Creature creature,
@@ -708,18 +702,7 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<QueenOfHatredPageRelic>(
-                room,
-                player,
-                QueenOfHatredPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<QueenOfHatredPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<QueenOfHatredPageRelic>(room, QueenOfHatredPageRelicTitleLocKey);
     }
 
     private static bool HasQueenOfHatredPageReward(CombatRoom room, Player player)

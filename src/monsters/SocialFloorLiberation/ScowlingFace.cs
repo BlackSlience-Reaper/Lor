@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.SocialFloorLiberation;
 
-public sealed class ScowlingFace : LibraryMonsterModel
+public sealed class ScowlingFace : LorMonsterModel
 {
     public const int BaseHp = 50;
     public const int ChaoResistance = 50;

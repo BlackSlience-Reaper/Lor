@@ -25,13 +25,12 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.WarmheartedWoodsman;
 
-public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     internal const string EmptyHeartMoveId = "EMPTY_HEART";
     internal const string GiantAxeSlashMoveId = "GIANT_AXE_SLASH";
@@ -178,7 +177,6 @@ public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterA
     public override void BeforeRemovedFromRoom()
     {
         StopWarmAmbientLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 
@@ -788,18 +786,7 @@ public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterA
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<WarmheartedWoodsmanPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<WarmheartedWoodsmanPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<WarmheartedWoodsmanPageRelic>(room, PageRelicTitleLocKey);
     }
 
     private static bool IsWarmheartedWoodsmanEncounter(CombatRoom room)
@@ -846,7 +833,7 @@ public sealed class WarmheartedWoodsman : LibraryMonsterModel, ITargetedMonsterA
 
 }
 
-public sealed class WoodsmanTree : LibraryMonsterModel
+public sealed class WoodsmanTree : LorMonsterModel
 {
     internal const string HelpMeMoveId = "HELP_ME";
     internal const int HelpMeBlock = 6;

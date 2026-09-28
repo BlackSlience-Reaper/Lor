@@ -169,12 +169,6 @@ public sealed class GreenStemHermit : CounterIntentMonsterModel, ITargetedMonste
         await PowerCmdCompat.Apply<GreenStemHermitProtectionPower>(Creature, 1m, Creature, null, silent: true);
     }
 
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         // Phase 1 moves (attack players)

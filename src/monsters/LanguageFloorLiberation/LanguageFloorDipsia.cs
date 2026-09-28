@@ -47,7 +47,7 @@ internal enum LanguageFloorDipsiaMove
 }
 
 public sealed class LanguageFloorDipsia :
-    LibraryMonsterModel,
+    LorMonsterModel,
     ILiberationPrimaryPhaseBoss
 {
     public const int MaxHp = 350;
@@ -243,12 +243,6 @@ public sealed class LanguageFloorDipsia :
         }
 
         LanguageFloorLiberationBackgroundController.SetPhaseBackground(4);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeSideTurnStart(

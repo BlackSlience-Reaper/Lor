@@ -12,7 +12,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.ScorchedGirl;
 
-public sealed class TheFourthMatchFlame : LibraryMonsterModel
+public sealed class TheFourthMatchFlame : LorMonsterModel
 {
     private int EmberDamage => 
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 8, 5);

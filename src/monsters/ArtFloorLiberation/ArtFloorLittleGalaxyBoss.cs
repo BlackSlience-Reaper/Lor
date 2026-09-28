@@ -34,7 +34,7 @@ public enum ArtFloorLittleGalaxyForm
     Exposed
 }
 
-public sealed class ArtFloorLittleGalaxyBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 3;
     private const string PartingTearsMoveId = "PARTING_TEARS";
@@ -167,9 +167,8 @@ public sealed class ArtFloorLittleGalaxyBoss : LibraryMonsterModel, ILiberationP
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
-        ArtFloorLiberationBackgroundController.SetGalaxyCryingMode(false);
         base.BeforeRemovedFromRoom();
+        ArtFloorLiberationBackgroundController.SetGalaxyCryingMode(false);
     }
 
     public override Task AfterDeath(

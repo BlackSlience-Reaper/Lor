@@ -26,7 +26,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using BigBirdCreatureVisuals = LibraryOfRuina.visuals.BigBird.BigBirdCreatureVisuals;
@@ -143,7 +142,6 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
     public override void BeforeRemovedFromRoom()
     {
         BigBirdFilterOverlay.Clear();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 
@@ -479,18 +477,7 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<BigBirdPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<BigBirdPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<BigBirdPageRelic>(room, PageRelicTitleLocKey);
     }
 
     public override Task AfterDeath(
@@ -509,7 +496,7 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
 
 }
 
-public sealed class EyeballBird : LibraryMonsterModel
+public sealed class EyeballBird : LorMonsterModel
 {
     internal const string TextureRoot = "res://images/monsters/eyeball_bird/";
     internal const string IdleTexturePath = TextureRoot + "idle.png";

@@ -302,18 +302,7 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<MatchMarkRelic>(
-                room,
-                player,
-                MatchMarkRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<MatchMarkRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<MatchMarkRelic>(room, MatchMarkRelicTitleLocKey);
     }
 
     private static bool HasMatchMarkReward(CombatRoom room, Player player)

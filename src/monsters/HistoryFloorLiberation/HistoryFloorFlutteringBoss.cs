@@ -29,7 +29,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorFlutteringBoss : LibraryMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class HistoryFloorFlutteringBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
 {
     private const int Phase = 3;
     internal const int StaggerResistance = 60;
@@ -174,7 +174,6 @@ public sealed class HistoryFloorFlutteringBoss : LibraryMonsterModel, ILiberatio
     public override void BeforeRemovedFromRoom()
     {
         StopBackgroundMoonTextLoop();
-        EncounterBgmController.UnregisterMonster(Creature);
         base.BeforeRemovedFromRoom();
     }
 

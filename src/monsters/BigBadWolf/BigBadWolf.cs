@@ -39,7 +39,7 @@ using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.monsters.BigBadWolf;
 
-public sealed class BigBadWolf : LibraryMonsterModel
+public sealed class BigBadWolf : LorMonsterModel
 {
     private const string Root = "res://images/monsters/big_bad_wolf/";
     public const string IdleTexturePath = Root + "idle.png";
@@ -190,10 +190,9 @@ public sealed class BigBadWolf : LibraryMonsterModel
 
     public override void BeforeRemovedFromRoom()
     {
-        EncounterBgmController.UnregisterMonster(Creature);
+        base.BeforeRemovedFromRoom();
         ClearStolenCardMarker();
         ClearPendingCardStateOnly();
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task BeforeDeath(Creature creature)

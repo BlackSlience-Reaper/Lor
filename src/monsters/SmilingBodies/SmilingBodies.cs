@@ -29,7 +29,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -42,7 +41,7 @@ public enum SmilingBodiesPhase
     Third
 }
 
-public sealed class SmilingBodies : LibraryMonsterModel, ITargetedMonsterAttackProvider
+public sealed class SmilingBodies : LorMonsterModel, ITargetedMonsterAttackProvider
 {
     public const int MaxCorpseCount = 1;
 
@@ -245,12 +244,6 @@ public sealed class SmilingBodies : LibraryMonsterModel, ITargetedMonsterAttackP
         ResetCorpseSpawnThreshold();
         await RefreshPhasePowers();
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -927,18 +920,7 @@ public sealed class SmilingBodies : LibraryMonsterModel, ITargetedMonsterAttackP
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<SmilingBodiesPageRelic>(
-                room,
-                player,
-                PageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<SmilingBodiesPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<SmilingBodiesPageRelic>(room, PageRelicTitleLocKey);
     }
 
     public override Task AfterDeath(

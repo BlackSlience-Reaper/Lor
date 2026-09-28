@@ -35,7 +35,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.KingOfGreed;
 
-public sealed class KingOfGreed : LibraryMonsterModel
+public sealed class KingOfGreed : LorMonsterModel
 {
     public const float LocalSfxVolumeScale = 0.85f;
     public static readonly float LocalSfxVolumeDb = Mathf.LinearToDb(LocalSfxVolumeScale);

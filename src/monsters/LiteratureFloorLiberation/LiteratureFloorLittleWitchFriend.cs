@@ -27,7 +27,7 @@ internal enum LiteratureFloorLittleWitchFriendInitialMove
     Move3 = 3
 }
 
-public sealed class LiteratureFloorLittleWitchFriend : LibraryMonsterModel
+public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
 {
     private const string MoveOneId = "GLITCH_FLUTTER";
     private const string MoveTwoId = "BROKEN_LAUGHTER";

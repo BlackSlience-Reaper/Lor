@@ -20,13 +20,12 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.CosmicFragment;
 
-public sealed class CosmicFragment : LibraryMonsterModel
+public sealed class CosmicFragment : LorMonsterModel
 {
     public const string IdleTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_idle.png";
     public const string AttackTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_attack.png";
@@ -96,12 +95,6 @@ public sealed class CosmicFragment : LibraryMonsterModel
         await base.AfterAddedToRoom();
         SaveManager.Instance.MarkCardAsSeen(ModelDb.Card<CosmicFragmentEpiphanyCard>());
         EncounterBgmController.RegisterMonster(Creature);
-    }
-
-    public override void BeforeRemovedFromRoom()
-    {
-        EncounterBgmController.UnregisterMonster(Creature);
-        base.BeforeRemovedFromRoom();
     }
 
     public override async Task AfterDeath(
@@ -270,17 +263,6 @@ public sealed class CosmicFragment : LibraryMonsterModel
             return;
         }
 
-        foreach (Player player in room.CombatState.Players)
-        {
-            if (!AbnormalityPageRewardHelper.ShouldAddPageReward<CosmicFragmentPageRelic>(
-                room,
-                player,
-                CosmicFragmentPageRelicTitleLocKey))
-            {
-                continue;
-            }
-
-            room.AddExtraReward(player, new RelicReward(ModelDb.Relic<CosmicFragmentPageRelic>().ToMutable(), player));
-        }
+        AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<CosmicFragmentPageRelic>(room, CosmicFragmentPageRelicTitleLocKey);
     }
 }

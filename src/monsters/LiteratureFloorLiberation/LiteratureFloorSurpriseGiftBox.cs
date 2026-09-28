@@ -19,7 +19,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
-public sealed class LiteratureFloorSurpriseGiftBox : LibraryMonsterModel
+public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
 {
     private const string MoveOneId = "EE_YO_LI_WOO";
     private const string MoveTwoId = "COUGH_OMM_JJI_AO";
