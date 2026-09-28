@@ -15,13 +15,6 @@ namespace LibraryOfRuina.cards.TechnologyFloorLiberation;
 
 public sealed class RegretEgoCard : EgoCardBase
 {
-    public const int MultiHitDamage = 5;
-    public const int MultiHitUpgradedDamage = 6;
-    public const int MultiHitCount = 2;
-    public const int FinalDamage = 12;
-    public const int FinalUpgradedDamage = 14;
-    public const int ConfusionAmount = 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         TechnologyFloorRegretBoss.AttackSfxPath
@@ -35,9 +28,9 @@ public sealed class RegretEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", MultiHitCount),
-        new DamageVar("FinalDamage", FinalDamage, ValueProp.Move),
-        new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", ConfusionAmount)
+        new DynamicVar("Hits", TechnologyFloorEgoNumbers.RegretMultiHitCount),
+        new DamageVar("FinalDamage", TechnologyFloorEgoNumbers.RegretFinalDamage, ValueProp.Move),
+        new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", TechnologyFloorEgoNumbers.RegretConfusionAmount)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -46,7 +39,7 @@ public sealed class RegretEgoCard : EgoCardBase
     ];
 
     public RegretEgoCard()
-        : base(3, previewDamage: MultiHitDamage)
+        : base(3, previewDamage: TechnologyFloorEgoNumbers.RegretMultiHitDamage)
     {
     }
 
@@ -65,7 +58,7 @@ public sealed class RegretEgoCard : EgoCardBase
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
 
-        for (int i = 0; i < MultiHitCount; i++)
+        for (int i = 0; i < TechnologyFloorEgoNumbers.RegretMultiHitCount; i++)
         {
             LocalOggOneShotPlayer.Play(TechnologyFloorRegretBoss.AttackSfxPath, -2f);
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)

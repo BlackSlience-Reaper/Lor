@@ -124,13 +124,13 @@ public sealed class TechnologyFloorChordBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
 
     private static int EgoHitADamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, TechnologyFloorEgoNumbers.ChordHitAAscensionDamage, TechnologyFloorEgoNumbers.ChordHitABaseDamage);
 
     private static int EgoHitBDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, TechnologyFloorEgoNumbers.ChordHitBAscensionDamage, TechnologyFloorEgoNumbers.ChordHitBBaseDamage);
 
     private static int EgoHitCDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, TechnologyFloorEgoNumbers.ChordHitCAscensionDamage, TechnologyFloorEgoNumbers.ChordHitCBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         TechnologyFloorChordBossCreatureVisuals.Profile.AssetPaths
