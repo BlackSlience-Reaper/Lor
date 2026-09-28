@@ -50,8 +50,12 @@ public abstract class EgoCardBase : CardModel, IEnemyAttackPreviewCard
 
     // CardModel 与 AbstractModel 的构造函数不调用虚成员，所以在这里写 _previewDamage，与原来子类字段
     // 初始化器（先于基类构造执行）对 CanonicalVars 等价。
-    protected EgoCardBase(int cost, TargetType targetType, int previewDamage = 0)
-        : base(cost, CardType.Attack, CardRarity.Rare, targetType)
+    protected EgoCardBase(
+        int cost,
+        TargetType targetType,
+        int previewDamage = 0,
+        bool shouldShowInCardLibrary = true)
+        : base(cost, CardType.Attack, CardRarity.Rare, targetType, shouldShowInCardLibrary)
     {
         _previewDamage = previewDamage;
     }
