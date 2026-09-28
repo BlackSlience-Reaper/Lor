@@ -48,7 +48,6 @@ mutable	LibraryOfRuina.backgrounds.ForsakenMurderer.ForsakenMurdererFearBackgrou
 mutable	LibraryOfRuina.backgrounds.PhilosophyFloorLiberation.PhilosophyFloorLiberationBackgroundController._slamCompletion	System.Threading.Tasks.TaskCompletionSource
 mutable	LibraryOfRuina.backgrounds.PhilosophyFloorLiberation.PhilosophyFloorLiberationBackgroundController._slamDisconnectFinishedHandler	System.Action
 mutable	LibraryOfRuina.backgrounds.PhilosophyFloorLiberation.PhilosophyFloorLiberationBackgroundController._slamPlayer	Godot.AnimationPlayer
-mutable	LibraryOfRuina.combat.CombatSafetyNet._initialized	System.Boolean
 mutable	LibraryOfRuina.combat.CombatSafetyNet._recoveryDepth	System.Int32
 mutable	LibraryOfRuina.compat.IncompatibleModGuard.noticeShown	System.Boolean
 mutable	LibraryOfRuina.compat.MadokaLongbowSavedStateCompat._releasedCardsField	System.Reflection.FieldInfo
@@ -351,14 +350,8 @@ readonly	LibraryOfRuina.cards.Rnfmabj.RnfmabjWillOfThePrescriptCard.RollableTask
 readonly	LibraryOfRuina.cards.RoadHome.RoadHomePageChoiceCardBase.PortraitResourcePaths	System.String[]
 readonly	LibraryOfRuina.combat.AllyTurnRegistry.Providers	System.Collections.Generic.List`1[LibraryOfRuina.combat.IAllyTurnProvider]
 readonly	LibraryOfRuina.combat.AllyTurnRegistry.States	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,LibraryOfRuina.combat.AllyTurnState]
-readonly	LibraryOfRuina.combat.CombatSafetyNet.CardCombatStateProperty	System.Reflection.PropertyInfo
-readonly	LibraryOfRuina.combat.CombatSafetyNet.GuardCounters	System.Collections.Generic.Dictionary`2[LibraryOfRuina.combat.CombatSafetyNet+GuardCounterKey,LibraryOfRuina.combat.CombatSafetyNet+GuardCounterState]
-readonly	LibraryOfRuina.combat.CombatSafetyNet.Guards	System.Collections.Generic.List`1[LibraryOfRuina.combat.CombatSafetyNet+CombatSafetyGuard]
 readonly	LibraryOfRuina.combat.CombatSafetyNet.MonsterIsPerformingMoveField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.combat.CombatSafetyNet.OverlayStackOverlaysField	System.Reflection.FieldInfo
-readonly	LibraryOfRuina.combat.CombatSafetyNet.SavedPropertyIdBitSizeProperty	System.Reflection.PropertyInfo
-readonly	LibraryOfRuina.combat.CombatSafetyNet.SavedPropertyNameToNetIdMapField	System.Reflection.FieldInfo
-readonly	LibraryOfRuina.combat.CombatSafetyNet.SavedPropertyNetIdToNameMapField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker.BlockBreakRatio	System.Decimal
 readonly	LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker.SuppressedNextDamageHooks	System.Collections.Generic.HashSet`1[LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker+BlockBreakSuppression]
 readonly	LibraryOfRuina.combat.IndiscriminateAttackBlockBreaker.SuppressionSync	System.Object
@@ -835,6 +828,7 @@ readonly	LibraryOfRuina.guests.DawnOffice.Yuna.BattleStartLines	System.String[]
 readonly	LibraryOfRuina.guests.DawnOffice.Yuna.EnemyDeathLines	System.String[]
 readonly	LibraryOfRuina.guests.DawnOffice.Yuna.VictoryLines	System.String[]
 readonly	LibraryOfRuina.helpers.GodotTextureSafety.SourcePaths	System.Runtime.CompilerServices.ConditionalWeakTable`2[Godot.Texture2D,LibraryOfRuina.helpers.GodotTextureSafety+TextureSourcePath]
+readonly	LibraryOfRuina.helpers.ModOwnership.Assembly	System.Reflection.Assembly
 readonly	LibraryOfRuina.helpers.PatchFailureLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]
 readonly	LibraryOfRuina.intents.BadgedIntentTextureComposer.Cache	System.Collections.Generic.Dictionary`2[System.String,Godot.Texture2D]
 readonly	LibraryOfRuina.intents.BadgedIntentTextureComposer.TextureCompositionEnabled	System.Boolean

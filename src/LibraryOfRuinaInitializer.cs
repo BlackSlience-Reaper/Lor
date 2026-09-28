@@ -65,7 +65,6 @@ public static class LibraryOfRuinaInitializer
         NonCombatRunBgmController.Initialize();
         AbnormalityEliteBgmController.Initialize();
         ReverberationEnsembleBgmController.Initialize();
-        CombatSafetyNet.Initialize();
         RegisterAllyTurnProviders();
         SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes();
         SpecialGuestAutoRegistrar.Initialize();

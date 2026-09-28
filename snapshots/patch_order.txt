@@ -13,10 +13,6 @@ HarmonyPatch()
   Postfix LibraryOfRuina.patches.AllyPreEnemyTurnPatch.Postfix
   Prefix LibraryOfRuina.patches.AllySkipEnemySideSwitchWhenCombatEndsPatch.Prefix
   Postfix LibraryOfRuina.patches.ArtFloorMapBackgroundPatch.Postfix
-  Postfix LibraryOfRuina.patches.CombatSafetyHookTaskPatch.Postfix
-  Postfix LibraryOfRuina.patches.CombatSafetyEndPlayerTurnPhaseOnePatch.Postfix
-  Postfix LibraryOfRuina.patches.CombatSafetyEndPlayerTurnPhaseTwoPatch.Postfix
-  Postfix LibraryOfRuina.patches.CombatSafetySwitchFromPlayerToEnemySidePatch.Postfix
   Transpiler LibraryOfRuina.patches.GroupAttackEnemyTurnPriorityPatch.Transpiler
   Postfix LibraryOfRuina.patches.HistoryFloorMapBackgroundPatch.Postfix
   Postfix LibraryOfRuina.patches.LanguageFloorMapBackgroundPatch.Postfix
@@ -59,9 +55,6 @@ HarmonyPatch(typeof(LibraryLib.Entities.Creatures.LibraryCreature), "SaveAndSetS
   Postfix LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilRestoreStunWindowPatch.Postfix
   Postfix LibraryOfRuina.patches.BlueStar.BlueStarFollowerStunResistancePatch.Postfix
   Prefix LibraryOfRuina.patches.BlueStar.BlueStarFollowerStunResistancePatch.Prefix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Combat.CombatManager), "AfterCreatureAdded", [typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature)])
-  Postfix LibraryOfRuina.patches.CombatSafetyAfterCreatureAddedPatch.Postfix
-  Postfix LibraryOfRuina.patches.MonsterIntentGraphPrecomputePatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Combat.CombatManager), "LoseCombat")
   Postfix LibraryOfRuina.audio.NonCombatRunBgmCombatLossPatch.Postfix
   Prefix LibraryOfRuina.audio.ReverberationEnsembleMusicLossPatch.Prefix
@@ -127,9 +120,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "ScaleMonst
   Prefix LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch.Prefix
   Prefix LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorMagicalGirlFixedHpPatch.Prefix
   Postfix LibraryOfRuina.monsters.SocialFloorLiberation.SocialFloorLiberationExactVitalsPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "TakeTurn")
-  Prefix LibraryOfRuina.patches.AllySkipOfficialEnemyTurnPatch.Prefix
-  Postfix LibraryOfRuina.patches.CombatSafetyCreatureTakeTurnPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "AfterCombatVictory")
   Postfix LibraryOfRuina.specialguests.SpecialGuestAfterCombatVictoryPatch.Postfix
   Prefix LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorVictoryPatch.Prefix
@@ -240,9 +230,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Audio.NRunMusicController), "Update
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCardPlay), "ShowMultiCreatureTargetingVisuals")
   Postfix LibraryOfRuina.patches.WrathServant.WrathServantPageTargetPatch+CardPlayShowMultiCreatureTargetingVisualsPatch.Postfix
   Postfix LibraryOfRuina.patches.WedgeOffice.FanaticWorshipTargetPatch+CardPlayShowMultiCreatureTargetingVisualsPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "PerformIntent")
-  Prefix LibraryOfRuina.patches.AllySkipOfficialEnemyIntentPatch.Prefix
-  Postfix LibraryOfRuina.patches.CombatSafetyCreatureIntentPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "SetAnimationTrigger")
   Postfix LibraryOfRuina.patches.NonSpineAnimationTriggerBridgePatch.Postfix
   Prefix LibraryOfRuina.patches.NonSpineAnimationTriggerBridgePatch.Prefix

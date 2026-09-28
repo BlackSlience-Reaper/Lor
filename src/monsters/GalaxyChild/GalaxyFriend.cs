@@ -94,7 +94,6 @@ public sealed class GalaxyFriend : LibraryMonsterModel
 
     private GalaxyFriendInitialMove _initialMove = GalaxyFriendInitialMove.Wait;
     private bool _isFakeDead;
-    private bool _isPartingTearsVictoryQueued;
     private bool _isResolvingPartingTearsVictory;
     private int _fakeDeathPlayerTurnStunsRemaining;
     private string _fakeDeathRecoveryMoveId = WaitMoveId;
@@ -242,7 +241,8 @@ public sealed class GalaxyFriend : LibraryMonsterModel
 
         GalaxyChildBackgroundController.SetFakeDeathMode(true);
         StartFakeDeathBackgroundTextLoop();
-        QueuePartingTearsVictoryIfReady(Creature.CombatState);
+        // Parting Tears victory is triggered once the AfterDeath dispatch completes
+        // (GalaxyChildPartingTearsAfterDeathPatch); player turn start is the fallback.
     }
 
     public async Task TickFakeDeathOnPlayerTurnStart()
@@ -312,7 +312,6 @@ public sealed class GalaxyFriend : LibraryMonsterModel
         Log.Warn("[GalaxyFriend] forcing Parting Tears victory after both friends entered fake death.");
         foreach (GalaxyFriend friend in friends)
         {
-            friend._isPartingTearsVictoryQueued = true;
             friend._isResolvingPartingTearsVictory = true;
             friend.ResetFakeDeathState(clearPartingTearsVictoryState: false);
         }
@@ -575,7 +574,6 @@ public sealed class GalaxyFriend : LibraryMonsterModel
         _fakeDeathRecoveryMoveId = WaitMoveId;
         if (clearPartingTearsVictoryState)
         {
-            _isPartingTearsVictoryQueued = false;
             _isResolvingPartingTearsVictory = false;
         }
     }
@@ -594,28 +592,6 @@ public sealed class GalaxyFriend : LibraryMonsterModel
             .ToArray() ?? [];
     }
 
-    private static void QueuePartingTearsVictoryIfReady(CombatStateLike? combatState)
-    {
-        IReadOnlyList<GalaxyFriend> friends = GetFriends(combatState).ToArray();
-        if (!ShouldTriggerPartingTears(combatState)
-            || friends.Any(static friend => friend._isResolvingPartingTearsVictory))
-        {
-            return;
-        }
-
-        if (!friends.Any(static friend => friend._isPartingTearsVictoryQueued))
-        {
-            foreach (GalaxyFriend friend in friends)
-            {
-                friend._isPartingTearsVictoryQueued = true;
-            }
-        }
-
-        Callable.From(() =>
-        {
-            TaskHelper.RunSafely(TriggerPartingTearsVictory(combatState));
-        }).CallDeferred();
-    }
 
     private static void StartNormalBackgroundTextLoop()
     {

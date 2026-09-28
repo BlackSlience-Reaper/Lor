@@ -46,22 +46,11 @@ internal static class CombatSafetyNet
 {
     private const string LogTag = "LibraryOfRuina.CombatSafety";
 
-    private static readonly List<CombatSafetyGuard> Guards = [];
-    private static readonly Dictionary<GuardCounterKey, GuardCounterState> GuardCounters = [];
     private static readonly FieldInfo? MonsterIsPerformingMoveField =
         AccessTools.Field(typeof(MonsterModel), "_isPerformingMove");
-    private static readonly PropertyInfo? CardCombatStateProperty =
-        AccessTools.Property(typeof(CardModel), "CombatState");
     private static readonly FieldInfo? OverlayStackOverlaysField =
         AccessTools.Field(typeof(NOverlayStack), "_overlays");
-    private static readonly FieldInfo? SavedPropertyNameToNetIdMapField =
-        AccessTools.DeclaredField(typeof(ModelIdSerializationCache), "_propertyNameToNetIdMap");
-    private static readonly FieldInfo? SavedPropertyNetIdToNameMapField =
-        AccessTools.DeclaredField(typeof(ModelIdSerializationCache), "_netIdToPropertyNameMap");
-    private static readonly PropertyInfo? SavedPropertyIdBitSizeProperty =
-        AccessTools.Property(typeof(ModelIdSerializationCache), "PropertyIdBitSize");
 
-    private static bool _initialized;
     private static int _recoveryDepth;
 
     public static bool IsRecovering => _recoveryDepth > 0;
@@ -87,85 +76,6 @@ internal static class CombatSafetyNet
             + " encounter=" + (room.ModelId?.Entry ?? "unknown"));
     }
 
-    public static void Initialize()
-    {
-        if (_initialized)
-        {
-            return;
-        }
-
-        _initialized = true;
-        RegisterRepeatedCombatStateGuard(
-            id: "GALAXY_CHILD_DOUBLE_FAKE_DEATH",
-            reason: "two Galaxy Friends stayed fake-dead across repeated combat checks",
-            consecutiveDetections: 1,
-            isProblemState: GalaxyFriend.ShouldTriggerPartingTears,
-            recoverAsync: GalaxyFriend.TriggerPartingTearsVictory);
-    }
-
-    public static void RegisterRecoveryGuard(
-        string id,
-        string reason,
-        int priority,
-        Func<CombatSafetyContext, Exception?, Task<bool>> recoverAsync)
-    {
-        if (string.IsNullOrWhiteSpace(id))
-        {
-            throw new ArgumentException("Guard id is required.", nameof(id));
-        }
-
-        Guards.Add(new CombatSafetyGuard(id, reason, priority, recoverAsync));
-        Guards.Sort(static (left, right) => left.Priority.CompareTo(right.Priority));
-    }
-
-    public static void RegisterRepeatedCombatStateGuard(
-        string id,
-        string reason,
-        int consecutiveDetections,
-        Func<CombatStateLike?, bool> isProblemState,
-        Func<CombatStateLike?, Task> recoverAsync,
-        int priority = 100)
-    {
-        if (consecutiveDetections <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(consecutiveDetections));
-        }
-
-        RegisterRecoveryGuard(
-            id,
-            reason,
-            priority,
-            async (context, _) =>
-            {
-                CombatStateLike? combatState = ResolveCombatState(context);
-                if (combatState == null || !isProblemState(combatState))
-                {
-                    ResetCounter(id, combatState);
-                    return false;
-                }
-
-                GuardCounterState counter = IncrementCounter(id, combatState);
-                Log.Warn(
-                    "[" + LogTag + "] guard detected id=" + id
-                    + " count=" + counter.Count + "/" + consecutiveDetections
-                    + " beat=" + counter.LastBeat
-                    + " context=" + DescribeContext(context with { CombatState = combatState }));
-
-                if (counter.Count < consecutiveDetections)
-                {
-                    return false;
-                }
-
-                ResetCounter(id, combatState);
-                Log.Error(
-                    "[" + LogTag + "] guard recovering id=" + id
-                    + " reason=" + reason
-                    + " context=" + DescribeContext(context with { CombatState = combatState }));
-                await recoverAsync(combatState);
-                return true;
-            });
-    }
-
     public static Task WrapTask(Task task, CombatSafetyContext context)
     {
         if (task.IsCompletedSuccessfully || IsRecovering)
@@ -174,49 +84,6 @@ internal static class CombatSafetyNet
         }
 
         return AwaitWithGuard(task, context);
-    }
-
-    public static Task RunTaskHelperSafely(Task? task)
-    {
-        CombatSafetyContext context = new("TaskHelper.RunSafely");
-        if (task == null)
-        {
-            Log.Warn("[" + LogTag + "] TaskHelper.RunSafely received null task; skipped wrapper and ran guard point.");
-            return RunGuardPoint(context);
-        }
-
-        return AwaitTaskHelperWithGuard(task, context);
-    }
-
-    public static Task WrapHookTask(Task? task, string surface, object?[]? args)
-    {
-        object?[] resolvedArgs = args ?? Array.Empty<object?>();
-        if (task == null)
-        {
-            CombatSafetyContext context = ResolveContextFromArgs(surface, resolvedArgs);
-            Log.Warn(
-                "[" + LogTag + "] hook returned null task; skipped wrapper surface=" + surface
-                + " context=" + DescribeContext(context)
-                + TryDescribeHookNullTaskDetails(surface, resolvedArgs));
-            return Task.CompletedTask;
-        }
-
-        if (task.IsCompletedSuccessfully || IsRecovering)
-        {
-            return task;
-        }
-
-        return AwaitWithGuard(task, ResolveContextFromArgs(surface, resolvedArgs));
-    }
-
-    public static Task<bool> WrapCheckWinConditionTask(Task<bool> task, CombatSafetyContext context)
-    {
-        if (IsRecovering)
-        {
-            return task;
-        }
-
-        return AwaitCheckWinConditionWithGuard(task, context);
     }
 
     public static Task<AttackCommand> WrapMonsterAttackTask(Task<AttackCommand> task, AttackCommand command)
@@ -232,94 +99,11 @@ internal static class CombatSafetyNet
     public static bool ShouldSkipDeadMonsterAttackFollowup(Creature? attacker) =>
         IsDeadPerformingMonster(attacker);
 
-    public static async Task RunGuardPoint(CombatSafetyContext context)
-    {
-        if (!IsCombatContext(context) || IsRecovering)
-        {
-            return;
-        }
-
-        await RecoverAsync(context, exception: null, checkWinAfterRecovery: true);
-    }
-
-    /// <summary>
-    /// Synchronous convergence point that runs right before every multiplayer checksum
-    /// snapshot (patched into ChecksumTracker.GenerateChecksum). If an enemy's death
-    /// pipeline stalled mid-hook on this machine, the creature sits at 0 HP inside the
-    /// combat state while peers have already removed it, which desyncs the checksum and
-    /// kicks clients. Finalizing the stuck death here mirrors the removal block of
-    /// CreatureCmd.KillWithoutCheckingWinCondition, so every machine snapshots the same
-    /// post-death state. Fake-death / corpse-keeping powers are untouched because the
-    /// check goes through Hook.ShouldCreatureBeRemovedFromCombatAfterDeath.
-    /// </summary>
-    public static void FinalizeStuckDeadEnemiesBeforeChecksum()
-    {
-        if (IsRecovering)
-        {
-            return;
-        }
-
-        CombatStateLike? combatState;
-        try
-        {
-            if (!CombatManager.Instance.IsInProgress)
-            {
-                return;
-            }
-
-            combatState = CombatManager.Instance.DebugOnlyGetState();
-        }
-        catch
-        {
-            return;
-        }
-
-        if (combatState == null)
-        {
-            return;
-        }
-
-        try
-        {
-            Creature[] stuckEnemies = combatState.Enemies
-                .Where(enemy =>
-                    enemy.IsDead
-                    && Hook.ShouldCreatureBeRemovedFromCombatAfterDeath(combatState, enemy))
-                .ToArray();
-            if (stuckEnemies.Length == 0)
-            {
-                return;
-            }
-
-            foreach (Creature enemy in stuckEnemies)
-            {
-                CombatManager.Instance.RemoveCreature(enemy);
-                if (enemy.Monster is not { IsPerformingMove: true })
-                {
-                    combatState.RemoveCreature(enemy);
-                }
-
-                Log.Warn(
-                    "[" + LogTag + "] checksum guard finalized stuck dead enemy"
-                    + " monster=" + (enemy.Monster?.Id.Entry ?? "none")
-                    + " hp=" + enemy.CurrentHp
-                    + " encounter=" + (combatState.Encounter?.Id.Entry ?? "none"));
-            }
-        }
-        catch (Exception exception)
-        {
-            Log.Error(
-                "[" + LogTag + "] failed to finalize stuck dead enemies before checksum: "
-                + exception);
-        }
-    }
-
     private static async Task AwaitWithGuard(Task task, CombatSafetyContext context)
     {
         try
         {
             await task;
-            await RunGuardPoint(context);
         }
         catch (DeadMonsterAttackAbortedException exception)
         {
@@ -332,10 +116,6 @@ internal static class CombatSafetyNet
         {
             SuppressNonFatalPresentationException(context, exception);
         }
-        catch (Exception exception) when (IsRunAbandonTaskHelperException(context, exception))
-        {
-            await RecoverFromRunAbandonTaskFailure(context, exception);
-        }
         catch (Exception exception) when (IsMultiplayerNonRecoverableException(exception))
         {
             LogNonRecoverableMultiplayerException(context, exception);
@@ -343,86 +123,6 @@ internal static class CombatSafetyNet
         catch (Exception exception) when (ShouldSuppress(exception, context))
         {
             await RecoverAsync(context, exception, checkWinAfterRecovery: true);
-        }
-    }
-
-    private static async Task AwaitTaskHelperWithGuard(Task task, CombatSafetyContext context)
-    {
-        try
-        {
-            await task;
-            await RunGuardPoint(context);
-        }
-        catch (DeadMonsterAttackAbortedException exception)
-        {
-            await RecoverFromDeadMonsterAttackAbort(context, exception);
-        }
-        catch (Exception exception) when (ShouldIgnore(exception))
-        {
-        }
-        catch (Exception exception) when (ShouldTreatAsNonFatalPresentationException(exception, context))
-        {
-            SuppressNonFatalPresentationException(context, exception);
-        }
-        catch (Exception exception) when (IsRunAbandonTaskHelperException(context, exception))
-        {
-            await RecoverFromRunAbandonTaskFailure(context, exception);
-        }
-        catch (Exception exception) when (IsMultiplayerNonRecoverableException(exception))
-        {
-            LogNonRecoverableMultiplayerException(context, exception);
-        }
-        catch (Exception exception) when (ShouldSuppress(exception, context))
-        {
-            await RecoverAsync(context, exception, checkWinAfterRecovery: true);
-        }
-        catch (Exception exception)
-        {
-            Log.Error(exception.ToString());
-            SentryService.CaptureException(exception);
-            throw;
-        }
-    }
-
-    private static async Task<bool> AwaitCheckWinConditionWithGuard(Task<bool> task, CombatSafetyContext context)
-    {
-        try
-        {
-            bool result = await task;
-            if (!result)
-            {
-                bool recovered = await RecoverAsync(context, exception: null, checkWinAfterRecovery: false);
-                if (recovered)
-                {
-                    return true;
-                }
-            }
-
-            return result;
-        }
-        catch (DeadMonsterAttackAbortedException exception)
-        {
-            await RecoverFromDeadMonsterAttackAbort(context, exception);
-            return !CombatManager.Instance.IsInProgress;
-        }
-        catch (Exception exception) when (ShouldIgnore(exception))
-        {
-            return false;
-        }
-        catch (Exception exception) when (ShouldTreatAsNonFatalPresentationException(exception, context))
-        {
-            SuppressNonFatalPresentationException(context, exception);
-            return false;
-        }
-        catch (Exception exception) when (IsMultiplayerNonRecoverableException(exception))
-        {
-            LogNonRecoverableMultiplayerException(context, exception);
-            return false;
-        }
-        catch (Exception exception) when (ShouldSuppress(exception, context))
-        {
-            await RecoverAsync(context, exception, checkWinAfterRecovery: true);
-            return !CombatManager.Instance.IsInProgress;
         }
     }
 
@@ -475,83 +175,6 @@ internal static class CombatSafetyNet
         }
     }
 
-    private static async Task RecoverFromRunAbandonTaskFailure(
-        CombatSafetyContext context,
-        Exception exception)
-    {
-        CombatSafetyContext resolvedContext = context with { CombatState = ResolveCombatState(context) };
-        var recoveryReport = new CombatRecoveryReport();
-
-        bool endedAbandonedRun = await TryEndInterruptedAbandonedRun(resolvedContext, recoveryReport);
-        if (!endedAbandonedRun)
-        {
-            TryUnpauseCombat(recoveryReport);
-            await TryCheckWinCondition(recoveryReport);
-        }
-
-        Log.Warn(
-            "[" + LogTag + "] recovered interrupted run abandon: "
-            + DescribeCaughtError(exception)
-            + "; recovery=" + recoveryReport.Summary
-            + "; context=" + DescribeContext(resolvedContext)
-            + "; details=" + exception);
-    }
-
-    private static async Task<bool> TryEndInterruptedAbandonedRun(
-        CombatSafetyContext context,
-        CombatRecoveryReport recoveryReport)
-    {
-        try
-        {
-            CombatStateLike? combatState = ResolveCombatState(context);
-            if (combatState == null || !RunManager.Instance.IsAbandoned)
-            {
-                return false;
-            }
-
-            if (CombatManager.Instance.IsInProgress)
-            {
-                CombatManager.Instance.LoseCombat();
-                recoveryReport.Add("forced combat loss after interrupted run abandon");
-                await CombatManager.Instance.CheckWinCondition();
-            }
-
-            TryShowGameOverForInterruptedAbandon(recoveryReport);
-            return true;
-        }
-        catch (Exception recoveryException)
-        {
-            Log.Error(
-                "[" + LogTag + "] failed to recover interrupted run abandon context="
-                + DescribeContext(context)
-                + " exception=" + recoveryException);
-            return false;
-        }
-    }
-
-    private static void TryShowGameOverForInterruptedAbandon(CombatRecoveryReport recoveryReport)
-    {
-        NRun? nRun = NRun.Instance;
-        if (!TestMode.IsOff || !RunManager.Instance.IsInProgress || nRun == null)
-        {
-            return;
-        }
-
-        try
-        {
-            nRun.RunMusicController.StopMusic();
-            NAudioManager.Instance?.PlayMusic("event:/temp/sfx/game_over");
-            var serializableRun = RunManager.Instance.OnEnded(isVictory: false);
-            nRun.ShowGameOverScreen(serializableRun);
-            recoveryReport.Add("completed game-over cleanup for interrupted run abandon");
-        }
-        catch (Exception exception)
-        {
-            recoveryReport.Add("combat ended but game-over cleanup failed: " + exception.GetType().Name);
-            Log.Error("[" + LogTag + "] game-over cleanup failed after interrupted run abandon: " + exception);
-        }
-    }
-
     private static async Task<bool> RecoverAsync(
         CombatSafetyContext context,
         Exception? exception,
@@ -578,30 +201,10 @@ internal static class CombatSafetyNet
                     TryFinalizeFailedMonsterMoves(resolvedContext, recoveryReport);
                 }
                 TryUnpauseCombat(recoveryReport);
-                TryRecoverMissingSavedPropertyNetIds(exception, recoveryReport);
             }
 
             bool recovered = false;
-            foreach (CombatSafetyGuard guard in Guards)
-            {
-                try
-                {
-                    if (await guard.RecoverAsync(resolvedContext, exception))
-                    {
-                        recovered = true;
-                        recoveryReport.Add("执行保护规则 " + guard.Id + "（" + guard.Reason + "）");
-                    }
-                }
-                catch (Exception guardException)
-                {
-                    Log.Error(
-                        "[" + LogTag + "] guard failed id=" + guard.Id
-                        + " context=" + DescribeContext(resolvedContext)
-                        + " exception=" + guardException);
-                }
-            }
-
-            if ((recovered || exception != null) && checkWinAfterRecovery && !isDeathHookRecovery)
+            if (exception != null && checkWinAfterRecovery && !isDeathHookRecovery)
             {
                 await TryCheckWinCondition(recoveryReport);
             }
@@ -701,17 +304,6 @@ internal static class CombatSafetyNet
         string.Equals(context.Surface, "Hook.BeforeDeath", StringComparison.Ordinal)
         || string.Equals(context.Surface, "Hook.AfterDeath", StringComparison.Ordinal);
 
-    private static bool IsRunAbandonTaskHelperException(CombatSafetyContext context, Exception exception) =>
-        string.Equals(context.Surface, "TaskHelper.RunSafely", StringComparison.Ordinal)
-        && IsRunAbandonStack(exception);
-
-    private static bool IsRunAbandonStack(Exception exception)
-    {
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        return stackTrace.Contains("MegaCrit.Sts2.Core.Runs.RunManager.AbandonInternal", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Runs.RunManager.GuaranteeKillAllPlayers", StringComparison.Ordinal);
-    }
-
     private static bool ShouldIgnore(Exception exception) =>
         exception is OperationCanceledException;
 
@@ -725,16 +317,6 @@ internal static class CombatSafetyNet
         if (exception is LocException)
         {
             return IsPowerVfxPresentationException(exception);
-        }
-
-        // 独立重击特效失败只影响画面，不能解除正在等待结算的战斗队列。
-        if (context.Surface == "TaskHelper.RunSafely"
-            && (exception is NullReferenceException || exception is ObjectDisposedException)
-            && (exception.StackTrace ?? string.Empty).Contains(
-                "MegaCrit.Sts2.Core.Nodes.Vfx.NHeavyBluntVfx.PlaySequence",
-                StringComparison.Ordinal))
-        {
-            return true;
         }
 
         if (exception is InvalidOperationException && IsBbcodePresentationException(exception))
@@ -902,17 +484,6 @@ internal static class CombatSafetyNet
             return;
         }
 
-        if (IsKnownNonCombatTaskHelperException(context, exception, out string nonCombatArea))
-        {
-            Log.Warn(
-                "[" + LogTag + "] caught TaskHelper exception outside combat seam: "
-                + DescribeCaughtError(exception)
-                + "; kept recovery diagnostics only; area=" + nonCombatArea
-                + "; context=" + DescribeContext(context)
-                + "; details=" + exception);
-            return;
-        }
-
         Log.Error(
             "[" + LogTag + "] caught combat exception / 发现战斗异常："
             + DescribeCaughtError(exception)
@@ -939,50 +510,6 @@ internal static class CombatSafetyNet
         return objectDisposedException.ObjectName?.StartsWith("Godot.", StringComparison.Ordinal) == true
             || exception.StackTrace?.Contains("MegaCrit.Sts2.Core.Nodes.Cards.NCardGrid", StringComparison.Ordinal) == true
             || exception.StackTrace?.Contains("MegaCrit.Sts2.Core.Nodes.Relics.NRelicInventoryHolder", StringComparison.Ordinal) == true;
-    }
-
-    private static bool IsKnownNonCombatTaskHelperException(
-        CombatSafetyContext context,
-        Exception exception,
-        out string area)
-    {
-        area = string.Empty;
-
-        if (!string.Equals(context.Surface, "TaskHelper.RunSafely", StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        string stackTrace = exception.StackTrace ?? string.Empty;
-        if (stackTrace.Contains("MegaCrit.Sts2.Core.Runs.RunManager.AbandonInternal", StringComparison.Ordinal))
-        {
-            area = "run abandon";
-            return true;
-        }
-
-        if (stackTrace.Contains("MegaCrit.Sts2.Core.GameActions.MoveToMapCoordAction.GoToMapCoord", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen.TravelToMapCoord", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Runs.RunManager.EnterMapPointInternal", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Runs.RunManager.EnterRoomInternal", StringComparison.Ordinal))
-        {
-            area = "map travel";
-            return true;
-        }
-
-        if (stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunLeaderboard", StringComparison.Ordinal))
-        {
-            area = "daily run leaderboard";
-            return true;
-        }
-
-        if (stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu", StringComparison.Ordinal)
-            || stackTrace.Contains("MegaCrit.Sts2.Core.Nodes.Screens.Settings.NSettingsScreen", StringComparison.Ordinal))
-        {
-            area = "main menu/settings";
-            return true;
-        }
-
-        return false;
     }
 
     private static bool IsCombatContext(CombatSafetyContext context)
@@ -1030,97 +557,6 @@ internal static class CombatSafetyNet
         }
     }
 
-    private static CombatSafetyContext ResolveContextFromArgs(string surface, object?[] args)
-    {
-        CombatStateLike? combatState = null;
-        Creature? creature = null;
-        MonsterModel? monster = null;
-
-        foreach (object? arg in args)
-        {
-            switch (arg)
-            {
-                case CombatStateLike state:
-                    combatState ??= state;
-                    break;
-                case Creature argCreature:
-                    creature ??= argCreature;
-                    combatState ??= argCreature.CombatState;
-                    monster ??= argCreature.Monster;
-                    break;
-                case Player player:
-                    creature ??= player.Creature;
-                    combatState ??= player.Creature?.CombatState;
-                    monster ??= player.Creature?.Monster;
-                    break;
-                case MonsterModel argMonster:
-                    monster ??= argMonster;
-                    creature ??= argMonster.Creature;
-                    combatState ??= argMonster.Creature?.CombatState;
-                    break;
-                case CardModel card:
-                    combatState ??= TryResolveCardCombatState(card);
-                    break;
-                case CardPlay cardPlay:
-                    creature ??= cardPlay.Card.Owner?.Creature;
-                    monster ??= cardPlay.Target?.Monster;
-                    combatState ??= TryResolveCardCombatState(cardPlay.Card);
-                    break;
-                case PowerModel power:
-                    creature ??= power.Owner;
-                    combatState ??= power.Owner?.CombatState;
-                    monster ??= power.Owner?.Monster;
-                    break;
-            }
-        }
-
-        return new CombatSafetyContext(surface, combatState, creature, monster);
-    }
-
-    private static CombatStateLike? TryResolveCardCombatState(CardModel card)
-    {
-        try
-        {
-            return CardCombatStateProperty?.GetValue(card) as CombatStateLike;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private static GuardCounterState IncrementCounter(string id, CombatStateLike combatState)
-    {
-        var key = new GuardCounterKey(RuntimeHelpers.GetHashCode(combatState), id);
-        string beat = DescribeBeat(combatState);
-
-        if (!GuardCounters.TryGetValue(key, out GuardCounterState state))
-        {
-            state = new GuardCounterState(0, string.Empty);
-        }
-
-        if (state.LastBeat != beat)
-        {
-            state = new GuardCounterState(state.Count + 1, beat);
-            GuardCounters[key] = state;
-        }
-
-        return state;
-    }
-
-    private static void ResetCounter(string id, CombatStateLike? combatState)
-    {
-        if (combatState == null)
-        {
-            return;
-        }
-
-        GuardCounters.Remove(new GuardCounterKey(RuntimeHelpers.GetHashCode(combatState), id));
-    }
-
-    private static string DescribeBeat(CombatStateLike combatState) =>
-        "round=" + combatState.RoundNumber + ",side=" + combatState.CurrentSide;
-
     private static string DescribeContext(CombatSafetyContext context)
     {
         CombatStateLike? combatState = ResolveCombatState(context);
@@ -1140,96 +576,6 @@ internal static class CombatSafetyNet
             + ",action=" + action
             + ",multiplayer=" + multiplayer
             + beforeDeathListeners;
-    }
-
-    private static string TryDescribeHookNullTaskDetails(string surface, object?[] args)
-    {
-        List<string> details = [];
-
-        string patchOwners = TryDescribeHookPatchOwners(surface);
-        if (!string.IsNullOrEmpty(patchOwners))
-        {
-            details.Add("patchOwners=" + patchOwners);
-        }
-
-        string cardPlay = TryDescribeCardPlay(args);
-        if (!string.IsNullOrEmpty(cardPlay))
-        {
-            details.Add("cardPlay=" + cardPlay);
-        }
-
-        string choiceModel = TryDescribeChoiceContextModel(args);
-        if (!string.IsNullOrEmpty(choiceModel))
-        {
-            details.Add("choiceModel=" + choiceModel);
-        }
-
-        return details.Count == 0 ? string.Empty : "," + string.Join(",", details);
-    }
-
-    private static string TryDescribeHookPatchOwners(string surface)
-    {
-        if (!surface.StartsWith("Hook.", StringComparison.Ordinal))
-        {
-            return string.Empty;
-        }
-
-        try
-        {
-            string methodName = surface.Substring("Hook.".Length);
-            MethodBase? method = typeof(Hook)
-                .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                .FirstOrDefault(candidate => string.Equals(candidate.Name, methodName, StringComparison.Ordinal));
-            if (method == null)
-            {
-                return "method_not_found";
-            }
-
-            Patches? patchInfo = Harmony.GetPatchInfo(method);
-            if (patchInfo == null || patchInfo.Owners.Count == 0)
-            {
-                return "none";
-            }
-
-            IReadOnlyList<string> owners = patchInfo.Owners
-                .Distinct(StringComparer.Ordinal)
-                .Take(12)
-                .ToList();
-            return string.Join("|", owners) + (patchInfo.Owners.Count > owners.Count ? "|..." : string.Empty);
-        }
-        catch (Exception exception)
-        {
-            return "lookup_failed:" + exception.GetType().Name;
-        }
-    }
-
-    private static string TryDescribeCardPlay(object?[] args)
-    {
-        CardPlay? cardPlay = args.OfType<CardPlay>().FirstOrDefault();
-        if (cardPlay == null)
-        {
-            return string.Empty;
-        }
-
-        string card = SafeDescribeModelId(cardPlay.Card);
-        string owner = cardPlay.Card.Owner?.NetId.ToString() ?? "none";
-        string target = cardPlay.Target?.Monster?.Id.Entry ?? cardPlay.Target?.Name ?? "none";
-        return card
-            + "@owner=" + owner
-            + "@target=" + target
-            + "@play=" + cardPlay.PlayIndex + "/" + cardPlay.PlayCount;
-    }
-
-    private static string TryDescribeChoiceContextModel(object?[] args)
-    {
-        PlayerChoiceContext? choiceContext = args.OfType<PlayerChoiceContext>().FirstOrDefault();
-        AbstractModel? model = choiceContext?.LastInvolvedModel;
-        if (model == null)
-        {
-            return string.Empty;
-        }
-
-        return (model.GetType().FullName ?? model.GetType().Name) + "[" + SafeDescribeModelId(model) + "]";
     }
 
     private static string TryDescribeBeforeDeathListenersForContext(CombatSafetyContext context)
@@ -1491,104 +837,6 @@ internal static class CombatSafetyNet
         }
     }
 
-    /// <summary>
-    /// Registers a missing SavedProperty name into the game's ModelIdSerializationCache so that
-    /// replay / network serialization of a card that carries a property from a currently-unloaded
-    /// mod does not abort combat-end (WriteReplay) or other serialization paths.
-    /// Safe to call repeatedly; no-op when the name is already known or the cache is unavailable.
-    /// </summary>
-    public static void RegisterSavedPropertyNameIfMissing(string? name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return;
-        }
-
-        try
-        {
-            var map = SavedPropertyNameToNetIdMapField?.GetValue(null) as Dictionary<string, int>;
-            var list = SavedPropertyNetIdToNameMapField?.GetValue(null) as List<string>;
-            if (map == null || list == null || map.ContainsKey(name))
-            {
-                return;
-            }
-
-            map[name] = list.Count;
-            list.Add(name);
-
-            int bitSize = list.Count > 1
-                ? Mathf.CeilToInt(Mathf.Log(list.Count) / Mathf.Log(2f))
-                : 0;
-            SavedPropertyIdBitSizeProperty?.SetValue(null, bitSize);
-
-            Log.Warn(
-                "[" + LogTag + "] registered missing SavedProperty name into ModelIdSerializationCache: "
-                + name + " (netId=" + (list.Count - 1) + ", bitSize=" + bitSize + ")");
-        }
-        catch (Exception exception)
-        {
-            Log.Warn(
-                "[" + LogTag + "] failed to register missing SavedProperty name "
-                + name + " exception=" + exception.GetType().Name + ": " + exception.Message);
-        }
-    }
-
-    private static bool IsSavedPropertyNetIdMappingException(Exception exception) =>
-        exception is ArgumentException
-        && exception.Message?.Contains(
-            "could not be mapped to any net ID",
-            StringComparison.Ordinal) == true
-        && exception.StackTrace?.Contains(
-            "ModelIdSerializationCache.GetNetIdForPropertyName",
-            StringComparison.Ordinal) == true;
-
-    private static string? TryResolveMissingSavedPropertyName(Exception exception)
-    {
-        const string prefix = "SavedProperty name ";
-        const string suffix = " could not be mapped to any net ID";
-
-        string message = exception.Message ?? string.Empty;
-        int start = message.IndexOf(prefix, StringComparison.Ordinal);
-        if (start < 0)
-        {
-            return null;
-        }
-
-        start += prefix.Length;
-        int end = message.IndexOf(suffix, start, StringComparison.Ordinal);
-        if (end < 0)
-        {
-            end = message.Length;
-        }
-
-        string name = message.Substring(start, end - start).Trim();
-        return string.IsNullOrWhiteSpace(name) ? null : name;
-    }
-
-    /// <summary>
-    /// Defensive fallback for the rare case a SavedProperty net-ID mapping failure still escapes
-    /// (e.g. serialization path not covered by the WritePropertyName prefix). Registers the missing
-    /// name so later serialization (save/replay) succeeds and keeps a clear recovery summary.
-    /// </summary>
-    private static void TryRecoverMissingSavedPropertyNetIds(
-        Exception exception,
-        CombatRecoveryReport recoveryReport)
-    {
-        if (!IsSavedPropertyNetIdMappingException(exception))
-        {
-            return;
-        }
-
-        string? name = TryResolveMissingSavedPropertyName(exception);
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return;
-        }
-
-        RegisterSavedPropertyNameIfMissing(name);
-        recoveryReport.Add("注册缺失的 SavedProperty 属性名到序列化缓存：" + name);
-    }
-
     private static async Task TryCheckWinCondition(CombatRecoveryReport recoveryReport)
     {
         try
@@ -1621,16 +869,6 @@ internal static class CombatSafetyNet
             }
         }
     }
-
-    private sealed record CombatSafetyGuard(
-        string Id,
-        string Reason,
-        int Priority,
-        Func<CombatSafetyContext, Exception?, Task<bool>> RecoverAsync);
-
-    private readonly record struct GuardCounterKey(int CombatStateHash, string Id);
-
-    private readonly record struct GuardCounterState(int Count, string LastBeat);
 
     private sealed class DeadMonsterAttackAbortedException(Creature attacker) : Exception
     {
