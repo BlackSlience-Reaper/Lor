@@ -12,7 +12,7 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 
 | 模组 | 最低版本 | 地址 |
 | --- | --- | --- |
-| LibraryOfRuinaLib（废墟图书馆基础库） | 1.2.14 | https://github.com/Xuyuha/LibraryOfRuinaLib |
+| LibraryOfRuinaLib（废墟图书馆基础库） | 1.3.0 | https://github.com/Xuyuha/LibraryOfRuinaLib |
 | STS2-RitsuLib | 0.6.2 | https://github.com/BAKAOLC/STS2-RitsuLib |
 | ActLikeIt2 | 0.2.1 | https://github.com/Darkglade1/ActLikeIt2 |
 

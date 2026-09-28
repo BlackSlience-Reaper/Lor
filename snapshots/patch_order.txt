@@ -2,7 +2,6 @@ HarmonyPatch()
   Transpiler LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.Transpiler
   Transpiler LibraryOfRuina.ui.DamagePreview.VanillaHookPreviewTracePatch.Transpiler
   Prefix LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestBgmCombatEndPatch.Prefix
-  Postfix LibraryOfRuina.specialguests.Iori.IoriAttackDamageTypePatch.Postfix
   Postfix LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmCombatEndPatch.Postfix
   Prefix LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmCombatEndPatch.Prefix
   Finalizer LibraryOfRuina.reverberation.GearChurch.GearChurchLibraryHitPatch.Finalizer
@@ -21,7 +20,6 @@ HarmonyPatch()
   Transpiler LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionLightningOrbPatch.Transpiler
   Transpiler LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionBeatDownPatch.Transpiler
   Transpiler LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionBouncingFlaskPatch.Transpiler
-  Postfix LibraryOfRuina.patches.HistoryFloorLiberation.StranglingVineVanillaDamageTypePatch.Postfix
   Postfix LibraryOfRuina.patches.dispatch.ActMapBackgroundPatch.Postfix
   Postfix LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch.Postfix
   Postfix LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch.Postfix

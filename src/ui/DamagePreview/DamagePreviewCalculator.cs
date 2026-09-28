@@ -19,6 +19,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using LibraryLib.Combat;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
@@ -26,12 +27,6 @@ internal sealed record DamagePreviewResult(string Summary, string Details);
 
 internal static class DamagePreviewCalculator
 {
-    // 复用基础库原版卡牌类型推断，避免与实际攻击分类分叉。
-    private static readonly Func<CardModel, Creature?, LibraryDamageType> VanillaType =
-        AccessTools.MethodDelegate<Func<CardModel, Creature?, LibraryDamageType>>(
-            AccessTools.Method(typeof(LibraryHooks).Assembly.GetType("LibraryLib.Patches.LibraryDamagePreviewFeedback"),
-                "ResolveVanillaPreviewDamageType"));
-
     internal static string Text(string key) => key switch
     {
         "Block" => DamagePreviewTrace.Icon("res://images/ui/combat/block.png"),
@@ -107,7 +102,8 @@ internal static class DamagePreviewCalculator
     {
         low = high = variable.BaseValue;
         props = ValueProp.Move;
-        type = VanillaType(card, target);
+        // 与基础库实战用同一套推断（含其他模组注册的改判），预览与实际攻击分类一致。
+        type = LibraryDamageTypes.ResolveForCard(card, target, isPreview: true);
         dealer = card.Owner.Creature;
         baseDetails = "";
         switch (variable)

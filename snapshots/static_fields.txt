@@ -751,6 +751,8 @@ readonly	LibraryOfRuina.intents.IndiscriminateAttackIntent.GroupAttackBadge	Libr
 readonly	LibraryOfRuina.intents.TargetedMonsterAttackHelper+EmptyTargetScope.Instance	LibraryOfRuina.intents.TargetedMonsterAttackHelper+EmptyTargetScope
 readonly	LibraryOfRuina.intents.TargetedMonsterAttackHelper.ForcedTargetStacks	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Collections.Generic.Stack`1[System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]]]
 readonly	LibraryOfRuina.intents.TargetedSegmentedAttackPreview.EmptyVariables	System.Collections.Generic.IReadOnlyDictionary`2[System.String,System.Object]
+readonly	LibraryOfRuina.interop.LibraryExtensionPoints+AttackTargets.Instance	LibraryOfRuina.interop.LibraryExtensionPoints+AttackTargets
+readonly	LibraryOfRuina.interop.LibraryExtensionPoints+DamageTypes.Instance	LibraryOfRuina.interop.LibraryExtensionPoints+DamageTypes
 readonly	LibraryOfRuina.interop.VanillaPrivate.ActModelRooms	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Models.ActModel,MegaCrit.Sts2.Core.Rooms.RoomSet]
 readonly	LibraryOfRuina.interop.VanillaPrivate.AscensionPanelArrowsVisible	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NAscensionPanel,System.Boolean]
 readonly	LibraryOfRuina.interop.VanillaPrivate.AscensionPanelAscensionLevel	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect.NAscensionPanel,Godot.Label]
@@ -1155,7 +1157,6 @@ readonly	LibraryOfRuina.patches.HarborMistDodgePatch.PendingDodges	System.Collec
 readonly	LibraryOfRuina.patches.HarborMistDodgePatch.ResolvedDodges	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32]
 readonly	LibraryOfRuina.patches.HarborMistDodgePatch.Sync	System.Object
 readonly	LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationPlayerPositionPatch.PlayerOffset	Godot.Vector2
-readonly	LibraryOfRuina.patches.HistoryFloorLiberation.StranglingVineLibraryAttackDamageTypePatch.DamageTypeField	System.Reflection.FieldInfo
 readonly	LibraryOfRuina.patches.LibraryCursorPatch.CursorHotSpot	Godot.Vector2
 readonly	LibraryOfRuina.patches.LibraryEncounterWeighting.ModAssembly	System.Reflection.Assembly
 readonly	LibraryOfRuina.patches.LibraryEncounterWeighting.PriorityAbnormalityEncounterTypes	System.Collections.Generic.HashSet`1[System.Type]
@@ -1439,7 +1440,6 @@ readonly	LibraryOfRuina.ui.BlockTransferOverlay+MethodName._Process	Godot.String
 readonly	LibraryOfRuina.ui.BlockTransferOverlay+PropertyName._frameCounter	Godot.StringName
 readonly	LibraryOfRuina.ui.BlockTransferOverlay+PropertyName._isBusy	Godot.StringName
 readonly	LibraryOfRuina.ui.BlockTransferOverlay.ForestKeeperButtonOffset	Godot.Vector2
-readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewCalculator.VanillaType	System.Func`3[MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Creatures.Creature,LibraryLib.Utils.Resistance.LibraryDamageType]
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+MethodName.FindHpBar	Godot.StringName
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+MethodName.HideAll	Godot.StringName
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+MethodName.HideIncoming	Godot.StringName
@@ -1456,7 +1456,6 @@ readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+PropertyName._repo
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+PropertyName._untilIncomingRefresh	Godot.StringName
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+PropertyName._untilRefresh	Godot.StringName
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay.HasModeHotkey	System.Boolean
-readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewSpeedDieSource.TargetLineTargets	System.Func`3[LibraryLib.SpeedDice.LibrarySpeedDiceCombatState,LibraryLib.SpeedDice.LibrarySpeedDiceSlot,System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]]
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	System.Reflection.MethodInfo
 readonly	LibraryOfRuina.ui.EnemyCardHandController+EnemyCardFallbackCardView+MethodName.AddNextGlow	Godot.StringName
 readonly	LibraryOfRuina.ui.EnemyCardHandController+EnemyCardFallbackCardView+MethodName.AddTexture	Godot.StringName

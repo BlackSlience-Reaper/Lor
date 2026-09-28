@@ -94,6 +94,7 @@ public static class LibraryOfRuinaInitializer
             new("SavedPropertyTypes", true, SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes),
             new("SpecialGuests", true, SpecialGuestAutoRegistrar.Initialize),
             new("CardPools", true, RegisterRuntimeCardPools),
+            new("LibraryExtensionPoints", true, LibraryExtensionPoints.Register),
             new("GameplayPatches", true, () => patchResult = LibraryPatcher.ApplyAll(harmony)),
             new("Cursor", false, LibraryCursorPatch.ApplyToCurrentGame),
         ]);

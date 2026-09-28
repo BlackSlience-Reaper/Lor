@@ -29,22 +29,6 @@ internal static class DamagePreviewSpeedDieSource
     // 各槽位按钮命名为 SpeedDie{槽位序号}（从 1 起）。
     private const string SlotButtonPrefix = "SpeedDie";
 
-    private static readonly Func<LibrarySpeedDiceCombatState, LibrarySpeedDiceSlot, IReadOnlyList<Creature>> TargetLineTargets =
-        BindTargetLineTargets();
-
-    private static Func<LibrarySpeedDiceCombatState, LibrarySpeedDiceSlot, IReadOnlyList<Creature>> BindTargetLineTargets()
-    {
-        // 与速度骰 UI 共用分发入口，包括群攻扩展与卡牌专属的目标规则。
-        var state = Expression.Parameter(typeof(LibrarySpeedDiceCombatState), "state");
-        var slot = Expression.Parameter(typeof(LibrarySpeedDiceSlot), "slot");
-        var registration = Expression.Property(state,
-            AccessTools.Property(typeof(LibrarySpeedDiceCombatState), "Registration"));
-        var dispatcher = Expression.Property(registration, "Dispatcher");
-        var targets = Expression.Call(dispatcher, "GetTargetLineTargets", null, state, slot);
-        return Expression.Lambda<Func<LibrarySpeedDiceCombatState, LibrarySpeedDiceSlot, IReadOnlyList<Creature>>>(
-            targets, state, slot).Compile();
-    }
-
     internal static bool TryGetHovered(NCombatRoom room, CombatState combat, out CardModel? card,
         out Creature? target, out IReadOnlyList<Creature> targets)
     {
@@ -88,7 +72,8 @@ internal static class DamagePreviewSpeedDieSource
 
                 card = slot.Card;
                 target = slot.Target;
-                targets = TargetLineTargets(state, slot);
+                // 与速度骰 UI 共用分发入口，包括群攻扩展与卡牌专属的目标规则。
+                targets = state.GetTargetLineTargets(slot);
                 return true;
             }
         }

@@ -22,18 +22,6 @@ namespace LibraryOfRuina.patches.dispatch;
 /// </summary>
 internal static class TargetingDispatch
 {
-    [HarmonyPatch(typeof(LibraryAttackCommand), "GetPossibleTargets")]
-    private static class LibraryAttackTargetsLast
-    {
-        [HarmonyPostfix]
-        [HarmonyPriority(Priority.Last)]
-        private static void Postfix(LibraryAttackCommand __instance, ref IReadOnlyList<Creature> __result)
-        {
-            FriendlyAllyLibraryAttackTargetsPatch.FilterLibraryAttackTargets(__instance, ref __result);
-            MagicBulletShooterLibraryAttackTargetsPatch.FilterLibraryAttackTargets(__instance, ref __result);
-        }
-    }
-
     [HarmonyPatch(typeof(AttackCommand), "GetPossibleTargets")]
     private static class AttackTargets
     {

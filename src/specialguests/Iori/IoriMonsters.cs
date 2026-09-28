@@ -1834,47 +1834,6 @@ internal sealed record IoriTurnPlanSnapshot(
     int RoundOffset,
     int Amount);
 
-/// <summary>
-/// LibraryOfRuinaLib normally infers a vanilla AttackCommand's Ruina damage
-/// type from hit-count/target shape. Iori already stores the exact segment
-/// type in her synchronized plan, so replace that inference while the command
-/// is executing. Patching the private Unsafe resolver is required because the
-/// current Beta library's SetFlag -> Safe resolver path bypasses its internal
-/// public-facing ResolveVanillaDamageType wrapper.
-/// </summary>
-[HarmonyPatch]
-internal static class IoriAttackDamageTypePatch
-{
-    private static MethodBase TargetMethod()
-    {
-        Type contextType = AccessTools.TypeByName(
-            "LibraryLib.Patches.AttackExecuteContext")
-            ?? throw new MissingMemberException(
-                "LibraryLib.Patches.AttackExecuteContext");
-        return AccessTools.DeclaredMethod(
-                   contextType,
-                   "ResolveVanillaDamageTypeUnsafe",
-                   [typeof(object)])
-               ?? throw new MissingMethodException(
-                   contextType.FullName,
-                   "ResolveVanillaDamageTypeUnsafe");
-    }
-
-    [HarmonyPostfix]
-    private static void Postfix(
-        object? attackCommand,
-        ref LibraryDamageType __result)
-    {
-        if (attackCommand is AttackCommand
-            {
-                Attacker.Monster: IoriMonsterBase iori,
-            })
-        {
-            __result = iori.ResolveActiveOrPreviewDamageType();
-        }
-    }
-}
-
 [HarmonyPatch(
     typeof(Creature),
     nameof(Creature.LoseHpInternal), typeof(decimal), typeof(ValueProp))]
