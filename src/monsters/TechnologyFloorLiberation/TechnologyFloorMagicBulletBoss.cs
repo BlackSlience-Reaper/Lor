@@ -35,7 +35,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss, IEnemyCardRuntimeOwner
+public sealed class TechnologyFloorMagicBulletBoss : LiberationPhaseBossMonster, IEnemyCardRuntimeOwner
 {
     private const int Phase = 5;
     private const int MaxInternalPhase = 7;
@@ -67,7 +67,6 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
     private const string Phase5MoveId = "PHASE_5_SILENCE";
     private const string Phase6MoveId = "PHASE_6_TORRENT";
     private const string Phase7MoveId = "PHASE_7_DESPAIR";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const string PierceCardId = "MAGIC_BULLET_PIERCE";
     private const string PrecisionCardId = "MAGIC_BULLET_PRECISION";
     private const string BaseBulletCardId = "MAGIC_BULLET_BASE";
@@ -90,11 +89,14 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
     private bool _bypassClamp;
     private bool _internalPhaseTransitionPending;
     private LibraryCreatureResistanceData? _savedResistanceData;
-    private MoveState? _reviveAndEmpowerState;
     private EnemyCardRuntime? _enemyCards;
     private Dictionary<string, EnemyCardSpec>? _enemyCardSpecs;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Hit";
 
     public bool IsBypassingStaggerClamp => _bypassClamp;
 
@@ -201,7 +203,7 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
         base.DeepCloneFields();
         _enemyCards = null;
         _enemyCardSpecs = null;
-        _reviveAndEmpowerState = null;
+        ClearReviveAndEmpowerState();
         _savedResistanceData = null;
     }
 
@@ -218,24 +220,6 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
         }
 
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
-    }
-
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
     }
 
     public Task TriggerInternalPhaseTransition()
@@ -343,14 +327,7 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var phase1 = new MoveState(
             Phase1MoveId,
@@ -404,12 +381,12 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
         phase5.FollowUpState = chooser;
         phase6.FollowUpState = chooser;
         phase7.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState, phase1, phase2, phase3, phase4, phase5, phase6, phase7, chooser
+                reviveAndEmpower, phase1, phase2, phase3, phase4, phase5, phase6, phase7, chooser
             },
             chooser);
     }
@@ -730,21 +707,10 @@ public sealed class TechnologyFloorMagicBulletBoss : LorMonsterModel, ILiberatio
             card => { card.UpgradePreview(); card.SetPreviewDamage((int) DespairDamage); });
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Hit", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private Task<AttackCommand> ExecuteAttackSegment(int damage)
     {

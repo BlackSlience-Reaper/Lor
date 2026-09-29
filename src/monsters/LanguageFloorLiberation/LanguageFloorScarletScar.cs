@@ -30,13 +30,11 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 public sealed class LanguageFloorScarletScar :
-    LorMonsterModel,
-    ITargetedMonsterAttackProvider,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster,
+    ITargetedMonsterAttackProvider
 {
     private const string CompositeMoveId = "LANGUAGE_FLOOR_SCARLET_COMPOSITE";
     private const string RouterMoveId = "LANGUAGE_FLOOR_SCARLET_ROUTER";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const string AttackSfxPath = "res://audio/sfx/little_red_mercenary/little_red_attack.ogg";
     private const string FireSfxPath = "res://audio/sfx/little_red_mercenary/little_red_fire.ogg";
     private const string RageSfxPath = "res://audio/sfx/little_red_mercenary/little_red_rage.ogg";
@@ -55,10 +53,11 @@ public sealed class LanguageFloorScarletScar :
     public bool UnrelievedAnger { get; private set; }
 
     private MoveState? _compositeState;
-    private MoveState? _reviveAndEmpowerState;
     private AbstractIntent[]? _compositeIntents;
 
-    public int LiberationPhase => 1;
+    public override int LiberationPhase => 1;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -179,14 +178,7 @@ public sealed class LanguageFloorScarletScar :
             CompositeMoveId,
             PerformCompositeMove,
             _compositeIntents);
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
@@ -196,9 +188,9 @@ public sealed class LanguageFloorScarletScar :
                 return CompositeMoveId;
             });
         _compositeState.FollowUpState = router;
-        _reviveAndEmpowerState.FollowUpState = router;
+        reviveAndEmpower.FollowUpState = router;
         return new MonsterMoveStateMachine(
-            [_reviveAndEmpowerState, _compositeState, router],
+            [reviveAndEmpower, _compositeState, router],
             HasPlannedTurn ? _compositeState : router);
     }
 
@@ -214,41 +206,11 @@ public sealed class LanguageFloorScarletScar :
     public string GetTargetedAttackTargetName(Creature owner) =>
         GetTargetedAttackTargets(owner).FirstOrDefault()?.Name ?? "未知目标";
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-        if (Creature.CombatState?.Encounter
-            is LanguageFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LanguageFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     public async Task ChangeAnger(int delta)
     {

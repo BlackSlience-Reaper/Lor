@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 5;
     internal const string WinterBeginningMoveId = "WINTER_BEGINNING";
@@ -35,7 +35,6 @@ public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPri
     private const string FadingAutumnMoveId = "FADING_AUTUMN";
     private const string SpringOriginMoveId = "SPRING_ORIGIN";
     internal const string NostalgicScentEgoMoveId = "NOSTALGIC_SCENT_EGO";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     internal const float AttackSegmentDelaySeconds = 0.85f;
     private const float SegmentDelaySeconds = AttackSegmentDelaySeconds;
 
@@ -70,9 +69,8 @@ public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPri
     private MoveState? _autumnState;
     private MoveState? _springState;
     private MoveState? _egoState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     internal bool IsWinterBeginningQueued => NextMove.Id == WinterBeginningMoveId;
 
@@ -163,20 +161,6 @@ public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPri
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     public Task QueuePetalEgo()
     {
         if (_egoQueued || Creature.IsDead || _egoState == null)
@@ -190,14 +174,7 @@ public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPri
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         _winterState = new MoveState(
             WinterBeginningMoveId,
@@ -255,12 +232,12 @@ public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPri
         _autumnState.FollowUpState = chooser;
         _springState.FollowUpState = chooser;
         _egoState.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 _winterState,
                 _blossomsState,
                 _autumnState,
@@ -271,20 +248,10 @@ public sealed class ArtFloorNostalgicScentBoss : LorMonsterModel, ILiberationPri
             chooser);
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task WinterBeginningMove(IReadOnlyList<Creature> targets)
     {

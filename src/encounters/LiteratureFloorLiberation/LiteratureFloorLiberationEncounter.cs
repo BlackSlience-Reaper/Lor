@@ -24,7 +24,7 @@ using LibraryOfRuina.interop;
 namespace LibraryOfRuina.encounters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorLiberationEncounter :
-    EncounterModel,
+    LiberationEncounterBase,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
@@ -331,45 +331,38 @@ public sealed class LiteratureFloorLiberationEncounter :
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        CurrentPhase = Math.Clamp(
-            ReadInt(state, CurrentPhaseKey, 1),
+        var bag = new EncounterStateBag(state);
+        CurrentPhase = bag.ReadClampedInt(
+            CurrentPhaseKey,
+            1,
             1,
             PlannedMaxPhase);
-        KilledBossCount = Math.Clamp(
-            ReadInt(state, KilledBossCountKey, 0),
+        KilledBossCount = bag.ReadClampedInt(
+            KilledBossCountKey,
+            0,
             0,
             PlannedMaxPhase);
-        PhaseComplete = ReadBool(state, PhaseCompleteKey);
+        PhaseComplete = bag.ReadBool(PhaseCompleteKey);
         TransitionPending = !PhaseComplete
-            && ReadBool(state, TransitionPendingKey);
-        SettlementTriggered = ReadBool(state, SettlementTriggeredKey);
-        EndedByLethalDamage = ReadBool(state, EndedByLethalDamageKey);
-        _superGiftPending = ReadBool(state, SuperGiftPendingKey);
+            && bag.ReadBool(TransitionPendingKey);
+        SettlementTriggered = bag.ReadBool(SettlementTriggeredKey);
+        EndedByLethalDamage = bag.ReadBool(EndedByLethalDamageKey);
+        _superGiftPending = bag.ReadBool(SuperGiftPendingKey);
         _normalMovesUntilSuperGift = Math.Max(
             0,
-            ReadInt(state, NormalMovesUntilSuperGiftKey, 0));
-        _leftFriendSpawnRound = ReadInt(
-            state,
-            LeftFriendSpawnRoundKey,
-            -1);
-        _leftFriendWeakened = ReadBool(state, LeftFriendWeakenedKey);
-        _rightFriendSpawnRound = ReadInt(
-            state,
-            RightFriendSpawnRoundKey,
-            -1);
-        _rightFriendWeakened = ReadBool(state, RightFriendWeakenedKey);
+            bag.ReadInt(NormalMovesUntilSuperGiftKey, 0));
+        _leftFriendSpawnRound = bag.ReadInt(LeftFriendSpawnRoundKey, -1);
+        _leftFriendWeakened = bag.ReadBool(LeftFriendWeakenedKey);
+        _rightFriendSpawnRound = bag.ReadInt(RightFriendSpawnRoundKey, -1);
+        _rightFriendWeakened = bag.ReadBool(RightFriendWeakenedKey);
         _blackSwanRoundStarts = Math.Max(
             0,
-            ReadInt(state, BlackSwanRoundStartsKey, 0));
-        _nextBlackSwanBrother = Math.Clamp(
-            ReadInt(state, NextBlackSwanBrotherKey, 3),
+            bag.ReadInt(BlackSwanRoundStartsKey, 0));
+        _nextBlackSwanBrother = bag.ReadClampedInt(
+            NextBlackSwanBrotherKey,
+            3,
             3,
             7);
-    }
-
-    public void RefreshLiberationPhaseBgm()
-    {
-        EncounterBgmController.RefreshCurrentEncounterTrack();
     }
 
     internal bool HasLivingGiftBoxes(CombatStateLike? combatState) =>
@@ -602,17 +595,6 @@ public sealed class LiteratureFloorLiberationEncounter :
             >= LiteratureFloorLiberationSettlementStore
                 .MinimumKilledBossCount);
 
-    private static bool IsLastAlivePlayer(Creature creature)
-    {
-        if (creature.CombatState is not { } combatState)
-        {
-            return false;
-        }
-
-        return !combatState.PlayerCreatures.Any(player =>
-            player != creature && player.IsAlive);
-    }
-
     public async Task OnPreventingDeath(Creature creature)
     {
         if (ShouldPreventPlayerDeath(creature))
@@ -738,28 +720,6 @@ public sealed class LiteratureFloorLiberationEncounter :
         EndedByLethalDamage = false;
         LiteratureFloorLiberationSettlementStore.Record(this);
         ScheduleDeferredWinConditionCheck();
-    }
-
-    private static async Task EndCombatAsLiberationVictory(
-        CombatStateLike? combatState)
-    {
-        if (combatState == null || !CombatManager.Instance.IsInProgress)
-        {
-            return;
-        }
-
-        foreach (Creature enemy in combatState.Enemies.ToArray())
-        {
-            if (enemy.IsAlive)
-            {
-                await CreatureCmd.Kill(enemy, force: true);
-            }
-        }
-
-        if (CombatManager.Instance.IsInProgress)
-        {
-            await CombatManager.Instance.CheckWinCondition();
-        }
     }
 
     private static async Task ClearPhaseTwoPlayerState(
@@ -1051,32 +1011,4 @@ public sealed class LiteratureFloorLiberationEncounter :
             _rightFriendWeakened = false;
         }
     }
-
-    private static void ScheduleDeferredWinConditionCheck()
-    {
-        Callable.From(() =>
-        {
-            if (CombatManager.Instance.IsInProgress)
-            {
-                _ = TaskHelper.RunSafely(
-                    CombatManager.Instance.CheckWinCondition());
-            }
-        }).CallDeferred();
-    }
-
-    private static int ReadInt(
-        IReadOnlyDictionary<string, string> state,
-        string key,
-        int fallback) =>
-        state.TryGetValue(key, out string? value)
-        && int.TryParse(value, out int parsed)
-            ? parsed
-            : fallback;
-
-    private static bool ReadBool(
-        IReadOnlyDictionary<string, string> state,
-        string key) =>
-        state.TryGetValue(key, out string? value)
-        && bool.TryParse(value, out bool parsed)
-        && parsed;
 }

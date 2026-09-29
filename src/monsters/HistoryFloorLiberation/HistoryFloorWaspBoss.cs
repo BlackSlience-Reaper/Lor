@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorWaspBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 4;
 
@@ -49,7 +49,6 @@ public sealed class HistoryFloorWaspBoss : LorMonsterModel, ILiberationPrimaryPh
     private const string WarlikeEnhancementMoveId = "WARLIKE_ENHANCEMENT";
     private const string ForTheKingdomMoveId = "FOR_THE_KINGDOM";
     private const string PunishmentStrikeMoveId = "PUNISHMENT_STRIKE";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     private const int LoyaltyBlock = 8;
     private const int LoyaltyGuard = 1;
@@ -109,9 +108,12 @@ public sealed class HistoryFloorWaspBoss : LorMonsterModel, ILiberationPrimaryPh
     private bool _buffComboUsed;
     private bool _backgroundMoonTextLoopStarted;
     private MoveState? _warlikeEnhancementState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Cast";
 
     public bool BuffComboUsed
     {
@@ -230,34 +232,9 @@ public sealed class HistoryFloorWaspBoss : LorMonsterModel, ILiberationPrimaryPh
         _chainedLoyaltyPending = true;
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var gloriousBrand = new MoveState(
             GloriousBrandMoveId,
@@ -316,10 +293,10 @@ public sealed class HistoryFloorWaspBoss : LorMonsterModel, ILiberationPrimaryPh
         warlikeEnhancement.FollowUpState = afterWarlike;
         forTheKingdom.FollowUpState = chooser;
         punishmentStrike.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
-            new MonsterState[] { _reviveAndEmpowerState, gloriousBrand, loyaltyEnhancement, warlikeEnhancement, forTheKingdom, punishmentStrike, randomBranch, chooser, afterWarlike },
+            new MonsterState[] { reviveAndEmpower, gloriousBrand, loyaltyEnhancement, warlikeEnhancement, forTheKingdom, punishmentStrike, randomBranch, chooser, afterWarlike },
             chooser);
     }
 
@@ -425,26 +402,10 @@ public sealed class HistoryFloorWaspBoss : LorMonsterModel, ILiberationPrimaryPh
         _egoQueued = false;
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature == null)
-        {
-            return;
-        }
-
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is HistoryFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is HistoryFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private Task<AttackCommand> ExecuteSegmentAttack(string trigger, int damage)
     {

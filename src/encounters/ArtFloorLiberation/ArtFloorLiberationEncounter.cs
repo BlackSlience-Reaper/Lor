@@ -23,7 +23,7 @@ using MegaCrit.Sts2.Core.Rooms;
 namespace LibraryOfRuina.encounters.ArtFloorLiberation;
 
 public sealed class ArtFloorLiberationEncounter :
-    EncounterModel,
+    LiberationEncounterBase,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
@@ -93,11 +93,6 @@ public sealed class ArtFloorLiberationEncounter :
     public override string BossNodePath => "res://images/map/placeholder/art_floor_liberation_encounter_icon";
 
     public int CurrentPhase => _currentPhase;
-
-    public void RefreshLiberationPhaseBgm()
-    {
-        EncounterBgmController.RefreshCurrentEncounterTrack();
-    }
 
     public int KilledBossCount => _killedBossCount;
 
@@ -234,12 +229,13 @@ public sealed class ArtFloorLiberationEncounter :
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        _currentPhase = ReadPhase(state, CurrentPhaseKey, 1);
-        _killedBossCount = Math.Clamp(ReadInt(state, KilledBossCountKey, Math.Max(0, _currentPhase - 1)), 0, MaxPhase);
-        _transitionPending = ReadBool(state, TransitionPendingKey);
-        _settlementTriggered = ReadBool(state, SettlementTriggeredKey);
-        _endedByPlaceholder = ReadBool(state, EndedByPlaceholderKey);
-        _endedByLethalDamage = ReadBool(state, EndedByLethalDamageKey);
+        var bag = new EncounterStateBag(state);
+        _currentPhase = bag.ReadClampedInt(CurrentPhaseKey, 1, 1, MaxPhase);
+        _killedBossCount = bag.ReadClampedInt(KilledBossCountKey, Math.Max(0, _currentPhase - 1), 0, MaxPhase);
+        _transitionPending = bag.ReadBool(TransitionPendingKey);
+        _settlementTriggered = bag.ReadBool(SettlementTriggeredKey);
+        _endedByPlaceholder = bag.ReadBool(EndedByPlaceholderKey);
+        _endedByLethalDamage = bag.ReadBool(EndedByLethalDamageKey);
         ArtFloorLiberationBackgroundController.SetPhaseBackground(_currentPhase);
     }
 
@@ -803,52 +799,5 @@ public sealed class ArtFloorLiberationEncounter :
         {
             await CardPileCmd.RemoveFromCombat(hiddenPleasures, skipVisuals: true);
         }
-    }
-
-    private static async Task EndCombatAsLiberationVictory(CombatStateLike? combatState)
-    {
-        if (combatState == null || !CombatManager.Instance.IsInProgress)
-        {
-            // 战斗已经结束/正在结束：不再进入击杀与胜负复核管线。
-            return;
-        }
-
-        foreach (Creature enemy in combatState.Enemies.ToArray())
-        {
-            if (enemy.IsAlive)
-            {
-                await CreatureCmd.Kill(enemy, force: true);
-            }
-        }
-
-        if (CombatManager.Instance.IsInProgress)
-        {
-            await CombatManager.Instance.CheckWinCondition();
-        }
-    }
-
-    private static bool IsLastAlivePlayer(Creature creature)
-    {
-        if (creature.CombatState is not { } combatState)
-        {
-            return false;
-        }
-
-        return !combatState.PlayerCreatures.Any(p => p != creature && p.IsAlive);
-    }
-
-    private static int ReadInt(Dictionary<string, string> state, string key, int fallback)
-    {
-        return state.TryGetValue(key, out string? value) && int.TryParse(value, out int parsed)
-            ? parsed
-            : fallback;
-    }
-
-    private static int ReadPhase(Dictionary<string, string> state, string key, int fallback) =>
-        Math.Clamp(ReadInt(state, key, fallback), 1, MaxPhase);
-
-    private static bool ReadBool(Dictionary<string, string> state, string key)
-    {
-        return state.TryGetValue(key, out string? value) && bool.TryParse(value, out bool parsed) && parsed;
     }
 }

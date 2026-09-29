@@ -29,10 +29,6 @@ sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature+<TakeTurn>d__140::MoveNext()
 sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::ScaleMonsterHpForMultiplayer(MegaCrit.Sts2.Core.Models.EncounterModel,System.Int32,System.Int32)	e12599cf57863ed5cb136812ea5d087fbdfb4e43
 sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::StunInternal(System.Func`2[[System.Collections.Generic.IReadOnlyList`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]],System.String)	d9594373575c04f67b4c8e1a99b07ad96185317f
 sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::TakeTurn()	321b2a861647daefa999f42627730f4f480dc376
-sts2|MegaCrit.Sts2.Core.Entities.Merchant.MerchantCardRemovalEntry+<OnTryPurchaseWrapper>d__12::MoveNext()	080c8f879bdbbe2b08f5177b0927b9d7eec2c1be
-sts2|MegaCrit.Sts2.Core.Entities.Merchant.MerchantCardRemovalEntry::OnTryPurchaseWrapper(MegaCrit.Sts2.Core.Entities.Merchant.MerchantInventory,System.Boolean,System.Boolean)	fda001197e9ec5be5d4c6d317307c965e343ab2a
-sts2|MegaCrit.Sts2.Core.Entities.Merchant.MerchantEntry+<OnTryPurchaseWrapper>d__23::MoveNext()	050e54fc9a8be0a90f316f871b0a726d99b1cde2
-sts2|MegaCrit.Sts2.Core.Entities.Merchant.MerchantEntry::OnTryPurchaseWrapper(MegaCrit.Sts2.Core.Entities.Merchant.MerchantInventory,System.Boolean)	0bdb59a91378d4d09355ed26bbfb0677cfd9477f
 sts2|MegaCrit.Sts2.Core.Helpers.EnergyIconHelper::GetPath(System.String)	a1b8108b2de7fcbabf7d012eb67d346016f05b40
 sts2|MegaCrit.Sts2.Core.Helpers.ImageHelper::GetRoomIconOutlinePath(MegaCrit.Sts2.Core.Map.MapPointType,MegaCrit.Sts2.Core.Rooms.RoomType,MegaCrit.Sts2.Core.Models.ModelId)	e83bd897e8ee7cd17f3e7faa251667327791b809
 sts2|MegaCrit.Sts2.Core.Helpers.ImageHelper::GetRoomIconPath(MegaCrit.Sts2.Core.Map.MapPointType,MegaCrit.Sts2.Core.Rooms.RoomType,MegaCrit.Sts2.Core.Models.ModelId)	6d6148f103b7d57ab725f237fd51d5b4eca13156

@@ -61,8 +61,6 @@ LibraryOfRuina|LibraryOfRuina.relics.HistoryFloorLiberation.MatchMarkRelic::Modi
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch.Prefix
 LibraryOfRuina|LibraryOfRuina.relics.QueenOfHatred.QueenOfHatredPageRelic::ModifyHpLostAfterOstyLate(MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch.Prefix
-LibraryOfRuina|LibraryOfRuina.relics.StandaloneRelics.FerrisWheelTicketRelic::ModifyHpLostAfterOstyLate(MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch.Prefix
 LibraryOfRuina|LibraryOfRuina.specialguests.Rnfmabj.RnfmabjHandBase::ApplySavedCombatAvailability()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Rnfmabj.RnfmabjSavedHandAvailabilityVisualPatch.Postfix
 LibraryOfRuina|LibraryOfRuina.specialguests.Rnfmabj.RnfmabjHandBase::RefreshCombatAvailability()
@@ -185,10 +183,6 @@ sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::StunInternal(System.Func`2[
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.Rnfmabj.RnfmabjHandStunImmunityPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Entities.Creatures.Creature::TakeTurn()
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.AllySkipOfficialEnemyTurnPatch.Prefix
-sts2|MegaCrit.Sts2.Core.Entities.Merchant.MerchantCardRemovalEntry::OnTryPurchaseWrapper(MegaCrit.Sts2.Core.Entities.Merchant.MerchantInventory,System.Boolean,System.Boolean)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LeopardPlush.LeopardPlushMerchantRemovalPatch.Prefix
-sts2|MegaCrit.Sts2.Core.Entities.Merchant.MerchantEntry::OnTryPurchaseWrapper(MegaCrit.Sts2.Core.Entities.Merchant.MerchantInventory,System.Boolean)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LeopardPlush.LeopardPlushMerchantPurchasePatch.Prefix
 sts2|MegaCrit.Sts2.Core.Entities.Multiplayer.NetErrorInfo::GetErrorString()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.MultiplayerConfigMismatchErrorPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Entities.Players.Player::AddRelicInternal(MegaCrit.Sts2.Core.Models.RelicModel,System.Int32,System.Boolean)

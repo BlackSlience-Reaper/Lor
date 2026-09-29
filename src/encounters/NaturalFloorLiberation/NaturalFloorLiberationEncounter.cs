@@ -21,7 +21,7 @@ using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.encounters.NaturalFloorLiberation;
 
-public sealed partial class NaturalFloorLiberationEncounter : EncounterModel,
+public sealed partial class NaturalFloorLiberationEncounter : LiberationEncounterBase,
     IFloorLiberationEncounter, ILiberationPhaseBgmSource
 {
     public const int PlannedMaxPhase = 4;
@@ -744,7 +744,7 @@ public sealed partial class NaturalFloorLiberationEncounter : EncounterModel,
     }
 
     // Called between phase state writes (e.g. before RefreshStaffMode); audio is local presentation.
-    public void RefreshLiberationPhaseBgm() =>
+    public override void RefreshLiberationPhaseBgm() =>
         PresentationGuard.Run(EncounterBgmController.RefreshCurrentEncounterTrack, "NaturalFloorLiberation bgm");
 
     public override Dictionary<string, string> SaveCustomState()
@@ -834,28 +834,27 @@ public sealed partial class NaturalFloorLiberationEncounter : EncounterModel,
     public override void LoadCustomState(Dictionary<string, string> state)
     {
         _restoredBossState = new(state);
+        var bag = new EncounterStateBag(state);
         // 空状态与战前快照仍需检查遗物；旧版已开始的战斗保留原阶段。
-        if (state.TryGetValue("EntryBranchChosen", out string? entryChosen)
-            && bool.TryParse(entryChosen, out bool chosen))
+        if (bag.TryReadBool("EntryBranchChosen", out bool chosen))
         {
             _entryBranchChosen = chosen;
         }
         else
         {
             _entryBranchChosen = state.ContainsKey("BossHp")
-                || NaturalFloorWrathMonster.ReadInt(state, "CurrentPhase", 1) > 1
-                || NaturalFloorWrathMonster.ReadInt(state, "KilledBossCount", 0) > 0
-                || NaturalFloorWrathMonster.ReadBool(state, "TransitionPending")
-                || NaturalFloorWrathMonster.ReadBool(state, "SettlementTriggered");
+                || bag.ReadInt("CurrentPhase", 1) > 1
+                || bag.ReadInt("KilledBossCount", 0) > 0
+                || bag.ReadBool("TransitionPending")
+                || bag.ReadBool("SettlementTriggered");
         }
-        NihilCompleted = NaturalFloorWrathMonster.ReadBool(state, "NihilCompleted");
-        CurrentPhase = Math.Clamp(NaturalFloorWrathMonster.ReadInt(state, "CurrentPhase", 1), 1, ImplementedMaxPhase);
-        TransitionPending = NaturalFloorWrathMonster.ReadBool(state, "TransitionPending");
-        _phaseTwoRageDefeated = NaturalFloorWrathMonster.ReadBool(state, "PhaseTwoRageDefeated");
-        _phaseTwoHermitDefeated = NaturalFloorWrathMonster.ReadBool(state, "PhaseTwoHermitDefeated");
-        KilledBossCount = state.TryGetValue("KilledBossCount", out string? kills) && int.TryParse(kills, out int n)
-            ? Math.Clamp(n, 0, PlannedMaxPhase) : 0;
-        SettlementTriggered = state.TryGetValue("SettlementTriggered", out string? settled) && bool.TryParse(settled, out bool flag) && flag;
+        NihilCompleted = bag.ReadBool("NihilCompleted");
+        CurrentPhase = bag.ReadClampedInt("CurrentPhase", 1, 1, ImplementedMaxPhase);
+        TransitionPending = bag.ReadBool("TransitionPending");
+        _phaseTwoRageDefeated = bag.ReadBool("PhaseTwoRageDefeated");
+        _phaseTwoHermitDefeated = bag.ReadBool("PhaseTwoHermitDefeated");
+        KilledBossCount = bag.ReadClampedInt("KilledBossCount", 0, 0, PlannedMaxPhase);
+        SettlementTriggered = bag.ReadBool("SettlementTriggered");
         if (CurrentPhase == 5)
         {
             // 兼容旧存档：丢弃终战怪物快照，仅保留上方已读取的入口和结算信息。

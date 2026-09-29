@@ -135,14 +135,7 @@ public sealed class HistoryFloorPhaseBoss : MonsterModel, ILiberationPrimaryPhas
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        _reviveAndEmpowerState = LiberationPhaseBossMoves.CreateState(ReviveAndEmpowerMoveId, ReviveAndEmpowerMove);
 
         var attack = new MoveState(
             AttackMoveId,
@@ -254,10 +247,7 @@ public sealed class HistoryFloorPhaseBoss : MonsterModel, ILiberationPrimaryPhas
 
     public void ForceReviveAndEmpowerState()
     {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
+        LiberationPhaseBossMoves.ForceState(this, _reviveAndEmpowerState);
     }
 
     private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
