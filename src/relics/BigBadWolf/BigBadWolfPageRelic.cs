@@ -11,11 +11,8 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -23,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.BigBadWolf;
 
-public sealed class BigBadWolfPageRelic : RelicModel
+public sealed class BigBadWolfPageRelic : ModalPageRelic<BigBadWolfPageMode>
 {
     internal const int PredatoryInstinctTurnInterval = 8;
     internal const int PredatoryInstinctHeal = 3;
@@ -109,6 +106,12 @@ public sealed class BigBadWolfPageRelic : RelicModel
     [SavedProperty]
     public BigBadWolfPageMode Mode { get; private set; }
 
+    protected override BigBadWolfPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PredatoryInstinctTurnsSeen { get; private set; }
 
@@ -120,45 +123,6 @@ public sealed class BigBadWolfPageRelic : RelicModel
 
     private bool _predatoryTriggerTurn;
     private bool _predatoryUnblockedDamageThisTurn;
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != BigBadWolfPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -335,7 +299,7 @@ public sealed class BigBadWolfPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -343,66 +307,6 @@ public sealed class BigBadWolfPageRelic : RelicModel
             Owner.RunState.CreateCard<BigBadWolfWolfRoleChoiceCard>(Owner),
             Owner.RunState.CreateCard<BigBadWolfCruelClawsChoiceCard>(Owner)
         ];
-    }
-
-    private static BigBadWolfPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            BigBadWolfPredatoryInstinctChoiceCard => BigBadWolfPageMode.PredatoryInstinct,
-            BigBadWolfWolfRoleChoiceCard => BigBadWolfPageMode.WolfRole,
-            BigBadWolfCruelClawsChoiceCard => BigBadWolfPageMode.CruelClaws,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(BigBadWolfPageMode mode)
-    {
-        return mode is BigBadWolfPageMode.None
-            or BigBadWolfPageMode.PredatoryInstinct
-            or BigBadWolfPageMode.WolfRole
-            or BigBadWolfPageMode.CruelClaws;
-    }
-
-    private static bool IsConcreteMode(BigBadWolfPageMode mode)
-    {
-        return mode is BigBadWolfPageMode.PredatoryInstinct
-            or BigBadWolfPageMode.WolfRole
-            or BigBadWolfPageMode.CruelClaws;
-    }
-
-    private void SetMode(BigBadWolfPageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        BigBadWolfPageMode oldMode = Mode;
-        Mode = BigBadWolfPageMode.PredatoryInstinct;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] BigBadWolfPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to PredatoryInstinct.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
     private void ResetTransientCombatState()
@@ -414,7 +318,11 @@ public sealed class BigBadWolfPageRelic : RelicModel
         _predatoryUnblockedDamageThisTurn = false;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(BigBadWolfPageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -451,27 +359,6 @@ public sealed class BigBadWolfPageRelic : RelicModel
         }
 
         return Math.Max(1, (int)Math.Ceiling(Owner.Creature.MaxHp * CruelClawsHpThresholdPercent / 100m));
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

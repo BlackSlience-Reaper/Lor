@@ -215,29 +215,9 @@ public sealed class OzmaForgetCard() : CardModel(1, CardType.Skill, CardRarity.A
     }
 }
 
-public abstract class OzmaPageChoiceCardBase : CardModel
+public abstract class OzmaPageChoiceCardBase : PageChoiceCard<OzmaPageMode>
 {
-    public const string OldPowerChoiceId = "OZMA_OLD_POWER_CHOICE_CARD";
-    public const string ForgetChoiceId = "OZMA_FORGET_CHOICE_CARD";
-    public const string LifePowderChoiceId = "OZMA_LIFE_POWDER_CHOICE_CARD";
-
-    protected OzmaPageChoiceCardBase()
-        : base(-1, CardType.Skill, CardRarity.Ancient, TargetType.None, shouldShowInCardLibrary: false)
-    {
-    }
-
-    protected abstract string PortraitFileName { get; }
-
     public override CardPoolModel VisualCardPool => ModelDb.CardPool<ColorlessCardPool>();
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
-    public override string PortraitPath =>
-        ImageHelper.GetImagePath($"packed/card_portraits/colorless/{PortraitFileName}");
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -245,23 +225,21 @@ public abstract class OzmaPageChoiceCardBase : CardModel
         new DynamicVar("DamageMultiplier", OzmaPageRelic.DamageMultiplier),
         new DynamicVar("Heal", OzmaPageRelic.LifePowderHeal)
     ];
-
-    public static bool IsOzmaPageChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is OldPowerChoiceId or ForgetChoiceId or LifePowderChoiceId;
-    }
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class OzmaOldPowerChoiceCard : OzmaPageChoiceCardBase
 {
+    public override OzmaPageMode PageMode => OzmaPageMode.OldPower;
+
     protected override string PortraitFileName => "ozma_old_power_choice_card.png";
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class OzmaForgetChoiceCard : OzmaPageChoiceCardBase
 {
+    public override OzmaPageMode PageMode => OzmaPageMode.Forget;
+
     protected override string PortraitFileName => "ozma_forget_choice_card.png";
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -273,5 +251,7 @@ public sealed class OzmaForgetChoiceCard : OzmaPageChoiceCardBase
 [CardPool(typeof(TokenCardPool))]
 public sealed class OzmaLifePowderChoiceCard : OzmaPageChoiceCardBase
 {
+    public override OzmaPageMode PageMode => OzmaPageMode.LifePowder;
+
     protected override string PortraitFileName => "ozma_life_powder_choice_card.png";
 }

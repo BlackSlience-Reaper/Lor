@@ -4,18 +4,14 @@ using LibraryLib.Commands;
 using LibraryOfRuina.cards.AllAroundHelper;
 using LibraryOfRuina.compat;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -23,7 +19,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.AllAroundHelper;
 
-public sealed class AllAroundHelperPageRelic : RelicModel
+public sealed class AllAroundHelperPageRelic : ModalPageRelic<AllAroundHelperPageMode>
 {
     internal const int ChargeHandThreshold = 5;
     internal const int ChargeEnergyNextTurn = 1;
@@ -69,52 +65,18 @@ public sealed class AllAroundHelperPageRelic : RelicModel
     [SavedProperty]
     public AllAroundHelperPageMode Mode { get; private set; }
 
+    protected override AllAroundHelperPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int RecognitionCardsPlayedRemainder { get; private set; }
 
     // 保留旧清洁触发标记的存档字段，当前效果不再读取它。
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool CleanTriggeredThisTurn { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != AllAroundHelperPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    { 
-        base.AfterRoomEntered(room);
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override Task BeforeCombatStart()
     {
@@ -220,7 +182,7 @@ public sealed class AllAroundHelperPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -230,73 +192,17 @@ public sealed class AllAroundHelperPageRelic : RelicModel
         ];
     }
 
-    private static AllAroundHelperPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            AllAroundHelperChargeChoiceCard => AllAroundHelperPageMode.Charge,
-            AllAroundHelperRecognitionFunctionChoiceCard => AllAroundHelperPageMode.RecognitionFunction,
-            AllAroundHelperCleanChoiceCard => AllAroundHelperPageMode.Clean,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(AllAroundHelperPageMode mode)
-    {
-        return mode is AllAroundHelperPageMode.None
-            or AllAroundHelperPageMode.Charge
-            or AllAroundHelperPageMode.RecognitionFunction
-            or AllAroundHelperPageMode.Clean;
-    }
-
-    private static bool IsConcreteMode(AllAroundHelperPageMode mode)
-    {
-        return mode is AllAroundHelperPageMode.Charge
-            or AllAroundHelperPageMode.RecognitionFunction
-            or AllAroundHelperPageMode.Clean;
-    }
-
-    private void SetMode(AllAroundHelperPageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        AllAroundHelperPageMode oldMode = Mode;
-        Mode = AllAroundHelperPageMode.Charge;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] AllAroundHelperPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Charge.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
     private void ResetTransientCombatState()
     {
         RecognitionCardsPlayedRemainder = 0;
         CleanTriggeredThisTurn = false;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(AllAroundHelperPageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -360,26 +266,5 @@ public sealed class AllAroundHelperPageRelic : RelicModel
         }
 
         return PileType.Hand.GetPile(Owner).Cards.Count;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

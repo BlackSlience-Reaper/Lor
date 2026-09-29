@@ -16,7 +16,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Rooms;
@@ -26,7 +25,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.TechnologyFloorLiberation;
 
-public sealed class MagicBulletShooterPageRelic : LibraryRelicModel
+public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShooterPageMode>
 {
     internal const int CommissionDamagePercent = 50;
     internal const int CommissionGoldPerKill = 80;
@@ -104,6 +103,16 @@ public sealed class MagicBulletShooterPageRelic : LibraryRelicModel
     [SavedProperty]
     public MagicBulletShooterPageMode Mode { get; private set; }
 
+    protected override MagicBulletShooterPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int CommissionKillsThisCombat { get; private set; }
 
@@ -124,38 +133,6 @@ public sealed class MagicBulletShooterPageRelic : LibraryRelicModel
         base.DeepCloneFields();
         _pendingCommissionKills = [];
         _seventhAttackCard = null;
-    }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != MagicBulletShooterPageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
     }
 
     public override async Task AfterRoomEntered(AbstractRoom room)
@@ -607,66 +584,12 @@ public sealed class MagicBulletShooterPageRelic : LibraryRelicModel
             creature.GetPostStunChaosResistanceLevel(LibraryDamageType.Blunt));
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<MagicBulletCommissionChoiceCard>(Owner),
         Owner.RunState.CreateCard<MagicBulletSeventhBulletChoiceCard>(Owner),
         Owner.RunState.CreateCard<MagicBulletBlackFlameChoiceCard>(Owner)
     ];
-
-    private static MagicBulletShooterPageMode ResolveModeFromChoiceCard(
-        CardModel? card) => card switch
-    {
-        MagicBulletCommissionChoiceCard =>
-            MagicBulletShooterPageMode.Commission,
-        MagicBulletSeventhBulletChoiceCard =>
-            MagicBulletShooterPageMode.SeventhBullet,
-        MagicBulletBlackFlameChoiceCard =>
-            MagicBulletShooterPageMode.BlackFlame,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    private static bool IsKnownMode(MagicBulletShooterPageMode mode) =>
-        mode is MagicBulletShooterPageMode.None
-            or MagicBulletShooterPageMode.Commission
-            or MagicBulletShooterPageMode.SeventhBullet
-            or MagicBulletShooterPageMode.BlackFlame;
-
-    private static bool IsConcreteMode(MagicBulletShooterPageMode mode) =>
-        mode is MagicBulletShooterPageMode.Commission
-            or MagicBulletShooterPageMode.SeventhBullet
-            or MagicBulletShooterPageMode.BlackFlame;
-
-    private void SetMode(MagicBulletShooterPageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        UpdateModeUiState();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        MagicBulletShooterPageMode oldMode = Mode;
-        Mode = MagicBulletShooterPageMode.Commission;
-        ResetTransientCombatState();
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] MagicBulletShooterPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Commission.");
-        UpdateModeUiState();
-    }
 
     private void ResetTransientCombatState()
     {
@@ -679,7 +602,11 @@ public sealed class MagicBulletShooterPageRelic : LibraryRelicModel
         _seventhAttackCard = null;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(MagicBulletShooterPageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch

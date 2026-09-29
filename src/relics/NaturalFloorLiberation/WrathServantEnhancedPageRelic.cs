@@ -287,17 +287,4 @@ public sealed class WrathServantEnhancedPageRelic : EnhancedMagicalGirlPageRelic
         CreateUpgradedChoice<WrathServantVenomChoiceCard>()
     ];
 
-    private static WrathServantPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            WrathServantWrathChoiceCard => WrathServantPageMode.Wrath,
-            WrathServantFriendChoiceCard => WrathServantPageMode.Friend,
-            WrathServantVenomChoiceCard => WrathServantPageMode.Venom,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    protected override WrathServantPageMode ResolveChoice(CardModel card) =>
-        ResolveModeFromChoiceCard(card);
 }

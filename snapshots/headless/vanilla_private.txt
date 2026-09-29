@@ -72,7 +72,6 @@ NTopBarPortraitTip.ShowTip	ok
 NTopBarPortraitTip._hoverTip	ok
 OrbModel.IconPath	ok
 OrbModel.PlayEvokeSfx	ok
-RelicModel.RelicIconChanged	ok
 RelicReward.ClaimedRelic	ok
 RelicReward._relic	ok
 RelicReward._wasTaken	ok
