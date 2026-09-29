@@ -30,6 +30,7 @@ public static class VerificationRunner
         BlueStarStrongVerificationPatch.Start,
         CodeHealthVerificationPatch.Start,
         EgoCardPreviewVerificationPatch.Start,
+        EncounterBgmDeclarationVerificationPatch.Start,
         EnemyCardIntentVerificationPatch.Start,
         FairyMassCareVerificationPatch.Start,
         GalaxyDoomVerificationPatch.Start,
