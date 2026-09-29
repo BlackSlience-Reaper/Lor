@@ -329,6 +329,14 @@ internal static class EncounterBgmDeclarationVerificationPatch
             await RecordSession(canonical, runState, layer, initialPhase: null);
         }
 
+        // 上面的轮换让每个接待遭遇都抽到了接待层（改走按回合的层配置）；
+        // 接待遭遇自己的配置（按死亡推进的 3 首）只在没有层时生效，单独各跑一次。
+        foreach (EncounterModel canonical in configured.Where(static e =>
+                     GuestReceptionPoolRegistry.IsGuestEncounterType(e.GetType())))
+        {
+            await RecordSession(canonical, runState, [], initialPhase: null, idSuffix: "@nolayer");
+        }
+
         EncounterModel? natural = configured.FirstOrDefault(static e =>
             e.GetType().Name == "NaturalFloorLiberationEncounter");
         if (natural != null)
@@ -343,10 +351,11 @@ internal static class EncounterBgmDeclarationVerificationPatch
         EncounterModel canonical,
         IRunState runState,
         string[]? layers,
-        int? initialPhase)
+        int? initialPhase,
+        string idSuffix = "")
     {
         EncounterBgmController.StopRuntimeSession();
-        string id = canonical.Id + (initialPhase is { } p ? "@phase" + p : string.Empty);
+        string id = canonical.Id + (initialPhase is { } p ? "@phase" + p : string.Empty) + idSuffix;
         EncounterModel encounter = canonical.ToMutable();
         if (layers != null)
         {
