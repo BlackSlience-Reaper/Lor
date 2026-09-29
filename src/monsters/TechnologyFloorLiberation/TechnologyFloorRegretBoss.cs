@@ -30,7 +30,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 1;
 
@@ -69,7 +69,6 @@ public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrim
     private const string IronEchoMoveId = "IRON_ECHO";
     private const string EndBeginEndMoveId = "END_BEGIN_END";
     private const string EgoRegretMoveId = "EGO_REGRET";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_1";
     private const float BackgroundTextIntervalSeconds = 5f;
@@ -111,9 +110,12 @@ public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrim
     private bool _backgroundMoonTextLoopStarted;
     private MoveState? _endBeginEndState;
     private MoveState? _egoRegretState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Cast";
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -241,34 +243,9 @@ public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrim
         }
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var boundRage = new MoveState(
             BoundRageMoveId,
@@ -314,10 +291,10 @@ public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrim
         ironEcho.FollowUpState = chooser;
         endBeginEnd.FollowUpState = chooser;
         egoRegret.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
-            new MonsterState[] { _reviveAndEmpowerState, boundRage, ironEcho, endBeginEnd, egoRegret, chooser },
+            new MonsterState[] { reviveAndEmpower, boundRage, ironEcho, endBeginEnd, egoRegret, chooser },
             chooser);
     }
 
@@ -405,21 +382,10 @@ public sealed class TechnologyFloorRegretBoss : LorMonsterModel, ILiberationPrim
         _egoRegretQueued = false;
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private Task<AttackCommand> ExecuteAttackSegment(string animation, int damage)
     {

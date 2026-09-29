@@ -54,9 +54,8 @@ internal enum LanguageFloorSmilingFaceMove
 }
 
 public sealed class LanguageFloorSmilingFace :
-    LorMonsterModel,
-    ITargetedMonsterAttackProvider,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster,
+    ITargetedMonsterAttackProvider
 {
     public const int MaxCorpseCount = 3;
     public const int MaxChaoResistance = 100;
@@ -87,7 +86,6 @@ public sealed class LanguageFloorSmilingFace :
     public const string ScreamMoveId = "SCREAM";
     public const string VomitMoveId = "VOMIT";
     public const string ReviveMoveId = "REVIVE";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const string RouterMoveId = "LANGUAGE_FLOOR_SMILING_FACE_ROUTER";
     private const string FakeDeathHiddenMoveId = "FAKE_DEATH_HIDDEN";
     private const string FormOneCompositeMoveId = "FORM_ONE_COMPOSITE";
@@ -192,7 +190,6 @@ public sealed class LanguageFloorSmilingFace :
     private MoveState? _screamState;
     private MoveState? _vomitState;
     private MoveState? _reviveState;
-    private MoveState? _reviveAndEmpowerState;
     private MoveState? _fakeDeathHiddenState;
     private MoveState? _formOneCompositeState;
     private MoveState? _formTwoCompositeState;
@@ -231,7 +228,9 @@ public sealed class LanguageFloorSmilingFace :
         !ForceKillable
         && (WaitingForDowngrade || CorpseTrialPending || CorpseTrialActive);
 
-    public int LiberationPhase => 3;
+    public override int LiberationPhase => 3;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -376,14 +375,7 @@ public sealed class LanguageFloorSmilingFace :
         {
             MustPerformOnceBeforeTransitioning = true
         };
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
         _fakeDeathHiddenState = new MoveState(
             FakeDeathHiddenMoveId,
             static _ => Task.CompletedTask,
@@ -420,7 +412,7 @@ public sealed class LanguageFloorSmilingFace :
                      _screamState,
                      _vomitState,
                      _reviveState,
-                     _reviveAndEmpowerState,
+                     reviveAndEmpower,
                      _formOneCompositeState,
                      _formTwoCompositeState,
                      _formThreeCompositeState
@@ -437,7 +429,7 @@ public sealed class LanguageFloorSmilingFace :
                 _screamState,
                 _vomitState,
                 _reviveState,
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 _fakeDeathHiddenState,
                 _formOneCompositeState,
                 _formTwoCompositeState,
@@ -571,26 +563,6 @@ public sealed class LanguageFloorSmilingFace :
         FakeDeathPlayerTurnsRemaining = 0;
         PendingFormTransition = -1;
         PendingFormTransitionIsPromotion = false;
-    }
-
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
     }
 
     private async Task ResolvePlayerTurnStart(
@@ -1133,21 +1105,11 @@ public sealed class LanguageFloorSmilingFace :
         return Task.CompletedTask;
     }
 
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-        if (Creature.CombatState?.Encounter
-            is LanguageFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LanguageFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task PerformCompositeMove(IReadOnlyList<Creature> targets)
     {

@@ -34,13 +34,12 @@ public enum ArtFloorLittleGalaxyForm
     Exposed
 }
 
-public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 3;
     private const string PartingTearsMoveId = "PARTING_TEARS";
     private const string EternalFarewellMoveId = "ETERNAL_FAREWELL";
     private const string OurLittleGalaxyMoveId = "OUR_LITTLE_GALAXY";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
     private const int PebbleHealPercent = 20;
@@ -69,9 +68,8 @@ public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrima
     private MoveState? _eternalFarewellState;
     private MoveState? _egoState;
     private MoveState? _permanentStunState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     public bool IsHealingForm => _isHealingForm && !_allFriendsDeadExposed;
 
@@ -186,20 +184,6 @@ public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrima
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     public async Task RefreshTurnStartState()
     {
         if (Creature.IsDead)
@@ -290,14 +274,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrima
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         _partingTearsState = new MoveState(
             PartingTearsMoveId,
@@ -339,12 +316,12 @@ public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrima
         _eternalFarewellState.FollowUpState = chooser;
         _egoState.FollowUpState = chooser;
         _permanentStunState.FollowUpState = _permanentStunState;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 _partingTearsState,
                 _eternalFarewellState,
                 _egoState,
@@ -410,20 +387,10 @@ public sealed class ArtFloorLittleGalaxyBoss : LorMonsterModel, ILiberationPrima
         return Task.CompletedTask;
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task<AttackCommand> ExecuteGroupAttack(int damage, string anim)
     {

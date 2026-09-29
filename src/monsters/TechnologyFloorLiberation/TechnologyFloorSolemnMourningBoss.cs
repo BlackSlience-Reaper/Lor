@@ -35,7 +35,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 4;
 
@@ -53,7 +53,6 @@ public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILibera
     private const string SinkingIntoBlissMoveId = "SINKING_INTO_BLISS";
     private const string RestingPlaceMoveId = "RESTING_PLACE";
     private const string SolemnMourningEgoMoveId = "SOLEMN_MOURNING_EGO";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_4";
     private const float BackgroundTextIntervalSeconds = 5f;
@@ -112,9 +111,12 @@ public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILibera
     private CanvasLayer? _activeEgoFlashLayer;
     private Tween? _activeEgoFlashTween;
     private MoveState? _egoState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Cast";
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -243,24 +245,6 @@ public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILibera
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     internal async Task<bool> QueueEgoSequence()
     {
         if (Creature.IsDead || _egoState == null)
@@ -287,14 +271,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILibera
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var solemnCeremony = new MoveState(
             SolemnCeremonyMoveId,
@@ -358,12 +335,12 @@ public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILibera
         sinkingIntoBliss.FollowUpState = chooser;
         restingPlace.FollowUpState = chooser;
         solemnMourningEgo.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState, solemnCeremony, handOfDeliverance,
+                reviveAndEmpower, solemnCeremony, handOfDeliverance,
                 sinkingIntoBliss, restingPlace, solemnMourningEgo, chooser
             },
             chooser);
@@ -625,21 +602,10 @@ public sealed class TechnologyFloorSolemnMourningBoss : LorMonsterModel, ILibera
         }
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private Task<AttackCommand> ExecuteAttackSegment(string animation, int damage)
     {
