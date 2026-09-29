@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
+using LibraryOfRuina.content.abnormalities.Nosferatu;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
-using LibraryOfRuina.monsters.Nosferatu;
 using LibraryOfRuina.powers.LanguageFloorLiberation;
-using LibraryOfRuina.powers.Nosferatu;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 

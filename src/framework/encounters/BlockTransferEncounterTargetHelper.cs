@@ -1,19 +1,15 @@
 using System.Linq;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
+using LibraryOfRuina.content.abnormalities.PunishingBird;
+using LibraryOfRuina.content.abnormalities.RoadHome;
+using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
+using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
-using LibraryOfRuina.encounters.LittleRedMercenary;
 using LibraryOfRuina.encounters.NaturalFloorLiberation;
-using LibraryOfRuina.encounters.PunishingBird;
-using LibraryOfRuina.encounters.RoadHome;
-using LibraryOfRuina.encounters.WarmheartedWoodsman;
-using LibraryOfRuina.encounters.WrathServant;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
-using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
-using LibraryOfRuina.monsters.PunishingBird;
-using LibraryOfRuina.monsters.RoadHome;
-using LibraryOfRuina.monsters.WarmheartedWoodsman;
 
 namespace LibraryOfRuina.framework.encounters;
 
@@ -70,7 +66,7 @@ internal static class BlockTransferEncounterTargetHelper
                 LanguageFloorScarletScar => combatState?.Encounter is LanguageFloorLiberationEncounter,
                 NaturalFloorBlindRageBoss => combatState?.Encounter is NaturalFloorLiberationEncounter,
                 NaturalFloorMagicalGirl => combatState?.Encounter is NaturalFloorLiberationEncounter { CurrentPhase: 5 },
-                LibraryOfRuina.monsters.WrathServant.WrathServant => WrathServantEncounterHelper.IsWrathServantEncounter(combatState),
+                LibraryOfRuina.content.abnormalities.WrathServant.WrathServant => WrathServantEncounterHelper.IsWrathServantEncounter(combatState),
                 WoodsmanTree => WarmheartedWoodsmanEncounterHelper.IsWarmheartedWoodsmanEncounter(combatState),
                 RoadHomeHouse => RoadHomeEncounterHelper.IsRoadHomeElite(combatState),
                 ForestKeeperBirdBase => PunishingBirdEncounterHelper.IsEncounter(combatState),

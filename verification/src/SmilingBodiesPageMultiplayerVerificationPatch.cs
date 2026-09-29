@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.patches.SmilingBodies;
+using LibraryOfRuina.content.abnormalities.SmilingBodies;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes;

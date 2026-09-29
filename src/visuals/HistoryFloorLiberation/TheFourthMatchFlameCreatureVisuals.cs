@@ -1,5 +1,5 @@
+using LibraryOfRuina.content.abnormalities.ScorchedGirl;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.monsters.ScorchedGirl;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.HistoryFloorLiberation;

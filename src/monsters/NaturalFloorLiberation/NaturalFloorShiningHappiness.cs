@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.abnormalities.KingOfGreed;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
-using LibraryOfRuina.monsters.KingOfGreed;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.visuals.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Cards;

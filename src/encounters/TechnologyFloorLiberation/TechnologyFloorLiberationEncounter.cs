@@ -3,11 +3,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.afflictions.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.afflictions.TechnologyFloorLiberation;
 using LibraryOfRuina.backgrounds.TechnologyFloorLiberation;
 using LibraryOfRuina.cards;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
+using LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.events.TechnologyFloorLiberation;
@@ -130,7 +130,7 @@ public sealed class TechnologyFloorLiberationEncounter :
         ModelDb.Monster<TechnologyFloorChordBoss>(),
         ModelDb.Monster<TechnologyFloorChordStaff>(),
         ModelDb.Monster<TechnologyFloorSolemnMourningBoss>(),
-        ModelDb.Monster<monsters.DeadButterfly.DeadButterfly>(),
+        ModelDb.Monster<content.abnormalities.DeadButterfly.DeadButterfly>(),
         ModelDb.Monster<TechnologyFloorMagicBulletBoss>()
     ];
 
@@ -141,7 +141,7 @@ public sealed class TechnologyFloorLiberationEncounter :
             .Concat(ModelDb.Monster<TechnologyFloorChordBoss>().AssetPaths)
             .Concat(ModelDb.Monster<TechnologyFloorChordStaff>().AssetPaths)
             .Concat(ModelDb.Monster<TechnologyFloorSolemnMourningBoss>().AssetPaths)
-            .Concat(ModelDb.Monster<monsters.DeadButterfly.DeadButterfly>().AssetPaths)
+            .Concat(ModelDb.Monster<content.abnormalities.DeadButterfly.DeadButterfly>().AssetPaths)
             .Concat(ModelDb.Monster<TechnologyFloorMagicBulletBoss>().AssetPaths)
             .Concat(LorexSceneTransitionAssetPaths.All)
             .Concat(new[]

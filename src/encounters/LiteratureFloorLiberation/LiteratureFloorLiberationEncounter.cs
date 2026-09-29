@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.LiteratureFloorLiberation;
-using LibraryOfRuina.cards.Leticia;
+using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.events.LiteratureFloorLiberation;

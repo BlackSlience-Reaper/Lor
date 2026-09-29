@@ -1,9 +1,9 @@
 using System;
 using Godot;
+using LibraryOfRuina.content.abnormalities.JudgementBird;
+using LibraryOfRuina.content.abnormalities.PriceOfSilence;
 using LibraryOfRuina.powers.ArtFloorLiberation;
-using LibraryOfRuina.powers.JudgementBird;
 using LibraryOfRuina.powers.LanguageFloorLiberation;
-using LibraryOfRuina.powers.PriceOfSilence;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;

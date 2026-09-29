@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.ArtFloorLiberation;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.content.abnormalities.CosmicFragment;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
@@ -12,7 +13,6 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
-using LibraryOfRuina.monsters.CosmicFragment;
 using LibraryOfRuina.powers.ArtFloorLiberation;
 using LibraryOfRuina.visuals.ArtFloorLiberation;
 using MegaCrit.Sts2.Core.Commands;
@@ -96,9 +96,9 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
         BeyondFragmentCreatureVisuals.Profile.AssetPaths
             .Concat(new[]
             {
-                CosmicFragment.CosmicFragment.AttackSfxPath,
-                CosmicFragment.CosmicFragment.SingingSfxPath,
-                CosmicFragment.CosmicFragment.EchoAttackSfxPath
+                content.abnormalities.CosmicFragment.CosmicFragment.AttackSfxPath,
+                content.abnormalities.CosmicFragment.CosmicFragment.SingingSfxPath,
+                content.abnormalities.CosmicFragment.CosmicFragment.EchoAttackSfxPath
             })
             .Concat(EnumerateIntentAssets().SelectMany(static intent => intent.AssetPaths))
             .Distinct();
@@ -219,7 +219,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
     {
         for (int i = 0; i < 3; i++)
         {
-            LocalOggOneShotPlayer.Play(CosmicFragment.CosmicFragment.SingingSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(content.abnormalities.CosmicFragment.CosmicFragment.SingingSfxPath, -2f);
             AttackCommand attack = await ExecuteGroupAttack(MelodiousSongDamage, "Attack2", "vfx/vfx_attack_blunt");
             foreach (Creature target in GetUnblockedPlayerHitTargets(attack))
             {
@@ -234,7 +234,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 
     private async Task PenetrateMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(CosmicFragment.CosmicFragment.AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(content.abnormalities.CosmicFragment.CosmicFragment.AttackSfxPath, -2f);
         await ExecuteGroupAttack(PenetrateDamage, "Attack", "vfx/vfx_attack_slash");
         await AddEpiphanyToPlayers(1);
         AdvanceBaseCadence();
@@ -244,7 +244,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
     {
         await AddEpiphanyToPlayers(1);
 
-        LocalOggOneShotPlayer.Play(CosmicFragment.CosmicFragment.AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(content.abnormalities.CosmicFragment.CosmicFragment.AttackSfxPath, -2f);
         await ExecuteGroupAttack(BoundaryThornDamage, "Attack", "vfx/vfx_attack_slash");
 
         foreach (CardModel epiphany in EnumerateEpiphanyCards())
@@ -273,7 +273,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 
         for (int i = 0; i < 3; i++)
         {
-            LocalOggOneShotPlayer.Play(CosmicFragment.CosmicFragment.EchoAttackSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(content.abnormalities.CosmicFragment.CosmicFragment.EchoAttackSfxPath, -2f);
             await ExecuteGroupAttack(OtherworldlyEchoDamage, "Attack2", "vfx/vfx_attack_slash", indiscriminate: true);
             await Cmd.CustomScaledWait(0.04f, 0.08f);
         }
@@ -291,7 +291,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
         _egoQueued = false;
         for (int i = 0; i < ArtFloorEgoNumbers.BeyondFragmentHitCount; i++)
         {
-            LocalOggOneShotPlayer.Play(CosmicFragment.CosmicFragment.EchoAttackSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(content.abnormalities.CosmicFragment.CosmicFragment.EchoAttackSfxPath, -2f);
             await ExecuteGroupAttack(BeyondFragmentEgoDamage, "Ego", "vfx/vfx_attack_slash");
             await Cmd.CustomScaledWait(0.04f, 0.08f);
         }

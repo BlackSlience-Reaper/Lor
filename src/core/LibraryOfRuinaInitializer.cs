@@ -17,7 +17,6 @@ using LibraryOfRuina.infra.hooks;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.patches.LittleRedMercenary;
 using LibraryOfRuina.specialguests;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;

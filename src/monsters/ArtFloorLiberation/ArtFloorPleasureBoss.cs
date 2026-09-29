@@ -97,9 +97,9 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
         ArtFloorPleasureCreatureVisuals.Profile.AssetPaths
             .Concat(new[]
             {
-                SpinyBus.SpinyBus.AttackSfxPath,
-                SpinyBus.SpinyBus.ParrySfxPath,
-                SpinyBus.SpinyBus.HitSfxPath,
+                content.abnormalities.SpinyBus.SpinyBus.AttackSfxPath,
+                content.abnormalities.SpinyBus.SpinyBus.ParrySfxPath,
+                content.abnormalities.SpinyBus.SpinyBus.HitSfxPath,
                 ImageHelper.GetImagePath(PleasureCard.GetPortraitResourcePath()),
                 ImageHelper.GetImagePath(PleasureEgoCard.GetPortraitResourcePath())
             })
@@ -288,7 +288,7 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
                 null);
         }
 
-        await ExecuteGroupAttack(PleasureEgoFinalDamage, "EgoS2", "vfx/vfx_attack_blunt", SpinyBus.SpinyBus.ParrySfxPath);
+        await ExecuteGroupAttack(PleasureEgoFinalDamage, "EgoS2", "vfx/vfx_attack_blunt", content.abnormalities.SpinyBus.SpinyBus.ParrySfxPath);
         await PowerCmdCompat.Apply<StrengthPower>(Creature, ArtFloorEgoNumbers.PleasureStrength, Creature, null);
     }
 
@@ -296,7 +296,7 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
         int damage,
         string anim,
         string hitFx,
-        string sfxPath = SpinyBus.SpinyBus.AttackSfxPath)
+        string sfxPath = content.abnormalities.SpinyBus.SpinyBus.AttackSfxPath)
     {
         return DamageCmd.Attack(damage)
             .FromMonster(this)

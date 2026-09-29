@@ -43,23 +43,23 @@ internal static class PowerNameMap
             Zhs: "下回合崩溃", Eng: "Next Turn Collapse", Jpn: "次ターン崩壊", Kor: "다음 턴 붕괴"),
         // Buff
         new("QUEEN_BEE_NEXT_TURN_STRONG_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.QueenBee.QueenBeeNextTurnStrongPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.QueenBee.QueenBeeNextTurnStrongPower>(),
             Zhs: "下回合强壮", Eng: "Next-Turn Power Up", Jpn: "次ターン筋力", Kor: "다음 턴 강화"),
         // Debuff
         new("WRATH_SERVANT_NEXT_TURN_CORROSION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WrathServant.WrathServantNextTurnCorrosionPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.WrathServant.WrathServantNextTurnCorrosionPower>(),
             Zhs: "下回合腐蚀", Eng: "Next-Turn Corrosion", Jpn: "次ターン腐食", Kor: "다음 턴 부식"),
         // Buff
         new("QUEEN_BEE_NEXT_TURN_QUICKNESS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.QueenBee.QueenBeeNextTurnQuicknessPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.QueenBee.QueenBeeNextTurnQuicknessPower>(),
             Zhs: "下回合迅捷", Eng: "Next-Turn Quickness", Jpn: "次ターン迅速", Kor: "다음 턴 신속"),
         // Buff
         new("BIG_BAD_WOLF_TEMPORARY_THORNS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.BigBadWolf.BigBadWolfTemporaryThornsPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.BigBadWolf.BigBadWolfTemporaryThornsPower>(),
             Zhs: "临时荆棘", Eng: "Temporary Thorns", Jpn: "一時的な棘", Kor: "일시적인 가시"),
         // Buff
         new("WARMHEARTED_WOODSMAN_TEMPORARY_THORNS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WarmheartedWoodsman.WarmheartedWoodsmanTemporaryThornsPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanTemporaryThornsPower>(),
             Zhs: "临时荆棘", Eng: "Temporary Thorns", Jpn: "一時的な棘", Kor: "임시 가시"),
         // Debuff
         new("ART_FLOOR_FRAGRANCE_POWER.title",
@@ -83,7 +83,7 @@ internal static class PowerNameMap
             Zhs: "再生", Eng: "Regenerative", Jpn: "再生", Kor: "재생"),
         // Buff
         new("BIG_BAD_WOLF_CRUEL_CLAWS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.BigBadWolf.BigBadWolfCruelClawsPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.BigBadWolf.BigBadWolfCruelClawsPower>(),
             Zhs: "凶残利爪", Eng: "Cruel Claws", Jpn: "凶暴な爪", Kor: "잔혹한 발톱"),
         // Debuff
         new("LANGUAGE_FLOOR_SCAR_POWER.title",
@@ -119,7 +119,7 @@ internal static class PowerNameMap
             Zhs: "委托目标", Eng: "Commission Target", Jpn: "依頼対象", Kor: "의뢰 대상"),
         // Debuff
         new("QUEEN_BEE_THREAT_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.QueenBee.QueenBeeThreatPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.QueenBee.QueenBeeThreatPower>(),
             Zhs: "威胁", Eng: "Threat", Jpn: "脅威", Kor: "위협"),
         // Debuff
         new("HISTORY_FLOOR_WASP_SPORE_POWER.title",
@@ -155,7 +155,7 @@ internal static class PowerNameMap
             Zhs: "恐惧", Eng: "Fear", Jpn: "恐怖", Kor: "공포"),
         // Debuff
         new("NOSFERATU_HYDROPHOBIA_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.Nosferatu.NosferatuHydrophobiaPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.Nosferatu.NosferatuHydrophobiaPower>(),
             Zhs: "恐水症", Eng: "Hydrophobia", Jpn: "恐水症", Kor: "공수병"),
         // Debuff
         new("NATURAL_FLOOR_NIHIL_HATRED_STATUS.title",
@@ -163,7 +163,7 @@ internal static class PowerNameMap
             Zhs: "憎恶", Eng: "Hatred", Jpn: "憎悪", Kor: "증오"),
         // Debuff
         new("WRATH_SERVANT_STAFF_MARK_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WrathServant.WrathServantStaffMarkPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.WrathServant.WrathServantStaffMarkPower>(),
             Zhs: "手杖", Eng: "Staff Mark", Jpn: "ケイン", Kor: "지팡이"),
         // Buff
         new("LIBRARY_STRONG_BLUNT_POWER.title",
@@ -187,11 +187,11 @@ internal static class PowerNameMap
             Zhs: "星火", Eng: "Spark", Jpn: "火種", Kor: "불씨"),
         // Buff
         new("SCARECROW_WISDOM_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ScarecrowSearchingForWisdom.ScarecrowWisdomPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom.ScarecrowWisdomPower>(),
             Zhs: "智慧", Eng: "Wisdom", Jpn: "知恵", Kor: "지혜"),
         // Debuff
         new("WRATH_SERVANT_FRIEND_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WrathServant.WrathServantFriendPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.WrathServant.WrathServantFriendPower>(),
             Zhs: "朋友", Eng: "Friend", Jpn: "友", Kor: "친구"),
         // Debuff
         new("LIBRARY_BINDING_POWER.title",
@@ -199,7 +199,7 @@ internal static class PowerNameMap
             Zhs: "束缚", Eng: "Binding", Jpn: "束縛", Kor: "속박"),
         // Debuff
         new("QUEEN_BIND_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.QueenOfHatred.LibraryOfRuinaQueenBindPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.QueenOfHatred.LibraryOfRuinaQueenBindPower>(),
             Zhs: "束缚", Eng: "Bind", Jpn: "抑制", Kor: "속박"),
         // Buff
         new("WEDGE_PIERCING_POWER.title",
@@ -227,7 +227,7 @@ internal static class PowerNameMap
             Zhs: "混乱易伤", Eng: "Break Vulnerable", Jpn: "混乱脆弱", Kor: "흐트러짐 취약"),
         // Buff
         new("BLOOD_THIRST_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.RedShoes.LibraryOfRuinaBloodThirstPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.RedShoes.LibraryOfRuinaBloodThirstPower>(),
             Zhs: "渴血", Eng: "Blood Thirst", Jpn: "血に渇望している", Kor: "피에 목말라"),
         // Debuff
         new("LIBRARY_BURN_POWER_DEFAULT.title",
@@ -247,7 +247,7 @@ internal static class PowerNameMap
             Zhs: "狂热崇拜", Eng: "Fanatic Worship", Jpn: "狂熱崇拝", Kor: "광신적인 숭배"),
         // Debuff
         new("LITTLE_RED_PREY_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LittleRedMercenary.LittleRedPreyPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.LittleRedMercenary.LittleRedPreyPower>(),
             Zhs: "猎物", Eng: "Prey", Jpn: "獲物", Kor: "먹이"),
         // Buff
         new("WEDGE_PERSEVERANCE_POWER.title",
@@ -263,7 +263,7 @@ internal static class PowerNameMap
             Zhs: "突刺威力增强", Eng: "Pierce Power Up", Jpn: "貫通威力増加", Kor: "관통 위력 증가"),
         // Debuff
         new("JUDGEMENT_BIRD_SIN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.JudgementBird.JudgementBirdSinPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.JudgementBird.JudgementBirdSinPower>(),
             Zhs: "罪孽", Eng: "Sin", Jpn: "罪", Kor: "죄"),
         // Debuff
         new("PHILOSOPHY_FLOOR_TWILIGHT_SIN_POWER.title",
@@ -271,11 +271,11 @@ internal static class PowerNameMap
             Zhs: "罪痕", Eng: "Sin", Jpn: "罪", Kor: "죄"),
         // Debuff
         new("BIG_BIRD_ENERGY_SEAL_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.BigBird.BigBirdEnergySealPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.BigBird.BigBirdEnergySealPower>(),
             Zhs: "能量减少", Eng: "Reduced Energy", Jpn: "エナジー減少", Kor: "에너지 감소"),
         // Debuff
         new("WRATH_SERVANT_CORROSION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WrathServant.WrathServantCorrosionPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.WrathServant.WrathServantCorrosionPower>(),
             Zhs: "腐蚀", Eng: "Corrosion", Jpn: "腐食", Kor: "부식"),
         // Debuff
         new("RNFMABJ_CORROSION_POWER.title",
@@ -295,7 +295,7 @@ internal static class PowerNameMap
             Zhs: "虚弱", Eng: "Weak", Jpn: "虚弱", Kor: "허약"),
         // Debuff
         new("BIG_BIRD_CHARMED_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.BigBird.BigBirdCharmedPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.BigBird.BigBirdCharmedPower>(),
             Zhs: "被魅惑", Eng: "Charmed", Jpn: "魅惑", Kor: "매혹"),
         // Debuff
         new("IORI_CARD_PLAY_PAIN_POWER.title",
@@ -315,7 +315,7 @@ internal static class PowerNameMap
             Zhs: "迅捷", Eng: "Quickness", Jpn: "迅速", Kor: "신속"),
         // Buff
         new("ALL_AROUND_HELPER_SWIFT_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.AllAroundHelper.LibraryOfRuinaAllAroundHelperSwiftPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.AllAroundHelper.LibraryOfRuinaAllAroundHelperSwiftPower>(),
             Zhs: "迅捷", Eng: "Swiftness", Jpn: "迅速", Kor: "스위프트"),
         // Buff
         new("ART_FLOOR_QUICKNESS_POWER.title",
@@ -335,7 +335,7 @@ internal static class PowerNameMap
             Zhs: "鲜肉", Eng: "Fresh Meat", Jpn: "新鮮な肉", Kor: "신선한 고기"),
         // Buff
         new("NOSFERATU_BLOOD_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.Nosferatu.NosferatuBloodPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.Nosferatu.NosferatuBloodPower>(),
             Zhs: "鲜血", Eng: "Blood", Jpn: "鮮血", Kor: "선혈"),
         // Debuff
         new("HISTORY_FLOOR_WASP_PARALYSIS_POWER.title",

@@ -30,7 +30,7 @@ internal static class CombatStateProperties
         [typeof(global::LibraryOfRuina.encounters.LanguageFloorLiberation.LanguageFloorLiberationEncounter)] = new(
             ["CurrentPhase"],
             ["EndedByLethalDamage", "KilledBossCount", "PhaseComplete", "SettlementTriggered", "TransitionPending"]),
-        [typeof(global::LibraryOfRuina.monsters.JudgementBird.JudgementBird)] = new(
+        [typeof(global::LibraryOfRuina.content.abnormalities.JudgementBird.JudgementBird)] = new(
             [],
             ["FullOfEvilPending", "PlannedJudgementTargetCombatIds"]),
         [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorBloodBat)] = new(
@@ -98,17 +98,17 @@ internal static class CombatStateProperties
         [typeof(global::LibraryOfRuina.monsters.NaturalFloorLiberation.NaturalFloorNihilStatue)] = new(
             ["SummonPending"],
             []),
-        [typeof(global::LibraryOfRuina.monsters.Ozma.Ozma)] = new(
+        [typeof(global::LibraryOfRuina.content.abnormalities.Ozma.Ozma)] = new(
             ["ForgottenOriginalCards", "Mode"],
             [
                 "ForgetCount", "ForgottenOriginalOwnerCombatIds", "ForgottenPlayerCombatIds",
                 "ForgottenPlayerTurnsStarted", "NextInterferenceUsesPressure", "StunAfterForgottenRestorePending",
                 "TrueJackDirection", "TrueJackHitsRemaining"
             ]),
-        [typeof(global::LibraryOfRuina.monsters.Ozma.OzmaJack)] = new(
+        [typeof(global::LibraryOfRuina.content.abnormalities.Ozma.OzmaJack)] = new(
             [],
             ["IsAwake"]),
-        [typeof(global::LibraryOfRuina.monsters.SpiderBud.SpiderBud)] = new(
+        [typeof(global::LibraryOfRuina.content.abnormalities.SpiderBud.SpiderBud)] = new(
             [],
             ["HuntPending"]),
         [typeof(global::LibraryOfRuina.framework.powers.NextTurnVigorPower)] = new(

@@ -24,7 +24,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 using BaseSmilingBodies =
-    SmilingBodies.SmilingBodies;
+    content.abnormalities.SmilingBodies.SmilingBodies;
 
 public sealed partial class LanguageFloorSmilingFace
 {

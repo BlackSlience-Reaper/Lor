@@ -1,7 +1,7 @@
+using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.encounters.NaturalFloorLiberation;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
-using LibraryOfRuina.powers.LittleRedMercenary;
 
 namespace LibraryOfRuina.combat.NaturalFloorLiberation;
 

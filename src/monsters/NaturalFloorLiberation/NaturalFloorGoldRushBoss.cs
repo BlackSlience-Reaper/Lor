@@ -517,14 +517,14 @@ public sealed class NaturalFloorGoldRushBoss : NaturalFloorPhaseMonster, ILibera
 
     internal static string SoundPath(string file) => file switch
     {
-        "human_attack" => KingOfGreed.GoldenAmber.SfxRoot + "magical_girl_stab.ogg",
-        "king_attack" => KingOfGreed.GoldenAmber.SfxRoot + "king_stab.ogg",
-        "human_special" => KingOfGreed.GoldenAmber.SfxRoot + "golden_path.ogg",
-        "king_special" => KingOfGreed.GoldenAmber.SfxRoot + "tyrant_path.ogg",
-        "transform" => KingOfGreed.GoldenAmber.SfxRoot + "transform_to_king.ogg",
-        "summon" => KingOfGreed.ShiningHappiness.SummonSfxPath,
+        "human_attack" => content.abnormalities.KingOfGreed.GoldenAmber.SfxRoot + "magical_girl_stab.ogg",
+        "king_attack" => content.abnormalities.KingOfGreed.GoldenAmber.SfxRoot + "king_stab.ogg",
+        "human_special" => content.abnormalities.KingOfGreed.GoldenAmber.SfxRoot + "golden_path.ogg",
+        "king_special" => content.abnormalities.KingOfGreed.GoldenAmber.SfxRoot + "tyrant_path.ogg",
+        "transform" => content.abnormalities.KingOfGreed.GoldenAmber.SfxRoot + "transform_to_king.ogg",
+        "summon" => content.abnormalities.KingOfGreed.ShiningHappiness.SummonSfxPath,
         "guard" or "hit" => NaturalFloorDespairMonster.SfxRoot + file + ".ogg",
-        _ => KingOfGreed.GoldenAmber.SfxRoot + file + ".ogg"
+        _ => content.abnormalities.KingOfGreed.GoldenAmber.SfxRoot + file + ".ogg"
     };
 
     internal static void Sound(string file) => LocalOggOneShotPlayer.Play(SoundPath(file));

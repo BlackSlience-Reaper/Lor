@@ -1,12 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.abnormalities.RedShoes;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.intents;
-using LibraryOfRuina.visuals.RedShoes;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;

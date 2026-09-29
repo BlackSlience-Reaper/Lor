@@ -1,12 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.cards.QueenOfHatred;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
-using LibraryOfRuina.powers.QueenOfHatred;
-using LibraryOfRuina.relics.QueenOfHatred;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

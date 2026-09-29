@@ -1,0 +1,79 @@
+using System.Linq;
+using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Rooms;
+
+namespace LibraryOfRuina.content.abnormalities.PriceOfSilence;
+
+public sealed class PriceOfSilenceStrong : EncounterModel, IEncounterBgmSource
+{
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "PriceOfSilenceBGM",
+        GuestReceptionPoolRegistry.ReligionReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
+    public const string TraceSlot = "time_trace";
+    public const string BossSlot = "price_of_silence_boss";
+
+    public override RoomType RoomType => RoomType.Monster;
+
+    public override bool IsWeak => false;
+
+    public override bool HasScene => true;
+
+    protected override bool HasCustomBackground => true;
+
+    public override IReadOnlyList<string> Slots =>
+    [
+        TraceSlot,
+        BossSlot
+    ];
+
+    public override IEnumerable<MonsterModel> AllPossibleMonsters =>
+    [
+        ModelDb.Monster<TimeTrace>(),
+        ModelDb.Monster<PriceOfSilence>()
+    ];
+
+    protected override IReadOnlyList<(MonsterModel, string?)> GenerateMonsters()
+    {
+        return
+        [
+            (ModelDb.Monster<PriceOfSilence>().ToMutable(), BossSlot),
+            (ModelDb.Monster<TimeTrace>().ToMutable(), TraceSlot)
+        ];
+    }
+
+    public override float GetCameraScaling() => 0.82f;
+}
+
+internal static class PriceOfSilenceEncounterHelper
+{
+    public static bool IsPriceOfSilenceEncounter(CombatStateLike? combatState)
+    {
+        return combatState?.RunState.CurrentRoom is CombatRoom room
+            && room.Encounter.MonstersWithSlots.Any(pair =>
+                pair.Item1 is PriceOfSilence or TimeTrace);
+    }
+
+    public static Creature? FindBoss(CombatStateLike? combatState)
+    {
+        return combatState?.Creatures.FirstOrDefault(creature =>
+            creature.IsAlive && creature.Monster is PriceOfSilence);
+    }
+
+    public static PriceOfSilenceEncounterTrackerPower? FindTracker(CombatStateLike? combatState)
+    {
+        return FindBoss(combatState)?.GetPower<PriceOfSilenceEncounterTrackerPower>();
+    }
+
+    public static IReadOnlyList<Creature> LivingPlayers(CombatStateLike? combatState)
+    {
+        return combatState?.PlayerCreatures
+            .Where(static creature => creature.IsAlive)
+            .ToArray()
+            ?? [];
+    }
+}

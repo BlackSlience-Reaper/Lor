@@ -30,7 +30,7 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
 
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
-        monsters.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath
+        content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath
     ];
 
     public SolemnMourningEgoCard()
@@ -61,7 +61,7 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
 
         for (int i = 0; i < hits; i++)
         {
-            LocalOggOneShotPlayer.Play(monsters.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath, -2f);
             IReadOnlyList<Creature> enemies = Owner.Creature.CombatState?.HittableEnemies.ToArray()
                 ?? Array.Empty<Creature>();
 

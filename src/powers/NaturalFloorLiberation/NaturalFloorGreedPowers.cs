@@ -175,8 +175,8 @@ public sealed class NaturalFloorShiningHappinessPower : NaturalFloorGreedPassive
             return;
         }
 
-        await KingOfGreed.ShiningHappinessAura.Add<LibraryStrongPower>(boss, NaturalFloorShiningHappiness.StrongAura, Owner);
-        await KingOfGreed.ShiningHappinessAura.Add<LibraryEndurancePower>(boss, NaturalFloorShiningHappiness.EnduranceAura, Owner);
+        await content.abnormalities.KingOfGreed.ShiningHappinessAura.Add<LibraryStrongPower>(boss, NaturalFloorShiningHappiness.StrongAura, Owner);
+        await content.abnormalities.KingOfGreed.ShiningHappinessAura.Add<LibraryEndurancePower>(boss, NaturalFloorShiningHappiness.EnduranceAura, Owner);
         AuraApplied = true;
     }
 
@@ -190,8 +190,8 @@ public sealed class NaturalFloorShiningHappinessPower : NaturalFloorGreedPassive
         AuraApplied = false;
         if (Boss is { } boss)
         {
-            await KingOfGreed.ShiningHappinessAura.Remove<LibraryStrongPower>(boss, NaturalFloorShiningHappiness.StrongAura, Owner);
-            await KingOfGreed.ShiningHappinessAura.Remove<LibraryEndurancePower>(boss, NaturalFloorShiningHappiness.EnduranceAura, Owner);
+            await content.abnormalities.KingOfGreed.ShiningHappinessAura.Remove<LibraryStrongPower>(boss, NaturalFloorShiningHappiness.StrongAura, Owner);
+            await content.abnormalities.KingOfGreed.ShiningHappinessAura.Remove<LibraryEndurancePower>(boss, NaturalFloorShiningHappiness.EnduranceAura, Owner);
         }
     }
 

@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
-using LibraryOfRuina.powers.WrathServant;
 using LibraryOfRuina.visuals.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;

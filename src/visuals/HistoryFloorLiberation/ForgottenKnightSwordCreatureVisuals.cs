@@ -1,6 +1,6 @@
 using Godot;
+using LibraryOfRuina.content.abnormalities.DespairKnight;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.monsters.DespairKnight;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 

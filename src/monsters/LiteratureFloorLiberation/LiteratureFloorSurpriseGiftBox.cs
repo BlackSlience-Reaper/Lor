@@ -1,8 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.cards.Leticia;
+using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters.Leticia;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;

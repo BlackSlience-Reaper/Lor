@@ -10,7 +10,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.acts;
-using LibraryOfRuina.cards.Leticia;
+using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;

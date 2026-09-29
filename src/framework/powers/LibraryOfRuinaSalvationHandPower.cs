@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.afflictions.FuneralOfTheDeadButterflies;
+using LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;

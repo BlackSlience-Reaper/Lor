@@ -110,12 +110,12 @@
 			]
 		}
 	},
-	"LibraryOfRuina.monsters.Nosferatu.BloodBat": {
+	"LibraryOfRuina.content.abnormalities.Nosferatu.BloodBat": {
 		"secondaryInitialStates": [
 			"THIRST"
 		]
 	},
-	"LibraryOfRuina.monsters.Nosferatu.Nosferatu": {
+	"LibraryOfRuina.content.abnormalities.Nosferatu.Nosferatu": {
 		"secondaryInitialStates": [
 			"GRACEFUL_REST"
 		]

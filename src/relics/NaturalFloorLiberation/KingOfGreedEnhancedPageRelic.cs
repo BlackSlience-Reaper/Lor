@@ -1,11 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using LibraryOfRuina.cards.KingOfGreed;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.content.abnormalities.KingOfGreed;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.relics.KingOfGreed;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;

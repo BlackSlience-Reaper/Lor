@@ -18,7 +18,7 @@ using MegaCrit.Sts2.Core.Logging;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 using BaseSmilingBodies =
-    SmilingBodies.SmilingBodies;
+    content.abnormalities.SmilingBodies.SmilingBodies;
 
 public sealed partial class LanguageFloorSmilingFace
 {

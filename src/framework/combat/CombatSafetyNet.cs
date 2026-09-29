@@ -6,8 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.monsters.BigBadWolf;
-using LibraryOfRuina.monsters.GalaxyChild;
+using LibraryOfRuina.content.abnormalities.BigBadWolf;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Debug;
@@ -32,7 +32,6 @@ using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.TestSupport;
 using Environment = System.Environment;
 using GodotNode = Godot.Node;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.framework.combat;
 

@@ -978,7 +978,7 @@ internal static class BadgedIntentVisualPatch
         string? portraitPath = target.Monster switch
         {
             NaturalFloorNihilBoss => "res://images/intents/targets/nihil.png",
-            monsters.WrathServant.WrathServant or NaturalFloorBlindRageBoss => "res://images/intents/targets/wrath_servant.png",
+            content.abnormalities.WrathServant.WrathServant or NaturalFloorBlindRageBoss => "res://images/intents/targets/wrath_servant.png",
             _ => null
         };
         if (portraitPath != null)

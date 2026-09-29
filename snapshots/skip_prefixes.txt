@@ -1,3 +1,8 @@
+LibraryOfRuina.content.abnormalities.LittleRedMercenary.FocusOfAttentionDarkOrbEvokePatch	DarkOrb 是原版类，无法覆写，原版没有激发目标重定向 Hook；只在存在带本模组集火能力的可命中敌人时改为对它造成伤害。
+LibraryOfRuina.content.abnormalities.LittleRedMercenary.LittleRedMercenaryBlockClearPatch	生物已被移出战斗时原版 Hook.ShouldClearBlock 会因 CombatState 为空抛异常，没有监听者可用；只把该异常路径改成与原版结束战斗分支相同的清格挡结果。
+LibraryOfRuina.content.abnormalities.QueenOfHatred.UntargetableCreatureStunPatch	原版 CreatureCmd.Stun 没有否决 Hook；对不可命中的生物跳过眩晕。判断用 IsHittable，也会作用于第三方“存活但不可命中”的生物，收窄见重构指导附录 A。
+LibraryOfRuina.content.abnormalities.QueenOfHatred.UntargetableLibraryCreatureStunPatch	基础库 LibraryCreatureCmd.Stun 没有否决点；对不可命中的生物跳过眩晕。判断用 IsHittable，收窄见重构指导附录 A。
+LibraryOfRuina.content.abnormalities.WrathServant.WrathServantEmptyRewardScreenPatch	愤怒仆从之死结局要显示空的终局奖励界面，NCombatUi.OnCombatWon 私有无 Hook；只作用于本模组愤怒仆从遭遇。改为不覆写 ShouldGiveRewards 会改变读档表现，暂缓。
 LibraryOfRuina.core.settings.LibraryRunSettingsHideTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的本局设置载体返回 null（原版 TestMode 同样返回 null）。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionCharacterSelectModifiersChangedPatch	标准模式下原版 ModifiersChanged 固定抛 NotImplementedException，二层飞升借大厅修饰符同步时必然触发；接口实现非虚无 Hook，仅在大厅修饰符为空或全为本模组载体时跳过。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组二层飞升载体修饰符返回 null（原版 TestMode 同样返回 null）。
@@ -25,19 +30,14 @@ LibraryOfRuina.patches.HeavyBluntVfxLifecyclePatch	原版 _Ready 只启动私有
 LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于历史层解放遭遇的第 3–5 阶段。
 LibraryOfRuina.patches.LiberationBossTopBarHoverPatch	原版 Boss 图标悬停文本固定为通用 BOSS 提示且方法受保护，没有扩展点；只在可见 Boss 为本模组解放战时替换提示。
 LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于文学层解放遭遇的第 2–5 阶段。
-LibraryOfRuina.patches.LittleRedMercenary.FocusOfAttentionDarkOrbEvokePatch	DarkOrb 是原版类，无法覆写，原版没有激发目标重定向 Hook；只在存在带本模组集火能力的可命中敌人时改为对它造成伤害。
-LibraryOfRuina.patches.LittleRedMercenary.LittleRedMercenaryBlockClearPatch	生物已被移出战斗时原版 Hook.ShouldClearBlock 会因 CombatState 为空抛异常，没有监听者可用；只把该异常路径改成与原版结束战斗分支相同的清格挡结果。
 LibraryOfRuina.patches.MonsterModelCreateVisualsPatch	原版 CreateVisuals 非虚，只会实例化 VisualsPath（可覆写）指向的场景；本模组外观多为运行时用代码拼装的精灵节点，没有对应场景可指，换路径做不到。只作用于 MonsterVisualCatalog 登记的本模组怪物 id。
 LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilChaosStunPatch	基础库混乱眩晕没有否决钩子，且 LibraryCreature.StunInternal 强制切招；仅对本模组终战 Boss“虚无”在非愤怒力竭时拦截。
 LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilExternalStunPatch	原版 CreatureCmd.Stun 没有 Hook 或虚方法可否决；仅对本模组终战 Boss“虚无”屏蔽外部眩晕。
 LibraryOfRuina.patches.PetDealerCompatibilityPatch	PersonalHivePower 是 sealed 原版能力，无 Hook 能改伤害来源；把有主人的宠物伤害归到主人。本模组没有宠物，这是给第三方宠物模组的兼容，属于有意的例外。
 LibraryOfRuina.patches.PowerBigIconPngFallbackPatch	PowerModel.BigIcon 非虚；只对本模组与 LibraryOfRuinaLib 的能力用 png 大图。可改用 RitsuLib 纹理 provider，需要处理基础库图标后缀，暂缓。
 LibraryOfRuina.patches.PowerIconPngFallbackPatch	PowerModel.Icon 非虚，本模组能力没有 power_atlas 资源，走原版会报资源缺失；只对本模组与 LibraryOfRuinaLib 的能力用 png。可改用 RitsuLib 纹理 provider，暂缓。
-LibraryOfRuina.patches.QueenOfHatred.UntargetableCreatureStunPatch	原版 CreatureCmd.Stun 没有否决 Hook；对不可命中的生物跳过眩晕。判断用 IsHittable，也会作用于第三方“存活但不可命中”的生物，收窄见重构指导附录 A。
-LibraryOfRuina.patches.QueenOfHatred.UntargetableLibraryCreatureStunPatch	基础库 LibraryCreatureCmd.Stun 没有否决点；对不可命中的生物跳过眩晕。判断用 IsHittable，收窄见重构指导附录 A。
 LibraryOfRuina.patches.RoomIconOutlinePathCustomOverridePatch	兼容其他模组（BaseLib/RitsuLib 内容）的对局历史图标描边属性，本模组图标走原版约定路径；作为兜底排在两者之后，它们已给出结果时本前缀不执行。
 LibraryOfRuina.patches.RoomIconPathCustomOverridePatch	兼容其他模组（BaseLib/RitsuLib 内容）的对局历史图标属性，本模组图标走原版约定路径；作为兜底排在两者之后，它们已给出结果时本前缀不执行。
-LibraryOfRuina.patches.WrathServant.WrathServantEmptyRewardScreenPatch	愤怒仆从之死结局要显示空的终局奖励界面，NCombatUi.OnCombatWon 私有无 Hook；只作用于本模组愤怒仆从遭遇。改为不覆写 ShouldGiveRewards 会改变读档表现，暂缓。
 LibraryOfRuina.patches.dispatch.IntentVisualDispatch+Hovered	AbstractIntent.GetHoverTip 非虚无 Hook；带本模组徽记或详细意图时显示多条提示并接管原版悬停。
 LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+ProceedToNextAct	NEventRoom.Proceed 是被硬编码为事件结束回调的静态方法且无 Hook；仅当前房间为本模组楼层解放结算事件时改为进入下一幕。绕过了换幕投票，联机需实测。
 LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+RedirectToSettlement	ProceedFromTerminalRewardsScreen 公开非虚无 Hook，原版体会立即打开地图（后缀无法撤销）；仅当前房间为本模组楼层解放遭遇且满足结算条件时转入结算事件。

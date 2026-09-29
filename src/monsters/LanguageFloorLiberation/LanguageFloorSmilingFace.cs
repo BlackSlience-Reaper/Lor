@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
+using LibraryOfRuina.content.abnormalities.SmilingBodies;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.intents;
-using LibraryOfRuina.monsters.SmilingBodies;
 using LibraryOfRuina.visuals.LanguageFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -20,7 +20,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 using BaseSmilingBodies =
-    SmilingBodies.SmilingBodies;
+    content.abnormalities.SmilingBodies.SmilingBodies;
 
 public enum LanguageFloorSmilingFaceForm
 {

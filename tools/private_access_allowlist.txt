@@ -4,10 +4,10 @@
 
 # Harmony target resolution in helpers called from TargetMethod(s)/Prepare; failures are reported by LibraryPatcher.
 features/ftue/LibraryOfRuinaRewardsFtuePatch.cs	LibraryOfRuinaRewardsFtuePatch.ResolveTargetMethod	AccessTools.Method	补丁目标解析（由 Prepare 调用）
-patches/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	FocusOfAttentionPatchTargets.GetAsyncMoveNext	AccessTools.Method	补丁目标解析：async 方法与它的状态机 MoveNext
+content/abnormalities/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	FocusOfAttentionPatchTargets.GetAsyncMoveNext	AccessTools.Method	补丁目标解析：async 方法与它的状态机 MoveNext
 
 # This mod's own methods, and public vanilla/Godot methods, used as transpiler operands or delegate targets.
-patches/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	FocusOfAttentionPatchTargets.ChooseFocusedTargetAfterRngRollMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
+content/abnormalities/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	FocusOfAttentionPatchTargets.ChooseFocusedTargetAfterRngRollMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
 patches/GroupAttackEnemyTurnPriorityPatch.cs	GroupAttackEnemyTurnPriorityPatch.PrioritizeGroupAttackersMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
 patches/HarborMistDodgePatch.cs	HarborMistDodgePatch.InvokeOnPlayOrSkipMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	AccessTools.Method	本模组方法（nameof），Transpiler 替换的调用目标
@@ -15,8 +15,8 @@ ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.Transpiler	Access
 core/localization/PowerInlineIconSizing.cs	MeasureInlineDimensionsPatch.Transpiler	AccessTools.Method	Godot 公开方法 Texture2D.GetSize 与本模组方法（nameof），Transpiler 的匹配与替换目标
 
 # Public members looked up by name on a runtime type.
-events/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetProperty	探测卡牌的公开“可升级”成员，各版本名字不同
-events/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetMethod	同上
+content/abnormalities/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetProperty	探测卡牌的公开“可升级”成员，各版本名字不同
+content/abnormalities/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetMethod	同上
 features/secondascension/LibrarySecondAscensionUiPatch.cs	LibrarySecondAscensionUi.SetLabelTextAutoSize	.GetMethod	公开方法 SetTextAutoSize，声明在 MegaLabel 与 MegaRichTextLabel 两个不相关的类型上，按运行时类型调用
 features/secondascension/LibrarySecondAscensionUiPatch.cs	LibrarySecondAscensionUi.SetRichTextAutoSize	.GetMethod	同上
 framework/combat/CombatSafetyNet.cs	CombatSafetyNet.OverridesBeforeDeath	.GetMethod	只取公开虚方法 BeforeDeath，判断运行时类型是否覆写（诊断日志用）

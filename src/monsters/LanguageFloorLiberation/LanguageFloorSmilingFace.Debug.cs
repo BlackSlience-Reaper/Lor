@@ -5,7 +5,7 @@ using MegaCrit.Sts2.Core.Random;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 using BaseSmilingBodies =
-    SmilingBodies.SmilingBodies;
+    content.abnormalities.SmilingBodies.SmilingBodies;
 
 // 只给验证程序集（InternalsVisibleTo）用的入口，正式流程不调用。
 public sealed partial class LanguageFloorSmilingFace

@@ -1,4 +1,4 @@
-using LibraryOfRuina.encounters.QueenOfHatred;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

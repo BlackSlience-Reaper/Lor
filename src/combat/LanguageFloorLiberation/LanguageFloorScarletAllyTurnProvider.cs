@@ -1,8 +1,8 @@
 using System.Linq;
+using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
-using LibraryOfRuina.powers.LittleRedMercenary;
 
 namespace LibraryOfRuina.combat.LanguageFloorLiberation;
 

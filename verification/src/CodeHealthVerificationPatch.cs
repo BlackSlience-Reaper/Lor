@@ -5,10 +5,10 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina;
+using LibraryOfRuina.content.abnormalities.JudgementBird;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.core;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters.JudgementBird;
-using LibraryOfRuina.encounters.QueenOfHatred;
 using LibraryOfRuina.features.ftue;
 using LibraryOfRuina.features.intentgraph;
 using LibraryOfRuina.specialguests;
@@ -155,10 +155,10 @@ internal static class CodeHealthVerificationPatch
         }
 
         RequireSecondaryInitialState(
-            "LibraryOfRuina.monsters.Nosferatu.BloodBat",
+            "LibraryOfRuina.content.abnormalities.Nosferatu.BloodBat",
             "THIRST");
         RequireSecondaryInitialState(
-            "LibraryOfRuina.monsters.Nosferatu.Nosferatu",
+            "LibraryOfRuina.content.abnormalities.Nosferatu.Nosferatu",
             "GRACEFUL_REST");
     }
 

@@ -1,13 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.cards.WrathServant;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
-using LibraryOfRuina.powers.WrathServant;
-using LibraryOfRuina.relics.WrathServant;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;

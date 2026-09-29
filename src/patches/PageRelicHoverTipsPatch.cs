@@ -6,44 +6,44 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
-using LibraryOfRuina.cards.AllAroundHelper;
 using LibraryOfRuina.cards.ArtFloorLiberation;
-using LibraryOfRuina.cards.BigBadWolf;
-using LibraryOfRuina.cards.BigBird;
-using LibraryOfRuina.cards.BlueStar;
-using LibraryOfRuina.cards.BurrowingHeaven;
-using LibraryOfRuina.cards.CosmicFragment;
-using LibraryOfRuina.cards.DespairKnight;
-using LibraryOfRuina.cards.FairyFestival;
-using LibraryOfRuina.cards.ForsakenMurderer;
-using LibraryOfRuina.cards.FuneralOfTheDeadButterflies;
-using LibraryOfRuina.cards.GalaxyChild;
-using LibraryOfRuina.cards.HappyTeddy;
-using LibraryOfRuina.cards.HeartOfAspiration;
 using LibraryOfRuina.cards.HistoryFloorLiberation;
-using LibraryOfRuina.cards.JudgementBird;
-using LibraryOfRuina.cards.KingOfGreed;
 using LibraryOfRuina.cards.LanguageFloorLiberation;
-using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.cards.LiteratureFloorLiberation;
-using LibraryOfRuina.cards.LittleRedMercenary;
 using LibraryOfRuina.cards.NaturalFloorLiberation;
-using LibraryOfRuina.cards.Nosferatu;
-using LibraryOfRuina.cards.Ozma;
-using LibraryOfRuina.cards.PriceOfSilence;
-using LibraryOfRuina.cards.QueenBee;
-using LibraryOfRuina.cards.QueenOfHatred;
-using LibraryOfRuina.cards.RedShoes;
-using LibraryOfRuina.cards.RoadHome;
-using LibraryOfRuina.cards.ScarecrowSearchingForWisdom;
-using LibraryOfRuina.cards.SmilingBodies;
-using LibraryOfRuina.cards.SongMachine;
-using LibraryOfRuina.cards.SpiderBud;
-using LibraryOfRuina.cards.SpinyBus;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
-using LibraryOfRuina.cards.TodaysShyLook;
-using LibraryOfRuina.cards.WarmheartedWoodsman;
-using LibraryOfRuina.cards.WrathServant;
+using LibraryOfRuina.content.abnormalities.AllAroundHelper;
+using LibraryOfRuina.content.abnormalities.BigBadWolf;
+using LibraryOfRuina.content.abnormalities.BigBird;
+using LibraryOfRuina.content.abnormalities.BlueStar;
+using LibraryOfRuina.content.abnormalities.BurrowingHeaven;
+using LibraryOfRuina.content.abnormalities.CosmicFragment;
+using LibraryOfRuina.content.abnormalities.DespairKnight;
+using LibraryOfRuina.content.abnormalities.FairyFestival;
+using LibraryOfRuina.content.abnormalities.ForsakenMurderer;
+using LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
+using LibraryOfRuina.content.abnormalities.GalaxyChild;
+using LibraryOfRuina.content.abnormalities.HappyTeddy;
+using LibraryOfRuina.content.abnormalities.HeartOfAspiration;
+using LibraryOfRuina.content.abnormalities.JudgementBird;
+using LibraryOfRuina.content.abnormalities.KingOfGreed;
+using LibraryOfRuina.content.abnormalities.Leticia;
+using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
+using LibraryOfRuina.content.abnormalities.Nosferatu;
+using LibraryOfRuina.content.abnormalities.Ozma;
+using LibraryOfRuina.content.abnormalities.PriceOfSilence;
+using LibraryOfRuina.content.abnormalities.QueenBee;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
+using LibraryOfRuina.content.abnormalities.RedShoes;
+using LibraryOfRuina.content.abnormalities.RoadHome;
+using LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
+using LibraryOfRuina.content.abnormalities.SmilingBodies;
+using LibraryOfRuina.content.abnormalities.SongMachine;
+using LibraryOfRuina.content.abnormalities.SpiderBud;
+using LibraryOfRuina.content.abnormalities.SpinyBus;
+using LibraryOfRuina.content.abnormalities.TodaysShyLook;
+using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
+using LibraryOfRuina.content.abnormalities.WrathServant;
 
 namespace LibraryOfRuina.patches;
 
@@ -93,31 +93,31 @@ internal static class PageRelicHoverTipsPatch
                 Preview<SilentOrchestraFerventAdorationChoiceCard>(upgrade: false),
                 Preview<SilentOrchestraFinaleChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.FairyFestival.FairyFestivalPageRelic =>
+            LibraryOfRuina.content.abnormalities.FairyFestival.FairyFestivalPageRelic =>
             [
                 Preview<FairyCareChoiceCard>(upgrade: false),
                 Preview<FairyGluttonyChoiceCard>(upgrade: false),
                 Preview<FairyPredationChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.Nosferatu.NosferatuPageRelic =>
+            LibraryOfRuina.content.abnormalities.Nosferatu.NosferatuPageRelic =>
             [
                 Preview<NosferatuHydrophobiaChoiceCard>(upgrade: false),
                 Preview<NosferatuVampirismChoiceCard>(upgrade: false),
                 Preview<NosferatuWineChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.WrathServant.WrathServantPageRelic =>
+            LibraryOfRuina.content.abnormalities.WrathServant.WrathServantPageRelic =>
             [
                 Preview<WrathServantWrathChoiceCard>(upgrade: false),
                 Preview<WrathServantFriendChoiceCard>(upgrade: false),
                 Preview<WrathServantVenomChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.CosmicFragment.CosmicFragmentPageRelic =>
+            LibraryOfRuina.content.abnormalities.CosmicFragment.CosmicFragmentPageRelic =>
             [
                 Preview<CosmicFragmentOtherworldlyEchoChoiceCard>(upgrade: false),
                 Preview<CosmicFragmentTentacleChoiceCard>(upgrade: false),
                 Preview<CosmicFragmentIncomprehensibleChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.QueenBee.QueenBeePageRelic =>
+            LibraryOfRuina.content.abnormalities.QueenBee.QueenBeePageRelic =>
             [
                 Preview<QueenBeeSporeChoiceCard>(upgrade: false),
                 Preview<QueenBeeWorkerBeeChoiceCard>(upgrade: false),
@@ -135,31 +135,31 @@ internal static class PageRelicHoverTipsPatch
                 Preview<MagicBulletSeventhBulletChoiceCard>(upgrade: false),
                 Preview<MagicBulletBlackFlameChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.GalaxyChild.GalaxyChildPageRelic =>
+            LibraryOfRuina.content.abnormalities.GalaxyChild.GalaxyChildPageRelic =>
             [
                 Preview<GalaxyChildPebbleChoiceCard>(upgrade: false),
                 Preview<GalaxyChildProofOfFriendshipChoiceCard>(upgrade: false),
                 Preview<GalaxyChildTearsChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.WarmheartedWoodsman.WarmheartedWoodsmanPageRelic =>
+            LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanPageRelic =>
             [
                 Preview<WarmheartedWoodsmanWarmHeartChoiceCard>(upgrade: false),
                 Preview<WarmheartedWoodsmanHeartChoiceCard>(upgrade: false),
                 Preview<WarmheartedWoodsmanLoggingChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.Leticia.LeticiaPageRelic =>
+            LibraryOfRuina.content.abnormalities.Leticia.LeticiaPageRelic =>
             [
                 Preview<LeticiaPageSurpriseGiftChoiceCard>(upgrade: false),
                 Preview<LeticiaPageBuddyChoiceCard>(upgrade: false),
                 Preview<LeticiaPageMischiefChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.SpiderBud.SpiderBudPageRelic =>
+            LibraryOfRuina.content.abnormalities.SpiderBud.SpiderBudPageRelic =>
             [
                 Preview<SpiderBudCocoonBindChoiceCard>(upgrade: false),
                 Preview<SpiderBudFeedingChoiceCard>(upgrade: false),
                 Preview<SpiderBudVigilanceChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.KingOfGreed.KingOfGreedPageRelic =>
+            LibraryOfRuina.content.abnormalities.KingOfGreed.KingOfGreedPageRelic =>
             [
                 Preview<KingOfGreedIndulgenceChoiceCard>(upgrade: false),
                 Preview<KingOfGreedHappinessPathChoiceCard>(upgrade: false),
@@ -195,91 +195,91 @@ internal static class PageRelicHoverTipsPatch
                 Preview<DespairKnightDespairChoiceCard>(upgrade: true),
                 Preview<DespairKnightTearSwordChoiceCard>(upgrade: true)
             ],
-            LibraryOfRuina.relics.DespairKnight.DespairKnightPageRelic =>
+            LibraryOfRuina.content.abnormalities.DespairKnight.DespairKnightPageRelic =>
             [
                 Preview<DespairKnightBlessingChoiceCard>(upgrade: false),
                 Preview<DespairKnightDespairChoiceCard>(upgrade: false),
                 Preview<DespairKnightTearSwordChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.AllAroundHelper.AllAroundHelperPageRelic =>
+            LibraryOfRuina.content.abnormalities.AllAroundHelper.AllAroundHelperPageRelic =>
             [
                 Preview<AllAroundHelperChargeChoiceCard>(upgrade: false),
                 Preview<AllAroundHelperRecognitionFunctionChoiceCard>(upgrade: false),
                 Preview<AllAroundHelperCleanChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.BurrowingHeaven.BurrowingHeavenPageRelic =>
+            LibraryOfRuina.content.abnormalities.BurrowingHeaven.BurrowingHeavenPageRelic =>
             [
                 Preview<BurrowingHeavenWitheringBloodWingsChoiceCard>(upgrade: false),
                 Preview<BurrowingHeavenOthersGazeChoiceCard>(upgrade: false),
                 Preview<BurrowingHeavenAttentionAndFocusChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.Ozma.OzmaPageRelic =>
+            LibraryOfRuina.content.abnormalities.Ozma.OzmaPageRelic =>
             [
                 Preview<OzmaOldPowerChoiceCard>(upgrade: false),
                 Preview<OzmaForgetChoiceCard>(upgrade: false),
                 Preview<OzmaLifePowderChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.LittleRedMercenary.LittleRedMercenaryPageRelic =>
+            LibraryOfRuina.content.abnormalities.LittleRedMercenary.LittleRedMercenaryPageRelic =>
             [
                 Preview<LittleRedScarChoiceCard>(upgrade: false),
                 Preview<LittleRedRevengeChoiceCard>(upgrade: false),
                 Preview<LittleRedPreyChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.JudgementBird.JudgementBirdPageRelic =>
+            LibraryOfRuina.content.abnormalities.JudgementBird.JudgementBirdPageRelic =>
             [
                 Preview<JudgementBirdWeightOfSinChoiceCard>(upgrade: false),
                 Preview<JudgementBirdJudgementChoiceCard>(upgrade: false),
                 Preview<JudgementBirdTiltedScaleChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.PriceOfSilence.PriceOfSilencePageRelic =>
+            LibraryOfRuina.content.abnormalities.PriceOfSilence.PriceOfSilencePageRelic =>
             [
                 Preview<PriceOfSilenceTimeChoiceCard>(upgrade: false),
                 Preview<PriceOfSilenceThirteenthTollChoiceCard>(upgrade: false),
                 Preview<PriceOfSilenceSilenceChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.TodaysShyLook.TodaysShyLookPageRelic =>
+            LibraryOfRuina.content.abnormalities.TodaysShyLook.TodaysShyLookPageRelic =>
             [
                 Preview<TodaysShyLookTodaysExpressionChoiceCard>(upgrade: false),
                 Preview<TodaysShyLookShynessChoiceCard>(upgrade: false),
                 Preview<TodaysShyLookSocialDistanceChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.SongMachine.SongMachinePageRelic =>
+            LibraryOfRuina.content.abnormalities.SongMachine.SongMachinePageRelic =>
             [
                 Preview<SongMachineMusicChoiceCard>(upgrade: false),
                 Preview<SongMachineMelodyChoiceCard>(upgrade: false),
                 Preview<SongMachineAddictionChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterfliesPageRelic =>
+            LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterfliesPageRelic =>
             [
                 Preview<FuneralRestChoiceCard>(upgrade: false),
                 Preview<FuneralCoffinChoiceCard>(upgrade: false),
                 Preview<FuneralMourningChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.BigBird.BigBirdPageRelic =>
+            LibraryOfRuina.content.abnormalities.BigBird.BigBirdPageRelic =>
             [
                 Preview<BigBirdWatchfulEyeChoiceCard>(upgrade: false),
                 Preview<BigBirdEverBurningLampChoiceCard>(upgrade: false),
                 Preview<BigBirdSalvationChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.RoadHome.RoadHomePageRelic =>
+            LibraryOfRuina.content.abnormalities.RoadHome.RoadHomePageRelic =>
             [
                 Preview<RoadHomeCourageChoiceCard>(upgrade: false),
                 Preview<RoadHomeCompanionRoadChoiceCard>(upgrade: false),
                 Preview<RoadHomeHomeChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.RedShoes.RedShoesPageRelic =>
+            LibraryOfRuina.content.abnormalities.RedShoes.RedShoesPageRelic =>
             [
                 Preview<RedShoesGlitterChoiceCard>(upgrade: false),
                 Preview<RedShoesBloodThirstChoiceCard>(upgrade: false),
                 Preview<RedShoesAxeChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.QueenOfHatred.QueenOfHatredPageRelic =>
+            LibraryOfRuina.content.abnormalities.QueenOfHatred.QueenOfHatredPageRelic =>
             [
                 Preview<QueenOfHatredPhilanthropyChoiceCard>(upgrade: false),
                 Preview<QueenOfHatredJusticeChoiceCard>(upgrade: false),
                 Preview<QueenOfHatredHatredChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.BigBadWolf.BigBadWolfPageRelic =>
+            LibraryOfRuina.content.abnormalities.BigBadWolf.BigBadWolfPageRelic =>
             [
                 Preview<BigBadWolfPredatoryInstinctChoiceCard>(upgrade: false),
                 Preview<BigBadWolfWolfRoleChoiceCard>(upgrade: false),
@@ -297,43 +297,43 @@ internal static class PageRelicHoverTipsPatch
                 Preview<MatchMarkFootstepsChoiceCard>(upgrade: false),
                 Preview<MatchMarkAfterglowChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.ForsakenMurderer.ForsakenMurdererPageRelic =>
+            LibraryOfRuina.content.abnormalities.ForsakenMurderer.ForsakenMurdererPageRelic =>
             [
                 Preview<ForsakenMurdererIronEchoChoiceCard>(upgrade: false),
                 Preview<ForsakenMurdererBoundWrathChoiceCard>(upgrade: false),
                 Preview<ForsakenMurdererExtremeViolenceChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.SpinyBus.SpinyBusPageRelic =>
+            LibraryOfRuina.content.abnormalities.SpinyBus.SpinyBusPageRelic =>
             [
                 Preview<SpinyBusThornsChoiceCard>(upgrade: false),
                 Preview<SpinyBusPleasureChoiceCard>(upgrade: false),
                 Preview<SpinyBusLaughingPowderChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.HappyTeddy.HappyTeddyPageRelic =>
+            LibraryOfRuina.content.abnormalities.HappyTeddy.HappyTeddyPageRelic =>
             [
                 Preview<HappyTeddyLongingEmbraceChoiceCard>(upgrade: false),
                 Preview<HappyTeddyHappyMemoryChoiceCard>(upgrade: false),
                 Preview<HappyTeddyExpressAffectionChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.SmilingBodies.SmilingBodiesPageRelic =>
+            LibraryOfRuina.content.abnormalities.SmilingBodies.SmilingBodiesPageRelic =>
             [
                 Preview<SmilingBodiesCorpseLaughsChoiceCard>(upgrade: false),
                 Preview<SmilingBodiesCorpseAbsorptionChoiceCard>(upgrade: false),
                 Preview<SmilingBodiesCorpseMountainChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.ScarecrowSearchingForWisdom.ScarecrowPageRelic =>
+            LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom.ScarecrowPageRelic =>
             [
                 Preview<ScarecrowRakeChoiceCard>(upgrade: false),
                 Preview<ScarecrowHarvestChoiceCard>(upgrade: false),
                 Preview<ScarecrowTornWisdomChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.BlueStar.BlueStarPageRelic =>
+            LibraryOfRuina.content.abnormalities.BlueStar.BlueStarPageRelic =>
             [
                 Preview<BlueStarMartyrdomChoiceCard>(upgrade: false),
                 Preview<BlueStarAtonementChoiceCard>(upgrade: false),
                 Preview<BlueStarVoiceOfRemembranceChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.HeartOfAspiration.HeartOfAspirationPageRelic =>
+            LibraryOfRuina.content.abnormalities.HeartOfAspiration.HeartOfAspirationPageRelic =>
             [
                 Preview<HeartOfAspirationPulseChoiceCard>(upgrade: false),
                 Preview<HeartOfAspirationAspirationChoiceCard>(upgrade: false),

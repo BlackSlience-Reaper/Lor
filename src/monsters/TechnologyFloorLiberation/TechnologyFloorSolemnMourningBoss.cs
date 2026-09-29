@@ -6,6 +6,7 @@ using Godot;
 using LibraryOfRuina.afflictions.TechnologyFloorLiberation;
 using LibraryOfRuina.backgrounds.TechnologyFloorLiberation;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
+using LibraryOfRuina.content.abnormalities.DeadButterfly;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
@@ -16,7 +17,6 @@ using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
-using LibraryOfRuina.monsters.DeadButterfly;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.TechnologyFloorLiberation;
 using LibraryOfRuina.visuals.TechnologyFloorLiberation;
@@ -159,8 +159,8 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
             .Append(EgoFlashWhiteTexturePath)
             .Concat(new[]
             {
-                FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath,
-                FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackBlackSfxPath
+                content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath,
+                content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackBlackSfxPath
             })
             .Concat(EnumerateIntentAssets().SelectMany(static intent => intent.AssetPaths))
             .Distinct();
@@ -529,7 +529,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
                     break;
                 }
 
-                LocalOggOneShotPlayer.Play(FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath, -2f);
+                LocalOggOneShotPlayer.Play(content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath, -2f);
 
                 await DamageCmd.Attack(EgoDamage)
                     .FromMonster(this)
@@ -612,7 +612,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
 
     private Task<AttackCommand> ExecuteAttackSegment(string animation, int damage)
     {
-        LocalOggOneShotPlayer.Play(FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(content.abnormalities.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies.AttackWhiteSfxPath, -2f);
         return DamageCmd.Attack(damage)
             .FromMonster(this)
             .WithAttackerAnim(animation, AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)
@@ -695,7 +695,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
                 continue;
             }
 
-            var butterfly = (DeadButterfly.DeadButterfly)ModelDb.Monster<DeadButterfly.DeadButterfly>().ToMutable();
+            var butterfly = (content.abnormalities.DeadButterfly.DeadButterfly)ModelDb.Monster<content.abnormalities.DeadButterfly.DeadButterfly>().ToMutable();
             butterfly.ConfigureMoveSequence(patterns[i]);
             Creature summoned = await CreatureCmd.Add(
                 butterfly, Creature.CombatState, CombatSide.Enemy, slot);

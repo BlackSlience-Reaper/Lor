@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.encounters.NaturalFloorLiberation;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
-using LibraryOfRuina.powers.WrathServant;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
