@@ -67,6 +67,7 @@ public static class VerificationRunner
         SmilingBodiesDeathVerificationPatch.Start,
         SmilingBodiesPageMultiplayerVerificationPatch.Start,
         SocialFloorLiberationVerificationPatch.Start,
+        SpecialGuestPlanTraceVerificationPatch.Start,
         SpecialGuestXiaoContractVerificationPatch.Start,
         TargetedIntentLineVerificationPatch.Start,
         TechnologyFloorLiberationSettlementVerificationPatch.Start,
