@@ -222,7 +222,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.NGame), "Quit")
   Prefix LibraryOfRuina.audio.MainMenuBgmQuitPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "OnCombatSetUp")
   Postfix LibraryOfRuina.ui.BlockTransferOverlayPatch.Postfix
-  Postfix LibraryOfRuina.ui.EnemyCardHandControllerPatch.Postfix
   Postfix LibraryOfRuina.ui.RnfmabjDirectiveOverlayPatch.Postfix
   Postfix LibraryOfRuina.ui.RnfmabjPrescriptTaskOverlayPatch.Postfix
   Postfix LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlayPatch.Postfix

@@ -389,7 +389,6 @@ LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTrigger
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()
 LibraryOfRuina.ui.DamagePreview.VanillaHookPreviewTracePatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()
 LibraryOfRuina.ui.DamagePreview.VanillaHookPreviewTracePatch	Transpiler	Transpiler	returns=System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction]	target=HarmonyPatch()
-LibraryOfRuina.ui.EnemyCardHandControllerPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "OnCombatSetUp")
 LibraryOfRuina.ui.LibraryHealthBarLockForegroundPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NHealthBar), "RefreshForeground")	HarmonyAfter(["com.ritsukage.sts2-RitsuLib.framework-core"])	HarmonyPriority(0)
 LibraryOfRuina.ui.LibraryHealthBarLockResizePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NHealthBar), "SetHpBarContainerSizeWithOffsetsImmediately")	HarmonyAfter(["com.ritsukage.sts2-RitsuLib.framework-core"])	HarmonyPriority(0)
 LibraryOfRuina.ui.RnfmabjDirectiveOverlayPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "OnCombatSetUp")
