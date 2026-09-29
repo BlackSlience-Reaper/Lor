@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
@@ -10,6 +9,17 @@ namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 public sealed partial class LanguageFloorSmilingFace
 {
+    // 招式存在四个 PlannedMove 槽位，三种形态的复合行动共用它们，分别展示前 3、2、1 个；目标存在对应的
+    // PlannedTarget 槽位，不经过控制器，意图按槽位取目标。读槽位把非法值当作吞噬，执行不会停在空槽位。
+    // 实例随怪物克隆丢弃、用到时重建（见 PlannedMoveController）。
+    private PlannedMoveController<LanguageFloorSmilingFaceMove> Plan => _plan ??= new(
+        this,
+        StoredIntentSlotCount,
+        GetPlannedMove,
+        (slot, move) => SetPlannedMove(slot, move),
+        (slot, move) => CreateIntent(move, _ => GetPlannedTarget(slot)),
+        (LanguageFloorSmilingFaceMove)(-1));
+
     internal async Task RefreshPlannedTargetsAfterRosterChanged(
         bool retargetAll)
     {
@@ -29,7 +39,7 @@ public sealed partial class LanguageFloorSmilingFace
             }
         }
 
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
         await RefreshTargetedIntentDisplay();
     }
 
@@ -58,31 +68,32 @@ public sealed partial class LanguageFloorSmilingFace
         return MoveId(ChooseNormalMove(rng));
     }
 
+    // 每个槽位先掷招式、再为指向性招式掷目标，随机数按槽位交替消耗；目标在写槽位的委托里一并写入。
+    // 形态容量之外的招式与目标都写空。
     private void PlanTurn(Rng rng)
     {
         FormTurnCount++;
         int capacity = GetIntentCapacity(Form);
         bool useSpecial = ShouldUseSpecial(Form, FormTurnCount);
-        for (int slot = 0; slot < capacity; slot++)
+        Plan.WriteSlots(capacity, slot =>
         {
             LanguageFloorSmilingFaceMove move = useSpecial && slot == 0
                 ? Form == LanguageFloorSmilingFaceForm.Second
                     ? LanguageFloorSmilingFaceMove.Scream
                     : LanguageFloorSmilingFaceMove.Vomit
                 : ChooseNormalMove(rng);
-            SetPlannedMove(slot, move);
             SetPlannedTarget(
                 slot,
                 IsTargetedMove(move) ? ChooseRandomTarget(rng) : null);
-        }
+            return move;
+        });
 
         for (int slot = capacity; slot < StoredIntentSlotCount; slot++)
         {
-            SetPlannedMove(slot, null);
             SetPlannedTarget(slot, null);
         }
 
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
     }
 
     private LanguageFloorSmilingFaceMove ChooseNormalMove(Rng rng)
@@ -220,29 +231,6 @@ public sealed partial class LanguageFloorSmilingFace
             default:
                 PlannedTargetFour = value;
                 break;
-        }
-    }
-
-    private void RefreshPlannedIntents()
-    {
-        RefreshIntentArray(_formOnePlannedIntents);
-        RefreshIntentArray(_formTwoPlannedIntents);
-        RefreshIntentArray(_formThreePlannedIntents);
-    }
-
-    private void RefreshIntentArray(AbstractIntent[]? intents)
-    {
-        if (intents == null)
-        {
-            return;
-        }
-
-        for (int slot = 0; slot < intents.Length; slot++)
-        {
-            int plannedSlot = slot;
-            intents[slot] = CreateIntent(
-                GetPlannedMove(slot),
-                _ => GetPlannedTarget(plannedSlot));
         }
     }
 

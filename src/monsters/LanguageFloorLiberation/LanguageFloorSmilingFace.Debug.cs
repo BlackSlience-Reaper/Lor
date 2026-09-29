@@ -51,7 +51,7 @@ public sealed partial class LanguageFloorSmilingFace
             && _formTwoCompositeState != null
             && _formThreeCompositeState != null)
         {
-            SetMoveImmediate(GetCurrentCompositeState(), forceTransition: true);
+            Plan.Reveal(GetCurrentCompositeState());
         }
     }
 
@@ -69,12 +69,12 @@ public sealed partial class LanguageFloorSmilingFace
             SetPlannedTarget(slot, slot < targets.Count ? targets[slot] : null);
         }
 
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
         if (_formOneCompositeState != null
             && _formTwoCompositeState != null
             && _formThreeCompositeState != null)
         {
-            SetMoveImmediate(GetCurrentCompositeState(), forceTransition: true);
+            Plan.Reveal(GetCurrentCompositeState());
         }
     }
 

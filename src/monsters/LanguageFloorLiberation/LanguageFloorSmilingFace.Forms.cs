@@ -356,13 +356,13 @@ public sealed partial class LanguageFloorSmilingFace
     {
         FormTurnCount = 0;
         PreviousNormalMove = -1;
+        Plan.ClearSlots();
         for (int slot = 0; slot < StoredIntentSlotCount; slot++)
         {
-            SetPlannedMove(slot, null);
             SetPlannedTarget(slot, null);
         }
 
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
     }
 
     private void ResetSpawnThreshold()
@@ -376,13 +376,7 @@ public sealed partial class LanguageFloorSmilingFace
         SetUpForCombat();
     }
 
-    private void EnterHiddenFakeDeathIntent()
-    {
-        if (_fakeDeathHiddenState != null)
-        {
-            SetMoveImmediate(_fakeDeathHiddenState, forceTransition: true);
-        }
-    }
+    private void EnterHiddenFakeDeathIntent() => Plan.Hide();
 
     private void EnterReviveIntent()
     {

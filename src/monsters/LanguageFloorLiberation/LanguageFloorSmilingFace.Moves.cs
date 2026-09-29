@@ -42,19 +42,14 @@ public sealed partial class LanguageFloorSmilingFace
         GetTargetedAttackTargets(owner).FirstOrDefault()?.Name
         ?? "Unknown Target";
 
-    private async Task PerformCompositeMove(IReadOnlyList<Creature> targets)
-    {
-        int capacity = GetIntentCapacity(Form);
-        for (int slot = 0; slot < capacity && Creature.IsAlive; slot++)
-        {
-            await PerformPlannedMove(GetPlannedMove(slot), slot);
-            if (Creature.CombatState?.Encounter
-                is LanguageFloorLiberationEncounter { PhaseComplete: true })
-            {
-                return;
-            }
-        }
-    }
+    // 执行几个槽位按开始时的形态定；招式中途切换形态也不改变本回合要执行的槽位数。
+    private Task PerformCompositeMove(IReadOnlyList<Creature> targets) =>
+        Plan.PerformPlan(
+            () => Creature.IsAlive,
+            (slot, move) => PerformPlannedMove(move, slot),
+            slotLimit: GetIntentCapacity(Form),
+            stopAfterMove: () => Creature.CombatState?.Encounter
+                is LanguageFloorLiberationEncounter { PhaseComplete: true });
 
     private Task PerformPlannedMove(
         LanguageFloorSmilingFaceMove move,

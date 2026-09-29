@@ -176,13 +176,10 @@ public sealed partial class LanguageFloorSmilingFace :
     private MoveState? _screamState;
     private MoveState? _vomitState;
     private MoveState? _reviveState;
-    private MoveState? _fakeDeathHiddenState;
     private MoveState? _formOneCompositeState;
     private MoveState? _formTwoCompositeState;
     private MoveState? _formThreeCompositeState;
-    private AbstractIntent[]? _formOnePlannedIntents;
-    private AbstractIntent[]? _formTwoPlannedIntents;
-    private AbstractIntent[]? _formThreePlannedIntents;
+    private PlannedMoveController<LanguageFloorSmilingFaceMove>? _plan;
 
     public static readonly string[] PowerIconPaths =
     [
@@ -326,13 +323,17 @@ public sealed partial class LanguageFloorSmilingFace :
         }
     }
 
+    protected override void DeepCloneFields()
+    {
+        base.DeepCloneFields();
+        // 计划控制器的委托捕获的是被克隆的实例，克隆体必须用自己的。
+        _plan = null;
+    }
+
+    // 形态切换与审判失败时 ResetStateMachine 后重建：三个复合行动与假死隐藏行动用同一个 ID 重建，
+    // 控制器里的旧意图数组随之被顶替。
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _formOnePlannedIntents = new AbstractIntent[FormOneIntentCapacity];
-        _formTwoPlannedIntents = new AbstractIntent[FormTwoIntentCapacity];
-        _formThreePlannedIntents = new AbstractIntent[FormThreeIntentCapacity];
-        RefreshPlannedIntents();
-
         _devourState = new MoveState(
             DevourMoveId,
             DevourMove,
@@ -362,26 +363,22 @@ public sealed partial class LanguageFloorSmilingFace :
             MustPerformOnceBeforeTransitioning = true
         };
         MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
-        _fakeDeathHiddenState = new MoveState(
+        MoveState fakeDeathHiddenState = Plan.CreateHiddenState(
             FakeDeathHiddenMoveId,
-            static _ => Task.CompletedTask,
-            new HiddenIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
-        _fakeDeathHiddenState.FollowUpState = _fakeDeathHiddenState;
-        _formOneCompositeState = new MoveState(
+            mustPerformOnce: true);
+        fakeDeathHiddenState.FollowUpState = fakeDeathHiddenState;
+        _formOneCompositeState = Plan.CreateCompositeState(
             FormOneCompositeMoveId,
             PerformCompositeMove,
-            _formOnePlannedIntents);
-        _formTwoCompositeState = new MoveState(
+            intentCount: FormOneIntentCapacity);
+        _formTwoCompositeState = Plan.CreateCompositeState(
             FormTwoCompositeMoveId,
             PerformCompositeMove,
-            _formTwoPlannedIntents);
-        _formThreeCompositeState = new MoveState(
+            intentCount: FormTwoIntentCapacity);
+        _formThreeCompositeState = Plan.CreateCompositeState(
             FormThreeCompositeMoveId,
             PerformCompositeMove,
-            _formThreePlannedIntents);
+            intentCount: FormThreeIntentCapacity);
 
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
@@ -416,14 +413,14 @@ public sealed partial class LanguageFloorSmilingFace :
                 _vomitState,
                 _reviveState,
                 reviveAndEmpower,
-                _fakeDeathHiddenState,
+                fakeDeathHiddenState,
                 _formOneCompositeState,
                 _formTwoCompositeState,
                 _formThreeCompositeState,
                 router
             ],
             IsFakeDead
-                ? _fakeDeathHiddenState
+                ? fakeDeathHiddenState
                 : HasPlannedTurn
                     ? GetCurrentCompositeState()
                     : router);
