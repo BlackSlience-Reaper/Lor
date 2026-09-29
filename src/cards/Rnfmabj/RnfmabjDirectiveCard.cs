@@ -1,5 +1,5 @@
 using System;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.specialguests.Rnfmabj;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization;

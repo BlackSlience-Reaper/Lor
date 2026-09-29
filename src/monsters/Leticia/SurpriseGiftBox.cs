@@ -4,7 +4,7 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.Leticia;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.Leticia;
 using LibraryOfRuina.visuals.Leticia;

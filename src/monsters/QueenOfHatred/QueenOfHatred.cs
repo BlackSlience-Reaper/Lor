@@ -8,7 +8,7 @@ using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.QueenOfHatred;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.guests.DawnOffice;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.intents.QueenOfHatred;
 using LibraryOfRuina.patches;

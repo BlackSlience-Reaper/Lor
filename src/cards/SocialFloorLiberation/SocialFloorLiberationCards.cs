@@ -2,7 +2,8 @@ using System;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.powers.SocialFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -14,7 +15,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.cards.SocialFloorLiberation;
 

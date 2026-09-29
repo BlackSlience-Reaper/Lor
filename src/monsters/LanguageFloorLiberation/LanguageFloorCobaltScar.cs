@@ -1,20 +1,20 @@
 using LibraryLib.Models;
 using System;
-using LibraryOfRuina.helpers;
-using System.Linq;
-using System.Threading.Tasks;
-using Godot;
-using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.LanguageFloorLiberation;
 using LibraryOfRuina.visuals.LanguageFloorLiberation;
+using System.Linq;
+using System.Threading.Tasks;
+using Godot;
+using LibraryLib.Entities.Creatures;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -47,7 +47,7 @@ public enum LanguageFloorCobaltScarForm
 
 public sealed class LanguageFloorCobaltScar :
     CounterIntentMonsterModel,
-    ILiberationPrimaryPhaseBoss, LibraryOfRuina.helpers.IFinalHpLossClamp
+    ILiberationPrimaryPhaseBoss, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     private const string NormalCompositeMoveId = "LANGUAGE_FLOOR_COBALT_COMPOSITE";
     private const string ShadowCompositeMoveId = "LANGUAGE_FLOOR_COBALT_SHADOW_COMPOSITE";

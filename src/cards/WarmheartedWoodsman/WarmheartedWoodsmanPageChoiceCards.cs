@@ -1,4 +1,4 @@
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.relics.WarmheartedWoodsman;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

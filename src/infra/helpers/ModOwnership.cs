@@ -1,7 +1,7 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Models;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 /// <summary>
 /// "Is this ours" checks for gating patches on shared vanilla entry points. Vanilla and third-party

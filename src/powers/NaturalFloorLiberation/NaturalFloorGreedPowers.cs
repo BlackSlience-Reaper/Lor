@@ -32,7 +32,7 @@ public abstract class NaturalFloorGreedPassivePower : LibraryOfRuinaPowerModel
 
 }
 
-public sealed class NaturalFloorFlickeringDesirePower : NaturalFloorGreedPassivePower, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class NaturalFloorFlickeringDesirePower : NaturalFloorGreedPassivePower, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     protected override string LegacyPowerId => "NATURAL_FLOOR_FLICKERING_DESIRE_POWER";
 

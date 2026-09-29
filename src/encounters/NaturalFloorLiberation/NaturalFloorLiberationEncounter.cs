@@ -6,6 +6,7 @@ using LibraryOfRuina.backgrounds.NaturalFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.events.NaturalFloorLiberation;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.scene_transitions;
@@ -17,7 +18,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.helpers;
 
 namespace LibraryOfRuina.encounters.NaturalFloorLiberation;
 

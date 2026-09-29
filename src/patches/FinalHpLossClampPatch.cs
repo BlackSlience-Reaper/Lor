@@ -2,14 +2,14 @@ using System;
 using System.Linq;
 using HarmonyLib;
 using LibraryLib.Hooks;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.powers.PhilosophyFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.powers.PhilosophyFloorLiberation;
 
 namespace LibraryOfRuina.patches;
 

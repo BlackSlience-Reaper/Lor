@@ -263,7 +263,7 @@ public sealed class WrathServantTodayPlayPower : LibraryOfRuinaPowerModel
 /// <summary>
 /// 被利用之人 - 玩家伤害无法使HP低于最大HP的10% + 每回合结束若HP不高于阈值则恢复50%最大HP。
 /// </summary>
-public sealed class GreenStemHermitProtectionPower : LibraryOfRuinaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class GreenStemHermitProtectionPower : LibraryOfRuinaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     //public const int MinimumHpPercent = 10;
     public const int RecoveryPercent = 15;

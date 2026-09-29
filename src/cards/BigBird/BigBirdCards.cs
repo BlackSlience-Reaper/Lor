@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.BigBird;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.BigBird;
 using LibraryOfRuina.relics.BigBird;
 using MegaCrit.Sts2.Core.Commands;

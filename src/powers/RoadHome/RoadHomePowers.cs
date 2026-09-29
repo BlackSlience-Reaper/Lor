@@ -83,7 +83,7 @@ public sealed class ScaredyCatCowardPower : RoadHomePowerModel
     public override PowerStackType StackType => PowerStackType.Single;
 }
 
-public sealed class RoadHomeHouseProtectionPower : RoadHomePowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class RoadHomeHouseProtectionPower : RoadHomePowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     protected override string LegacyPowerId => "ROAD_HOME_HOUSE_PROTECTION_POWER";
 

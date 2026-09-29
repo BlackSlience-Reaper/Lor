@@ -9,7 +9,7 @@ using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
 using LibraryOfRuina.features.moontext;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.TechnologyFloorLiberation;

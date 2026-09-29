@@ -11,7 +11,7 @@ using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.guests.DawnOffice;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.HistoryFloorLiberation;

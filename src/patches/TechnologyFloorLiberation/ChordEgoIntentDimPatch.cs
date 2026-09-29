@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;

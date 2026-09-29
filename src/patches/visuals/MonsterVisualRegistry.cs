@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using LibraryOfRuina.guests.MusiciansOfBremen;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;

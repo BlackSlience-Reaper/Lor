@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Models;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 internal static class AbnormalityAnimHelper
 {

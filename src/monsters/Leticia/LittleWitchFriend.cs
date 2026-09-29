@@ -5,7 +5,7 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.Leticia;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.visuals.Leticia;
 using MegaCrit.Sts2.Core.Commands;

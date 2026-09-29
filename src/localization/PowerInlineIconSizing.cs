@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Text;
 using GameLabelHelper = MegaCrit.Sts2.addons.mega_text.MegaLabelHelper;
 using ModLabelHelper = LibraryOfRuina.addons.mega_text.MegaLabelHelper;

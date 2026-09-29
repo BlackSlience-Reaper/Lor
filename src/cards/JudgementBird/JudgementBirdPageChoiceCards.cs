@@ -1,4 +1,4 @@
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.JudgementBird;
 using LibraryOfRuina.relics.JudgementBird;
 using MegaCrit.Sts2.Core.HoverTips;

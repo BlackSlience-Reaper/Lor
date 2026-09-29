@@ -1,6 +1,6 @@
 using System;
 using Godot;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.powers.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.Nodes.Combat;

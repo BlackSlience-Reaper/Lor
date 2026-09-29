@@ -72,7 +72,7 @@ internal static class FalseThroneWoodsmanMaxEnergyPatch
 
 public sealed class FalseThrone :
     LorMonsterModel,
-    ISocialFloorMagicalPowderTarget, LibraryOfRuina.helpers.IFinalHpLossClamp
+    ISocialFloorMagicalPowderTarget, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     public const int NormalHp = 888;
     public const int ToughHp = 999;

@@ -366,7 +366,7 @@ public sealed class ArtFloorDustToDustPower : LibraryPowerModel
     }
 }
 
-public sealed class ArtFloorDustbornWinterStasisPower : LibraryPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class ArtFloorDustbornWinterStasisPower : LibraryPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     protected override string? LegacyPowerId => "ART_FLOOR_DUSTBORN_WINTER_STASIS_POWER";
 

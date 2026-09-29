@@ -8,7 +8,7 @@ using LibraryOfRuina.combat;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.KingOfGreed;
 using LibraryOfRuina.features.moontext;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers;

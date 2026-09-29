@@ -5,7 +5,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers.LanguageFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;

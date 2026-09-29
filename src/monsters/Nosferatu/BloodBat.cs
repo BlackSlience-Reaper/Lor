@@ -5,7 +5,7 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.Nosferatu;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.Nosferatu;
 using LibraryOfRuina.visuals.Nosferatu;

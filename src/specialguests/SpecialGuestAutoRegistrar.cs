@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.specialguests;
 

@@ -10,9 +10,10 @@ using LibraryOfRuina.compat;
 using LibraryOfRuina.features.intentgraph;
 using LibraryOfRuina.features.settings;
 using LibraryOfRuina.features.temporarymaps;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.hooks;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.networking;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.LittleRedMercenary;
@@ -20,7 +21,6 @@ using LibraryOfRuina.specialguests;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina;
 

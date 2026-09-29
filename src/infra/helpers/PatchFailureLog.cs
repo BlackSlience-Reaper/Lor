@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using MegaCrit.Sts2.Core.Logging;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 internal static class PatchFailureLog
 {

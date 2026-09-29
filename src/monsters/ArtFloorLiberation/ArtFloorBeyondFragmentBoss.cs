@@ -7,7 +7,7 @@ using LibraryOfRuina.combat;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.CosmicFragment;
 using LibraryOfRuina.powers.ArtFloorLiberation;

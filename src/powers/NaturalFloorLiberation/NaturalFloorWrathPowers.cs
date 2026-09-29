@@ -127,7 +127,7 @@ public sealed class NaturalFloorSinnerPower : NaturalFloorGreenPassivePower
     }
 }
 
-public sealed class NaturalFloorExploitedPower : NaturalFloorGreenPassivePower, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class NaturalFloorExploitedPower : NaturalFloorGreenPassivePower, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     protected override string LegacyPowerId => "NATURAL_FLOOR_EXPLOITED_POWER";
 

@@ -10,7 +10,7 @@ using LibraryOfRuina.cards.JudgementBird;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.JudgementBird;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents.JudgementBird;
 using LibraryOfRuina.monsters;
 using LibraryOfRuina.monsters.JudgementBird;

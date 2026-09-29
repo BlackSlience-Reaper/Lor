@@ -6,7 +6,7 @@ using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.Leticia;
 using LibraryOfRuina.features.moontext;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.relics;

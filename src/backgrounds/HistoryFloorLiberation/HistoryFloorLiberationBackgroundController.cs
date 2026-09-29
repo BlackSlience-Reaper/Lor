@@ -1,7 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.backgrounds.HistoryFloorLiberation;
 

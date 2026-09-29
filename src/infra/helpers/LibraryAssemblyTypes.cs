@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 /// <summary>
 /// 本程序集的类型表，只枚举一次，供补丁安装、卡池、盟友回合、SavedProperty、特殊来宾等自动发现共用。

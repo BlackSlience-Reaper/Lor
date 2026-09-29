@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 internal readonly struct ResolvedPowerIcon(string path, Texture2D texture)
 {

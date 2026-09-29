@@ -591,7 +591,7 @@ public sealed class PhilosophyFloorTwilightFearPower :
 }
 
 public abstract class PhilosophyFloorTwilightPeacePowerBase :
-    LibraryOfRuinaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+    LibraryOfRuinaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     internal const int ThreeEggsMinimumHpPercent = 75;
     internal const int TwoEggsMinimumHpPercent = 50;

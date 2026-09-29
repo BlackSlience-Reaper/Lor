@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 internal static class GodotTextureSafety
 {

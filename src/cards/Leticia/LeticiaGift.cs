@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.compat;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

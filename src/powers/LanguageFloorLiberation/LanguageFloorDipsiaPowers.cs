@@ -54,7 +54,7 @@ public sealed class LanguageFloorDipsiaHydrophobiaPassivePower
 }
 
 public sealed class LanguageFloorDipsiaTransformPower
-    : LanguageFloorDipsiaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+    : LanguageFloorDipsiaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     protected override string LegacyPowerId =>
         "LANGUAGE_FLOOR_DIPSIA_TRANSFORM_POWER";

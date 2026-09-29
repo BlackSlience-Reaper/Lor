@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;

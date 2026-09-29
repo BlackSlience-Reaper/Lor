@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Text;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 
 // usage: ModSnapshot <mod.dll> <out-dir> <reference-dir-or-dll>...

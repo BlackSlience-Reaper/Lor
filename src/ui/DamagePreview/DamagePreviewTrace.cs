@@ -10,16 +10,16 @@ using LibraryLib.Combat;
 using LibraryLib.Hooks;
 using LibraryLib.Powers;
 using LibraryLib.Utils.Resistance;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.specialguests;
 using LibraryOfRuina.specialguests.Kali;

@@ -5,13 +5,13 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.addons.mega_text;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 

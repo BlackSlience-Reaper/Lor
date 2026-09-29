@@ -41,7 +41,7 @@ public sealed class LibraryOfRuinaGoldenAmberPower : LibraryFakeDeathPowerModel
 }
 
 public sealed class LibraryOfRuinaFlickeringDesirePower :
-    LibraryOfRuinaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+    LibraryOfRuinaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     // 闪烁欲望：魔法少女形态触发变身时保留的生命百分比。
     private const int HpThresholdPercent = 50;

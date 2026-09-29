@@ -6,7 +6,7 @@ using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.SpinyBus;
 using LibraryOfRuina.features.moontext;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.SpinyBus;
 using LibraryOfRuina.relics;
 using LibraryOfRuina.relics.SpinyBus;

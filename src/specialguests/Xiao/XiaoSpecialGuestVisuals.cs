@@ -1,12 +1,12 @@
 using System;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Xiao;
 

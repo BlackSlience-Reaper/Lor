@@ -7,7 +7,7 @@ using LibraryOfRuina.combat;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.PriceOfSilence;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.PriceOfSilence;
 using LibraryOfRuina.visuals.PriceOfSilence;

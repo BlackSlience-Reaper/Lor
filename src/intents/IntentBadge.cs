@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using LibraryOfRuina.guests.DawnOffice;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;

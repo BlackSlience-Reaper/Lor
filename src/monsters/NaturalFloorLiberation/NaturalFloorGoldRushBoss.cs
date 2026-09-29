@@ -6,7 +6,6 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.HistoryFloorLiberation;

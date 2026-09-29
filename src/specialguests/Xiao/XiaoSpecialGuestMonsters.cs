@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Xiao;
 
-public sealed class XiaoStageOne : XiaoSpecialGuestMonsterBase, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class XiaoStageOne : XiaoSpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     public bool IsFakeDead { get; private set; }
 

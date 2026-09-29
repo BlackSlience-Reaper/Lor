@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.PriceOfSilence;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.PriceOfSilence;
 using LibraryOfRuina.relics.PriceOfSilence;
 using MegaCrit.Sts2.Core.Entities.Cards;

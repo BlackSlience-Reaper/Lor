@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.compat;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.BlueStar;
 using LibraryOfRuina.relics.BlueStar;
 using MegaCrit.Sts2.Core.Entities.Cards;

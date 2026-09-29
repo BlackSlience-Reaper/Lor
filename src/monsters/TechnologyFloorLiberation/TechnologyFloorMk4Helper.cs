@@ -4,7 +4,7 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.guests.DawnOffice;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.AllAroundHelper;
 using LibraryOfRuina.visuals.TechnologyFloorLiberation;

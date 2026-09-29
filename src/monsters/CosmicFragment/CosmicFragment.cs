@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.relics;
 using LibraryOfRuina.relics.CosmicFragment;

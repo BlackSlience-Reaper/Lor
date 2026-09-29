@@ -33,7 +33,7 @@ public sealed class FairyFestivalReservedFoodPower : LibraryOfRuinaPowerModel
     ];
 }
 
-public sealed class FairyMassCarePower : LibraryOfRuinaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class FairyMassCarePower : LibraryOfRuinaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     private const decimal HealRatio = 0.10m;
     private const int PreservedHp = 1;

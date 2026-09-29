@@ -13,7 +13,7 @@ using LibraryOfRuina.encounters.KuroKumo;
 using LibraryOfRuina.encounters.ScorchedGirl;
 using LibraryOfRuina.events.SongMachine;
 using LibraryOfRuina.features.secondascension;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers;

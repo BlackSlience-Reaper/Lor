@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;

@@ -1,4 +1,4 @@
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.relics.GalaxyChild;
 using MegaCrit.Sts2.Core.Models.CardPools;
 

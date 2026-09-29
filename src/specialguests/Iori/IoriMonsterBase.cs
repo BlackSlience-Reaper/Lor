@@ -27,7 +27,7 @@ namespace LibraryOfRuina.specialguests.Iori;
 /// （快照的存取在 <see cref="IoriReceptionSnapshotStore"/>）。
 /// </summary>
 public abstract partial class IoriMonsterBase :
-    SpecialGuestMonsterBase, LibraryOfRuina.helpers.IFinalHpLossClamp
+    SpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     internal const string RouterMoveId = "IORI_ROUTER";
     internal const string CompositeMoveId = "IORI_COMPOSITE";

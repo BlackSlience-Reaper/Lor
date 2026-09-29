@@ -1,6 +1,6 @@
 using System;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 /// <summary>
 /// 标记一个卡牌类应自动注册到指定卡池。

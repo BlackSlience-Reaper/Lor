@@ -4,7 +4,7 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.DeadButterfly;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.relics;
 using LibraryOfRuina.relics.DeadButterfly;
 using LibraryOfRuina.visuals.DeadButterfly;

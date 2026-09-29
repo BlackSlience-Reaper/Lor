@@ -177,7 +177,7 @@ public sealed class NosferatuHydrophobiaPassivePower : LibraryOfRuinaPowerModel
     }
 }
 
-public sealed class NosferatuTransformPower : LibraryOfRuinaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class NosferatuTransformPower : LibraryOfRuinaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     private sealed class Data
     {

@@ -6,6 +6,9 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards;
 using LibraryOfRuina.compat;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -14,9 +17,6 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Rewards;
-using LibraryOfRuina.helpers;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.relics;
 

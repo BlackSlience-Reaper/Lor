@@ -6,7 +6,7 @@ using LibraryOfRuina.backgrounds.HistoryFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters.FairyFestival;
 using LibraryOfRuina.visuals.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Commands;

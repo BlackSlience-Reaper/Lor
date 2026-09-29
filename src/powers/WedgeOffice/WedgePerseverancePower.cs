@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.powers.WedgeOffice;
 
-public sealed class WedgePerseverancePower : LibraryOfRuinaPowerModel, LibraryOfRuina.helpers.IFinalHpLossClamp
+public sealed class WedgePerseverancePower : LibraryOfRuinaPowerModel, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     private const int DefaultGuardAmount = 25;
     private const int EnduranceTurns = 1;

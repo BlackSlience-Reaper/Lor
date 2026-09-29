@@ -6,7 +6,7 @@ using LibraryOfRuina.cards.ArtFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.ArtFloorLiberation;
 using LibraryOfRuina.visuals.ArtFloorLiberation;

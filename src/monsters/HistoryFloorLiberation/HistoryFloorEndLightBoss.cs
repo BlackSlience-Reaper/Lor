@@ -8,7 +8,7 @@ using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.features.moontext;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.HistoryFloorLiberation;
 using LibraryOfRuina.visuals.HistoryFloorLiberation;

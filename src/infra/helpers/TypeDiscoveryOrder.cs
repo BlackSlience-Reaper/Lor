@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace LibraryOfRuina.helpers;
+namespace LibraryOfRuina.infra.helpers;
 
 /// <summary>
 /// 自动发现的遍历顺序。补丁安装（同目标、同优先级补丁按安装先后执行）、卡池登记（原版按追加顺序拼到池尾）、

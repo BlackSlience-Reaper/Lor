@@ -4,13 +4,13 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 

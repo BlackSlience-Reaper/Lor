@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;

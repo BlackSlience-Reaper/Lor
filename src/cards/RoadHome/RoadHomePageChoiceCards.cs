@@ -1,4 +1,4 @@
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters.ScaredyCat;
 using LibraryOfRuina.relics.RoadHome;
 using MegaCrit.Sts2.Core.HoverTips;

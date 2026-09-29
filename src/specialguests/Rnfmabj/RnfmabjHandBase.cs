@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Commands;
@@ -18,7 +18,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 
-public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.helpers.IFinalHpLossClamp
+public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 {
     internal const int SurvivalHp = 1;
 
