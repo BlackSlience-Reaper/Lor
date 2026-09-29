@@ -395,8 +395,6 @@ sts2|MegaCrit.Sts2.Core.Models.Powers.HardenedShellPower::ModifyHpLostBeforeOsty
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+HardenedShellPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Models.Powers.PersonalHivePower::AfterDamageReceived(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Entities.Creatures.DamageResult,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel)
   Prefix priority=200 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.PetDealerCompatibilityPatch.Prefix
-sts2|MegaCrit.Sts2.Core.Models.Powers.SwipePower::BeforeDeath(MegaCrit.Sts2.Core.Entities.Creatures.Creature)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.monsters.BigBadWolf.BigBadWolfSwipePowerRewardPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Models.RelicModel::FromSerializable(MegaCrit.Sts2.Core.Saves.Runs.SerializableRelic)
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.RelicSavedModeDescriptionPatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.compat.MadokaLongbowRestorePatch.Postfix

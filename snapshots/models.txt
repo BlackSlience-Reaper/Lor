@@ -460,6 +460,7 @@ LibraryOfRuina.powers.ArtFloorLiberation.SilentPerformancePower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfBornToBePower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfCruelClawsPower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfPunishEvilPower
+LibraryOfRuina.powers.BigBadWolf.BigBadWolfSwipePower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfTemporaryThornsPower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfUntargetablePower
 LibraryOfRuina.powers.BigBird.BigBirdCharmedPower
