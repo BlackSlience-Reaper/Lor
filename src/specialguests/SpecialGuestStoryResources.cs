@@ -1,4 +1,6 @@
 using System;
+using Godot;
+using MegaCrit.Sts2.Core.Logging;
 
 namespace LibraryOfRuina.specialguests;
 
@@ -27,8 +29,7 @@ public static class SpecialGuestStoryResources
 
     /// <summary>
     /// 本体自带的 Noto Sans CJK JP，字体数据与本模组原先打包的那份逐字节相同。本体按 MSDF 导入，
-    /// 剧情播放器用 <see cref="SpecialGuestStoryPlayer"/> 里的副本改回普通光栅化。
-    /// 它归本体主题持有，不放进 <see cref="AssetPaths"/>。
+    /// <see cref="LoadFont"/> 在副本上改回普通光栅化。它归本体主题持有，不放进 <see cref="AssetPaths"/>。
     /// </summary>
     public const string JapaneseFont =
         "res://fonts/jpn/NotoSansCJKjp-Regular.otf";
@@ -57,5 +58,30 @@ public static class SpecialGuestStoryResources
         }
 
         return LatinKoreanFont;
+    }
+
+    /// <summary>剧情画面用的字体；缺失时记错误并返回 null，由调用方沿用主题字体。</summary>
+    internal static Font? LoadFont(string language)
+    {
+        string path = GetFontPath(language);
+        Font? font = ResourceLoader.Load<Font>(path);
+        if (font == null)
+        {
+            Log.Error("[SpecialGuestStory] Missing Library of Ruina story font: " + path);
+            return null;
+        }
+
+        if (path == JapaneseFont && font is FontFile vanillaImport)
+        {
+            // 本体按 MSDF 导入这份字体；本模组一直用普通光栅化显示剧情文字。在副本上改回原来的导入参数，
+            // 不动本体界面共用的那份。改完后与本模组原先的导入结果逐项相同。
+            var copy = (FontFile)vanillaImport.Duplicate();
+            copy.MultichannelSignedDistanceField = false;
+            copy.MsdfPixelRange = 8;
+            copy.ClearCache();
+            return copy;
+        }
+
+        return font;
     }
 }

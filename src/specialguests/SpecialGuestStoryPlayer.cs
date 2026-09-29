@@ -705,26 +705,7 @@ internal sealed partial class SpecialGuestStoryOverlay : Control
 
     private Font? LoadStoryFont()
     {
-        string path = SpecialGuestStoryResources.GetFontPath(LocManager.Instance.Language);
-        Font? font = ResourceLoader.Load<Font>(path);
-        if (font == null)
-        {
-            Log.Error("[SpecialGuestStory] Missing Library of Ruina story font: " + path);
-            return null;
-        }
-
-        if (path == SpecialGuestStoryResources.JapaneseFont && font is FontFile vanillaImport)
-        {
-            // 本体按 MSDF 导入这份字体；本模组一直用普通光栅化显示剧情文字。在副本上改回原来的导入参数，
-            // 不动本体界面共用的那份。改完后与本模组原先的导入结果逐项相同。
-            var copy = (FontFile)vanillaImport.Duplicate();
-            copy.MultichannelSignedDistanceField = false;
-            copy.MsdfPixelRange = 8;
-            copy.ClearCache();
-            return copy;
-        }
-
-        return font;
+        return SpecialGuestStoryResources.LoadFont(LocManager.Instance.Language);
     }
 
     private static void ApplyFont(Label label, Font? font)
