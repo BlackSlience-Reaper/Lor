@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.powers;
 
@@ -17,7 +16,6 @@ public sealed class NextTurnVigorPower : LibraryOfRuinaPowerModel
 {
     private const int DelayRounds = 1; // 下回合活力：施加后的回合延迟。
 
-    [SavedProperty]
     public int ActivationRound { get; private set; }
 
     protected override string LegacyPowerId => "NEXT_TURN_VIGOR_POWER";

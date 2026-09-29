@@ -13,7 +13,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.encounters.LanguageFloorLiberation;
 
@@ -98,22 +97,16 @@ public sealed class LanguageFloorLiberationEncounter :
 
     public override string BossNodePath => BossNodeResourcePath;
 
-    [SavedProperty]
     public int CurrentPhase { get; private set; } = 1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool PhaseComplete { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool TransitionPending { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int KilledBossCount { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool SettlementTriggered { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool EndedByLethalDamage { get; private set; }
 
     public string LiberationFloorId =>

@@ -20,7 +20,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using static LibraryOfRuina.reverberation.CryingChildren.CryingChildrenRules;
 
@@ -31,11 +30,9 @@ public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
     private MoveState? _action;
     private AbstractIntent[]? _intents;
 
-    // 保留旧版本存档字段；当前攻击不使用单体目标，也不再抽取单体目标 RNG。
-    [SavedProperty]
+    // 没有读写者：当前攻击不使用单体目标，也不再抽取单体目标 RNG。
     public int TargetCombatId { get; private set; } = -1;
 
-    [SavedProperty]
     public bool Overheated { get; private set; }
 
     protected abstract LibraryResistanceLevel BaselineResistance { get; }
@@ -307,16 +304,12 @@ public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
 
 public sealed class ReverberationPhilip : CryingChildMonsterBase, IFinalHpLossClamp
 {
-    [SavedProperty]
     public int Phase { get; private set; } = 1;
 
-    [SavedProperty]
     public bool TransitionPending { get; private set; }
 
-    [SavedProperty]
     public bool ChildrenSpawned { get; private set; }
 
-    [SavedProperty]
     public int LastPreparedRound { get; private set; } = -1;
 
     public override int MinInitialHp => HpValue(PhilipMinHp, PhilipHighMinHp);
@@ -457,10 +450,8 @@ public sealed class ReverberationPhilip : CryingChildMonsterBase, IFinalHpLossCl
 
 public sealed class UnspeakingChild : CryingChildMonsterBase
 {
-    [SavedProperty]
     public int SpawnRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int LastPreparedRound { get; private set; } = -1;
 
     public override int MinInitialHp => HpValue(ChildMinHp, ChildHighMinHp);

@@ -10,7 +10,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
@@ -24,16 +23,12 @@ public abstract class NaturalFloorMagicalGirl : NaturalFloorNihilMonster
     protected override IEnumerable<NaturalFloorNihilAction> AvailableActions =>
         Kind == NaturalFloorGirlKind.Love ? Rotation.Append(NaturalFloorNihilAction.LoveMagic).Distinct() : Rotation;
 
-    [SavedProperty]
     public int RotationIndex { get; private set; }
 
-    [SavedProperty]
     public int LoveHitCount { get; private set; }
 
-    [SavedProperty]
     public int PendingGreedBlock { get; private set; }
 
-    [SavedProperty]
     public bool HasReceivedGreedBlock { get; private set; }
 
     internal override string VisualId => Kind.ToString().ToLowerInvariant();
@@ -181,7 +176,6 @@ public abstract class NaturalFloorNihilStatue : NaturalFloorPhaseMonster
 
     public abstract NaturalFloorGirlKind Kind { get; }
 
-    [SavedProperty]
     public bool SummonPending { get; private set; }
 
     public override int MinInitialHp => NaturalFloorNihilMoves.StatueHp;

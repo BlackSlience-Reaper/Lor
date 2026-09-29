@@ -15,7 +15,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
@@ -31,55 +30,38 @@ public sealed partial class Rnfmabj : RnfmabjMonsterBase
 
     public static readonly string[] StaticAssetPaths = RnfmabjCombatAssets.All;
 
-    [SavedProperty]
     public int Phase { get; private set; } = 1;
 
-    [SavedProperty]
     public bool IsUnited { get; private set; }
 
-    [SavedProperty]
     public bool PhaseThreeInitialized { get; private set; }
 
-    [SavedProperty]
     public int BladeCooldown { get; private set; } = 6;
 
-    [SavedProperty]
     public int LastActivatedPlanSerial { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetTwo { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetThree { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetFour { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetFive { get; private set; } = -1;
 
-    [SavedProperty]
     public int DirectivePlanSerial { get; private set; } = -1;
 
-    [SavedProperty]
     public int DirectiveSequenceLength { get; private set; }
 
-    [SavedProperty]
     public int[] DirectiveSequenceCodes { get; private set; } = [];
 
-    [SavedProperty]
     public int CurrentDirectiveTaskIndex { get; private set; }
 
-    [SavedProperty]
     public bool CurrentDirectiveCompleted { get; private set; }
 
-    [SavedProperty]
     public string DirectiveRequiredPlayerNetIds { get; private set; } = string.Empty;
 
-    [SavedProperty]
     public string DirectiveProgressByPlayerNetId { get; private set; } = string.Empty;
 
     public override int MinInitialHp => 700;

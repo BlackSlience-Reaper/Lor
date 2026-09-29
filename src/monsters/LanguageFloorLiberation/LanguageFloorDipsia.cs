@@ -26,7 +26,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
@@ -147,21 +146,16 @@ public sealed class LanguageFloorDipsia :
             ])
             .ToArray();
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool IsTransformed { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool TransformPending { get; private set; }
 
-    // 半血触发标记：一旦锁血触发就置 true 并持久保存，
+    // 半血触发标记：一旦锁血触发就置 true，本场战斗内不再复位，
     // BeforeSideTurnStart 依赖它执行变身，避免 pending 状态丢失后永远锁血。
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool TransformTriggered { get; private set; }
 
-    [SavedProperty]
     public int PreviousMove { get; private set; } = -1;
 
-    [SavedProperty]
     public int LastHydrophobiaRound { get; private set; } = -1;
 
     internal int GroupBreakTriggerCount { get; private set; }

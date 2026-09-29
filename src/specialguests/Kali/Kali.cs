@@ -21,15 +21,14 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Kali;
 
 /// <summary>
-/// 卡莉（红雾）。按职责分在几个 partial 文件里：本文件是常量、存档状态与回合钩子；
+/// 卡莉（红雾）。按职责分在几个 partial 文件里：本文件是常量、战斗状态与回合钩子；
 /// <c>Kali.Ego.cs</c> 是 E.G.O. 的显现、解除、再显现与血雾层数；<c>Kali.CardPlan.cs</c> 是敌方卡牌计划
-/// （计划存在基类的五个槽位里，读档按槽位恢复）；<c>Kali.Moves.cs</c> 是各张卡的执行与卡牌共用的攻击演出。
+/// （计划存在基类的五个槽位里）；<c>Kali.Moves.cs</c> 是各张卡的执行与卡牌共用的攻击演出。
 /// 纯规则方法（<c>BuildPlanCardIds</c>、<c>ResolvePlanCardLimit</c> 等）被卡牌与验证套件按 <c>Kali.X</c> 引用，留在本类型上。
 /// </summary>
 public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwner, ITargetedMonsterAttackProvider, LibraryOfRuina.helpers.IFinalHpLossClamp
@@ -162,34 +161,24 @@ public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwn
     private EnemyCardRuntime? _enemyCards;
     private Dictionary<string, EnemyCardSpec>? _enemyCardSpecs;
 
-    [SavedProperty]
     public bool EgoTriggered { get; private set; }
 
-    [SavedProperty]
     public bool EgoActive { get; private set; }
 
-    [SavedProperty]
     public bool EgoManifestationPending { get; private set; }
 
-    [SavedProperty]
     public int EgoReturnCountdown { get; private set; }
 
-    [SavedProperty]
     public int PersistedBloodMistStacks { get; private set; }
 
-    [SavedProperty]
     public int PersistedEnemyCardPlanNumber { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public string PersistedQueuedExtraCardIds { get; private set; } = string.Empty;
 
-    [SavedProperty]
     public bool EgoThresholdTurnLockConsumed { get; private set; }
 
-    [SavedProperty]
     public int EgoThresholdTurnLockRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int EgoThresholdTurnLockSide { get; private set; } = -1;
 
     private int _redMistStrongContribution;

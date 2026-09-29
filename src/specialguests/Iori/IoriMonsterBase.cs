@@ -16,13 +16,12 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Iori;
 
 /// <summary>
-/// 伊织两个阶段的共同实现。按职责分在几个 partial 文件里：本文件是存档状态、行动状态机与每回合的计划；
+/// 伊织两个阶段的共同实现。按职责分在几个 partial 文件里：本文件是战斗状态、行动状态机与每回合的计划；
 /// <c>IoriMonsterBase.Moves.cs</c> 是招式执行；<c>IoriMonsterBase.Stance.cs</c> 是姿态切换（纯规则在
 /// <see cref="IoriStanceController"/>）；<c>IoriMonsterBase.Escape.cs</c> 是一阶段撤离与二阶段读回快照
 /// （快照的存取在 <see cref="IoriReceptionSnapshotStore"/>）。
@@ -44,37 +43,26 @@ public abstract partial class IoriMonsterBase :
 
     internal bool IsHealthBarLockActive => _shouldLockHealthBar;
 
-    [SavedProperty]
     public IoriStance CurrentStance { get; private set; } = IoriStance.None;
 
-    [SavedProperty]
     public int LastPlannedRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int LastRegularMove { get; private set; } = (int)IoriMove.None;
 
-    [SavedProperty]
     public IoriStance PlannedNextStance { get; private set; } = IoriStance.None;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int SelectedStanceMask { get; private set; }
 
-    [SavedProperty]
     public bool HasExpandedRoundTwoCapacity { get; private set; }
 
-    [SavedProperty]
     public int ReceptionRoundOffset { get; private set; }
 
-    [SavedProperty]
     public bool EscapeQueued { get; private set; }
 
-    [SavedProperty]
     public bool EscapeCompleted { get; private set; }
 
-    [SavedProperty]
     public bool StageSnapshotRestored { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public string ChainsContributionByPlayerNetId { get; private set; } =
         string.Empty;
 

@@ -23,7 +23,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Rooms;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.SpiderBud;
@@ -81,7 +80,6 @@ public sealed class SpiderBud : CounterIntentMonsterModel
     private static readonly string SpiderBudPageRelicTitleLocKey =
         $"{ModelDb.GetId<SpiderBudPageRelic>().Entry}.title";
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool HuntPending { get; private set; }
 
     public override int MinInitialHp =>

@@ -24,7 +24,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
@@ -40,16 +39,12 @@ public sealed class LanguageFloorScarletScar :
     private const string RageSfxPath = "res://audio/sfx/little_red_mercenary/little_red_rage.ogg";
     private const string UnrelievedSfxPath = "res://audio/sfx/little_red_mercenary/little_red_unrelieved.ogg";
 
-    [SavedProperty]
     public int PlannedMoveOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveTwo { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int EnemyTurnCount { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool UnrelievedAnger { get; private set; }
 
     private const int PlanSlotCount = 2;

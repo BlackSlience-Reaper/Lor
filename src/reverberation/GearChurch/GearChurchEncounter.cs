@@ -11,7 +11,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens.Bestiary;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using LibraryOfRuina.infra.patching;
 using static LibraryOfRuina.reverberation.GearChurch.GearChurchRules;
 using LibraryOfRuina.interop;
@@ -23,7 +22,6 @@ public sealed class GearChurchEncounter : ReverberationEncounterModel
     internal const string EileenSlot = "eileen";
     internal static readonly string[] FollowerSlots = ["follower_1", "follower_2", "follower_3"];
 
-    [SavedProperty]
     public int LastFollowerPlanRound { get; private set; } = -1;
 
     protected override IReadOnlyList<string> EnemySlots => [EileenSlot, .. FollowerSlots];
