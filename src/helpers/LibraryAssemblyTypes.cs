@@ -6,19 +6,23 @@ namespace LibraryOfRuina.helpers;
 
 /// <summary>
 /// 本程序集的类型表，只枚举一次，供补丁安装、卡池、盟友回合、SavedProperty、特殊来宾等自动发现共用。
-/// 顺序与 <see cref="Assembly.GetTypes"/> 相同；补丁安装与同目标补丁的执行顺序依赖这个顺序。
+/// 顺序由 <see cref="TypeDiscoveryOrder"/> 决定：补丁安装与同目标补丁的执行顺序、卡池与事件遗物池的追加顺序、
+/// 盟友 provider 的匹配顺序都依赖它。
 /// </summary>
 internal static class LibraryAssemblyTypes
 {
     private static readonly Lazy<(Type[] Types, ReflectionTypeLoadException? Error)> Scan = new(static () =>
     {
+        Assembly assembly = typeof(LibraryAssemblyTypes).Assembly;
+        IReadOnlyList<string> table = TypeDiscoveryOrder.ReadTable(assembly);
         try
         {
-            return (typeof(LibraryAssemblyTypes).Assembly.GetTypes(), null);
+            return (TypeDiscoveryOrder.Sort(assembly.GetTypes(), table), null);
         }
         catch (ReflectionTypeLoadException exception)
         {
-            return (exception.Types.Where(static type => type != null).Select(static type => type!).ToArray(), exception);
+            Type[] loaded = exception.Types.Where(static type => type != null).Select(static type => type!).ToArray();
+            return (TypeDiscoveryOrder.Sort(loaded, table), exception);
         }
     });
 
