@@ -23,7 +23,7 @@ namespace LibraryOfRuinaVerification;
 /// <summary>
 /// 怪物外观目录的逐行转储，用于重构前后对照（A/B）。
 /// 只经过重构前后都存在的入口：<see cref="MonsterVisualCatalog"/> 的按 ID 查询、<c>Validate</c>、<c>Create</c>，
-/// 以及 <see cref="WrappedMonsterVisualFactory.ShouldWrap"/>。对 <see cref="ModelDb.Monsters"/> 里的每个怪物记录
+/// 以及 <see cref="WrappedMonsterVisualFactory.ShouldWrap"/>。对 ModelDb 里的每个怪物模型（<see cref="ModelDb.All"/>，比 <see cref="ModelDb.Monsters"/> 全）记录
 /// 是否登记；登记了的再记录布局全部字段、精灵配置（按引用认出是哪个外观类的 <c>Profile</c>）、静态贴图，
 /// 并用可变副本实际生成外观节点，逐个节点记录类型、名字、所有者、坐标、缩放、偏移、翻转、层级、贴图与动画。
 /// 几个按怪物状态选贴图的自定义工厂，再按反射改写状态字段各生成一次。
@@ -126,7 +126,7 @@ internal static class MonsterVisualLayoutVerificationPatch
         RecordLookups(MissingId);
 
         var monsterIds = new HashSet<string>(StringComparer.Ordinal);
-        foreach (MonsterModel monster in ModelDb.Monsters
+        foreach (MonsterModel monster in ModelDb.All.OfType<MonsterModel>()
                      .OrderBy(static m => m.Id.Entry, StringComparer.Ordinal)
                      .ThenBy(static m => m.GetType().FullName, StringComparer.Ordinal))
         {
