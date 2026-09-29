@@ -742,6 +742,9 @@ sts2|MegaCrit.Sts2.Core.Rooms.EventRoom::ToSerializable()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorSpecialRewardSavePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Rooms.TreasureRoom::.ctor(System.Int32)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.ReverberationEnsembleTreasureRoomPatch.Prefix
+sts2|MegaCrit.Sts2.Core.Runs.RunManager::CanonicalizeSave(MegaCrit.Sts2.Core.Saves.SerializableRun,System.UInt64)
+  Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.RunData.Patches.RunSavedDataCanonicalizeSavePatch.Postfix
+  Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.features.settings.LibraryRunInjectionCanonicalizePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::CleanUp(System.Boolean)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.RunLifecycle+CleanUpPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::CreateRoom(MegaCrit.Sts2.Core.Rooms.RoomType,MegaCrit.Sts2.Core.Map.MapPointType,MegaCrit.Sts2.Core.Models.AbstractModel)
@@ -763,6 +766,10 @@ sts2|MegaCrit.Sts2.Core.Runs.RunManager::ProceedFromTerminalRewardsScreen()
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Lifecycle.Patches.RewardsScreenContinuingLifecyclePatch.Postfix
   Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.features.temporarymaps.TemporaryMapTerminalRewardsProceedPatch.Postfix
   Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.specialguests.SpecialGuestTerminalRewardsProceedPatch.Postfix
+sts2|MegaCrit.Sts2.Core.Runs.RunManager::SetUpNewMultiplayer(MegaCrit.Sts2.Core.Runs.RunState,MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby,System.Boolean,System.Nullable`1[[System.DateTimeOffset, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.settings.LibraryRunInjectionNewRunGuardPatch.Prefix
+sts2|MegaCrit.Sts2.Core.Runs.RunManager::SetUpSavedMultiplayer(MegaCrit.Sts2.Core.Runs.RunState,MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.LoadRunLobby)
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.settings.LibraryRunInjectionLoadGuardPatch.Prefix
 sts2|MegaCrit.Sts2.Core.Runs.RunManager::ToSave(MegaCrit.Sts2.Core.Rooms.AbstractRoom)
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.RunData.Patches.RunSavedDataToSavePatch.Postfix
   Postfix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.features.temporarymaps.TemporaryMapSavePatch.Postfix
