@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.cards.SpinyBus;
+using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

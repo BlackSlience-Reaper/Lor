@@ -1,7 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.visuals.SmilingBodies;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;

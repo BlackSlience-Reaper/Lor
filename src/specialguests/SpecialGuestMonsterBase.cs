@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.SpeedDice;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters;
 using LibraryOfRuina.patches;

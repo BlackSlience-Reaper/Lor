@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Localization;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 
 namespace LibraryOfRuina.intents.NaturalFloorLiberation;

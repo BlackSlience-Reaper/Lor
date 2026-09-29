@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;

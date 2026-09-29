@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryLib.Commands;
 using LibraryOfRuina.cards.AllAroundHelper;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;

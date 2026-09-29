@@ -2,13 +2,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.PhilosophyFloorLiberation;
+using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
-using static LibraryOfRuina.visuals.common.VfxPrimitives;
+using static LibraryOfRuina.framework.visuals.common.VfxPrimitives;
 
 namespace LibraryOfRuina.visuals.PhilosophyFloorLiberation;
 

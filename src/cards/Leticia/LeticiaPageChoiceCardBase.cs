@@ -1,4 +1,5 @@
 using LibraryOfRuina.enchantments.Leticia;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.relics.Leticia;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

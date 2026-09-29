@@ -5,6 +5,8 @@ using Godot;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.events.LanguageFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.powers.LanguageFloorLiberation;
 using LibraryOfRuina.scene_transitions;

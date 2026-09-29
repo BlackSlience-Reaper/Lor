@@ -1,4 +1,5 @@
 using LibraryOfRuina.encounters.QueenOfHatred;
+using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.HoverTips;

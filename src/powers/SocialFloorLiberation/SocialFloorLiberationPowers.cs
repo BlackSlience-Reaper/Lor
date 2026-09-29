@@ -5,6 +5,7 @@ using HarmonyLib;
 using LibraryLib.Light;
 using LibraryOfRuina.cards.SocialFloorLiberation;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

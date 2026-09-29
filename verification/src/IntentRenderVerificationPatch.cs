@@ -17,8 +17,10 @@ using LibraryOfRuina.encounters.PunishingBird;
 using LibraryOfRuina.encounters.RedMist;
 using LibraryOfRuina.encounters.ScorchedGirl;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.intents.rendering;
 using LibraryOfRuina.intents;
-using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.monsters.PunishingBird;
 using LibraryOfRuina.monsters.ScorchedGirl;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
@@ -688,7 +690,7 @@ internal static class IntentRenderVerificationPatch
 
     /// <summary>重构前的构建里没有这些类型；只在类型存在时调用，这些方法在调用前不会被 JIT。</summary>
     private static bool PipelineAvailable() =>
-        typeof(IntentBadge).Assembly.GetType("LibraryOfRuina.intents.rendering.IntentRenderPipeline", throwOnError: false) != null;
+        typeof(IntentBadge).Assembly.GetType("LibraryOfRuina.framework.intents.rendering.IntentRenderPipeline", throwOnError: false) != null;
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DumpPipeline(string name, AbstractIntent intent, IReadOnlyList<Creature> targets, Creature owner, Control host)

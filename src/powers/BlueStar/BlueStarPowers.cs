@@ -1,9 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.BlueStar;
 using LibraryOfRuina.encounters.BlueStar;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.BlueStar;
 using MegaCrit.Sts2.Core.Combat;

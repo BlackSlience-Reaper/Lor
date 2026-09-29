@@ -1,5 +1,6 @@
 using System.Globalization;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.SocialFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

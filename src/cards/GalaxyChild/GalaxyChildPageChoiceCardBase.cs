@@ -1,4 +1,5 @@
 using LibraryOfRuina.enchantments.GalaxyChild;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.relics.GalaxyChild;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.HoverTips;

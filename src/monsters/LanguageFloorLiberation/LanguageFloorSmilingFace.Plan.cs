@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
+using LibraryOfRuina.framework.monsters;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 

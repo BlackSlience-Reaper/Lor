@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.ForsakenMurderer;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

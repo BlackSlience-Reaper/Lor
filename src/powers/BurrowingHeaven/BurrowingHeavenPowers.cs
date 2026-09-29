@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BurrowingHeaven;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.BurrowingHeaven;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

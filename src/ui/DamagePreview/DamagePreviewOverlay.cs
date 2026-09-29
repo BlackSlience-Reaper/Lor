@@ -6,6 +6,7 @@ using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Assets;

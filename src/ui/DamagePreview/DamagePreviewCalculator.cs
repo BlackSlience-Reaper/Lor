@@ -8,6 +8,7 @@ using LibraryLib.Localization;
 using LibraryLib.Localization.LibraryDynamicVars;
 using LibraryLib.Models;
 using LibraryLib.Utils.Resistance;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.reverberation.GearChurch;

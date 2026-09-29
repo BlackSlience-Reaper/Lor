@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers.WedgeOffice;
 using LibraryOfRuina.visuals;

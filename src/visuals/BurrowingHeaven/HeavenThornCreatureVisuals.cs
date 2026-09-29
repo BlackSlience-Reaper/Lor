@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.BurrowingHeaven;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Models;

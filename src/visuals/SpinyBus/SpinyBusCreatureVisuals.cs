@@ -1,5 +1,6 @@
 using Godot;
-using LibraryOfRuina.audio;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.SpinyBus;

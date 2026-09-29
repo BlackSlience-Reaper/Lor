@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.events.NaturalFloorLiberation;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.relics.DespairKnight;
 using LibraryOfRuina.relics.KingOfGreed;

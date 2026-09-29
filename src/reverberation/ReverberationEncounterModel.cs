@@ -1,5 +1,7 @@
 using System.Linq;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.monsters;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Models;

@@ -1,9 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters;
 using MegaCrit.Sts2.Core.Combat;

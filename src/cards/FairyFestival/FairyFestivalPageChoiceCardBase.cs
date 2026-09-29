@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.relics.FairyFestival;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

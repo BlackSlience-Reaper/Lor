@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.relics.QueenOfHatred;
 using LibraryLib.Utils.Resistance;
 using MegaCrit.Sts2.Core.Entities.Cards;

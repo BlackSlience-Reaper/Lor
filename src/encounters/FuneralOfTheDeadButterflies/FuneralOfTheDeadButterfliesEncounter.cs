@@ -1,5 +1,6 @@
 using System.Linq;
 using LibraryOfRuina.afflictions.FuneralOfTheDeadButterflies;
+using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 

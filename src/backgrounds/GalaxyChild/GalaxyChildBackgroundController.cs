@@ -1,5 +1,5 @@
 using Godot;
-using LibraryOfRuina.audio;
+using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.backgrounds.GalaxyChild;

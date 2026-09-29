@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.relics.HistoryFloorLiberation;

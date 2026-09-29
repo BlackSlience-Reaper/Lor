@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.PunishingBird;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Rooms;

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;

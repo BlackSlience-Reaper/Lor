@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.cards.WrathServant;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.powers.WrathServant;

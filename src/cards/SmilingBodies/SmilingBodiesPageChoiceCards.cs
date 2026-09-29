@@ -1,4 +1,5 @@
 using System;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.relics.SmilingBodies;
 using MegaCrit.Sts2.Core.HoverTips;

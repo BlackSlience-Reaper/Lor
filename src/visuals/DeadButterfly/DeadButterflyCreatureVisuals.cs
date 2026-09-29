@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.DeadButterfly;

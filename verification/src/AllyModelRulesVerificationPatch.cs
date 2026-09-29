@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.encounters.LittleRedMercenary;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;

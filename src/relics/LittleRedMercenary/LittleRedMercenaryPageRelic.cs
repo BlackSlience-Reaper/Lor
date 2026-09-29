@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using LibraryOfRuina.cards.LittleRedMercenary;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Relics;

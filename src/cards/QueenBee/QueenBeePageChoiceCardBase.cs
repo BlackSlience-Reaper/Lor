@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.powers.HistoryFloorLiberation;
 using LibraryOfRuina.powers.QueenBee;
 using LibraryOfRuina.relics.QueenBee;

@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;

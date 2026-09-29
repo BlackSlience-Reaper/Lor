@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.LittleRedMercenary;
+using LibraryOfRuina.framework.powers;
+using ISecondaryDisplayAmountPower = LibraryOfRuina.framework.powers.ISecondaryDisplayAmountPower;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;

@@ -4,6 +4,7 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Helpers;

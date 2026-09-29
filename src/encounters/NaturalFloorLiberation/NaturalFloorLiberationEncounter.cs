@@ -6,6 +6,8 @@ using LibraryOfRuina.backgrounds.NaturalFloorLiberation;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.events.NaturalFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.powers.NaturalFloorLiberation;

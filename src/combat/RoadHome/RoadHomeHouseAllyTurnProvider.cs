@@ -1,4 +1,5 @@
 using LibraryOfRuina.encounters.RoadHome;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.RoadHome;
 using LibraryOfRuina.powers.LittleRedMercenary;
 

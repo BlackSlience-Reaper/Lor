@@ -5,6 +5,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.JudgementBird;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.JudgementBird;
 using MegaCrit.Sts2.Core.Combat;

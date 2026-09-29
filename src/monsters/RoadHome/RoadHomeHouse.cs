@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.RoadHome;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.powers.RoadHome;
 using LibraryOfRuina.visuals.RoadHome;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

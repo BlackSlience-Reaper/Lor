@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
 using LibraryOfRuina.monsters.GalaxyChild;
 using LibraryOfRuina.patches;

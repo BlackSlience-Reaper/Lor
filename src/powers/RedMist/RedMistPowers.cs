@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.specialguests.Kali;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.HoverTips;

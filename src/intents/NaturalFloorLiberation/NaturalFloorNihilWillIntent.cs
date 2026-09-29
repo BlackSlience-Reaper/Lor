@@ -1,4 +1,5 @@
 using System.Linq;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 
 namespace LibraryOfRuina.intents;

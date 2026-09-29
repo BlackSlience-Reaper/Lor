@@ -1,5 +1,7 @@
 using System.Linq;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;

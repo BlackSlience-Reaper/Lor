@@ -1,3 +1,5 @@
+using LibraryOfRuina.framework.powers;
+
 namespace LibraryOfRuina.powers.SpiderBud;
 
 /// <summary>

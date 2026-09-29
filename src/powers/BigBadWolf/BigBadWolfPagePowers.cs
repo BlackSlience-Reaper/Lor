@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -76,7 +77,7 @@ public sealed class BigBadWolfCruelClawsPower : LibraryOfRuinaPowerModel
             || cardSource.Type != CardType.Attack
             || !IsOwnerDamageSource(dealer)
             || target.Side == Owner.Side
-            || LibraryOfRuina.combat.AllyTurnRegistry.IsFriendlyAlly(target))
+            || LibraryOfRuina.framework.combat.AllyTurnRegistry.IsFriendlyAlly(target))
         {
             return;
         }

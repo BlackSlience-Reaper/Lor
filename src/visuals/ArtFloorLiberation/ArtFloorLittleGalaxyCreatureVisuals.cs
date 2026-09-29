@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
 using LibraryOfRuina.patches;

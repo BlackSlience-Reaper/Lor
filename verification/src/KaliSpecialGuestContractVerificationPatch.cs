@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.specialguests;

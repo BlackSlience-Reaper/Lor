@@ -35,6 +35,7 @@ using LibraryOfRuina.encounters.SpiderBud;
 using LibraryOfRuina.encounters.SpinyBus;
 using LibraryOfRuina.encounters.TodaysShyLook;
 using LibraryOfRuina.encounters.WarmheartedWoodsman;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.guests;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches.AddictedEmployee;

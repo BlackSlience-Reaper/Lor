@@ -10,6 +10,8 @@ using LibraryOfRuina.combat.WrathServant;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LittleRedMercenary;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;

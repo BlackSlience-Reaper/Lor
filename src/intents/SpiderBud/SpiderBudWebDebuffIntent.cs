@@ -1,5 +1,6 @@
 using System.Linq;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+using LibraryOfRuina.framework.intents;
 
 namespace LibraryOfRuina.intents.SpiderBud;
 

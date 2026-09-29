@@ -5,6 +5,7 @@ using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.WrathServant;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.WrathServant;
 using LibraryOfRuina.ui;

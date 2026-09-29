@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.ScorchedGirl;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;

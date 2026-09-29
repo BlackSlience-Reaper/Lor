@@ -1,4 +1,5 @@
 using LibraryOfRuina.enchantments.HistoryFloorLiberation;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.relics.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

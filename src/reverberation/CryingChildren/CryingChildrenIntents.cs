@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.specialguests.Iori;
 using MegaCrit.Sts2.Core.Entities.Cards;

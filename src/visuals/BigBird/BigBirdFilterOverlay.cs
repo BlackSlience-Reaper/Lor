@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.powers.BigBird;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;

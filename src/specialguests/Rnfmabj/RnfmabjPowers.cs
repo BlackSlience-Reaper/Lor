@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers;

@@ -1,10 +1,11 @@
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
+using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Utils.Resistance;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;

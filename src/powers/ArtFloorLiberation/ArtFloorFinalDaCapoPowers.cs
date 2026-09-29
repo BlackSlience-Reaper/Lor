@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Afflictions;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
+using LibraryOfRuina.framework.powers;
 
 namespace LibraryOfRuina.powers.ArtFloorLiberation;
 

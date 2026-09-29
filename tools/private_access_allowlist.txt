@@ -19,9 +19,9 @@ events/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.Get
 events/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetMethod	同上
 features/secondascension/LibrarySecondAscensionUiPatch.cs	LibrarySecondAscensionUi.SetLabelTextAutoSize	.GetMethod	公开方法 SetTextAutoSize，声明在 MegaLabel 与 MegaRichTextLabel 两个不相关的类型上，按运行时类型调用
 features/secondascension/LibrarySecondAscensionUiPatch.cs	LibrarySecondAscensionUi.SetRichTextAutoSize	.GetMethod	同上
-combat/CombatSafetyNet.cs	CombatSafetyNet.OverridesBeforeDeath	.GetMethod	只取公开虚方法 BeforeDeath，判断运行时类型是否覆写（诊断日志用）
+framework/combat/CombatSafetyNet.cs	CombatSafetyNet.OverridesBeforeDeath	.GetMethod	只取公开虚方法 BeforeDeath，判断运行时类型是否覆写（诊断日志用）
 patches/RelicSavedModeDescriptionPatch.cs	RelicSavedModeDescriptionPatch.Postfix	AccessTools.Property	按约定探测任意遗物运行时类型上名为 Mode 的枚举属性（本模组多模式书页遗物用这个约定；遵循同一约定、带同名 DynamicVar 的其他遗物也会被处理）
-relics/AbnormalityPageRewardPreselection.cs	AbnormalityPageRewardPreselection.DiscoverPageRelics	AccessTools.Property	本模组书页遗物的 Mode 属性，声明在各遗物类上
+framework/relics/AbnormalityPageRewardPreselection.cs	AbnormalityPageRewardPreselection.DiscoverPageRelics	AccessTools.Property	本模组书页遗物的 Mode 属性，声明在各遗物类上
 core/settings/ExtAutoModSettings.cs	ExtAutoModSettings.GenerateOptionsForAllProperties	.GetProperty	本模组设置类上的公开属性（按可见性条件里写的属性名）
 
 # Infrastructure that walks compiler-generated or third-party types.

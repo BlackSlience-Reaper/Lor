@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.BlueStar;
 using LibraryOfRuina.patches;
 

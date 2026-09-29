@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.monsters.QueenBee;
 using LibraryOfRuina.patches;

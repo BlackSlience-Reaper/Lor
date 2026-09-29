@@ -1,4 +1,5 @@
 using LibraryOfRuina.encounters.LittleRedMercenary;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.powers.LittleRedMercenary;
 

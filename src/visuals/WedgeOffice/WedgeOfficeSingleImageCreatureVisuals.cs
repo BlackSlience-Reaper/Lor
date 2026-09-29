@@ -1,3 +1,5 @@
+using LibraryOfRuina.framework.visuals;
+
 namespace LibraryOfRuina.visuals.WedgeOffice;
 
 public abstract partial class WedgeOfficeSingleImageCreatureVisuals : SpriteAttackCreatureVisuals

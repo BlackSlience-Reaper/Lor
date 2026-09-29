@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.relics.BigBadWolf;
 using MegaCrit.Sts2.Core.HoverTips;

@@ -2,9 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.specialguests;
@@ -119,8 +121,8 @@ public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
         long burn = state.Creatures
             .Where(target => target.IsAlive
                 && (target.Side == CombatSide.Player
-                    || LibraryOfRuina.combat.AllyTurnRegistry.GetAllyType(target)
-                        == LibraryOfRuina.combat.AllyType.Friendly))
+                    || LibraryOfRuina.framework.combat.AllyTurnRegistry.GetAllyType(target)
+                        == LibraryOfRuina.framework.combat.AllyType.Friendly))
             .Sum(target => (long)(target.GetPower<LibraryBurnPower>()?.Amount ?? 0));
         long divisor = Math.Max(1, state.RunState.Players.Count) * (long)WillBurnPerPlayer;
         return (int)Math.Min(int.MaxValue, Math.Max(WillMinimumHits, burn / divisor));

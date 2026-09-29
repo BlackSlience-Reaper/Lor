@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.HistoryFloorLiberation;
 using LibraryOfRuina.visuals.HistoryFloorLiberation;

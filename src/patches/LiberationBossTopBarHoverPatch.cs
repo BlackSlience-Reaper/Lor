@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;

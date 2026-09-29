@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.addons.mega_text;
 using LibraryOfRuina.encounters.WrathServant;
+using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.relics;
 using LibraryOfRuina.relics.WrathServant;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -15,8 +18,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.WrathServant;
 

@@ -2,13 +2,14 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards.Rnfmabj;
+using LibraryOfRuina.framework.visuals;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.ui;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 

@@ -111,7 +111,7 @@ internal static class CombatStateProperties
         [typeof(global::LibraryOfRuina.monsters.SpiderBud.SpiderBud)] = new(
             [],
             ["HuntPending"]),
-        [typeof(global::LibraryOfRuina.powers.NextTurnVigorPower)] = new(
+        [typeof(global::LibraryOfRuina.framework.powers.NextTurnVigorPower)] = new(
             ["ActivationRound"],
             []),
         [typeof(global::LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightBrokenEggPower)] = new(

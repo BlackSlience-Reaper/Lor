@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.powers.BigBadWolf;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -14,7 +16,6 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.QueenOfHatred;
 

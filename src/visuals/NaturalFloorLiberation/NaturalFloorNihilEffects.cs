@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.audio;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 

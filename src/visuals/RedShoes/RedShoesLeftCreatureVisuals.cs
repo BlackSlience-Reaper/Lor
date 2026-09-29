@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.monsters.RedShoes;
 using LibraryOfRuina.patches;

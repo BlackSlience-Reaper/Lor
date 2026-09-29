@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using LibraryOfRuina.cards.DespairKnight;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;

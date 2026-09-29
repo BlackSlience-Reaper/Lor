@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using LibraryOfRuina.relics.LittleRedMercenary;
 using MegaCrit.Sts2.Core.HoverTips;

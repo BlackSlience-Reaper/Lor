@@ -3,6 +3,7 @@ using System.Linq;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+using LibraryOfRuina.framework.intents;
 
 namespace LibraryOfRuina.intents.WarmheartedWoodsman;
 

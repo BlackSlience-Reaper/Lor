@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Godot;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.ftue;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.core.settings;
 

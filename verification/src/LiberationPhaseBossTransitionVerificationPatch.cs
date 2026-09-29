@@ -12,6 +12,7 @@ using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
+using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;

@@ -1,5 +1,5 @@
 using System.Linq;
-using LibraryOfRuina.intents.rendering;
+using LibraryOfRuina.framework.intents.rendering;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 

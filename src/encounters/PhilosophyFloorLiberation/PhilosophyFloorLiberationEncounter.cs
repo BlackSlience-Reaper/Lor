@@ -1,6 +1,8 @@
 using System.Linq;
 using Godot;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.monsters.PhilosophyFloorLiberation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Models;

@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.HeartOfAspiration;
 using LibraryOfRuina.patches;
 

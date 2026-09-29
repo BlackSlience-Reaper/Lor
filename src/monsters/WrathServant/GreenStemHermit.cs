@@ -1,11 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.WrathServant;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers.WrathServant;

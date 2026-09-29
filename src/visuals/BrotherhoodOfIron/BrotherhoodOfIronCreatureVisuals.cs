@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.MusiciansOfBremen;
 using LibraryOfRuina.guests.WedgeOffice;
 using LibraryOfRuina.patches;

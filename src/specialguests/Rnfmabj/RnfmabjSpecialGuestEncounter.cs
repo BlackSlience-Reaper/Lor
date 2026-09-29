@@ -3,6 +3,8 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -10,7 +12,6 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 

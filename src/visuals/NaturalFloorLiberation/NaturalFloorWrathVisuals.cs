@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.patches;
 

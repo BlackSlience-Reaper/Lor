@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.BigBird;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.powers.BigBird;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

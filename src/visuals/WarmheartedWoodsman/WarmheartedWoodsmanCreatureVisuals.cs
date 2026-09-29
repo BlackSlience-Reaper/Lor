@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.WarmheartedWoodsman;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Models;

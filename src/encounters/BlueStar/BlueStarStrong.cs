@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.monsters.BlueStar;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;

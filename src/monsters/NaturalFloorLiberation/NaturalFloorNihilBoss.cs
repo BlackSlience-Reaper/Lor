@@ -1,6 +1,7 @@
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.NaturalFloorLiberation;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using System;

@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.relics;

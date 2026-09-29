@@ -1,8 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.cards.ScarecrowSearchingForWisdom;
+using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.ScarecrowSearchingForWisdom;
 using MegaCrit.Sts2.Core.CardSelection;

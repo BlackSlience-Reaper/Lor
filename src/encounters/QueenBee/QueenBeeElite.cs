@@ -1,7 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.monsters.QueenBee;
 using LibraryOfRuina.relics;
 using LibraryOfRuina.relics.QueenBee;

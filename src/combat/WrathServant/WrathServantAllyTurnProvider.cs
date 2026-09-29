@@ -1,4 +1,5 @@
 using LibraryOfRuina.encounters.WrathServant;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using WrathServantMonster = LibraryOfRuina.monsters.WrathServant.WrathServant;
 

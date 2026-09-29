@@ -5,6 +5,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.CosmicFragment;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

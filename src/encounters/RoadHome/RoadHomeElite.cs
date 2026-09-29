@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.cards.RoadHome;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.monsters.RoadHome;
 using LibraryOfRuina.monsters.ScaredyCat;
 using LibraryOfRuina.powers.RoadHome;

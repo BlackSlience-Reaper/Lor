@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.cards.QueenOfHatred;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.powers.QueenOfHatred;
 using LibraryOfRuina.relics.QueenOfHatred;

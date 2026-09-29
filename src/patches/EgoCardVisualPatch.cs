@@ -1,6 +1,7 @@
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Entities.Cards;

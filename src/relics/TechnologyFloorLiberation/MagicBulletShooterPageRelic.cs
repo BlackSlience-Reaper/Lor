@@ -5,6 +5,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.TechnologyFloorLiberation;
 using LibraryOfRuina.relics;

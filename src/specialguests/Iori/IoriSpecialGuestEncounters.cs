@@ -3,8 +3,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using HarmonyLib;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
@@ -12,7 +13,6 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.specialguests.Iori;
 

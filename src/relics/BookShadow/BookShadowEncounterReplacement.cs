@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.guests;
 using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Entities.Players;

@@ -1,5 +1,6 @@
 using System.Linq;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 

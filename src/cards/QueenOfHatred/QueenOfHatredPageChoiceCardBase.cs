@@ -1,4 +1,5 @@
 using LibraryLib.Powers;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.powers.QueenOfHatred;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using LibraryOfRuina.relics.QueenOfHatred;

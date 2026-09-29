@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.monsters.SocialFloorLiberation;
 using LibraryOfRuina.powers;

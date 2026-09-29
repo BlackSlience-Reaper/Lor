@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.ScaredyCat;
 
 namespace LibraryOfRuina.combat.ScaredyCat;

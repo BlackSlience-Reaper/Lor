@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.visuals;
 using LibraryOfRuina.visuals.YunOffice;

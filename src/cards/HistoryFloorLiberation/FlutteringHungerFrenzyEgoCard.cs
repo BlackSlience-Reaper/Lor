@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;

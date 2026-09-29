@@ -1,4 +1,5 @@
 using System;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.patches;
 

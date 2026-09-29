@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.visuals.NaturalFloorLiberation;

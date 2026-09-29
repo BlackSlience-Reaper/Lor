@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.NaturalFloorLiberation;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.relics.DespairKnight;
 using LibraryOfRuina.relics.KingOfGreed;
 using LibraryOfRuina.relics.QueenOfHatred;

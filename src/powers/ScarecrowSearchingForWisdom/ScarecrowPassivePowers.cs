@@ -1,5 +1,6 @@
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using LibraryOfRuina.framework.powers;
 
 namespace LibraryOfRuina.powers.ScarecrowSearchingForWisdom;
 

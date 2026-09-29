@@ -1,10 +1,11 @@
 using System.Linq;
 using HarmonyLib;
+using LibraryOfRuina.framework.visuals;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Entities.UI;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.NaturalFloorLiberation;
 

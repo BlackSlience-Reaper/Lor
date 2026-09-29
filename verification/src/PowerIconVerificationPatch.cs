@@ -7,6 +7,7 @@ using HarmonyLib;
 using LibraryLib.Powers.LibraryPowerMode;
 using LibraryOfRuina;
 using LibraryOfRuina.core;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.AddictedEmployee;

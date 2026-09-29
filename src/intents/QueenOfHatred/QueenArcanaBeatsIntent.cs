@@ -1,5 +1,6 @@
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+using LibraryOfRuina.framework.intents;
 
 namespace LibraryOfRuina.intents.QueenOfHatred;
 

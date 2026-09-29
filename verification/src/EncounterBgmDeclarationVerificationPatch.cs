@@ -10,10 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -48,10 +48,10 @@ internal static class EncounterBgmDeclarationVerificationPatch
 
     private static readonly string[] BgmTypeNames =
     [
-        "LibraryOfRuina.encounters.EncounterBgmController",
-        "LibraryOfRuina.encounters.BgmRegistry",
-        "LibraryOfRuina.encounters.BgmSession",
-        "LibraryOfRuina.encounters.BgmCrossfader",
+        "LibraryOfRuina.framework.audio.EncounterBgmController",
+        "LibraryOfRuina.framework.audio.BgmRegistry",
+        "LibraryOfRuina.framework.audio.BgmSession",
+        "LibraryOfRuina.framework.audio.BgmCrossfader",
     ];
 
     private const BindingFlags AnyStatic = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
@@ -542,7 +542,7 @@ internal static class EncounterBgmDeclarationVerificationPatch
 
     private static object? FindEncounterConfig(EncounterModel encounter)
     {
-        Type? registry = ModAssembly.GetType("LibraryOfRuina.encounters.BgmRegistry");
+        Type? registry = ModAssembly.GetType("LibraryOfRuina.framework.audio.BgmRegistry");
         MethodInfo? lookup = registry?.GetMethod("TryGetEncounterConfig", AnyStatic);
         if (lookup != null)
         {

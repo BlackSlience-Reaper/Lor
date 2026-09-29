@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BigBird;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.BigBird;
 using LibraryOfRuina.relics.BigBird;

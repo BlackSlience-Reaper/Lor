@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;

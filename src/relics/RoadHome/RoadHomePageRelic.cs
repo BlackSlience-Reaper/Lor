@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.cards.RoadHome;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.monsters.ScaredyCat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers.MusiciansOfBremen;

@@ -14,6 +14,8 @@ using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.patches;

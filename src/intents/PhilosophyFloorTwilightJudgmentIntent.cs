@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Localization;
 
 namespace LibraryOfRuina.intents;

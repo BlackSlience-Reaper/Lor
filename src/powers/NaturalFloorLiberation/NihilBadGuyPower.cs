@@ -1,4 +1,5 @@
 using LibraryLib.Utils.Resistance;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;

@@ -1,10 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.LittleRedMercenary;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;

@@ -1,8 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;

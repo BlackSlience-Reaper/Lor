@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.HappyTeddy;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;

@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.acts;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.Map;

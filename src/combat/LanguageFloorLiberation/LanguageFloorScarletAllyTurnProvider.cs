@@ -1,5 +1,6 @@
 using System.Linq;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.powers.LittleRedMercenary;
 

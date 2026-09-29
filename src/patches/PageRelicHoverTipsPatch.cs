@@ -62,7 +62,7 @@ internal static class PageRelicHoverTipsPatch
     private static void Postfix(RelicModel __instance, ref IEnumerable<IHoverTip> __result)
     {
         // 书页绑定具体模式后，仅保留遗物原有的效果提示。
-        if (LibraryOfRuina.relics.AbnormalityPageRewardPreselection.HasConcreteModeForPatch(__instance))
+        if (LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.HasConcreteModeForPatch(__instance))
         {
             return;
         }

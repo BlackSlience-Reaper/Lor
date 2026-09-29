@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.ScorchedGirl;

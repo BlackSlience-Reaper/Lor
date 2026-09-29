@@ -1,4 +1,5 @@
 using System.Linq;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.monsters.PriceOfSilence;
 using LibraryOfRuina.powers.PriceOfSilence;
 using MegaCrit.Sts2.Core.Models;

@@ -1,5 +1,6 @@
 using System.Linq;
 using LibraryOfRuina.encounters.PunishingBird;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.PunishingBird;
 using LibraryOfRuina.powers.LittleRedMercenary;
 

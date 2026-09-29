@@ -1,7 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.audio;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;

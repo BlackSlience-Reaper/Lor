@@ -5,6 +5,8 @@ using LibraryOfRuina.cards.QueenOfHatred;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.QueenOfHatred;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.powers.QueenOfHatred;

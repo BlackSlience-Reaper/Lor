@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.Leticia;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;

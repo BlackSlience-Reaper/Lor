@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters;
 using LibraryOfRuina.powers;

@@ -5,6 +5,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.RedMist;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers.RedMist;

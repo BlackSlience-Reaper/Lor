@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;

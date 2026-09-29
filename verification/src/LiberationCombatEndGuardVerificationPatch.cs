@@ -7,6 +7,7 @@ using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
+using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;

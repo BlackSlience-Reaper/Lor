@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.Ozma;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Models;

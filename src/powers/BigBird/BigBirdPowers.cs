@@ -4,6 +4,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.BigBird;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BigBird;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.relics.BigBird;
 using LibraryOfRuina.visuals.BigBird;
 using MegaCrit.Sts2.Core.Combat;

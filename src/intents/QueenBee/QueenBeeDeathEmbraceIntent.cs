@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Intents;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using QueenBeeMonster = LibraryOfRuina.monsters.QueenBee.QueenBee;
+using LibraryOfRuina.framework.intents;
 
 namespace LibraryOfRuina.intents.QueenBee;
 

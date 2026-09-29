@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.cards.PriceOfSilence;
 using LibraryOfRuina.encounters.PriceOfSilence;
+using LibraryOfRuina.framework.powers;
+using ISecondaryDisplayAmountPower = LibraryOfRuina.framework.powers.ISecondaryDisplayAmountPower;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.PriceOfSilence;
 using MegaCrit.Sts2.Core.Combat;

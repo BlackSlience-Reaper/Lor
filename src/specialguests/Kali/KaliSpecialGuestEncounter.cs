@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using KaliMonster = LibraryOfRuina.specialguests.Kali.Kali;

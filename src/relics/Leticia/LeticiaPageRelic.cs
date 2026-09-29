@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.enchantments.Leticia;
+using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

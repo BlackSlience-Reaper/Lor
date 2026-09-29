@@ -6,6 +6,8 @@ using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.NaturalFloorLiberation;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.gameactions.LittleRedMercenary;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.monsters.PunishingBird;

@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.YunOffice;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals.DawnOffice;

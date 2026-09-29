@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using QueenBeeMonster = LibraryOfRuina.monsters.QueenBee.QueenBee;
 

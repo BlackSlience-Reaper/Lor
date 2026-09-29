@@ -21,6 +21,7 @@ using LibraryOfRuina.encounters.NaturalFloorLiberation;
 using LibraryOfRuina.encounters.PhilosophyFloorLiberation;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Entities.Players;

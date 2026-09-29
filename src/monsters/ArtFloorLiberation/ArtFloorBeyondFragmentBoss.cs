@@ -1,12 +1,15 @@
 using LibraryLib.Models;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.ArtFloorLiberation;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.CosmicFragment;

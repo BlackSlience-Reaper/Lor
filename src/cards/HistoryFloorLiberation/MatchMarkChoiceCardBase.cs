@@ -1,4 +1,5 @@
 using LibraryOfRuina.enchantments.HistoryFloorLiberation;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.relics.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;

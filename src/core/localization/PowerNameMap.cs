@@ -23,7 +23,7 @@ internal static class PowerNameMap
     [
         // Buff；复用原版活力图标，下一回合开始时转化。
         new("NEXT_TURN_VIGOR_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.NextTurnVigorPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.NextTurnVigorPower>(),
             Zhs: "下回合活力", Eng: "Vigor Next Turn", Jpn: "次ターンの活力", Kor: "다음 턴 활력"),
         // Buff
         new("ALL_RETURNS_TO_VOID_POWER.title",
@@ -35,7 +35,7 @@ internal static class PowerNameMap
             Zhs: "下回合力量", Eng: "Next-Turn Strength", Jpn: "次ターン筋力", Kor: "다음 턴 힘"),
         // Debuff
         new("LIBRARY_OF_RUINA_DRAW_CARDS_NEXT_TURN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LibraryOfRuinaDrawCardsNextTurnPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.LibraryOfRuinaDrawCardsNextTurnPower>(),
             Zhs: "下回合少抽牌", Eng: "Fewer Cards Next Turn", Jpn: "次ターンのドロー減少", Kor: "다음 턴에 카드를 덜 뽑으세요"),
         // Debuff
         new("ART_FLOOR_NEXT_TURN_COLLAPSE_POWER.title",
@@ -67,7 +67,7 @@ internal static class PowerNameMap
             Zhs: "余香", Eng: "Fragrance", Jpn: "余香", Kor: "잔향"),
         // Buff
         new("PRESERVED_DAMAGE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.PreservedDamagePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.PreservedDamagePower>(),
             Zhs: "保留伤害", Eng: "Preserved Damage", Jpn: "ダメージを保存する", Kor: "피해를 보존하다"),
         // Buff
         new("LIBRARY_CHARGE_POWER_DEFAULT.title",
@@ -207,7 +207,7 @@ internal static class PowerNameMap
             Zhs: "极锐之楔", Eng: "Razor Wedge", Jpn: "非常に鋭いくさび", Kor: "매우 날카로운 웨지"),
         // Debuff
         new("LIBRARY_OF_RUINA_MARK_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LibraryOfRuinaMarkPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.LibraryOfRuinaMarkPower>(),
             Zhs: "标记", Eng: "Mark", Jpn: "マーク", Kor: "표시"),
         // Debuff
         new("LIBRARY_BLEEDING_POWER_DEFAULT.title",
@@ -219,7 +219,7 @@ internal static class PowerNameMap
             Zhs: "深度创伤", Eng: "Deep Wound", Jpn: "深い傷", Kor: "깊은 상처"),
         // Debuff
         new("LIBRARY_OF_RUINA_CONFUSION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LibraryOfRuinaConfusionPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.LibraryOfRuinaConfusionPower>(),
             Zhs: "混乱", Eng: "Confusion", Jpn: "混乱", Kor: "착란"),
         // Debuff
         new("LIBRARY_BREAK_VULNERABLE_POWER.title",
@@ -303,7 +303,7 @@ internal static class PowerNameMap
             Zhs: "贯通创伤", Eng: "Laceration", Jpn: "裂傷", Kor: "열상"),
         // Debuff
         new("COST_REDUCTION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LibraryOfRuinaCostReductionPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.LibraryOfRuinaCostReductionPower>(),
             Zhs: "费用降低", Eng: "Cost Reduction", Jpn: "コスト削減", Kor: "비용 절감"),
         // Buff
         new("ART_FLOOR_ATONEMENT_CROWN_POWER.title",
@@ -343,7 +343,7 @@ internal static class PowerNameMap
             Zhs: "麻痹", Eng: "Paralysis", Jpn: "麻痺", Kor: "마비"),
         // Debuff
         new("LIBRARY_OF_RUINA_PARALYSIS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LibraryOfRuinaParalysisPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.framework.powers.LibraryOfRuinaParalysisPower>(),
             Zhs: "麻痹", Eng: "Paralysis", Jpn: "麻痺", Kor: "마비"),
     ];
 }

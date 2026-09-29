@@ -8,6 +8,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.patches;

@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.monsters.Nosferatu;
 using LibraryOfRuina.patches;

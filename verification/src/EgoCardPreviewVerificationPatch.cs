@@ -29,7 +29,7 @@ internal static class EgoCardPreviewVerificationPatch
 {
     private const string VerifyArg = "lor-verify-ego-card-preview";
     private const string LogPrefix = "[LibraryOfRuina.EgoCardPreview.Verify] ";
-    private const string PreviewInterfaceName = "LibraryOfRuina.cards.IEnemyAttackPreviewCard";
+    private const string PreviewInterfaceName = "LibraryOfRuina.framework.cards.IEnemyAttackPreviewCard";
     private const string PreviewDamageFieldPrefix = "_previewDamage";
 
     private static readonly int[] PreviewArguments = [31, 32, 33];

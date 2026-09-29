@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;

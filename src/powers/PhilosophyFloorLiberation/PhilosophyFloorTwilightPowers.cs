@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.monsters.PhilosophyFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;

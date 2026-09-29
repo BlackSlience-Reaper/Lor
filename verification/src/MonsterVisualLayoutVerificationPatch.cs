@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina;
 using LibraryOfRuina.core;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Helpers;

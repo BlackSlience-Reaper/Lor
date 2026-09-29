@@ -9,6 +9,7 @@ using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

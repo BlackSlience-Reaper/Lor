@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.relics.DespairKnight;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;

@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.HookOffice;
 using LibraryOfRuina.patches;
 

@@ -2,9 +2,10 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.addons.mega_text;
+using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Nodes.Cards;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.HistoryFloorLiberation;
 

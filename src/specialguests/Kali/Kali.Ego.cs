@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.powers.RedMist;
 using LibraryOfRuina.visuals.RedMist;
 using MegaCrit.Sts2.Core.Combat;

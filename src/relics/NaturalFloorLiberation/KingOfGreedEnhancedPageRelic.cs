@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System;
 using LibraryOfRuina.cards.KingOfGreed;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.relics.KingOfGreed;
 using MegaCrit.Sts2.Core.Combat;

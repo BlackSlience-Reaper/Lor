@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using OzmaMonster = LibraryOfRuina.monsters.Ozma.Ozma;
+using LibraryOfRuina.framework.powers;
 
 namespace LibraryOfRuina.powers.Ozma;
 

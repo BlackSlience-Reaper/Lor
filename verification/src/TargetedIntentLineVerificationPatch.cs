@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards.PunishingBird;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.intents.BigBadWolf;
 using LibraryOfRuina.monsters.PunishingBird;

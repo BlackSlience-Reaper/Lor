@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.Leticia;
 using LibraryOfRuina.patches;
 

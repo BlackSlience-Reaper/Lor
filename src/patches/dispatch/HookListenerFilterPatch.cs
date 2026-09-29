@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using HarmonyLib;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.PhilosophyFloorLiberation;
 using LibraryOfRuina.powers.Ozma;
 using LibraryOfRuina.powers.PhilosophyFloorLiberation;

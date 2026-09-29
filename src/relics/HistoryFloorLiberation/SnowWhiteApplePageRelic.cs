@@ -5,6 +5,8 @@ using LibraryOfRuina.cards.HistoryFloorLiberation;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.enchantments.HistoryFloorLiberation;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.relics;
 using LibraryLib.Entities.Creatures;

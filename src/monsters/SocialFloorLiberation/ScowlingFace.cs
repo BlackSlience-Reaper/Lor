@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.visuals.SocialFloorLiberation;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;

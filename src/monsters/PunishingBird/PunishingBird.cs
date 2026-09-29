@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.PunishingBird;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.PunishingBird;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.PunishingBird;
 using LibraryOfRuina.relics;

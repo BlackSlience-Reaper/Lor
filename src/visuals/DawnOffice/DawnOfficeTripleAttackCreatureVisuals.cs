@@ -1,3 +1,5 @@
+using LibraryOfRuina.framework.visuals;
+
 namespace LibraryOfRuina.visuals.DawnOffice;
 
 public abstract partial class DawnOfficeTripleAttackCreatureVisuals : SpriteAttackCreatureVisuals

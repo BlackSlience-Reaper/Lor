@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using LibraryLib.Models;
 using LibraryLib.Utils.Resistance;
 using LibraryOfRuina.cards.Ozma;
+using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.encounters.Ozma;
+using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.relics.Ozma;
 using MegaCrit.Sts2.Core.Commands;

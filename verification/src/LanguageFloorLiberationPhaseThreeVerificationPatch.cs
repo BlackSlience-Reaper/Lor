@@ -6,6 +6,8 @@ using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;

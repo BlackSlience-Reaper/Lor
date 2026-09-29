@@ -1,9 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;

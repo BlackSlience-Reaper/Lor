@@ -8,6 +8,8 @@ using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.events.LiteratureFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.powers.LiteratureFloorLiberation;

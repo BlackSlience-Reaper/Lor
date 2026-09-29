@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.visuals;

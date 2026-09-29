@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.specialguests.Kali;
 using MegaCrit.Sts2.Core.Models;

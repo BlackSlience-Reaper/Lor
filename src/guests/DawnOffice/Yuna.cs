@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.visuals.DawnOffice;
 using MegaCrit.Sts2.Core.Commands;

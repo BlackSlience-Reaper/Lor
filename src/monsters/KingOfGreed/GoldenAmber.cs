@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.powers.KingOfGreed;
 using LibraryOfRuina.visuals.KingOfGreed;
 using MegaCrit.Sts2.Core.Combat;

@@ -1,10 +1,14 @@
 using LibraryLib.Models;
 using System;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;

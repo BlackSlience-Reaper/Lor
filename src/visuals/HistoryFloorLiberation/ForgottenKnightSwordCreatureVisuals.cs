@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.DespairKnight;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;

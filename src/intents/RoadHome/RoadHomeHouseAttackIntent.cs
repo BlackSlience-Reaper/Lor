@@ -1,5 +1,6 @@
 using System;
 using LibraryOfRuina.encounters.RoadHome;
+using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 

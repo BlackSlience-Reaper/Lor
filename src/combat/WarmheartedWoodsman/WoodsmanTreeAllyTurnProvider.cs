@@ -1,4 +1,5 @@
 using LibraryOfRuina.encounters.WarmheartedWoodsman;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.monsters.WarmheartedWoodsman;
 using LibraryOfRuina.powers.LittleRedMercenary;
 

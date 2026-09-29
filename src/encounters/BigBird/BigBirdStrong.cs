@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.monsters.BigBird;
 using LibraryOfRuina.powers.BigBird;
 using LibraryOfRuina.visuals.BigBird;

@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.Leticia;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.Leticia;

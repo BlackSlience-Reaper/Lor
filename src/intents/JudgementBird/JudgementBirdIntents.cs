@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.powers.JudgementBird;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Intents;

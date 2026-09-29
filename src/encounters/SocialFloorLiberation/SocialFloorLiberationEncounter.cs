@@ -7,6 +7,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.cards.SocialFloorLiberation;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.monsters.SocialFloorLiberation;
 using LibraryOfRuina.powers.SocialFloorLiberation;
 using LibraryOfRuina.visuals.SocialFloorLiberation;

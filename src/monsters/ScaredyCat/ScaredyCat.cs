@@ -1,10 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.RoadHome;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.RoadHome;
 using LibraryOfRuina.powers.RoadHome;

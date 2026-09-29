@@ -5,6 +5,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.powers.ArtFloorLiberation;
 using LibraryOfRuina.visuals.ArtFloorLiberation;
 using MegaCrit.Sts2.Core.Commands;

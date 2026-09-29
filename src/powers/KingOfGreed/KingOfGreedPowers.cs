@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.monsters.KingOfGreed;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;

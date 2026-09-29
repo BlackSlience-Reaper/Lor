@@ -2,6 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.Ozma;
+using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.Ozma;

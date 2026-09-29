@@ -8,6 +8,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.BlueStar;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BlueStar;
+using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.BlueStar;
 using LibraryOfRuina.powers.BlueStar;

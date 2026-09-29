@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.patches;
 

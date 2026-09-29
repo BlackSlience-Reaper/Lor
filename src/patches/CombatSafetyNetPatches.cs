@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.encounters.GalaxyChild;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.monsters.GalaxyChild;
 using MegaCrit.Sts2.Core.Commands;

@@ -1,7 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.audio;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.monsters.SmilingBodies;
 using LibraryOfRuina.powers.LanguageFloorLiberation;
 using LibraryOfRuina.visuals.LanguageFloorLiberation;

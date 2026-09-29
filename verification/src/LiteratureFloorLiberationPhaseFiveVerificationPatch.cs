@@ -10,6 +10,8 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.LiteratureFloorLiberation;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using LibraryOfRuina.events.LiteratureFloorLiberation;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;

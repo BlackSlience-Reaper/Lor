@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Entities.Powers;
+using LibraryOfRuina.framework.powers;
 
 namespace LibraryOfRuina.powers.LittleRedMercenary;
 
