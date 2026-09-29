@@ -494,7 +494,7 @@ internal static class EncounterBgmDeclarationVerificationPatch
         text.Append(" tag=").Append(ReadActiveConfig("LogTag") ?? "null");
         text.Append(" tracks=").Append(ReadActiveConfig("TrackPaths") is string[] tracks ? tracks.Length : -1);
         text.Append(" maxDb=").Append(((float)ReadStatic("_activeMaxVolumeDb")!).ToString("R", CultureInfo.InvariantCulture));
-        text.Append(" reg=").Append(((ICollection)ReadStatic("RegisteredCreatures")!).Count);
+        text.Append(" reg=").Append(((HashSet<Creature>)ReadStatic("RegisteredCreatures")!).Count);
         text.Append(" suspended=").Append(ReadStatic("_suspendedSession") != null);
         text.Append(" active=").Append(DescribePlayer(ReadStatic("_activePlayer") as AudioStreamPlayer, includeVolume));
         text.Append(" inactive=").Append(DescribePlayer(ReadStatic("_inactivePlayer") as AudioStreamPlayer, includeVolume));
