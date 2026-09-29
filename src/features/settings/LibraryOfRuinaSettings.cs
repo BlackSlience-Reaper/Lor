@@ -130,12 +130,12 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
         _ => LibraryResistanceMode.Normal
     };
 
-    internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && MonsterExtensionEnabled;
+    // 局内以本局是否有图书馆内容为准（联机时是房主开局时的设置），局外读本地设置。BGM 控制器用它决定是否接管音乐。
+    internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && LibraryRunSettings.MonsterExtensionEnabled;
 
-    // Gameplay settings are locked while a run is in progress (the settings screen is reachable
-    // from the pause menu). Changing them mid-run rewrote the current run's rooms and flipped
-    // dozens of gameplay gates on one client only (design philosophy §4). The rows are hidden
-    // in-run; this also covers other writers such as "Restore Defaults".
+    // 这两项玩法设置在局内不能改（暂停菜单里能打开设置界面）：局内的值已由本局的 LibraryRunSettingsModifier 固定，
+    // 本地设置只影响之后新开的局，局内改了也不会生效。所以这两行在局内不显示，setter 也拒绝“恢复默认”之类的写入，
+    // 免得玩家以为改动作用于当前这局。
     private static bool RejectDuringRun(string setting)
     {
         if (!RunManager.Instance.IsInProgress)
