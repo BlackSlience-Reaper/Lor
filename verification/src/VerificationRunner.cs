@@ -71,6 +71,7 @@ public static class VerificationRunner
         SocialFloorLiberationVerificationPatch.Start,
         SocialTrialTraceVerificationPatch.Start,
         SpecialGuestPlanTraceVerificationPatch.Start,
+        SpecialGuestStoryFontVerificationPatch.Start,
         SpecialGuestXiaoContractVerificationPatch.Start,
         TargetedIntentLineVerificationPatch.Start,
         TechnologyFloorLiberationSettlementVerificationPatch.Start,
