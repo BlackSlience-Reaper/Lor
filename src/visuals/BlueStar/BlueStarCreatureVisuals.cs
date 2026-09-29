@@ -1,7 +1,9 @@
 using LibraryOfRuina.monsters.BlueStar;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.BlueStar;
 
+[MonsterVisual(typeof(BlueStarAltar), ScenePath = BlueStarAltarCreatureVisuals.ScenePath)]
 internal sealed partial class BlueStarAltarCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -50,6 +52,7 @@ internal static class BlueStarAltarAnimationContract
     internal const float NovaDurationSeconds = 1.50f;
 }
 
+[MonsterVisual(typeof(BlueStarFollower), ScenePath = BlueStarFollowerCreatureVisuals.ScenePath)]
 internal sealed partial class BlueStarFollowerCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {

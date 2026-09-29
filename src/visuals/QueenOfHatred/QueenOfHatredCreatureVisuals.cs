@@ -1,8 +1,14 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.QueenOfHatred;
 
 public partial class QueenOfHatredCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.QueenOfHatred.QueenOfHatred))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -118f), new(0.84f, 0.84f), -150f, -280f, 150f, 8f, new(0f, -120f), new(0f, -315f));
+
     private const string HumanVariant = "human";
     private const string SnakeVariant = "snake";
 

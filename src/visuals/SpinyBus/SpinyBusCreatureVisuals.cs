@@ -1,9 +1,18 @@
+using Godot;
 using LibraryOfRuina.audio;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.SpinyBus;
 
 public sealed partial class SpinyBusCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.SpinyBus.SpinyBus))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -126f), new(0.58f, 0.58f), -132f, -320f, 132f, 10f, new(0f, -126f), new(0f, -348f))
+    {
+        TalkPos = new Vector2(0f, -266f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

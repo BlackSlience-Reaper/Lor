@@ -1,7 +1,17 @@
+using Godot;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.FuneralOfTheDeadButterflies;
 
 public partial class FuneralOfTheDeadButterfliesCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.FuneralOfTheDeadButterflies.FuneralOfTheDeadButterflies))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -126f), new(0.58f, 0.58f), -165f, -315f, 165f, 12f, new(0f, -126f), new(0f, -350f))
+    {
+        TalkPos = new Vector2(0f, -278f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

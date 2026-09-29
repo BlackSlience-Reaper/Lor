@@ -1,9 +1,18 @@
+using Godot;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.ArtFloorLiberation;
 
 public sealed partial class BeyondFragmentCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ArtFloorBeyondFragmentBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(-108f, -205f), new(0.58f, 0.58f), -400f, -435f, 190f, 14f, new(0f, -210f), new(0f, -438f))
+    {
+        TalkPos = new Vector2(0f, -352f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

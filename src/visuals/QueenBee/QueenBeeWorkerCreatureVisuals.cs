@@ -1,10 +1,20 @@
+using Godot;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
+using LibraryOfRuina.monsters.QueenBee;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.QueenBee;
 
 public sealed partial class QueenBeeWorkerCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(QueenBeeWorker))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -76f), new(0.54f, 0.54f), -82f, -184f, 82f, 8f, new(0f, -82f), new(0f, -224f))
+    {
+        TalkPos = new Vector2(0f, -178f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

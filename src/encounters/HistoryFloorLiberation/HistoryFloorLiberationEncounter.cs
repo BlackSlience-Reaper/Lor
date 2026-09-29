@@ -324,10 +324,10 @@ public sealed class HistoryFloorLiberationEncounter :
 
     public bool ShouldPreventPlayerDeath(Creature creature)
     {
+        // 结算期间继续保护末位玩家，避免后续伤害重新进入真实死亡流程。
         return creature.IsPlayer
-            && !_settlementTriggered
-            && _killedBossCount >= 2
-            && IsLastAlivePlayer(creature);
+            && IsLastAlivePlayer(creature)
+            && (_settlementTriggered || _killedBossCount >= 2);
     }
 
     public bool ShouldPreventTransitionBossDeath(Creature creature)
@@ -345,17 +345,20 @@ public sealed class HistoryFloorLiberationEncounter :
             return;
         }
 
+        await CreatureCmd.SetCurrentHp(creature, 1m);
+        if (_settlementTriggered)
+        {
+            // 结算已经触发时只恢复血量，避免重复记录结算或再次结束战斗。
+            return;
+        }
+
         _settlementTriggered = true;
         _endedByLethalDamage = true;
         _transitionPending = false;
         StopHistoryFloorBackgroundMoonTextLoops(creature.CombatState);
         HistoryFloorLiberationSettlementStore.Record(this);
 
-        await CreatureCmd.SetCurrentHp(creature, 1m);
-        // 历史层一直没有“战斗已结束或正在结束则直接返回”的守卫（艺术、技术、语言、文学层有），这里保持原行为。
-        await EndCombatAsLiberationVictory(
-            creature.CombatState,
-            requireCombatInProgress: false);
+        await EndCombatAsLiberationVictory(creature.CombatState);
     }
 
     public async Task OnBeforeSideTurnStart(CombatSide side, CombatStateLike combatState)
