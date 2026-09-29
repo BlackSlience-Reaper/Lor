@@ -22,8 +22,6 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     public const int FinalDamage = 5;
     public const int BleedAmount = 3;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         HistoryFloorFlutteringBoss.BossAttackSfxPath
@@ -36,7 +34,7 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(MultiHitDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", MultiHitCount),
         new HealVar(HealAmount),
         new DamageVar("FinalDamage", FinalDamage, ValueProp.Move),
@@ -49,14 +47,8 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
     ];
 
     public FlutteringHungerFrenzyEgoCard()
-        : base(3)
+        : base(3, previewDamage: MultiHitDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
@@ -66,7 +58,7 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
 
     public void SetPreviewDamage(int multiHitDamage, int finalDamage)
     {
-        DynamicVars.Damage.BaseValue = multiHitDamage;
+        base.SetPreviewDamage(multiHitDamage);
         DynamicVars["FinalDamage"].BaseValue = finalDamage;
     }
 

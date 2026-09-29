@@ -22,8 +22,6 @@ public sealed class RegretEgoCard : EgoCardBase
     public const int FinalUpgradedDamage = 14;
     public const int ConfusionAmount = 1;
 
-    public override int MaxUpgradeLevel => 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         TechnologyFloorRegretBoss.AttackSfxPath
@@ -36,7 +34,7 @@ public sealed class RegretEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(MultiHitDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", MultiHitCount),
         new DamageVar("FinalDamage", FinalDamage, ValueProp.Move),
         new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", ConfusionAmount)
@@ -48,14 +46,8 @@ public sealed class RegretEgoCard : EgoCardBase
     ];
 
     public RegretEgoCard()
-        : base(3)
+        : base(3, previewDamage: MultiHitDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
@@ -65,7 +57,7 @@ public sealed class RegretEgoCard : EgoCardBase
 
     public void SetPreviewDamage(int multiHitDamage, int finalDamage)
     {
-        DynamicVars.Damage.BaseValue = multiHitDamage;
+        base.SetPreviewDamage(multiHitDamage);
         DynamicVars["FinalDamage"].BaseValue = finalDamage;
     }
 

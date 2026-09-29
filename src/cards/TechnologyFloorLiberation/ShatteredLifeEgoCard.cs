@@ -13,10 +13,6 @@ public sealed class ShatteredLifeEgoCard : EgoCardBase
 {
     public const int HitsCount = 3;
 
-    private int _previewDamage = HistoryFloorEmeraldBoughBoss.ShatteredLifeBaseDamage;
-
-    public override int MaxUpgradeLevel => 1;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -24,30 +20,18 @@ public sealed class ShatteredLifeEgoCard : EgoCardBase
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(_previewDamage, ValueProp.Move),
+        new DamageVar(PreviewDamage, ValueProp.Move),
         new DynamicVar("Hits", HitsCount)
     ];
 
     public ShatteredLifeEgoCard()
-        : base(1)
+        : base(1, previewDamage: HistoryFloorEmeraldBoughBoss.ShatteredLifeBaseDamage)
     {
-    }
-
-    public void UpgradePreview()
-    {
-        UpgradeInternal();
-        FinalizeUpgradeInternal();
     }
 
     protected override void OnUpgrade()
     {
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
-    }
-
-    public void SetPreviewDamage(int damage)
-    {
-        _previewDamage = damage;
-        DynamicVars.Damage.BaseValue = damage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
