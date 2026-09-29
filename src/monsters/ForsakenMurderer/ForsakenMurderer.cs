@@ -13,14 +13,12 @@ using LibraryOfRuina.relics.ForsakenMurderer;
 using LibraryOfRuina.visuals.ForsakenMurderer;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -210,21 +208,6 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
         }
 
         AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<ForsakenMurdererPageRelic>(room, ForsakenMurdererPageRelicTitleLocKey);
-    }
-
-    private static bool HasForsakenMurdererPageReward(CombatRoom room, Player player)
-    {
-        if (!room.ExtraRewards.TryGetValue(player, out List<Reward>? rewards) || rewards == null)
-        {
-            return false;
-        }
-
-        return rewards
-            .OfType<RelicReward>()
-            .Any(reward =>
-                reward.IsPopulated
-                && reward.Description.LocTable == "relics"
-                && reward.Description.LocEntryKey == ForsakenMurdererPageRelicTitleLocKey);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
