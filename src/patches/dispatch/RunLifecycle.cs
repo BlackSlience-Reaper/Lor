@@ -1,6 +1,7 @@
 using HarmonyLib;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.encounters;
+using LibraryOfRuina.features.settings;
 using LibraryOfRuina.specialguests;
 using LibraryOfRuina.specialguests.Iori;
 using LibraryOfRuina.specialguests.Xiao;
@@ -16,6 +17,8 @@ internal static class RunLifecycle
 {
     internal static void OnRunCleaningUp(bool graceful)
     {
+        // 放在最前：只改静态值、不会抛出，后面的步骤抛异常时抗性也已回到本地设置。
+        LibraryRunSettings.OnRunCleaningUp();
         SpecialGuestRunCleanup.OnRunCleaningUp();
         XiaoSpecialGuestBgmController.Stop();
         IoriSpecialGuestBgmController.Stop();
