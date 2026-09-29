@@ -1,7 +1,9 @@
 using LibraryOfRuina.monsters.JudgementBird;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.JudgementBird;
 
+[MonsterVisual(typeof(monsters.JudgementBird.JudgementBird), ScenePath = JudgementBirdCreatureVisuals.ScenePath)]
 internal sealed partial class JudgementBirdCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -31,6 +33,7 @@ internal sealed partial class JudgementBirdCreatureVisuals :
         };
 }
 
+[MonsterVisual(typeof(EscapedBird), ScenePath = EscapedBirdCreatureVisuals.ScenePath)]
 internal sealed partial class EscapedBirdCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {

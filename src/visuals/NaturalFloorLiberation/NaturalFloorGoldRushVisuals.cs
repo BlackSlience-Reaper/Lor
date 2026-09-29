@@ -1,9 +1,11 @@
 using System.Linq;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.NaturalFloorLiberation;
 
+[MonsterVisual(typeof(NaturalFloorGoldRushBoss), ScenePath = NaturalFloorGoldRushVisuals.ScenePath)]
 internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_gold_rush_boss.tscn";
@@ -46,6 +48,7 @@ internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatur
     }
 }
 
+[MonsterVisual(typeof(NaturalFloorShiningHappiness), ScenePath = NaturalFloorHappinessVisuals.ScenePath)]
 internal sealed partial class NaturalFloorHappinessVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_shining_happiness.tscn";

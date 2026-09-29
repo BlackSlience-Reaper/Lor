@@ -1,9 +1,19 @@
+using Godot;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.ArtFloorLiberation;
 
 public sealed partial class ArtFloorDustbornPersonCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ArtFloorDustbornPerson))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -80f), new(0.50f, 0.50f), -116f, -260f, 116f, 10f, new(0f, -112f), new(0f, -375f))
+    {
+        TalkPos = new Vector2(0f, -220f),
+        StateDisplayLiftY = 70f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

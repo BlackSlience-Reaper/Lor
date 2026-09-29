@@ -1,10 +1,15 @@
 using LibraryOfRuina.monsters.WrathServant;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.WrathServant;
 
 public sealed partial class HermitStaffCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(HermitStaff))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -100f), new(0.46f, 0.46f), -90f, -220f, 90f, 8f, new(0f, -100f), new(0f, -250f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

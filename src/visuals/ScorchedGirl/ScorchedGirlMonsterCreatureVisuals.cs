@@ -1,7 +1,18 @@
+using Godot;
+using LibraryOfRuina.monsters.ScorchedGirl;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.ScorchedGirl;
 
 public partial class ScorchedGirlMonsterCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ScorchedGirlMonster))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(10f, -98f), new(0.52f, 0.52f), -124f, -218f, 124f, 8f, new(10f, -98f), new(-20f, -286f))
+    {
+        TalkPos = new Vector2(-20f, -214f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

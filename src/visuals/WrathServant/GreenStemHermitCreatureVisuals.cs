@@ -1,5 +1,9 @@
+using LibraryOfRuina.monsters.WrathServant;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.WrathServant;
 
+[MonsterVisual(typeof(GreenStemHermit), ScenePath = GreenStemHermitCreatureVisuals.ScenePath)]
 internal sealed partial class GreenStemHermitCreatureVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/green_stem_hermit.tscn";

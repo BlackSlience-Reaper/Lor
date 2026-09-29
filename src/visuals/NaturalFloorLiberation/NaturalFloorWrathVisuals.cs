@@ -1,5 +1,9 @@
+using LibraryOfRuina.monsters.NaturalFloorLiberation;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.NaturalFloorLiberation;
 
+[MonsterVisual(typeof(NaturalFloorBlindRageBoss), ScenePath = NaturalFloorBlindRageVisuals.ScenePath)]
 internal sealed partial class NaturalFloorBlindRageVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_blind_rage_boss.tscn";
@@ -28,6 +32,7 @@ internal sealed partial class NaturalFloorBlindRageVisuals : SceneAnimatedCreatu
     };
 }
 
+[MonsterVisual(typeof(NaturalFloorGreenStemHermit), ScenePath = NaturalFloorHermitVisuals.ScenePath)]
 internal sealed partial class NaturalFloorHermitVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_green_stem_hermit.tscn";

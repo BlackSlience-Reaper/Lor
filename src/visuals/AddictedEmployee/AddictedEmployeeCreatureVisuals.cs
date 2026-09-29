@@ -1,7 +1,19 @@
+using Godot;
+using LibraryOfRuina.monsters.TechnologyFloorLiberation;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.AddictedEmployee;
 
 public sealed partial class AddictedEmployeeCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.AddictedEmployee.AddictedEmployee))]
+    [MonsterVisual(typeof(TechnologyFloorChordStaff))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -122f), new(0.58f, 0.58f), -118f, -330f, 118f, 12f, new(0f, -122f), new(20f, -290f))
+    {
+        TalkPos = new Vector2(0f, -286f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

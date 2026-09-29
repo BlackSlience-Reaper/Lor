@@ -1,3 +1,5 @@
+using Godot;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.DespairKnight;
@@ -5,6 +7,13 @@ namespace LibraryOfRuina.visuals.DespairKnight;
 public sealed partial class DespairKnightCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.DespairKnight.DespairKnight))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 6f), new(0.77f, 0.77f), -181.5f, -336.7f, 181.5f, 12f, new(0f, -160.1f), new(0f, -369.7f))
+    {
+        TalkPos = new Vector2(0f, -286.6f),
+    };
+
     private const string NormalVariant = "normal";
     private const string StabbedOneVariant = "stabbed_one";
     private const string StabbedTwoVariant = "stabbed_two";
