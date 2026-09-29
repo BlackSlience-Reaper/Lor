@@ -1,7 +1,13 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.ForsakenMurderer;
 
 public partial class ForsakenMurdererCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.ForsakenMurderer.ForsakenMurderer))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -100f), new(0.31f, 0.31f), -160f, -250f, 160f, 20f, new(0f, -100f), new(0f, -280f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

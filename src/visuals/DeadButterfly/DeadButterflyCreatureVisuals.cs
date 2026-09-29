@@ -1,7 +1,13 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.DeadButterfly;
 
 public partial class DeadButterflyCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.DeadButterfly.DeadButterfly))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -88f), new(0.36f, 0.36f), -78f, -182f, 78f, 8f, new(0f, -88f), new(0f, -218f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

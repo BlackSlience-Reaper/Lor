@@ -2,11 +2,13 @@ using System;
 using Godot;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.specialguests.Kali;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.visuals.RedMist;
 
+[MonsterVisual(typeof(Kali), ScenePath = KaliCreatureVisuals.ScenePath)]
 internal sealed partial class KaliCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
@@ -25,6 +27,10 @@ internal sealed partial class KaliCreatureVisuals
 
     protected override string ResolveCurrentAnimationLibrary() =>
         KaliAnimationContract.LibraryForEgo(IsEgoActive());
+
+    [MonsterVisualFactory]
+    internal static NCreatureVisuals CreateForMonster(MonsterModel monster) =>
+        Create(monster.Id.Entry);
 
     internal static NCreatureVisuals Create(string id)
     {

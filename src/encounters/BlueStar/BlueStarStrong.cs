@@ -7,8 +7,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.BlueStar;
 
-public sealed class BlueStarStrong : EncounterModel
+public sealed class BlueStarStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "BlueStarBGM",
+        GuestReceptionPoolRegistry.ReligionReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string AltarSlot = "blue_star_altar";
     public const string LeftFollowerSlot = "blue_star_follower_left";
     public const string MiddleFollowerSlot = "blue_star_follower_middle";

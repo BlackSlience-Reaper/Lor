@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.DawnOffice;
 
-public sealed class DawnOfficeNormal : EncounterModel, IGuestReceptionEncounter
+public sealed class DawnOfficeNormal : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "DawnOfficeBGM",
+        "res://audio/bgm/dawn_office/dawn_office_battle_1.ogg",
+        "res://audio/bgm/dawn_office/dawn_office_battle_2.ogg",
+        "res://audio/bgm/dawn_office/dawn_office_battle_3.ogg");
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

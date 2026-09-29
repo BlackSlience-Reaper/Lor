@@ -1,10 +1,20 @@
+using Godot;
 using LibraryOfRuina.monsters.BigBird;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.BigBird;
 
 public sealed partial class BigBirdCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.BigBird.BigBird))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -12f), new(0.60f, 0.60f), -190f, -420f, 190f, 16f, new(0f, -204f), new(44f, -372f))
+    {
+        TalkPos = new Vector2(0f, -356f),
+        StateDisplayLiftY = 36f,
+    };
+
     private const string NormalVariant = "normal";
     private const string SleepVariant = "sleep";
     private const string RescueVariant = "rescue";
@@ -63,6 +73,13 @@ public sealed partial class BigBirdCreatureVisuals
 public sealed partial class EyeballBirdCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(EyeballBird))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 13f), new(0.56f, 0.56f), -104f, -222f, 104f, 10f, new(0f, -96f), new(0f, -238f))
+    {
+        TalkPos = new Vector2(0f, -202f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

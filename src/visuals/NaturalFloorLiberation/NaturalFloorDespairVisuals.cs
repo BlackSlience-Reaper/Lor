@@ -4,6 +4,7 @@ using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.UI;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.NaturalFloorLiberation;
 
@@ -53,6 +54,7 @@ internal abstract partial class NaturalFloorDespairVisuals : SceneAnimatedCreatu
     }
 }
 
+[MonsterVisual(typeof(NaturalFloorTearEdgeBoss), ScenePath = NaturalFloorTearEdgeVisuals.ScenePath)]
 internal sealed partial class NaturalFloorTearEdgeVisuals : NaturalFloorDespairVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_tear_edge_boss.tscn";
@@ -68,6 +70,7 @@ internal sealed partial class NaturalFloorTearEdgeVisuals : NaturalFloorDespairV
     protected override string NormalizeTriggerName(string name) => name == "Dead" ? "Hit" : name;
 }
 
+[MonsterVisual(typeof(NaturalFloorForgottenSword), ScenePath = NaturalFloorForgottenSwordVisuals.ScenePath)]
 internal sealed partial class NaturalFloorForgottenSwordVisuals : NaturalFloorDespairVisuals
 {
     private bool _healthBarHiddenForFalseDeath;

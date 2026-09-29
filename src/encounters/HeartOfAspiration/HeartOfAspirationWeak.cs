@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.HeartOfAspiration;
 
-public sealed class HeartOfAspirationWeak : EncounterModel
+public sealed class HeartOfAspirationWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "HeartOfAspirationBGM",
+        GuestReceptionPoolRegistry.GeneralReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string LungSlot = "lung_left";
     public const string HeartSlot = "heart_right";
 

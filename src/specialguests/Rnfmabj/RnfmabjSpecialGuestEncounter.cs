@@ -16,8 +16,13 @@ namespace LibraryOfRuina.specialguests.Rnfmabj;
 
 public sealed class RnfmabjSpecialGuestEncounter :
     EncounterModel,
+    IEncounterBgmSource,
     ISpecialGuestEncounterStage
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "RnfmabjSpecialGuestBGM",
+        RnfmabjSpecialGuestIds.BattleBgm);
+
     public const string LeftHandSlot = "left_hand";
     public const string BodySlot = "rnfmabj";
     public const string RightHandSlot = "right_hand";

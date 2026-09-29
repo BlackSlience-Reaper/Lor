@@ -1,3 +1,7 @@
+using Godot;
+using LibraryOfRuina.guests.HookOffice;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.HookOffice;
 
 public abstract partial class HookOfficeCreatureVisuals : SpriteAttackCreatureVisuals
@@ -42,6 +46,13 @@ public abstract partial class HookOfficeCreatureVisuals : SpriteAttackCreatureVi
 
 public partial class TaeinCreatureVisuals : HookOfficeCreatureVisuals
 {
+    [MonsterVisual(typeof(Taein))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -145.2f), new(0.48f, 0.48f), -124f, -299.7f, 124f, 5f, new(0f, -139.8f), new(0f, -333.7f))
+    {
+        TalkPos = new Vector2(0f, -262f),
+    };
+
     internal static readonly SpriteVisualProfile Profile =
         BuildProfile(
             "taein",
@@ -56,6 +67,13 @@ public partial class TaeinCreatureVisuals : HookOfficeCreatureVisuals
 
 public partial class MccullinCreatureVisuals : HookOfficeCreatureVisuals
 {
+    [MonsterVisual(typeof(Mccullin))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -145.2f), new(0.49f, 0.49f), -108f, -299.7f, 108f, 5f, new(0f, -139.8f), new(0f, -333.7f))
+    {
+        TalkPos = new Vector2(0f, -262f),
+    };
+
     internal static readonly SpriteVisualProfile Profile =
         BuildProfile(
             "mccullin",
@@ -70,6 +88,13 @@ public partial class MccullinCreatureVisuals : HookOfficeCreatureVisuals
 
 public partial class NaokiCreatureVisuals : HookOfficeCreatureVisuals
 {
+    [MonsterVisual(typeof(Naoki))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -145.2f), new(0.50f, 0.50f), -104f, -299.7f, 104f, 5f, new(0f, -139.8f), new(0f, -333.7f))
+    {
+        TalkPos = new Vector2(0f, -262f),
+    };
+
     internal static readonly SpriteVisualProfile Profile =
         BuildProfile(
             "naoki",

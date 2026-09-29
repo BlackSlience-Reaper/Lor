@@ -10,8 +10,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.BigBird;
 
-public sealed class BigBirdStrong : EncounterModel
+public sealed class BigBirdStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "BigBirdBGM",
+        GuestReceptionPoolRegistry.PhilosophyReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string LeftEyeSlot = "big_bird_left_eye";
     public const string BossSlot = "big_bird_boss";
     public const string RightEyeSlot = "big_bird_right_eye";
