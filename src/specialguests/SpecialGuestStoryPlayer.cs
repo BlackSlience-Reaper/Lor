@@ -705,14 +705,7 @@ internal sealed partial class SpecialGuestStoryOverlay : Control
 
     private Font? LoadStoryFont()
     {
-        string path = SpecialGuestStoryResources.GetFontPath(LocManager.Instance.Language);
-        Font? font = ResourceLoader.Load<Font>(path);
-        if (font == null)
-        {
-            Log.Error("[SpecialGuestStory] Missing Library of Ruina story font: " + path);
-        }
-
-        return font;
+        return SpecialGuestStoryResources.LoadFont(LocManager.Instance.Language);
     }
 
     private static void ApplyFont(Label label, Font? font)

@@ -54,6 +54,8 @@ godot --headless --path . --export-pack LibraryOfRuina build/LibraryOfRuina.pck
 
 导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。PCK 里的 `.cs` 只保留空占位（场景按路径引用脚本），不附带源码；`docs/`、`tools/`、`snapshots/`、`verification/` 带有 `.gdignore`，不会进包。
 
+纹理用最高等级的无损 WebP 压缩（`project.godot` 的 `rendering/textures/webp_compression`）。修改这两项不会触发重新导入：已有的导入缓存要先删掉 `.godot/imported/` 再导入，否则导出的仍是旧的纹理。
+
 ### 4. 安装
 
 ```
@@ -115,7 +117,7 @@ MIT 许可只适用于本模组自己编写的代码与工程文件。以下内�
 
 - 取自或基于《废墟图书馆》《脑叶公司》等 Project Moon 作品的美术、动画、音频、音乐、视频、角色与剧情文本 © Project Moon，仅限非商业同人用途。
 - `addons/mega_text/` 属于《杀戮尖塔2》© Mega Crit Games。
-- `fonts/` 下的字体：Noto Sans CJK、Nanum 系列（SIL Open Font License 1.1），Arita-buri（© AMOREPACIFIC）。
+- `fonts/` 下的字体：Noto Sans CJK SC（子集，由 `tools/subset_zhs_font.py` 生成）、Nanum Barun Gothic（SIL Open Font License 1.1），Arita-buri（© AMOREPACIFIC）。日文剧情字体直接使用游戏自带的 Noto Sans CJK JP。
 
 ## Git LFS
 

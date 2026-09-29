@@ -12,6 +12,9 @@ obj/
 .idea/
 .vscode/
 
+# Python
+__pycache__/
+
 # Local machine settings
 local.props
 
