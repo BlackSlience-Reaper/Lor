@@ -59,10 +59,22 @@ public sealed class LanguageFloorLostEverythingWolf :
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool LowHealthMode { get; private set; }
 
-    private MoveState? _highCompositeState;
+    // 规划只写前三个槽位。PlannedMoveFour 不经过控制器：规划从不写它，只有进场重置、DebugSetPlan 和
+    // HasPlannedTurn 直接读写。低血量模式下 HasPlannedTurn 要求它非负，所以这时读档总会清空状态重新规划。
+    private const int PlanSlotCount = 3;
+
     private MoveState? _lowCompositeState;
-    private AbstractIntent[]? _highCompositeIntents;
-    private AbstractIntent[]? _lowCompositeIntents;
+    private PlannedMoveController<LanguageFloorMoveKind>? _plan;
+
+    // 高、低血量两个复合行动共用槽位，分别展示前 2、3 个。读槽位把非法值当作残暴獠牙，执行不会停在空槽位。
+    // 实例随怪物克隆丢弃、用到时重建（见 PlannedMoveController）。
+    private PlannedMoveController<LanguageFloorMoveKind> Plan => _plan ??= new(
+        this,
+        PlanSlotCount,
+        GetPlannedMove,
+        SetPlannedMove,
+        static (_, move) => CreateIntent(move),
+        (LanguageFloorMoveKind)(-1));
 
     public override int LiberationPhase => 1;
 
@@ -149,19 +161,23 @@ public sealed class LanguageFloorLostEverythingWolf :
         EncounterBgmController.RegisterMonster(Creature);
     }
 
+    protected override void DeepCloneFields()
+    {
+        base.DeepCloneFields();
+        // 计划控制器的委托捕获的是被克隆的实例，克隆体必须用自己的。
+        _plan = null;
+    }
+
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _highCompositeIntents = new AbstractIntent[2];
-        _lowCompositeIntents = new AbstractIntent[3];
-        RefreshPlannedIntents();
-        _highCompositeState = new MoveState(
+        MoveState highCompositeState = Plan.CreateCompositeState(
             HighCompositeMoveId,
             PerformCompositeMove,
-            _highCompositeIntents);
-        _lowCompositeState = new MoveState(
+            intentCount: LanguageFloorWolfHowlingNightmarePassivePower.InitialIntentCount);
+        _lowCompositeState = Plan.CreateCompositeState(
             LowCompositeMoveId,
             PerformCompositeMove,
-            _lowCompositeIntents);
+            intentCount: LanguageFloorWolfHowlingNightmarePassivePower.IntentCount);
         MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var router = new DelegatingMonsterRouterState(
@@ -173,16 +189,16 @@ public sealed class LanguageFloorLostEverythingWolf :
                     ? LowCompositeMoveId
                     : HighCompositeMoveId;
             });
-        _highCompositeState.FollowUpState = router;
+        highCompositeState.FollowUpState = router;
         _lowCompositeState.FollowUpState = router;
         reviveAndEmpower.FollowUpState = router;
         MonsterState initialState = HasPlannedTurn
-            ? LowHealthMode ? _lowCompositeState : _highCompositeState
+            ? LowHealthMode ? _lowCompositeState : highCompositeState
             : router;
         return new MonsterMoveStateMachine(
             [
                 reviveAndEmpower,
-                _highCompositeState,
+                highCompositeState,
                 _lowCompositeState,
                 router
             ],
@@ -244,27 +260,25 @@ public sealed class LanguageFloorLostEverythingWolf :
         }
 
         PlanTurn(RunRng.MonsterAi, incrementTurn: false);
-        SetMoveImmediate(_lowCompositeState, forceTransition: true);
+        Plan.Reveal(_lowCompositeState);
         if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
         {
             await node.RefreshIntents();
         }
     }
 
-    private async Task PerformCompositeMove(IReadOnlyList<Creature> targets)
-    {
-        int capacity = LowHealthMode
+    private Task PerformCompositeMove(IReadOnlyList<Creature> targets) =>
+        Plan.PerformPlan(
+            () => Creature.IsAlive,
+            (_, move) => PerformMove(move),
+            slotLimit: CurrentIntentCapacity,
+            stopAfterMove: () =>
+                Creature.CombatState?.Encounter is LanguageFloorLiberationEncounter { PhaseComplete: true });
+
+    private int CurrentIntentCapacity =>
+        LowHealthMode
             ? LanguageFloorWolfHowlingNightmarePassivePower.IntentCount
             : LanguageFloorWolfHowlingNightmarePassivePower.InitialIntentCount;
-        for (int slot = 0; slot < capacity && Creature.IsAlive; slot++)
-        {
-            await PerformMove(GetPlannedMove(slot));
-            if (Creature.CombatState?.Encounter is LanguageFloorLiberationEncounter { PhaseComplete: true })
-            {
-                return;
-            }
-        }
-    }
 
     private async Task PerformMove(LanguageFloorMoveKind move)
     {
@@ -436,25 +450,6 @@ public sealed class LanguageFloorLostEverythingWolf :
         };
     }
 
-    private void RefreshPlannedIntents()
-    {
-        if (_highCompositeIntents != null)
-        {
-            for (int slot = 0; slot < _highCompositeIntents.Length; slot++)
-            {
-                _highCompositeIntents[slot] = CreateIntent(GetPlannedMove(slot));
-            }
-        }
-
-        if (_lowCompositeIntents != null)
-        {
-            for (int slot = 0; slot < _lowCompositeIntents.Length; slot++)
-            {
-                _lowCompositeIntents[slot] = CreateIntent(GetPlannedMove(slot));
-            }
-        }
-    }
-
     private static IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
         yield return CreateIntent(LanguageFloorMoveKind.BrutalFangs);
@@ -477,11 +472,28 @@ public sealed class LanguageFloorLostEverythingWolf :
             : LanguageFloorMoveKind.BrutalFangs;
     }
 
+    private void SetPlannedMove(int slot, LanguageFloorMoveKind move)
+    {
+        switch (slot)
+        {
+            case 0:
+                PlannedMoveOne = (int)move;
+                break;
+            case 1:
+                PlannedMoveTwo = (int)move;
+                break;
+            default:
+                PlannedMoveThree = (int)move;
+                break;
+        }
+    }
+
     private void PlanNextTurn(Rng rng)
     {
         PlanTurn(rng, incrementTurn: true);
     }
 
+    // 按槽位顺序掷骰；嚎叫回合第一个槽位固定为嚎叫，不消耗随机数。高血量模式第三个槽位写空。
     private void PlanTurn(Rng rng, bool incrementTurn)
     {
         if (incrementTurn)
@@ -489,18 +501,13 @@ public sealed class LanguageFloorLostEverythingWolf :
             WolfTurnCount++;
         }
 
-        int capacity = LowHealthMode
-            ? LanguageFloorWolfHowlingNightmarePassivePower.IntentCount
-            : LanguageFloorWolfHowlingNightmarePassivePower.InitialIntentCount;
         bool roar = ShouldUseHowl(WolfTurnCount, LowHealthMode);
-
-        PlannedMoveOne = roar
-            ? (int)LanguageFloorMoveKind.Howl
-            : (int)NextBaseMove(rng);
-        PlannedMoveTwo = (int)NextBaseMove(rng);
-        PlannedMoveThree = capacity >= 3 ? (int)NextBaseMove(rng) : -1;
-        //PlannedMoveFour = capacity >= 4 ? (int)NextBaseMove(rng) : -1;
-        RefreshPlannedIntents();
+        Plan.WriteSlots(
+            Math.Min(CurrentIntentCapacity, PlanSlotCount),
+            slot => slot == 0 && roar
+                ? LanguageFloorMoveKind.Howl
+                : NextBaseMove(rng));
+        Plan.RefreshIntents();
     }
 
     internal static bool ShouldUseHowl(int wolfTurnCount, bool lowHealthMode)
@@ -512,11 +519,7 @@ public sealed class LanguageFloorLostEverythingWolf :
     }
 
     internal IReadOnlyList<LanguageFloorMoveKind> PlannedMoves =>
-        Enumerable.Range(
-                0,
-                LowHealthMode
-                    ? LanguageFloorWolfHowlingNightmarePassivePower.IntentCount
-                    : LanguageFloorWolfHowlingNightmarePassivePower.InitialIntentCount)
+        Enumerable.Range(0, CurrentIntentCapacity)
             .Select(GetPlannedMove)
             .ToArray();
 
@@ -533,7 +536,7 @@ public sealed class LanguageFloorLostEverythingWolf :
         PlannedMoveTwo = moves.Length > 1 ? (int)moves[1] : -1;
         PlannedMoveThree = moves.Length > 2 ? (int)moves[2] : -1;
         PlannedMoveFour = moves.Length > 3 ? (int)moves[3] : -1;
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
     }
 
     private bool HasPlannedTurn =>
