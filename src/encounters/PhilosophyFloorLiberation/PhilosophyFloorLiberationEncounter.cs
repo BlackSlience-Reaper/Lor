@@ -10,8 +10,14 @@ namespace LibraryOfRuina.encounters.PhilosophyFloorLiberation;
 
 public sealed class PhilosophyFloorLiberationEncounter :
     EncounterModel,
+    IEncounterBgmSource,
     IFloorLiberationEncounter
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DynamicSourceBased(
+        "PhilosophyFloorLiberationBGM",
+        LanguageFloorLiberationEncounter.RolandLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     internal const string TwilightSlot = "twilight";
     internal const string EncounterScenePath =
         "res://scenes/encounters/philosophy_floor_liberation_encounter.tscn";

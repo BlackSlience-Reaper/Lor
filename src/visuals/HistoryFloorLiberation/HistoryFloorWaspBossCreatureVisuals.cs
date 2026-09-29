@@ -1,10 +1,19 @@
+using Godot;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.HistoryFloorLiberation;
 
 public partial class HistoryFloorWaspBossCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(HistoryFloorWaspBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -128f), new(0.46f, 0.46f), -170f, -315f, 170f, 24f, new(0f, -126f), new(0f, -342f))
+    {
+        TalkPos = new Vector2(0f, -268f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

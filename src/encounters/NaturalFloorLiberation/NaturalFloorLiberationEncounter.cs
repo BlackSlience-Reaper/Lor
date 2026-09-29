@@ -22,8 +22,14 @@ using LibraryOfRuina.helpers;
 namespace LibraryOfRuina.encounters.NaturalFloorLiberation;
 
 public sealed partial class NaturalFloorLiberationEncounter : LiberationEncounterBase,
+    IEncounterBgmSource,
     IFloorLiberationEncounter, ILiberationPhaseBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "NaturalFloorLiberationBGM",
+        LanguageFloorLiberationEncounter.RolandLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     public const int PlannedMaxPhase = 4;
     public const int ImplementedMaxPhase = 5;
     public const string BossSlot = "love_and_hatred";

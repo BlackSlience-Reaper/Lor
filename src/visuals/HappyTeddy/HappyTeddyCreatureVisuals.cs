@@ -1,7 +1,18 @@
+using Godot;
+using LibraryOfRuina.monsters.HappyTeddy;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.HappyTeddy;
 
 public partial class HappyTeddyCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(HappyTeddyMonster))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(6f, -120f), new(0.58f, 0.58f), -145f, -320f, 145f, 10f, new(6f, -120f), new(-4f, -340f))
+    {
+        TalkPos = new Vector2(-8f, -272f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

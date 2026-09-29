@@ -1,10 +1,20 @@
+using Godot;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.LanguageFloorLiberation;
 
 public sealed partial class LanguageFloorDipsiaCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorDipsia))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -128f), new(0.72f, 0.72f), -160f, -360f, 160f, 12f, new(0f, -150f), new(0f, -395f))
+    {
+        TalkPos = new Vector2(0f, -305f),
+        StateDisplayLiftY = 18f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

@@ -3,8 +3,12 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.Tomerry;
 
-public sealed class TomerryEncounter : EncounterModel
+public sealed class TomerryEncounter : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "TomerryBGM",
+        "res://audio/bgm/warp_train/from_a_place_of_love.ogg");
+
     public override RoomType RoomType => RoomType.Elite;
 
     public override bool HasScene => true;

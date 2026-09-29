@@ -6,8 +6,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.WrathServant;
 
-public sealed class WrathServantStrong : EncounterModel
+public sealed class WrathServantStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "WrathServantBGM",
+        GuestReceptionPoolRegistry.NaturalReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     private const string EndedByServantDeathKey = "endedByServantDeath";
 
     public const string StaffSlotLeft = "staff_left";

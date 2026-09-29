@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.MusiciansOfBremen;
 
-public sealed class MusiciansOfBremenNormal : EncounterModel, IGuestReceptionEncounter
+public sealed class MusiciansOfBremenNormal : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "MusiciansOfBremenBGM",
+        "res://audio/bgm/musicians_of_bremen/musicians_of_bremen_battle_1.ogg",
+        "res://audio/bgm/musicians_of_bremen/musicians_of_bremen_battle_2.ogg",
+        "res://audio/bgm/musicians_of_bremen/musicians_of_bremen_battle_3.ogg");
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

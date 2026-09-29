@@ -185,11 +185,13 @@ public abstract class EnemyCardCombinedAttackIntentBase :
     AttackIntent,
     IEnemyCardIntent,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly EnemyCardSpec _card;
     private readonly Func<int> _repeatCalc;
     private readonly string? _descriptionKey;
+    private CompositeIntent? _composite;
 
     protected EnemyCardCombinedAttackIntentBase(
         EnemyCardSpec card,
@@ -206,6 +208,13 @@ public abstract class EnemyCardCombinedAttackIntentBase :
     public EnemyCardSpec EnemyCard => _card;
 
     protected abstract string AttackKind { get; }
+
+    public CompositeIntent Composite =>
+        _composite ??= CompositeIntent.FromVisualKind(
+            AttackKind,
+            IntentType,
+            CompositeIntentTargeting.Default,
+            Array.Empty<IntentBadge>());
 
     public string HoverIconPath => CombinedIntentAnimData.GetHoverIconPath(AttackKind);
 
@@ -321,7 +330,8 @@ public sealed class EnemyCardCombinedDefendBuffIntent :
     DefendIntent,
     IEnemyCardIntent,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly EnemyCardSpec _card;
     private readonly string? _descriptionKey;
@@ -332,9 +342,16 @@ public sealed class EnemyCardCombinedDefendBuffIntent :
     {
         _card = card ?? throw new ArgumentNullException(nameof(card));
         _descriptionKey = descriptionKey;
+        Composite = CompositeIntent.FromVisualKind(
+            CombinedIntentAnimData.DefendBuff,
+            IntentType,
+            CompositeIntentTargeting.Default,
+            Array.Empty<IntentBadge>());
     }
 
     public EnemyCardSpec EnemyCard => _card;
+
+    public CompositeIntent Composite { get; }
 
     protected override string IntentPrefix => "ENEMY_CARD_COMBINED_DEFEND_BUFF";
 
@@ -373,7 +390,8 @@ public sealed class EnemyCardCombinedDefendDebuffIntent :
     DefendIntent,
     IEnemyCardIntent,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly EnemyCardSpec _card;
     private readonly string? _descriptionKey;
@@ -384,9 +402,16 @@ public sealed class EnemyCardCombinedDefendDebuffIntent :
     {
         _card = card ?? throw new ArgumentNullException(nameof(card));
         _descriptionKey = descriptionKey;
+        Composite = CompositeIntent.FromVisualKind(
+            CombinedIntentAnimData.DefendDebuff,
+            IntentType,
+            CompositeIntentTargeting.Default,
+            Array.Empty<IntentBadge>());
     }
 
     public EnemyCardSpec EnemyCard => _card;
+
+    public CompositeIntent Composite { get; }
 
     protected override string IntentPrefix => "ENEMY_CARD_COMBINED_DEFEND_DEBUFF";
 
@@ -425,7 +450,8 @@ public sealed class EnemyCardCombinedMagicIntent :
     AbstractIntent,
     IEnemyCardIntent,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly EnemyCardSpec _card;
     private readonly string? _descriptionKey;
@@ -439,9 +465,16 @@ public sealed class EnemyCardCombinedMagicIntent :
         _card = card ?? throw new ArgumentNullException(nameof(card));
         _descriptionKey = descriptionKey;
         _large = large;
+        Composite = CompositeIntent.FromVisualKind(
+            IntentKind,
+            IntentType,
+            CompositeIntentTargeting.Default,
+            Array.Empty<IntentBadge>());
     }
 
     public EnemyCardSpec EnemyCard => _card;
+
+    public CompositeIntent Composite { get; }
 
     public override IntentType IntentType => IntentType.Unknown;
 

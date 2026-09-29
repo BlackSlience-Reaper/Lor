@@ -1,10 +1,19 @@
+using Godot;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.HistoryFloorLiberation;
 
 public partial class HistoryFloorVineBarrierCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(HistoryFloorVineBarrier))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -88f), new(0.40f, 0.40f), -94f, -198f, 94f, 8f, new(0f, -92f), new(0f, -236f))
+    {
+        TalkPos = new Vector2(0f, -188f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

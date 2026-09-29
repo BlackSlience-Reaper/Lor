@@ -480,19 +480,6 @@ internal static class LibraryOfRuinaInteropRegistry
         return _allModelDescriptors.Where(d => d.Category == category).ToArray();
     }
 
-    private static void AddPublicIdAlias(
-        Dictionary<string, LibraryOfRuinaInteropDescriptor> byPublicId,
-        string aliasPublicId,
-        string canonicalPublicId)
-    {
-        if (!byPublicId.TryGetValue(canonicalPublicId, out LibraryOfRuinaInteropDescriptor? descriptor))
-        {
-            throw new InvalidOperationException($"Missing canonical public ID for alias: {canonicalPublicId}");
-        }
-
-        byPublicId[aliasPublicId] = descriptor;
-    }
-
     private static LibraryOfRuinaInteropDescriptor Model(
         string publicId,
         LibraryOfRuinaInteropCategory category,

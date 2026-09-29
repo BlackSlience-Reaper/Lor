@@ -1,10 +1,18 @@
 using Godot;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.TodaysShyLook;
 
 public partial class TodaysShyLookCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.TodaysShyLook.TodaysShyLook))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -142f), new(0.58f, 0.58f), -118f, -330f, 118f, 12f, new(0f, -142f), new(0f, -366f))
+    {
+        TalkPos = new Vector2(0f, -286f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     private int _currentExpression = 5;

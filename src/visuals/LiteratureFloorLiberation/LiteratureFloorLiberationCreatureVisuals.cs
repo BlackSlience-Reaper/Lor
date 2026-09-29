@@ -1,7 +1,10 @@
 using System;
+using LibraryOfRuina.monsters.LiteratureFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.LiteratureFloorLiberation;
 
+[MonsterVisual(typeof(LiteratureFloorLaetitiaBoss), ScenePath = LiteratureFloorLaetitiaBossCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorLaetitiaBossCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -37,6 +40,7 @@ internal static class LiteratureFloorLaetitiaAnimationContract
         };
 }
 
+[MonsterVisual(typeof(LiteratureFloorSurpriseGiftBox), ScenePath = LiteratureFloorGiftBoxCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorGiftBoxCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -60,6 +64,7 @@ internal static class LiteratureFloorGiftBoxAnimationContract
         ["Idle", "Attack", "Cast", "Hit", "SelfDestruct"];
 }
 
+[MonsterVisual(typeof(LiteratureFloorLittleWitchFriend), ScenePath = LiteratureFloorLittleWitchFriendCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorLittleWitchFriendCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -81,6 +86,7 @@ internal static class LiteratureFloorLittleWitchFriendAnimationContract
         ["Idle", "Attack", "AttackAlt", "Cast", "Hit"];
 }
 
+[MonsterVisual(typeof(LiteratureFloorRedEyesBoss), ScenePath = LiteratureFloorRedEyesCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorRedEyesCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -109,6 +115,7 @@ internal static class LiteratureFloorRedEyesAnimationContract
         ["Idle", "FlickeringEyes", "Unknown", "Screech", "Hit"];
 }
 
+[MonsterVisual(typeof(LiteratureFloorEnhancedSmallSpider), ScenePath = LiteratureFloorEnhancedSmallSpiderCreatureVisuals.ScenePath)]
 internal sealed partial class
     LiteratureFloorEnhancedSmallSpiderCreatureVisuals :
     SceneAnimatedCreatureVisuals

@@ -159,12 +159,6 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
         }
     }
 
-    private Creature? FindRightShoe()
-    {
-        return Creature.CombatState?.Creatures
-            .FirstOrDefault(c => c.IsAlive && c.Monster is RedShoesRight);
-    }
-
     private bool IsRedShoesStrongEncounter(CombatRoom room)
     {
         return room.Encounter.MonstersWithSlots.Any(pair => pair.Item1 is RedShoesLeft or RedShoesRight);

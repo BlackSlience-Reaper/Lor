@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
@@ -7,7 +7,7 @@ namespace LibraryOfRuina.patches;
 
 public static class FoxIntentValuePatch
 {
-    internal static void OnUpdateVisuals(NIntent __instance, AbstractIntent ____intent)
+    internal static IntentDecoratorOutcome OnUpdateVisuals(NIntent __instance, AbstractIntent ____intent)
     {
         string? text = null;
 
@@ -23,6 +23,9 @@ public static class FoxIntentValuePatch
         if (text != null && __instance.HasNode("%Value"))
         {
             __instance.GetNode("%Value").Set("text", text);
+            return IntentDecoratorOutcome.Applied;
         }
+
+        return IntentDecoratorOutcome.Skipped;
     }
 }

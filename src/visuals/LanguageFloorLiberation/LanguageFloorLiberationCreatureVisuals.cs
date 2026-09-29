@@ -1,10 +1,20 @@
+using Godot;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.LanguageFloorLiberation;
 
 public sealed partial class LanguageFloorScarletScarCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorScarletScar))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 42f), new(-0.50f, 0.50f), -158f, -388f, 158f, 12f, new(0f, -76f), new(0f, -330f))
+    {
+        TalkPos = new Vector2(0f, -248f),
+        StateDisplayLiftY = 18f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
@@ -52,6 +62,14 @@ public sealed partial class LanguageFloorScarletScarCreatureVisuals
 public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorLostEverythingWolf))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 20f), new(0.62f, 0.62f), -235f, -400f, 235f, 12f, new(-20f, -86f), new(-70f, -300f))
+    {
+        TalkPos = new Vector2(-155f, -193f),
+        StateDisplayLiftY = 12f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
@@ -95,6 +113,14 @@ public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals
 public sealed partial class LanguageFloorCobaltScarCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorCobaltScar))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 18f), new(0.62f, 0.62f), -235f, -400f, 235f, 12f, new(-20f, -86f), new(-70f, -300f))
+    {
+        TalkPos = new Vector2(-155f, -193f),
+        StateDisplayLiftY = 12f,
+    };
+
     private const string CobaltVariant = "cobalt";
     private const string BigWolfVariant = "big_wolf";
     private const string ShadowVariant = "shadow";
@@ -253,6 +279,14 @@ public sealed partial class LanguageFloorCobaltScarCreatureVisuals
 public sealed partial class LanguageFloorSmilingFaceCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorSmilingFace))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 48f), new(0.48f, 0.48f), -245f, -390f, 245f, 12f, new(0f, -110f), new(0f, -320f))
+    {
+        TalkPos = new Vector2(35f, -300f),
+        StateDisplayLiftY = 12f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
@@ -300,6 +334,10 @@ public sealed partial class LanguageFloorSmilingFaceCreatureVisuals
 public sealed partial class LanguageFloorMeltingCorpseCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorMeltingCorpse))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 5f), new(0.28f, 0.28f), -105f, -150f, 105f, 10f, new(0f, -60f), new(0f, -190f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

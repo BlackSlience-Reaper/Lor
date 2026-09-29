@@ -1,7 +1,13 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.AllAroundHelper;
 
 public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.AllAroundHelper.AllAroundHelper))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -108f), new(0.58f, 0.58f), -108f, -244f, 108f, 12f, new(0f, -108f), new(0f, -292f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

@@ -1,10 +1,12 @@
 using System;
 using Godot;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.LiteratureFloorLiberation;
 
+[MonsterVisual(typeof(LiteratureFloorTodaysExpressionBoss), ScenePath = LiteratureFloorTodaysExpressionCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorTodaysExpressionCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
