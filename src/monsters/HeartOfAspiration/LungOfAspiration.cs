@@ -148,9 +148,6 @@ public sealed class LungOfAspiration : AspirationMonsterBase
     private int GetContractingPulseDamageRoll() =>
         GetDisplayDamageRoll(ref _contractingPulseDamageRoll, ContractingPulseMaxDamage);
 
-    private int GetViolentPulseDamageRoll() =>
-        GetDisplayDamageRoll(ref _violentPulseDamageRoll, ViolentPulseMaxDamage);
-
     private int EnsureContractingPulseDamageRoll() =>
         EnsureDamageRoll(ref _contractingPulseDamageRoll, ContractingPulseMinDamage, ContractingPulseMaxDamage);
 

@@ -20,7 +20,6 @@ using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Ascension;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
@@ -30,7 +29,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using QueenOfHatredCreatureVisuals = LibraryOfRuina.visuals.QueenOfHatred.QueenOfHatredCreatureVisuals;
@@ -703,21 +701,6 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         }
 
         AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<QueenOfHatredPageRelic>(room, QueenOfHatredPageRelicTitleLocKey);
-    }
-
-    private static bool HasQueenOfHatredPageReward(CombatRoom room, Player player)
-    {
-        if (!room.ExtraRewards.TryGetValue(player, out List<Reward>? rewards) || rewards == null)
-        {
-            return false;
-        }
-
-        return rewards
-            .OfType<RelicReward>()
-            .Any(reward =>
-                reward.IsPopulated
-                && reward.Description.LocTable == "relics"
-                && reward.Description.LocEntryKey == QueenOfHatredPageRelicTitleLocKey);
     }
 
     private List<Creature> GetLivingPlayers()

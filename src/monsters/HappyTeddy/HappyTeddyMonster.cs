@@ -14,7 +14,6 @@ using LibraryOfRuina.relics.HappyTeddy;
 using LibraryOfRuina.visuals.HappyTeddy;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
@@ -22,7 +21,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -295,21 +293,6 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
         }
 
         AbnormalityPageRewardHelper.AddPageRewardForEachPlayer<HappyTeddyPageRelic>(room, HappyTeddyPageRelicTitleLocKey);
-    }
-
-    private static bool HasHappyTeddyPageReward(CombatRoom room, Player player)
-    {
-        if (!room.ExtraRewards.TryGetValue(player, out List<Reward>? rewards) || rewards == null)
-        {
-            return false;
-        }
-
-        return rewards
-            .OfType<RelicReward>()
-            .Any(reward =>
-                reward.IsPopulated
-                && reward.Description.LocTable == "relics"
-                && reward.Description.LocEntryKey == HappyTeddyPageRelicTitleLocKey);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
