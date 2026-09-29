@@ -1,6 +1,6 @@
 using HarmonyLib;
-using LibraryOfRuina.patches.TechnologyFloorLiberation;
-using LibraryOfRuina.ui;
+using LibraryOfRuina.intents.rendering;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using LibraryOfRuina.infra.patching;
@@ -8,12 +8,12 @@ using LibraryOfRuina.infra.patching;
 namespace LibraryOfRuina.patches.dispatch;
 
 /// <summary>
-/// 意图显示相关的补丁。每个嵌套类对应原来同一目标、同一优先级的一段补丁，按原执行顺序调用各功能的处理函数。
-/// 几种复合意图之间的先后是隐式约定（例如 Badged 看到 Combined 就让出），调整顺序前先读各处理函数。
+/// 意图显示的补丁入口，只负责把参数转交 <see cref="IntentRenderPipeline"/>。
+/// 每个嵌套类对应一个入口（<see cref="IntentRenderStage"/>），保留原来那段补丁的目标、种类和优先级；
+/// 装饰器的先后与短路在流水线的顺序表里，不在这里。
 /// </summary>
 internal static class IntentVisualDispatch
 {
-    /// <summary>先把多个意图合并成复合意图、再追加反击意图；必须早于下面其他装饰。</summary>
     [HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateIntent))]
     private static class UpdateIntentFirst
     {
@@ -21,8 +21,8 @@ internal static class IntentVisualDispatch
         [HarmonyPriority(Priority.First)]
         private static void Postfix(NCreature __instance, IEnumerable<Creature> targets)
         {
-            CombinedIntentDisplayPatch.OnUpdateIntent(__instance, targets);
-            CounterIntentAppendPatch.OnUpdateIntent(__instance, targets);
+            var context = new IntentRenderContext { CreatureNode = __instance, Targets = targets };
+            IntentRenderPipeline.Run(IntentRenderStage.CreatureLayout, ref context);
         }
     }
 
@@ -32,10 +32,8 @@ internal static class IntentVisualDispatch
         [HarmonyPostfix]
         private static void Postfix(NCreature __instance, IEnumerable<Creature> targets)
         {
-            EnemyCardIntentRuntimePatch.OnUpdateIntent(__instance, targets);
-            TargetedIntentIndicatorPatch.OnUpdateIntent(__instance);
-            ChordEgoIntentDimPatch.OnUpdateIntent(__instance);
-            SolemnMourningSealIntentPatch.OnUpdateIntent(__instance);
+            var context = new IntentRenderContext { CreatureNode = __instance, Targets = targets };
+            IntentRenderPipeline.Run(IntentRenderStage.CreatureDecorate, ref context);
         }
     }
 
@@ -45,8 +43,44 @@ internal static class IntentVisualDispatch
     private static class Hovered
     {
         [HarmonyPrefix]
-        private static bool Prefix(AbstractIntent ____intent, IEnumerable<Creature> ____targets, Creature ____owner) =>
-            BadgedIntentHoverTipDisplayPatch.OnIntentHovered(____intent, ____targets, ____owner);
+        private static bool Prefix(AbstractIntent ____intent, IEnumerable<Creature> ____targets, Creature ____owner)
+        {
+            var context = new IntentRenderContext
+            {
+                Intent = ____intent,
+                Targets = ____targets,
+                Owner = ____owner
+            };
+            return IntentRenderPipeline.Run(IntentRenderStage.IntentHovered, ref context);
+        }
+    }
+
+    [HarmonyPatch(typeof(NIntent), "OnHovered")]
+    private static class HoveredAfter
+    {
+        [HarmonyPostfix]
+        private static void Postfix(NIntent __instance, AbstractIntent ____intent, IEnumerable<Creature> ____targets, Creature ____owner)
+        {
+            var context = new IntentRenderContext
+            {
+                IntentNode = __instance,
+                Intent = ____intent,
+                Targets = ____targets,
+                Owner = ____owner
+            };
+            IntentRenderPipeline.Run(IntentRenderStage.IntentHoveredAfter, ref context);
+        }
+    }
+
+    [HarmonyPatch(typeof(NIntent), "OnUnhovered")]
+    private static class Unhovered
+    {
+        [HarmonyPostfix]
+        private static void Postfix(Creature ____owner)
+        {
+            var context = new IntentRenderContext { Owner = ____owner };
+            IntentRenderPipeline.Run(IntentRenderStage.IntentUnhovered, ref context);
+        }
     }
 
     [HarmonyPatch(typeof(NIntent), "UpdateVisuals")]
@@ -55,9 +89,14 @@ internal static class IntentVisualDispatch
         [HarmonyPostfix]
         private static void Postfix(NIntent __instance, AbstractIntent ____intent, IEnumerable<Creature> ____targets, Creature ____owner)
         {
-            BadgedIntentVisualPatch.OnUpdateVisuals(__instance, ____intent, ____targets, ____owner);
-            CombinedIntentAnimationRefreshPatch.OnUpdateVisuals(__instance, ____intent, ____targets, ____owner);
-            FoxIntentValuePatch.OnUpdateVisuals(__instance, ____intent);
+            var context = new IntentRenderContext
+            {
+                IntentNode = __instance,
+                Intent = ____intent,
+                Targets = ____targets,
+                Owner = ____owner
+            };
+            IntentRenderPipeline.Run(IntentRenderStage.IntentVisuals, ref context);
         }
     }
 
@@ -67,8 +106,42 @@ internal static class IntentVisualDispatch
         [HarmonyPostfix]
         private static void Postfix(NIntent __instance, int? ____animationFrame)
         {
-            CombinedIntentVisualPatch.OnIntentProcess(__instance, ____animationFrame);
-            CounterIntentVisualPatch.OnIntentProcess(__instance, ____animationFrame);
+            var context = new IntentRenderContext { IntentNode = __instance, AnimationFrame = ____animationFrame };
+            IntentRenderPipeline.Run(IntentRenderStage.IntentFrame, ref context);
+        }
+    }
+
+    [HarmonyPatch(typeof(AbstractIntent), nameof(AbstractIntent.GetHoverTip))]
+    private static class IntentHoverTip
+    {
+        [HarmonyPostfix]
+        private static void Postfix(
+            AbstractIntent __instance,
+            IEnumerable<Creature> targets,
+            Creature owner,
+            ref HoverTip __result)
+        {
+            var context = new IntentRenderContext
+            {
+                Intent = __instance,
+                Targets = targets,
+                Owner = owner,
+                HoverTip = __result
+            };
+            IntentRenderPipeline.Run(IntentRenderStage.HoverTip, ref context);
+            __result = context.HoverTip;
+        }
+    }
+
+    [HarmonyPatch(typeof(NCreature), nameof(NCreature.ShowHoverTips))]
+    private static class CreatureHoverTips
+    {
+        [HarmonyPrefix]
+        private static void Prefix(ref IEnumerable<IHoverTip> hoverTips)
+        {
+            var context = new IntentRenderContext { HoverTips = hoverTips };
+            IntentRenderPipeline.Run(IntentRenderStage.CreatureHoverTips, ref context);
+            hoverTips = context.HoverTips!;
         }
     }
 }

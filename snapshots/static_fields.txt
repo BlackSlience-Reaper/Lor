@@ -745,6 +745,7 @@ readonly	LibraryOfRuina.intents.IndiscriminateAttackIntent.GroupAttackBadge	Libr
 readonly	LibraryOfRuina.intents.TargetedMonsterAttackHelper+EmptyTargetScope.Instance	LibraryOfRuina.intents.TargetedMonsterAttackHelper+EmptyTargetScope
 readonly	LibraryOfRuina.intents.TargetedMonsterAttackHelper.ForcedTargetStacks	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Collections.Generic.Stack`1[System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]]]
 readonly	LibraryOfRuina.intents.TargetedSegmentedAttackPreview.EmptyVariables	System.Collections.Generic.IReadOnlyDictionary`2[System.String,System.Object]
+readonly	LibraryOfRuina.intents.rendering.IntentRenderPipeline.Order	LibraryOfRuina.intents.rendering.IIntentDecorator[][]
 readonly	LibraryOfRuina.interop.LibraryExtensionPoints+AttackTargets.Instance	LibraryOfRuina.interop.LibraryExtensionPoints+AttackTargets
 readonly	LibraryOfRuina.interop.LibraryExtensionPoints+DamageTypes.Instance	LibraryOfRuina.interop.LibraryExtensionPoints+DamageTypes
 readonly	LibraryOfRuina.interop.VanillaPrivate.ActModelRooms	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Models.ActModel,MegaCrit.Sts2.Core.Rooms.RoomSet]

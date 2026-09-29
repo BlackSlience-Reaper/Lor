@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.UI;
@@ -29,28 +30,30 @@ internal static class EnemyCardIntentRuntimePatch
     private static readonly HashSet<string> LoggedRuntimeIntentRefreshes = [];
     private static readonly HashSet<string> LoggedMoveIntentRefreshes = [];
 
-    internal static void OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
+    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
         {
             Creature? creature = __instance.Entity;
             if (creature?.Monster == null)
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             if (creature.Monster is IEnemyCardRuntimeOwner owner
                 && owner.EnemyCards is { } runtime)
             {
                 RenderRuntimeIntents(__instance, targets, creature, owner, runtime);
-                return;
+                return IntentDecoratorOutcome.Applied;
             }
 
             RenderMoveIntents(__instance, targets, creature);
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception ex)
         {
             Log.Warn("[LibraryOfRuina.EnemyCards] Enemy card intent refresh failed: " + ex);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 
