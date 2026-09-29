@@ -20,7 +20,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -325,11 +324,6 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
     private void AdvanceBaseCadence()
     {
         _baseCadenceIndex = (_baseCadenceIndex + 1) % 3;
-    }
-
-    private Task RefreshNodeIntents()
-    {
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
     private static IReadOnlyList<Creature> GetUnblockedPlayerHitTargets(AttackCommand attack)

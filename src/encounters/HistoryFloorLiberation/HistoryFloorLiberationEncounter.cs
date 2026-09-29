@@ -448,9 +448,6 @@ public sealed class HistoryFloorLiberationEncounter :
     private static MonsterModel CreateEmeraldBoughBoss() =>
         ModelDb.Monster<HistoryFloorEmeraldBoughBoss>().ToMutable();
 
-    private static MonsterModel CreateVineBarrier() =>
-        ModelDb.Monster<HistoryFloorVineBarrier>().ToMutable();
-
     internal static Control InstantiateFlutteringEncounterScene() =>
         PreloadManager.Cache.GetScene(FlutteringEncounterScenePath)
             .Instantiate<Control>();
