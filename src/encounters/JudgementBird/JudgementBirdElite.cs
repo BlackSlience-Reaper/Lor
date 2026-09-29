@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.JudgementBird;
 
-public sealed class JudgementBirdElite : EncounterModel
+public sealed class JudgementBirdElite : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "JudgementBirdBGM",
+        GuestReceptionPoolRegistry.PhilosophyReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string LeftEscapedBirdSlot =
         "judgement_bird_escaped_left";
     public const string RightEscapedBirdSlot =

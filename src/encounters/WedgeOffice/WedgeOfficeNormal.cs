@@ -6,8 +6,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.WedgeOffice;
 
-public sealed class WedgeOfficeNormal : EncounterModel, IGuestReceptionEncounter
+public sealed class WedgeOfficeNormal : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "WedgeOfficeBGM",
+        GuestReceptionPoolRegistry.GeneralReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

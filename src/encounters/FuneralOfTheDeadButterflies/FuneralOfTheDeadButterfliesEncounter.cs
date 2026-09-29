@@ -5,8 +5,12 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.FuneralOfTheDeadButterflies;
 
-public sealed class FuneralOfTheDeadButterfliesEncounter : EncounterModel
+public sealed class FuneralOfTheDeadButterfliesEncounter : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "FuneralOfTheDeadButterfliesBGM",
+        "res://audio/bgm/literature_reception_floor/literature_reception_floor_1.ogg");
+
     public override RoomType RoomType => RoomType.Elite;
 
     public override bool ShouldGiveRewards => true;
