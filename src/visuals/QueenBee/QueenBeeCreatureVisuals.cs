@@ -1,3 +1,5 @@
+using Godot;
+using LibraryOfRuina.patches;
 using QueenBeeMonster = LibraryOfRuina.monsters.QueenBee.QueenBee;
 
 namespace LibraryOfRuina.visuals.QueenBee;
@@ -5,6 +7,13 @@ namespace LibraryOfRuina.visuals.QueenBee;
 public sealed partial class QueenBeeCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.QueenBee.QueenBee))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -200f), new(0.46f, 0.46f), -170f, -315f, 170f, 24f, new(0f, -126f), new(0f, -412f))
+    {
+        TalkPos = new Vector2(0f, -268f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

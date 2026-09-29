@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using Godot;
-using HarmonyLib;
 using LibraryOfRuina.helpers;
+using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
@@ -11,7 +11,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 namespace LibraryOfRuina.patches.TechnologyFloorLiberation;
 
 /// <summary>
-/// Harmony postfix on <see cref="NCreature.UpdateIntent"/> that dims the second and third
+/// Runs after <see cref="NCreature.UpdateIntent"/> (IntentRenderPipeline, CreatureDecorate stage) and dims the second and third
 /// attack intents of the Chord EGO move when the player's block is insufficient.
 /// <para>
 /// Logic: HitA is always shown at full opacity. HitB is unlocked (full opacity) when any
@@ -23,31 +23,34 @@ internal static class ChordEgoIntentDimPatch
 {
     private static readonly Color DimColor = new(1f, 1f, 1f, 0.5f);
 
-    internal static void OnUpdateIntent(NCreature __instance)
+    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance)
     {
         try
         {
-            ApplyChordEgoDimming(__instance);
+            return ApplyChordEgoDimming(__instance)
+                ? IntentDecoratorOutcome.Applied
+                : IntentDecoratorOutcome.Skipped;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
                 "ChordEgoIntentDim.UpdateIntent",
                 exception);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 
-    private static void ApplyChordEgoDimming(NCreature creatureNode)
+    private static bool ApplyChordEgoDimming(NCreature creatureNode)
     {
         if (creatureNode.Entity?.Monster is not TechnologyFloorChordBoss boss)
         {
-            return;
+            return false;
         }
 
         MoveState? nextMove = boss.NextMove;
         if (nextMove?.StateId != "CHORD_EGO")
         {
-            return;
+            return false;
         }
 
         IReadOnlyList<AbstractIntent> intents = nextMove.Intents;
@@ -64,7 +67,7 @@ internal static class ChordEgoIntentDimPatch
 
         if (attackIntents.Count < 3)
         {
-            return;
+            return false;
         }
 
         // Compute final damage for each segment
@@ -122,5 +125,7 @@ internal static class ChordEgoIntentDimPatch
                 childIndex++;
             }
         }
+
+        return true;
     }
 }

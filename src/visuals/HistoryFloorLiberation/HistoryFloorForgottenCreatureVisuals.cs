@@ -1,11 +1,20 @@
+using Godot;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.HistoryFloorLiberation;
 
 public partial class HistoryFloorForgottenCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(HistoryFloorForgottenBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 45f), new(0.50f, 0.50f), -190f, -235f, 190f, 5f, new(0f, -88f), new(0f, -300f))
+    {
+        TalkPos = new Vector2(0f, -220f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

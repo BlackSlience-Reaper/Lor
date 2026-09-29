@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.BurrowingHeaven;
 
-public sealed class BurrowingHeavenWeak : EncounterModel
+public sealed class BurrowingHeavenWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "BurrowingHeavenBGM",
+        GuestReceptionPoolRegistry.ReligionReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string BossSlot = "burrowing_heaven";
     public const string LeftThornSlot = "heaven_thorn_left";
     public const string RightThornSlot = "heaven_thorn_right";

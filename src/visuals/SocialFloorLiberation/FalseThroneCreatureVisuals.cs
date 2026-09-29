@@ -1,3 +1,7 @@
+using Godot;
+using LibraryOfRuina.monsters.SocialFloorLiberation;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.SocialFloorLiberation;
 
 /// <summary>
@@ -8,6 +12,14 @@ namespace LibraryOfRuina.visuals.SocialFloorLiberation;
 public sealed partial class FalseThroneCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(FalseThrone))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -8f), new(0.504f, 0.504f), -190f, -620f, 190f, 10f, new(0f, -285f), new(20f, -600f))
+    {
+        TalkPos = new Vector2(0f, -500f),
+        StateDisplayLiftY = 20f,
+    };
+
     private const string TransformedVariantKey = "transformed";
     internal const string DefaultTexturePath =
         "res://images/monsters/social_floor_liberation/false_throne/default.png";

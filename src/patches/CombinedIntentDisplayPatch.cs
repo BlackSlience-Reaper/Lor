@@ -12,6 +12,7 @@ using LibraryOfRuina.guests.WedgeOffice;
 using LibraryOfRuina.guests.YunOffice;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.monsters.LittleRedMercenary;
 using LibraryOfRuina.monsters.Tomerry;
@@ -58,30 +59,32 @@ internal static class CombinedIntentDisplayPatch
             .Distinct(StringComparer.Ordinal)
             .ToArray();
 
-    internal static void OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
+    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
         {
             Creature? owner = __instance.Entity;
             if (owner?.Monster == null || !ShouldSimplifyCreature(owner))
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             IReadOnlyList<AbstractIntent> source = owner.Monster.NextMove.Intents;
             IReadOnlyList<AbstractIntent> display = SimplifyForDisplay(source);
             if (ReferenceEquals(display, source))
             {
-                return;
+                return IntentDecoratorOutcome.Unchanged;
             }
 
             Render(__instance, display, targets as IReadOnlyList<Creature> ?? targets.ToArray());
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
                 "CombinedIntentDisplay.UpdateIntent",
                 exception);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 

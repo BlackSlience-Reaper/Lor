@@ -1,10 +1,20 @@
+using Godot;
 using LibraryOfRuina.monsters.HeartOfAspiration;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.HeartOfAspiration;
 
 public sealed partial class HeartOfAspirationCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.HeartOfAspiration.HeartOfAspiration))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -8f), new(0.984f, 0.984f), -190f, -390f, 190f, 14f, new(0f, -165f), new(0f, -355f))
+    {
+        TalkPos = new Vector2(0f, -320f),
+        StateDisplayLiftY = 32f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
@@ -34,6 +44,14 @@ public sealed partial class HeartOfAspirationCreatureVisuals
 public sealed partial class LungOfAspirationCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LungOfAspiration))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -6f), new(-0.984f, 0.984f), -170f, -350f, 170f, 14f, new(0f, -150f), new(0f, -365f))
+    {
+        TalkPos = new Vector2(0f, -290f),
+        StateDisplayLiftY = 28f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

@@ -19,9 +19,15 @@ namespace LibraryOfRuina.encounters.LanguageFloorLiberation;
 
 public sealed class LanguageFloorLiberationEncounter :
     LiberationEncounterBase,
+    IEncounterBgmSource,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "LanguageFloorLiberationBGM",
+        LanguageFloorLiberationEncounter.RolandLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     public const int MaxPhase = 5;
     private const decimal PhaseTransitionHealAmount = 6m;
 

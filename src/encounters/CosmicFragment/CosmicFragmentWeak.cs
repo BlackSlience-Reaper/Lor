@@ -3,8 +3,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.CosmicFragment;
 
-public sealed class CosmicFragmentWeak : EncounterModel
+public sealed class CosmicFragmentWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "CosmicFragmentBGM",
+        GuestReceptionPoolRegistry.NetzachReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool IsWeak => true;

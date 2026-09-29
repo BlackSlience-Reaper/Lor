@@ -1,11 +1,21 @@
+using Godot;
 using LibraryOfRuina.monsters.RoadHome;
 using LibraryOfRuina.monsters.ScaredyCat;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.RoadHome;
 
 public sealed partial class RoadHomeCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.RoadHome.RoadHome))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -18f), new(0.60f, 0.60f), -155f, -360f, 155f, 14f, new(0f, -170f), new(0f, -390f))
+    {
+        TalkPos = new Vector2(0f, -316f),
+        StateDisplayLiftY = 28f,
+    };
+
     private const string NormalVariant = "normal";
     private const string ConfusedVariant = "confused";
 
@@ -60,6 +70,14 @@ public sealed partial class RoadHomeCreatureVisuals
 public partial class ScaredyCatCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ScaredyCat))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -12f), new(0.88f, 0.88f), -132f, -270f, 132f, 12f, new(0f, -126f), new(0f, -332f))
+    {
+        TalkPos = new Vector2(0f, -238f),
+        StateDisplayLiftY = 14f,
+    };
+
     private const string NormalVariant = "normal";
     private const string DefeatedVariant = "road_home_defeated";
 
@@ -146,6 +164,14 @@ public partial class ScaredyCatCreatureVisuals
 public sealed partial class RoadHomeHouseCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(RoadHomeHouse))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -18f), new(0.62f, 0.62f), -170f, -260f, 170f, 14f, new(0f, -124f), new(0f, -292f))
+    {
+        TalkPos = new Vector2(0f, -230f),
+        StateDisplayLiftY = 18f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
@@ -169,6 +195,14 @@ public sealed partial class RoadHomeHouseCreatureVisuals
 public sealed partial class ScaredyCatCompanionCreatureVisuals
     : ScaredyCatCreatureVisuals
 {
+    [MonsterVisual(typeof(ScaredyCatCompanion))]
+    internal new static readonly CreatureVisualLayout Layout = new(
+        new(-20f, 12f), new(-0.52f, 0.52f), -118f, -246f, 118f, 12f, new(0f, -112f), new(0f, -170f))
+    {
+        TalkPos = new Vector2(0f, -216f),
+        StateDisplayLiftY = -8f,
+    };
+
     internal new static readonly SpriteVisualProfile Profile =
         BuildScaredyProfile(
             ScaredyCatCompanion.IdleTexturePath,

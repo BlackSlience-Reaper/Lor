@@ -1,7 +1,13 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.CosmicFragment;
 
 public sealed partial class CosmicFragmentCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.CosmicFragment.CosmicFragment))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -120f), new(0.55f, 0.55f), -130f, -300f, 130f, 10f, new(0f, -120f), new(0f, -340f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

@@ -5,8 +5,20 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.FairyFestival;
 
-public sealed class FairyFestivalStrong : EncounterModel
+public sealed class FairyFestivalStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "FairyFestivalBGM",
+        new[]
+        {
+            "res://audio/bgm/fairy_festival/history_layer_1.ogg",
+            "res://audio/bgm/fairy_festival/history_layer_2.ogg",
+            "res://audio/bgm/fairy_festival/history_layer_3.ogg"
+        },
+        volumeScale: 0.85f,
+        4,
+        7);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

@@ -264,9 +264,11 @@ public sealed class TechnologyFloorChordBoss : LiberationPhaseBossMonster
                     card.UpgradePreview();
                     card.SetPreviewDamage(
                         damages[0],
-                        damages.Count > 1 ? damages[1] : 0,
-                        damages.Count > 2 ? damages[2] : 0);
-                }),
+                        damages[1],
+                        damages[2]);
+                },
+                repeatCalc: null,
+                additionalDamageCalcs: [() => EgoHitBDamage, () => EgoHitCDamage]),
             new SingleAttackIntent(() => EgoHitBDamage),
             new SingleAttackIntent(() => EgoHitCDamage),
             new BuffIntent());

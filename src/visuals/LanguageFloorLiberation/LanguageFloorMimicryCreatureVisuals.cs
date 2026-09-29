@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
@@ -15,6 +16,14 @@ namespace LibraryOfRuina.visuals.LanguageFloorLiberation;
 public sealed partial class LanguageFloorMimicryCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LanguageFloorMimicry))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -80f), new(0.78f, 0.78f), -180f, -390f, 180f, 12f, new(0f, -130f), new(0f, -410f))
+    {
+        TalkPos = new Vector2(0f, -325f),
+        StateDisplayLiftY = 18f,
+    };
+
     private const string FirstVariant = "first";
     private const string SecondVariant = "second";
     private const string ThirdVariant = "third";

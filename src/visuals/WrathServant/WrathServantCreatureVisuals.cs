@@ -1,5 +1,8 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.WrathServant;
 
+[MonsterVisual(typeof(monsters.WrathServant.WrathServant), ScenePath = WrathServantCreatureVisuals.ScenePath)]
 internal sealed partial class WrathServantCreatureVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/wrath_servant.tscn";

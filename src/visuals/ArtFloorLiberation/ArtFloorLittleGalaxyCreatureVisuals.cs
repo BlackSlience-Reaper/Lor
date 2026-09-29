@@ -1,10 +1,19 @@
+using Godot;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.ArtFloorLiberation;
 
 public sealed partial class ArtFloorLittleGalaxyCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ArtFloorLittleGalaxyBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -28f), new(0.52f, 0.52f), -170f, -330f, 170f, 38f, new(0f, -88f), new(0f, -420f))
+    {
+        TalkPos = new Vector2(0f, -240f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

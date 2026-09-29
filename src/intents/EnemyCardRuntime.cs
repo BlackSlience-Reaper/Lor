@@ -214,15 +214,6 @@ public sealed class EnemyCardRuntime
     public void Refresh()
     {
         NotifyChangedSafely();
-        try
-        {
-            EnemyCardHandController.RefreshFor(this);
-        }
-        catch (Exception ex)
-        {
-            Log.Warn("[LibraryOfRuina.EnemyCards] Skipped enemy hand visual refresh: " + ex);
-        }
-
         if (GetRefreshableCreatureNode() is NCreature creatureNode)
         {
             TaskHelper.RunSafely(creatureNode.RefreshIntents());
