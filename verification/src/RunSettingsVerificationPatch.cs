@@ -10,6 +10,7 @@ using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Characters;
@@ -41,8 +42,9 @@ namespace LibraryOfRuinaVerification;
 /// 两端各自建两名玩家的局，房间序列相同。</item>
 /// <item><c>mp-load</c>：房主规范化旧存档时补建，报文往返后本地设置不同的客户端读到同一个值。</item>
 /// <item><c>daily-load</c>：联机每日挑战读档界面的修改器格子数量，以及带载体的存档经过该界面初始化后载体仍在。</item>
+/// <item><c>wiring</c>：Neow 过滤排除载体；离开本局后抗性回到本地设置。</item>
+/// <item><c>mismatch</c>：两端注入状态不一致的判定与文案（开局报文、读档存档两条路径，房主注入 / 未注入两个方向）。</item>
 /// </list>
-/// 另记两行 INFO：Neow 过滤是否隐藏载体、离开本局后抗性是否复位（两者依赖本阶段之外的接线）。
 /// </summary>
 internal static class RunSettingsVerificationPatch
 {
@@ -100,7 +102,8 @@ internal static class RunSettingsVerificationPatch
             VerifyMultiplayerNewRun(roomsOn);
             VerifyMultiplayerLoad(json);
             await VerifyDailyLoadScreen();
-            RecordExternalWiring();
+            VerifyWiring();
+            VerifyInjectionMismatch(json);
             Log.Info(LogPrefix + "RUN_SETTINGS_OK checks=" + _checks);
             NGame.Instance?.GetTree().Quit();
         }
@@ -304,20 +307,80 @@ internal static class RunSettingsVerificationPatch
         Row("daily-load ok");
     }
 
-    private static void RecordExternalWiring()
+    private static void VerifyWiring()
     {
         LibraryRunSettingsModifier carrier = LibraryRunSettingsModifier.CreateFromLocalSettings();
         bool neowHides = LibrarySecondAscensionNeowModifierFilter.FilterForNeow([carrier]).Count == 0;
-        Row("INFO neowFilterHidesCarrier=" + neowHides);
+        Row("wiring neowFilterHidesCarrier=" + neowHides);
+        Require(neowHides, "wiring: the Neow filter keeps the carrier");
 
         SetLocal(A);
-        RunState state = SetUp(CreateRun(Seed, 1));
+        SetUp(CreateRun(Seed, 1));
         Require(LibraryResistanceModeState.Current == LibraryResistanceMode.Weak, "wiring: run did not apply A");
-        SetLocalRaw(B.Extension, B.Resistance);
+        SetLocal(B);
         CleanupRun();
-        Row("INFO cleanupRestoresResistance=" + (LibraryResistanceModeState.Current == LibraryResistanceMode.Ignore)
-            + " current=" + LibraryResistanceModeState.Current);
-        _ = state;
+        Row("wiring cleanupRestoresResistance current=" + LibraryResistanceModeState.Current);
+        Require(LibraryResistanceModeState.Current == LibraryResistanceMode.Ignore,
+            "wiring: leaving the run did not restore resistance from local B");
+    }
+
+    // 两端注入状态不一致的诊断。原版的退出路径（建局入口抛出、界面 catch 里断开并回主菜单）在联机实机里走，
+    // 这里直接调用判定函数，输入用真实的开局报文与存档往返构造。
+    private static void VerifyInjectionMismatch(string json)
+    {
+        Require(LibraryOfRuinaSettings.ContentInjected, "mismatch: the verification process is expected to be injected");
+        Require(LibraryRunInjectionGuard.Check(true, true, "test") == null, "mismatch: injected pair flagged");
+        Require(LibraryRunInjectionGuard.Check(false, false, "test") == null, "mismatch: non-injected pair flagged");
+
+        // 注入的房主开新局：报文里有载体；未注入的客户端退出。
+        SetLocal(A);
+        List<ModifierModel> fromInjectedHost = RoundTrip(LibraryRunSettings.WithHostCarrier([]));
+        bool hostInjected = fromInjectedHost.OfType<LibraryRunSettingsModifier>().Any();
+        LibraryRunInjectionGuard.RecordLobbyHost(hostInjected);
+        Require(LibraryRunInjectionGuard.TakeLobbyHost() == true && LibraryRunInjectionGuard.TakeLobbyHost() == null,
+            "mismatch: lobby record was not taken exactly once");
+        RequireMismatch(LibraryRunInjectionGuard.Check(false, hostInjected, "new run"),
+            "LIBRARYOFRUINA-INJECTION_MISMATCH.host_injected", "mismatch new host-injected");
+
+        // 未注入的房主开新局：报文里没有载体（未注入时不装追加载体的补丁）；注入的客户端退出。
+        List<ModifierModel> fromPlainHost = RoundTrip([]);
+        RequireMismatch(LibraryRunInjectionGuard.Check(true, fromPlainHost.OfType<LibraryRunSettingsModifier>().Any(), "new run"),
+            "LIBRARYOFRUINA-INJECTION_MISMATCH.host_not_injected", "mismatch new host-not-injected");
+
+        // 读档：注入的房主规范化时补建，存档里一定有载体。
+        SerializableRun old = WithoutCarrier(FromJson(json));
+        SerializableRun injectedHostSave = RunManager.CanonicalizeSave(old, 1uL);
+        Require(LibraryRunInjectionGuard.HasCarrier(PacketRoundTrip(injectedHostSave)), "mismatch: injected host save lost the carrier");
+        RequireMismatch(LibraryRunInjectionGuard.Check(false, LibraryRunInjectionGuard.HasCarrier(injectedHostSave), "loaded run"),
+            "LIBRARYOFRUINA-INJECTION_MISMATCH.host_injected", "mismatch load host-injected");
+
+        // 未注入的房主：存档里残留的载体（局是注入时开的）在规范化时去掉，注入的客户端认出后退出。
+        SerializableRun plainHostSave = FromJson(json);
+        Require(LibraryRunInjectionGuard.HasCarrier(plainHostSave), "mismatch: the fixture save has no carrier");
+        LibraryRunInjectionGuard.StripCarrier(plainHostSave);
+        SerializableRun received = PacketRoundTrip(plainHostSave);
+        Require(!LibraryRunInjectionGuard.HasCarrier(received), "mismatch: stripped carrier came back");
+        RequireMismatch(LibraryRunInjectionGuard.Check(true, LibraryRunInjectionGuard.HasCarrier(received), "loaded run"),
+            "LIBRARYOFRUINA-INJECTION_MISMATCH.host_not_injected", "mismatch load host-not-injected");
+        Row("mismatch ok");
+    }
+
+    private static void RequireMismatch(LibraryInjectionMismatchException? mismatch, string key, string label)
+    {
+        Require(mismatch != null, label + ": not detected");
+        string expected = new LocString("settings_ui", key).GetFormattedText();
+        Row(label + " message=" + mismatch!.Message);
+        Require(mismatch.Message == expected && !mismatch.Message.Contains(key, StringComparison.Ordinal),
+            label + ": message is not the localized text");
+    }
+
+    private static SerializableRun PacketRoundTrip(SerializableRun save)
+    {
+        var writer = new PacketWriter();
+        writer.Write(save);
+        var reader = new PacketReader();
+        reader.Reset(writer.Buffer);
+        return reader.Read<SerializableRun>();
     }
 
     private static RunState CreateRun(

@@ -152,6 +152,9 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
         _runtimeSideEffectsEnabled = true;
     }
 
+    /// <summary>本次启动是否注入了内容（初始化越过了“关闭内容 / 不兼容模组”分支）；进程内不再改变。</summary>
+    internal static bool ContentInjected => _runtimeSideEffectsEnabled;
+
     [SettingsSection("MonsterExtension")]
     [SettingsLockedDuringRun]
     public static bool MonsterExtensionEnabled

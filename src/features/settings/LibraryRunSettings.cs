@@ -23,7 +23,8 @@ namespace LibraryOfRuina.features.settings;
 /// 此刻的本地设置补建。联机读档时房主先用 <c>CanonicalizeSave</c> 规范化存档（其中调用 FromSerializable），
 /// 补建的载体因此写进发给客户端的存档，客户端读到的是房主的值；之后的存档里都有它，只补建这一次。</item>
 /// </list>
-/// 进程启动时没有注入内容（设置关闭或检测到不兼容模组）的一端不装这些补丁，与注入的一端混联不受支持。
+/// 进程启动时没有注入内容（设置关闭或检测到不兼容模组）的一端不装玩法补丁；联机时两端注入状态不一致由
+/// <see cref="LibraryRunInjectionGuard"/> 诊断并退出开局或读档。
 /// </summary>
 internal static class LibraryRunSettings
 {
@@ -66,8 +67,8 @@ internal static class LibraryRunSettings
             .ToList();
 
     /// <summary>
-    /// 从开局消息的修改器列表里取出载体暂存，返回不含载体的列表交给原版界面。列表里没有载体
-    /// （开局的一端没有注入内容）时不暂存，新局退回本地设置。
+    /// 从开局消息的修改器列表里取出载体暂存，返回不含载体的列表交给原版界面。列表里没有载体时不暂存：
+    /// 房主没有注入内容（客户端随后由 LibraryRunInjectionGuard 退出），新局退回本地设置。
     /// </summary>
     internal static List<ModifierModel> TakeLobbyCarrier(string seed, List<ModifierModel> modifiers)
     {

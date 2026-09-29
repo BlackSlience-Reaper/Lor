@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Multiplayer.Game.Lobby;
 using MegaCrit.Sts2.Core.Nodes.Screens.DailyRun;
 using MegaCrit.Sts2.Core.Runs;
+using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.features.settings;
@@ -31,14 +32,75 @@ internal static class LibraryRunSettingsHostBeginRunPatch
     }
 }
 
-/// <summary>房主与客户端都经过这里，参数是房主发出的那份修改器列表。</summary>
+/// <summary>
+/// 房主与客户端都经过这里，参数是房主发出的那份修改器列表。未注入模式也安装（见 LibraryRunInjectionGuard）：
+/// 客户端记下房主有没有发载体，并照样取出载体，免得标准模式的选角界面因列表非空报错。
+/// </summary>
 [HarmonyPatch(typeof(StartRunLobby), "BeginRunLocally")]
 internal static class LibraryRunSettingsBeginRunLocallyPatch
 {
     [HarmonyPrefix]
-    private static void Prefix(string seed, ref List<ModifierModel> modifiers)
+    private static void Prefix(StartRunLobby __instance, string seed, ref List<ModifierModel> modifiers)
     {
+        if (__instance.NetService.Type == NetGameType.Client)
+        {
+            LibraryRunInjectionGuard.RecordLobbyHost(modifiers.OfType<LibraryRunSettingsModifier>().Any());
+        }
+
         modifiers = LibraryRunSettings.TakeLobbyCarrier(seed, modifiers);
+    }
+}
+
+/// <summary>
+/// 客户端新局：两端注入状态不一致时在这里抛出。原版在 NGame.StartNewMultiplayerRun 里调用它，
+/// 各界面（标准、自定义、每日挑战）的调用点都在 try 里，catch 断开大厅并回主菜单弹窗。此时 RunState 已建好
+/// 但还没交给 RunManager，没有留下局内状态。
+/// </summary>
+[HarmonyPatch(typeof(RunManager), nameof(RunManager.SetUpNewMultiplayer))]
+internal static class LibraryRunInjectionNewRunGuardPatch
+{
+    [HarmonyPrefix]
+    private static void Prefix(StartRunLobby lobby)
+    {
+        bool? hostInjected = LibraryRunInjectionGuard.TakeLobbyHost();
+        if (lobby.NetService.Type == NetGameType.Client
+            && hostInjected is { } injected
+            && LibraryRunInjectionGuard.Check(LibraryOfRuinaSettings.ContentInjected, injected, "new run") is { } mismatch)
+        {
+            throw mismatch;
+        }
+    }
+}
+
+/// <summary>客户端读档：同上，原版三个读档界面的 StartRun 都在 try 里调用它。</summary>
+[HarmonyPatch(typeof(RunManager), nameof(RunManager.SetUpSavedMultiplayer))]
+internal static class LibraryRunInjectionLoadGuardPatch
+{
+    [HarmonyPrefix]
+    private static void Prefix(LoadRunLobby lobby)
+    {
+        if (lobby.NetService.Type == NetGameType.Client
+            && LibraryRunInjectionGuard.Check(
+                LibraryOfRuinaSettings.ContentInjected,
+                LibraryRunInjectionGuard.HasCarrier(lobby.Run),
+                "loaded run") is { } mismatch)
+        {
+            throw mismatch;
+        }
+    }
+}
+
+/// <summary>未注入的房主去掉联机存档里残留的载体；注入模式下什么也不做（载体由 FromSerializable 补建写入）。</summary>
+[HarmonyPatch(typeof(RunManager), nameof(RunManager.CanonicalizeSave))]
+internal static class LibraryRunInjectionCanonicalizePatch
+{
+    [HarmonyPostfix]
+    private static void Postfix(SerializableRun __result)
+    {
+        if (!LibraryOfRuinaSettings.ContentInjected)
+        {
+            LibraryRunInjectionGuard.StripCarrier(__result);
+        }
     }
 }
 
