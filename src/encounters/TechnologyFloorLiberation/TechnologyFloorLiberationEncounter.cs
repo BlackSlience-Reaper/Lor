@@ -32,9 +32,15 @@ namespace LibraryOfRuina.encounters.TechnologyFloorLiberation;
 
 public sealed class TechnologyFloorLiberationEncounter :
     LiberationEncounterBase,
+    IEncounterBgmSource,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "TechnologyFloorLiberationBGM",
+        HistoryFloorLiberationEncounter.AngelaLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     internal const string CenterSlot = "yesod";
     internal const string HelperLeftSlot = "helper_left";
     internal const string HelperCenterLeftSlot = "helper_center_left";

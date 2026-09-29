@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.QueenOfHatred;
 
-public sealed class QueenOfHatredStrong : EncounterModel
+public sealed class QueenOfHatredStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "QueenOfHatredBGM",
+        GuestReceptionPoolRegistry.NaturalReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     protected override bool HasCustomBackground => true;

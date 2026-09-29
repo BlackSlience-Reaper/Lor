@@ -3,8 +3,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.SpinyBus;
 
-public sealed class SpinyBusWeak : EncounterModel
+public sealed class SpinyBusWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "SpinyBusBGM",
+        GuestReceptionPoolRegistry.NetzachReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool IsWeak => false;

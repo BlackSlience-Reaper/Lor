@@ -323,7 +323,6 @@ readonly	LibraryOfRuina.compat.RunManagerCompat.RunStateGameModeProperty	System.
 readonly	LibraryOfRuina.compat.SavedPropertiesTypeCacheCompat.LockObj	System.Object
 readonly	LibraryOfRuina.enchantments.FuneralOfTheDeadButterflies.ChainEnchantment.ChainDamageRatio	System.Decimal
 readonly	LibraryOfRuina.encounters.ArtFloorLiberation.ArtFloorLiberationEncounter.PhaseTransitionHealAmount	System.Decimal
-readonly	LibraryOfRuina.encounters.BgmRegistry.ConfigByEncounterType	System.Collections.Generic.Dictionary`2[System.Type,LibraryOfRuina.encounters.EncounterBgmConfig]
 readonly	LibraryOfRuina.encounters.BgmRegistry.GuestLayerConfigByScenePath	System.Collections.Generic.Dictionary`2[System.String,LibraryOfRuina.encounters.EncounterBgmConfig]
 readonly	LibraryOfRuina.encounters.BgmSession.RegisteredCreatures	System.Collections.Generic.HashSet`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]
 readonly	LibraryOfRuina.encounters.BlueStar.BlueStarStrong.CameraOffset	Godot.Vector2

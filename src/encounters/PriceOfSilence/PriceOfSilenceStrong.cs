@@ -6,8 +6,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.PriceOfSilence;
 
-public sealed class PriceOfSilenceStrong : EncounterModel
+public sealed class PriceOfSilenceStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "PriceOfSilenceBGM",
+        GuestReceptionPoolRegistry.ReligionReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string TraceSlot = "time_trace";
     public const string BossSlot = "price_of_silence_boss";
 

@@ -30,10 +30,16 @@ namespace LibraryOfRuina.encounters.HistoryFloorLiberation;
 
 public sealed class HistoryFloorLiberationEncounter :
     LiberationEncounterBase,
+    IEncounterBgmSource,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter,
     ISporeWorkerSpawner
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "AngelaLiberationBGM",
+        HistoryFloorLiberationEncounter.AngelaLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     internal const string CenterSlot = "malkuth";
     internal const string MatchOneSlot = "match_1";
     internal const string MatchTwoSlot = "match_2";

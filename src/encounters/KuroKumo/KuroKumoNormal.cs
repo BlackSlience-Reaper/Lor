@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.KuroKumo;
 
-public sealed class KuroKumoNormal : EncounterModel, IGuestReceptionEncounter
+public sealed class KuroKumoNormal : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "KuroKumoBGM",
+        "res://audio/bgm/kurokumo/kurokumo_guest_battle_1.ogg",
+        "res://audio/bgm/kurokumo/kurokumo_guest_battle_2.ogg",
+        "res://audio/bgm/kurokumo/kurokumo_guest_battle_3.ogg");
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

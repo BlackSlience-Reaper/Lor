@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.SmilingBodies;
 
-public sealed class SmilingBodiesStrong : EncounterModel
+public sealed class SmilingBodiesStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "SmilingBodiesBGM",
+        GuestReceptionPoolRegistry.LanguageReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string CorpseSlotOne = "corpse_1";
     public const string CorpseSlotTwo = "corpse_2";
     public const string BossSlot = "boss";

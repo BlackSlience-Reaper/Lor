@@ -5,8 +5,12 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.DawnOffice;
 
-public sealed class FinnWeak : EncounterModel, IGuestReceptionEncounter
+public sealed class FinnWeak : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "FinnBGM",
+        "res://audio/bgm/finn/finn_battle_1.ogg");
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool IsWeak => true;

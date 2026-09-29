@@ -6,8 +6,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.BrotherhoodOfIron;
 
-public sealed class BrotherhoodOfIronStrong : EncounterModel, IGuestReceptionEncounter
+public sealed class BrotherhoodOfIronStrong : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "BrotherhoodOfIronBGM",
+        GuestReceptionPoolRegistry.GeneralReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

@@ -6,8 +6,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.DespairKnight;
 
-public sealed class DespairKnightStrong : EncounterModel
+public sealed class DespairKnightStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "DespairKnightBGM",
+        GuestReceptionPoolRegistry.NaturalReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string SwordSlotOne = "sword_1";
     public const string SwordSlotTwo = "sword_2";
     public const string BossSlot = "despair_knight";
