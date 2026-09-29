@@ -33,6 +33,7 @@ public static class VerificationRunner
         EnemyCardIntentVerificationPatch.Start,
         FairyMassCareVerificationPatch.Start,
         GalaxyDoomVerificationPatch.Start,
+        IntentRenderVerificationPatch.Start,
         JudgementBirdVerificationPatch.Start,
         KaliSpecialGuestContractVerificationPatch.Start,
         KingOfGreedPageStunVerificationPatch.Start,
