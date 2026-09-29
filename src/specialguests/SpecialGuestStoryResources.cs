@@ -21,8 +21,14 @@ public static class SpecialGuestStoryResources
         "res://fonts/story_ui/lor_story_arita_buri.otf";
     public const string ChineseFont =
         "res://fonts/NotoSansCJKsc-Regular.otf";
+
+    /// <summary>
+    /// 本体自带的 Noto Sans CJK JP，字体数据与本模组原先打包的那份逐字节相同。本体按 MSDF 导入，
+    /// 剧情播放器用 <see cref="SpecialGuestStoryPlayer"/> 里的副本改回普通光栅化。
+    /// 它归本体主题持有，不放进 <see cref="AssetPaths"/>。
+    /// </summary>
     public const string JapaneseFont =
-        "res://fonts/NotoSansCJKjp-Regular.otf";
+        "res://fonts/jpn/NotoSansCJKjp-Regular.otf";
 
     public static IReadOnlyList<string> AssetPaths { get; } =
     [
@@ -33,7 +39,6 @@ public static class SpecialGuestStoryResources
         AdvanceIcon,
         LatinKoreanFont,
         ChineseFont,
-        JapaneseFont,
     ];
 
     public static string GetFontPath(string language)
