@@ -2697,7 +2697,11 @@ internal static class SocialFloorLiberationVerificationPatch
         var expected = new Dictionary<Type, string[]>
         {
             [typeof(SocialFloorMagicalPowderCard)] =
-                ["InternalCost", "SerializedHolderNetId", "IsHolderValid"],
+                ["InternalCost", "SerializedHolderNetId", "IsHolderValid"]
+        };
+        // 能力状态不进存档也不同步（原版 NetFullCombatState 只带能力的 id 与层数），守住它们不再带 [SavedProperty]。
+        var combatStateOnly = new Dictionary<Type, string[]>
+        {
             [typeof(SocialFloorCouragePower)] =
             [
                 "SerializedHolderNetId",
@@ -2750,6 +2754,13 @@ internal static class SocialFloorLiberationVerificationPatch
             }
         }
 
+        foreach ((Type type, string[] properties) in combatStateOnly)
+        {
+            Require(CombatStateProperties.IsTransient(type)
+                    && properties.All(name => CombatStateProperties.IsListed(type, name)),
+                type.Name + " is a SavedProperty carrier again, or a field is missing from the reload list.");
+        }
+
         VerifyPlayerPowerSavedPropertiesRoundTrip();
     }
 
@@ -2775,7 +2786,7 @@ internal static class SocialFloorLiberationVerificationPatch
             courage,
             nameof(courage.RemoveAtNextPlayerTurnEnd),
             true);
-        SavedProperties courageSaved = SavedProperties.From(courage)
+        SavedProperties courageSaved = CombatStateProperties.From(courage)
             ?? throw new InvalidOperationException(
                 "Courage SavedProperties were empty.");
         var courageClone = (SocialFloorCouragePower)ModelDb
@@ -2793,7 +2804,7 @@ internal static class SocialFloorLiberationVerificationPatch
         WriteProperty(cat, nameof(cat.CardsSubmittedThisTurn), 5);
         WriteProperty(cat, nameof(cat.CourageCardGranted), true);
         WriteProperty(cat, nameof(cat.IsHolderActive), false);
-        SavedProperties catSaved = SavedProperties.From(cat)
+        SavedProperties catSaved = CombatStateProperties.From(cat)
             ?? throw new InvalidOperationException(
                 "Scaredy Cat SavedProperties were empty.");
         var catClone = (SocialFloorScaredyCatPower)ModelDb
@@ -2808,7 +2819,7 @@ internal static class SocialFloorLiberationVerificationPatch
         var coward = (SocialFloorCowardPower)ModelDb
             .Power<SocialFloorCowardPower>().ToMutable();
         WriteProperty(coward, nameof(coward.SerializedHolderNetId), netId);
-        SavedProperties cowardSaved = SavedProperties.From(coward)
+        SavedProperties cowardSaved = CombatStateProperties.From(coward)
             ?? throw new InvalidOperationException(
                 "Coward SavedProperties were empty.");
         var cowardClone = (SocialFloorCowardPower)ModelDb
@@ -2821,7 +2832,7 @@ internal static class SocialFloorLiberationVerificationPatch
             .Power<SocialFloorOzmaPower>().ToMutable();
         WriteProperty(ozma, nameof(ozma.SerializedHolderNetId), netId);
         WriteProperty(ozma, nameof(ozma.IsHolderActive), false);
-        SavedProperties ozmaSaved = SavedProperties.From(ozma)
+        SavedProperties ozmaSaved = CombatStateProperties.From(ozma)
             ?? throw new InvalidOperationException(
                 "Ozma SavedProperties were empty.");
         var ozmaClone = (SocialFloorOzmaPower)ModelDb

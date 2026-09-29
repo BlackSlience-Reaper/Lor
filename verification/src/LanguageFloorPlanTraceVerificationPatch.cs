@@ -568,14 +568,15 @@ internal static class LanguageFloorPlanTraceVerificationPatch
     }
 
     /// <summary>
-    /// 读档路径：原版把存档属性填进 <c>ToMutable</c> 出来的新实例，再 <c>SetUpForCombat</c> 建状态机。
-    /// 这里照做一遍，记录新状态机的初始行动与意图类型；新实例没有生物，不取标签与伤害。
+    /// 模拟读档：把 <see cref="CombatStateProperties"/> 列出的战斗状态填进 <c>ToMutable</c> 出来的新实例，
+    /// 再 <c>SetUpForCombat</c> 建状态机（原版不存怪物，这条路径只在套件里走）。
+    /// 记录新状态机的初始行动与意图类型；新实例没有生物，不取标签与伤害。
     /// </summary>
     private static string DescribeReload(MonsterModel monster)
     {
         try
         {
-            SavedProperties? props = SavedProperties.From(monster);
+            SavedProperties? props = CombatStateProperties.From(monster);
             MonsterModel fresh = ModelDb.GetById<MonsterModel>(monster.Id).ToMutable();
             props?.Fill(fresh);
             fresh.SetUpForCombat();

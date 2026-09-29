@@ -283,16 +283,11 @@ internal static class JudgementBirdVerificationPatch
             .ModSavedPropertyTypes;
         Require(savedTypes.Contains(typeof(JudgementBirdPageRelic)),
             "Page relic SavedProperty type is not pinned.");
-        Require(savedTypes.Contains(typeof(JudgementBird)),
-            "Judgement Bird SavedProperty type is not pinned.");
+        Require(CombatStateProperties.IsTransient(typeof(JudgementBird))
+                && CombatStateProperties.IsListed(typeof(JudgementBird), "FullOfEvilPending"),
+            "Judgement Bird combat state is a SavedProperty again, or Full of Evil pending is missing from the reload list.");
         string fingerprintMaterial = SavedPropertiesTypeCacheCompat
             .BuildSchemaFingerprintMaterial();
-        Require(fingerprintMaterial.Contains(
-                "saved|"
-                + typeof(JudgementBird).FullName
-                + "|FullOfEvilPending|System.Boolean|",
-                StringComparison.Ordinal),
-            "Full of Evil pending state is absent from the saved-property schema fingerprint.");
         Require(fingerprintMaterial.Contains(
                 "enum|"
                 + typeof(JudgementBirdPageMode).FullName

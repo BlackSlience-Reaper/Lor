@@ -223,9 +223,10 @@ internal static class LiteratureFloorLiberationPhaseFiveVerificationPatch
                 .FollowUpState?.Id == "BLACK_SWAN_CYCLE_ROUTER",
             "Swan Song no longer returns to the cycle router.");
         Require(
-            SavedPropertiesTypeCacheCompat.GetAllModSavedPropertyTypes()
-                .Contains(typeof(LiteratureFloorBlackSwanBoss)),
-            "Black Swan cycle state is missing from SavedProperty cache.");
+            CombatStateProperties.IsTransient(typeof(LiteratureFloorBlackSwanBoss))
+            && CombatStateProperties.All.Any(static entry =>
+                entry.DeclaringType == typeof(LiteratureFloorBlackSwanBoss)),
+            "Black Swan cycle state is a SavedProperty again, or missing from the reload list.");
 
         MonsterMoveStateMachine brotherMoves =
             GenerateStateMachine(brother);

@@ -271,12 +271,6 @@ internal static class LanguageFloorLiberationPhaseFiveVerificationPatch
                 "Required phase-five resource was missing: " + path);
         }
 
-        Type[] savedTypes = SavedPropertiesTypeCacheCompat
-            .GetAllModSavedPropertyTypes();
-        Require(savedTypes.Contains(typeof(LanguageFloorMimicry)),
-            "Mimicry SavedProperties type was not auto-discovered.");
-        string schema = SavedPropertiesTypeCacheCompat
-            .BuildSchemaFingerprintMaterial();
         string[] requiredSavedFields =
         [
             nameof(LanguageFloorMimicry.Form),
@@ -289,12 +283,10 @@ internal static class LanguageFloorLiberationPhaseFiveVerificationPatch
             nameof(LanguageFloorMimicry.PlannedMoveEnhanced),
             nameof(LanguageFloorMimicry.PlannedTargetCombatId)
         ];
-        Require(schema.Contains(
-                    typeof(LanguageFloorMimicry).FullName!,
-                    StringComparison.Ordinal)
-                && requiredSavedFields.All(field =>
-                    schema.Contains(field, StringComparison.Ordinal)),
-            "Mimicry save fields were absent from the schema fingerprint.");
+        Require(CombatStateProperties.IsTransient(typeof(LanguageFloorMimicry))
+                && requiredSavedFields.All(static field =>
+                    CombatStateProperties.IsListed(typeof(LanguageFloorMimicry), field)),
+            "Mimicry combat state is a SavedProperty again, or a field is missing from the reload list.");
     }
 
     private static void VerifyDeterministicSelection(
@@ -1047,7 +1039,7 @@ internal static class LanguageFloorLiberationPhaseFiveVerificationPatch
             plannedMoveEnhanced: true,
             plannedTargetCombatId: 42);
         source.DebugSetRoundDamageTaken(80);
-        SavedProperties props = SavedProperties.From(source)
+        SavedProperties props = CombatStateProperties.From(source)
             ?? throw new InvalidOperationException(
                 "Mimicry SavedProperties were empty.");
         var clone = (LanguageFloorMimicry)ModelDb

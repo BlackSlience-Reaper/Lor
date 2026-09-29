@@ -212,28 +212,15 @@ internal static class LanguageFloorLiberationPhaseFourVerificationPatch
 
         VerifySceneMarkers();
 
-        Type[] savedTypes = SavedPropertiesTypeCacheCompat
-            .GetAllModSavedPropertyTypes();
-        Require(savedTypes.Contains(typeof(LanguageFloorDipsia)),
-            "Dipsia SavedProperties type was not auto-discovered.");
-        string schema = SavedPropertiesTypeCacheCompat
-            .BuildSchemaFingerprintMaterial();
-        Require(schema.Contains(
-                    typeof(LanguageFloorDipsia).FullName!,
-                    StringComparison.Ordinal)
-                && schema.Contains(
+        Require(CombatStateProperties.IsTransient(typeof(LanguageFloorDipsia))
+                && new[]
+                {
                     nameof(LanguageFloorDipsia.IsTransformed),
-                    StringComparison.Ordinal)
-                && schema.Contains(
                     nameof(LanguageFloorDipsia.TransformPending),
-                    StringComparison.Ordinal)
-                && schema.Contains(
                     nameof(LanguageFloorDipsia.TransformTriggered),
-                    StringComparison.Ordinal)
-                && schema.Contains(
-                    nameof(LanguageFloorDipsia.PreviousMove),
-                    StringComparison.Ordinal),
-            "Dipsia save fields were absent from the schema fingerprint.");
+                    nameof(LanguageFloorDipsia.PreviousMove)
+                }.All(static name => CombatStateProperties.IsListed(typeof(LanguageFloorDipsia), name)),
+            "Dipsia combat state is a SavedProperty again, or a field is missing from the reload list.");
     }
 
     private static void VerifyLocalization()
@@ -858,7 +845,7 @@ internal static class LanguageFloorLiberationPhaseFourVerificationPatch
             fight.BossCreature,
             LanguageFloorDipsia.HydrophobiaStrong);
 
-        SavedProperties saved = SavedProperties.From(fight.Boss)
+        SavedProperties saved = CombatStateProperties.From(fight.Boss)
             ?? throw new InvalidOperationException(
                 "Dipsia produced no SavedProperties.");
         var clone = (LanguageFloorDipsia)ModelDb
