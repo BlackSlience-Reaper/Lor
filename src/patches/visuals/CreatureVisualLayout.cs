@@ -13,6 +13,8 @@ namespace LibraryOfRuina.patches;
 // 可选项：
 // - TalkPos：说话气泡位置。
 // - StateDisplayLiftY：血条、power 栏、名字条整体上移量；正数越大越往上。
+//   只想调血条/power 栏上下位置时，改 StateDisplayLiftY；不要改 SpritePos 或 BoundsTop/Bottom。
+// 各怪物的布局写在自己外观类的静态字段上，用 [MonsterVisual] 登记（见 MonsterVisualRegistry）。
 internal readonly record struct CreatureVisualLayout(
     Vector2 SpritePos,
     Vector2 SpriteScale,

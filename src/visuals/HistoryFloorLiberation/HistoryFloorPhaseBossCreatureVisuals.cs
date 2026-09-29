@@ -1,5 +1,8 @@
 using System;
+using Godot;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
+using LibraryOfRuina.patches;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.HistoryFloorLiberation;
@@ -7,6 +10,24 @@ namespace LibraryOfRuina.visuals.HistoryFloorLiberation;
 public partial class HistoryFloorPhaseBossCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(HistoryFloorPhaseBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -118f), new(0.58f, 0.58f), -155f, -310f, 155f, 10f, new(0f, -120f), new(0f, -340f))
+    {
+        TalkPos = new Vector2(0f, -260f),
+    };
+
+    // 初始立绘按当前阶段取；_Ready 里再按阶段切到对应变体。
+    [MonsterVisualFactory]
+    internal static NCreatureVisuals CreateForMonster(MonsterModel monster)
+    {
+        string id = monster.Id.Entry;
+        int phase = monster is HistoryFloorPhaseBoss boss ? boss.Phase : 1;
+        return WrappedMonsterVisualFactory.CreateScriptedSpriteVisuals<HistoryFloorPhaseBossCreatureVisuals>(
+            id,
+            HistoryFloorPhaseBoss.IdleTexturePathForPhase(phase));
+    }
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

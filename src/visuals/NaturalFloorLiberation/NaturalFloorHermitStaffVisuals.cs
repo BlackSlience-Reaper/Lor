@@ -1,5 +1,9 @@
+using LibraryOfRuina.monsters.NaturalFloorLiberation;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.NaturalFloorLiberation;
 
+[MonsterVisual(typeof(NaturalFloorHermitStaff), ScenePath = NaturalFloorHermitStaffVisuals.ScenePath)]
 internal sealed partial class NaturalFloorHermitStaffVisuals : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_hermit_staff.tscn";

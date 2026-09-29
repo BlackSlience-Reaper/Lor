@@ -1,7 +1,14 @@
+using LibraryOfRuina.guests.DawnOffice;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.DawnOffice;
 
 public partial class SayoCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(Sayo))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(-30f, -145.2f), new(0.48f, 0.48f), -120f, -299.7f, 120f, 5f, new(-30f, -139.8f), new(-30f, -333.7f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

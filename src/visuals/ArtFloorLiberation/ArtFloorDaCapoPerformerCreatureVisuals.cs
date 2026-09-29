@@ -1,11 +1,35 @@
 using System;
+using Godot;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
+using LibraryOfRuina.patches;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.ArtFloorLiberation;
 
 public sealed partial class ArtFloorDaCapoPerformerCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ArtFloorDaCapoPerformer))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -48f), new(0.48f, 0.48f), -88f, -260f, 88f, 10f, new(0f, -136f), new(0f, -298f))
+    {
+        TalkPos = new Vector2(0f, -228f),
+        StateDisplayLiftY = 30f,
+    };
+
+    // 初始立绘取演奏者自己的变体。
+    [MonsterVisualFactory]
+    internal static NCreatureVisuals CreateForMonster(MonsterModel monster)
+    {
+        string id = monster.Id.Entry;
+        string idleTexturePath = monster is ArtFloorDaCapoPerformer performer
+            ? performer.IdleTexturePath
+            : "res://images/monsters/art_floor/dacapo_performers/performer_1_idle.png";
+        return WrappedMonsterVisualFactory.CreateScriptedSpriteVisuals<ArtFloorDaCapoPerformerCreatureVisuals>(
+            id,
+            idleTexturePath);
+    }
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

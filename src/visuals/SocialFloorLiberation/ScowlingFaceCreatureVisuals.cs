@@ -1,8 +1,18 @@
+using LibraryOfRuina.monsters.SocialFloorLiberation;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.SocialFloorLiberation;
 
 public sealed partial class ScowlingFaceCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ScowlingFace))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(-78f, -6f), new(0.30f, 0.30f), -170f, -180f, 14f, 8f, new(0f, -85f), new(-78f, -215f))
+    {
+        StateDisplayLiftY = 8f,
+    };
+
     internal const string DefaultTexturePath =
         "res://images/monsters/social_floor_liberation/scowling_face/default.png";
     internal const string MoveTexturePath =

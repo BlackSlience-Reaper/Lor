@@ -1,7 +1,18 @@
+using Godot;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.ScarecrowSearchingForWisdom;
 
 public sealed partial class ScarecrowSearchingForWisdomCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.ScarecrowSearchingForWisdom.ScarecrowSearchingForWisdom))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -28f), new(0.50f, 0.50f), -120f, -330f, 120f, 8f, new(0f, -130f), new(0f, -390f))
+    {
+        TalkPos = new Vector2(0f, -280f),
+        StateDisplayLiftY = 20f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

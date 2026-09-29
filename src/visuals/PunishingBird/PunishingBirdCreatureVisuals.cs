@@ -1,12 +1,20 @@
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.monsters.PunishingBird;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.visuals.PunishingBird;
 
 public sealed partial class PunishingBirdCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.PunishingBird.PunishingBird))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -12f), new(2.2f, 2.2f), -190f, -420f, 190f, 16f, new(0f, -190f), new(-90f, -435f))
+    {
+        StateDisplayLiftY = 32f,
+    };
+
     private static readonly Vector2 BirdPosition = new(-90f, -290f);
     private static readonly Vector2 BirdScale = new(1f, 1f);
     private static readonly Vector2 BranchPosition = new(0f, -155f);
@@ -344,6 +352,14 @@ public sealed partial class PunishingBirdCreatureVisuals : SpriteAttackCreatureV
 
 public sealed partial class ForestKeeperBirdCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ForestKeeperBirdLeft))]
+    [MonsterVisual(typeof(ForestKeeperBirdRight))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -8f), new(0.44f, 0.44f), -150f, -320f, 150f, 12f, new(0f, -148f), new(0f, -350f))
+    {
+        StateDisplayLiftY = 20f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

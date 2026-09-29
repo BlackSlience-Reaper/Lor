@@ -1,8 +1,34 @@
+using Godot;
+using LibraryOfRuina.patches;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+
 namespace LibraryOfRuina.visuals.BurrowingHeaven;
 
 public sealed partial class BurrowingHeavenCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.BurrowingHeaven.BurrowingHeaven))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -18f), new(0.58f, 0.58f), -165f, -390f, 165f, 12f, new(0f, -170f), new(0f, -430f))
+    {
+        TalkPos = new Vector2(0f, -330f),
+        StateDisplayLiftY = 34f,
+    };
+
+    // 按怪物当前是否苏醒选初始立绘与 _Ready 时的变体。
+    [MonsterVisualFactory]
+    internal static NCreatureVisuals CreateForMonster(MonsterModel monster)
+    {
+        string id = monster.Id.Entry;
+        return WrappedMonsterVisualFactory.CreateScriptedSpriteVisuals<BurrowingHeavenCreatureVisuals>(
+            id,
+            monster is monsters.BurrowingHeaven.BurrowingHeaven { IsAwake: false }
+                ? monsters.BurrowingHeaven.BurrowingHeaven.SleepTexturePath
+                : monsters.BurrowingHeaven.BurrowingHeaven.AwakeTexturePath,
+            visuals => visuals.StartsAwake = monster is not monsters.BurrowingHeaven.BurrowingHeaven { IsAwake: false });
+    }
+
     private const string AwakeVariant = "awake";
     private const string SleepVariant = "sleep";
 
