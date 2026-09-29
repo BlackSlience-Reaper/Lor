@@ -526,7 +526,9 @@ internal static class EncounterBgmDeclarationVerificationPatch
         string stream = player.Stream == null
             ? "none"
             : player.Stream.GetLength().ToString("0.000", CultureInfo.InvariantCulture);
-        string text = player.Name + "(stream=" + stream + ",playing=" + player.Playing;
+        // 不记节点名：上一场的播放器 QueueFree 后还没离开树时，新播放器会被 Godot 改成 @AudioStreamPlayer@序号，
+        // 序号取决于全局节点计数，两次运行之间不稳定。哪一首由流的长度区分。
+        string text = "(stream=" + stream + ",playing=" + player.Playing;
         if (includeVolume)
         {
             text += ",vol=" + player.VolumeDb.ToString("0.00", CultureInfo.InvariantCulture);
