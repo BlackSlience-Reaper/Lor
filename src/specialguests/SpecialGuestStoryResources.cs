@@ -19,6 +19,9 @@ public static class SpecialGuestStoryResources
 
     public const string LatinKoreanFont =
         "res://fonts/story_ui/lor_story_arita_buri.otf";
+    /// <summary>
+    /// Noto Sans CJK SC 的子集：GB2312 全集加本模组 zhs 文案用到的字，`tools/check_zhs_font.py` 检查覆盖。
+    /// </summary>
     public const string ChineseFont =
         "res://fonts/NotoSansCJKsc-Regular.otf";
 

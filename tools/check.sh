@@ -11,6 +11,8 @@ FIXTURE_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP" "$FIXTURE_OUT"' EXIT
 
 python3 "$ROOT/tools/check_canonical_getters.py" "$ROOT/src"
+# The zhs story font is a subset; new zhs text must not use a character outside it.
+python3 "$ROOT/tools/check_zhs_font.py"
 # No reflection by name outside src/interop/ (syntax-based); the self-test covers the forms that must be caught.
 dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release -- --self-test "$ROOT/tools/PrivateAccessCheck/fixtures"
 dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release --no-build -- "$ROOT/src" "$ROOT/tools/private_access_allowlist.txt"
