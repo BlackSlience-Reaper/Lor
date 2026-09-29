@@ -54,6 +54,11 @@ WriteLines("patch_order.txt", order);
 WriteLines("static_fields.txt", StaticFields());
 WriteLines("skip_prefixes.txt", SkipPrefixes());
 WriteLines("hook_patches.txt", HookPatches());
+// Not sorted: GetTypes() returns TypeDef order, which LibraryPatcher and the other auto-discovery steps
+// (LibraryAssemblyTypes) iterate. Moving a source file can reorder it, so a move shows up here and must be justified.
+WriteLines("type_order.txt", types
+    .Where(static type => type != null && !type.FullName!.Contains('<'))
+    .Select(static type => type!.FullName!));
 WriteLines("unresolved.txt", missing);
 Console.WriteLine($"snapshot written to {outDir} ({types.Length} types, {missing.Count} unresolved)");
 return 0;

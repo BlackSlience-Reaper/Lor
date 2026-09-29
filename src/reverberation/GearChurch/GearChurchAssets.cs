@@ -1,4 +1,5 @@
 using LibraryOfRuina.guests.DawnOffice;
+using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
@@ -64,11 +65,13 @@ internal static class GearChurchAssets
     }
 }
 
+[MonsterVisual(typeof(ReverberationEileen), ScenePath = GearChurchAssets.EileenScene)]
 internal sealed partial class ReverberationEileenVisuals : SceneAnimatedCreatureVisuals
 {
     protected override string ResolveCurrentAnimationLibrary() => "normal";
 }
 
+[MonsterVisual(typeof(GearChurchFollower), ScenePath = GearChurchAssets.FollowerScene)]
 internal sealed partial class GearChurchFollowerVisuals : SceneAnimatedCreatureVisuals
 {
     protected override string ResolveCurrentAnimationLibrary() => "normal";
