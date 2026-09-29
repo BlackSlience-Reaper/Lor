@@ -1131,8 +1131,8 @@ readonly	LibraryOfRuina.patches.AttackAnimationHitSuppression.Gate	System.Object
 readonly	LibraryOfRuina.patches.BadgedIntentVisualPatch+MonsterHeadTextureCache.Cache	System.Collections.Generic.Dictionary`2[Godot.Rid,Godot.Texture2D]
 readonly	LibraryOfRuina.patches.BlueStar.BlueStarChaoThresholdForecast.ThresholdColor	Godot.Color
 readonly	LibraryOfRuina.patches.CombinedIntentDisplayPatch.CombinedDisplayAssetPaths	System.Collections.Generic.IReadOnlyList`1[System.String]
-readonly	LibraryOfRuina.patches.CombinedIntentDisplayPatch.LibraryReceptionMonsterBaseTypeNames	System.Collections.Generic.HashSet`1[System.String]
-readonly	LibraryOfRuina.patches.CombinedIntentDisplayPatch.LibraryReceptionMonsterTypeNames	System.Collections.Generic.HashSet`1[System.String]
+readonly	LibraryOfRuina.patches.CombinedIntentDisplayPatch.LibraryReceptionMonsterBaseTypes	System.Collections.Generic.HashSet`1[System.Type]
+readonly	LibraryOfRuina.patches.CombinedIntentDisplayPatch.LibraryReceptionMonsterTypes	System.Collections.Generic.HashSet`1[System.Type]
 readonly	LibraryOfRuina.patches.CombinedIntentVisualPatch.States	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Nodes.Combat.NIntent,LibraryOfRuina.patches.CombinedIntentVisualPatch+AnimationState]
 readonly	LibraryOfRuina.patches.CounterIntentVisualPatch.States	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Nodes.Combat.NIntent,LibraryOfRuina.patches.CounterIntentVisualPatch+AnimationState]
 readonly	LibraryOfRuina.patches.CreatureStateDisplayOffset+MethodName.ApplyOffset	Godot.StringName

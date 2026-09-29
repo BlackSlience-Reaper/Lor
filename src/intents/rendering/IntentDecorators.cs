@@ -116,8 +116,8 @@ internal sealed class ChordEgoDimIntentDecorator : IIntentDecorator
     public string Name => "ChordEgoDim";
 
     public IntentDecoratorOutcome Render(IntentRenderStage stage, ref IntentRenderContext context) =>
-        stage == IntentRenderStage.CreatureDecorate
-            ? ChordEgoIntentDimPatch.OnUpdateIntent(context.CreatureNode!)
+        stage == IntentRenderStage.IntentVisuals
+            ? ChordEgoIntentDimPatch.OnUpdateVisuals(context.IntentNode!, context.Intent!, context.Owner!)
             : IntentDecoratorOutcome.Skipped;
 }
 
@@ -127,7 +127,7 @@ internal sealed class SolemnMourningSealIntentDecorator : IIntentDecorator
     public string Name => "SolemnMourningSeal";
 
     public IntentDecoratorOutcome Render(IntentRenderStage stage, ref IntentRenderContext context) =>
-        stage == IntentRenderStage.CreatureDecorate
-            ? SolemnMourningSealIntentPatch.OnUpdateIntent(context.CreatureNode!)
+        stage == IntentRenderStage.IntentVisuals
+            ? SolemnMourningSealIntentPatch.OnUpdateVisuals(context.IntentNode!, context.Owner!)
             : IntentDecoratorOutcome.Skipped;
 }

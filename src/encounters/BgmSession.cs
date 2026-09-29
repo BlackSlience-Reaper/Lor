@@ -332,6 +332,8 @@ internal static class BgmSession
         {
             _currentTrackIndex = nextTrackIndex;
             _isTransitioning = false;
+            // 换曲期间更新的音量已记入会话，完成后应用到刚接管播放的新曲目。
+            BgmCrossfader.SetActivePlayerVolume(_activeMaxVolumeDb);
             Log.Info("[" + logTag + "] Crossfade finished. Current track=" + _currentTrackIndex);
             TryAdvanceTrack();
         });
