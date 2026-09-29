@@ -52,8 +52,19 @@ public sealed class LanguageFloorScarletScar :
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool UnrelievedAnger { get; private set; }
 
-    private MoveState? _compositeState;
-    private AbstractIntent[]? _compositeIntents;
+    private const int PlanSlotCount = 2;
+
+    private PlannedMoveController<LanguageFloorMoveKind>? _plan;
+
+    // 两个槽位存在 PlannedMoveOne/Two；读槽位把非法值当作平稳呼吸，执行不会停在空槽位。
+    // 实例随怪物克隆丢弃、用到时重建（见 PlannedMoveController）。
+    private PlannedMoveController<LanguageFloorMoveKind> Plan => _plan ??= new(
+        this,
+        PlanSlotCount,
+        GetPlannedMove,
+        SetPlannedMove,
+        static (_, move) => CreateIntent(move),
+        (LanguageFloorMoveKind)(-1));
 
     public override int LiberationPhase => 1;
 
@@ -170,14 +181,18 @@ public sealed class LanguageFloorScarletScar :
         }
     }
 
+    protected override void DeepCloneFields()
+    {
+        base.DeepCloneFields();
+        // 计划控制器的委托捕获的是被克隆的实例，克隆体必须用自己的。
+        _plan = null;
+    }
+
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _compositeIntents = new AbstractIntent[2];
-        RefreshPlannedIntents();
-        _compositeState = new MoveState(
+        MoveState compositeState = Plan.CreateCompositeState(
             CompositeMoveId,
-            PerformCompositeMove,
-            _compositeIntents);
+            PerformCompositeMove);
         MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var router = new DelegatingMonsterRouterState(
@@ -187,11 +202,11 @@ public sealed class LanguageFloorScarletScar :
                 PlanNextTurn(rng);
                 return CompositeMoveId;
             });
-        _compositeState.FollowUpState = router;
+        compositeState.FollowUpState = router;
         reviveAndEmpower.FollowUpState = router;
         return new MonsterMoveStateMachine(
-            [reviveAndEmpower, _compositeState, router],
-            HasPlannedTurn ? _compositeState : router);
+            [reviveAndEmpower, compositeState, router],
+            HasPlannedTurn ? compositeState : router);
     }
 
     public bool UsesTargetedAttackContract(Creature owner) => true;
@@ -299,17 +314,12 @@ public sealed class LanguageFloorScarletScar :
         await RefreshIntents();
     }
 
-    private async Task PerformCompositeMove(IReadOnlyList<Creature> targets)
-    {
-        for (int slot = 0; slot < 2 && Creature.IsAlive; slot++)
-        {
-            await PerformMove(GetPlannedMove(slot));
-            if (Creature.CombatState?.Encounter is LanguageFloorLiberationEncounter { PhaseComplete: true })
-            {
-                return;
-            }
-        }
-    }
+    private Task PerformCompositeMove(IReadOnlyList<Creature> targets) =>
+        Plan.PerformPlan(
+            () => Creature.IsAlive,
+            (_, move) => PerformMove(move),
+            stopAfterMove: () =>
+                Creature.CombatState?.Encounter is LanguageFloorLiberationEncounter { PhaseComplete: true });
 
     private async Task PerformMove(LanguageFloorMoveKind move)
     {
@@ -505,19 +515,6 @@ public sealed class LanguageFloorScarletScar :
         };
     }
 
-    private void RefreshPlannedIntents()
-    {
-        if (_compositeIntents == null)
-        {
-            return;
-        }
-
-        for (int slot = 0; slot < _compositeIntents.Length; slot++)
-        {
-            _compositeIntents[slot] = CreateIntent(GetPlannedMove(slot));
-        }
-    }
-
     private static IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
         yield return CreateIntent(LanguageFloorMoveKind.StableBreath);
@@ -536,22 +533,34 @@ public sealed class LanguageFloorScarletScar :
             : LanguageFloorMoveKind.StableBreath;
     }
 
-    private void PlanNextTurn(Rng rng)
+    private void SetPlannedMove(int slot, LanguageFloorMoveKind move)
     {
-        EnemyTurnCount++;
-        if (UnrelievedAnger || IsRaging)
+        if (slot == 0)
         {
-            PlannedMoveOne = (int)LanguageFloorMoveKind.IndiscriminateShot;
+            PlannedMoveOne = (int)move;
         }
         else
         {
-            IReadOnlyList<LanguageFloorMoveKind> candidates = GetNormalCandidates(EnemyTurnCount);
-            PlannedMoveOne = (int)candidates[rng.NextInt(candidates.Count)];
+            PlannedMoveTwo = (int)move;
         }
+    }
 
-        IReadOnlyList<LanguageFloorMoveKind> secondCandidates = GetNormalCandidates(EnemyTurnCount);
-        PlannedMoveTwo = (int)secondCandidates[rng.NextInt(secondCandidates.Count)];
-        RefreshPlannedIntents();
+    // 两个槽位按顺序掷骰：暴怒或无法平息的愤怒时第一个槽位固定为无差别射击，不消耗随机数。
+    private void PlanNextTurn(Rng rng)
+    {
+        EnemyTurnCount++;
+        Plan.WriteSlots(
+            PlanSlotCount,
+            slot => slot == 0 && (UnrelievedAnger || IsRaging)
+                ? LanguageFloorMoveKind.IndiscriminateShot
+                : RollNormalMove(rng));
+        Plan.RefreshIntents();
+    }
+
+    private LanguageFloorMoveKind RollNormalMove(Rng rng)
+    {
+        IReadOnlyList<LanguageFloorMoveKind> candidates = GetNormalCandidates(EnemyTurnCount);
+        return candidates[rng.NextInt(candidates.Count)];
     }
 
     internal static IReadOnlyList<LanguageFloorMoveKind> GetNormalCandidates(int enemyTurnCount) =>
@@ -585,19 +594,17 @@ public sealed class LanguageFloorScarletScar :
         PlannedMoveOne = (int)first;
         PlannedMoveTwo = (int)second;
         UnrelievedAnger = unrelievedAnger;
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
     }
 
     private bool HasPlannedTurn => PlannedMoveOne >= 0 && PlannedMoveTwo >= 0;
 
+    // 进入暴怒或无法平息的愤怒时只改第一个槽位，第二个保留原计划，并立即揭示。
     private void ForceSpecialFirstSlot()
     {
-        PlannedMoveOne = (int)LanguageFloorMoveKind.IndiscriminateShot;
-        RefreshPlannedIntents();
-        if (_compositeState != null)
-        {
-            SetMoveImmediate(_compositeState, forceTransition: true);
-        }
+        SetPlannedMove(0, LanguageFloorMoveKind.IndiscriminateShot);
+        Plan.RefreshIntents();
+        Plan.Reveal();
     }
 
     private Task RefreshIntents()

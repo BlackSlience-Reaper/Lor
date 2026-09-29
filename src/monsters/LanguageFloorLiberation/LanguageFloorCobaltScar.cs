@@ -144,9 +144,17 @@ public sealed class LanguageFloorCobaltScar :
     private MoveState? _normalCompositeState;
     private MoveState? _shadowCompositeState;
     private MoveState? _reviveAndEmpowerState;
-    private AbstractIntent[]? _normalPlannedIntents;
-    private AbstractIntent[]? _shadowPlannedIntents;
+    private PlannedMoveController<LanguageFloorMoveKind>? _plan;
     private bool _resolvingSwallowedCards;
+
+    // 普通与影子两个复合行动共用三个槽位，分别展示前 3、2 个。读槽位把非法值当作咳嗽，执行不会停在空槽位。
+    private PlannedMoveController<LanguageFloorMoveKind> Plan => _plan ??= new(
+        this,
+        IntentCount,
+        GetPlannedMove,
+        SetPlannedMove,
+        static (_, move) => CreateIntent(move),
+        (LanguageFloorMoveKind)(-1));
 
     protected override void DeepCloneFields()
     {
@@ -157,8 +165,8 @@ public sealed class LanguageFloorCobaltScar :
         _normalCompositeState = null;
         _shadowCompositeState = null;
         _reviveAndEmpowerState = null;
-        _normalPlannedIntents = null;
-        _shadowPlannedIntents = null;
+        // 计划控制器的委托捕获的是被克隆的实例，克隆体必须用自己的。
+        _plan = null;
     }
 
     public int LiberationPhase => 2;
@@ -253,7 +261,7 @@ public sealed class LanguageFloorCobaltScar :
         }
         else
         {
-            RefreshPlannedIntents();
+            Plan.RefreshIntents();
         }
 
         if (Creature.CombatState?.CurrentSide == CombatSide.Player)
@@ -312,17 +320,13 @@ public sealed class LanguageFloorCobaltScar :
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _normalPlannedIntents = new AbstractIntent[IntentCount];
-        _shadowPlannedIntents = new AbstractIntent[ShadowIntentCount];
-        RefreshPlannedIntents();
-        _normalCompositeState = new MoveState(
+        _normalCompositeState = Plan.CreateCompositeState(
             NormalCompositeMoveId,
-            PerformCompositeMove,
-            _normalPlannedIntents);
-        _shadowCompositeState = new MoveState(
+            PerformCompositeMove);
+        _shadowCompositeState = Plan.CreateCompositeState(
             ShadowCompositeMoveId,
             PerformCompositeMove,
-            _shadowPlannedIntents);
+            intentCount: ShadowIntentCount);
         _reviveAndEmpowerState = LiberationPhaseBossMoves.CreateState(
             ReviveAndEmpowerMoveId,
             ReviveAndEmpowerMove);
@@ -893,19 +897,13 @@ public sealed class LanguageFloorCobaltScar :
         await Task.CompletedTask;
     }
 
-    private async Task PerformCompositeMove(IReadOnlyList<Creature> targets)
-    {
-        LanguageFloorMoveKind[] moves = PlannedMoves.ToArray();
-        foreach (LanguageFloorMoveKind move in moves)
-        {
-            if (!Creature.IsAlive)
-            {
-                break;
-            }
-
-            await PerformMove(move);
-        }
-    }
+    // 开始前按当前形态的意图数对计划做快照再逐个执行，不在每招后检查 PhaseComplete。
+    private Task PerformCompositeMove(IReadOnlyList<Creature> targets) =>
+        Plan.PerformPlan(
+            () => Creature.IsAlive,
+            (_, move) => PerformMove(move),
+            slotLimit: GetCurrentIntentCount(),
+            readAllFirst: true);
 
     private async Task PerformMove(LanguageFloorMoveKind move)
     {
@@ -1141,41 +1139,38 @@ public sealed class LanguageFloorCobaltScar :
 
     private void PlanOpeningCounterTurn()
     {
-        PlannedMoveOne = (int)LanguageFloorMoveKind.CobaltWolfComes;
-        PlannedMoveTwo = (int)LanguageFloorMoveKind.CobaltWolfComes;
-        PlannedMoveThree = (int)LanguageFloorMoveKind.CobaltWolfComes;
-        RefreshPlannedIntents();
+        Plan.WriteSlots(IntentCount, static _ => LanguageFloorMoveKind.CobaltWolfComes);
+        Plan.RefreshIntents();
     }
 
+    // 按槽位顺序掷骰；影子形态两个槽位固定为影袭、第三个写空，咆哮与本能占第一个槽位时不消耗随机数。
     private void PlanTurn(Rng rng)
     {
         if (ShadowTurnsRemaining > 0)
         {
-            PlannedMoveOne = (int)LanguageFloorMoveKind.BigWolfShadowAssault;
-            PlannedMoveTwo = (int)LanguageFloorMoveKind.BigWolfShadowAssault;
-            PlannedMoveThree = -1;
-            RefreshPlannedIntents();
+            Plan.WriteSlots(ShadowIntentCount, static _ => LanguageFloorMoveKind.BigWolfShadowAssault);
+            Plan.RefreshIntents();
             return;
         }
 
         if (Form == LanguageFloorCobaltScarForm.CobaltScar)
         {
-            PlannedMoveOne = (int)NextCobaltMove(rng);
-            PlannedMoveTwo = (int)NextCobaltMove(rng);
-            PlannedMoveThree = (int)NextCobaltMove(rng);
-            RefreshPlannedIntents();
+            Plan.WriteSlots(IntentCount, _ => NextCobaltMove(rng));
+            Plan.RefreshIntents();
             return;
         }
 
         bool useInstinct = ForceInstinctNextTurn || TurnsUntilInstinct <= 0;
         bool useRoar = ForceRoarNextTurn;
-        PlannedMoveOne = useRoar
-            ? (int)LanguageFloorMoveKind.BigWolfRoar
-            : useInstinct
-                ? (int)LanguageFloorMoveKind.BigWolfUncontrollableInstinct
-                : (int)NextBigWolfMove(rng);
-        PlannedMoveTwo = (int)NextBigWolfMove(rng);
-        PlannedMoveThree = (int)NextBigWolfMove(rng);
+        Plan.WriteSlots(
+            IntentCount,
+            slot => slot != 0
+                ? NextBigWolfMove(rng)
+                : useRoar
+                    ? LanguageFloorMoveKind.BigWolfRoar
+                    : useInstinct
+                        ? LanguageFloorMoveKind.BigWolfUncontrollableInstinct
+                        : NextBigWolfMove(rng));
         ForceRoarNextTurn = false;
         if (useRoar)
         {
@@ -1191,7 +1186,7 @@ public sealed class LanguageFloorCobaltScar :
             TurnsUntilInstinct--;
         }
 
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
     }
 
     internal void RefreshAfterMoveRoll()
@@ -1202,27 +1197,7 @@ public sealed class LanguageFloorCobaltScar :
         PrepareCounterIntentsFromCurrentMove();
     }
 
-    private void RefreshPlannedIntents()
-    {
-        if (_normalPlannedIntents != null)
-        {
-            for (int slot = 0; slot < IntentCount; slot++)
-            {
-                _normalPlannedIntents[slot] =
-                    CreateIntent(GetPlannedMove(slot));
-            }
-        }
-
-        if (_shadowPlannedIntents != null)
-        {
-            for (int slot = 0; slot < ShadowIntentCount; slot++)
-            {
-                _shadowPlannedIntents[slot] =
-                    CreateIntent(GetPlannedMove(slot));
-            }
-        }
-    }
-
+    // 揭示之后要按新行动刷新影袭的卡牌上限并准备反击意图，这些不属于计划控制器。
     private void SetCompositeMoveAndRefresh()
     {
         if (_normalCompositeState == null || _shadowCompositeState == null)
@@ -1230,8 +1205,8 @@ public sealed class LanguageFloorCobaltScar :
             return;
         }
 
-        RefreshPlannedIntents();
-        SetMoveImmediate(GetCurrentCompositeState(), forceTransition: true);
+        Plan.RefreshIntents();
+        Plan.Reveal(GetCurrentCompositeState());
         Creature.GetPower<LanguageFloorShadowAmbushPassivePower>()
             ?.RefreshCardLimit();
         if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
@@ -1263,6 +1238,22 @@ public sealed class LanguageFloorCobaltScar :
         return Enum.IsDefined(typeof(LanguageFloorMoveKind), value)
             ? (LanguageFloorMoveKind)value
             : LanguageFloorMoveKind.CobaltCough;
+    }
+
+    private void SetPlannedMove(int slot, LanguageFloorMoveKind move)
+    {
+        switch (slot)
+        {
+            case 0:
+                PlannedMoveOne = (int)move;
+                break;
+            case 1:
+                PlannedMoveTwo = (int)move;
+                break;
+            default:
+                PlannedMoveThree = (int)move;
+                break;
+        }
     }
 
     internal IReadOnlyList<LanguageFloorMoveKind> PlannedMoves =>
@@ -1304,7 +1295,7 @@ public sealed class LanguageFloorCobaltScar :
         PlannedMoveOne = moves.Length > 0 ? (int)moves[0] : -1;
         PlannedMoveTwo = moves.Length > 1 ? (int)moves[1] : -1;
         PlannedMoveThree = moves.Length > 2 ? (int)moves[2] : -1;
-        RefreshPlannedIntents();
+        Plan.RefreshIntents();
     }
 
     internal Task DebugTransformToBigBadWolf() =>

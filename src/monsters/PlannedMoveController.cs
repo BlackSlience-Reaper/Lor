@@ -20,6 +20,8 @@ namespace LibraryOfRuina.monsters;
 /// 这是战斗状态而不是表现：每个客户端都在同一个钩子里调用，原版 <c>SetMoveImmediate</c> 只在有节点时顺带刷新意图显示。</item>
 /// <item>多个复合行动可以共用同一组槽位，各自只展示前若干个（语言层的高/低血量、影子形态、三种形态），
 /// 用不同的行动 ID 各建一次，揭示时传入要切换的那个。</item>
+/// <item>怪物可以在控制器之外直接写槽位（单独改某一个槽位、调试入口、槽位数之外的旧存档槽位），
+/// 写完调用 <see cref="RefreshIntents"/> 即可；控制器不缓存槽位的值。</item>
 /// </list>
 /// </summary>
 internal sealed class PlannedMoveController<TMove>
@@ -152,19 +154,31 @@ internal sealed class PlannedMoveController<TMove>
 
     /// <summary>
     /// 从第一个槽位起逐个执行。每个槽位执行前检查 <paramref name="canContinue"/>，槽位读到空值就停；
-    /// 每个招式执行完检查 <paramref name="stopAfterMove"/>，为真就停。槽位在执行时逐个读取，
-    /// 招式执行中改动了后面的槽位（清空、左移）会影响后面执行什么。
+    /// 每个招式执行完检查 <paramref name="stopAfterMove"/>，为真就停。缺省时槽位在执行时逐个读取，
+    /// 招式执行中改动了后面的槽位（清空、左移）会影响后面执行什么；<paramref name="readAllFirst"/> 为真时
+    /// 开始前一次读完前 <paramref name="slotLimit"/> 个槽位，按这份快照执行（钴蓝伤痕）。
     /// </summary>
     internal async Task PerformPlan(
         Func<bool> canContinue,
         Func<int, TMove, Task> performMove,
         int? slotLimit = null,
-        Func<bool>? stopAfterMove = null)
+        Func<bool>? stopAfterMove = null,
+        bool readAllFirst = false)
     {
         int limit = slotLimit ?? _slotCount;
+        TMove[]? snapshot = null;
+        if (readAllFirst)
+        {
+            snapshot = new TMove[limit];
+            for (int slot = 0; slot < limit; slot++)
+            {
+                snapshot[slot] = _readSlot(slot);
+            }
+        }
+
         for (int slot = 0; slot < limit && canContinue(); slot++)
         {
-            TMove move = _readSlot(slot);
+            TMove move = snapshot != null ? snapshot[slot] : _readSlot(slot);
             if (IsEmpty(move))
             {
                 break;
