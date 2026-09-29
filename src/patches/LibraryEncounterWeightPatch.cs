@@ -17,14 +17,10 @@ using LibraryOfRuina.encounters.GalaxyChild;
 using LibraryOfRuina.encounters.HappyTeddy;
 using LibraryOfRuina.encounters.JudgementBird;
 using LibraryOfRuina.encounters.KingOfGreed;
-using LibraryOfRuina.encounters.DespairKnight;
-using LibraryOfRuina.encounters.NaturalFloorLiberation;
-using LibraryOfRuina.encounters.WrathServant;
 using LibraryOfRuina.encounters.Leticia;
 using LibraryOfRuina.encounters.LittleRedMercenary;
 using LibraryOfRuina.encounters.Nosferatu;
 using LibraryOfRuina.encounters.Ozma;
-using LibraryOfRuina.encounters.PhilosophyFloorLiberation;
 using LibraryOfRuina.encounters.PriceOfSilence;
 using LibraryOfRuina.encounters.PunishingBird;
 using LibraryOfRuina.encounters.QueenOfHatred;
@@ -34,7 +30,6 @@ using LibraryOfRuina.encounters.RoadHome;
 using LibraryOfRuina.encounters.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.encounters.ScorchedGirl;
 using LibraryOfRuina.encounters.SmilingBodies;
-using LibraryOfRuina.encounters.SocialFloorLiberation;
 using LibraryOfRuina.encounters.SpiderBud;
 using LibraryOfRuina.encounters.SpinyBus;
 using LibraryOfRuina.encounters.TodaysShyLook;
@@ -66,17 +61,6 @@ internal static class LibraryEncounterWeighting
     private const double PriorityEncounterSelectionWeight = 8.5;
     private const double StandardModEncounterSelectionWeight = 1.0;
     private const double VanillaEncounterSelectionWeight = 0.5;
-    // 自然层解放为章节 Boss 时，贪婪国王的遭遇抽取权重提高
-    private const double NaturalFloorKingOfGreedWeightMultiplier = 2;
-
-    // 自然层解放为章节 Boss 时，憎恶皇后的遭遇抽取权重提高
-    private const double NaturalFloorQueenOfHatredWeightMultiplier = 1.50;
-
-    // 自然层解放为章节 Boss 时，绝望骑士的遭遇抽取权重提高
-    private const double NaturalFloorDespairKnightWeightMultiplier = 1.50;
-
-    // 自然层解放为章节 Boss 时，愤怒侍从的遭遇抽取权重提高
-    private const double NaturalFloorWrathServantWeightMultiplier = 1.50;
 
     private const string LogPrefix = "[LibraryEncounterWeight]";
 
@@ -760,38 +744,26 @@ internal static class LibraryEncounterWeighting
         return new Rng(baseSeed, $"library_encounter_weight_{label}_{act.Id.Entry}");
     }
 
-    private static bool IsFirstActLiberationBossTarget(ActModel act, int actIndex) =>
-        actIndex == 0 && LorActModel.IsFirstFamily(act);
-
-    private static bool IsArtFloorSecondActLiberationBossTarget(ActModel act, int actIndex) =>
-        actIndex == 1 && LorActModel.IsSecondFamily(act);
-
-    private static bool IsThirdActLiberationBossTarget(ActModel act, int actIndex) =>
-        actIndex == DoubleBossActIndex && LorActModel.IsThirdFamily(act);
-
     internal static bool ShouldApplyThirdActDoubleBossRule(
         int actIndex,
         int ascensionLevel) =>
         actIndex == DoubleBossActIndex
         && ascensionLevel >= (int)AscensionLevel.DoubleBoss;
 
+    /// <summary>
+    /// 从已登记的第三幕解放遭遇里按种子洗牌选出双 Boss；不足两个时返回空。运行期路由不用它
+    /// （第三幕的两场由 <see cref="LiberationFloorDescriptor.DoubleBossSecondEncounter"/> 固定），
+    /// 只有验证套件调用。
+    /// </summary>
     internal static IReadOnlyList<EncounterModel>
         ChooseThirdActDoubleBossSelection(
             ulong seed,
             string label)
     {
-        List<EncounterModel> candidates = [];
-        if (LiberationBossRegistry.RegisterPhilosophyFloorLiberation)
-        {
-            candidates.Add(
-                ModelDb.Encounter<PhilosophyFloorLiberationEncounter>());
-        }
-
-        if (LiberationBossRegistry.RegisterSocialFloorLiberation)
-        {
-            candidates.Add(
-                ModelDb.Encounter<SocialFloorLiberationEncounter>());
-        }
+        List<EncounterModel> candidates = LiberationFloors.ThirdActDoubleBossCandidates
+            .Where(static descriptor => descriptor.Registered)
+            .Select(static descriptor => descriptor.Encounter)
+            .ToList();
 
         if (candidates.Count < 2)
         {
@@ -803,10 +775,9 @@ internal static class LibraryEncounterWeighting
         return candidates.Take(2).ToArray();
     }
 
+    // 图书馆幕只在自己楼层的幕序号上固定解放 Boss；放到别的幕序号上走普通 Boss 重排。
     private static bool IsLiberationBossTarget(ActModel act, int actIndex) =>
-        IsFirstActLiberationBossTarget(act, actIndex)
-        || IsArtFloorSecondActLiberationBossTarget(act, actIndex)
-        || IsThirdActLiberationBossTarget(act, actIndex);
+        LiberationFloors.ForAct(act)?.BossActIndex == actIndex;
 
     internal static void ForceHistoryFloorFirstActBoss(ActModel act, int actIndex)
     {
@@ -865,7 +836,8 @@ internal static class LibraryEncounterWeighting
         int actIndex)
     {
         RunState? state = RunManager.Instance.DebugOnlyGetState();
-        if (!LorActModel.IsThirdFamily(act)
+        EncounterModel? secondBoss = LiberationFloors.ForAct(act)?.DoubleBossSecondEncounter;
+        if (secondBoss == null
             || state == null
             || !ShouldApplyThirdActDoubleBossRule(
                 actIndex,
@@ -874,12 +846,7 @@ internal static class LibraryEncounterWeighting
             return null;
         }
 
-        return act switch
-        {
-            Chesed => ModelDb.Encounter<PhilosophyFloorLiberationEncounter>(),
-            Binah => ModelDb.Encounter<SocialFloorLiberationEncounter>(),
-            _ => null
-        };
+        return secondBoss;
     }
 
     private static void AppendModFirstSequence(
@@ -1138,16 +1105,10 @@ internal static class LibraryEncounterWeighting
             EncounterModel? boss = act is LorActModel libraryAct
                 ? libraryAct.ExpectedBoss
                 : act?.BossEncounter;
-            if (boss is NaturalFloorLiberationEncounter)
+            LiberationFloorDescriptor? floor = LiberationFloors.ForEncounter(boss);
+            if (floor != null)
             {
-                multiplier = encounter switch
-                {
-                    KingOfGreedElite => NaturalFloorKingOfGreedWeightMultiplier,
-                    QueenOfHatredStrong => NaturalFloorQueenOfHatredWeightMultiplier,
-                    DespairKnightStrong => NaturalFloorDespairKnightWeightMultiplier,
-                    WrathServantStrong => NaturalFloorWrathServantWeightMultiplier,
-                    _ => 1.0
-                };
+                multiplier = floor.PriorityWeightMultiplierFor(encounter);
             }
 
             return PriorityEncounterSelectionWeight * multiplier;
