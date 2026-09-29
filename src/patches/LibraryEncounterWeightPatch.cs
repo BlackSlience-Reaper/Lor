@@ -775,26 +775,6 @@ internal static class LibraryEncounterWeighting
         actIndex == DoubleBossActIndex
         && ascensionLevel >= (int)AscensionLevel.DoubleBoss;
 
-    private static bool IsThirdActLiberationEncounter(EncounterModel encounter) =>
-        encounter is PhilosophyFloorLiberationEncounter
-            or SocialFloorLiberationEncounter;
-
-    private static bool IsRegisteredThirdActLiberationEncounter(
-        EncounterModel encounter) =>
-        encounter switch
-        {
-            PhilosophyFloorLiberationEncounter =>
-                LiberationBossRegistry.RegisterPhilosophyFloorLiberation,
-            SocialFloorLiberationEncounter =>
-                LiberationBossRegistry.RegisterSocialFloorLiberation,
-            _ => false
-        };
-
-    internal static bool ShouldDeferThirdActDoubleBossSelection(
-        RunState state,
-        ActModel act,
-        int actIndex) => false;
-
     internal static IReadOnlyList<EncounterModel>
         ChooseThirdActDoubleBossSelection(
             ulong seed,
@@ -823,70 +803,6 @@ internal static class LibraryEncounterWeighting
         return candidates.Take(2).ToArray();
     }
 
-    private static bool IsValidThirdActDoubleBossSelection(
-        EncounterModel firstBoss,
-        EncounterModel secondBoss)
-    {
-        if (firstBoss.Id == secondBoss.Id)
-        {
-            return false;
-        }
-
-        bool firstIsLiberation =
-            IsThirdActLiberationEncounter(firstBoss);
-        bool secondIsLiberation =
-            IsThirdActLiberationEncounter(secondBoss);
-        return firstIsLiberation
-            && secondIsLiberation
-            && IsRegisteredThirdActLiberationEncounter(firstBoss)
-            && IsRegisteredThirdActLiberationEncounter(secondBoss);
-    }
-
-    private static void EnsureThirdActDoubleBossSelection(
-        ActModel act,
-        int actIndex)
-    {
-        EncounterModel firstBoss = act.BossEncounter;
-        EncounterModel secondBoss = act.SecondBossEncounter
-            ?? throw new InvalidOperationException(
-                "Third-act double-boss routing requires a second boss.");
-        if (IsValidThirdActDoubleBossSelection(firstBoss, secondBoss))
-        {
-            Log.Info(
-                $"{LogPrefix} {act.Id.Entry}: existing liberation-only boss pair "
-                + $"preserved ({FormatEncounter(firstBoss)}, "
-                + $"{FormatEncounter(secondBoss)}).");
-            return;
-        }
-
-        ulong seed = RunManager.Instance.DebugOnlyGetState()?.Rng.Seed
-            ?? StringHelper.GetDeterministicHashCode(act.Id.Entry);
-        const string labelPrefix =
-            "liberation_third_act_double_boss_choice";
-        string label = $"{labelPrefix}_{actIndex}_{act.Id.Entry}";
-        IReadOnlyList<EncounterModel> selection =
-            ChooseThirdActDoubleBossSelection(
-                seed,
-                label);
-        if (selection.Count != 2)
-        {
-            Log.Warn(
-                $"{LogPrefix} {act.Id.Entry}: fewer than two registered "
-                + "third-act liberation encounters were available for A10.");
-            return;
-        }
-
-        act.SetBossEncounter(selection[0]);
-        act.SetSecondBossEncounter(selection[1]);
-        Log.Info(
-            $"{LogPrefix} {act.Id.Entry}: selected A10 bosses from registered "
-            + $"third-act liberation encounters "
-            + $"[{nameof(PhilosophyFloorLiberationEncounter)}, "
-            + $"{nameof(SocialFloorLiberationEncounter)}]: "
-            + $"{FormatEncounter(selection[0])}, "
-            + $"{FormatEncounter(selection[1])}.");
-    }
-
     private static bool IsLiberationBossTarget(ActModel act, int actIndex) =>
         IsFirstActLiberationBossTarget(act, actIndex)
         || IsArtFloorSecondActLiberationBossTarget(act, actIndex)
@@ -909,66 +825,29 @@ internal static class LibraryEncounterWeighting
 
         Log.Info($"{LogPrefix} ForceBoss start: act={act.Id.Entry} index={actIndex}");
 
-        if (act is LorActModel libraryAct)
+        // IsOwnedAct 已保证是图书馆幕；这里只取出类型。
+        if (act is not LorActModel libraryAct)
         {
-            EncounterModel expectedBoss = libraryAct.ExpectedBoss;
-            if (act.BossEncounter.Id != expectedBoss.Id)
-            {
-                act.SetBossEncounter(expectedBoss);
-            }
-
-            EncounterModel? expectedSecondBoss = ResolveLibraryActSecondBoss(
-                libraryAct,
-                actIndex);
-            if (act.SecondBossEncounter?.Id != expectedSecondBoss?.Id)
-            {
-                act.SetSecondBossEncounter(expectedSecondBoss);
-            }
-
-            Log.Info(
-                $"{LogPrefix} {act.Id.Entry}: fixed boss {FormatEncounter(expectedBoss)}, "
-                + $"secondBoss {(expectedSecondBoss == null ? "none" : FormatEncounter(expectedSecondBoss))}.");
             return;
         }
 
-        if (IsThirdActLiberationBossTarget(act, actIndex)
-            && act.SecondBossEncounter != null)
+        EncounterModel expectedBoss = libraryAct.ExpectedBoss;
+        if (act.BossEncounter.Id != expectedBoss.Id)
         {
-            EnsureThirdActDoubleBossSelection(act, actIndex);
-            return;
+            act.SetBossEncounter(expectedBoss);
         }
 
-        EncounterModel currentBoss;
-        try
+        EncounterModel? expectedSecondBoss = ResolveLibraryActSecondBoss(
+            libraryAct,
+            actIndex);
+        if (act.SecondBossEncounter?.Id != expectedSecondBoss?.Id)
         {
-            currentBoss = act.BossEncounter;
-            Log.Info($"{LogPrefix} Current boss: {FormatEncounter(currentBoss)}");
-        }
-        catch (InvalidOperationException ex)
-        {
-            Log.Warn($"{LogPrefix} BossEncounter threw: {ex.Message}");
-            return;
+            act.SetSecondBossEncounter(expectedSecondBoss);
         }
 
-        bool alreadyExpectedLiberation =
-            IsThirdActLiberationBossTarget(act, actIndex)
-                ? currentBoss is PhilosophyFloorLiberationEncounter
-                : LiberationBossRegistry.IsLiberationEncounter(currentBoss);
-        if (alreadyExpectedLiberation)
-        {
-            Log.Info($"{LogPrefix} Already set to Liberation boss, skip.");
-            return;
-        }
-
-        EncounterModel? liberation = ChooseLiberationEncounter(act, actIndex);
-        if (liberation == null)
-        {
-            Log.Info($"{LogPrefix} No registered liberation candidate for act={act.Id.Entry} index={actIndex}");
-            return;
-        }
-
-        act.SetBossEncounter(liberation);
-        Log.Info($"{LogPrefix} {act.Id.Entry}: forced liberation boss {FormatEncounter(liberation)}");
+        Log.Info(
+            $"{LogPrefix} {act.Id.Entry}: fixed boss {FormatEncounter(expectedBoss)}, "
+            + $"secondBoss {(expectedSecondBoss == null ? "none" : FormatEncounter(expectedSecondBoss))}.");
     }
 
     internal static EncounterModel? ChooseLiberationEncounter(ActModel act, int actIndex)
@@ -1385,15 +1264,8 @@ internal static class LibraryEncounterGenerateRoomsPatch
             {
                 if (ReferenceEquals(state.Acts[i], __instance))
                 {
-                    if (!LibraryEncounterWeighting
-                            .ShouldDeferThirdActDoubleBossSelection(
-                                state,
-                                __instance,
-                                i))
-                    {
-                        LibraryEncounterWeighting
-                            .ForceHistoryFloorFirstActBoss(__instance, i);
-                    }
+                    LibraryEncounterWeighting
+                        .ForceHistoryFloorFirstActBoss(__instance, i);
                     break;
                 }
             }
