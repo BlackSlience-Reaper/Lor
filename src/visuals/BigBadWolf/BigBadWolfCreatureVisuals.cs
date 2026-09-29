@@ -1,8 +1,20 @@
+using Godot;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.BigBadWolf;
 
 public sealed partial class BigBadWolfCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.BigBadWolf.BigBadWolf))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -178f), new(0.72f, 0.72f), -150f, -370f, 150f, 10f, new(0f, -178f), new(0f, -405f))
+    {
+        TalkPos = new Vector2(0f, -315f),
+        StolenCardPos = new Vector2(0f, -218f),
+        StolenCardScale = new Vector2(0.48f, 0.48f),
+    };
+
     private const string NormalVariant = "normal";
     private const string SwallowedVariant = "swallowed";
 

@@ -1,8 +1,19 @@
+using Godot;
+using LibraryOfRuina.monsters.LittleRedMercenary;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.LittleRedMercenary;
 
 public partial class LittleRedMercenaryCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LittleRedRidingHoodedMercenary))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -138f), new(-0.71f, 0.71f), -101f, -356f, 101f, 8f, new(0f, -146f), new(13f, -349f))
+    {
+        TalkPos = new Vector2(18f, -310f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

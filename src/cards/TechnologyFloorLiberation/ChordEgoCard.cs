@@ -40,6 +40,8 @@ public sealed class ChordEgoCard : EgoCardBase
         _previewDamageB = damageB;
         _previewDamageC = damageC;
         base.SetPreviewDamage(damageA);
+        DynamicVars["DamageB"].BaseValue = damageB;
+        DynamicVars["DamageC"].BaseValue = damageC;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

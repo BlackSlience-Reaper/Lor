@@ -1,9 +1,19 @@
+using Godot;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.ArtFloorLiberation;
 
 public sealed partial class ArtFloorNostalgicScentCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ArtFloorNostalgicScentBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -30f), new(0.58f, 0.58f), -148f, -340f, 148f, 12f, new(0f, -154f), new(0f, -370f))
+    {
+        TalkPos = new Vector2(0f, -292f),
+        StateDisplayLiftY = 30f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

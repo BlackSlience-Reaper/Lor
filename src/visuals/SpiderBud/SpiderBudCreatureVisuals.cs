@@ -1,7 +1,13 @@
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.SpiderBud;
 
 public partial class SpiderBudCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.SpiderBud.SpiderBud))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -152f), new(0.72f, 0.72f), -140f, -305f, 140f, 8f, new(0f, -145f), new(0f, -330f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

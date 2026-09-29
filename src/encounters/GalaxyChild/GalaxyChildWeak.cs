@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.GalaxyChild;
 
-public sealed class GalaxyChildWeak : EncounterModel
+public sealed class GalaxyChildWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "GalaxyChildBGM",
+        GuestReceptionPoolRegistry.NetzachReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool IsWeak => true;

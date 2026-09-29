@@ -1,7 +1,10 @@
 using System;
+using LibraryOfRuina.monsters.LiteratureFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.LiteratureFloorLiberation;
 
+[MonsterVisual(typeof(LiteratureFloorBloodlustBoss), ScenePath = LiteratureFloorBloodlustCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorBloodlustCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {

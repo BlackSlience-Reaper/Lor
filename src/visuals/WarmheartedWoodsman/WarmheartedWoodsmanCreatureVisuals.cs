@@ -1,10 +1,35 @@
+using Godot;
 using LibraryOfRuina.monsters.WarmheartedWoodsman;
+using LibraryOfRuina.patches;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.WarmheartedWoodsman;
 
 public sealed partial class WarmheartedWoodsmanCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(monsters.WarmheartedWoodsman.WarmheartedWoodsman))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -8f), new(0.87f, 0.87f), -190f, -430f, 190f, 16f, new(0f, -190f), new(0f, -455f))
+    {
+        TalkPos = new Vector2(0f, -360f),
+        StateDisplayLiftY = 40f,
+    };
+
+    // 按樵夫当前是否持有温暖之心选初始立绘与 _Ready 时的变体。
+    [MonsterVisualFactory]
+    internal static NCreatureVisuals CreateForMonster(MonsterModel monster)
+    {
+        string id = monster.Id.Entry;
+        return WrappedMonsterVisualFactory.CreateScriptedSpriteVisuals<WarmheartedWoodsmanCreatureVisuals>(
+            id,
+            monster is monsters.WarmheartedWoodsman.WarmheartedWoodsman { HasWarmHeart: true }
+                ? monsters.WarmheartedWoodsman.WarmheartedWoodsman.WarmIdleTexturePath
+                : monsters.WarmheartedWoodsman.WarmheartedWoodsman.EmptyIdleTexturePath,
+            visuals => visuals.StartsWarm = monster is monsters.WarmheartedWoodsman.WarmheartedWoodsman { HasWarmHeart: true });
+    }
+
     private const string EmptyVariant = "empty";
     private const string WarmVariant = "warm";
 
@@ -85,6 +110,13 @@ public sealed partial class WarmheartedWoodsmanCreatureVisuals
 public sealed partial class WoodsmanTreeCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(WoodsmanTree))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -10f), new(0.36f, 0.36f), -190f, -420f, 190f, 12f, new(0f, -200f), new(0f, -455f))
+    {
+        StateDisplayLiftY = 18f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

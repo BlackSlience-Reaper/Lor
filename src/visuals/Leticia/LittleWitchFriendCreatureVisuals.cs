@@ -1,7 +1,14 @@
+using LibraryOfRuina.monsters.Leticia;
+using LibraryOfRuina.patches;
+
 namespace LibraryOfRuina.visuals.Leticia;
 
 public partial class LittleWitchFriendCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(LittleWitchFriend))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -94f), new(0.43f, 0.43f), -126f, -202f, 126f, 8f, new(0f, -98f), new(0f, -242f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
