@@ -223,8 +223,6 @@ LibraryOfRuina.patches.MonsterStateMachineHideHoverTipsPatch	Postfix	HideHoverTi
 LibraryOfRuina.patches.MonsterStateMachineHoverTipLayoutPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Localization.LocManager), "SetLanguage")
 LibraryOfRuina.patches.MonsterStateMachineHoverTipsPatch	Postfix	ShowHoverTipsPostfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "ShowHoverTips")
 LibraryOfRuina.patches.MonsterVisualsReadyDebugPatch	Finalizer	Finalizer	returns=System.Exception	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreatureVisuals), "_Ready")
-LibraryOfRuina.patches.MultiplayerConfigFingerprintPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Modding.ModManager), "GetGameplayRelevantModNameList")
-LibraryOfRuina.patches.MultiplayerConfigMismatchErrorPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Multiplayer.NetErrorInfo), "GetErrorString")
 LibraryOfRuina.patches.MusiciansOfBremen.BremenEncounterLayoutPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreatureStateDisplay), "SetCreature")
 LibraryOfRuina.patches.NGameQuitExtSettingsSavePatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.NGame), "Quit")
 LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorAnimatedBackgroundPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "SetUpBackground")

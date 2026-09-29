@@ -1072,8 +1072,6 @@ LibraryOfRuina.patches.MonsterStateMachineHoverTipLayoutPatch
 LibraryOfRuina.patches.MonsterStateMachineHoverTipsPatch
 LibraryOfRuina.patches.MonsterStateMachineHideHoverTipsPatch
 LibraryOfRuina.patches.MonsterModelCreateVisualsPatch
-LibraryOfRuina.patches.MultiplayerConfigFingerprintPatch
-LibraryOfRuina.patches.MultiplayerConfigMismatchErrorPatch
 LibraryOfRuina.patches.MultiplayerScalingPatchHelper
 LibraryOfRuina.patches.ScaledMonsterHealVar
 LibraryOfRuina.patches.PageChoiceHoverTip
@@ -1947,7 +1945,6 @@ LibraryOfRuina.compat.RewardSyncCompat
 LibraryOfRuina.compat.RunLobbyEventsCompat
 LibraryOfRuina.compat.RunManagerCompat
 LibraryOfRuina.compat.SavedPropertiesTypeCacheCompat
-LibraryOfRuina.compat.LibraryOfRuinaCompatibilityFingerprint
 LibraryOfRuina.combat.AllyType
 LibraryOfRuina.combat.AllyPersistence
 LibraryOfRuina.combat.IAllyTurnProvider
