@@ -9,7 +9,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -28,7 +27,7 @@ public enum SongMachinePageMode
     Addiction = 3
 }
 
-public sealed class SongMachinePageRelic : RelicModel
+public sealed class SongMachinePageRelic : ModalPageRelic<SongMachinePageMode>
 {
     internal const int MusicStartStrength = 1;
     internal const int MusicKillHeal = 4;
@@ -75,43 +74,18 @@ public sealed class SongMachinePageRelic : RelicModel
     [SavedProperty]
     public SongMachinePageMode Mode { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override SongMachinePageMode SelectedMode
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != SongMachinePageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        Mode = ResolveModeFromChoiceCard(chosenCard);
-        UpdateModeUiState();
+        get => Mode;
+        set => Mode = value;
     }
 
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        return Task.CompletedTask;
-    }
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
+    // 预选写入模式时还会通知一次图标变化，获得时选择则不会。
+    protected override void ApplyPreselectedMode(SongMachinePageMode mode) => AssignPreselectedModeOnly(mode);
 
     public override async Task BeforeCombatStart()
     {
@@ -195,7 +169,7 @@ public sealed class SongMachinePageRelic : RelicModel
         await CreatureCmd.Heal(Owner.Creature, MusicKillHeal);
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -205,56 +179,9 @@ public sealed class SongMachinePageRelic : RelicModel
         ];
     }
 
-    private static SongMachinePageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            SongMachineMusicChoiceCard => SongMachinePageMode.Music,
-            SongMachineMelodyChoiceCard => SongMachinePageMode.Melody,
-            SongMachineAddictionChoiceCard => SongMachinePageMode.Addiction,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
+    protected override void ResetStateOnFallback() => _healedCombatIds.Clear();
 
-    private static bool IsKnownMode(SongMachinePageMode mode)
-    {
-        return mode is SongMachinePageMode.None
-            or SongMachinePageMode.Music
-            or SongMachinePageMode.Melody
-            or SongMachinePageMode.Addiction;
-    }
-
-    private static bool IsConcreteMode(SongMachinePageMode mode)
-    {
-        return mode is SongMachinePageMode.Music
-            or SongMachinePageMode.Melody
-            or SongMachinePageMode.Addiction;
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        SongMachinePageMode oldMode = Mode;
-        Mode = SongMachinePageMode.Music;
-        _healedCombatIds.Clear();
-        Log.Warn("[LibraryOfRuina.PageRelic] SongMachinePageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Music.");
-        UpdateModeUiState();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = RelicStatus.Normal;

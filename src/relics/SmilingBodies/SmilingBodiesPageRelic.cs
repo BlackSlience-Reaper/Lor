@@ -13,8 +13,6 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -22,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.SmilingBodies;
 
-public sealed class SmilingBodiesPageRelic : LibraryRelicModel
+public sealed class SmilingBodiesPageRelic : ModalPageRelic<SmilingBodiesPageMode>
 {
     public const int CorpseLaughsChaosDamage = 8;
     public const int CorpseLaughsVulnerable = 1;
@@ -99,6 +97,12 @@ public sealed class SmilingBodiesPageRelic : LibraryRelicModel
     [SavedProperty]
     public SmilingBodiesPageMode Mode { get; private set; }
 
+    protected override SmilingBodiesPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int AbsorptionHealsUsed { get; private set; }
 
@@ -138,45 +142,6 @@ public sealed class SmilingBodiesPageRelic : LibraryRelicModel
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int[]? CorpseMountainSavedHps { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != SmilingBodiesPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override Task BeforeCombatStart()
     {
@@ -611,7 +576,7 @@ public sealed class SmilingBodiesPageRelic : LibraryRelicModel
         return -1;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -621,69 +586,15 @@ public sealed class SmilingBodiesPageRelic : LibraryRelicModel
         ];
     }
 
-    private static SmilingBodiesPageMode ResolveModeFromChoiceCard(CardModel? card)
+    protected override void ResetStateOnFallback()
     {
-        return card switch
-        {
-            SmilingBodiesCorpseLaughsChoiceCard => SmilingBodiesPageMode.CorpseLaughs,
-            SmilingBodiesCorpseAbsorptionChoiceCard => SmilingBodiesPageMode.CorpseAbsorption,
-            SmilingBodiesCorpseMountainChoiceCard => SmilingBodiesPageMode.CorpseMountain,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(SmilingBodiesPageMode mode)
-    {
-        return mode is SmilingBodiesPageMode.None
-            or SmilingBodiesPageMode.CorpseLaughs
-            or SmilingBodiesPageMode.CorpseAbsorption
-            or SmilingBodiesPageMode.CorpseMountain;
-    }
-
-    private static bool IsConcreteMode(SmilingBodiesPageMode mode)
-    {
-        return mode is SmilingBodiesPageMode.CorpseLaughs
-            or SmilingBodiesPageMode.CorpseAbsorption
-            or SmilingBodiesPageMode.CorpseMountain;
-    }
-
-    private void SetMode(SmilingBodiesPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        SmilingBodiesPageMode oldMode = Mode;
-        Mode = SmilingBodiesPageMode.CorpseLaughs;
         AbsorptionHealsUsed = 0;
         AbsorptionCumulativeHealPercent = 0;
         AbsorptionGrantedThisCombat = 0;
         CorpseMountainCooldownRemaining = 0;
-        Log.Warn("[LibraryOfRuina.PageRelic] SmilingBodiesPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to CorpseLaughs.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["RemainingHeals"].BaseValue =
@@ -711,27 +622,6 @@ public sealed class SmilingBodiesPageRelic : LibraryRelicModel
             _ => RelicStatus.Normal
         };
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

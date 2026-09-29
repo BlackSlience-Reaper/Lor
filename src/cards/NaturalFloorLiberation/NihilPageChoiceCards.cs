@@ -1,28 +1,14 @@
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
-using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.cards.NaturalFloorLiberation;
 
-public abstract class NihilPageChoiceCardBase() : CardModel(
-    -1, CardType.Skill, CardRarity.Ancient, TargetType.None, shouldShowInCardLibrary: false)
+public abstract class NihilPageChoiceCardBase : PageChoiceCard<NihilPageMode>
 {
-    protected abstract string PortraitName { get; }
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
-    public override string PortraitPath =>
-        $"res://images/packed/card_portraits/colorless/{PortraitName}.png";
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("Weak", NihilPageRelic.NihilityWeak),
@@ -38,13 +24,17 @@ public abstract class NihilPageChoiceCardBase() : CardModel(
 [CardPool(typeof(TokenCardPool))]
 public sealed class NihilMagicalGirlsChoiceCard : NihilPageChoiceCardBase
 {
-    protected override string PortraitName => "nihil_magical_girls";
+    public override NihilPageMode PageMode => NihilPageMode.MagicalGirls;
+
+    protected override string PortraitFileName => "nihil_magical_girls.png";
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class NihilEmptinessChoiceCard : NihilPageChoiceCardBase
 {
-    protected override string PortraitName => "nihil_emptiness";
+    public override NihilPageMode PageMode => NihilPageMode.Emptiness;
+
+    protected override string PortraitFileName => "nihil_emptiness.png";
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
@@ -55,7 +45,9 @@ public sealed class NihilEmptinessChoiceCard : NihilPageChoiceCardBase
 [CardPool(typeof(TokenCardPool))]
 public sealed class NihilNihilityChoiceCard : NihilPageChoiceCardBase
 {
-    protected override string PortraitName => "nihil_nihility";
+    public override NihilPageMode PageMode => NihilPageMode.Nihility;
+
+    protected override string PortraitFileName => "nihil_nihility.png";
 
     protected override void AddExtraArgsToDescription(LocString description)
     {

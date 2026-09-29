@@ -10,7 +10,6 @@ using LibraryOfRuina.powers.LanguageFloorLiberation;
 using LibraryOfRuina.scene_transitions;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
@@ -19,7 +18,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 namespace LibraryOfRuina.encounters.LanguageFloorLiberation;
 
 public sealed class LanguageFloorLiberationEncounter :
-    EncounterModel,
+    LiberationEncounterBase,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
@@ -228,46 +227,19 @@ public sealed class LanguageFloorLiberationEncounter :
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        CurrentPhase = state.TryGetValue(CurrentPhaseKey, out string? phase)
-            && int.TryParse(phase, out int parsedPhase)
-            ? Math.Max(1, parsedPhase)
-            : 1;
-        PhaseComplete = state.TryGetValue(PhaseCompleteKey, out string? complete)
-            && bool.TryParse(complete, out bool parsedComplete)
-            && parsedComplete;
-        TransitionPending = state.TryGetValue(
-                TransitionPendingKey,
-                out string? transition)
-            && bool.TryParse(transition, out bool parsedTransition)
-            && parsedTransition;
-        KilledBossCount = state.TryGetValue(
-                KilledBossCountKey,
-                out string? killedBossCount)
-            && int.TryParse(killedBossCount, out int parsedKilledBossCount)
-                ? Math.Clamp(parsedKilledBossCount, 0, MaxPhase)
-                : Math.Clamp(
-                    PhaseComplete ? CurrentPhase : CurrentPhase - 1,
-                    0,
-                    MaxPhase);
-        SettlementTriggered = state.TryGetValue(
-                SettlementTriggeredKey,
-                out string? settlementTriggered)
-            && bool.TryParse(
-                settlementTriggered,
-                out bool parsedSettlementTriggered)
-            && parsedSettlementTriggered;
-        EndedByLethalDamage = state.TryGetValue(
-                EndedByLethalDamageKey,
-                out string? endedByLethalDamage)
-            && bool.TryParse(
-                endedByLethalDamage,
-                out bool parsedEndedByLethalDamage)
-            && parsedEndedByLethalDamage;
-    }
-
-    public void RefreshLiberationPhaseBgm()
-    {
-        EncounterBgmController.RefreshCurrentEncounterTrack();
+        var bag = new EncounterStateBag(state);
+        // 阶段只保证不小于 1，不按 MaxPhase 钳制上限。
+        CurrentPhase = Math.Max(1, bag.ReadInt(CurrentPhaseKey, 1));
+        PhaseComplete = bag.ReadBool(PhaseCompleteKey);
+        TransitionPending = bag.ReadBool(TransitionPendingKey);
+        // 没有击杀数的旧档按阶段推算：本阶段已完成则算上本阶段。
+        KilledBossCount = bag.ReadClampedInt(
+            KilledBossCountKey,
+            PhaseComplete ? CurrentPhase : CurrentPhase - 1,
+            0,
+            MaxPhase);
+        SettlementTriggered = bag.ReadBool(SettlementTriggeredKey);
+        EndedByLethalDamage = bag.ReadBool(EndedByLethalDamageKey);
     }
 
     public async Task EnsureControllerPowers(CombatStateLike? combatState)
@@ -494,7 +466,9 @@ public sealed class LanguageFloorLiberationEncounter :
             EndedByLethalDamage = true;
             LanguageFloorLiberationSettlementStore.Record(this);
 
-            await EndCombatAsLiberationVictory(creature.CombatState);
+            await EndCombatAsLiberationVictory(
+                creature.CombatState,
+                deferRecheckIfNotEnded: true);
             return;
         }
 
@@ -974,54 +948,4 @@ public sealed class LanguageFloorLiberationEncounter :
     //         }
     //     }
     // }
-
-    private static async Task EndCombatAsLiberationVictory(
-        CombatStateLike? combatState)
-    {
-        if (combatState == null || !CombatManager.Instance.IsInProgress)
-        {
-            // 战斗已经结束/正在结束：不再进入击杀与胜负复核管线。
-            return;
-        }
-
-        foreach (Creature enemy in combatState.Enemies.ToArray())
-        {
-            if (enemy.IsAlive)
-            {
-                await CreatureCmd.Kill(enemy, force: true);
-            }
-        }
-
-        if (CombatManager.Instance.IsInProgress)
-        {
-            bool ended = await CombatManager.Instance.CheckWinCondition();
-            if (!ended)
-            {
-                ScheduleDeferredWinConditionCheck();
-            }
-        }
-    }
-
-    private static void ScheduleDeferredWinConditionCheck()
-    {
-        Callable.From(() =>
-        {
-            if (CombatManager.Instance.IsInProgress)
-            {
-                _ = TaskHelper.RunSafely(
-                    CombatManager.Instance.CheckWinCondition());
-            }
-        }).CallDeferred();
-    }
-
-    private static bool IsLastAlivePlayer(Creature creature)
-    {
-        if (creature.CombatState is not { } combatState)
-        {
-            return false;
-        }
-
-        return !combatState.PlayerCreatures.Any(
-            player => player != creature && player.IsAlive);
-    }
 }

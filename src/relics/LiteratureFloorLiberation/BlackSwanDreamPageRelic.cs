@@ -6,7 +6,6 @@ using LibraryOfRuina.interop;
 using LibraryOfRuina.cards.LiteratureFloorLiberation;
 using LibraryOfRuina.compat;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -14,7 +13,6 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Rooms;
@@ -24,7 +22,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.LiteratureFloorLiberation;
 
-public sealed class BlackSwanDreamPageRelic : LibraryRelicModel
+public sealed class BlackSwanDreamPageRelic : ModalPageRelic<BlackSwanDreamPageMode>
 {
     internal const int FilthDebuffMultiplier = 3;
     internal const int BrokenUmbrellaTurnInterval = 4;
@@ -107,6 +105,16 @@ public sealed class BlackSwanDreamPageRelic : LibraryRelicModel
     [SavedProperty]
     public BlackSwanDreamPageMode Mode { get; private set; }
 
+    protected override BlackSwanDreamPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool FilthUsedThisTurn { get; private set; }
 
@@ -127,46 +135,6 @@ public sealed class BlackSwanDreamPageRelic : LibraryRelicModel
         _dearFamilyTriggerTurn = false;
         _dearFamilySlipperyCandidate = false;
         _dearFamilySlipperyShouldConsume = false;
-    }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != BlackSwanDreamPageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        _ = room;
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        return Task.CompletedTask;
     }
 
     public override Task BeforeCombatStart()
@@ -497,79 +465,12 @@ public sealed class BlackSwanDreamPageRelic : LibraryRelicModel
             && !target.HasPower<ArtifactPower>();
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards() =>
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards() =>
     [
         Owner.RunState.CreateCard<BlackSwanFilthChoiceCard>(Owner),
         Owner.RunState.CreateCard<BlackSwanBrokenUmbrellaChoiceCard>(Owner),
         Owner.RunState.CreateCard<BlackSwanDearFamilyChoiceCard>(Owner)
     ];
-
-    private static BlackSwanDreamPageMode ResolveModeFromChoiceCard(
-        CardModel? card) => card switch
-    {
-        BlackSwanFilthChoiceCard => BlackSwanDreamPageMode.Filth,
-        BlackSwanBrokenUmbrellaChoiceCard =>
-            BlackSwanDreamPageMode.BrokenUmbrella,
-        BlackSwanDearFamilyChoiceCard =>
-            BlackSwanDreamPageMode.DearFamily,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    private static bool IsKnownMode(BlackSwanDreamPageMode mode) =>
-        mode is BlackSwanDreamPageMode.None
-            or BlackSwanDreamPageMode.Filth
-            or BlackSwanDreamPageMode.BrokenUmbrella
-            or BlackSwanDreamPageMode.DearFamily;
-
-    private static bool IsConcreteMode(BlackSwanDreamPageMode mode) =>
-        mode is BlackSwanDreamPageMode.Filth
-            or BlackSwanDreamPageMode.BrokenUmbrella
-            or BlackSwanDreamPageMode.DearFamily;
-
-    private void SetMode(BlackSwanDreamPageMode mode)
-    {
-        Mode = mode;
-        FilthUsedThisTurn = false;
-        BrokenUmbrellaTurnsSeenAcrossCombats = 0;
-        BrokenUmbrellaTriggerTurn = false;
-        DearFamilyTurnsSeenAcrossCombats = 0;
-        _dearFamilyTriggerTurn = false;
-        _dearFamilySlipperyCandidate = false;
-        _dearFamilySlipperyShouldConsume = false;
-        ClearFilthPowerTracking();
-        UpdateModeUiState();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        BlackSwanDreamPageMode oldMode = Mode;
-        Mode = BlackSwanDreamPageMode.Filth;
-        FilthUsedThisTurn = false;
-        BrokenUmbrellaTurnsSeenAcrossCombats = 0;
-        BrokenUmbrellaTriggerTurn = false;
-        DearFamilyTurnsSeenAcrossCombats = 0;
-        _dearFamilyTriggerTurn = false;
-        _dearFamilySlipperyCandidate = false;
-        _dearFamilySlipperyShouldConsume = false;
-        ClearFilthPowerTracking();
-        Log.Warn(
-            "[LibraryOfRuina.PageRelic] BlackSwanDreamPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Filth.");
-        UpdateModeUiState();
-    }
 
     private void ClearFilthPowerTracking()
     {
@@ -577,7 +478,21 @@ public sealed class BlackSwanDreamPageRelic : LibraryRelicModel
         _filthPowerAwaitingCommit = null;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(BlackSwanDreamPageMode mode)
+    {
+        FilthUsedThisTurn = false;
+        BrokenUmbrellaTurnsSeenAcrossCombats = 0;
+        BrokenUmbrellaTriggerTurn = false;
+        DearFamilyTurnsSeenAcrossCombats = 0;
+        _dearFamilyTriggerTurn = false;
+        _dearFamilySlipperyCandidate = false;
+        _dearFamilySlipperyShouldConsume = false;
+        ClearFilthPowerTracking();
+    }
+
+    protected override void ResetStateOnFallback() => ResetStateOnModeSet(FallbackMode);
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch

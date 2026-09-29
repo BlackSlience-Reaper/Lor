@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes;
@@ -30,7 +29,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.QueenOfHatred;
 
-public sealed class QueenOfHatredPageRelic : RelicModel
+public sealed class QueenOfHatredPageRelic : ModalPageRelic<QueenOfHatredPageMode>
 {
     internal const int PhilanthropyHealAmount = 4;
     internal const int PhilanthropyTriggersPerTurn = 1;
@@ -97,6 +96,12 @@ public sealed class QueenOfHatredPageRelic : RelicModel
     [SavedProperty]
     public QueenOfHatredPageMode Mode { get; private set; }
 
+    protected override QueenOfHatredPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PhilanthropyTriggersRemainingThisTurn { get; private set; }
 
@@ -106,45 +111,6 @@ public sealed class QueenOfHatredPageRelic : RelicModel
     
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int JusticeTurnsSeenThisCombat { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != QueenOfHatredPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -249,7 +215,7 @@ public sealed class QueenOfHatredPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -259,64 +225,14 @@ public sealed class QueenOfHatredPageRelic : RelicModel
         ];
     }
 
-    private static QueenOfHatredPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            QueenOfHatredPhilanthropyChoiceCard => QueenOfHatredPageMode.Philanthropy,
-            QueenOfHatredJusticeChoiceCard => QueenOfHatredPageMode.Justice,
-            QueenOfHatredHatredChoiceCard => QueenOfHatredPageMode.Hatred,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(QueenOfHatredPageMode mode)
-    {
-        return mode is QueenOfHatredPageMode.None
-            or QueenOfHatredPageMode.Philanthropy
-            or QueenOfHatredPageMode.Justice
-            or QueenOfHatredPageMode.Hatred;
-    }
-
-    private static bool IsConcreteMode(QueenOfHatredPageMode mode)
-    {
-        return mode is QueenOfHatredPageMode.Philanthropy
-            or QueenOfHatredPageMode.Justice
-            or QueenOfHatredPageMode.Hatred;
-    }
-
-    private void SetMode(QueenOfHatredPageMode mode)
+    // 先换背包图标再刷新界面状态，顺序与基类相反。
+    protected override void SetMode(QueenOfHatredPageMode mode)
     {
         Mode = mode;
         ResetTransientCombatState();
         RelicIconChanged();
         RefreshInventoryIcon();
         UpdateModeUiState();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        QueenOfHatredPageMode oldMode = Mode;
-        Mode = QueenOfHatredPageMode.Philanthropy;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] QueenOfHatredPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Philanthropy.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
     private void ResetTransientCombatState()
@@ -338,7 +254,9 @@ public sealed class QueenOfHatredPageRelic : RelicModel
         UpdateModeUiState();
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -404,26 +322,5 @@ public sealed class QueenOfHatredPageRelic : RelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

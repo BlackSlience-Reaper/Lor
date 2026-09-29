@@ -7,14 +7,10 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -22,7 +18,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.TodaysShyLook;
 
-public sealed class TodaysShyLookPageRelic : RelicModel
+public sealed class TodaysShyLookPageRelic : ModalPageRelic<TodaysShyLookPageMode>
 {
     internal const int TodaysExpressionStrengthMin = -1;
     internal const int TodaysExpressionStrengthMax = 3;
@@ -74,43 +70,10 @@ public sealed class TodaysShyLookPageRelic : RelicModel
     [SavedProperty]
     public TodaysShyLookPageMode Mode { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override TodaysShyLookPageMode SelectedMode
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != TodaysShyLookPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
+        get => Mode;
+        set => Mode = value;
     }
 
     public override async Task BeforeCombatStart()
@@ -183,7 +146,7 @@ public sealed class TodaysShyLookPageRelic : RelicModel
         }
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -193,89 +156,10 @@ public sealed class TodaysShyLookPageRelic : RelicModel
         ];
     }
 
-    private static TodaysShyLookPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            TodaysShyLookTodaysExpressionChoiceCard => TodaysShyLookPageMode.TodaysExpression,
-            TodaysShyLookShynessChoiceCard => TodaysShyLookPageMode.Shyness,
-            TodaysShyLookSocialDistanceChoiceCard => TodaysShyLookPageMode.SocialDistance,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(TodaysShyLookPageMode mode)
-    {
-        return mode is TodaysShyLookPageMode.None
-            or TodaysShyLookPageMode.TodaysExpression
-            or TodaysShyLookPageMode.Shyness
-            or TodaysShyLookPageMode.SocialDistance;
-    }
-
-    private static bool IsConcreteMode(TodaysShyLookPageMode mode)
-    {
-        return mode is TodaysShyLookPageMode.TodaysExpression
-            or TodaysShyLookPageMode.Shyness
-            or TodaysShyLookPageMode.SocialDistance;
-    }
-
-    private void SetMode(TodaysShyLookPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        TodaysShyLookPageMode oldMode = Mode;
-        Mode = TodaysShyLookPageMode.TodaysExpression;
-        Log.Warn("[LibraryOfRuina.PageRelic] TodaysShyLookPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to TodaysExpression.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

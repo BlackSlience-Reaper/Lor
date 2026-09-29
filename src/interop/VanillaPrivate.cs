@@ -54,7 +54,6 @@ internal static class VanillaPrivate
         new("OnPlay", [typeof(PlayerChoiceContext), typeof(CardPlay)]);
     internal static readonly VanillaPrivateProperty<OrbModel, string> OrbModelIconPath = new("IconPath");
     internal static readonly VanillaPrivateMethod<OrbModel> OrbModelPlayEvokeSfx = new("PlayEvokeSfx");
-    internal static readonly VanillaPrivateMethod<RelicModel> RelicModelRelicIconChanged = new("RelicIconChanged");
     internal static readonly VanillaPrivateFieldRef<MegaCrit.Sts2.Core.Models.Relics.BeatingRemnant, decimal> BeatingRemnantDamageReceivedThisTurn =
         new("_damageReceivedThisTurn");
 

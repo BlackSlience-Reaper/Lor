@@ -95,16 +95,6 @@ public sealed class KingOfGreedEnhancedPageRelic : EnhancedMagicalGirlPageRelic<
         CreateUpgradedChoice<KingOfGreedGreedChoiceCard>()
     ];
 
-    private static KingOfGreedPageMode ResolveModeFromChoiceCard(CardModel? card) => card switch
-    {
-        KingOfGreedIndulgenceChoiceCard => KingOfGreedPageMode.Indulgence,
-        KingOfGreedHappinessPathChoiceCard => KingOfGreedPageMode.HappinessPath,
-        KingOfGreedGreedChoiceCard => KingOfGreedPageMode.Greed,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    protected override KingOfGreedPageMode ResolveChoice(CardModel card) => ResolveModeFromChoiceCard(card);
-
     public override Task BeforeCombatStart()
     {
         EnsureMode();

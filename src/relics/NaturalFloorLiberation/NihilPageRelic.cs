@@ -119,16 +119,6 @@ public sealed class NihilPageRelic : EnhancedMagicalGirlPageRelic<NihilPageMode>
         Owner.RunState.CreateCard<NihilNihilityChoiceCard>(Owner)
     ];
 
-    private static NihilPageMode ResolveModeFromChoiceCard(CardModel? card) => card switch
-    {
-        NihilMagicalGirlsChoiceCard => NihilPageMode.MagicalGirls,
-        NihilEmptinessChoiceCard => NihilPageMode.Emptiness,
-        NihilNihilityChoiceCard => NihilPageMode.Nihility,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    protected override NihilPageMode ResolveChoice(CardModel card) => ResolveModeFromChoiceCard(card);
-
     protected override Task OnModeObtained() => ApplyPickupEffect();
 
     [AbnormalityPagePostObtainEffect]

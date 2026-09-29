@@ -1,18 +1,17 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using LibraryOfRuina.cards;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Relics;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.relics.NaturalFloorLiberation;
 
-public abstract class EnhancedMagicalGirlPageRelic<TMode> : LibraryRelicModel
+public abstract class EnhancedMagicalGirlPageRelic<TMode> : LibraryRelicModel, IModalPageRelic
     where TMode : struct, Enum
 {
     public override RelicRarity Rarity => RelicRarity.Event;
@@ -23,7 +22,7 @@ public abstract class EnhancedMagicalGirlPageRelic<TMode> : LibraryRelicModel
 
     protected abstract IReadOnlyList<CardModel> CreateModeChoiceCards();
 
-    protected abstract TMode ResolveChoice(CardModel card);
+    protected static TMode ResolveChoice(CardModel card) => PageChoiceCard<TMode>.ModeOf(card);
 
     protected CardModel CreateUpgradedChoice<TCard>() where TCard : CardModel, new()
     {
@@ -71,24 +70,7 @@ public abstract class EnhancedMagicalGirlPageRelic<TMode> : LibraryRelicModel
         UpdateModeUiState();
     }
 
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (ReferenceEquals(holder.Relic.Model, this))
-            {
-                holder.Relic.Icon.Texture = Icon;
-                holder.Relic.Outline.Texture = IconOutline;
-                break;
-            }
-        }
-    }
+    private void RefreshInventoryIcon() => PageRelicInventoryIcon.Refresh(this);
 
     protected void EnsureMode()
     {
@@ -112,4 +94,10 @@ public abstract class EnhancedMagicalGirlPageRelic<TMode> : LibraryRelicModel
         RefreshInventoryIcon();
         return Task.CompletedTask;
     }
+
+    bool IModalPageRelic.HasSelectedMode => Convert.ToInt32(SelectedMode) != 0;
+
+    IReadOnlyList<CardModel> IModalPageRelic.CreateModeChoiceCards() => CreateModeChoiceCards();
+
+    void IModalPageRelic.ApplyPreselectedChoice(CardModel chosenCard) => SetMode(ResolveChoice(chosenCard));
 }

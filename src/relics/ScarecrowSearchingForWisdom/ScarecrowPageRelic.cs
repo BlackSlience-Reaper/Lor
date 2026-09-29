@@ -14,10 +14,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -25,7 +22,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.ScarecrowSearchingForWisdom;
 
-public sealed class ScarecrowPageRelic : LibraryRelicModel
+public sealed class ScarecrowPageRelic : ModalPageRelic<ScarecrowPageMode>
 {
     internal const int RakeCardsToCopy = 2;
     //internal const int RakeCopiedCardCostIncrease = 1;
@@ -72,50 +69,22 @@ public sealed class ScarecrowPageRelic : LibraryRelicModel
     [SavedProperty]
     public ScarecrowPageMode Mode { get; private set; }
 
+    protected override ScarecrowPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int TornWisdomPlayedCardCounter { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(ScarecrowPageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != ScarecrowPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
+        SetMode(mode);
         if (Mode == ScarecrowPageMode.Rake)
         {
             await CopyDeckCardsOnPickup();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
     }
 
     public override Task BeforeCombatStart()
@@ -212,7 +181,7 @@ public sealed class ScarecrowPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -243,91 +212,13 @@ public sealed class ScarecrowPageRelic : LibraryRelicModel
         }
     }
 
-    private static ScarecrowPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            ScarecrowRakeChoiceCard => ScarecrowPageMode.Rake,
-            ScarecrowHarvestChoiceCard => ScarecrowPageMode.Harvest,
-            ScarecrowTornWisdomChoiceCard => ScarecrowPageMode.TornWisdom,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
+    protected override void ResetStateOnFallback() => TornWisdomPlayedCardCounter = 0;
 
-    private static bool IsKnownMode(ScarecrowPageMode mode)
-    {
-        return mode is ScarecrowPageMode.None
-            or ScarecrowPageMode.Rake
-            or ScarecrowPageMode.Harvest
-            or ScarecrowPageMode.TornWisdom;
-    }
-
-    private static bool IsConcreteMode(ScarecrowPageMode mode)
-    {
-        return mode is ScarecrowPageMode.Rake
-            or ScarecrowPageMode.Harvest
-            or ScarecrowPageMode.TornWisdom;
-    }
-
-    private void SetMode(ScarecrowPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        ScarecrowPageMode oldMode = Mode;
-        Mode = ScarecrowPageMode.Rake;
-        TornWisdomPlayedCardCounter = 0;
-        Log.Warn("[LibraryOfRuina.PageRelic] ScarecrowPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Rake.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == ScarecrowPageMode.TornWisdom && CombatManager.Instance.IsInProgress
             ? RelicStatus.Active
             : RelicStatus.Normal;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

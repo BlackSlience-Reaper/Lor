@@ -12,10 +12,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -23,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.WrathServant;
 
-public sealed class WrathServantPageRelic : RelicModel
+public sealed class WrathServantPageRelic : ModalPageRelic<WrathServantPageMode>
 {
     internal const int WrathEnergy = 3;
     internal const int WrathCards = 3;
@@ -74,6 +71,12 @@ public sealed class WrathServantPageRelic : RelicModel
     [SavedProperty]
     public WrathServantPageMode Mode { get; private set; }
 
+    protected override WrathServantPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FriendCombatId { get; private set; }
 
@@ -81,45 +84,6 @@ public sealed class WrathServantPageRelic : RelicModel
     public bool MarkedFriendThisTurn { get; private set; }
 
     private uint? FriendPendingKillByOwnerCombatId { get; set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != WrathServantPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -274,7 +238,7 @@ public sealed class WrathServantPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -284,65 +248,7 @@ public sealed class WrathServantPageRelic : RelicModel
         ];
     }
 
-    private static WrathServantPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            WrathServantWrathChoiceCard => WrathServantPageMode.Wrath,
-            WrathServantFriendChoiceCard => WrathServantPageMode.Friend,
-            WrathServantVenomChoiceCard => WrathServantPageMode.Venom,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(WrathServantPageMode mode)
-    {
-        return mode is WrathServantPageMode.None
-            or WrathServantPageMode.Wrath
-            or WrathServantPageMode.Friend
-            or WrathServantPageMode.Venom;
-    }
-
-    private static bool IsConcreteMode(WrathServantPageMode mode)
-    {
-        return mode is WrathServantPageMode.Wrath
-            or WrathServantPageMode.Friend
-            or WrathServantPageMode.Venom;
-    }
-
-    private void SetMode(WrathServantPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        WrathServantPageMode oldMode = Mode;
-        Mode = WrathServantPageMode.Wrath;
-        Log.Warn("[LibraryOfRuina.PageRelic] WrathServantPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Wrath.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = RelicStatus.Normal;
@@ -366,26 +272,5 @@ public sealed class WrathServantPageRelic : RelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

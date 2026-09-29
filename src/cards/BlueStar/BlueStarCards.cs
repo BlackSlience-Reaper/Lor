@@ -60,36 +60,8 @@ public sealed class BlueStarMartyrdomCard() :
     }
 }
 
-public abstract class BlueStarPageChoiceCardBase : CardModel
+public abstract class BlueStarPageChoiceCardBase : PageChoiceCard<BlueStarPageMode>
 {
-    public const string MartyrdomChoiceId =
-        "BLUE_STAR_MARTYRDOM_CHOICE_CARD";
-    public const string AtonementChoiceId =
-        "BLUE_STAR_ATONEMENT_CHOICE_CARD";
-    public const string VoiceChoiceId =
-        "BLUE_STAR_VOICE_OF_REMEMBRANCE_CHOICE_CARD";
-
-    protected abstract string PortraitFileName { get; }
-
-    protected BlueStarPageChoiceCardBase()
-        : base(
-            -1,
-            CardType.Skill,
-            CardRarity.Ancient,
-            TargetType.None,
-            shouldShowInCardLibrary: false)
-    {
-    }
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
-    public override string PortraitPath =>
-        $"res://images/packed/card_portraits/colorless/{PortraitFileName}";
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("ChaoDamage", BlueStarMartyrdomCard.BaseChaoDamage),
@@ -106,20 +78,14 @@ public abstract class BlueStarPageChoiceCardBase : CardModel
     [
         ..HoverTipFactory.FromCardWithCardHoverTips<BlueStarMartyrdomCard>()
     ];
-
-    public static bool IsBlueStarPageChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is MartyrdomChoiceId
-            or AtonementChoiceId
-            or VoiceChoiceId;
-    }
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class BlueStarMartyrdomChoiceCard :
     BlueStarPageChoiceCardBase
 {
+    public override BlueStarPageMode PageMode => BlueStarPageMode.Martyrdom;
+
     protected override string PortraitFileName =>
         "blue_star_martyrdom.png";
 }
@@ -128,6 +94,8 @@ public sealed class BlueStarMartyrdomChoiceCard :
 public sealed class BlueStarAtonementChoiceCard :
     BlueStarPageChoiceCardBase
 {
+    public override BlueStarPageMode PageMode => BlueStarPageMode.Atonement;
+
     protected override string PortraitFileName =>
         "blue_star_atonement_choice_card.png";
 }
@@ -136,6 +104,8 @@ public sealed class BlueStarAtonementChoiceCard :
 public sealed class BlueStarVoiceOfRemembranceChoiceCard :
     BlueStarPageChoiceCardBase
 {
+    public override BlueStarPageMode PageMode => BlueStarPageMode.VoiceOfRemembrance;
+
     protected override string PortraitFileName =>
         "blue_star_voice_of_remembrance_choice_card.png";
 }
