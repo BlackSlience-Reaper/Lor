@@ -30,7 +30,7 @@ internal static class MonsterExtensionPullNextEncounterGatePatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionEnabled)
+        if (LibraryRunSettings.MonsterExtensionEnabled)
         {
             if (BookShadowEncounterReplacement.TryReplaceActiveGuestEncounter(
                     __instance,
@@ -61,6 +61,8 @@ internal static class MonsterExtensionPullNextEncounterGatePatch
             return;
         }
 
+        // 本局的开关在局内不会再变，走到这里的是关闭内容的局里仍排着本模组遭遇的情况：开启时建的旧局
+        // 按关闭补建了本局设置，或本模组的幕原生遭遇池里就有本模组遭遇。两端读同一份本局设置，对称执行。
         LibraryEncounterWeighting.RestoreVanillaEncounters(RunManager.Instance.DebugOnlyGetState());
         if (LibraryEncounterWeighting.TryGetScheduledVanillaEncounter(
                 __instance,
@@ -78,7 +80,7 @@ internal static class MonsterExtensionPullNextEventGatePatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RunState runState, ref EventModel __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (LibraryRunSettings.IsMonsterExtensionEnabled(runState)
             || !MonsterExtensionRuntimeGate.IsInjectedByThisMod(__result))
         {
             return;
@@ -111,7 +113,7 @@ internal static class MonsterExtensionEventRelicPoolGatePatch
     [HarmonyPostfix]
     public static void Postfix(RelicPoolModel __instance, ref IEnumerable<RelicModel> __result)
     {
-        if (LibraryOfRuinaSettings.MonsterExtensionEnabled || __instance is not EventRelicPool)
+        if (LibraryRunSettings.MonsterExtensionEnabled || __instance is not EventRelicPool)
         {
             return;
         }

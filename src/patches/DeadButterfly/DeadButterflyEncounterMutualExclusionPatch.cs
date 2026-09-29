@@ -103,7 +103,7 @@ internal static class DeadButterflyEncounterMutualExclusionGenerateRoomsPatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (!LibraryRunSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsFirstFamily(__instance))
         {
             return;
@@ -125,7 +125,7 @@ internal static class DeadButterflyEncounterMutualExclusionPullNextPatch
     [HarmonyPostfix]
     public static void Postfix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (!LibraryRunSettings.MonsterExtensionEnabled
             || !LibraryOfRuinaActModel.IsFirstFamily(__instance)
             || roomType != RoomType.Monster
             || !DeadButterflyEncounterMutualExclusion.IsButterflyVariant(__result))

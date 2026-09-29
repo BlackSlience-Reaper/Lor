@@ -3,8 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
-using LibraryOfRuina.features.secondascension;
-using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -155,6 +153,11 @@ public static class SavedPropertiesTypeCacheCompat
 #endif
     }
 
+    /// <summary>
+    /// 本程序集 SavedProperty 的“类型全名 | 属性名 | 类型 | 序列化条件 | 顺序”与相关枚举值的文本，只给验证套件核对用。
+    /// 它不参与联机校验（v0.21.2 的联机指纹也只带设置，指纹已随 MultiplayerConfigFingerprintPatch 删除）；
+    /// 与旧版本能否联机由 net-id 布局和 manifest 版本号决定。
+    /// </summary>
     public static string BuildSchemaFingerprintMaterial()
     {
         StringBuilder builder = new();
@@ -279,20 +282,6 @@ public static class SavedPropertiesTypeCacheCompat
         Log.Error("[LibraryOfRuina.SavedProperties] Failed to refresh SavedPropertiesTypeCache.NetIdBitSize: " + reason);
 #endif
     }
-}
-
-public static class LibraryOfRuinaCompatibilityFingerprint
-{
-    public static string GetGameplayRelevantSuffix() =>
-        "+设置.抗性" + GetResistanceMode()
-        + ".第二进阶" + (LibrarySecondAscensionState.IsSelectionEnabled ? "开" : "关");
-
-    private static int GetResistanceMode() => LibraryOfRuinaSettings.ResistanceMode switch
-    {
-        1d => 1,
-        2d => 2,
-        _ => 3
-    };
 }
 
 #if !STS2_BETA

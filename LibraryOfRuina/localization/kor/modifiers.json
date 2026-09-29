@@ -1,4 +1,6 @@
 {
   "SPECIAL_GUEST_RUN_STATE.title": "특별 손님 내부 상태",
-  "SPECIAL_GUEST_RUN_STATE.description": "특별 손님의 해금, 소모, 무대, 스토리 및 추첨 상태를 저장합니다."
+  "SPECIAL_GUEST_RUN_STATE.description": "특별 손님의 해금, 소모, 무대, 스토리 및 추첨 상태를 저장합니다.",
+  "LIBRARY_RUN_SETTINGS.title": "폐허 도서관 도전 설정",
+  "LIBRARY_RUN_SETTINGS.description": "이번 도전을 시작할 때 정해진 폐허 도서관 설정(콘텐츠 활성화 여부와 내성 모드)을 저장합니다."
 }

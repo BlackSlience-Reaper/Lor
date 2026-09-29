@@ -96,7 +96,7 @@ internal static partial class LibraryEncounterWeighting
 
     public static void ReweightBosses(RunState? state)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || state == null)
+        if (state == null || !LibraryRunSettings.IsMonsterExtensionEnabled(state))
         {
             return;
         }
@@ -141,8 +141,8 @@ internal static partial class LibraryEncounterWeighting
 
     public static void ForceHistoryFloorFirstActBoss(RunState? state)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
-            || state == null
+        if (state == null
+            || !LibraryRunSettings.IsMonsterExtensionEnabled(state)
             || state.Acts.Count == 0)
         {
             return;
@@ -194,7 +194,7 @@ internal static partial class LibraryEncounterWeighting
 
     internal static void ForceHistoryFloorFirstActBoss(ActModel act, int actIndex)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (!LibraryRunSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act)
             || !LiberationBossRegistry.AnyLiberationRegistered)
         {

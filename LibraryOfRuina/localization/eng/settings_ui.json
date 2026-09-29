@@ -36,5 +36,7 @@
   "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.title": "Library of Ruina did not load",
   "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.body": "Mods incompatible with Library of Ruina were detected:\n\n{mods}\n\nTo protect your save, Library of Ruina skipped all content injection for this session: monsters, encounters, page relics and related settings are not active.\n\nUnsubscribe from or disable the mods above, then restart the game.",
   "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.item": "· {mod}\n  {reason}",
-  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES": "This mod patches the type check of the vanilla Neurosurge power and throws inside the page reward and choose-a-card screens, freezing the reward screen."
+  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES": "This mod patches the type check of the vanilla Neurosurge power and throws inside the page reward and choose-a-card screens, freezing the reward screen.",
+  "LIBRARYOFRUINA-INJECTION_MISMATCH.host_injected": "The host is running Library of Ruina content, but Library of Ruina did not load its content on this computer this session (\"Enable Library of Ruina content\" is off, or an incompatible mod was detected). Continuing would desync the run. Turn the setting on, restart the game, and join again.",
+  "LIBRARYOFRUINA-INJECTION_MISMATCH.host_not_injected": "The host did not load Library of Ruina content this session (\"Enable Library of Ruina content\" is off, or an incompatible mod was detected), but it is loaded on this computer. Continuing would desync the run. Both players must match: turn the setting off here and restart the game, or have the host turn it on and restart the game."
 }
