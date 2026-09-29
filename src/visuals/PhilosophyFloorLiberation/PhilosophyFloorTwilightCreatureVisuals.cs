@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using LibraryOfRuina.monsters.PhilosophyFloorLiberation;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.PhilosophyFloorLiberation;
@@ -56,6 +57,14 @@ public sealed partial class PhilosophyFloorTwilightCreatureVisuals
             DefaultRootFromCenterY * VisualScale);
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
+
+    [MonsterVisual(typeof(PhilosophyFloorTwilight))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -216f), new(0.45f, 0.45f), -315f, -624f, 315f, 12f, new(0f, -202f), new(36f, -508f))
+    {
+        TalkPos = new Vector2(0f, -540f),
+        StateDisplayLiftY = 52f,
+    };
 
     private AnimationPlayer? _animationPlayer;
     private Node2D? _attackFrameNormalizer;

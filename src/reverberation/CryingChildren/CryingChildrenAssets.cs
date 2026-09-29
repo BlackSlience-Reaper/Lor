@@ -1,4 +1,5 @@
 using LibraryOfRuina.guests.DawnOffice;
+using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
@@ -39,6 +40,7 @@ internal static class CryingChildrenAssets
         DawnOfficeDialogueHelper.Speak(monster, "REVERBERATION_PHILIP.banter." + moment);
 }
 
+[MonsterVisual(typeof(ReverberationPhilip), ScenePath = CryingChildrenAssets.PhilipScene)]
 internal sealed partial class ReverberationPhilipVisuals : SceneAnimatedCreatureVisuals
 {
     protected override string ResolveCurrentAnimationLibrary() =>
@@ -46,6 +48,7 @@ internal sealed partial class ReverberationPhilipVisuals : SceneAnimatedCreature
             ? "burning" : "normal";
 }
 
+[MonsterVisual(typeof(UnspeakingChild), ScenePath = CryingChildrenAssets.ChildScene)]
 internal sealed partial class UnspeakingChildVisuals : SceneAnimatedCreatureVisuals
 {
     protected override string ResolveCurrentAnimationLibrary() => "normal";
