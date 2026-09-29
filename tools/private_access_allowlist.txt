@@ -12,7 +12,7 @@ patches/GroupAttackEnemyTurnPriorityPatch.cs	GroupAttackEnemyTurnPriorityPatch.P
 patches/HarborMistDodgePatch.cs	HarborMistDodgePatch.InvokeOnPlayOrSkipMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	AccessTools.Method	本模组方法（nameof），Transpiler 替换的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.Transpiler	AccessTools.Method	本模组方法 DamagePreviewTrace.Record（nameof），Transpiler 插入的调用目标
-localization/PowerInlineIconSizing.cs	MeasureInlineDimensionsPatch.Transpiler	AccessTools.Method	Godot 公开方法 Texture2D.GetSize 与本模组方法（nameof），Transpiler 的匹配与替换目标
+core/localization/PowerInlineIconSizing.cs	MeasureInlineDimensionsPatch.Transpiler	AccessTools.Method	Godot 公开方法 Texture2D.GetSize 与本模组方法（nameof），Transpiler 的匹配与替换目标
 
 # Public members looked up by name on a runtime type.
 events/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetProperty	探测卡牌的公开“可升级”成员，各版本名字不同
@@ -22,7 +22,7 @@ features/secondascension/LibrarySecondAscensionUiPatch.cs	LibrarySecondAscension
 combat/CombatSafetyNet.cs	CombatSafetyNet.OverridesBeforeDeath	.GetMethod	只取公开虚方法 BeforeDeath，判断运行时类型是否覆写（诊断日志用）
 patches/RelicSavedModeDescriptionPatch.cs	RelicSavedModeDescriptionPatch.Postfix	AccessTools.Property	按约定探测任意遗物运行时类型上名为 Mode 的枚举属性（本模组多模式书页遗物用这个约定；遵循同一约定、带同名 DynamicVar 的其他遗物也会被处理）
 relics/AbnormalityPageRewardPreselection.cs	AbnormalityPageRewardPreselection.DiscoverPageRelics	AccessTools.Property	本模组书页遗物的 Mode 属性，声明在各遗物类上
-features/settings/ExtAutoModSettings.cs	ExtAutoModSettings.GenerateOptionsForAllProperties	.GetProperty	本模组设置类上的公开属性（按可见性条件里写的属性名）
+core/settings/ExtAutoModSettings.cs	ExtAutoModSettings.GenerateOptionsForAllProperties	.GetProperty	本模组设置类上的公开属性（按可见性条件里写的属性名）
 
 # Infrastructure that walks compiler-generated or third-party types.
 infra/patching/LibraryPatcher.cs	LibraryPatcher.GuardedBodies	.GetMethod	原版拷贝守卫：取任意 async/迭代器方法的编译器生成状态机 MoveNext

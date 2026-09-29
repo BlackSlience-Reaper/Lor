@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.cards.FuneralOfTheDeadButterflies;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.combat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.enchantments.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.CardSelection;

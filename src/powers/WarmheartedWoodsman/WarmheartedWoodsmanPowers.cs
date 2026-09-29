@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;

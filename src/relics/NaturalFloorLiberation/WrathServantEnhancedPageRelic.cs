@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.WrathServant;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.powers.WrathServant;

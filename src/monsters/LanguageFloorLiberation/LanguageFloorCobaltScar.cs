@@ -2,7 +2,7 @@ using LibraryLib.Models;
 using System;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.infra.helpers;

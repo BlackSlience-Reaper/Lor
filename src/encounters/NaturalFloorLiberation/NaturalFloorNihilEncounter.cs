@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.events.NaturalFloorLiberation;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using LibraryOfRuina.relics.DespairKnight;

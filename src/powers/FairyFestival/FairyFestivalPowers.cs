@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.FairyFestival;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.monsters.FairyFestival;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

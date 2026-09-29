@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 using LibraryLib.SpeedDice;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

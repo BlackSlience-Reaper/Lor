@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.cards.RedShoes;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.combat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;

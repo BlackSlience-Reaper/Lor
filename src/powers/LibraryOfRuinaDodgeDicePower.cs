@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;

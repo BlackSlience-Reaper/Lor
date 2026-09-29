@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.relics.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Cards;

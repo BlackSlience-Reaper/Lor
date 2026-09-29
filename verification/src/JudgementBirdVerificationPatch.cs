@@ -7,7 +7,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.JudgementBird;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.JudgementBird;
 using LibraryOfRuina.infra.helpers;

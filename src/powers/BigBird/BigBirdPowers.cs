@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.BigBird;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BigBird;
 using LibraryOfRuina.relics.BigBird;
 using LibraryOfRuina.visuals.BigBird;

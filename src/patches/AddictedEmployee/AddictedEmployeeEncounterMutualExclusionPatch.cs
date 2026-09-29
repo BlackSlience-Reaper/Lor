@@ -2,11 +2,11 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using LibraryOfRuina.acts;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters.AddictedEmployee;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.AddictedEmployee;
 

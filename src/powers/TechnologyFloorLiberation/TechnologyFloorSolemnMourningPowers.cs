@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.afflictions.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.afflictions.TechnologyFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

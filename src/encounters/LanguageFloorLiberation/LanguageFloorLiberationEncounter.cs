@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.events.LanguageFloorLiberation;
 using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.powers.LanguageFloorLiberation;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.KuroKumo;
 using LibraryOfRuina.encounters.ScorchedGirl;

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.monsters.BurrowingHeaven;
 using LibraryOfRuina.powers.BurrowingHeaven;
 using MegaCrit.Sts2.Core.Combat;

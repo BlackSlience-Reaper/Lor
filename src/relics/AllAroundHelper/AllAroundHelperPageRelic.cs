@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Commands;
 using LibraryOfRuina.cards.AllAroundHelper;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;

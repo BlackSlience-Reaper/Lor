@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Intents;
 using MegaCrit.Sts2.Core.Entities.Players;

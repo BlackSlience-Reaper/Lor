@@ -1,12 +1,12 @@
 using System;
 using HarmonyLib;
 using LibraryOfRuina.acts;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters.DawnOffice;
 using LibraryOfRuina.encounters.WedgeOffice;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.WedgeOffice;
 

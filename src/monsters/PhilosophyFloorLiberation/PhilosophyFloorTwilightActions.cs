@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.powers.PhilosophyFloorLiberation;

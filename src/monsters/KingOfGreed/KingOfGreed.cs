@@ -5,7 +5,7 @@ using Godot;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.KingOfGreed;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.infra.helpers;

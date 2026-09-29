@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.WrathServant;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.WrathServant;

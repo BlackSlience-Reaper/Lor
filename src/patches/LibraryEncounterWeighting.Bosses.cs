@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;

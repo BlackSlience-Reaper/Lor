@@ -9,7 +9,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.ArtFloorLiberation;
 using LibraryOfRuina.cards;
 using LibraryOfRuina.cards.ArtFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;

@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.networking;
+using LibraryOfRuina.core.networking;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions;

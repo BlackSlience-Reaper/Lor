@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.cards;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;

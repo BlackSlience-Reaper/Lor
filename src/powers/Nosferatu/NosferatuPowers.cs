@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.monsters.Nosferatu;
 using LibraryOfRuina.powers.AllAroundHelper;
 using MegaCrit.Sts2.Core.Combat;

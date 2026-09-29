@@ -7,7 +7,7 @@ using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.combat.WrathServant;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LittleRedMercenary;
 using LibraryOfRuina.monsters.LittleRedMercenary;

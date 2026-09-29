@@ -1,7 +1,8 @@
 using System;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -11,7 +12,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.audio;
 

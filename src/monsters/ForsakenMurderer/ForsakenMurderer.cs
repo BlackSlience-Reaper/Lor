@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.ForsakenMurderer;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.infra.helpers;

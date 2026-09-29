@@ -8,11 +8,12 @@ using LibraryOfRuina.afflictions.TechnologyFloorLiberation;
 using LibraryOfRuina.backgrounds.TechnologyFloorLiberation;
 using LibraryOfRuina.cards;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.events.TechnologyFloorLiberation;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.features.secondascension;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using LibraryOfRuina.powers.TechnologyFloorLiberation;
 using LibraryOfRuina.scene_transitions;
@@ -26,7 +27,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters.TechnologyFloorLiberation;
 

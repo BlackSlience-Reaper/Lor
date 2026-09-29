@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.PriceOfSilence;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.PriceOfSilence;

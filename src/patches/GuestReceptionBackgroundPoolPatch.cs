@@ -25,13 +25,12 @@ using LibraryOfRuina.encounters.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.encounters.SpinyBus;
 using LibraryOfRuina.encounters.WarmheartedWoodsman;
 using LibraryOfRuina.encounters.WrathServant;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.specialguests.Kali;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 

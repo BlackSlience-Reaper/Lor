@@ -1,10 +1,10 @@
 using System.Linq;
 using HarmonyLib;
 using LibraryOfRuina.acts;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.events.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.events.SongMachine;
 using LibraryOfRuina.events.WarpTrain;
-using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.patches;

@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Logging;

@@ -1,6 +1,6 @@
 using System;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
 using MegaCrit.Sts2.Core.Logging;
 
 namespace LibraryOfRuina.encounters;

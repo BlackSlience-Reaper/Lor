@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using HarmonyLib;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;

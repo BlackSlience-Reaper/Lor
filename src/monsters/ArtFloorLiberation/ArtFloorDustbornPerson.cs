@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
 using LibraryOfRuina.infra.helpers;

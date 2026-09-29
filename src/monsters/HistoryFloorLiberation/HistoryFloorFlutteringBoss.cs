@@ -6,7 +6,7 @@ using Godot;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.HistoryFloorLiberation;
 using LibraryOfRuina.cards.HistoryFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.features.moontext;

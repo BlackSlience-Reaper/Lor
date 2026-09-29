@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using Environment = System.Environment;
 
 using LibraryOfRuina;
+using LibraryOfRuina.core;
 
 namespace LibraryOfRuinaVerification;
 

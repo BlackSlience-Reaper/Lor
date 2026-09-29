@@ -6,7 +6,7 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.ArtFloorLiberation;
 using LibraryOfRuina.cards.ArtFloorLiberation;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
 using LibraryOfRuina.infra.helpers;

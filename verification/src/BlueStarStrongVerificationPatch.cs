@@ -6,7 +6,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.BlueStar;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BlueStar;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.BlueStar;

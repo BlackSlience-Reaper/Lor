@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.cards.Nosferatu;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.combat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;

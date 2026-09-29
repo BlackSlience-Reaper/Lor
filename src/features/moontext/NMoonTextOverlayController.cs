@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;

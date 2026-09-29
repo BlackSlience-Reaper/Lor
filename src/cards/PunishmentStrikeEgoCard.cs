@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.cards.HistoryFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Commands;

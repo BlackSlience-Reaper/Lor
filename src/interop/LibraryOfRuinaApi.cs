@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop.catalog;
 using LibraryOfRuina.interop.descriptors;
 using MegaCrit.Sts2.Core.Commands;

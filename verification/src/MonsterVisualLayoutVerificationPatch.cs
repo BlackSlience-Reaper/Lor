@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina;
+using LibraryOfRuina.core;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Helpers;

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.Nosferatu;
 using LibraryOfRuina.infra.helpers;

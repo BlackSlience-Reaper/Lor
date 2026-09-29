@@ -3,15 +3,15 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.features.settings;
-using LibraryOfRuina.features.settings.ui;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.core.settings.ui;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Nodes.Screens.Settings;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 

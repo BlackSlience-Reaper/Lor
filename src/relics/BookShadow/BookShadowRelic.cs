@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.acts;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Factories;

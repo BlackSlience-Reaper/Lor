@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.cards.SocialFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.powers.ScarecrowSearchingForWisdom;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;

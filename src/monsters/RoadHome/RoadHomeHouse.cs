@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.RoadHome;
 using LibraryOfRuina.powers.RoadHome;
 using LibraryOfRuina.visuals.RoadHome;

@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.combat;
+using LibraryOfRuina.core.networking;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.networking;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

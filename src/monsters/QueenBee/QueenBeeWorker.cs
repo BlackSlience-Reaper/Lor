@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.intents.QueenBee;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;

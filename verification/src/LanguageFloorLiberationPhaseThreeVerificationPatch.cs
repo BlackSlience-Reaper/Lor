@@ -5,7 +5,6 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.LanguageFloorLiberation;
-using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.intents;

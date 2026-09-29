@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Hooks;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.WarmheartedWoodsman;
 using LibraryOfRuina.intents;

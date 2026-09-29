@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.compat;
+using LibraryOfRuina;
+using LibraryOfRuina.core;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.JudgementBird;
 using LibraryOfRuina.encounters.QueenOfHatred;
 using LibraryOfRuina.features.ftue;
@@ -21,7 +23,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using Environment = System.Environment;
 
-using LibraryOfRuina;
 
 namespace LibraryOfRuinaVerification;
 

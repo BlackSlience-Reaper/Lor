@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Events;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.secondascension;
 

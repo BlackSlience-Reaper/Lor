@@ -5,7 +5,7 @@ using Godot;
 using LibraryOfRuina.backgrounds.ArtFloorLiberation;
 using LibraryOfRuina.cards;
 using LibraryOfRuina.cards.ArtFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.events.ArtFloorLiberation;
 using LibraryOfRuina.monsters.ArtFloorLiberation;

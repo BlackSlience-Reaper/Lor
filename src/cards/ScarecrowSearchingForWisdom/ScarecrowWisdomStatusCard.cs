@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.ScarecrowSearchingForWisdom;
 using MegaCrit.Sts2.Core.Entities.Cards;

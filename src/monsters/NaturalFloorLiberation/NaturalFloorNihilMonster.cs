@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryOfRuina.powers.WrathServant;

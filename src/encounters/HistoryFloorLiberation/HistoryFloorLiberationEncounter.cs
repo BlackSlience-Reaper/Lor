@@ -7,10 +7,11 @@ using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.HistoryFloorLiberation;
 using LibraryOfRuina.cards;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.events.HistoryFloorLiberation;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.features.secondascension;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.powers.HistoryFloorLiberation;
 using LibraryOfRuina.scene_transitions;
@@ -24,7 +25,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters.HistoryFloorLiberation;
 

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Commands;

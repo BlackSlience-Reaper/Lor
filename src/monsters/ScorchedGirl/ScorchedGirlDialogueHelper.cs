@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.features.moontext;
-using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters.AddictedEmployee;
 using LibraryOfRuina.encounters.AllAroundHelper;
 using LibraryOfRuina.encounters.CosmicFragment;
@@ -17,7 +18,6 @@ using LibraryOfRuina.encounters.ScorchedGirl;
 using LibraryOfRuina.encounters.SpiderBud;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
 using LibraryOfRuina.encounters.TodaysShyLook;
-using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.features.ftue;

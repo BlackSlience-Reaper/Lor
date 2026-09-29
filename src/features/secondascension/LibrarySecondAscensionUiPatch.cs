@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.ControllerInput;
@@ -24,8 +26,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.TestSupport;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.secondascension;
 

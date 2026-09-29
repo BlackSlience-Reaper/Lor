@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.LiteratureFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using LibraryOfRuina.intents;

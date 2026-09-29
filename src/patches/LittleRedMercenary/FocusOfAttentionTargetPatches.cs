@@ -5,7 +5,9 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using HarmonyLib;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -18,8 +20,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Orbs;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches.LittleRedMercenary;
 

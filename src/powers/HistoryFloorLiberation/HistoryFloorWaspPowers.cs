@@ -5,7 +5,7 @@ using Godot;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.HistoryFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;

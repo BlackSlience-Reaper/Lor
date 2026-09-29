@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.intents.NaturalFloorLiberation;

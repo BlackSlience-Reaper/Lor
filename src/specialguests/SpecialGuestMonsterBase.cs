@@ -2,15 +2,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.SpeedDice;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
+using LibraryOfRuina.monsters;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.monsters;
 
 namespace LibraryOfRuina.specialguests;
 

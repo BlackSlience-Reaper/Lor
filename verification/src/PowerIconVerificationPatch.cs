@@ -6,6 +6,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Powers.LibraryPowerMode;
 using LibraryOfRuina;
+using LibraryOfRuina.core;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.AddictedEmployee;

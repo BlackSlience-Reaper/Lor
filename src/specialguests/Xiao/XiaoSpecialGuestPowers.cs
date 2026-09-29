@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Powers;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

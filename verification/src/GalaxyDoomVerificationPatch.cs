@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.GalaxyChild;
 using LibraryOfRuina.monsters.GalaxyChild;
 using MegaCrit.Sts2.Core.Combat;

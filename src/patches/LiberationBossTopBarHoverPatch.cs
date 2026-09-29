@@ -1,14 +1,14 @@
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
 using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 

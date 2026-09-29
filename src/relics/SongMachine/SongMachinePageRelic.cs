@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.SongMachine;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;

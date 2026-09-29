@@ -5,7 +5,7 @@ using Godot;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.LittleRedMercenary;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.LittleRedMercenary;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.guests.DawnOffice;

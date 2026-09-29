@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.LanguageFloorLiberation;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.intents;

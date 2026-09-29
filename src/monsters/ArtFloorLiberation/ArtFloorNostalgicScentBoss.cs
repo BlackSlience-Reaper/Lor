@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.ArtFloorLiberation;
 using LibraryOfRuina.cards.ArtFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.ArtFloorLiberation;
 using LibraryOfRuina.intents;

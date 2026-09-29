@@ -7,7 +7,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.TechnologyFloorLiberation;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.TechnologyFloorLiberation;
 using LibraryOfRuina.features.moontext;

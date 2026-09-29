@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.LiteratureFloorLiberation;
 using LibraryOfRuina.cards.Leticia;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
 using LibraryOfRuina.events.LiteratureFloorLiberation;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.powers.LiteratureFloorLiberation;
 using LibraryOfRuina.scene_transitions;
@@ -19,7 +20,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.encounters.LiteratureFloorLiberation;
 

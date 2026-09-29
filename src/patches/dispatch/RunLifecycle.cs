@@ -1,7 +1,7 @@
 using HarmonyLib;
 using LibraryOfRuina.audio;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
-using LibraryOfRuina.features.settings;
 using LibraryOfRuina.specialguests;
 using LibraryOfRuina.specialguests.Iori;
 using LibraryOfRuina.specialguests.Xiao;

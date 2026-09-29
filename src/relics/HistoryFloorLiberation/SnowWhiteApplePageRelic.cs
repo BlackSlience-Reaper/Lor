@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.HistoryFloorLiberation;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.enchantments.HistoryFloorLiberation;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.relics;

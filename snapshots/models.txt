@@ -180,6 +180,7 @@ LibraryOfRuina.cards.WrathServant.WrathServantWrathChoiceCard
 LibraryOfRuina.cards.Xiao.XiaoPulaoBellEgoCard
 LibraryOfRuina.cards.Xiao.XiaoTaotieFeastEgoCard
 LibraryOfRuina.cards.Xiao.XiaoYaziVengeanceEgoCard
+LibraryOfRuina.core.settings.LibraryRunSettingsModifier
 LibraryOfRuina.enchantments.FuneralOfTheDeadButterflies.ChainEnchantment
 LibraryOfRuina.enchantments.GalaxyChild.PebbleMarkEnchantment
 LibraryOfRuina.enchantments.HistoryFloorLiberation.MatchFlameEnchantment
@@ -254,7 +255,6 @@ LibraryOfRuina.events.SongMachine.SingingMachineEvent
 LibraryOfRuina.events.TechnologyFloorLiberation.TechnologyFloorLiberationSettlementEvent
 LibraryOfRuina.events.WarpTrain.WarpTrainEvent
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionModifier
-LibraryOfRuina.features.settings.LibraryRunSettingsModifier
 LibraryOfRuina.guests.DawnOffice.Finn
 LibraryOfRuina.guests.DawnOffice.Gin
 LibraryOfRuina.guests.DawnOffice.LibraryOfRuinaNextTurnStrength

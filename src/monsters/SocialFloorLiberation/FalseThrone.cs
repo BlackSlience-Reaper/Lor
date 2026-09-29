@@ -5,9 +5,10 @@ using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.cards.SocialFloorLiberation;
 using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.SocialFloorLiberation;
+using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.SocialFloorLiberation;
 using LibraryOfRuina.visuals.SocialFloorLiberation;
@@ -28,7 +29,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.monsters.SocialFloorLiberation;
 

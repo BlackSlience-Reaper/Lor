@@ -1,10 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.Ozma;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.powers.Ozma;
 using LibraryOfRuina.powers;
+using LibraryOfRuina.powers.Ozma;
 using LibraryOfRuina.visuals.Ozma;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

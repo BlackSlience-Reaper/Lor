@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.cards.ScarecrowSearchingForWisdom;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.monsters.SocialFloorLiberation;
 using LibraryOfRuina.powers.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.powers.SocialFloorLiberation;

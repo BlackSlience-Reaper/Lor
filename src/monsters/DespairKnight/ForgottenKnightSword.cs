@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Models;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.intents;

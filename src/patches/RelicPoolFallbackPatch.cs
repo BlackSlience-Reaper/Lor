@@ -2,6 +2,7 @@ using System;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
+using LibraryOfRuina.core;
 
 namespace LibraryOfRuina.patches;
 

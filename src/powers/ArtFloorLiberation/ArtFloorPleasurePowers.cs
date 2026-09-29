@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.monsters.ArtFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;

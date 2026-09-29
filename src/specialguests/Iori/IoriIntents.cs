@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;

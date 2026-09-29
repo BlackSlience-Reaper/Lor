@@ -11,7 +11,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Models;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.PunishingBird;
 using LibraryOfRuina.encounters.RedMist;

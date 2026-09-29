@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.QueenOfHatred;
 using LibraryOfRuina.powers.BigBadWolf;

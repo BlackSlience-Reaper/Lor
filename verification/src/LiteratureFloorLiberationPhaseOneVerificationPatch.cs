@@ -11,7 +11,7 @@ using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.acts;
 using LibraryOfRuina.cards.Leticia;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using LibraryOfRuina.intents;

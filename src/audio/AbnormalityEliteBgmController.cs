@@ -3,9 +3,10 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.acts;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.RedMist;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -16,7 +17,6 @@ using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.audio;
 

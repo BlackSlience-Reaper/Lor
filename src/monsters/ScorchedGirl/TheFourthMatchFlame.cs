@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.visuals.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Ascension;

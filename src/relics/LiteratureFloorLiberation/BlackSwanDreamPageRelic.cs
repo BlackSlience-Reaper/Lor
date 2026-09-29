@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
-using LibraryOfRuina.interop;
 using LibraryOfRuina.cards.LiteratureFloorLiberation;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.combat;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;

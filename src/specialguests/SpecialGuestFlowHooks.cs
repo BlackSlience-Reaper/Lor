@@ -6,8 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.compat;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.specialguests.Iori;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Hooks;
@@ -22,8 +24,6 @@ using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.specialguests;
 

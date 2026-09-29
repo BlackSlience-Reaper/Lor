@@ -8,7 +8,6 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.backgrounds.LiteratureFloorLiberation;
-using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters.LiteratureFloorLiberation;
 using LibraryOfRuina.events.LiteratureFloorLiberation;
 using LibraryOfRuina.guests.DawnOffice;

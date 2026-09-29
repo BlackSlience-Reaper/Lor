@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters.KingOfGreed;
 using LibraryOfRuina.powers.NaturalFloorLiberation;

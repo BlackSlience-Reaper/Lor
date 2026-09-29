@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters.BigBird;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.powers.BigBird;
