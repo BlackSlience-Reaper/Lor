@@ -8,7 +8,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.ui;
 using ISecondaryDisplayAmountPower = LibraryOfRuina.framework.powers.ISecondaryDisplayAmountPower;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

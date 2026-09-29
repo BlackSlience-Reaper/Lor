@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.abnormalities.SmilingBodies;
-using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;

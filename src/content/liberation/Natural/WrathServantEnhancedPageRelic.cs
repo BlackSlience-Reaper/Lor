@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
-using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;

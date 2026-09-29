@@ -1,6 +1,5 @@
 using LibraryOfRuina.content.abnormalities.ScorchedGirl;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.History;

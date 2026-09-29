@@ -1,7 +1,6 @@
 using Godot;
 using LibraryOfRuina.content.liberation.Art;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.GalaxyChild;

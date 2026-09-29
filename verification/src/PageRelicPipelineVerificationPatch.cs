@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina;
 using LibraryOfRuina.core;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Commands;

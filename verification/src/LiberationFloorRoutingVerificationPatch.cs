@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using ActLikeIt2;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.content.liberation.Art;
 using LibraryOfRuina.content.liberation.History;

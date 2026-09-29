@@ -12,7 +12,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using Environment = System.Environment;
 
-using LibraryOfRuina;
 using LibraryOfRuina.core;
 
 namespace LibraryOfRuinaVerification;

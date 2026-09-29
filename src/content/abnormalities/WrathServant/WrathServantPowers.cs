@@ -5,7 +5,6 @@ using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.interop;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Powers.LibraryPowerMode;
-using LibraryOfRuina;
 using LibraryOfRuina.content.abnormalities.AddictedEmployee;
 using LibraryOfRuina.core;
 using LibraryOfRuina.framework.intents;

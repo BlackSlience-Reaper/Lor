@@ -11,7 +11,6 @@ using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

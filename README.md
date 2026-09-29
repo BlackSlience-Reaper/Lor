@@ -98,6 +98,21 @@ dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 | `docs/` | 设计哲学、本地化规范、重构指导 |
 | `tools/` `snapshots/` | 重构护栏脚本与身份快照基线 |
 
+`src/` 按纵切组织，命名空间与目录一致（前缀都是 `LibraryOfRuina`）：
+
+| 目录 | 内容 |
+| --- | --- |
+| `core/` | 初始化入口、`compat/` 版本兼容、`networking/`、`localization/`、`settings/` 设置与设置界面 |
+| `infra/` | `patching/` 补丁安装与守卫、`helpers/` 类型发现等通用工具、`hooks/` 局级监听模型 |
+| `framework/` | 跨内容共用的基类与组件：`monsters/` `encounters/` `cards/` `powers/` `relics/` `intents/` `visuals/` `audio/` `combat/` |
+| `content/` | 一个实体一个文件夹：`abnormalities/<异想体>/`、`liberation/<楼层>/`、`guests/<事务所>/`、`specialguests/<来宾>/`，以及 `events/` `relics/` `acts/` `reverberation/` `afflictions/` |
+| `patches/` | 不属于单个实体的补丁，`dispatch/` 是每个原版目标唯一的分派补丁 |
+| `ui/` `features/` | 界面与独立功能（意图图、教程、临时地图等） |
+| `interop/` | 给其他模组用的公开接口；命名空间是对外契约，不随目录调整 |
+
+移动文件或改命名空间不能改类名（类名就是模型 ID）。补丁安装、卡池登记、盟友 provider 与事件遗物池按
+`src/infra/helpers/type_discovery_order.txt` 的顺序发现，新增这几类类型时照表头说明登记。
+
 ## 关于本仓库的来源
 
 本仓库由 v0.21.2 发布包里的 `LibraryOfRuina.pck` 还原而来。PCK 中已包含全部 C# 源码和文本场景，DLL 中的全部类型都能在 `src/` 找到对应源码。导出过程只留下了导入后的产物，以下内容经过还原或重建：

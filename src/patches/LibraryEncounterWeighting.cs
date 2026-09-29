@@ -29,7 +29,6 @@ using LibraryOfRuina.content.abnormalities.SpiderBud;
 using LibraryOfRuina.content.abnormalities.SpinyBus;
 using LibraryOfRuina.content.abnormalities.TodaysShyLook;
 using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
-using LibraryOfRuina.content.acts;
 using LibraryOfRuina.content.guests;
 using LibraryOfRuina.content.guests.WedgeOffice;
 using LibraryOfRuina.content.specialguests.Kali;
