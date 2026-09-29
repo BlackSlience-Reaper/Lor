@@ -1,7 +1,7 @@
 using System;
 using Godot;
-using HarmonyLib;
 using LibraryOfRuina.helpers;
+using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.powers.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
@@ -9,25 +9,28 @@ namespace LibraryOfRuina.patches.TechnologyFloorLiberation;
 
 internal static class SolemnMourningSealIntentPatch
 {
-    internal static void OnUpdateIntent(NCreature __instance)
+    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance)
     {
         try
         {
-            ApplySealedIntentVisuals(__instance);
+            return ApplySealedIntentVisuals(__instance)
+                ? IntentDecoratorOutcome.Applied
+                : IntentDecoratorOutcome.Skipped;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
                 "SolemnMourningSealIntent.UpdateIntent",
                 exception);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 
-    private static void ApplySealedIntentVisuals(NCreature creatureNode)
+    private static bool ApplySealedIntentVisuals(NCreature creatureNode)
     {
         if (creatureNode.Entity?.Monster == null)
         {
-            return;
+            return false;
         }
 
         var sealPower = creatureNode.Entity.GetPower<SolemnMourningSealOnEnemyPower>();
@@ -44,5 +47,7 @@ internal static class SolemnMourningSealIntentPatch
                 index++;
             }
         }
+
+        return true;
     }
 }

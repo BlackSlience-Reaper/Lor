@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Godot;
-using HarmonyLib;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Helpers;
@@ -18,7 +18,7 @@ internal static class CounterIntentVisualPatch
 {
     private static readonly ConditionalWeakTable<NIntent, AnimationState> States = new();
 
-    internal static void RefreshAnimation(
+    internal static IntentDecoratorOutcome RefreshAnimation(
         NIntent intentNode,
         AbstractIntent intent,
         IEnumerable<Creature> targets,
@@ -27,7 +27,7 @@ internal static class CounterIntentVisualPatch
         if (intent is not ICounterIntentVisual counterIntent)
         {
             States.Remove(intentNode);
-            return;
+            return IntentDecoratorOutcome.Skipped;
         }
 
         AnimationState state = States.GetValue(intentNode, static _ => new AnimationState());
@@ -35,6 +35,7 @@ internal static class CounterIntentVisualPatch
             ? attack.GetCounterAnimation(targets, owner)
             : counterIntent.CounterAnimation;
         state.Frame = null;
+        return IntentDecoratorOutcome.Applied;
     }
 
     public static void RefreshCounterIntentDisplay(Creature owner)
@@ -48,38 +49,44 @@ internal static class CounterIntentVisualPatch
         TaskHelper.RunSafely(creatureNode.RefreshIntents());
     }
 
-    internal static void OnIntentProcess(
+    internal static IntentDecoratorOutcome OnIntentProcess(
         NIntent __instance,
         int? ____animationFrame)
     {
         try
         {
             if (!States.TryGetValue(__instance, out AnimationState? state)
-                || !____animationFrame.HasValue
-                || state.Frame == ____animationFrame)
+                || !____animationFrame.HasValue)
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
+            }
+
+            if (state.Frame == ____animationFrame)
+            {
+                return IntentDecoratorOutcome.Unchanged;
             }
 
             if (!__instance.HasNode("%Intent"))
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             if (!CounterIntentAnimData.TryGetAnimationFrame(state.Animation, ____animationFrame.Value, out string path))
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             Sprite2D sprite = __instance.GetNode<Sprite2D>("%Intent");
             GodotTextureSafety.TrySetTexture(sprite, PreloadManager.Cache.GetTexture2D(path));
             state.Frame = ____animationFrame;
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
                 "CounterIntentVisual.UpdateIntent",
                 exception);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 
@@ -93,13 +100,13 @@ internal static class CounterIntentVisualPatch
 
 internal static class CounterIntentAppendPatch
 {
-    internal static void OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
+    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
         {
             if (__instance.Entity is not { IsEnemy: true, Monster: ICounterIntentQueueOwner owner })
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             Control container = __instance.IntentContainer;
@@ -136,12 +143,15 @@ internal static class CounterIntentAppendPatch
                 container.RemoveChildSafely(extra);
                 extra.QueueFreeSafely();
             }
+
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
                 "CounterIntentAppend.UpdateIntent",
                 exception);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 

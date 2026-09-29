@@ -36,10 +36,12 @@ public abstract class CombinedAttackIntentBase :
     IIntentEffectProvider,
     IGroupAttackIntent,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly Func<int> _repeatCalc;
     private readonly string? _descriptionKey;
+    private CompositeIntent? _composite;
 
     protected CombinedAttackIntentBase(
         Func<decimal> damageCalc,
@@ -54,6 +56,17 @@ public abstract class CombinedAttackIntentBase :
     }
 
     protected abstract string AttackKind { get; }
+
+    /// <summary>
+    /// 第一次读取时才生成：子类的 <see cref="AttackKind"/> 可能依赖子类构造函数里才赋值的字段
+    /// （例如伊织的组合攻击按传入的种类选图标组），在基类构造函数里读取会得到错误的组。
+    /// </summary>
+    public CompositeIntent Composite =>
+        _composite ??= CompositeIntent.FromVisualKind(
+            AttackKind,
+            IntentType,
+            CompositeIntent.ResolveTargeting(this, Effects),
+            Effects);
 
     public string HoverIconPath => CombinedIntentAnimData.GetHoverIconPath(AttackKind);
 
@@ -705,7 +718,8 @@ public sealed class CombinedDefendBuffIntent :
     DefendIntent,
     IIntentEffectProvider,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly string? _descriptionKey;
 
@@ -717,9 +731,16 @@ public sealed class CombinedDefendBuffIntent :
         BlockAmount = blockAmount;
         _descriptionKey = descriptionKey;
         Effects = IntentEffectCollection.Create(badges);
+        Composite = CompositeIntent.FromVisualKind(
+            CombinedIntentAnimData.DefendBuff,
+            IntentType,
+            CompositeIntent.ResolveTargeting(this, Effects),
+            Effects);
     }
 
     public IReadOnlyList<IntentBadge> Effects { get; }
+
+    public CompositeIntent Composite { get; }
 
     public int BlockAmount { get; }
 
@@ -763,7 +784,8 @@ public sealed class CombinedDefendDebuffIntent :
     DefendIntent,
     IIntentEffectProvider,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly string? _descriptionKey;
     private readonly int? _descriptionBadgeAmount;
@@ -776,6 +798,11 @@ public sealed class CombinedDefendDebuffIntent :
         BlockAmount = blockAmount;
         _descriptionKey = descriptionKey;
         Effects = IntentEffectCollection.Create(badges);
+        Composite = CompositeIntent.FromVisualKind(
+            CombinedIntentAnimData.DefendDebuff,
+            IntentType,
+            CompositeIntent.ResolveTargeting(this, Effects),
+            Effects);
     }
 
     public CombinedDefendDebuffIntent(
@@ -788,6 +815,8 @@ public sealed class CombinedDefendDebuffIntent :
     }
 
     public IReadOnlyList<IntentBadge> Effects { get; }
+
+    public CompositeIntent Composite { get; }
 
     public int BlockAmount { get; }
 
@@ -835,7 +864,8 @@ public sealed class CombinedCounterDefendBuffIntent :
     DefendIntent,
     IIntentEffectProvider,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly string? _descriptionKey;
 
@@ -847,9 +877,16 @@ public sealed class CombinedCounterDefendBuffIntent :
         BlockAmount = blockAmount;
         _descriptionKey = descriptionKey;
         Effects = IntentEffectCollection.Create(badges);
+        Composite = CompositeIntent.FromVisualKind(
+            CombinedIntentAnimData.CounterDefendBuff,
+            IntentType,
+            CompositeIntent.ResolveTargeting(this, Effects),
+            Effects);
     }
 
     public IReadOnlyList<IntentBadge> Effects { get; }
+
+    public CompositeIntent Composite { get; }
 
     public int BlockAmount { get; }
 
@@ -892,7 +929,8 @@ public sealed class CombinedCounterDefendDebuffIntent :
     DefendIntent,
     IIntentEffectProvider,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly string? _descriptionKey;
 
@@ -904,9 +942,16 @@ public sealed class CombinedCounterDefendDebuffIntent :
         BlockAmount = blockAmount;
         _descriptionKey = descriptionKey;
         Effects = IntentEffectCollection.Create(badges);
+        Composite = CompositeIntent.FromVisualKind(
+            CombinedIntentAnimData.CounterDefendDebuff,
+            IntentType,
+            CompositeIntent.ResolveTargeting(this, Effects),
+            Effects);
     }
 
     public IReadOnlyList<IntentBadge> Effects { get; }
+
+    public CompositeIntent Composite { get; }
 
     public int BlockAmount { get; }
 
@@ -950,7 +995,8 @@ public class CombinedMagicIntent :
     AbstractIntent,
     IIntentEffectProvider,
     ICombinedIntentVisual,
-    ICombinedIntentHoverIcon
+    ICombinedIntentHoverIcon,
+    ICompositeIntent
 {
     private readonly string? _descriptionKey;
     private readonly bool _large;
@@ -963,11 +1009,18 @@ public class CombinedMagicIntent :
         _descriptionKey = descriptionKey;
         _large = large;
         Effects = IntentEffectCollection.Create(badges);
+        Composite = CompositeIntent.FromVisualKind(
+            IntentKind,
+            IntentType,
+            CompositeIntent.ResolveTargeting(this, Effects),
+            Effects);
     }
 
     private string IntentKind => _large ? CombinedIntentAnimData.MagicLarge : CombinedIntentAnimData.Magic;
 
     public IReadOnlyList<IntentBadge> Effects { get; }
+
+    public CompositeIntent Composite { get; }
 
     public string HoverIconPath => CombinedIntentAnimData.GetHoverIconPath(IntentKind);
 
