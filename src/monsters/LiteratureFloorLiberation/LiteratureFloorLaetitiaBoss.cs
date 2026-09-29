@@ -29,8 +29,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorLaetitiaBoss :
-    LorMonsterModel,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster
 {
     public const int Phase = 1;
     private const string SendGiftMoveId = "SEND_YOU_A_GIFT";
@@ -38,7 +37,6 @@ public sealed class LiteratureFloorLaetitiaBoss :
     private const string HaveFunMoveId = "HAVE_FUN";
     private const string ItsAGiftMoveId = "ITS_A_GIFT";
     private const string SuperGiftMoveId = "SUPER_GIFT";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     private const int SendGiftBlock = 18;
     private const int SendGiftCards = 3;
@@ -80,10 +78,9 @@ public sealed class LiteratureFloorLaetitiaBoss :
     ];
 
     private MoveState? _superGiftState;
-    private MoveState? _reviveAndEmpowerState;
     private bool _backgroundTextStarted;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     private int AttackDamage => AscensionHelper.GetValueIfAscension(
         AscensionLevel.DeadlyEnemies,
@@ -274,22 +271,6 @@ public sealed class LiteratureFloorLaetitiaBoss :
         }
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
     internal async Task OnAllGiftBoxesDefeated(
         bool queueForImmediateEnemyAction)
     {
@@ -393,14 +374,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
                 SuperGiftCards,
                 PileType.Discard,
                 DetailedIntentScopeText.Target));
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var afterSend = CreateFollowUpBranch(
             "AFTER_SEND",
@@ -429,7 +403,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
         haveFun.FollowUpState = afterHaveFun;
         itsAGift.FollowUpState = afterItsAGift;
         _superGiftState.FollowUpState = itsAGift;
-        _reviveAndEmpowerState.FollowUpState = sendGift;
+        reviveAndEmpower.FollowUpState = sendGift;
 
         return new MonsterMoveStateMachine(
             [
@@ -438,7 +412,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
                 haveFun,
                 itsAGift,
                 _superGiftState,
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 afterSend,
                 afterDontGetHurt,
                 afterHaveFun,
@@ -447,21 +421,16 @@ public sealed class LiteratureFloorLaetitiaBoss :
             sendGift);
     }
 
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
+    protected override Task PlayReviveAndEmpowerAnimation()
     {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await PlayActionAnimationToCompletion("Cast");
-        if (Creature.CombatState?.Encounter
-            is LiteratureFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
+        return PlayActionAnimationToCompletion("Cast");
     }
+
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LiteratureFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private ConditionalBranchState CreateFollowUpBranch(
         string id,

@@ -77,16 +77,6 @@ public sealed class QueenOfHatredEnhancedPageRelic : EnhancedMagicalGirlPageReli
         CreateUpgradedChoice<QueenOfHatredHatredChoiceCard>()
     ];
 
-    private static QueenOfHatredPageMode ResolveModeFromChoiceCard(CardModel? card) => card switch
-    {
-        QueenOfHatredPhilanthropyChoiceCard => QueenOfHatredPageMode.Philanthropy,
-        QueenOfHatredJusticeChoiceCard => QueenOfHatredPageMode.Justice,
-        QueenOfHatredHatredChoiceCard => QueenOfHatredPageMode.Hatred,
-        _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-    };
-
-    protected override QueenOfHatredPageMode ResolveChoice(CardModel card) => ResolveModeFromChoiceCard(card);
-
     public override async Task BeforeCombatStart()
     {
         EnsureMode();

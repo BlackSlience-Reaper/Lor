@@ -2,8 +2,6 @@ using LibraryLib.Powers;
 using LibraryOfRuina.powers.QueenOfHatred;
 using LibraryOfRuina.relics.NaturalFloorLiberation;
 using LibraryOfRuina.relics.QueenOfHatred;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -11,17 +9,9 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.cards.QueenOfHatred;
 
-public abstract class QueenOfHatredPageChoiceCardBase : CardModel
+public abstract class QueenOfHatredPageChoiceCardBase : PageChoiceCard<QueenOfHatredPageMode>
 {
-    public const string PhilanthropyChoiceId = "QUEEN_OF_HATRED_PHILANTHROPY_CHOICE_CARD";
-    public const string JusticeChoiceId = "QUEEN_OF_HATRED_JUSTICE_CHOICE_CARD";
-    public const string HatredChoiceId = "QUEEN_OF_HATRED_HATRED_CHOICE_CARD";
-
-    protected abstract string PortraitFileName { get; }
-
     public override int MaxUpgradeLevel => 1;
-
-    public override bool CanBeGeneratedInCombat => false;
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
@@ -59,23 +49,5 @@ public abstract class QueenOfHatredPageChoiceCardBase : CardModel
             QueenOfHatredEnhancedPageRelic.HatredStrong - DynamicVars["Strong"].BaseValue);
         DynamicVars["StrongTurns"].UpgradeValueBy(
             QueenOfHatredEnhancedPageRelic.HatredTurns - DynamicVars["StrongTurns"].BaseValue);
-    }
-
-    public override string PortraitPath => ImageHelper.GetImagePath($"packed/card_portraits/colorless/{PortraitFileName}");
-
-    public override IEnumerable<string> AllPortraitPaths =>
-    [
-        PortraitPath
-    ];
-
-    protected QueenOfHatredPageChoiceCardBase()
-        : base(-1, CardType.Skill, CardRarity.Ancient, TargetType.None, shouldShowInCardLibrary: false)
-    {
-    }
-
-    public static bool IsQueenOfHatredPageChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is PhilanthropyChoiceId or JusticeChoiceId or HatredChoiceId;
     }
 }

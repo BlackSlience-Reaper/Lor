@@ -14,11 +14,8 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Enchantments;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -26,7 +23,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.DespairKnight;
 
-public sealed class DespairKnightPageRelic : LibraryRelicModel
+public sealed class DespairKnightPageRelic : ModalPageRelic<DespairKnightPageMode>
 {
     internal const int BlessingGuard = 9;
     internal const int BlessingTurns = 4;
@@ -77,6 +74,12 @@ public sealed class DespairKnightPageRelic : LibraryRelicModel
     [SavedProperty]
     public DespairKnightPageMode Mode { get; private set; }
 
+    protected override DespairKnightPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool BlessingTriggeredThisCombat { get; private set; }
 
@@ -86,44 +89,10 @@ public sealed class DespairKnightPageRelic : LibraryRelicModel
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool DespairTriggeredThisCombat { get; private set; }
 
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
+    protected override Task ApplyObtainedChoiceAsync(DespairKnightPageMode mode) => SetModeAsync(mode);
 
-        if (Mode != DespairKnightPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        await SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
+    // 预选只写模式、通知图标变化并刷新界面；清状态与拾取效果由获得后作为 AbnormalityPagePostObtainEffect 执行的 SetModeAsync 完成。
+    protected override void ApplyPreselectedMode(DespairKnightPageMode mode) => AssignPreselectedModeOnly(mode);
 
     public override Task BeforeCombatStart()
     {
@@ -268,7 +237,7 @@ public sealed class DespairKnightPageRelic : LibraryRelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -278,42 +247,10 @@ public sealed class DespairKnightPageRelic : LibraryRelicModel
         ];
     }
 
-    private static DespairKnightPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            DespairKnightBlessingChoiceCard => DespairKnightPageMode.Blessing,
-            DespairKnightDespairChoiceCard => DespairKnightPageMode.Despair,
-            DespairKnightTearSwordChoiceCard => DespairKnightPageMode.TearSword,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(DespairKnightPageMode mode)
-    {
-        return mode is DespairKnightPageMode.None
-            or DespairKnightPageMode.Blessing
-            or DespairKnightPageMode.Despair
-            or DespairKnightPageMode.TearSword;
-    }
-
-    private static bool IsConcreteMode(DespairKnightPageMode mode)
-    {
-        return mode is DespairKnightPageMode.Blessing
-            or DespairKnightPageMode.Despair
-            or DespairKnightPageMode.TearSword;
-    }
-
     [AbnormalityPagePostObtainEffect]
-    private async Task SetMode(DespairKnightPageMode mode)
+    private async Task SetModeAsync(DespairKnightPageMode mode)
     {
-        Mode = mode;
-        BlessingTriggeredThisCombat = false;
-        BlessingPendingNextPlayerTurn = false;
-        DespairTriggeredThisCombat = false;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
+        SetMode(mode);
 
         if (Mode == DespairKnightPageMode.TearSword)
         {
@@ -321,34 +258,16 @@ public sealed class DespairKnightPageRelic : LibraryRelicModel
         }
     }
 
-    private void EnsureValidModeOrFallback(string context)
+    protected override void ResetStateOnModeSet(DespairKnightPageMode mode)
     {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        DespairKnightPageMode oldMode = Mode;
-        Mode = DespairKnightPageMode.Blessing;
         BlessingTriggeredThisCombat = false;
         BlessingPendingNextPlayerTurn = false;
         DespairTriggeredThisCombat = false;
-        Log.Warn("[LibraryOfRuina.PageRelic] DespairKnightPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Blessing.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnFallback() => ResetStateOnModeSet(FallbackMode);
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -403,26 +322,5 @@ public sealed class DespairKnightPageRelic : LibraryRelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

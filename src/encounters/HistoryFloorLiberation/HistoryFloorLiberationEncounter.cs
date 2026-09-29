@@ -29,7 +29,7 @@ using LibraryOfRuina.interop;
 namespace LibraryOfRuina.encounters.HistoryFloorLiberation;
 
 public sealed class HistoryFloorLiberationEncounter :
-    EncounterModel,
+    LiberationEncounterBase,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter,
     ISporeWorkerSpawner
@@ -103,11 +103,6 @@ public sealed class HistoryFloorLiberationEncounter :
 
     public bool CanSpawnSporeWorkers =>
         _currentPhase == 4 && !_settlementTriggered;
-
-    public void RefreshLiberationPhaseBgm()
-    {
-        EncounterBgmController.RefreshCurrentEncounterTrack();
-    }
 
     public int KilledBossCount => _killedBossCount;
 
@@ -243,11 +238,12 @@ public sealed class HistoryFloorLiberationEncounter :
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        _currentPhase = ReadPhase(state, CurrentPhaseKey, 1);
-        _killedBossCount = Math.Clamp(ReadInt(state, KilledBossCountKey, Math.Max(0, _currentPhase - 1)), 0, MaxPhase);
-        _transitionPending = ReadBool(state, TransitionPendingKey);
-        _settlementTriggered = ReadBool(state, SettlementTriggeredKey);
-        _endedByLethalDamage = ReadBool(state, EndedByLethalDamageKey);
+        var bag = new EncounterStateBag(state);
+        _currentPhase = bag.ReadClampedInt(CurrentPhaseKey, 1, 1, MaxPhase);
+        _killedBossCount = bag.ReadClampedInt(KilledBossCountKey, Math.Max(0, _currentPhase - 1), 0, MaxPhase);
+        _transitionPending = bag.ReadBool(TransitionPendingKey);
+        _settlementTriggered = bag.ReadBool(SettlementTriggeredKey);
+        _endedByLethalDamage = bag.ReadBool(EndedByLethalDamageKey);
     }
 
     public async Task EnsureControllerPowers(CombatStateLike? combatState)
@@ -336,16 +332,6 @@ public sealed class HistoryFloorLiberationEncounter :
             && boss.LiberationPhase + 1 == _currentPhase;
     }
 
-    private static bool IsLastAlivePlayer(Creature creature)
-    {
-        if (creature.CombatState is not { } combatState)
-        {
-            return false;
-        }
-
-        return !combatState.PlayerCreatures.Any(p => p != creature && p.IsAlive);
-    }
-
     public async Task OnPreventingPlayerDeath(Creature creature)
     {
         if (!ShouldPreventPlayerDeath(creature))
@@ -360,7 +346,10 @@ public sealed class HistoryFloorLiberationEncounter :
         HistoryFloorLiberationSettlementStore.Record(this);
 
         await CreatureCmd.SetCurrentHp(creature, 1m);
-        await EndCombatAsLiberationVictory(creature.CombatState);
+        // 历史层一直没有“战斗已结束或正在结束则直接返回”的守卫（艺术、技术、语言、文学层有），这里保持原行为。
+        await EndCombatAsLiberationVictory(
+            creature.CombatState,
+            requireCombatInProgress: false);
     }
 
     public async Task OnBeforeSideTurnStart(CombatSide side, CombatStateLike combatState)
@@ -825,42 +814,6 @@ public sealed class HistoryFloorLiberationEncounter :
         MoonTextService.StopRandomLoop(creature, HistoryFloorFlutteringBoss.BackgroundTextScope);
         MoonTextService.StopRandomLoop(creature, HistoryFloorWaspBoss.BackgroundTextScope);
         MoonTextService.StopRandomLoop(creature, HistoryFloorEmeraldBoughBoss.BackgroundTextScope);
-    }
-
-    private static async Task EndCombatAsLiberationVictory(CombatStateLike? combatState)
-    {
-        if (combatState == null)
-        {
-            return;
-        }
-
-        foreach (Creature enemy in combatState.Enemies.ToArray())
-        {
-            if (enemy.IsAlive)
-            {
-                await CreatureCmd.Kill(enemy, force: true);
-            }
-        }
-
-        if (CombatManager.Instance.IsInProgress)
-        {
-            await CombatManager.Instance.CheckWinCondition();
-        }
-    }
-
-    private static int ReadInt(Dictionary<string, string> state, string key, int fallback)
-    {
-        return state.TryGetValue(key, out string? value) && int.TryParse(value, out int parsed)
-            ? parsed
-            : fallback;
-    }
-
-    private static int ReadPhase(Dictionary<string, string> state, string key, int fallback) =>
-        Math.Clamp(ReadInt(state, key, fallback), 1, MaxPhase);
-
-    private static bool ReadBool(Dictionary<string, string> state, string key)
-    {
-        return state.TryGetValue(key, out string? value) && bool.TryParse(value, out bool parsed) && parsed;
     }
 
     internal async Task TrySpawnEmeraldBoughVineBarriers(CombatStateLike combatState)

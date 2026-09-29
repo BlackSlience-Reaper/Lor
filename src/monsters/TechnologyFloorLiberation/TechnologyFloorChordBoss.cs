@@ -30,7 +30,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.TechnologyFloorLiberation;
 
-public sealed class TechnologyFloorChordBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class TechnologyFloorChordBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 3;
 
@@ -42,7 +42,6 @@ public sealed class TechnologyFloorChordBoss : LorMonsterModel, ILiberationPrima
     private const string ShredMoveId = "SHRED";
     private const string CompositionMoveId = "COMPOSITION";
     private const string ChordEgoMoveId = "CHORD_EGO";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_3";
     private const float BackgroundTextIntervalSeconds = 5f;
@@ -101,9 +100,12 @@ public sealed class TechnologyFloorChordBoss : LorMonsterModel, ILiberationPrima
     private bool _backgroundMoonTextLoopStarted;
     private bool _usingCompositionText;
     private MoveState? _egoState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Cast";
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -228,34 +230,9 @@ public sealed class TechnologyFloorChordBoss : LorMonsterModel, ILiberationPrima
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var ensemble = new MoveState(
             EnsembleMoveId,
@@ -308,10 +285,10 @@ public sealed class TechnologyFloorChordBoss : LorMonsterModel, ILiberationPrima
         shred.FollowUpState = chooser;
         composition.FollowUpState = chooser;
         chordEgo.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
-            new MonsterState[] { _reviveAndEmpowerState, ensemble, shred, composition, chordEgo, rand, chooser },
+            new MonsterState[] { reviveAndEmpower, ensemble, shred, composition, chordEgo, rand, chooser },
             chooser);
     }
 
@@ -385,21 +362,10 @@ public sealed class TechnologyFloorChordBoss : LorMonsterModel, ILiberationPrima
         _moveCount = 0;
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is TechnologyFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private Task<AttackCommand> ExecuteAttackSegment(string animation, int damage)
     {

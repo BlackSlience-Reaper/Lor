@@ -24,7 +24,7 @@ using VoidCard = MegaCrit.Sts2.Core.Models.Cards.Void;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorDaCapoBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 1;
     private const string FirstMovementMoveId = "FIRST_MOVEMENT";
@@ -32,7 +32,6 @@ public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhas
     private const string ThirdMovementMoveId = "THIRD_MOVEMENT";
     private const string FourthMovementMoveId = "FOURTH_MOVEMENT";
     private const string FinaleMoveId = "FINALE";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     public const int StageTurnCount = 5;
     private const int StaggerResistanceMax = 200;
@@ -43,7 +42,6 @@ public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhas
     private const int ThirdMovementWeak = 3;
     private const int FourthMovementHits = 3;
     private const int FinaleChaosDamage = 1;
-    private MoveState? _reviveAndEmpowerState;
 
     public const string Root = "res://images/monsters/art_floor/dacapo/";
     public const string IdleTexturePath = Root + "idle.png";
@@ -54,7 +52,7 @@ public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhas
 
     public override int DefaultChaoResistance => StaggerResistanceMax;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -118,30 +116,9 @@ public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhas
         return encounter.OnPhaseBossDeath(this, wasRemovalPrevented, deathAnimLength);
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var first = new MoveState(
             FirstMovementMoveId,
@@ -169,10 +146,10 @@ public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhas
         third.FollowUpState = fourth;
         fourth.FollowUpState = finale;
         finale.FollowUpState = first;
-        _reviveAndEmpowerState.FollowUpState = first;
+        reviveAndEmpower.FollowUpState = first;
 
         return new MonsterMoveStateMachine(
-            new MonsterState[] { _reviveAndEmpowerState, first, second, third, fourth, finale },
+            new MonsterState[] { reviveAndEmpower, first, second, third, fourth, finale },
             first);
     }
 
@@ -201,20 +178,10 @@ public sealed class ArtFloorDaCapoBoss : LorMonsterModel, ILiberationPrimaryPhas
         await PlayFinale(targets);
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task PlayFirstMovement(IReadOnlyList<Creature> targets)
     {

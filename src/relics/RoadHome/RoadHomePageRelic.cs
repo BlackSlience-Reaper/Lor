@@ -14,8 +14,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -23,7 +21,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.relics.RoadHome;
 
-public sealed class RoadHomePageRelic : LibraryRelicModel
+public sealed class RoadHomePageRelic : ModalPageRelic<RoadHomePageMode>
 {
     public const int CourageMaxHpPercent = 25;
     public const int CourageTotalUses = 3;
@@ -91,6 +89,12 @@ public sealed class RoadHomePageRelic : LibraryRelicModel
     [SavedProperty]
     public RoadHomePageMode Mode { get; private set; }
 
+    protected override RoadHomePageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty]
     public int CourageUsesRemaining { get; private set; } = CourageTotalUses;
 
@@ -109,47 +113,13 @@ public sealed class RoadHomePageRelic : LibraryRelicModel
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int CompanionCurrentHp { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(RoadHomePageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != RoadHomePageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
+        SetMode(mode);
         if (Mode == RoadHomePageMode.CompanionRoad && CombatManager.Instance.IsInProgress)
         {
             await SummonCompanionIfNeeded();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
     }
 
     public override async Task BeforeCombatStart()
@@ -382,7 +352,7 @@ public sealed class RoadHomePageRelic : LibraryRelicModel
         return null;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -392,67 +362,13 @@ public sealed class RoadHomePageRelic : LibraryRelicModel
         ];
     }
 
-    private static RoadHomePageMode ResolveModeFromChoiceCard(CardModel? card)
+    protected override void ResetStateOnFallback()
     {
-        return card switch
-        {
-            RoadHomeCourageChoiceCard => RoadHomePageMode.Courage,
-            RoadHomeCompanionRoadChoiceCard => RoadHomePageMode.CompanionRoad,
-            RoadHomeHomeChoiceCard => RoadHomePageMode.Home,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(RoadHomePageMode mode)
-    {
-        return mode is RoadHomePageMode.None
-            or RoadHomePageMode.Courage
-            or RoadHomePageMode.CompanionRoad
-            or RoadHomePageMode.Home;
-    }
-
-    private static bool IsConcreteMode(RoadHomePageMode mode)
-    {
-        return mode is RoadHomePageMode.Courage
-            or RoadHomePageMode.CompanionRoad
-            or RoadHomePageMode.Home;
-    }
-
-    private void SetMode(RoadHomePageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        RoadHomePageMode oldMode = Mode;
-        Mode = RoadHomePageMode.Courage;
         CourageUsedThisCombat = false;
         _courageMaxHpGainedThisCombat = 0;
-        Log.Warn("[LibraryOfRuina.PageRelic] RoadHomePageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Courage.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         DynamicVars["RemainingUses"].BaseValue = Math.Max(0, CourageUsesRemaining);
@@ -469,27 +385,6 @@ public sealed class RoadHomePageRelic : LibraryRelicModel
                     ? RelicStatus.Active
                     : RelicStatus.Normal;
         InvokeDisplayAmountChanged();
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }
 

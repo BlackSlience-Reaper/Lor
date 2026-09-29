@@ -163,24 +163,8 @@ public sealed class BirdLullabyCard() : CardModel(2, CardType.Skill, CardRarity.
     }
 }
 
-public abstract class BigBirdPageChoiceCardBase() : CardModel(-1, CardType.Skill, CardRarity.Ancient, TargetType.None,
-    shouldShowInCardLibrary: false)
+public abstract class BigBirdPageChoiceCardBase : PageChoiceCard<BigBirdPageMode>
 {
-    public const string WatchfulEyeChoiceId = "BIG_BIRD_WATCHFUL_EYE_CHOICE_CARD";
-    public const string EverBurningLampChoiceId = "BIG_BIRD_EVER_BURNING_LAMP_CHOICE_CARD";
-    public const string SalvationChoiceId = "BIG_BIRD_SALVATION_CHOICE_CARD";
-
-    protected abstract string PortraitFileName { get; }
-
-    public override int MaxUpgradeLevel => 0;
-
-    public override bool CanBeGeneratedInCombat => false;
-
-    public override string PortraitPath =>
-        ImageHelper.GetImagePath($"packed/card_portraits/colorless/{PortraitFileName}");
-
-    public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
-
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.ForEnergy(this),
@@ -195,28 +179,28 @@ public abstract class BigBirdPageChoiceCardBase() : CardModel(-1, CardType.Skill
         new DynamicVar("Strong", BigBirdPageRelic.SalvationStrong),
         new DynamicVar("Damage", BigBirdPageRelic.SalvationDamage)
     ];
-
-    public static bool IsBigBirdPageChoiceCard(CardModel? card)
-    {
-        string? id = card?.Id.Entry;
-        return id is WatchfulEyeChoiceId or EverBurningLampChoiceId or SalvationChoiceId;
-    }
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class BigBirdWatchfulEyeChoiceCard : BigBirdPageChoiceCardBase
 {
+    public override BigBirdPageMode PageMode => BigBirdPageMode.WatchfulEye;
+
     protected override string PortraitFileName => "big_bird_watchful_eye_choice_card.png";
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class BigBirdEverBurningLampChoiceCard : BigBirdPageChoiceCardBase
 {
+    public override BigBirdPageMode PageMode => BigBirdPageMode.EverBurningLamp;
+
     protected override string PortraitFileName => "big_bird_ever_burning_lamp_choice_card.png";
 }
 
 [CardPool(typeof(TokenCardPool))]
 public sealed class BigBirdSalvationChoiceCard : BigBirdPageChoiceCardBase
 {
+    public override BigBirdPageMode PageMode => BigBirdPageMode.Salvation;
+
     protected override string PortraitFileName => "big_bird_salvation_choice_card.png";
 }

@@ -5,18 +5,14 @@ using LibraryOfRuina.cards.ForsakenMurderer;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -24,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.ForsakenMurderer;
 
-public sealed class ForsakenMurdererPageRelic : RelicModel
+public sealed class ForsakenMurdererPageRelic : ModalPageRelic<ForsakenMurdererPageMode>
 {
     internal const int IronEchoStrengthLoss = 1;
     internal const int BoundWrathDamage = 16;
@@ -64,49 +60,16 @@ public sealed class ForsakenMurdererPageRelic : RelicModel
     [SavedProperty]
     public ForsakenMurdererPageMode Mode { get; private set; }
 
+    protected override ForsakenMurdererPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool IronEchoAvailableThisCombat { get; private set; }
 
     private bool _boundWrathPendingThisCombat;
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != ForsakenMurdererPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -204,7 +167,7 @@ public sealed class ForsakenMurdererPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -214,69 +177,15 @@ public sealed class ForsakenMurdererPageRelic : RelicModel
         ];
     }
 
-    private static ForsakenMurdererPageMode ResolveModeFromChoiceCard(CardModel? card)
+    protected override void ResetStateOnModeSet(ForsakenMurdererPageMode mode)
     {
-        return card switch
-        {
-            ForsakenMurdererIronEchoChoiceCard => ForsakenMurdererPageMode.IronEcho,
-            ForsakenMurdererBoundWrathChoiceCard => ForsakenMurdererPageMode.BoundWrath,
-            ForsakenMurdererExtremeViolenceChoiceCard => ForsakenMurdererPageMode.ExtremeViolence,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(ForsakenMurdererPageMode mode)
-    {
-        return mode is ForsakenMurdererPageMode.None
-            or ForsakenMurdererPageMode.IronEcho
-            or ForsakenMurdererPageMode.BoundWrath
-            or ForsakenMurdererPageMode.ExtremeViolence;
-    }
-
-    private static bool IsConcreteMode(ForsakenMurdererPageMode mode)
-    {
-        return mode is ForsakenMurdererPageMode.IronEcho
-            or ForsakenMurdererPageMode.BoundWrath
-            or ForsakenMurdererPageMode.ExtremeViolence;
-    }
-
-    private void SetMode(ForsakenMurdererPageMode mode)
-    {
-        Mode = mode;
         IronEchoAvailableThisCombat = false;
         _boundWrathPendingThisCombat = false;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
+    protected override void ResetStateOnFallback() => ResetStateOnModeSet(FallbackMode);
 
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        ForsakenMurdererPageMode oldMode = Mode;
-        Mode = ForsakenMurdererPageMode.IronEcho;
-        IronEchoAvailableThisCombat = false;
-        _boundWrathPendingThisCombat = false;
-        Log.Warn("[LibraryOfRuina.PageRelic] ForsakenMurdererPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to IronEcho.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -300,26 +209,5 @@ public sealed class ForsakenMurdererPageRelic : RelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

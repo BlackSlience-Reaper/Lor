@@ -15,7 +15,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes;
@@ -27,7 +26,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.FuneralOfTheDeadButterflies;
 
-public sealed class FuneralOfTheDeadButterfliesPageRelic : RelicModel
+public sealed class FuneralOfTheDeadButterfliesPageRelic : ModalPageRelic<FuneralOfTheDeadButterfliesPageMode>
 {
     internal const int RestEnchantMaxSelect = 3;
     internal const int CoffinStrength = 4;
@@ -67,49 +66,24 @@ public sealed class FuneralOfTheDeadButterfliesPageRelic : RelicModel
     [SavedProperty]
     public FuneralOfTheDeadButterfliesPageMode Mode { get; private set; }
 
+    protected override FuneralOfTheDeadButterfliesPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool MourningTriggeredThisCombat { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(FuneralOfTheDeadButterfliesPageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != FuneralOfTheDeadButterfliesPageMode.None)
-        {
-            UpdateModeUiState();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-
+        SetMode(mode);
         if (Mode == FuneralOfTheDeadButterfliesPageMode.Rest)
         {
             await ApplyRestEnchantmentSelection();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        return Task.CompletedTask;
     }
 
     public override async Task BeforeCombatStart()
@@ -175,7 +149,7 @@ public sealed class FuneralOfTheDeadButterfliesPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -185,63 +159,11 @@ public sealed class FuneralOfTheDeadButterfliesPageRelic : RelicModel
         ];
     }
 
-    private static FuneralOfTheDeadButterfliesPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            FuneralRestChoiceCard => FuneralOfTheDeadButterfliesPageMode.Rest,
-            FuneralCoffinChoiceCard => FuneralOfTheDeadButterfliesPageMode.Coffin,
-            FuneralMourningChoiceCard => FuneralOfTheDeadButterfliesPageMode.Mourning,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
+    protected override void ResetStateOnModeSet(FuneralOfTheDeadButterfliesPageMode mode) => MourningTriggeredThisCombat = false;
 
-    private static bool IsKnownMode(FuneralOfTheDeadButterfliesPageMode mode)
-    {
-        return mode is FuneralOfTheDeadButterfliesPageMode.None
-            or FuneralOfTheDeadButterfliesPageMode.Rest
-            or FuneralOfTheDeadButterfliesPageMode.Coffin
-            or FuneralOfTheDeadButterfliesPageMode.Mourning;
-    }
+    protected override void ResetStateOnFallback() => MourningTriggeredThisCombat = false;
 
-    private static bool IsConcreteMode(FuneralOfTheDeadButterfliesPageMode mode)
-    {
-        return mode is FuneralOfTheDeadButterfliesPageMode.Rest
-            or FuneralOfTheDeadButterfliesPageMode.Coffin
-            or FuneralOfTheDeadButterfliesPageMode.Mourning;
-    }
-
-    private void SetMode(FuneralOfTheDeadButterfliesPageMode mode)
-    {
-        Mode = mode;
-        MourningTriggeredThisCombat = false;
-        UpdateModeUiState();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        FuneralOfTheDeadButterfliesPageMode oldMode = Mode;
-        Mode = FuneralOfTheDeadButterfliesPageMode.Rest;
-        MourningTriggeredThisCombat = false;
-        Log.Warn("[LibraryOfRuina.PageRelic] FuneralOfTheDeadButterfliesPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Rest.");
-        UpdateModeUiState();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == FuneralOfTheDeadButterfliesPageMode.Mourning && CombatManager.Instance.IsInProgress

@@ -219,20 +219,6 @@ public sealed class DespairKnightEnhancedPageRelic : EnhancedMagicalGirlPageReli
         CreateUpgradedChoice<DespairKnightTearSwordChoiceCard>()
     ];
 
-    private static DespairKnightPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            DespairKnightBlessingChoiceCard => DespairKnightPageMode.Blessing,
-            DespairKnightDespairChoiceCard => DespairKnightPageMode.Despair,
-            DespairKnightTearSwordChoiceCard => DespairKnightPageMode.TearSword,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    protected override DespairKnightPageMode ResolveChoice(CardModel card) =>
-        ResolveModeFromChoiceCard(card);
-
     protected override Task OnModeObtained() => ApplyTearSwordOnPickup();
 
     [AbnormalityPagePostObtainEffect((int)DespairKnightPageMode.TearSword)]

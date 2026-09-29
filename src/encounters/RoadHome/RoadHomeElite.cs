@@ -94,12 +94,10 @@ public sealed class RoadHomeElite : EncounterModel
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        EndedByHouseDeath = ReadBool(state, EndedByHouseDeathSaveKey);
-        CompletingSuccessfulCleanup = ReadBool(state, CompletingSuccessfulCleanupSaveKey);
+        var bag = new EncounterStateBag(state);
+        EndedByHouseDeath = bag.ReadBool(EndedByHouseDeathSaveKey);
+        CompletingSuccessfulCleanup = bag.ReadBool(CompletingSuccessfulCleanupSaveKey);
     }
-
-    private static bool ReadBool(IReadOnlyDictionary<string, string> state, string key) =>
-        state.TryGetValue(key, out string? value) && bool.TryParse(value, out bool result) && result;
 }
 
 internal static class RoadHomeEncounterHelper

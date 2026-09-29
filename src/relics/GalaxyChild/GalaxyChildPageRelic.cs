@@ -9,14 +9,11 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -24,7 +21,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.relics.GalaxyChild;
 
-public sealed class GalaxyChildPageRelic : RelicModel
+public sealed class GalaxyChildPageRelic : ModalPageRelic<GalaxyChildPageMode>
 {
     internal const int PebbleEnchantMaxSelect = 2;
     internal const int PebbleHeal = 3;
@@ -83,50 +80,22 @@ public sealed class GalaxyChildPageRelic : RelicModel
     [SavedProperty]
     public GalaxyChildPageMode Mode { get; private set; }
 
+    protected override GalaxyChildPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int ProofTurnsRemainingThisCombat { get; private set; }
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int TearsPenaltyCombatsRemaining { get; private set; }
 
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
+    protected override Task ApplyObtainedChoiceAsync(GalaxyChildPageMode mode) => SetModeAsync(mode);
 
-        if (Mode != GalaxyChildPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        await SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
+    // 预选只写模式、通知图标变化并刷新界面；清状态与拾取效果由获得后作为 AbnormalityPagePostObtainEffect 执行的 SetModeAsync 完成。
+    protected override void ApplyPreselectedMode(GalaxyChildPageMode mode) => AssignPreselectedModeOnly(mode);
 
     public override Task BeforeCombatStart()
     {
@@ -192,7 +161,7 @@ public sealed class GalaxyChildPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -202,40 +171,10 @@ public sealed class GalaxyChildPageRelic : RelicModel
         ];
     }
 
-    private static GalaxyChildPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            GalaxyChildPebbleChoiceCard => GalaxyChildPageMode.Pebble,
-            GalaxyChildProofOfFriendshipChoiceCard => GalaxyChildPageMode.ProofOfFriendship,
-            GalaxyChildTearsChoiceCard => GalaxyChildPageMode.Tears,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(GalaxyChildPageMode mode)
-    {
-        return mode is GalaxyChildPageMode.None
-            or GalaxyChildPageMode.Pebble
-            or GalaxyChildPageMode.ProofOfFriendship
-            or GalaxyChildPageMode.Tears;
-    }
-
-    private static bool IsConcreteMode(GalaxyChildPageMode mode)
-    {
-        return mode is GalaxyChildPageMode.Pebble
-            or GalaxyChildPageMode.ProofOfFriendship
-            or GalaxyChildPageMode.Tears;
-    }
-
     [AbnormalityPagePostObtainEffect]
-    private async Task SetMode(GalaxyChildPageMode mode)
+    private async Task SetModeAsync(GalaxyChildPageMode mode)
     {
-        Mode = mode;
-        ResetProofCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
+        SetMode(mode);
 
         if (Mode == GalaxyChildPageMode.Pebble)
         {
@@ -249,32 +188,6 @@ public sealed class GalaxyChildPageRelic : RelicModel
         }
     }
 
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        GalaxyChildPageMode oldMode = Mode;
-        Mode = GalaxyChildPageMode.Pebble;
-        TearsPenaltyCombatsRemaining = 0;
-        ResetProofCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] GalaxyChildPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Pebble.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
     private void ResetProofCombatState()
     {
         ProofTurnsRemainingThisCombat = Mode == GalaxyChildPageMode.ProofOfFriendship
@@ -282,7 +195,15 @@ public sealed class GalaxyChildPageRelic : RelicModel
             : 0;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(GalaxyChildPageMode mode) => ResetProofCombatState();
+
+    protected override void ResetStateOnFallback()
+    {
+        TearsPenaltyCombatsRemaining = 0;
+        ResetProofCombatState();
+    }
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -360,27 +281,6 @@ public sealed class GalaxyChildPageRelic : RelicModel
         if (vfx != null)
         {
             NRun.Instance?.GlobalUi.CardPreviewContainer.AddChildSafely(vfx);
-        }
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
         }
     }
 }

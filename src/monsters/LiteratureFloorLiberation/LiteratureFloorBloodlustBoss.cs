@@ -25,15 +25,13 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorBloodlustBoss :
-    LorMonsterModel,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster
 {
     public const int Phase = 3;
     public const string PersistenceMoveId = "PERSISTENCE";
     public const string ObsessionMoveId = "OBSESSION";
     public const string DesireBurstMoveId = "DESIRE_BURST";
     public const string UnbearableMoveId = "UNBEARABLE";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     public const int PersistenceHits = 2;
     public const int DesireBurstHits = 3;
@@ -69,9 +67,8 @@ public sealed class LiteratureFloorBloodlustBoss :
     private MoveState? _obsessionState;
     private MoveState? _desireBurstState;
     private MoveState? _unbearableState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     private int PersistenceDamage =>
         AscensionHelper.GetValueIfAscension(
@@ -247,22 +244,6 @@ public sealed class LiteratureFloorBloodlustBoss :
         }
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
     internal async Task<bool> TryQueueUnbearableMove()
     {
         if (_unbearableState == null
@@ -326,14 +307,7 @@ public sealed class LiteratureFloorBloodlustBoss :
                         previewTarget),
                 () => 1,
                 "LITERATURE_FLOOR_BLOODLUST_UNBEARABLE_FINISHER.description"));
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var normalRandom = new RandomBranchState("NORMAL_RANDOM");
         normalRandom.AddBranch(
@@ -350,7 +324,7 @@ public sealed class LiteratureFloorBloodlustBoss :
         _obsessionState.FollowUpState = normalRandom;
         _desireBurstState.FollowUpState = normalRandom;
         _unbearableState.FollowUpState = normalRandom;
-        _reviveAndEmpowerState.FollowUpState = normalRandom;
+        reviveAndEmpower.FollowUpState = normalRandom;
 
         return new MonsterMoveStateMachine(
             [
@@ -358,7 +332,7 @@ public sealed class LiteratureFloorBloodlustBoss :
                 _obsessionState,
                 _desireBurstState,
                 _unbearableState,
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 normalRandom
             ],
             normalRandom);
@@ -491,25 +465,20 @@ public sealed class LiteratureFloorBloodlustBoss :
                 .UnbearableDurationSeconds - previousHitTime));
     }
 
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
+    protected override Task PlayReviveAndEmpowerAnimation()
     {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(
+        return CreatureCmd.TriggerAnim(
             Creature,
             "Cast",
             LiteratureFloorBloodlustAnimationContract
                 .CastDurationSeconds);
-        if (Creature.CombatState?.Encounter
-            is LiteratureFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
     }
+
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LiteratureFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task ExecuteTimedMultiAttack(
         int damage,

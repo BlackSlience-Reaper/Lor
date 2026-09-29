@@ -6,17 +6,13 @@ using LibraryOfRuina.compat;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.powers.QueenBee;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -24,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.QueenBee;
 
-public sealed class QueenBeePageRelic : RelicModel
+public sealed class QueenBeePageRelic : ModalPageRelic<QueenBeePageMode>
 {
     internal const int SporeBurnAmount = 8;
     internal const int SporeBleedAmount = 8;
@@ -79,6 +75,12 @@ public sealed class QueenBeePageRelic : RelicModel
     [SavedProperty]
     public QueenBeePageMode Mode { get; private set; }
 
+    protected override QueenBeePageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool MarkedThisTurn { get; private set; }
 
@@ -97,47 +99,6 @@ public sealed class QueenBeePageRelic : RelicModel
     /// </summary>
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int HpLossRemainder { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != QueenBeePageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(
-                this,
-                nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -310,7 +271,7 @@ public sealed class QueenBeePageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -318,66 +279,6 @@ public sealed class QueenBeePageRelic : RelicModel
             Owner.RunState.CreateCard<QueenBeeWorkerBeeChoiceCard>(Owner),
             Owner.RunState.CreateCard<QueenBeeLoyaltyChoiceCard>(Owner)
         ];
-    }
-
-    private static QueenBeePageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            QueenBeeSporeChoiceCard => QueenBeePageMode.Spore,
-            QueenBeeWorkerBeeChoiceCard => QueenBeePageMode.WorkerBee,
-            QueenBeeLoyaltyChoiceCard => QueenBeePageMode.Loyalty,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(QueenBeePageMode mode)
-    {
-        return mode is QueenBeePageMode.None
-            or QueenBeePageMode.Spore
-            or QueenBeePageMode.WorkerBee
-            or QueenBeePageMode.Loyalty;
-    }
-
-    private static bool IsConcreteMode(QueenBeePageMode mode)
-    {
-        return mode is QueenBeePageMode.Spore
-            or QueenBeePageMode.WorkerBee
-            or QueenBeePageMode.Loyalty;
-    }
-
-    private void SetMode(QueenBeePageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        QueenBeePageMode oldMode = Mode;
-        Mode = QueenBeePageMode.Spore;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] QueenBeePageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Spore.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
     private void ResetTransientCombatState()
@@ -389,7 +290,11 @@ public sealed class QueenBeePageRelic : RelicModel
         
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(QueenBeePageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == QueenBeePageMode.Loyalty
@@ -418,26 +323,5 @@ public sealed class QueenBeePageRelic : RelicModel
         }
 
         return cardSource.Owner == Owner && cardSource.Type == CardType.Attack;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 }

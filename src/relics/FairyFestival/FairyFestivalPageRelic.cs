@@ -10,7 +10,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Rooms;
@@ -20,7 +19,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.FairyFestival;
 
-public sealed class FairyFestivalPageRelic : RelicModel
+public sealed class FairyFestivalPageRelic : ModalPageRelic<FairyFestivalPageMode>
 {
     internal const int FairyCareHeal = 6;
     internal const int FairyCarePermanentVulnerable = 1;
@@ -58,46 +57,21 @@ public sealed class FairyFestivalPageRelic : RelicModel
     [SavedProperty]
     public FairyFestivalPageMode Mode { get; private set; }
 
+    protected override FairyFestivalPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshIconOnModeChange => false;
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
+    // 预选写入模式时还会通知一次图标变化，获得时选择则不会。
+    protected override void ApplyPreselectedMode(FairyFestivalPageMode mode) => AssignPreselectedModeOnly(mode);
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool GluttonySpent { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != FairyFestivalPageMode.None)
-        {
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        Mode = ResolveModeFromChoiceCard(chosenCard);
-        UpdateModeUiState();
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -174,7 +148,7 @@ public sealed class FairyFestivalPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -184,56 +158,9 @@ public sealed class FairyFestivalPageRelic : RelicModel
         ];
     }
 
-    private static FairyFestivalPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            FairyCareChoiceCard => FairyFestivalPageMode.FairyCare,
-            FairyGluttonyChoiceCard => FairyFestivalPageMode.Gluttony,
-            FairyPredationChoiceCard => FairyFestivalPageMode.Predation,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
+    protected override void ResetStateOnFallback() => GluttonySpent = false;
 
-    private static bool IsKnownMode(FairyFestivalPageMode mode)
-    {
-        return mode is FairyFestivalPageMode.None
-            or FairyFestivalPageMode.FairyCare
-            or FairyFestivalPageMode.Gluttony
-            or FairyFestivalPageMode.Predation;
-    }
-
-    private static bool IsConcreteMode(FairyFestivalPageMode mode)
-    {
-        return mode is FairyFestivalPageMode.FairyCare
-            or FairyFestivalPageMode.Gluttony
-            or FairyFestivalPageMode.Predation;
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        FairyFestivalPageMode oldMode = Mode;
-        Mode = FairyFestivalPageMode.FairyCare;
-        GluttonySpent = false;
-        Log.Warn("[LibraryOfRuina.PageRelic] FairyFestivalPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to FairyCare.");
-        UpdateModeUiState();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == FairyFestivalPageMode.Gluttony && CombatManager.Instance.IsInProgress

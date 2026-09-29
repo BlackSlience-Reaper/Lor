@@ -605,14 +605,9 @@ public sealed class LanguageFloorMimicry :
                         ? GoodbyeBleed * EnhancedMultiplier
                         : GoodbyeBleed)));
         // 假死后的进化必须越过混乱锁，避免复活行动被击晕状态阻断。
-        _evolutionState = new LibraryPhaseTransitionMoveState(
+        _evolutionState = LiberationPhaseBossMoves.CreateState(
             EvolutionMoveId,
-            EvolutionMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+            EvolutionMove);
 
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
@@ -686,22 +681,13 @@ public sealed class LanguageFloorMimicry :
 
     public async Task TriggerReviveAndEmpowerState()
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
+        await LiberationPhaseBossMoves.TriggerHitAnimationIfVisible(Creature);
         ForceReviveAndEmpowerState();
     }
 
     public void ForceReviveAndEmpowerState()
     {
-        if (_evolutionState != null)
-        {
-            SetMoveImmediate(
-                _evolutionState,
-                forceTransition: true);
-        }
+        LiberationPhaseBossMoves.ForceState(this, _evolutionState);
     }
 
     // 假死后如果进化意图被击晕、混乱锁等外部切招覆盖，拟态会一直停留在假死状态、既不能被选中也不会进化。

@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.cards;
 using LibraryOfRuina.compat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
@@ -25,35 +25,20 @@ internal static class AbnormalityPageRewardPreselection
     private static readonly Lazy<IReadOnlyDictionary<ModelId, PageRelicRegistration>> PageRelicsById =
         new(DiscoverPageRelics);
 
-    private static readonly ConcurrentDictionary<Type, bool> PageChoiceCardTypeCache =
-        new();
-
     [ThreadStatic]
     private static bool _isPreselectingPageReward;
 
     public static bool IsPreselectingPageReward => _isPreselectingPageReward;
 
-    public static bool IsPageRelic(RelicModel? relic)
-    {
-        return relic != null && TryGetRegistration(relic, out _);
-    }
+    /// <summary>接入三选一管线的异想体书页遗物（<see cref="IModalPageRelic"/>）。</summary>
+    public static bool IsPageRelic(RelicModel? relic) => relic is IModalPageRelic;
 
-    public static bool IsPageRelicChoiceCard(CardModel? card)
-    {
-        if (card == null)
-        {
-            return false;
-        }
-
-        return PageChoiceCardTypeCache.GetOrAdd(
-            card.GetType(),
-            _ => IsRegisteredPageChoiceCard(card));
-    }
+    /// <summary>书页遗物三选一界面上的选择卡（横幅文字与类型牌据此替换）。</summary>
+    public static bool IsPageRelicChoiceCard(CardModel? card) => card is IPageChoiceCard;
 
     public static async Task<bool> TryPreselectPageChoice(RelicModel relic, Player player)
     {
-        if (!TryGetRegistration(relic, out PageRelicRegistration registration)
-            || HasConcreteMode(relic, registration))
+        if (relic is not IModalPageRelic modalRelic || modalRelic.HasSelectedMode)
         {
             return true;
         }
@@ -62,7 +47,7 @@ internal static class AbnormalityPageRewardPreselection
         try
         {
             relic.Owner = player;
-            IReadOnlyList<CardModel> options = CreateChoiceCards(relic, registration);
+            IReadOnlyList<CardModel> options = modalRelic.CreateModeChoiceCards();
             CardModel? chosenCard;
             try
             {
@@ -87,7 +72,7 @@ internal static class AbnormalityPageRewardPreselection
                 return false;
             }
 
-            ApplyChosenMode(relic, chosenCard, registration);
+            modalRelic.ApplyPreselectedChoice(chosenCard);
             return true;
         }
         finally
@@ -97,14 +82,13 @@ internal static class AbnormalityPageRewardPreselection
     }
 
     public static bool HasConcreteModeForPatch(RelicModel relic) =>
-        TryGetRegistration(relic, out PageRelicRegistration registration)
-        && HasConcreteMode(relic, registration);
+        relic is IModalPageRelic { HasSelectedMode: true };
 
     public static async Task ApplyPostObtainedEffects(RelicModel relic)
     {
         if (!TryGetRegistration(relic, out PageRelicRegistration registration)
             || registration.PostObtainedEffects.Count == 0
-            || !HasConcreteMode(relic, registration))
+            || relic is not IModalPageRelic { HasSelectedMode: true })
         {
             return;
         }
@@ -152,49 +136,6 @@ internal static class AbnormalityPageRewardPreselection
             player,
             canSkip: true);
 
-    private static void ApplyChosenMode(
-        RelicModel relic,
-        CardModel chosenCard,
-        PageRelicRegistration registration)
-    {
-        object? mode = registration.ResolveModeFromChoiceCard.Invoke(null, [chosenCard]);
-        if (mode == null)
-        {
-            throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(chosenCard);
-        }
-
-        MethodInfo? setModeMethod = AccessTools.Method(relic.GetType(), "SetMode", [mode.GetType()]);
-        if (setModeMethod != null && setModeMethod.ReturnType == typeof(void))
-        {
-            setModeMethod.Invoke(relic, [mode]);
-            return;
-        }
-
-        MethodInfo setter = registration.ModeProperty.GetSetMethod(nonPublic: true)
-            ?? throw new MissingMethodException(relic.GetType().FullName, "set_Mode");
-        setter.Invoke(relic, [mode]);
-        VanillaPrivate.RelicModelRelicIconChanged.Invoke(relic);
-        AccessTools.Method(relic.GetType(), "UpdateModeUiState")?.Invoke(relic, []);
-    }
-
-    private static IReadOnlyList<CardModel> CreateChoiceCards(
-        RelicModel relic,
-        PageRelicRegistration registration)
-    {
-        return (IReadOnlyList<CardModel>)registration.CreateModeChoiceCards.Invoke(relic, [])!;
-    }
-
-    private static bool HasConcreteMode(RelicModel relic, PageRelicRegistration registration)
-    {
-        object? mode = registration.ModeProperty.GetValue(relic);
-        if (mode == null)
-        {
-            return false;
-        }
-
-        return Convert.ToInt32(mode) != 0;
-    }
-
     private static object GetMode(RelicModel relic, PageRelicRegistration registration)
     {
         return registration.ModeProperty.GetValue(relic)
@@ -206,52 +147,24 @@ internal static class AbnormalityPageRewardPreselection
         return PageRelicsById.Value.TryGetValue(relic.Id, out registration!);
     }
 
-    private static bool IsRegisteredPageChoiceCard(CardModel card)
-    {
-        foreach (PageRelicRegistration registration in PageRelicsById.Value.Values)
-        {
-            try
-            {
-                object? mode = registration.ResolveModeFromChoiceCard.Invoke(
-                    null,
-                    [card]);
-                if (mode != null && Convert.ToInt32(mode) != 0)
-                {
-                    return true;
-                }
-            }
-            catch (TargetInvocationException exception)
-                when (exception.InnerException is InvalidOperationException)
-            {
-            }
-        }
-
-        return false;
-    }
-
     private static IReadOnlyDictionary<ModelId, PageRelicRegistration> DiscoverPageRelics()
     {
         Dictionary<ModelId, PageRelicRegistration> registrations = [];
         foreach (Type type in LibraryAssemblyTypes.All)
         {
-            if (type.IsAbstract || !typeof(RelicModel).IsAssignableFrom(type))
+            // 书页遗物 = 实现 IModalPageRelic 的具体遗物（ModalPageRelic 与强化书页）。惩戒鸟书页没有接入，
+            // 它的奖励走原版流程，选择卡也不算书页选择卡。
+            if (type.IsAbstract
+                || !typeof(RelicModel).IsAssignableFrom(type)
+                || !typeof(IModalPageRelic).IsAssignableFrom(type))
             {
                 continue;
             }
 
-            PropertyInfo? modeProperty = AccessTools.Property(type, "Mode");
-            MethodInfo? createModeChoiceCards = FindCreateModeChoiceCards(type);
-            MethodInfo? resolveModeFromChoiceCard = FindResolveModeFromChoiceCard(type, modeProperty);
-            if (modeProperty == null || createModeChoiceCards == null || resolveModeFromChoiceCard == null)
-            {
-                continue;
-            }
-
+            PropertyInfo modeProperty = AccessTools.Property(type, "Mode")
+                ?? throw new MissingMemberException(type.FullName, "Mode");
             ModelId id = ModelDb.GetId(type);
             registrations[id] = new PageRelicRegistration(
-                type,
-                createModeChoiceCards,
-                resolveModeFromChoiceCard,
                 modeProperty,
                 DiscoverPostObtainedEffects(type, modeProperty.PropertyType));
         }
@@ -260,33 +173,6 @@ internal static class AbnormalityPageRewardPreselection
             + registrations.Count
             + " abnormality page relic preselection entries.");
         return registrations;
-    }
-
-    private static MethodInfo? FindCreateModeChoiceCards(Type type)
-    {
-        return type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-            .FirstOrDefault(static method =>
-                method.Name == "CreateModeChoiceCards"
-                && method.GetParameters().Length == 0
-                && typeof(IReadOnlyList<CardModel>).IsAssignableFrom(method.ReturnType));
-    }
-
-    private static MethodInfo? FindResolveModeFromChoiceCard(Type type, PropertyInfo? modeProperty)
-    {
-        if (modeProperty?.PropertyType.IsEnum != true)
-        {
-            return null;
-        }
-
-        return type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-            .FirstOrDefault(method =>
-            {
-                ParameterInfo[] parameters = method.GetParameters();
-                return method.Name == "ResolveModeFromChoiceCard"
-                    && method.ReturnType == modeProperty.PropertyType
-                    && parameters.Length == 1
-                    && parameters[0].ParameterType == typeof(CardModel);
-            });
     }
 
     private static IReadOnlyList<PageRelicPostObtainedEffect> DiscoverPostObtainedEffects(Type type, Type modeType)
@@ -358,18 +244,9 @@ internal static class AbnormalityPageRewardPreselection
     }
 
     private sealed class PageRelicRegistration(
-        Type relicType,
-        MethodInfo createModeChoiceCards,
-        MethodInfo resolveModeFromChoiceCard,
         PropertyInfo modeProperty,
         IReadOnlyList<PageRelicPostObtainedEffect> postObtainedEffects)
     {
-        public Type RelicType { get; } = relicType;
-
-        public MethodInfo CreateModeChoiceCards { get; } = createModeChoiceCards;
-
-        public MethodInfo ResolveModeFromChoiceCard { get; } = resolveModeFromChoiceCard;
-
         public PropertyInfo ModeProperty { get; } = modeProperty;
 
         public IReadOnlyList<PageRelicPostObtainedEffect> PostObtainedEffects { get; } = postObtainedEffects;

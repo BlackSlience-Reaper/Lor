@@ -88,8 +88,6 @@ public sealed class WrathServantStrong : EncounterModel
     public override void LoadCustomState(Dictionary<string, string> state)
     {
         EndedByServantDeath =
-            state.TryGetValue(EndedByServantDeathKey, out string? value)
-            && bool.TryParse(value, out bool endedByServantDeath)
-            && endedByServantDeath;
+            new EncounterStateBag(state).ReadBool(EndedByServantDeathKey);
     }
 }

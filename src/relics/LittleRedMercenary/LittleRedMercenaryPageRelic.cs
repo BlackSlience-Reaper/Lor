@@ -5,16 +5,12 @@ using LibraryOfRuina.cards.LittleRedMercenary;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.powers.LittleRedMercenary;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -22,7 +18,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.relics.LittleRedMercenary;
 
-public sealed class LittleRedMercenaryPageRelic : RelicModel
+public sealed class LittleRedMercenaryPageRelic : ModalPageRelic<LittleRedMercenaryPageMode>
 {
     internal const int ScarHpPercentHigh = 90;
     internal const int ScarHpPercentMid = 70;
@@ -90,6 +86,12 @@ public sealed class LittleRedMercenaryPageRelic : RelicModel
     [SavedProperty]
     public LittleRedMercenaryPageMode Mode { get; private set; }
 
+    protected override LittleRedMercenaryPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int RevengeHpLossRemainderThisCombat { get; private set; }
 
@@ -98,45 +100,6 @@ public sealed class LittleRedMercenaryPageRelic : RelicModel
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool PreyMarkedTargetThisCombat { get; private set; }
-
-    public override async Task AfterObtained()
-    {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        if (Mode != LittleRedMercenaryPageMode.None)
-        {
-            UpdateModeUiState();
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
-    }
 
     public override async Task BeforeCombatStart()
     {
@@ -238,7 +201,7 @@ public sealed class LittleRedMercenaryPageRelic : RelicModel
         await PowerCmdCompat.Apply<StrengthPower>(ownerCreature, strength, ownerCreature, null);
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -246,66 +209,6 @@ public sealed class LittleRedMercenaryPageRelic : RelicModel
             Owner.RunState.CreateCard<LittleRedRevengeChoiceCard>(Owner),
             Owner.RunState.CreateCard<LittleRedPreyChoiceCard>(Owner)
         ];
-    }
-
-    private static LittleRedMercenaryPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            LittleRedScarChoiceCard => LittleRedMercenaryPageMode.Scar,
-            LittleRedRevengeChoiceCard => LittleRedMercenaryPageMode.Revenge,
-            LittleRedPreyChoiceCard => LittleRedMercenaryPageMode.Prey,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(LittleRedMercenaryPageMode mode)
-    {
-        return mode is LittleRedMercenaryPageMode.None
-            or LittleRedMercenaryPageMode.Scar
-            or LittleRedMercenaryPageMode.Revenge
-            or LittleRedMercenaryPageMode.Prey;
-    }
-
-    private static bool IsConcreteMode(LittleRedMercenaryPageMode mode)
-    {
-        return mode is LittleRedMercenaryPageMode.Scar
-            or LittleRedMercenaryPageMode.Revenge
-            or LittleRedMercenaryPageMode.Prey;
-    }
-
-    private void SetMode(LittleRedMercenaryPageMode mode)
-    {
-        Mode = mode;
-        ResetTransientCombatState();
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
-    {
-        LittleRedMercenaryPageMode oldMode = Mode;
-        Mode = LittleRedMercenaryPageMode.Scar;
-        ResetTransientCombatState();
-        Log.Warn("[LibraryOfRuina.PageRelic] LittleRedMercenaryPageRelic recovered loaded Mode "
-            + (int)oldMode
-            + " during "
-            + context
-            + "; fallback to Scar.");
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
     }
 
     private void ResetTransientCombatState()
@@ -317,7 +220,11 @@ public sealed class LittleRedMercenaryPageRelic : RelicModel
         PreyMarkedTargetThisCombat = false;
     }
 
-    private void UpdateModeUiState()
+    protected override void ResetStateOnModeSet(LittleRedMercenaryPageMode mode) => ResetTransientCombatState();
+
+    protected override void ResetStateOnFallback() => ResetTransientCombatState();
+
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode switch
@@ -357,27 +264,6 @@ public sealed class LittleRedMercenaryPageRelic : RelicModel
         RevengeHpLossRemainderThisCombat = total - triggers * RevengeHpLossPerTrigger;
         UpdateModeUiState();
         return triggers;
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
-        }
     }
 
 }

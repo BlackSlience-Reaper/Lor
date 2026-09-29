@@ -31,7 +31,7 @@ using LibraryOfRuina.interop;
 namespace LibraryOfRuina.encounters.TechnologyFloorLiberation;
 
 public sealed class TechnologyFloorLiberationEncounter :
-    EncounterModel,
+    LiberationEncounterBase,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
@@ -101,11 +101,6 @@ public sealed class TechnologyFloorLiberationEncounter :
     public override string BossNodePath => "res://images/map/placeholder/technology_floor_liberation_encounter_icon";
 
     public int CurrentPhase => _currentPhase;
-
-    public void RefreshLiberationPhaseBgm()
-    {
-        EncounterBgmController.RefreshCurrentEncounterTrack();
-    }
 
     public int KilledBossCount => _killedBossCount;
 
@@ -240,11 +235,12 @@ public sealed class TechnologyFloorLiberationEncounter :
 
     public override void LoadCustomState(Dictionary<string, string> state)
     {
-        _currentPhase = ReadPhase(state, CurrentPhaseKey, 1);
-        _killedBossCount = Math.Clamp(ReadInt(state, KilledBossCountKey, Math.Max(0, _currentPhase - 1)), 0, MaxPhase);
-        _transitionPending = ReadBool(state, TransitionPendingKey);
-        _settlementTriggered = ReadBool(state, SettlementTriggeredKey);
-        _endedByLethalDamage = ReadBool(state, EndedByLethalDamageKey);
+        var bag = new EncounterStateBag(state);
+        _currentPhase = bag.ReadClampedInt(CurrentPhaseKey, 1, 1, MaxPhase);
+        _killedBossCount = bag.ReadClampedInt(KilledBossCountKey, Math.Max(0, _currentPhase - 1), 0, MaxPhase);
+        _transitionPending = bag.ReadBool(TransitionPendingKey);
+        _settlementTriggered = bag.ReadBool(SettlementTriggeredKey);
+        _endedByLethalDamage = bag.ReadBool(EndedByLethalDamageKey);
     }
 
     public async Task EnsureControllerPowers(CombatStateLike? combatState)
@@ -336,16 +332,6 @@ public sealed class TechnologyFloorLiberationEncounter :
             && !_settlementTriggered
             && creature.Monster is ILiberationPrimaryPhaseBoss boss
             && boss.LiberationPhase + 1 == _currentPhase;
-    }
-
-    private static bool IsLastAlivePlayer(Creature creature)
-    {
-        if (creature.CombatState is not { } combatState)
-        {
-            return false;
-        }
-
-        return !combatState.PlayerCreatures.Any(p => p != creature && p.IsAlive);
     }
 
     public async Task OnPreventingDeath(Creature creature)
@@ -805,43 +791,5 @@ public sealed class TechnologyFloorLiberationEncounter :
         MoonTextService.StopRandomLoop(creature, TechnologyFloorChordBoss.BackgroundTextScope);
         MoonTextService.StopRandomLoop(creature, TechnologyFloorSolemnMourningBoss.BackgroundTextScope);
         MoonTextService.StopRandomLoop(creature, TechnologyFloorMagicBulletBoss.BackgroundTextScope);
-    }
-
-    private static async Task EndCombatAsLiberationVictory(CombatStateLike? combatState)
-    {
-        if (combatState == null || !CombatManager.Instance.IsInProgress)
-        {
-            // 战斗已经结束/正在结束：不再进入击杀与胜负复核管线，避免在 EndCombatInternal
-            // 之后重入 KillWithoutCheckingWinCondition（多人下会触发 "killed outside of combat"）。
-            return;
-        }
-
-        foreach (Creature enemy in combatState.Enemies.ToArray())
-        {
-            if (enemy.IsAlive)
-            {
-                await CreatureCmd.Kill(enemy, force: true);
-            }
-        }
-
-        if (CombatManager.Instance.IsInProgress)
-        {
-            await CombatManager.Instance.CheckWinCondition();
-        }
-    }
-
-    private static int ReadInt(Dictionary<string, string> state, string key, int fallback)
-    {
-        return state.TryGetValue(key, out string? value) && int.TryParse(value, out int parsed)
-            ? parsed
-            : fallback;
-    }
-
-    private static int ReadPhase(Dictionary<string, string> state, string key, int fallback) =>
-        Math.Clamp(ReadInt(state, key, fallback), 1, MaxPhase);
-
-    private static bool ReadBool(Dictionary<string, string> state, string key)
-    {
-        return state.TryGetValue(key, out string? value) && bool.TryParse(value, out bool parsed) && parsed;
     }
 }

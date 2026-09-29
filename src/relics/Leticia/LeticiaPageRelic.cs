@@ -20,7 +20,6 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -28,7 +27,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.relics.Leticia;
 
-public sealed class LeticiaPageRelic : RelicModel
+public sealed class LeticiaPageRelic : ModalPageRelic<LeticiaPageMode>
 {
     internal const int SurpriseGiftChoiceCount = 3;
     internal const int SurpriseGiftPickCount = 1;
@@ -43,7 +42,6 @@ public sealed class LeticiaPageRelic : RelicModel
     private bool _mischiefTriggerTurn;
 
     protected override string IconBaseName => "leticia_page_relic";
-
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
@@ -81,54 +79,27 @@ public sealed class LeticiaPageRelic : RelicModel
     [SavedProperty]
     public LeticiaPageMode Mode { get; private set; }
 
+    protected override LeticiaPageMode SelectedMode
+    {
+        get => Mode;
+        set => Mode = value;
+    }
+
+    protected override bool RefreshUiBeforeModeChoice => true;
+
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool SurpriseGiftTriggeredThisCombat { get; private set; }
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int MischiefTurnsSeen { get; private set; }
 
-    public override async Task AfterObtained()
+    protected override async Task ApplyObtainedChoiceAsync(LeticiaPageMode mode)
     {
-        if (!IsKnownMode(Mode))
-        {
-            FallbackToDefaultModeAfterLoad(nameof(AfterObtained));
-            return;
-        }
-
-        UpdateModeUiState();
-        if (Mode != LeticiaPageMode.None)
-        {
-            RefreshInventoryIcon();
-            return;
-        }
-
-        IReadOnlyList<CardModel> options = CreateModeChoiceCards();
-        CardModel? chosenCard = await CardSelectCmd.FromChooseACardScreen(
-            new BlockingPlayerChoiceContext(),
-            options,
-            Owner,
-            canSkip: true);
-
-        if (chosenCard == null)
-        {
-            await AbnormalityPageRewardHelper.SkipObtainedPageRelic(this, nameof(AfterObtained));
-            return;
-        }
-
-        SetMode(ResolveModeFromChoiceCard(chosenCard));
-
+        SetMode(mode);
         if (Mode == LeticiaPageMode.Buddy)
         {
             await ApplyBuddyEnchantmentSelection();
         }
-    }
-
-    public override Task AfterRoomEntered(AbstractRoom room)
-    {
-        EnsureValidModeOrFallback(nameof(AfterRoomEntered));
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-        return Task.CompletedTask;
     }
 
     public override async Task BeforeCombatStart()
@@ -215,7 +186,7 @@ public sealed class LeticiaPageRelic : RelicModel
         return Task.CompletedTask;
     }
 
-    private IReadOnlyList<CardModel> CreateModeChoiceCards()
+    protected override IReadOnlyList<CardModel> CreateModeChoiceCards()
     {
         return
         [
@@ -225,43 +196,8 @@ public sealed class LeticiaPageRelic : RelicModel
         ];
     }
 
-    private static LeticiaPageMode ResolveModeFromChoiceCard(CardModel? card)
-    {
-        return card switch
-        {
-            LeticiaPageSurpriseGiftChoiceCard => LeticiaPageMode.SurpriseGift,
-            LeticiaPageBuddyChoiceCard => LeticiaPageMode.Buddy,
-            LeticiaPageMischiefChoiceCard => LeticiaPageMode.Mischief,
-            _ => throw AbnormalityPageRewardHelper.UnexpectedPageChoiceCard(card)
-        };
-    }
-
-    private static bool IsKnownMode(LeticiaPageMode mode)
-    {
-        return mode is LeticiaPageMode.None
-            or LeticiaPageMode.SurpriseGift
-            or LeticiaPageMode.Buddy
-            or LeticiaPageMode.Mischief;
-    }
-
-    private static bool IsConcreteMode(LeticiaPageMode mode)
-    {
-        return mode is LeticiaPageMode.SurpriseGift
-            or LeticiaPageMode.Buddy
-            or LeticiaPageMode.Mischief;
-    }
-
-    private void EnsureValidModeOrFallback(string context)
-    {
-        if (IsConcreteMode(Mode))
-        {
-            return;
-        }
-
-        FallbackToDefaultModeAfterLoad(context);
-    }
-
-    private void FallbackToDefaultModeAfterLoad(string context)
+    // 联机时不在本地改写已同步的模式，只记日志。
+    protected override void FallbackToDefaultModeAfterLoad(string context)
     {
         LeticiaPageMode oldMode = Mode;
         bool canMutateLocally;
@@ -291,15 +227,7 @@ public sealed class LeticiaPageRelic : RelicModel
         RefreshInventoryIcon();
     }
 
-    private void SetMode(LeticiaPageMode mode)
-    {
-        Mode = mode;
-        RelicIconChanged();
-        UpdateModeUiState();
-        RefreshInventoryIcon();
-    }
-
-    private void UpdateModeUiState()
+    protected override void UpdateModeUiState()
     {
         DynamicVars["Mode"].BaseValue = (int)Mode;
         Status = Mode == LeticiaPageMode.Mischief
@@ -457,27 +385,6 @@ public sealed class LeticiaPageRelic : RelicModel
         if (vfx != null)
         {
             NRun.Instance?.GlobalUi.CardPreviewContainer.AddChildSafely(vfx);
-        }
-    }
-
-    private void RefreshInventoryIcon()
-    {
-        NRelicInventory? inventory = NRun.Instance?.GlobalUi?.RelicInventory;
-        if (inventory == null)
-        {
-            return;
-        }
-
-        foreach (NRelicInventoryHolder holder in inventory.RelicNodes)
-        {
-            if (!ReferenceEquals(holder.Relic.Model, this))
-            {
-                continue;
-            }
-
-            holder.Relic.Icon.Texture = Icon;
-            holder.Relic.Outline.Texture = IconOutline;
-            break;
         }
     }
 }
