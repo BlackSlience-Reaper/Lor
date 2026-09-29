@@ -10,15 +10,8 @@ namespace LibraryOfRuina.cards.TechnologyFloorLiberation;
 
 public sealed class ChordEgoCard : EgoCardBase
 {
-    public const int HitABaseDamage = 4;
-    public const int HitAAscensionDamage = 5;
-    public const int HitBBaseDamage = 3;
-    public const int HitBAscensionDamage = 4;
-    public const int HitCBaseDamage = 6;
-    public const int HitCAscensionDamage = 7;
-
-    private int _previewDamageB = HitBBaseDamage;
-    private int _previewDamageC = HitCBaseDamage;
+    private int _previewDamageB = TechnologyFloorEgoNumbers.ChordHitBBaseDamage;
+    private int _previewDamageC = TechnologyFloorEgoNumbers.ChordHitCBaseDamage;
 
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
@@ -33,7 +26,7 @@ public sealed class ChordEgoCard : EgoCardBase
     ];
 
     public ChordEgoCard()
-        : base(1, previewDamage: HitABaseDamage)
+        : base(1, previewDamage: TechnologyFloorEgoNumbers.ChordHitABaseDamage)
     {
     }
 

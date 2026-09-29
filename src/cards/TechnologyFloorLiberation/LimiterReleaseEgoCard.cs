@@ -14,11 +14,6 @@ namespace LibraryOfRuina.cards.TechnologyFloorLiberation;
 
 public sealed class LimiterReleaseEgoCard : EgoCardBase
 {
-    public const int HitDamage = 6;
-    public const int HitUpgradedDamage = 7;
-    public const int HitCount = 3;
-    public const int BleedPerHit = 1;
-
     protected override IEnumerable<string> ExtraRunAssetPaths =>
     [
         TechnologyFloorRegretBoss.AttackSfxPath
@@ -32,8 +27,8 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", HitCount),
-        new PowerVar<LibraryBleedingPower>("Bleed", BleedPerHit)
+        new DynamicVar("Hits", TechnologyFloorEgoNumbers.LimiterReleaseHitCount),
+        new PowerVar<LibraryBleedingPower>("Bleed", TechnologyFloorEgoNumbers.LimiterReleaseBleedPerHit)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -42,20 +37,20 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
     ];
 
     public LimiterReleaseEgoCard()
-        : base(1, previewDamage: HitDamage)
+        : base(1, previewDamage: TechnologyFloorEgoNumbers.LimiterReleaseHitDamage)
     {
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.BaseValue = HitUpgradedDamage;
+        DynamicVars.Damage.BaseValue = TechnologyFloorEgoNumbers.LimiterReleaseHitUpgradedDamage;
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
 
-        for (int i = 0; i < HitCount; i++)
+        for (int i = 0; i < TechnologyFloorEgoNumbers.LimiterReleaseHitCount; i++)
         {
             LocalOggOneShotPlayer.Play(TechnologyFloorRegretBoss.AttackSfxPath, -2f);
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
@@ -69,7 +64,7 @@ public sealed class LimiterReleaseEgoCard : EgoCardBase
                 await PowerCmdCompat.Apply<LibraryBleedingPower>(
                     choiceContext,
                     cardPlay.Target,
-                    BleedPerHit,
+                    TechnologyFloorEgoNumbers.LimiterReleaseBleedPerHit,
                     Owner.Creature,
                     this);
             }

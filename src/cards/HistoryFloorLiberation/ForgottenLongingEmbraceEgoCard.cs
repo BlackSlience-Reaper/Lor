@@ -23,7 +23,7 @@ public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", HistoryFloorForgottenBoss.LongingEmbraceConfusion)
+        new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", HistoryFloorEgoNumbers.LongingEmbraceConfusion)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -37,7 +37,7 @@ public sealed class ForgottenLongingEmbraceEgoCard : EgoCardBase
     }
 
     public ForgottenLongingEmbraceEgoCard()
-        : base(2, previewDamage: HistoryFloorForgottenBoss.LongingEmbraceBaseDamage)
+        : base(2, previewDamage: HistoryFloorEgoNumbers.LongingEmbraceBaseDamage)
     {
     }
 

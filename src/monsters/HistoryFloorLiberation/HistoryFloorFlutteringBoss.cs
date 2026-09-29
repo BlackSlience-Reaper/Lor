@@ -52,9 +52,6 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     private const int PredationHeal = 10;
     private const int PredationBlock = 8;
     private const int HungerWingsBleed = 1;
-    private const int HungerFrenzyHits = 5;
-    private const int HungerFrenzyHeal = 6;
-    private const int HungerFrenzyBleed = 3;
     private const float SegmentDelaySeconds = 1.25f;
     internal const string BackgroundTextScope = "history_floor_liberation_phase_3";
     private const float BackgroundTextIntervalSeconds = 5f;
@@ -128,10 +125,10 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
 
     private static int HungerFrenzyDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, HistoryFloorEgoNumbers.HungerFrenzyBossDeadlyMultiHitDamage, HistoryFloorEgoNumbers.HungerFrenzyBossMultiHitDamage);
 
     private static int HungerFrenzyFinalDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, HistoryFloorEgoNumbers.HungerFrenzyBossDeadlyFinalDamage, HistoryFloorEgoNumbers.HungerFrenzyBossFinalDamage);
 
     public override IEnumerable<string> AssetPaths =>
         HistoryFloorFlutteringBossCreatureVisuals.Profile.AssetPaths
@@ -266,9 +263,9 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
                 "FLUTTERING_HUNGER_FRENZY_EGO_CARD",
                 () => HungerFrenzyDamage,
                 (card, damages) => { card.SetPreviewDamage(damages[0], damages[1]); card.UpgradePreview(); },
-                () => HungerFrenzyHits, () => HungerFrenzyFinalDamage),
+                () => HistoryFloorEgoNumbers.HungerFrenzyHitCount, () => HungerFrenzyFinalDamage),
             new HealIntent(),
-            CreateBleedIntent(HungerFrenzyFinalDamage, HungerFrenzyBleed));
+            CreateBleedIntent(HungerFrenzyFinalDamage, HistoryFloorEgoNumbers.HungerFrenzyBleed));
 
         _hungerFrenzyState = hungerFrenzy;
 
@@ -321,7 +318,7 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         BeginFreshMeatAttackGroup();
         try
         {
-            for (int i = 0; i < HungerFrenzyHits; i++)
+            for (int i = 0; i < HistoryFloorEgoNumbers.HungerFrenzyHitCount; i++)
             {
                 if (Creature.IsDead) return;
                 await ExecuteAttackSegment("HungerFrenzy", HungerFrenzyDamage);
@@ -332,9 +329,9 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
             EndFreshMeatAttackGroup();
         }
 
-        await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, HungerFrenzyHeal));
+        await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, HistoryFloorEgoNumbers.HungerFrenzyHeal));
         IReadOnlyList<DamageResult> finalResults = await ExecuteAttackSegment("HungerFrenzy", HungerFrenzyFinalDamage);
-        await ApplyBleedFromResults(finalResults, HungerFrenzyBleed);
+        await ApplyBleedFromResults(finalResults, HistoryFloorEgoNumbers.HungerFrenzyBleed);
 
         _hungerFrenzyQueued = false;
     }
@@ -437,8 +434,8 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
             "FLUTTERING_HUNGER_FRENZY_EGO_CARD",
             () => HungerFrenzyDamage,
             (card, damages) => { card.SetPreviewDamage(damages[0], damages[1]); card.UpgradePreview(); },
-            () => HungerFrenzyHits, () => HungerFrenzyFinalDamage);
-        yield return CreateBleedIntent(HungerFrenzyFinalDamage, HungerFrenzyBleed);
+            () => HistoryFloorEgoNumbers.HungerFrenzyHitCount, () => HungerFrenzyFinalDamage);
+        yield return CreateBleedIntent(HungerFrenzyFinalDamage, HistoryFloorEgoNumbers.HungerFrenzyBleed);
         yield return new BuffIntent();
     }
 

@@ -53,11 +53,6 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
     private const int CleanHighAscensionDamage = 8;
     private const int CleanVulnerable = 1;
 
-    private const int EgoHitBaseDamage = 6;
-    private const int EgoHitHighAscensionDamage = 7;
-    private const int EgoHitCount = 3;
-    private const int EgoBleedPerHit = 1;
-
     private const string SleepMoveId = "SLEEP_MK2";
     private const string ChargeMoveId = "CHARGE_MK2";
     private const string CleanMoveId = "CLEAN_MK2";
@@ -133,7 +128,7 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, CleanHighAscensionDamage, CleanBaseDamage);
 
     private int EgoHitDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, EgoHitHighAscensionDamage, EgoHitBaseDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, TechnologyFloorEgoNumbers.LimiterReleaseHitUpgradedDamage, TechnologyFloorEgoNumbers.LimiterReleaseHitDamage);
 
     private bool ShouldShowUpgradedEgo =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 1, 0) == 1;
@@ -269,7 +264,7 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
                     card.UpgradePreview();
                     card.SetPreviewDamage(damages[0]);
                 },
-                () => EgoHitCount),
+                () => TechnologyFloorEgoNumbers.LimiterReleaseHitCount),
             new DebuffIntent());
         _egoState = ego;
 
@@ -344,7 +339,7 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
 
     private async Task EgoMove(IReadOnlyList<Creature> targets)
     {
-        for (int i = 0; i < EgoHitCount; i++)
+        for (int i = 0; i < TechnologyFloorEgoNumbers.LimiterReleaseHitCount; i++)
         {
             string animation = i switch
             {
@@ -363,7 +358,7 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
 
             if (bleedTargets.Count > 0)
             {
-                await PowerCmdCompat.Apply<LibraryBleedingPower>(bleedTargets, EgoBleedPerHit, Creature, null);
+                await PowerCmdCompat.Apply<LibraryBleedingPower>(bleedTargets, TechnologyFloorEgoNumbers.LimiterReleaseBleedPerHit, Creature, null);
             }
         }
 
@@ -412,6 +407,6 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
                 }
                 card.SetPreviewDamage(damages[0]);
             },
-            () => EgoHitCount);
+            () => TechnologyFloorEgoNumbers.LimiterReleaseHitCount);
     }
 }

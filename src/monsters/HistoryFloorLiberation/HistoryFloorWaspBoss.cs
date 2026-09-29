@@ -6,6 +6,7 @@ using Godot;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.backgrounds.HistoryFloorLiberation;
 using LibraryOfRuina.cards;
+using LibraryOfRuina.cards.HistoryFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.encounters.HistoryFloorLiberation;
@@ -58,11 +59,6 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
     private const int WarlikeWeak = 2;
     private const float SegmentDelaySeconds = 0.78f;
     private const float BackgroundTextIntervalSeconds = 5f;
-
-    public const int PunishmentStrikeBaseDamage = 20;
-    public const int PunishmentStrikeAscensionDamage = 22;
-    public const int PunishmentStrikeConfusionAmount = 1;
-    public const int PunishmentStrikeVulnerableAmount = 2;
 
     internal const string BackgroundTextScope = "history_floor_liberation_phase_4";
 
@@ -144,7 +140,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
 
     private static int PunishmentStrikeDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, PunishmentStrikeAscensionDamage, PunishmentStrikeBaseDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, HistoryFloorEgoNumbers.PunishmentStrikeAscensionDamage, HistoryFloorEgoNumbers.PunishmentStrikeBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         HistoryFloorWaspBossCreatureVisuals.Profile.AssetPaths
@@ -387,12 +383,12 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
             .ToArray();
         if (liveTargets.Count > 0)
         {
-            await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(liveTargets, PunishmentStrikeConfusionAmount, Creature, null);
+            await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(liveTargets, HistoryFloorEgoNumbers.PunishmentStrikeConfusionAmount, Creature, null);
             foreach (Creature target in liveTargets)
             {
                 await LibraryPowerCmd.Apply<LibraryVulnerablePower>(
                     target,
-                    PunishmentStrikeVulnerableAmount,
+                    HistoryFloorEgoNumbers.PunishmentStrikeVulnerableAmount,
                     turns: -1,
                     Creature,
                     null);
@@ -477,8 +473,8 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
             "PUNISHMENT_STRIKE_EGO_CARD",
             () => PunishmentStrikeDamage,
             static (card, damages) => { card.UpgradePreview(); card.SetPreviewDamage(damages[0]); });
-        yield return new DetailedBuffIntent<LibraryOfRuinaConfusionPower>(PunishmentStrikeConfusionAmount, DetailedBuffTargetScope.Target);
-        yield return new DetailedBuffIntent<LibraryVulnerablePower>(PunishmentStrikeVulnerableAmount, DetailedBuffTargetScope.Target);
+        yield return new DetailedBuffIntent<LibraryOfRuinaConfusionPower>(HistoryFloorEgoNumbers.PunishmentStrikeConfusionAmount, DetailedBuffTargetScope.Target);
+        yield return new DetailedBuffIntent<LibraryVulnerablePower>(HistoryFloorEgoNumbers.PunishmentStrikeVulnerableAmount, DetailedBuffTargetScope.Target);
         yield return new HealIntent();
         yield return new BuffIntent();
     }

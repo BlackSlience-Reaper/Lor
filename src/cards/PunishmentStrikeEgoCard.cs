@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.audio;
+using LibraryOfRuina.cards.HistoryFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.powers;
@@ -28,8 +29,8 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", HistoryFloorWaspBoss.PunishmentStrikeConfusionAmount),
-        new PowerVar<LibraryVulnerablePower>("Vulnerable", HistoryFloorWaspBoss.PunishmentStrikeVulnerableAmount)
+        new PowerVar<LibraryOfRuinaConfusionPower>("Confusion", HistoryFloorEgoNumbers.PunishmentStrikeConfusionAmount),
+        new PowerVar<LibraryVulnerablePower>("Vulnerable", HistoryFloorEgoNumbers.PunishmentStrikeVulnerableAmount)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -39,7 +40,7 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
     ];
 
     public PunishmentStrikeEgoCard()
-        : base(3, previewDamage: HistoryFloorWaspBoss.PunishmentStrikeBaseDamage)
+        : base(3, previewDamage: HistoryFloorEgoNumbers.PunishmentStrikeBaseDamage)
     {
     }
 

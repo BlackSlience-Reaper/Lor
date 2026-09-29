@@ -17,20 +17,15 @@ namespace LibraryOfRuina.cards.ArtFloorLiberation;
 
 [CardPool(typeof(LibraryOfRuinaEgoCardPool))]
 public sealed class NostalgicScentEgoCard()
-    : EgoCardBase(3, TargetType.AllEnemies, previewDamage: Damage, shouldShowInCardLibrary: false)
+    : EgoCardBase(3, TargetType.AllEnemies, previewDamage: ArtFloorEgoNumbers.NostalgicScentDamage, shouldShowInCardLibrary: false)
 {
-    public const int Damage = 6;
-    public const int UpgradedDamage = 9;
-    public const int HitCount = 7;
-    public const int MaxHpLossOnFullBlock = 2;
-
     public override CardPoolModel VisualCardPool => ModelDb.CardPool<LibraryOfRuinaEgoCardPool>();
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", HitCount),
-        new DynamicVar("MaxHpLoss", MaxHpLossOnFullBlock)
+        new DynamicVar("Hits", ArtFloorEgoNumbers.NostalgicScentHitCount),
+        new DynamicVar("MaxHpLoss", ArtFloorEgoNumbers.NostalgicScentMaxHpLossOnFullBlock)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -54,7 +49,7 @@ public sealed class NostalgicScentEgoCard()
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(UpgradedDamage - Damage);
+        DynamicVars.Damage.UpgradeValueBy(ArtFloorEgoNumbers.NostalgicScentUpgradedDamage - ArtFloorEgoNumbers.NostalgicScentDamage);
         EnergyCost.AddThisCombat(-1, reduceOnly: true);
     }
 
@@ -63,7 +58,7 @@ public sealed class NostalgicScentEgoCard()
         IReadOnlyList<Creature> targets = Owner.Creature.CombatState?.HittableEnemies.ToArray()
             ?? Array.Empty<Creature>();
 
-        for (int i = 0; i < HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.NostalgicScentHitCount; i++)
         {
             foreach (Creature target in targets.Where(static target => target.IsAlive))
             {
@@ -75,7 +70,7 @@ public sealed class NostalgicScentEgoCard()
 
                 if (AttackCommandCompat.Results(attack).Any(static result => result.WasFullyBlocked))
                 {
-                    await CreatureCmd.LoseMaxHp(choiceContext, target, MaxHpLossOnFullBlock, isFromCard: true);
+                    await CreatureCmd.LoseMaxHp(choiceContext, target, ArtFloorEgoNumbers.NostalgicScentMaxHpLossOnFullBlock, isFromCard: true);
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.backgrounds.HistoryFloorLiberation;
+using LibraryOfRuina.cards.HistoryFloorLiberation;
 using LibraryOfRuina.cards.TechnologyFloorLiberation;
 using LibraryOfRuina.compat;
 using LibraryOfRuina.encounters;
@@ -61,9 +62,6 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
     private const int ExtendedMaliceWeak = 3;
     private const float SegmentDelaySeconds = 0.95f;
     private const float BackgroundTextIntervalSeconds = 5f;
-
-    public const int ShatteredLifeBaseDamage = 12;
-    public const int ShatteredLifeAscensionDamage = 17;
 
     internal const string BackgroundTextScope = "history_floor_liberation_phase_5";
 
@@ -127,7 +125,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 10);
 
     private static int ShatteredLifeDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, ShatteredLifeAscensionDamage, ShatteredLifeBaseDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, HistoryFloorEgoNumbers.ShatteredLifeAscensionDamage, HistoryFloorEgoNumbers.ShatteredLifeBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         HistoryFloorEmeraldBoughCreatureVisuals.Profile.AssetPaths
@@ -270,7 +268,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
                 "SHATTERED_LIFE_EGO_CARD",
                 () => ShatteredLifeDamage,
                 static (card, damages) => { card.UpgradePreview(); card.SetPreviewDamage(damages[0]); },
-                () => ShatteredLifeEgoCard.HitsCount));
+                () => HistoryFloorEgoNumbers.ShatteredLifeHitCount));
 
         _shatteredLifeState = shatteredLife;
         _emeraldBoughState = emeraldBough;
@@ -456,7 +454,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
     {
         await CreatureCmd.TriggerAnim(Creature, "Ego", 0.6f);
 
-        for (int i = 0; i < ShatteredLifeEgoCard.HitsCount; i++)
+        for (int i = 0; i < HistoryFloorEgoNumbers.ShatteredLifeHitCount; i++)
         {
             if (Creature.IsDead) return;
             await DamageCmd.Attack(ShatteredLifeDamage)

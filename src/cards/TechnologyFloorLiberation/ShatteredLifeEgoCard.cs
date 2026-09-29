@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.monsters.HistoryFloorLiberation;
+using LibraryOfRuina.cards.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -11,8 +11,6 @@ namespace LibraryOfRuina.cards.TechnologyFloorLiberation;
 
 public sealed class ShatteredLifeEgoCard : EgoCardBase
 {
-    public const int HitsCount = 3;
-
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CardKeyword.Exhaust
@@ -21,11 +19,11 @@ public sealed class ShatteredLifeEgoCard : EgoCardBase
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(PreviewDamage, ValueProp.Move),
-        new DynamicVar("Hits", HitsCount)
+        new DynamicVar("Hits", HistoryFloorEgoNumbers.ShatteredLifeHitCount)
     ];
 
     public ShatteredLifeEgoCard()
-        : base(1, previewDamage: HistoryFloorEmeraldBoughBoss.ShatteredLifeBaseDamage)
+        : base(1, previewDamage: HistoryFloorEgoNumbers.ShatteredLifeBaseDamage)
     {
     }
 
@@ -38,7 +36,7 @@ public sealed class ShatteredLifeEgoCard : EgoCardBase
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
 
-        for (int i = 0; i < HitsCount; i++)
+        for (int i = 0; i < HistoryFloorEgoNumbers.ShatteredLifeHitCount; i++)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)

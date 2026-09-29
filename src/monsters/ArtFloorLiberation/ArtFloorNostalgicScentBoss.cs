@@ -108,7 +108,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 34, 30);
 
     private int EgoDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, NostalgicScentEgoCard.UpgradedDamage, NostalgicScentEgoCard.Damage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, ArtFloorEgoNumbers.NostalgicScentUpgradedDamage, ArtFloorEgoNumbers.NostalgicScentDamage);
 
     public override IEnumerable<string> AssetPaths =>
         ArtFloorNostalgicScentCreatureVisuals.Profile.AssetPaths
@@ -345,7 +345,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
     {
         _egoQueued = false;
 
-        for (int i = 0; i < NostalgicScentEgoCard.HitCount; i++)
+        for (int i = 0; i < ArtFloorEgoNumbers.NostalgicScentHitCount; i++)
         {
             string anim = i switch
             {
@@ -353,7 +353,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
                 1 or 4 => "EgoS2",
                 _ => "EgoS3"
             };
-            string sfx = i == NostalgicScentEgoCard.HitCount - 1 ? EgoFinishSfxPath : EgoSfxPath;
+            string sfx = i == ArtFloorEgoNumbers.NostalgicScentHitCount - 1 ? EgoFinishSfxPath : EgoSfxPath;
             AttackCommand attack = await ExecuteGroupAttack(EgoDamage, anim, "vfx/vfx_attack_slash", sfx);
             foreach (Creature target in AttackCommandCompat.Results(attack)
                 .Where(static result => result.Receiver.IsPlayer && result.WasFullyBlocked)
@@ -363,7 +363,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
                 await CreatureCmd.LoseMaxHp(
                     new ThrowingPlayerChoiceContext(),
                     target,
-                    NostalgicScentEgoCard.MaxHpLossOnFullBlock,
+                    ArtFloorEgoNumbers.NostalgicScentMaxHpLossOnFullBlock,
                     isFromCard: true);
             }
         }
@@ -445,8 +445,8 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
             "NOSTALGIC_SCENT_EGO_CARD",
             () => EgoDamage,
             static (card, _) => card.UpgradePreview(),
-            () => NostalgicScentEgoCard.HitCount,
-            badges: [IntentBadge.FromPower<ArtFloorAtonementCrownPower>(NostalgicScentEgoCard.MaxHpLossOnFullBlock)]);
+            () => ArtFloorEgoNumbers.NostalgicScentHitCount,
+            badges: [IntentBadge.FromPower<ArtFloorAtonementCrownPower>(ArtFloorEgoNumbers.NostalgicScentMaxHpLossOnFullBlock)]);
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

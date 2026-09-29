@@ -34,9 +34,6 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
 
     public override int DefaultChaoResistance => 30;
 
-    public const int EndLightBaseDamage = 17;
-    public const int EndLightHighAscensionDamage = 18;
-    public const int EndLightBurnAmount = 7;
 
     public const string IdleTexturePath = "res://images/monsters/history_floor/end_light.png";
     public const string AttackTexturePath = "res://images/monsters/history_floor/end_light_attack.png";
@@ -85,7 +82,7 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 500, 490);
 
     public static int ResolveEndLightDamage() =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, EndLightHighAscensionDamage, EndLightBaseDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, HistoryFloorEgoNumbers.EndLightHighAscensionDamage, HistoryFloorEgoNumbers.EndLightBaseDamage);
 
     private int EndLightDamage => ResolveEndLightDamage();
 
@@ -193,7 +190,7 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
 
         await PowerCmdCompat.Apply<LibraryBurnPower>(
             targets.Where(static target => target.IsAlive),
-            EndLightBurnAmount,
+            HistoryFloorEgoNumbers.EndLightBurnAmount,
             Creature,
             null);
 

@@ -135,10 +135,10 @@ public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, EndBeginEndArtifactHighAscension, EndBeginEndArtifactBase);
 
     private int EgoMultiHitDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, RegretEgoCard.MultiHitUpgradedDamage, RegretEgoCard.MultiHitDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, TechnologyFloorEgoNumbers.RegretMultiHitUpgradedDamage, TechnologyFloorEgoNumbers.RegretMultiHitDamage);
 
     private int EgoFinalDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, RegretEgoCard.FinalUpgradedDamage, RegretEgoCard.FinalDamage);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, TechnologyFloorEgoNumbers.RegretFinalUpgradedDamage, TechnologyFloorEgoNumbers.RegretFinalDamage);
 
     public bool HasQueuedEndBeginEndSequence => _endBeginEndQueued || _egoRegretQueued;
 
@@ -275,7 +275,7 @@ public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
                     card.SetPreviewDamage(damages[0], damages[1]);
                     card.UpgradePreview();
                 },
-                () => RegretEgoCard.MultiHitCount,
+                () => TechnologyFloorEgoNumbers.RegretMultiHitCount,
                 () => EgoFinalDamage),
             new SingleAttackIntent(() => EgoFinalDamage),
             new DebuffIntent());
@@ -346,7 +346,7 @@ public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
     {
         Creature? primary = targets.FirstOrDefault(static t => t.IsAlive);
 
-        for (int i = 0; i < RegretEgoCard.MultiHitCount; i++)
+        for (int i = 0; i < TechnologyFloorEgoNumbers.RegretMultiHitCount; i++)
         {
             string animation = i % 2 == 0 ? "AttackStrike" : "AttackSlash";
             await ExecuteAttackSegment(animation, EgoMultiHitDamage);
@@ -374,7 +374,7 @@ public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
         {
             await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(
                 confusionTargets,
-                RegretEgoCard.ConfusionAmount,
+                TechnologyFloorEgoNumbers.RegretConfusionAmount,
                 Creature,
                 null);
         }
@@ -417,7 +417,7 @@ public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
                 card.SetPreviewDamage(damages[0], damages[1]);
                 card.UpgradePreview();
             },
-            () => RegretEgoCard.MultiHitCount,
+            () => TechnologyFloorEgoNumbers.RegretMultiHitCount,
             () => EgoFinalDamage);
         yield return new SingleAttackIntent(EgoFinalDamage);
     }
