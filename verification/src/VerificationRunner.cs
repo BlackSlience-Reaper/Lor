@@ -52,6 +52,7 @@ public static class VerificationRunner
         LiteratureFloorLiberationPhaseTwoVerificationPatch.Start,
         LiteratureFloorLiberationSettlementVerificationPatch.Start,
         MatchMarkMultiplayerVerificationPatch.Start,
+        MonsterVisualLayoutVerificationPatch.Start,
         NosferatuDoomLockVerificationPatch.Start,
         PageRelicPipelineVerificationPatch.Start,
         PhilosophyFloorLiberationVerificationPatch.Start,
