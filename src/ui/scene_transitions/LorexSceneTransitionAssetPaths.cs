@@ -1,4 +1,4 @@
-namespace LibraryOfRuina.scene_transitions;
+namespace LibraryOfRuina.ui.scene_transitions;
 
 internal static class LorexSceneTransitionAssetPaths
 {

@@ -3,7 +3,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using LiteratureFloorBlackSwanBrotherBase = LibraryOfRuina.content.liberation.Literature.LiteratureFloorBlackSwanBrotherBase;
 using LiteratureFloorBlackSwanBrotherCreatureVisuals = LibraryOfRuina.content.liberation.Literature.LiteratureFloorBlackSwanBrotherCreatureVisuals;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.StartDeathAnim))]
 internal static class LiteratureFloorBlackSwanBrotherDeathVisualPatch

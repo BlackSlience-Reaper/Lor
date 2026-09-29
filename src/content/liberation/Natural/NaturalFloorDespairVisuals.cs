@@ -3,6 +3,7 @@ using HarmonyLib;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Entities.UI;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 

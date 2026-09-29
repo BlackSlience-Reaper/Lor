@@ -1,7 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 // CreatureVisualLayout 参数顺序：
 // 1. SpritePos：怪物立绘位置，改它会移动怪物本体。

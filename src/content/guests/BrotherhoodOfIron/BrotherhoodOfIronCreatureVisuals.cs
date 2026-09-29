@@ -3,6 +3,7 @@ using LibraryOfRuina.content.guests.MusiciansOfBremen;
 using LibraryOfRuina.content.guests.WedgeOffice;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.BrotherhoodOfIron;
 

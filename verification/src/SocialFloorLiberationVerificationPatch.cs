@@ -20,6 +20,7 @@ using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.DevConsole;
 using MegaCrit.Sts2.Core.Entities.Ascension;

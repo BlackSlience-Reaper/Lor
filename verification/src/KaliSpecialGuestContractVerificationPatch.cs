@@ -10,6 +10,7 @@ using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;

@@ -59,8 +59,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Combat.CombatState), "IterateHookListener
   Postfix LibraryOfRuina.patches.dispatch.HookListenerFilterPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.Builders.AttackCommand), "Execute")
   Postfix LibraryOfRuina.patches.CombatSafetyAttackCommandExecutePatch.Postfix
-  Postfix LibraryOfRuina.patches.AttackAnimationHitSuppressionAttackPatch.Postfix
-  Prefix LibraryOfRuina.patches.AttackAnimationHitSuppressionAttackPatch.Prefix
+  Postfix LibraryOfRuina.patches.visuals.AttackAnimationHitSuppressionAttackPatch.Postfix
+  Prefix LibraryOfRuina.patches.visuals.AttackAnimationHitSuppressionAttackPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.Builders.AttackCommand), "GetPossibleTargets")
   Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+AttackTargets.Postfix
   Postfix LibraryOfRuina.patches.dispatch.TargetingDispatch+AttackTargetsLast.Postfix
@@ -187,13 +187,13 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "ShowHoverTips")
   Prefix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+CreatureHoverTips.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "StartDeathAnim")
   Prefix LibraryOfRuina.content.liberation.Natural.NaturalFloorSwordFalseDeathVisualPatch.Prefix
-  Prefix LibraryOfRuina.patches.LiteratureFloorBlackSwanBrotherDeathVisualPatch.Prefix
+  Prefix LibraryOfRuina.patches.visuals.LiteratureFloorBlackSwanBrotherDeathVisualPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "UpdateIntent")
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntentFirst.Postfix
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntent.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "_Ready")
   Postfix LibraryOfRuina.content.liberation.Social.FalseThroneTrialHoverTipReadyPatch.Postfix
-  Finalizer LibraryOfRuina.patches.MonsterNodeReadyDebugPatch.Finalizer
+  Finalizer LibraryOfRuina.patches.visuals.MonsterNodeReadyDebugPatch.Finalizer
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreatureStateDisplay), "SetCreature")
   Postfix LibraryOfRuina.content.guests.MusiciansOfBremen.BremenEncounterLayoutPatch.Postfix
   Postfix LibraryOfRuina.content.liberation.History.HistoryFloorForgottenStateDisplayPatch.Postfix

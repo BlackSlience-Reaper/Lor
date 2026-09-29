@@ -4,7 +4,7 @@ using HarmonyLib;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Commands.Builders;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 [HarmonyPatch(typeof(AttackCommand), nameof(AttackCommand.Execute))]
 internal static class AttackAnimationHitSuppressionAttackPatch

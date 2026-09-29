@@ -3,7 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using LibraryOfRuina.content.guests;
 using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.scene_transitions;
+using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;

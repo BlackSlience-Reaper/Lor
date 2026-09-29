@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.specialguests.Kali;
 using LibraryOfRuina.content.specialguests.Rnfmabj;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.scene_transitions;
+using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Events;

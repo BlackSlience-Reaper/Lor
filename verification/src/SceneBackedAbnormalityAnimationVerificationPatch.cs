@@ -7,6 +7,7 @@ using LibraryOfRuina.content.abnormalities.KingOfGreed;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;

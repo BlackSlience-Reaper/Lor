@@ -1,6 +1,7 @@
 using System;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.abnormalities.KingOfGreed;

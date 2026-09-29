@@ -13,6 +13,7 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;

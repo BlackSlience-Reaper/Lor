@@ -1,6 +1,7 @@
 using System;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 

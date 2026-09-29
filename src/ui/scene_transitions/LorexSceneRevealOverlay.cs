@@ -5,7 +5,7 @@ using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 
-namespace LibraryOfRuina.scene_transitions;
+namespace LibraryOfRuina.ui.scene_transitions;
 
 public partial class LorexSceneRevealOverlay : Control
 {

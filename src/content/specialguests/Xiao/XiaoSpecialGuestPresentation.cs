@@ -7,7 +7,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
-using LibraryOfRuina.scene_transitions;
+using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;

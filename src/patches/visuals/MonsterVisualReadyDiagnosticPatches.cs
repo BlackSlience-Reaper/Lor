@@ -3,7 +3,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 [HarmonyPatch(typeof(NCreatureVisuals), nameof(NCreatureVisuals._Ready))]
 internal static class MonsterVisualsReadyDebugPatch

@@ -2,6 +2,7 @@ using Godot;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;
 

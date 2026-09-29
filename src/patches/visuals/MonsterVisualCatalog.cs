@@ -6,7 +6,7 @@ using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 internal sealed record MonsterVisualCatalogEntry(
     CreatureVisualLayout? Layout,

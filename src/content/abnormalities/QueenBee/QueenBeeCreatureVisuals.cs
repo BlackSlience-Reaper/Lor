@@ -1,6 +1,7 @@
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using QueenBeeMonster = LibraryOfRuina.content.abnormalities.QueenBee.QueenBee;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;
