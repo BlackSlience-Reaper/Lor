@@ -1282,8 +1282,6 @@ readonly	LibraryOfRuina.specialguests.Iori.IoriCreatureVisuals.SceneTalkPosition
 readonly	LibraryOfRuina.specialguests.Iori.IoriCreatureVisuals.StandardFrameCanvas	Godot.Vector2I
 readonly	LibraryOfRuina.specialguests.Iori.IoriCreatureVisuals.StandardFrameCharacterOrigin	Godot.Vector2
 readonly	LibraryOfRuina.specialguests.Iori.IoriCreatureVisuals.StandardFrameFaceAnchor	Godot.Vector2
-readonly	LibraryOfRuina.specialguests.Iori.IoriMonsterBase.AllStances	LibraryOfRuina.specialguests.Iori.IoriStance[]
-readonly	LibraryOfRuina.specialguests.Iori.IoriMonsterBase.OffensiveStances	LibraryOfRuina.specialguests.Iori.IoriStance[]
 readonly	LibraryOfRuina.specialguests.Iori.IoriMoveDefinitions.Definitions	System.Collections.Generic.IReadOnlyDictionary`2[LibraryOfRuina.specialguests.Iori.IoriMove,LibraryOfRuina.specialguests.Iori.IoriMoveDefinition]
 readonly	LibraryOfRuina.specialguests.Iori.IoriMoveDefinitions.Hidden	LibraryOfRuina.specialguests.Iori.IoriMoveDefinition
 readonly	LibraryOfRuina.specialguests.Iori.IoriSpecialGuestAssets.All	System.String[]
@@ -1292,13 +1290,11 @@ readonly	LibraryOfRuina.specialguests.Iori.IoriSpecialGuestAssets.PowerIcons	Sys
 readonly	LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBgmController.AllTracks	System.String[]
 readonly	LibraryOfRuina.specialguests.Iori.IoriSpecialGuestRegistration.CharacterStateIndices	System.Int32[]
 readonly	LibraryOfRuina.specialguests.Iori.IoriSpecialGuestRegistration.VoiceNames	System.String[]
+readonly	LibraryOfRuina.specialguests.Iori.IoriStanceController.AllStances	LibraryOfRuina.specialguests.Iori.IoriStance[]
+readonly	LibraryOfRuina.specialguests.Iori.IoriStanceController.OffensiveStances	LibraryOfRuina.specialguests.Iori.IoriStance[]
 readonly	LibraryOfRuina.specialguests.Kali.Kali.BasicAttackAnimations	System.String[]
 readonly	LibraryOfRuina.specialguests.Kali.Kali.RandomPlanCardIds	System.String[]
 readonly	LibraryOfRuina.specialguests.Kali.Kali.ResistanceRotationTypes	LibraryLib.Utils.Resistance.LibraryDamageType[]
-readonly	LibraryOfRuina.specialguests.Rnfmabj.Rnfmabj.FirstRoundDirectiveSequences	MegaCrit.Sts2.Core.Entities.Cards.CardType[][]
-readonly	LibraryOfRuina.specialguests.Rnfmabj.Rnfmabj.RandomDirectiveCardTypes	MegaCrit.Sts2.Core.Entities.Cards.CardType[]
-readonly	LibraryOfRuina.specialguests.Rnfmabj.Rnfmabj.RandomDirectiveNonPowerCardTypes	MegaCrit.Sts2.Core.Entities.Cards.CardType[]
-readonly	LibraryOfRuina.specialguests.Rnfmabj.Rnfmabj.SecondRoundDirectiveSequences	MegaCrit.Sts2.Core.Entities.Cards.CardType[][]
 readonly	LibraryOfRuina.specialguests.Rnfmabj.Rnfmabj.StaticAssetPaths	System.String[]
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjBlockAudio.CurrentGainBlockScope	System.Threading.AsyncLocal`1[LibraryOfRuina.specialguests.Rnfmabj.RnfmabjBlockAudio+GainBlockScope]
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjCombatAssets.All	System.String[]
@@ -1307,6 +1303,10 @@ readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjCreatureVisuals+MethodName.
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjCreatureVisuals+MethodName._Ready	Godot.StringName
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjCreatureVisuals+PropertyName.InitialUnited	Godot.StringName
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjCreatureVisuals+PropertyName._isUnited	Godot.StringName
+readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjDirectiveTracker.FirstRoundDirectiveSequences	MegaCrit.Sts2.Core.Entities.Cards.CardType[][]
+readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjDirectiveTracker.RandomDirectiveCardTypes	MegaCrit.Sts2.Core.Entities.Cards.CardType[]
+readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjDirectiveTracker.RandomDirectiveNonPowerCardTypes	MegaCrit.Sts2.Core.Entities.Cards.CardType[]
+readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjDirectiveTracker.SecondRoundDirectiveSequences	MegaCrit.Sts2.Core.Entities.Cards.CardType[][]
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjHandBase.NoEmotionThresholds	System.Int32[]
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjHandCreatureVisuals+MethodName.ResolveCurrentAnimationLibrary	Godot.StringName
 readonly	LibraryOfRuina.specialguests.Rnfmabj.RnfmabjHandCreatureVisuals+MethodName.SetAvailability	Godot.StringName
