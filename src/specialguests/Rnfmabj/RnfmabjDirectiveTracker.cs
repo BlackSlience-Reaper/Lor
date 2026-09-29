@@ -9,7 +9,7 @@ namespace LibraryOfRuina.specialguests.Rnfmabj;
 /// <summary>
 /// Rnfmabj 指令（Prescript）任务的纯规则：每个可取消的计划槽位对应一个任务，每个任务是 4 张指定类型的出牌序列；
 /// 所有玩家都按顺序打完当前序列，就取消最左边一个可取消的意图并进入下一个任务。
-/// 本类不读写怪物状态；状态是 <see cref="Rnfmabj"/> 上的 SavedProperty（序列编码、当前任务、各玩家进度），
+/// 本类不读写怪物状态；状态是 <see cref="Rnfmabj"/> 上的战斗内属性（序列编码、当前任务、各玩家进度），
 /// 由 <c>Rnfmabj.Directives.cs</c> 按这里的规则改写。进度与玩家列表按网络 ID 升序编码，联机各端得到相同字符串。
 /// </summary>
 internal static class RnfmabjDirectiveTracker
