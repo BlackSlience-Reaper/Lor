@@ -1,10 +1,12 @@
 using System;
 using Godot;
 using LibraryOfRuina.monsters.LiteratureFloorLiberation;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.LiteratureFloorLiberation;
 
+[MonsterVisual(typeof(LiteratureFloorBlackSwanBoss), ScenePath = LiteratureFloorBlackSwanCreatureVisuals.ScenePath)]
 internal sealed partial class LiteratureFloorBlackSwanCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
@@ -50,6 +52,12 @@ internal static class LiteratureFloorBlackSwanAnimationContract
         };
 }
 
+[MonsterVisual(typeof(LiteratureFloorBlackSwanFirstBrother), ScenePath = LiteratureFloorBlackSwanBrotherCreatureVisuals.ScenePath)]
+[MonsterVisual(typeof(LiteratureFloorBlackSwanSecondBrother), ScenePath = LiteratureFloorBlackSwanBrotherCreatureVisuals.ScenePath)]
+[MonsterVisual(typeof(LiteratureFloorBlackSwanThirdBrother), ScenePath = LiteratureFloorBlackSwanBrotherCreatureVisuals.ScenePath)]
+[MonsterVisual(typeof(LiteratureFloorBlackSwanFourthBrother), ScenePath = LiteratureFloorBlackSwanBrotherCreatureVisuals.ScenePath)]
+[MonsterVisual(typeof(LiteratureFloorBlackSwanFifthBrother), ScenePath = LiteratureFloorBlackSwanBrotherCreatureVisuals.ScenePath)]
+[MonsterVisual(typeof(LiteratureFloorBlackSwanSixthBrother), ScenePath = LiteratureFloorBlackSwanBrotherCreatureVisuals.ScenePath)]
 internal sealed partial class
     LiteratureFloorBlackSwanBrotherCreatureVisuals :
     SceneAnimatedCreatureVisuals

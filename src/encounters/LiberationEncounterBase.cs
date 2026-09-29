@@ -44,21 +44,16 @@ public abstract class LiberationEncounterBase : EncounterModel
 
     /// <summary>
     /// 最后一名玩家受到致死伤害、结算已记录后调用：强制击杀所有存活的敌人，再让原版复核胜负以正常胜利结束战斗。
+    /// 战斗已停止进行时直接返回，避免挂起的死亡回调重新进入击杀与胜负复核。
     /// </summary>
-    /// <param name="requireCombatInProgress">
-    /// 为 true 时，战斗已经结束或正在结束就直接返回，不再进入击杀与胜负复核：否则在 <c>EndCombatInternal</c> 之后
-    /// 重入 <c>KillWithoutCheckingWinCondition</c>，联机下会触发原版 "killed outside of combat"。
-    /// </param>
     /// <param name="deferRecheckIfNotEnded">
     /// 为 true 时，这次复核没有结束战斗，就用 <see cref="ScheduleDeferredWinConditionCheck"/> 在下一帧再复核一次。
     /// </param>
     protected static async Task EndCombatAsLiberationVictory(
         CombatStateLike? combatState,
-        bool requireCombatInProgress = true,
         bool deferRecheckIfNotEnded = false)
     {
-        if (combatState == null
-            || (requireCombatInProgress && !CombatManager.Instance.IsInProgress))
+        if (combatState == null || !CombatManager.Instance.IsInProgress)
         {
             return;
         }

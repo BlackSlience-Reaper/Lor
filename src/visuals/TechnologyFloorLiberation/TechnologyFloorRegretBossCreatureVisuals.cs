@@ -1,9 +1,18 @@
+using Godot;
 using LibraryOfRuina.monsters.TechnologyFloorLiberation;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.TechnologyFloorLiberation;
 
 public partial class TechnologyFloorRegretBossCreatureVisuals : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(TechnologyFloorRegretBoss))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, -155f), new(0.576f, 0.576f), -170f, -315f, 170f, 12f, new(0f, -155f), new(-20f, -340f))
+    {
+        TalkPos = new Vector2(-20f, -280f),
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

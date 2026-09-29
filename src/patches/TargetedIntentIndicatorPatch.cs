@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using Godot;
-using HarmonyLib;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.patches.QueenOfHatred;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -17,9 +17,10 @@ internal static class TargetedIntentIndicatorPatch
 {
     private const string OverlayNodeName = "LibraryOfRuinaTargetedIntentLines";
 
-    internal static void OnUpdateIntent(NCreature __instance)
+    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance)
     {
         RemoveOverlay(__instance);
+        return IntentDecoratorOutcome.Applied;
     }
 
     internal static void Show(
@@ -140,11 +141,10 @@ internal static class TargetedIntentIndicatorPatch
     }
 }
 
-[HarmonyPatch(typeof(NIntent), "OnHovered")]
+/// <summary><c>NIntent.OnHovered</c> 后缀的处理函数，入口在 IntentVisualDispatch。</summary>
 internal static class TargetedIntentHoverPatch
 {
-    [HarmonyPostfix]
-    private static void Postfix(
+    internal static IntentDecoratorOutcome OnIntentHovered(
         NIntent __instance,
         AbstractIntent ____intent,
         IEnumerable<Creature> ____targets,
@@ -153,27 +153,30 @@ internal static class TargetedIntentHoverPatch
         try
         {
             TargetedIntentIndicatorPatch.Show(__instance, ____intent, ____targets, ____owner);
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception e)
         {
             Log.Warn("[LibraryOfRuina.TargetedIntent] Failed to show target arrows: " + e);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 }
 
-[HarmonyPatch(typeof(NIntent), "OnUnhovered")]
+/// <summary><c>NIntent.OnUnhovered</c> 后缀的处理函数，入口在 IntentVisualDispatch。</summary>
 internal static class TargetedIntentUnhoverPatch
 {
-    [HarmonyPostfix]
-    private static void Postfix(Creature ____owner)
+    internal static IntentDecoratorOutcome OnIntentUnhovered(Creature ____owner)
     {
         try
         {
             TargetedIntentIndicatorPatch.Hide(____owner);
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception e)
         {
             Log.Warn("[LibraryOfRuina.TargetedIntent] Failed to hide target arrows: " + e);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 }

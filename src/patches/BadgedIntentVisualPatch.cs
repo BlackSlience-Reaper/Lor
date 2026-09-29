@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using Godot;
-using HarmonyLib;
 using LibraryOfRuina.combat;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -64,7 +64,7 @@ internal static class BadgedIntentVisualPatch
     private const int PreviewCardHoverZIndex = 0;
     private const int PileIconZIndex = DetailZIndex;
 
-    internal static void OnUpdateVisuals(
+    internal static IntentDecoratorOutcome OnUpdateVisuals(
         NIntent __instance,
         AbstractIntent ____intent,
         IEnumerable<Creature> ____targets,
@@ -72,7 +72,7 @@ internal static class BadgedIntentVisualPatch
     {
         if (!__instance.HasNode("%IntentHolder"))
         {
-            return;
+            return IntentDecoratorOutcome.Skipped;
         }
 
         Control holder = __instance.GetNode<Control>("%IntentHolder");
@@ -86,7 +86,7 @@ internal static class BadgedIntentVisualPatch
         if (holder.HasMeta(VisualHashMetaKey)
             && (string)holder.GetMeta(VisualHashMetaKey) == newHash)
         {
-            return;
+            return IntentDecoratorOutcome.Unchanged;
         }
 
         holder.SetMeta(VisualHashMetaKey, newHash);
@@ -106,7 +106,7 @@ internal static class BadgedIntentVisualPatch
 
         if (visualState.Effects.Count == 0 && visualState.SingleTarget == null)
         {
-            return;
+            return IntentDecoratorOutcome.Applied;
         }
 
         IReadOnlyList<DetailedIntentVisualEffect> effectRows = visualState.Effects
@@ -146,6 +146,8 @@ internal static class BadgedIntentVisualPatch
             target.Position = new Vector2(-6f, -2f);
             holder.AddChild(target);
         }
+
+        return IntentDecoratorOutcome.Applied;
     }
 
     private static void ApplyAllyAttackColor(NIntent intentNode, AbstractIntent intent, Creature owner)
@@ -1183,34 +1185,42 @@ internal static class BadgedIntentVisualPatch
 
 }
 
-[HarmonyPatch(typeof(AbstractIntent), nameof(AbstractIntent.GetHoverTip))]
+/// <summary><c>AbstractIntent.GetHoverTip</c> 后缀的两个处理函数，先复合图标、后徽记，由 IntentRenderPipeline 依次调用。</summary>
 internal static class BadgedIntentHoverTipPatch
 {
-    [HarmonyPostfix]
-    private static void Postfix(
-        AbstractIntent __instance,
+    /// <summary>复合意图换上自己的提示图标；换成功后徽记不再改写提示。</summary>
+    internal static IntentDecoratorOutcome ApplyCombinedHoverIcon(AbstractIntent intent, ref HoverTip tip)
+    {
+        if (intent is not ICombinedIntentHoverIcon combinedHoverIcon)
+        {
+            return IntentDecoratorOutcome.Skipped;
+        }
+
+        Texture2D? icon = BadgedIntentHoverTipFactory.ResolveCombinedHoverIcon(combinedHoverIcon);
+        if (!GodotTextureSafety.IsValid(icon))
+        {
+            return IntentDecoratorOutcome.Skipped;
+        }
+
+        tip = BadgedIntentHoverTipFactory.ReplaceIcon(combinedHoverIcon, tip, icon);
+        return IntentDecoratorOutcome.Handled;
+    }
+
+    internal static IntentDecoratorOutcome ApplyBadgeTip(
+        AbstractIntent intent,
         IEnumerable<Creature> targets,
         Creature owner,
-        ref HoverTip __result)
+        ref HoverTip tip)
     {
-        if (__instance is ICombinedIntentHoverIcon combinedHoverIcon)
-        {
-            Texture2D? icon = BadgedIntentHoverTipFactory.ResolveCombinedHoverIcon(combinedHoverIcon);
-            if (GodotTextureSafety.IsValid(icon))
-            {
-                __result = BadgedIntentHoverTipFactory.ReplaceIcon(combinedHoverIcon, __result, icon);
-                return;
-            }
-        }
-
-        IReadOnlyList<IntentBadge> effects = IntentEffectCollection.Get(__instance);
-        if (__instance is IndiscriminateAttackIntent
+        IReadOnlyList<IntentBadge> effects = IntentEffectCollection.Get(intent);
+        if (intent is IndiscriminateAttackIntent
             || effects.Count == 0)
         {
-            return;
+            return IntentDecoratorOutcome.Skipped;
         }
 
-        __result = BadgedIntentHoverTipFactory.Create(__instance, effects, __result, targets, owner);
+        tip = BadgedIntentHoverTipFactory.Create(intent, effects, tip, targets, owner);
+        return IntentDecoratorOutcome.Applied;
     }
 }
 

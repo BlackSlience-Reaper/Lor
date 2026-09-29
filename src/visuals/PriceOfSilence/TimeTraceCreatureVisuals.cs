@@ -1,10 +1,18 @@
 using LibraryOfRuina.monsters.PriceOfSilence;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.PriceOfSilence;
 
 public sealed partial class TimeTraceCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(TimeTrace))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(10f, 20f), new(1.24f, 1.24f), -158f, -340f, 158f, 12f, new(0f, -174f), new(-95f, -360f))
+    {
+        StateDisplayLiftY = 5f,
+    };
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

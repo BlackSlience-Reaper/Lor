@@ -3,8 +3,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.ScarecrowSearchingForWisdom;
 
-public sealed class ScarecrowSearchingForWisdomWeak : EncounterModel
+public sealed class ScarecrowSearchingForWisdomWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "ScarecrowSearchingForWisdomBGM",
+        GuestReceptionPoolRegistry.SocialSciencesReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string LeftSlot = "scarecrow_1";
     public const string CenterSlot = "scarecrow_2";
     public const string RightSlot = "scarecrow_3";

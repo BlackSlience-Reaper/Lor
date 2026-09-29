@@ -1,8 +1,10 @@
 using LibraryOfRuina.monsters.SmilingBodies;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.SmilingBodies;
 
+[MonsterVisual(typeof(monsters.SmilingBodies.SmilingBodies), ScenePath = SmilingBodiesCreatureVisuals.ScenePath)]
 internal sealed partial class SmilingBodiesCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {

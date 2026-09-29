@@ -4,8 +4,20 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.HappyTeddy;
 
-public sealed class HappyTeddyWeak : EncounterModel
+public sealed class HappyTeddyWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "HappyTeddyBGM",
+        new[]
+        {
+            "res://audio/bgm/scorched_girl/scorched_girl_battle_1.ogg",
+            "res://audio/bgm/scorched_girl/scorched_girl_battle_2.ogg",
+            "res://audio/bgm/scorched_girl/scorched_girl_battle_3.ogg"
+        },
+        volumeScale: 0.85f,
+        4,
+        7);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool IsWeak => true;

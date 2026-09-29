@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.HookOffice;
 
-public sealed class HookOfficeStrong : EncounterModel, IGuestReceptionEncounter
+public sealed class HookOfficeStrong : EncounterModel, IGuestReceptionEncounter, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "HookOfficeBGM",
+        GuestReceptionPoolRegistry.GeneralReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

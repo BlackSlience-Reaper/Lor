@@ -33,9 +33,15 @@ public enum SocialFloorTrial
 
 public sealed class SocialFloorLiberationEncounter :
     LiberationEncounterBase,
+    IEncounterBgmSource,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "SocialFloorLiberationBGM",
+        LanguageFloorLiberationEncounter.RolandLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     public const string FalseThroneSlot = "false_throne";
     public const string CrystalSlotOne = "crystal_1";
     public const string CrystalSlotTwo = "crystal_2";

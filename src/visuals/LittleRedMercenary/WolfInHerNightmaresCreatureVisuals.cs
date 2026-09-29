@@ -1,7 +1,10 @@
 using System;
+using LibraryOfRuina.monsters.LittleRedMercenary;
+using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.visuals.LittleRedMercenary;
 
+[MonsterVisual(typeof(WolfInHerNightmares), ScenePath = WolfInHerNightmaresCreatureVisuals.ScenePath)]
 internal sealed partial class WolfInHerNightmaresCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {

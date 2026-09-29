@@ -29,9 +29,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
     private const string RouterMoveId = "XIAO_GUEST_ROUTER";
     private const string CompositeMoveId = "XIAO_GUEST_COMPOSITE";
     private const string HiddenMoveId = "XIAO_GUEST_HIDDEN";
-    private AbstractIntent[]? _plannedIntents;
-    private MoveState? _compositeState;
-    private MoveState? _hiddenState;
+    private PlannedMoveController<XiaoGuestMove>? _plan;
 
     protected virtual bool HasStarfirePassive => false;
 
@@ -49,6 +47,15 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
 
     protected virtual XiaoGuestMove ResolveMoveForCurrentBattle(
         XiaoGuestMove move) => move;
+
+    // 计划存在基类的五个槽位里；实例随怪物克隆丢弃、用到时重建（见 PlannedMoveController）。
+    private PlannedMoveController<XiaoGuestMove> Plan => _plan ??= new(
+        this,
+        StoredIntentSlots,
+        slot => (XiaoGuestMove)GetStoredIntent(slot),
+        (slot, move) => SetStoredIntent(slot, (int)move),
+        (_, move) => CreateIntent(move),
+        XiaoGuestMove.None);
 
     public override async Task AfterAddedToRoom()
     {
@@ -87,19 +94,22 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
         await base.BeforeSideTurnStart(choiceContext, side, participants, combatState);
     }
 
+    protected override void DeepCloneFields()
+    {
+        base.DeepCloneFields();
+        // 计划控制器的委托捕获的是被克隆的实例，克隆体必须用自己的。
+        _plan = null;
+    }
+
+    // 萧不在 BeforeSideTurnStart 里规划，而在原版 RollMove 经过路由状态时规划（进场时一次，之后每个玩家回合
+    // 开始的 PrepareForNextTurn；眩晕的后续行动绕过路由，由 AfterStun 补规划）。隐藏行动只接回自己，假死后不再规划。
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _plannedIntents = new AbstractIntent[StoredIntentSlots];
-        RefreshPlannedIntents();
-        _compositeState = new MoveState(
+        MoveState compositeState = Plan.CreateCompositeState(
             CompositeMoveId,
-            PerformCompositeMove,
-            _plannedIntents);
-        _hiddenState = new MoveState(
-            HiddenMoveId,
-            static _ => Task.CompletedTask,
-            new HiddenIntent());
-        _hiddenState.FollowUpState = _hiddenState;
+            PerformCompositeMove);
+        MoveState hiddenState = Plan.CreateHiddenState(HiddenMoveId);
+        hiddenState.FollowUpState = hiddenState;
 
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
@@ -108,13 +118,13 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
                 PlanNextTurn(rng);
                 return CompositeMoveId;
             });
-        _compositeState.FollowUpState = router;
+        compositeState.FollowUpState = router;
 
         return new MonsterMoveStateMachine(
-            [_compositeState, _hiddenState, router],
+            [compositeState, hiddenState, router],
             !CanPerformMoves
-                ? _hiddenState
-                : HasPlannedMoves ? _compositeState : router);
+                ? hiddenState
+                : HasPlannedMoves ? compositeState : router);
     }
 
     private bool HasPlannedMoves => HasStoredIntentPlan;
@@ -128,14 +138,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
             PatternIndex,
             !HasCompletedFirstTurn);
         int count = Math.Min(pattern.Count, Math.Min(IntentCapacity, StoredIntentSlots));
-        for (int slot = 0; slot < StoredIntentSlots; slot++)
-        {
-            SetPlannedMove(
-                slot,
-                slot < count
-                    ? ResolveMoveForCurrentBattle(pattern[slot])
-                    : XiaoGuestMove.None);
-        }
+        Plan.WriteSlots(count, slot => ResolveMoveForCurrentBattle(pattern[slot]));
 
         PatternIndex = (PatternIndex + 1) % Math.Max(1, PatternLength);
         HasCompletedFirstTurn = true;
@@ -150,18 +153,10 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
             EnterHiddenIntent();
             return;
         }
-        for (int slot = 0;
-             slot < StoredIntentSlots && Creature.IsAlive && CanPerformMoves;
-             slot++)
-        {
-            XiaoGuestMove move = GetPlannedMove(slot);
-            if (move == XiaoGuestMove.None)
-            {
-                break;
-            }
 
-            await PerformMove(move);
-        }
+        await Plan.PerformPlan(
+            () => Creature.IsAlive && CanPerformMoves,
+            (_, move) => PerformMove(move));
 
         ClearPlan();
     }
@@ -398,13 +393,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
     protected int ScaleThreshold(int baseAmount) =>
         ScaleSpecialGuestAmount(baseAmount);
 
-    protected void EnterHiddenIntent()
-    {
-        if (_hiddenState != null)
-        {
-            SetMoveImmediate(_hiddenState, forceTransition: true);
-        }
-    }
+    protected void EnterHiddenIntent() => Plan.Hide();
 
     public override async Task AfterStun(Creature creature)
     {
@@ -452,34 +441,12 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
     private XiaoMoveDefinition GetMoveDefinition(XiaoGuestMove move) =>
         XiaoMoveDefinitions.Get(move, IsSecondStageXiao);
 
-    private void RefreshPlannedIntents()
-    {
-        if (_plannedIntents == null)
-        {
-            return;
-        }
-
-        for (int slot = 0; slot < StoredIntentSlots; slot++)
-        {
-            _plannedIntents[slot] = CreateIntent(GetPlannedMove(slot));
-        }
-    }
+    private void RefreshPlannedIntents() => Plan.RefreshIntents();
 
     private void ClearPlan()
     {
-        for (int slot = 0; slot < StoredIntentSlots; slot++)
-        {
-            SetPlannedMove(slot, XiaoGuestMove.None);
-        }
+        Plan.ClearSlots();
         RefreshPlannedIntents();
-    }
-
-    private XiaoGuestMove GetPlannedMove(int slot) =>
-        (XiaoGuestMove)GetStoredIntent(slot);
-
-    private void SetPlannedMove(int slot, XiaoGuestMove move)
-    {
-        SetStoredIntent(slot, (int)move);
     }
 }
 

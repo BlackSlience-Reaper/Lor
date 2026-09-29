@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.CompilerServices;
 using Godot;
-using HarmonyLib;
 using LibraryOfRuina.helpers;
 using LibraryOfRuina.intents;
+using LibraryOfRuina.intents.rendering;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -19,7 +19,7 @@ internal static class CombinedIntentVisualPatch
 {
     private static readonly ConditionalWeakTable<NIntent, AnimationState> States = new();
 
-    internal static void RefreshAnimation(
+    internal static IntentDecoratorOutcome RefreshAnimation(
         NIntent intentNode,
         AbstractIntent intent,
         IEnumerable<Creature> targets,
@@ -28,29 +28,34 @@ internal static class CombinedIntentVisualPatch
         if (intent is not ICombinedIntentVisual combined)
         {
             States.Remove(intentNode);
-            return;
+            return IntentDecoratorOutcome.Skipped;
         }
 
         // 伤害档位仅随原版意图刷新重新计算，逐帧播放不再遍历全部战斗 Hook。
         AnimationState state = States.GetValue(intentNode, static _ => new AnimationState());
         state.Animation = combined.GetCombinedAnimation(targets, owner);
         state.Frame = null;
+        return IntentDecoratorOutcome.Applied;
     }
 
-    internal static void OnIntentProcess(NIntent __instance, int? ____animationFrame)
+    internal static IntentDecoratorOutcome OnIntentProcess(NIntent __instance, int? ____animationFrame)
     {
         try
         {
             if (!States.TryGetValue(__instance, out AnimationState? state)
-                || !____animationFrame.HasValue
-                || state.Frame == ____animationFrame)
+                || !____animationFrame.HasValue)
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
+            }
+
+            if (state.Frame == ____animationFrame)
+            {
+                return IntentDecoratorOutcome.Unchanged;
             }
 
             if (!__instance.HasNode("%Intent"))
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             if (!CombinedIntentAnimData.TryGetAnimationFrame(
@@ -58,18 +63,20 @@ internal static class CombinedIntentVisualPatch
                     ____animationFrame.Value,
                     out string path))
             {
-                return;
+                return IntentDecoratorOutcome.Skipped;
             }
 
             Sprite2D sprite = __instance.GetNode<Sprite2D>("%Intent");
             GodotTextureSafety.TrySetTexture(sprite, PreloadManager.Cache.GetTexture2D(path));
             state.Frame = ____animationFrame;
+            return IntentDecoratorOutcome.Applied;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
                 "CombinedIntentVisual.UpdateIntent",
                 exception);
+            return IntentDecoratorOutcome.Failed;
         }
     }
 
@@ -78,18 +85,5 @@ internal static class CombinedIntentVisualPatch
         public string Animation = string.Empty;
 
         public int? Frame;
-    }
-}
-
-internal static class CombinedIntentAnimationRefreshPatch
-{
-    internal static void OnUpdateVisuals(
-        NIntent __instance,
-        AbstractIntent ____intent,
-        IEnumerable<Creature> ____targets,
-        Creature ____owner)
-    {
-        CombinedIntentVisualPatch.RefreshAnimation(__instance, ____intent, ____targets, ____owner);
-        CounterIntentVisualPatch.RefreshAnimation(__instance, ____intent, ____targets, ____owner);
     }
 }

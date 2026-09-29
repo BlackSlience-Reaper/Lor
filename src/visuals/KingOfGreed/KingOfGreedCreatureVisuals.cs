@@ -1,9 +1,11 @@
 using System;
 using LibraryOfRuina.monsters.KingOfGreed;
+using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.visuals.KingOfGreed;
 
+[MonsterVisual(typeof(monsters.KingOfGreed.KingOfGreed), ScenePath = KingOfGreedCreatureVisuals.ScenePath)]
 internal sealed partial class KingOfGreedCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
@@ -103,6 +105,10 @@ internal static class KingOfGreedAnimationContract
 public partial class GoldenAmberCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(GoldenAmber))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 0f), new(0.48f, 0.48f), -155f, -430f, 155f, 12f, new(0f, -215f), new(0f, -465f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
@@ -126,6 +132,10 @@ public partial class GoldenAmberCreatureVisuals
 public partial class ShiningHappinessCreatureVisuals
     : SpriteAttackCreatureVisuals
 {
+    [MonsterVisual(typeof(ShiningHappiness))]
+    internal static readonly CreatureVisualLayout Layout = new(
+        new(0f, 0f), new(0.50f, 0.50f), -82f, -188f, 82f, 8f, new(0f, -88f), new(0f, -222f));
+
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;

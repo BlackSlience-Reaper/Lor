@@ -1,29 +1,29 @@
 using System.Linq;
-using HarmonyLib;
+using LibraryOfRuina.intents.rendering;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
-using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.patches;
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.ShowHoverTips))]
+/// <summary><c>NCreature.ShowHoverTips</c> 前缀的处理函数，入口在 IntentVisualDispatch：有反击意图提示时补一条“反击”关键词。</summary>
 public static class CounterIntentHoverTipPatch
 {
     private const string CounterKeywordTitleId = "Title=intents.COUNTER_KEYWORD.title";
     private const string CounterIntentTitlePrefix = "Title=intents.COUNTER_";
 
-    [HarmonyPrefix]
-    public static void Prefix(ref IEnumerable<IHoverTip> hoverTips)
+    // 不论是否补充，都把参数换成物化后的列表，原版随后再枚举一次。
+    internal static IntentDecoratorOutcome AppendCounterKeyword(ref IEnumerable<IHoverTip> hoverTips)
     {
         List<IHoverTip> tips = hoverTips.ToList();
         if (tips.Any(IsCounterKeywordTip) || !tips.Any(IsCounterIntentTip))
         {
             hoverTips = tips;
-            return;
+            return IntentDecoratorOutcome.Unchanged;
         }
 
         tips.Add(CreateCounterKeywordTip());
         hoverTips = tips;
+        return IntentDecoratorOutcome.Applied;
     }
 
     private static bool IsCounterIntentTip(IHoverTip tip) =>
