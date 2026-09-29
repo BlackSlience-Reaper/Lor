@@ -54,6 +54,8 @@ godot --headless --path . --export-pack LibraryOfRuina build/LibraryOfRuina.pck
 
 导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。PCK 里的 `.cs` 只保留空占位（场景按路径引用脚本），不附带源码；`docs/`、`tools/`、`snapshots/`、`verification/` 带有 `.gdignore`，不会进包。
 
+纹理用最高等级的无损 WebP 压缩（`project.godot` 的 `rendering/textures/webp_compression`）。修改这两项不会触发重新导入：已有的导入缓存要先删掉 `.godot/imported/` 再导入，否则导出的仍是旧的纹理。
+
 ### 4. 安装
 
 ```

@@ -24,3 +24,5 @@ export/convert_text_resources_to_binary=false
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
+textures/webp_compression/compression_method=6
+textures/webp_compression/lossless_compression_factor=100.0
