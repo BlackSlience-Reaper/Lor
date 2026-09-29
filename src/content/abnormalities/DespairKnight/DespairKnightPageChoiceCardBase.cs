@@ -1,5 +1,5 @@
+using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.framework.cards;
-using LibraryOfRuina.relics.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Enchantments;

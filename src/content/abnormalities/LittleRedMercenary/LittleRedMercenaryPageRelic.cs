@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;

@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.relics.NaturalFloorLiberation;
+using LibraryOfRuina.content.liberation.Natural;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;

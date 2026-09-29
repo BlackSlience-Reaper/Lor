@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;

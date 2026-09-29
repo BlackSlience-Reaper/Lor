@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.BigBadWolf;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
@@ -11,7 +10,6 @@ using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Combat;

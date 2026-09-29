@@ -1,13 +1,11 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.combat;
+using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
-using LibraryOfRuina.monsters.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Helpers;

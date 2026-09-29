@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
+using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.powers.NaturalFloorLiberation;
 using LibraryLib.Commands;
 using LibraryLib.Powers;
 using MegaCrit.Sts2.Core.Combat;

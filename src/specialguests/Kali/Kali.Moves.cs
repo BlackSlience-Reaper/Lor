@@ -6,7 +6,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.visuals.RedMist;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;

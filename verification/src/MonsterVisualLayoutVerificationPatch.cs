@@ -51,8 +51,8 @@ internal static class MonsterVisualLayoutVerificationPatch
         ("LibraryOfRuina.content.abnormalities.BurrowingHeaven.BurrowingHeaven", "_isAwake", [false, true]),
         ("LibraryOfRuina.content.abnormalities.BurrowingHeaven.HeavenThorn", "_isAwake", [false, true]),
         ("LibraryOfRuina.content.abnormalities.Ozma.OzmaJack", "<IsAwake>k__BackingField", [false, true]),
-        ("LibraryOfRuina.monsters.HistoryFloorLiberation.HistoryFloorPhaseBoss", "_phase", [1, 2, 3, 4, 5]),
-        ("LibraryOfRuina.monsters.ArtFloorLiberation.ArtFloorDaCapoPerformer", "_variant", [1, 2, 3, 4]),
+        ("LibraryOfRuina.content.liberation.History.HistoryFloorPhaseBoss", "_phase", [1, 2, 3, 4, 5]),
+        ("LibraryOfRuina.content.liberation.Art.ArtFloorDaCapoPerformer", "_variant", [1, 2, 3, 4]),
     ];
 
     private static bool _started;

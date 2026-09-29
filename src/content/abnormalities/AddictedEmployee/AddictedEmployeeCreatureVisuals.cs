@@ -1,6 +1,6 @@
 using Godot;
+using LibraryOfRuina.content.liberation.Technology;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.monsters.TechnologyFloorLiberation;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.content.abnormalities.AddictedEmployee;

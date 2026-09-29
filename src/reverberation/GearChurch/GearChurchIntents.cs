@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization;

@@ -5,7 +5,6 @@ using Godot;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Helpers;

@@ -1,15 +1,12 @@
 using System.Linq;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.content.abnormalities.PunishingBird;
 using LibraryOfRuina.content.abnormalities.RoadHome;
 using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
 using LibraryOfRuina.content.abnormalities.WrathServant;
-using LibraryOfRuina.encounters.LanguageFloorLiberation;
-using LibraryOfRuina.encounters.NaturalFloorLiberation;
+using LibraryOfRuina.content.liberation.Language;
+using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.framework.combat;
-using LibraryOfRuina.monsters.LanguageFloorLiberation;
-using LibraryOfRuina.monsters.NaturalFloorLiberation;
 
 namespace LibraryOfRuina.framework.encounters;
 

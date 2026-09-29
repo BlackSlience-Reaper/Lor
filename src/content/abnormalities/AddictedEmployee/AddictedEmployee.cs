@@ -11,7 +11,6 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;

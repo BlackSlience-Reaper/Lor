@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using LibraryOfRuina.cards.RedMist;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Random;

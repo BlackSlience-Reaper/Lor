@@ -13,7 +13,6 @@ using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.relics;

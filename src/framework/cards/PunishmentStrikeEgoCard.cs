@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.cards.HistoryFloorLiberation;
+using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;

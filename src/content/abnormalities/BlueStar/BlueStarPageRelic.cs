@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;

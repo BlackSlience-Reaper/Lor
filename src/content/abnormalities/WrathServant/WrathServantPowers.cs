@@ -93,7 +93,7 @@ public sealed class WrathServantCorrosionPower :
 
     // 由傲慢之仆或盲怒施加时，腐蚀伤害以施加者为来源并进入其伤害来源上下文。
     private bool IsAppliedByWrathSource =>
-        Applier?.Monster is WrathServant or monsters.NaturalFloorLiberation.NaturalFloorBlindRageBoss;
+        Applier?.Monster is WrathServant or liberation.Natural.NaturalFloorBlindRageBoss;
 
     public IEnumerable<LibraryHealthBarDamageForecast>
         GetLibraryHealthBarDamageForecasts(

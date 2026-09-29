@@ -9,7 +9,6 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Commands;

@@ -162,7 +162,7 @@ internal static class BgmSession
         _activeConfig = config;
         string sessionKey = BuildSessionKey(CombatState, encounterType);
         int initialTrackIndex = 0;
-        if (CombatState.Encounter is LibraryOfRuina.encounters.NaturalFloorLiberation.NaturalFloorLiberationEncounter { CurrentPhase: 5 })
+        if (CombatState.Encounter is LibraryOfRuina.content.liberation.Natural.NaturalFloorLiberationEncounter { CurrentPhase: 5 })
         {
             initialTrackIndex = EncounterBgmController.ResolveLiberationPhaseTrackIndex(5);
         }

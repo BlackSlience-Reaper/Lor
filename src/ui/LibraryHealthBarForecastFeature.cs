@@ -8,14 +8,13 @@ using LibraryOfRuina.content.abnormalities.KingOfGreed;
 using LibraryOfRuina.content.abnormalities.Nosferatu;
 using LibraryOfRuina.content.abnormalities.RoadHome;
 using LibraryOfRuina.content.abnormalities.WrathServant;
+using LibraryOfRuina.content.liberation.Art;
+using LibraryOfRuina.content.liberation.Language;
+using LibraryOfRuina.content.liberation.Natural;
+using LibraryOfRuina.content.liberation.Philosophy;
+using LibraryOfRuina.content.liberation.Social;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.monsters.LanguageFloorLiberation;
-using LibraryOfRuina.monsters.SocialFloorLiberation;
 using LibraryOfRuina.powers;
-using LibraryOfRuina.powers.ArtFloorLiberation;
-using LibraryOfRuina.powers.LanguageFloorLiberation;
-using LibraryOfRuina.powers.NaturalFloorLiberation;
-using LibraryOfRuina.powers.PhilosophyFloorLiberation;
 using LibraryOfRuina.specialguests.Iori;
 using LibraryOfRuina.specialguests.Kali;
 using LibraryOfRuina.specialguests.Rnfmabj;
@@ -89,7 +88,7 @@ internal static class LibraryHealthBarForecastFeature
         {
             return true;
         }
-        if (creature.Powers.OfType<LibraryOfRuina.powers.NaturalFloorLiberation.NaturalFloorExploitedPower>()
+        if (creature.Powers.OfType<LibraryOfRuina.content.liberation.Natural.NaturalFloorExploitedPower>()
             .Any(static power => power.IsHealthBarLockActive))
         {
             return true;

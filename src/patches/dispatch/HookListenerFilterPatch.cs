@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using HarmonyLib;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.Ozma;
+using LibraryOfRuina.content.liberation.Philosophy;
 using LibraryOfRuina.framework.combat;
-using LibraryOfRuina.monsters.PhilosophyFloorLiberation;
-using LibraryOfRuina.powers.PhilosophyFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Models;

@@ -1,5 +1,5 @@
+using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.framework.cards;
-using LibraryOfRuina.powers.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 

@@ -796,7 +796,7 @@ internal static class BadgedIntentDescription
             : new LocString("intents", descriptionKey);
 
         desc.Add("IsMultiplayer", owner.CombatState != null && owner.CombatState.RunState.Players.Count > 1);
-        LibraryOfRuina.intents.NaturalFloorLiberation.NaturalFloorNihilIntentText.AddVariables(desc, descriptionKey, owner);
+        LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilIntentText.AddVariables(desc, descriptionKey, owner);
         return desc;
     }
 

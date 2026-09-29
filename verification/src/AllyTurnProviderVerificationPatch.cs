@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;

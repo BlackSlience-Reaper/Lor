@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;

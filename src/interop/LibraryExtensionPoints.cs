@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using LibraryLib.Combat;
 using LibraryLib.Commands;
 using LibraryLib.Utils.Resistance;
-using LibraryOfRuina.enchantments.HistoryFloorLiberation;
+using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.content.liberation.Technology;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.patches.TechnologyFloorLiberation;
 using LibraryOfRuina.specialguests.Iori;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 

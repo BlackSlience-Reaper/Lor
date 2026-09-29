@@ -1,10 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.visuals.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;

@@ -1,8 +1,8 @@
 using Godot;
-using LibraryOfRuina.cards.ArtFloorLiberation;
-using LibraryOfRuina.cards.HistoryFloorLiberation;
 using LibraryOfRuina.cards.RedMist;
-using LibraryOfRuina.cards.TechnologyFloorLiberation;
+using LibraryOfRuina.content.liberation.Art;
+using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.content.liberation.Technology;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.framework.cards;

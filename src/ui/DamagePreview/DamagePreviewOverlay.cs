@@ -4,7 +4,6 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;

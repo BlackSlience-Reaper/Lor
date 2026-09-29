@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;

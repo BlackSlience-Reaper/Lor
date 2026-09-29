@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using LibraryLib.Commands;
 using LibraryLib.Powers;
 using MegaCrit.Sts2.Core.HoverTips;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;

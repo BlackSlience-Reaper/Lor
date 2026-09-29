@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using LibraryLib.Models;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;

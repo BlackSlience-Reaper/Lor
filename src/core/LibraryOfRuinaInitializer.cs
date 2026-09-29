@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using HarmonyLib;
 using LibraryLib.Multiplayer;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.core.networking;
 using LibraryOfRuina.core.settings;

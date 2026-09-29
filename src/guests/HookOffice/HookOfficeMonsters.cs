@@ -5,7 +5,6 @@ using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.visuals;
 using LibraryOfRuina.visuals.HookOffice;

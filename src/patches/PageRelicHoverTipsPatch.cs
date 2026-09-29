@@ -6,12 +6,6 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
-using LibraryOfRuina.cards.ArtFloorLiberation;
-using LibraryOfRuina.cards.HistoryFloorLiberation;
-using LibraryOfRuina.cards.LanguageFloorLiberation;
-using LibraryOfRuina.cards.LiteratureFloorLiberation;
-using LibraryOfRuina.cards.NaturalFloorLiberation;
-using LibraryOfRuina.cards.TechnologyFloorLiberation;
 using LibraryOfRuina.content.abnormalities.AllAroundHelper;
 using LibraryOfRuina.content.abnormalities.BigBadWolf;
 using LibraryOfRuina.content.abnormalities.BigBird;
@@ -44,6 +38,12 @@ using LibraryOfRuina.content.abnormalities.SpinyBus;
 using LibraryOfRuina.content.abnormalities.TodaysShyLook;
 using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
 using LibraryOfRuina.content.abnormalities.WrathServant;
+using LibraryOfRuina.content.liberation.Art;
+using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.content.liberation.Language;
+using LibraryOfRuina.content.liberation.Literature;
+using LibraryOfRuina.content.liberation.Natural;
+using LibraryOfRuina.content.liberation.Technology;
 
 namespace LibraryOfRuina.patches;
 
@@ -81,13 +81,13 @@ internal static class PageRelicHoverTipsPatch
     {
         return relic switch
         {
-            LibraryOfRuina.relics.LanguageFloorLiberation.NothingTherePageRelic =>
+            LibraryOfRuina.content.liberation.Language.NothingTherePageRelic =>
             [
                 Preview<NothingThereGoodbyeChoiceCard>(upgrade: false),
                 Preview<NothingThereHelloChoiceCard>(upgrade: false),
                 Preview<NothingThereShellChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.ArtFloorLiberation.SilentOrchestraPageRelic =>
+            LibraryOfRuina.content.liberation.Art.SilentOrchestraPageRelic =>
             [
                 Preview<SilentOrchestraEverRepeatingPerformanceChoiceCard>(upgrade: false),
                 Preview<SilentOrchestraFerventAdorationChoiceCard>(upgrade: false),
@@ -123,13 +123,13 @@ internal static class PageRelicHoverTipsPatch
                 Preview<QueenBeeWorkerBeeChoiceCard>(upgrade: false),
                 Preview<QueenBeeLoyaltyChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.LiteratureFloorLiberation.BlackSwanDreamPageRelic =>
+            LibraryOfRuina.content.liberation.Literature.BlackSwanDreamPageRelic =>
             [
                 Preview<BlackSwanFilthChoiceCard>(upgrade: false),
                 Preview<BlackSwanBrokenUmbrellaChoiceCard>(upgrade: false),
                 Preview<BlackSwanDearFamilyChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.TechnologyFloorLiberation.MagicBulletShooterPageRelic =>
+            LibraryOfRuina.content.liberation.Technology.MagicBulletShooterPageRelic =>
             [
                 Preview<MagicBulletCommissionChoiceCard>(upgrade: false),
                 Preview<MagicBulletSeventhBulletChoiceCard>(upgrade: false),
@@ -165,31 +165,31 @@ internal static class PageRelicHoverTipsPatch
                 Preview<KingOfGreedHappinessPathChoiceCard>(upgrade: false),
                 Preview<KingOfGreedGreedChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.NaturalFloorLiberation.WrathServantEnhancedPageRelic =>
+            LibraryOfRuina.content.liberation.Natural.WrathServantEnhancedPageRelic =>
             [
                 Preview<WrathServantWrathChoiceCard>(upgrade: true),
                 Preview<WrathServantFriendChoiceCard>(upgrade: true),
                 Preview<WrathServantVenomChoiceCard>(upgrade: true)
             ],
-            LibraryOfRuina.relics.NaturalFloorLiberation.QueenOfHatredEnhancedPageRelic =>
+            LibraryOfRuina.content.liberation.Natural.QueenOfHatredEnhancedPageRelic =>
             [
                 Preview<QueenOfHatredPhilanthropyChoiceCard>(upgrade: true),
                 Preview<QueenOfHatredJusticeChoiceCard>(upgrade: true),
                 Preview<QueenOfHatredHatredChoiceCard>(upgrade: true)
             ],
-            LibraryOfRuina.relics.NaturalFloorLiberation.NihilPageRelic =>
+            LibraryOfRuina.content.liberation.Natural.NihilPageRelic =>
             [
                 Preview<NihilMagicalGirlsChoiceCard>(upgrade: false),
                 Preview<NihilEmptinessChoiceCard>(upgrade: false),
                 Preview<NihilNihilityChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.NaturalFloorLiberation.KingOfGreedEnhancedPageRelic =>
+            LibraryOfRuina.content.liberation.Natural.KingOfGreedEnhancedPageRelic =>
             [
                 Preview<KingOfGreedIndulgenceChoiceCard>(upgrade: true),
                 Preview<KingOfGreedHappinessPathChoiceCard>(upgrade: true),
                 Preview<KingOfGreedGreedChoiceCard>(upgrade: true)
             ],
-            LibraryOfRuina.relics.NaturalFloorLiberation.DespairKnightEnhancedPageRelic =>
+            LibraryOfRuina.content.liberation.Natural.DespairKnightEnhancedPageRelic =>
             [
                 Preview<DespairKnightBlessingChoiceCard>(upgrade: true),
                 Preview<DespairKnightDespairChoiceCard>(upgrade: true),
@@ -285,13 +285,13 @@ internal static class PageRelicHoverTipsPatch
                 Preview<BigBadWolfWolfRoleChoiceCard>(upgrade: false),
                 Preview<BigBadWolfCruelClawsChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.HistoryFloorLiberation.SnowWhiteApplePageRelic =>
+            LibraryOfRuina.content.liberation.History.SnowWhiteApplePageRelic =>
             [
                 Preview<SnowWhiteStranglingVineChoiceCard>(upgrade: false),
                 Preview<SnowWhitePoisonStingBarrierChoiceCard>(upgrade: false),
                 Preview<SnowWhiteMaliceChoiceCard>(upgrade: false)
             ],
-            LibraryOfRuina.relics.HistoryFloorLiberation.MatchMarkRelic =>
+            LibraryOfRuina.content.liberation.History.MatchMarkRelic =>
             [
                 Preview<MatchMarkEmberChoiceCard>(upgrade: false),
                 Preview<MatchMarkFootstepsChoiceCard>(upgrade: false),

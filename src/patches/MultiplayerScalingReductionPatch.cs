@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.features.secondascension;
 using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands;

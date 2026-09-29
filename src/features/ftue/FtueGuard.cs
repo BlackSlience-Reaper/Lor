@@ -15,9 +15,9 @@ using LibraryOfRuina.content.abnormalities.RedShoes;
 using LibraryOfRuina.content.abnormalities.ScorchedGirl;
 using LibraryOfRuina.content.abnormalities.SpiderBud;
 using LibraryOfRuina.content.abnormalities.TodaysShyLook;
+using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.content.liberation.Technology;
 using LibraryOfRuina.core.settings;
-using LibraryOfRuina.encounters.HistoryFloorLiberation;
-using LibraryOfRuina.encounters.TechnologyFloorLiberation;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.features.ftue;

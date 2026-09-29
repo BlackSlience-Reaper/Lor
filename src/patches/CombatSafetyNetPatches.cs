@@ -3,7 +3,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using HarmonyLib;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.GalaxyChild;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.helpers;

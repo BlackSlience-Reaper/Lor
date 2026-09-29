@@ -1,5 +1,5 @@
+using LibraryOfRuina.content.liberation.Technology;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.patches.TechnologyFloorLiberation;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.HoverTips;
 

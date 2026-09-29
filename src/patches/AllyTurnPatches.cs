@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using JetBrains.Annotations;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.patching;

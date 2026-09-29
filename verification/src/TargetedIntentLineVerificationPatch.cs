@@ -7,7 +7,6 @@ using HarmonyLib;
 using LibraryOfRuina.content.abnormalities.BigBadWolf;
 using LibraryOfRuina.content.abnormalities.PunishingBird;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

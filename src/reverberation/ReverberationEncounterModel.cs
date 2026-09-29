@@ -1,5 +1,4 @@
 using System.Linq;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;

@@ -8,7 +8,6 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.BlueStar;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;

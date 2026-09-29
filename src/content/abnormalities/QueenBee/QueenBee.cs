@@ -1,12 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
-using LibraryOfRuina.intents;
-using LibraryOfRuina.powers.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;

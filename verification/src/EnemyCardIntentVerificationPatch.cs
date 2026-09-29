@@ -6,7 +6,6 @@ using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.encounters.RedMist;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.powers.RedMist;
 using LibraryOfRuina.specialguests.Kali;
 using LibraryOfRuina.ui;

@@ -1,6 +1,6 @@
 using LibraryLib.Powers;
+using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.framework.cards;
-using LibraryOfRuina.relics.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -16,7 +16,7 @@ public abstract class QueenOfHatredPageChoiceCardBase : PageChoiceCard<QueenOfHa
     [
         HoverTipFactory.Static(StaticHoverTip.Block),
         IsUpgraded
-            ? HoverTipFactory.FromPower<LibraryOfRuina.powers.NaturalFloorLiberation.NihilBadGuyPower>()
+            ? HoverTipFactory.FromPower<LibraryOfRuina.content.liberation.Natural.NihilBadGuyPower>()
             : HoverTipFactory.FromPower<LibraryOfRuinaQueenBadGuyPower>(),
         HoverTipFactory.FromPower<LibraryStrongPower>()
     ];

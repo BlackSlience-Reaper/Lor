@@ -6,7 +6,6 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.relics;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Hooks;

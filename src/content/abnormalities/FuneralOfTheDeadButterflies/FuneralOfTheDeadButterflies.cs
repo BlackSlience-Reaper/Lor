@@ -10,7 +10,6 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.powers;
 using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Combat;

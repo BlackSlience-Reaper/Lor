@@ -1,18 +1,19 @@
 using System.Threading.Tasks;
 using HarmonyLib;
+using LibraryOfRuina.content.liberation;
+using LibraryOfRuina.content.liberation.Art;
+using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.content.liberation.Language;
+using LibraryOfRuina.content.liberation.Literature;
+using LibraryOfRuina.content.liberation.Natural;
+using LibraryOfRuina.content.liberation.Technology;
 using LibraryOfRuina.events;
-using LibraryOfRuina.patches.ArtFloorLiberation;
-using LibraryOfRuina.patches.HistoryFloorLiberation;
-using LibraryOfRuina.patches.LanguageFloorLiberation;
-using LibraryOfRuina.patches.LiteratureFloorLiberation;
-using LibraryOfRuina.patches.NaturalFloorLiberation;
-using LibraryOfRuina.patches.TechnologyFloorLiberation;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.dispatch;
 

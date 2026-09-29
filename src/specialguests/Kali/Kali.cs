@@ -7,7 +7,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers.RedMist;
 using LibraryOfRuina.ui;

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Combat;

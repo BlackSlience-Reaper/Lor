@@ -6,7 +6,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Combat;

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.relics.HistoryFloorLiberation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;

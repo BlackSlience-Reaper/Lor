@@ -10,7 +10,6 @@ using LibraryOfRuina.content.abnormalities.AddictedEmployee;
 using LibraryOfRuina.core;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;

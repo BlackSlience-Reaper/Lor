@@ -27,7 +27,7 @@ internal static class PowerNameMap
             Zhs: "下回合活力", Eng: "Vigor Next Turn", Jpn: "次ターンの活力", Kor: "다음 턴 활력"),
         // Buff
         new("ALL_RETURNS_TO_VOID_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.NaturalFloorLiberation.AllReturnsToVoidPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Natural.AllReturnsToVoidPower>(),
             Zhs: "万物归虚", Eng: "All Returns to Void", Jpn: "万物は虚無へ", Kor: "만물은 허무로"),
         // Buff
         new("NEXT_TURN_STRENGTH_POWER.title",
@@ -39,7 +39,7 @@ internal static class PowerNameMap
             Zhs: "下回合少抽牌", Eng: "Fewer Cards Next Turn", Jpn: "次ターンのドロー減少", Kor: "다음 턴에 카드를 덜 뽑으세요"),
         // Debuff
         new("ART_FLOOR_NEXT_TURN_COLLAPSE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorNextTurnCollapsePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorNextTurnCollapsePower>(),
             Zhs: "下回合崩溃", Eng: "Next Turn Collapse", Jpn: "次ターン崩壊", Kor: "다음 턴 붕괴"),
         // Buff
         new("QUEEN_BEE_NEXT_TURN_STRONG_POWER.title",
@@ -63,7 +63,7 @@ internal static class PowerNameMap
             Zhs: "临时荆棘", Eng: "Temporary Thorns", Jpn: "一時的な棘", Kor: "임시 가시"),
         // Debuff
         new("ART_FLOOR_FRAGRANCE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorFragrancePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorFragrancePower>(),
             Zhs: "余香", Eng: "Fragrance", Jpn: "余香", Kor: "잔향"),
         // Buff
         new("PRESERVED_DAMAGE_POWER.title",
@@ -79,7 +79,7 @@ internal static class PowerNameMap
             Zhs: "充能：R公司", Eng: "Charge: R Corp", Jpn: "充電：R社", Kor: "충전: R사"),
         // Buff
         new("LANGUAGE_FLOOR_MIMICRY_FORM_TWO_REGENERATION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LanguageFloorLiberation.LanguageFloorMimicryFormTwoRegenerationPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Language.LanguageFloorMimicryFormTwoRegenerationPower>(),
             Zhs: "再生", Eng: "Regenerative", Jpn: "再生", Kor: "재생"),
         // Buff
         new("BIG_BAD_WOLF_CRUEL_CLAWS_POWER.title",
@@ -87,23 +87,23 @@ internal static class PowerNameMap
             Zhs: "凶残利爪", Eng: "Cruel Claws", Jpn: "凶暴な爪", Kor: "잔혹한 발톱"),
         // Debuff
         new("LANGUAGE_FLOOR_SCAR_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LanguageFloorLiberation.LanguageFloorScarPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Language.LanguageFloorScarPower>(),
             Zhs: "创痕", Eng: "Scar", Jpn: "傷痕", Kor: "상흔"),
         // Buff
         new("SOCIAL_FLOOR_COURAGE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.SocialFloorLiberation.SocialFloorCouragePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Social.SocialFloorCouragePower>(),
             Zhs: "勇气", Eng: "Courage", Jpn: "勇気", Kor: "용기"),
         // Debuff
         new("NATURAL_FLOOR_BAD_GUY_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.NaturalFloorLiberation.NaturalFloorBadGuyPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Natural.NaturalFloorBadGuyPower>(),
             Zhs: "坏蛋", Eng: "Villain", Jpn: "悪党", Kor: "악당"),
         // Buff
         new("LANGUAGE_FLOOR_MIMICRY_HARDEN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LanguageFloorLiberation.LanguageFloorMimicryHardenPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Language.LanguageFloorMimicryHardenPower>(),
             Zhs: "坚硬", Eng: "Hardness", Jpn: "堅牢", Kor: "단단함"),
         // Debuff
         new("BOUNDARY_THORN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.BoundaryThornPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.BoundaryThornPower>(),
             Zhs: "境界之刺", Eng: "Boundary Thorn", Jpn: "境界の棘", Kor: "왕국의 가시"),
         // Buff
         new("INK_OVER_POWER.title",
@@ -111,11 +111,11 @@ internal static class PowerNameMap
             Zhs: "墨蚀", Eng: "Ink Erosion", Jpn: "インク・エロディオン", Kor: "잉크 에칭"),
         // Debuff
         new("ART_FLOOR_IMBALANCED_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorImbalancedPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorImbalancedPower>(),
             Zhs: "失衡", Eng: "Imbalanced", Jpn: "不均衡", Kor: "불균형"),
         // Debuff
         new("MAGIC_BULLET_COMMISSION_TARGET_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.TechnologyFloorLiberation.MagicBulletCommissionTargetPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Technology.MagicBulletCommissionTargetPower>(),
             Zhs: "委托目标", Eng: "Commission Target", Jpn: "依頼対象", Kor: "의뢰 대상"),
         // Debuff
         new("QUEEN_BEE_THREAT_POWER.title",
@@ -123,7 +123,7 @@ internal static class PowerNameMap
             Zhs: "威胁", Eng: "Threat", Jpn: "脅威", Kor: "위협"),
         // Debuff
         new("HISTORY_FLOOR_WASP_SPORE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.HistoryFloorLiberation.HistoryFloorWaspSporePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.History.HistoryFloorWaspSporePower>(),
             Zhs: "孢子", Eng: "Spore", Jpn: "胞子", Kor: "포자"),
         // Buff
         new("LIBRARY_PROTECTION_POWER.title",
@@ -131,11 +131,11 @@ internal static class PowerNameMap
             Zhs: "守护", Eng: "Protection", Jpn: "守護", Kor: "보호"),
         // Debuff
         new("SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.TechnologyFloorLiberation.SolemnMourningSealOnEnemyPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Technology.SolemnMourningSealOnEnemyPower>(),
             Zhs: "封印", Eng: "Seal", Jpn: "封印", Kor: "봉인"),
         // Debuff
         new("ART_FLOOR_COLLAPSE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorCollapsePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorCollapsePower>(),
             Zhs: "崩溃", Eng: "Collapse", Jpn: "崩壊", Kor: "붕괴"),
         // Debuff
         new("XIAO_IGNITE_POWER.title",
@@ -151,7 +151,7 @@ internal static class PowerNameMap
             Zhs: "忍耐", Eng: "Endurance", Jpn: "忍耐", Kor: "인내"),
         // Debuff
         new("PHILOSOPHY_FLOOR_TWILIGHT_FEAR_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightFearPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightFearPower>(),
             Zhs: "恐惧", Eng: "Fear", Jpn: "恐怖", Kor: "공포"),
         // Debuff
         new("NOSFERATU_HYDROPHOBIA_POWER.title",
@@ -159,7 +159,7 @@ internal static class PowerNameMap
             Zhs: "恐水症", Eng: "Hydrophobia", Jpn: "恐水症", Kor: "공수병"),
         // Debuff
         new("NATURAL_FLOOR_NIHIL_HATRED_STATUS.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.NaturalFloorLiberation.NaturalFloorNihilHatredStatus>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilHatredStatus>(),
             Zhs: "憎恶", Eng: "Hatred", Jpn: "憎悪", Kor: "증오"),
         // Debuff
         new("WRATH_SERVANT_STAFF_MARK_POWER.title",
@@ -215,7 +215,7 @@ internal static class PowerNameMap
             Zhs: "流血", Eng: "Bleed", Jpn: "出血", Kor: "출혈"),
         // Debuff
         new("LITERATURE_FLOOR_DEEP_WOUND_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LiteratureFloorLiberation.LiteratureFloorDeepWoundPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Literature.LiteratureFloorDeepWoundPower>(),
             Zhs: "深度创伤", Eng: "Deep Wound", Jpn: "深い傷", Kor: "깊은 상처"),
         // Debuff
         new("LIBRARY_OF_RUINA_CONFUSION_POWER.title",
@@ -235,15 +235,15 @@ internal static class PowerNameMap
             Zhs: "烧伤", Eng: "Burn", Jpn: "火傷", Kor: "화상"),
         // Buff
         new("FORGOTTEN_AFFECTION_ATTACK_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.HistoryFloorLiberation.ForgottenAffectionAttackPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.History.ForgottenAffectionAttackPower>(),
             Zhs: "爱意", Eng: "Affection", Jpn: "愛を込めて", Kor: "사랑"),
         // Debuff
         new("FORGOTTEN_AFFECTION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.HistoryFloorLiberation.ForgottenAffectionPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.History.ForgottenAffectionPower>(),
             Zhs: "爱意", Eng: "Affection", Jpn: "愛を込めて", Kor: "사랑"),
         // Debuff
         new("FANATIC_WORSHIP_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.FanaticWorshipPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.FanaticWorshipPower>(),
             Zhs: "狂热崇拜", Eng: "Fanatic Worship", Jpn: "狂熱崇拝", Kor: "광신적인 숭배"),
         // Debuff
         new("LITTLE_RED_PREY_POWER.title",
@@ -267,7 +267,7 @@ internal static class PowerNameMap
             Zhs: "罪孽", Eng: "Sin", Jpn: "罪", Kor: "죄"),
         // Debuff
         new("PHILOSOPHY_FLOOR_TWILIGHT_SIN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightSinPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightSinPower>(),
             Zhs: "罪痕", Eng: "Sin", Jpn: "罪", Kor: "죄"),
         // Debuff
         new("BIG_BIRD_ENERGY_SEAL_POWER.title",
@@ -283,11 +283,11 @@ internal static class PowerNameMap
             Zhs: "腐蚀", Eng: "Erosion", Jpn: "侵食", Kor: "침식"),
         // Buff
         new("ART_FLOOR_PETAL_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorPetalPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorPetalPower>(),
             Zhs: "花瓣", Eng: "Petal", Jpn: "花びら", Kor: "꽃잎"),
         // Debuff
         new("LITERATURE_FLOOR_COCOON_BIND_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.LiteratureFloorLiberation.LiteratureFloorCocoonBindPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Literature.LiteratureFloorCocoonBindPower>(),
             Zhs: "茧缚", Eng: "Cocoon Bind", Jpn: "繭縛り", Kor: "고치 속박"),
         // Debuff
         new("LIBRARY_WEAK_POWER.title",
@@ -307,7 +307,7 @@ internal static class PowerNameMap
             Zhs: "费用降低", Eng: "Cost Reduction", Jpn: "コスト削減", Kor: "비용 절감"),
         // Buff
         new("ART_FLOOR_ATONEMENT_CROWN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorAtonementCrownPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorAtonementCrownPower>(),
             Zhs: "赎罪之冠", Eng: "Crown of Atonement", Jpn: "贖罪の冠", Kor: "속죄의 왕관"),
         // Buff
         new("LIBRARY_QUICKNESS_POWER.title",
@@ -319,7 +319,7 @@ internal static class PowerNameMap
             Zhs: "迅捷", Eng: "Swiftness", Jpn: "迅速", Kor: "스위프트"),
         // Buff
         new("ART_FLOOR_QUICKNESS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorQuicknessPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorQuicknessPower>(),
             Zhs: "迅捷", Eng: "Quickness", Jpn: "迅速", Kor: "스위프트"),
         // Buff
         new("LIBRARY_DEFENSE_POWER_UP_POWER.title",
@@ -327,11 +327,11 @@ internal static class PowerNameMap
             Zhs: "防御强化", Eng: "Defense Power Up", Jpn: "防御型ダイス威力強化", Kor: "방어형 주사위 위력 강화"),
         // Debuff
         new("ART_FLOOR_DA_CAPO_SOUL_BINDING_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.ArtFloorLiberation.ArtFloorDaCapoSoulBindingPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorDaCapoSoulBindingPower>(),
             Zhs: "魂缚", Eng: "Soul Binding", Jpn: "魂縛", Kor: "영혼이 묶인"),
         // Debuff
         new("FLUTTERING_FRESH_MEAT_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.HistoryFloorLiberation.FlutteringFreshMeatPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.History.FlutteringFreshMeatPower>(),
             Zhs: "鲜肉", Eng: "Fresh Meat", Jpn: "新鮮な肉", Kor: "신선한 고기"),
         // Buff
         new("NOSFERATU_BLOOD_POWER.title",
@@ -339,7 +339,7 @@ internal static class PowerNameMap
             Zhs: "鲜血", Eng: "Blood", Jpn: "鮮血", Kor: "선혈"),
         // Debuff
         new("HISTORY_FLOOR_WASP_PARALYSIS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.HistoryFloorLiberation.HistoryFloorWaspParalysisPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.History.HistoryFloorWaspParalysisPower>(),
             Zhs: "麻痹", Eng: "Paralysis", Jpn: "麻痺", Kor: "마비"),
         // Debuff
         new("LIBRARY_OF_RUINA_PARALYSIS_POWER.title",

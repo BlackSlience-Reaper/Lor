@@ -7,7 +7,6 @@ using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Commands;

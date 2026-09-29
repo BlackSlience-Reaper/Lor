@@ -8,7 +8,6 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.guests.DawnOffice;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.relics;
 using LibraryOfRuina.visuals;

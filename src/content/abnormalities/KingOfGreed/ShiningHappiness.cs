@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
-using LibraryOfRuina.intents;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;

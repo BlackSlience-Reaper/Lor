@@ -1,6 +1,6 @@
 using Godot;
+using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.monsters.LiteratureFloorLiberation;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.content.abnormalities.RedShoes;

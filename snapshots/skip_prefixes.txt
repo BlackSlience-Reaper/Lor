@@ -3,6 +3,12 @@ LibraryOfRuina.content.abnormalities.LittleRedMercenary.LittleRedMercenaryBlockC
 LibraryOfRuina.content.abnormalities.QueenOfHatred.UntargetableCreatureStunPatch	原版 CreatureCmd.Stun 没有否决 Hook；对不可命中的生物跳过眩晕。判断用 IsHittable，也会作用于第三方“存活但不可命中”的生物，收窄见重构指导附录 A。
 LibraryOfRuina.content.abnormalities.QueenOfHatred.UntargetableLibraryCreatureStunPatch	基础库 LibraryCreatureCmd.Stun 没有否决点；对不可命中的生物跳过眩晕。判断用 IsHittable，收窄见重构指导附录 A。
 LibraryOfRuina.content.abnormalities.WrathServant.WrathServantEmptyRewardScreenPatch	愤怒仆从之死结局要显示空的终局奖励界面，NCombatUi.OnCombatWon 私有无 Hook；只作用于本模组愤怒仆从遭遇。改为不覆写 ShouldGiveRewards 会改变读档表现，暂缓。
+LibraryOfRuina.content.liberation.History.HistoryFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于历史层解放遭遇的第 3–5 阶段。
+LibraryOfRuina.content.liberation.Literature.LiteratureFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于文学层解放遭遇的第 2–5 阶段。
+LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilChaosStunPatch	基础库混乱眩晕没有否决钩子，且 LibraryCreature.StunInternal 强制切招；仅对本模组终战 Boss“虚无”在非愤怒力竭时拦截。
+LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilExternalStunPatch	原版 CreatureCmd.Stun 没有 Hook 或虚方法可否决；仅对本模组终战 Boss“虚无”屏蔽外部眩晕。
+LibraryOfRuina.content.liberation.Natural.NaturalFloorSwordFalseDeathVisualPatch	原版 StartDeathAnim 非虚，会禁用交互、冻结意图并播放死亡演出，没有跳过的扩展点；只作用于自然层遗忘之剑不移除的假死。
+LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightReflectStackedPowerPatch	原版 Hook 只能修改能力数值，不能改目标；为了在命令入口把叠加型负面效果反弹给施加者，只对本模组强化蛋暮光的碎蛋能力生效。
 LibraryOfRuina.core.settings.LibraryRunSettingsHideTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的本局设置载体返回 null（原版 TestMode 同样返回 null）。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionCharacterSelectModifiersChangedPatch	标准模式下原版 ModifiersChanged 固定抛 NotImplementedException，二层飞升借大厅修饰符同步时必然触发；接口实现非虚无 Hook，仅在大厅修饰符为空或全为本模组载体时跳过。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组二层飞升载体修饰符返回 null（原版 TestMode 同样返回 null）。
@@ -27,12 +33,8 @@ LibraryOfRuina.patches.EgoEnergyIconPathPatch	EnergyIconHelper.GetPath 是静态
 LibraryOfRuina.patches.FourthActMultiplayerScalingPatch	原版多人缩放系数是静态方法，且对第四幕直接抛异常，没有 Hook 或虚方法；只在当前幕是本模组残响乐团幕或遭遇属于本模组时返回本模组系数。
 LibraryOfRuina.patches.GuestReceptionBackgroundPoolPatch	原版自定义背景的标题只能是遭遇 id，且方法私有、没有 Hook；只处理本模组遭遇类型和实现 IGuestReceptionEncounter 的接待遭遇，给它们指定共享背景或抽取接待层。
 LibraryOfRuina.patches.HeavyBluntVfxLifecyclePatch	原版 _Ready 只启动私有的 PlaySequence，它在异步等待之后直接 Restart 冲击粒子、释放节点，不检查节点是否已失效（例如解放战换阶段换场景时）而抛异常；特效节点由原版场景实例化，无法换成子类覆写 _Ready。只在本模组遭遇中改用带有效性检查的播放流程。
-LibraryOfRuina.patches.HistoryFloorLiberation.HistoryFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于历史层解放遭遇的第 3–5 阶段。
 LibraryOfRuina.patches.LiberationBossTopBarHoverPatch	原版 Boss 图标悬停文本固定为通用 BOSS 提示且方法受保护，没有扩展点；只在可见 Boss 为本模组解放战时替换提示。
-LibraryOfRuina.patches.LiteratureFloorLiberation.LiteratureFloorLiberationCreateScenePatch	原版 CreateScene 非虚且场景路径按遭遇 id 固定，无法按阶段换场景；只作用于文学层解放遭遇的第 2–5 阶段。
 LibraryOfRuina.patches.MonsterModelCreateVisualsPatch	原版 CreateVisuals 非虚，只会实例化 VisualsPath（可覆写）指向的场景；本模组外观多为运行时用代码拼装的精灵节点，没有对应场景可指，换路径做不到。只作用于 MonsterVisualCatalog 登记的本模组怪物 id。
-LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilChaosStunPatch	基础库混乱眩晕没有否决钩子，且 LibraryCreature.StunInternal 强制切招；仅对本模组终战 Boss“虚无”在非愤怒力竭时拦截。
-LibraryOfRuina.patches.NaturalFloorLiberation.NaturalFloorNihilExternalStunPatch	原版 CreatureCmd.Stun 没有 Hook 或虚方法可否决；仅对本模组终战 Boss“虚无”屏蔽外部眩晕。
 LibraryOfRuina.patches.PetDealerCompatibilityPatch	PersonalHivePower 是 sealed 原版能力，无 Hook 能改伤害来源；把有主人的宠物伤害归到主人。本模组没有宠物，这是给第三方宠物模组的兼容，属于有意的例外。
 LibraryOfRuina.patches.PowerBigIconPngFallbackPatch	PowerModel.BigIcon 非虚；只对本模组与 LibraryOfRuinaLib 的能力用 png 大图。可改用 RitsuLib 纹理 provider，需要处理基础库图标后缀，暂缓。
 LibraryOfRuina.patches.PowerIconPngFallbackPatch	PowerModel.Icon 非虚，本模组能力没有 power_atlas 资源，走原版会报资源缺失；只对本模组与 LibraryOfRuinaLib 的能力用 png。可改用 RitsuLib 纹理 provider，暂缓。
@@ -41,7 +43,6 @@ LibraryOfRuina.patches.RoomIconPathCustomOverridePatch	兼容其他模组（Base
 LibraryOfRuina.patches.dispatch.IntentVisualDispatch+Hovered	AbstractIntent.GetHoverTip 非虚无 Hook；带本模组徽记或详细意图时显示多条提示并接管原版悬停。
 LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+ProceedToNextAct	NEventRoom.Proceed 是被硬编码为事件结束回调的静态方法且无 Hook；仅当前房间为本模组楼层解放结算事件时改为进入下一幕。绕过了换幕投票，联机需实测。
 LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+RedirectToSettlement	ProceedFromTerminalRewardsScreen 公开非虚无 Hook，原版体会立即打开地图（后缀无法撤销）；仅当前房间为本模组楼层解放遭遇且满足结算条件时转入结算事件。
-LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightReflectStackedPowerPatch	原版 Hook 只能修改能力数值，不能改目标；为了在命令入口把叠加型负面效果反弹给施加者，只对本模组强化蛋暮光的碎蛋能力生效。
 LibraryOfRuina.reverberation.CryingChildren.CryingChildrenHistoryReceptionPatch	ActModel.PullNextEncounter 非虚无 Hook；只在本模组残响乐团幕的历史层接待精英房返回哭泣之子。可改后缀，但原版 getter 在精英池为空时会除零，暂不改。
 LibraryOfRuina.reverberation.GearChurch.GearChurchTechnologyReceptionPatch	ActModel.PullNextEncounter 非虚无 Hook；只在本模组残响乐团幕的科技层接待精英房返回齿轮教会。可改后缀，但原版 getter 在精英池为空时会除零，暂不改。
 LibraryOfRuina.specialguests.Iori.IoriSpecialGuestBackgroundAssetsPatch	原版背景标题只能是遭遇 id，伊织两阶段需要按种子抽取不同的接待层；只作用于伊织特殊来宾遭遇。
@@ -60,4 +61,3 @@ LibraryOfRuina.specialguests.Xiao.XiaoSpecialGuestCreateVisualsPatch	原版 Crea
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+BeatingRemnantPatch	跳动残骸按实际本回合失血计算上限且无预览参数；仅在本模组受伤预览的同步模拟作用域内叠加模拟失血，正式结算原样执行。
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+HardenedShellPatch	坚硬外壳按实际累计失血计算上限且无预览参数；仅在本模组受伤预览的同步模拟作用域内改用模拟累计，正式结算原样执行。
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch	缓冲等按次触发的效果无预览标志；仅在本模组受伤预览的同步模拟作用域内按模拟次数截断，正式结算原样执行。
-LibraryOfRuina.visuals.NaturalFloorLiberation.NaturalFloorSwordFalseDeathVisualPatch	原版 StartDeathAnim 非虚，会禁用交互、冻结意图并播放死亡演出，没有跳过的扩展点；只作用于自然层遗忘之剑不移除的假死。

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.content.abnormalities.BigBadWolf;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.patching;

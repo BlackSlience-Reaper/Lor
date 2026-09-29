@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LibraryLib.Hooks;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
-using LibraryOfRuina.intents;
 using LibraryOfRuina.monsters;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

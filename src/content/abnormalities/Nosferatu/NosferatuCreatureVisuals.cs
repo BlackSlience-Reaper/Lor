@@ -1,6 +1,6 @@
 using Godot;
+using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.monsters.LanguageFloorLiberation;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.content.abnormalities.Nosferatu;

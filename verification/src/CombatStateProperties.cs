@@ -27,16 +27,16 @@ internal static class CombatStateProperties
     // 声明类型 → (AlwaysSave 的属性, SaveIfNotTypeDefault 的属性)。原来的特性都没有写 order。
     private static readonly Dictionary<Type, (string[] Always, string[] IfNotTypeDefault)> Declared = new()
     {
-        [typeof(global::LibraryOfRuina.encounters.LanguageFloorLiberation.LanguageFloorLiberationEncounter)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorLiberationEncounter)] = new(
             ["CurrentPhase"],
             ["EndedByLethalDamage", "KilledBossCount", "PhaseComplete", "SettlementTriggered", "TransitionPending"]),
         [typeof(global::LibraryOfRuina.content.abnormalities.JudgementBird.JudgementBird)] = new(
             [],
             ["FullOfEvilPending", "PlannedJudgementTargetCombatIds"]),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorBloodBat)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorBloodBat)] = new(
             ["LastHydrophobiaRound"],
             []),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorCobaltScar)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorCobaltScar)] = new(
             [
                 "PlannedMoveOne", "PlannedMoveThree", "PlannedMoveTwo", "ShadowCardsPlayedByPlayer", "SwallowedCards",
                 "SwallowedOwnerIndexes"
@@ -46,23 +46,23 @@ internal static class CombatStateProperties
                 "OpeningResolved", "PlayerTurnsSinceSwallow", "ShadowReleasePending", "ShadowTurnsRemaining",
                 "SwallowWindowActive", "TurnsUntilInstinct"
             ]),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorDipsia)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorDipsia)] = new(
             ["LastHydrophobiaRound", "PreviousMove"],
             ["IsTransformed", "TransformPending", "TransformTriggered"]),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorLostEverythingWolf)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorLostEverythingWolf)] = new(
             ["PlannedMoveOne", "PlannedMoveTwo"],
             ["LowHealthMode", "PlannedMoveFour", "PlannedMoveThree", "WolfTurnCount"]),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorMimicry)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorMimicry)] = new(
             ["Form", "PendingForm", "PreviousMove"],
             [
                 "EvolutionPending", "FormOneMaxHp", "FormThreeMaxHp", "FormTwoActionsCompleted", "FormTwoMaxHp",
                 "Initialized", "MimicStacks", "PlannedMoveEnhanced", "PlannedTargetCombatId", "RoundDamageTaken",
                 "SkipCurrentFormThreeEnemyEndRecovery", "SkipCurrentFormTwoEnemyEnd"
             ]),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorScarletScar)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorScarletScar)] = new(
             ["PlannedMoveOne", "PlannedMoveTwo"],
             ["EnemyTurnCount", "UnrelievedAnger"]),
-        [typeof(global::LibraryOfRuina.monsters.LanguageFloorLiberation.LanguageFloorSmilingFace)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Language.LanguageFloorSmilingFace)] = new(
             [
                 "Form", "PendingFormTransition", "PlannedMoveFour", "PlannedMoveOne", "PlannedMoveThree",
                 "PlannedMoveTwo", "PlannedTargetFour", "PlannedTargetOne", "PlannedTargetThree", "PlannedTargetTwo",
@@ -74,28 +74,28 @@ internal static class CombatStateProperties
                 "FormTwoMaxHp", "HpAtLastSpawnThreshold", "Initialized", "PendingCorpseSpawns",
                 "PendingFormTransitionIsPromotion", "WaitingForDowngrade"
             ]),
-        [typeof(global::LibraryOfRuina.monsters.LiteratureFloorLiberation.LiteratureFloorBlackSwanBoss)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Literature.LiteratureFloorBlackSwanBoss)] = new(
             [],
             ["CompletedMoveCycleMask"]),
-        [typeof(global::LibraryOfRuina.monsters.LiteratureFloorLiberation.LiteratureFloorRedEyesBoss)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Literature.LiteratureFloorRedEyesBoss)] = new(
             [],
             ["HuntPending"]),
-        [typeof(global::LibraryOfRuina.monsters.NaturalFloorLiberation.NaturalFloorLoveAndHatredBoss)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Natural.NaturalFloorLoveAndHatredBoss)] = new(
             [],
             ["CompletedFormActions", "CompletedMoveCycleMask", "IsSnakeForm", "LastMoveNumber", "SnakeBaseHp"]),
-        [typeof(global::LibraryOfRuina.monsters.NaturalFloorLiberation.NaturalFloorMagicalGirl)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Natural.NaturalFloorMagicalGirl)] = new(
             ["HasReceivedGreedBlock", "LoveHitCount", "PendingGreedBlock", "RotationIndex"],
             []),
-        [typeof(global::LibraryOfRuina.monsters.NaturalFloorLiberation.NaturalFloorNihilBoss)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilBoss)] = new(
             [
                 "CompletedFormTurns", "Form", "GreedGroupPending", "HatredHitCount", "NihilApplied", "NormalMoveIndex",
                 "PendingForm", "SealedSwords", "WrathStaggered"
             ],
             []),
-        [typeof(global::LibraryOfRuina.monsters.NaturalFloorLiberation.NaturalFloorNihilMonster)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilMonster)] = new(
             ["PlannedActions"],
             []),
-        [typeof(global::LibraryOfRuina.monsters.NaturalFloorLiberation.NaturalFloorNihilStatue)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilStatue)] = new(
             ["SummonPending"],
             []),
         [typeof(global::LibraryOfRuina.content.abnormalities.Ozma.Ozma)] = new(
@@ -114,22 +114,22 @@ internal static class CombatStateProperties
         [typeof(global::LibraryOfRuina.framework.powers.NextTurnVigorPower)] = new(
             ["ActivationRound"],
             []),
-        [typeof(global::LibraryOfRuina.powers.PhilosophyFloorLiberation.PhilosophyFloorTwilightBrokenEggPower)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightBrokenEggPower)] = new(
             ["ReflectionRound", "ReflectionsThisRound"],
             []),
-        [typeof(global::LibraryOfRuina.powers.SocialFloorLiberation.SocialFloorCouragePower)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Social.SocialFloorCouragePower)] = new(
             [
                 "IsEnergyOverrideActive", "PendingTurnStartActivations", "RemoveAtNextPlayerTurnEnd",
                 "SerializedHolderNetId"
             ],
             []),
-        [typeof(global::LibraryOfRuina.powers.SocialFloorLiberation.SocialFloorCowardPower)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Social.SocialFloorCowardPower)] = new(
             ["SerializedHolderNetId"],
             []),
-        [typeof(global::LibraryOfRuina.powers.SocialFloorLiberation.SocialFloorOzmaPower)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Social.SocialFloorOzmaPower)] = new(
             ["IsHolderActive", "SerializedHolderNetId"],
             []),
-        [typeof(global::LibraryOfRuina.powers.SocialFloorLiberation.SocialFloorScaredyCatPower)] = new(
+        [typeof(global::LibraryOfRuina.content.liberation.Social.SocialFloorScaredyCatPower)] = new(
             ["CardsSubmittedThisTurn", "CourageCardGranted", "IsHolderActive", "SerializedHolderNetId"],
             []),
         [typeof(global::LibraryOfRuina.reverberation.CryingChildren.CryingChildMonsterBase)] = new(

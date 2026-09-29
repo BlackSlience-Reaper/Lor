@@ -1,6 +1,6 @@
 using Godot;
+using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.monsters.HistoryFloorLiberation;
 using LibraryOfRuina.patches;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;

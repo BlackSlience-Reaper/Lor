@@ -1,5 +1,5 @@
+using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.framework.cards;
-using LibraryOfRuina.relics.NaturalFloorLiberation;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
@@ -14,7 +14,7 @@ public abstract class WrathServantPageChoiceCardBase : PageChoiceCard<WrathServa
         HoverTipFactory.ForEnergy(this),
         HoverTipFactory.FromPower<LibraryStrongPower>(),
         IsUpgraded
-            ? HoverTipFactory.FromPower<LibraryOfRuina.powers.NaturalFloorLiberation.NihilFriendPower>()
+            ? HoverTipFactory.FromPower<LibraryOfRuina.content.liberation.Natural.NihilFriendPower>()
             : HoverTipFactory.FromPower<WrathServantFriendPower>(),
         HoverTipFactory.FromPower<WrathServantCorrosionPower>()
     ];
