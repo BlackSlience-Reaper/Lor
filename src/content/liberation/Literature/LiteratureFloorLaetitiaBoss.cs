@@ -7,7 +7,6 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;

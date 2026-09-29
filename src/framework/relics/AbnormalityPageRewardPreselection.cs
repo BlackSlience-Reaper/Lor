@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;

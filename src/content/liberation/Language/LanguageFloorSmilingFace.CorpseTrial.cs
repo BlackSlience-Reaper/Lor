@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.abnormalities.QueenOfHatred;
-using LibraryOfRuina.guests.DawnOffice;
+using LibraryOfRuina.content.guests.DawnOffice;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;

@@ -5,7 +5,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;

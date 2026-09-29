@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Intents;

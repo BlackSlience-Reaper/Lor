@@ -5,7 +5,6 @@ using LibraryOfRuina.addons.mega_text;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Hooks;

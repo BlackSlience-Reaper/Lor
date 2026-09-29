@@ -1,5 +1,5 @@
 using HarmonyLib;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Models;

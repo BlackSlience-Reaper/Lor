@@ -7,7 +7,6 @@ using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.content.liberation.Technology;
-using LibraryOfRuina.events;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;

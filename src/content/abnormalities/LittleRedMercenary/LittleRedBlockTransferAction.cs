@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.networking;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;

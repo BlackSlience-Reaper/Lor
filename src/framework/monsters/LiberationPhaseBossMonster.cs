@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;

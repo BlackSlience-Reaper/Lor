@@ -1,10 +1,9 @@
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.cards.Xiao;
+using LibraryOfRuina.content.specialguests.Xiao;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;

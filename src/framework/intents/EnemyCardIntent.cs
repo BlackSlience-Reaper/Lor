@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.framework.cards;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Intents;

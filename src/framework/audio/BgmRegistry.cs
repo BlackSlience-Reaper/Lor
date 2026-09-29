@@ -2,13 +2,13 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using LibraryOfRuina.encounters;
+using LibraryOfRuina.content.guests;
 
 namespace LibraryOfRuina.framework.audio;
 
 /// <summary>
 /// 遭遇 BGM 配置的查找：遭遇自己通过 <see cref="IEncounterBgmSource"/> 声明；
-/// 接待遭遇（<see cref="LibraryOfRuina.guests.IGuestReceptionEncounter"/>）抽到登记过的接待层背景时，改用该层的配置。
+/// 接待遭遇（<see cref="LibraryOfRuina.content.guests.IGuestReceptionEncounter"/>）抽到登记过的接待层背景时，改用该层的配置。
 /// </summary>
 internal static class BgmRegistry
 {

@@ -1,7 +1,7 @@
 using System.Reflection;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Screens.Map;

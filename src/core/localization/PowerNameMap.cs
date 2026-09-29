@@ -31,7 +31,7 @@ internal static class PowerNameMap
             Zhs: "万物归虚", Eng: "All Returns to Void", Jpn: "万物は虚無へ", Kor: "만물은 허무로"),
         // Buff
         new("NEXT_TURN_STRENGTH_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.guests.DawnOffice.LibraryOfRuinaNextTurnStrength>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.guests.DawnOffice.LibraryOfRuinaNextTurnStrength>(),
             Zhs: "下回合力量", Eng: "Next-Turn Strength", Jpn: "次ターン筋力", Kor: "다음 턴 힘"),
         // Debuff
         new("LIBRARY_OF_RUINA_DRAW_CARDS_NEXT_TURN_POWER.title",
@@ -107,7 +107,7 @@ internal static class PowerNameMap
             Zhs: "境界之刺", Eng: "Boundary Thorn", Jpn: "境界の棘", Kor: "왕국의 가시"),
         // Buff
         new("INK_OVER_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.DawnOffice.LibraryOfRuinaInkOverPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.guests.DawnOffice.LibraryOfRuinaInkOverPower>(),
             Zhs: "墨蚀", Eng: "Ink Erosion", Jpn: "インク・エロディオン", Kor: "잉크 에칭"),
         // Debuff
         new("ART_FLOOR_IMBALANCED_POWER.title",
@@ -139,7 +139,7 @@ internal static class PowerNameMap
             Zhs: "崩溃", Eng: "Collapse", Jpn: "崩壊", Kor: "붕괴"),
         // Debuff
         new("XIAO_IGNITE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.specialguests.Xiao.XiaoIgnitePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.specialguests.Xiao.XiaoIgnitePower>(),
             Zhs: "引燃", Eng: "Ignite", Jpn: "引火", Kor: "발화"),
         // Buff
         new("LIBRARY_STRONG_POWER.title",
@@ -183,7 +183,7 @@ internal static class PowerNameMap
             Zhs: "易损", Eng: "Vulnerable", Jpn: "脆弱", Kor: "취약"),
         // Debuff
         new("XIAO_STARFIRE_STATUS_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.specialguests.Xiao.XiaoStarfireStatusPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.specialguests.Xiao.XiaoStarfireStatusPower>(),
             Zhs: "星火", Eng: "Spark", Jpn: "火種", Kor: "불씨"),
         // Buff
         new("SCARECROW_WISDOM_POWER.title",
@@ -203,7 +203,7 @@ internal static class PowerNameMap
             Zhs: "束缚", Eng: "Bind", Jpn: "抑制", Kor: "속박"),
         // Buff
         new("WEDGE_PIERCING_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WedgeOffice.WedgePiercingPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.guests.WedgeOffice.WedgePiercingPower>(),
             Zhs: "极锐之楔", Eng: "Razor Wedge", Jpn: "非常に鋭いくさび", Kor: "매우 날카로운 웨지"),
         // Debuff
         new("LIBRARY_OF_RUINA_MARK_POWER.title",
@@ -251,7 +251,7 @@ internal static class PowerNameMap
             Zhs: "猎物", Eng: "Prey", Jpn: "獲物", Kor: "먹이"),
         // Buff
         new("WEDGE_PERSEVERANCE_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.powers.WedgeOffice.WedgePerseverancePower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.guests.WedgeOffice.WedgePerseverancePower>(),
             Zhs: "百折不挠", Eng: "Perseverance", Jpn: "数えきれない挫折の後も屈しなかった", Kor: "굽히지 않는"),
         // Debuff
         new("LIBRARY_DISARM_POWER.title",
@@ -279,7 +279,7 @@ internal static class PowerNameMap
             Zhs: "腐蚀", Eng: "Corrosion", Jpn: "腐食", Kor: "부식"),
         // Debuff
         new("RNFMABJ_CORROSION_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.specialguests.Rnfmabj.RnfmabjCorrosionPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjCorrosionPower>(),
             Zhs: "腐蚀", Eng: "Erosion", Jpn: "侵食", Kor: "침식"),
         // Buff
         new("ART_FLOOR_PETAL_POWER.title",
@@ -299,7 +299,7 @@ internal static class PowerNameMap
             Zhs: "被魅惑", Eng: "Charmed", Jpn: "魅惑", Kor: "매혹"),
         // Debuff
         new("IORI_CARD_PLAY_PAIN_POWER.title",
-            static () => ModelDb.Power<global::LibraryOfRuina.specialguests.Iori.IoriCardPlayPainPower>(),
+            static () => ModelDb.Power<global::LibraryOfRuina.content.specialguests.Iori.IoriCardPlayPainPower>(),
             Zhs: "贯通创伤", Eng: "Laceration", Jpn: "裂傷", Kor: "열상"),
         // Debuff
         new("COST_REDUCTION_POWER.title",

@@ -1,6 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.patches.dispatch;

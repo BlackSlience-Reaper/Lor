@@ -4,7 +4,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;

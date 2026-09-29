@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.framework.cards;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

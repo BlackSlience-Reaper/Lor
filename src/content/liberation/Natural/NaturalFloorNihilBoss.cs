@@ -1,5 +1,4 @@
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.interop;
 using System;

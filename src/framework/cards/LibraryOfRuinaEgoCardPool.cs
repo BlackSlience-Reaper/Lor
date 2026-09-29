@@ -1,8 +1,8 @@
 using Godot;
-using LibraryOfRuina.cards.RedMist;
 using LibraryOfRuina.content.liberation.Art;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Technology;
+using LibraryOfRuina.content.specialguests.Kali;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.framework.cards;

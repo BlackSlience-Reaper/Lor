@@ -7,7 +7,6 @@ using LibraryOfRuina.content.abnormalities.PunishingBird;
 using LibraryOfRuina.content.abnormalities.RoadHome;
 using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;

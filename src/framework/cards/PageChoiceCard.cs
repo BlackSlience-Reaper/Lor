@@ -1,6 +1,5 @@
 using System;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;

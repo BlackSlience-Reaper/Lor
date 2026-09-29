@@ -1,5 +1,5 @@
+using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.guests.DawnOffice;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;

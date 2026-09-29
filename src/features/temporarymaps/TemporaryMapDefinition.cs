@@ -1,7 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using LibraryOfRuina.encounters.YunOffice;
+using LibraryOfRuina.content.guests.YunOffice;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Events;

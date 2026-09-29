@@ -9,7 +9,6 @@ using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;

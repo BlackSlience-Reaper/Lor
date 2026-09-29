@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.monsters;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.features.secondascension;
 using LibraryOfRuina.interop;

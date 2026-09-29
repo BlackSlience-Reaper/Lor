@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using Godot;
+using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.guests.DawnOffice;
-using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 

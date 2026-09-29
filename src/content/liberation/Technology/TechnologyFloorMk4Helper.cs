@@ -1,12 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.AllAroundHelper;
+using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
-using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;

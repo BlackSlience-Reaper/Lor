@@ -5,7 +5,6 @@ using Godot;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;

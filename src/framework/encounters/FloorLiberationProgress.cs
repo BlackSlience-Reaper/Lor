@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using LibraryOfRuina.specialguests;
+using LibraryOfRuina.content.specialguests;
 using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.framework.encounters;

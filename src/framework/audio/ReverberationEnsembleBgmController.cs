@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;

@@ -1,12 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.afflictions;
+using LibraryOfRuina.content.afflictions;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;

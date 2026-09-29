@@ -6,7 +6,6 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Godot;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.ftue;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.interop;

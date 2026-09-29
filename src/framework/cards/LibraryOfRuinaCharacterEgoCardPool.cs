@@ -1,5 +1,5 @@
 using Godot;
-using LibraryOfRuina.cards.Xiao;
+using LibraryOfRuina.content.specialguests.Xiao;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.framework.cards;

@@ -11,7 +11,6 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.content.liberation.Technology;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

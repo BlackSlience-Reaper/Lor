@@ -8,7 +8,6 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Combat;

@@ -10,7 +10,6 @@ using HarmonyLib;
 using LibraryOfRuina;
 using LibraryOfRuina.core;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.CardRewardAlternatives;
 using MegaCrit.Sts2.Core.Entities.Cards;

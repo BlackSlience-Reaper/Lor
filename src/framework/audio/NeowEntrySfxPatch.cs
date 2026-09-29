@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using HarmonyLib;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;

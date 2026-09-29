@@ -1,7 +1,6 @@
 using LibraryLib.Models;
 using System;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
@@ -9,7 +8,6 @@ using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.powers;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;

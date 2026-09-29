@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.framework.monsters;
-using LibraryOfRuina.monsters;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;

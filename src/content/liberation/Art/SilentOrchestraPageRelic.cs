@@ -7,7 +7,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;

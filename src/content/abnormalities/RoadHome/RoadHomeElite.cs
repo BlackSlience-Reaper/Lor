@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;

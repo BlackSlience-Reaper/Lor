@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using LibraryOfRuina.acts;
 using LibraryOfRuina.content.abnormalities.DespairKnight;
 using LibraryOfRuina.content.abnormalities.KingOfGreed;
 using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.content.abnormalities.WrathServant;
+using LibraryOfRuina.content.acts;
 using LibraryOfRuina.content.liberation.Art;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Language;

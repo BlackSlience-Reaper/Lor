@@ -1,6 +1,5 @@
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;

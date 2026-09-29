@@ -1,9 +1,8 @@
 using System;
 using Godot;
+using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;

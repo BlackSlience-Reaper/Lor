@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;

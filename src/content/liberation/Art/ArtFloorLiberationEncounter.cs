@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.content.abnormalities.CosmicFragment;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;

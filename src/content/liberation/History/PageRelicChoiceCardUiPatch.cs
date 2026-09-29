@@ -4,7 +4,6 @@ using HarmonyLib;
 using LibraryOfRuina.addons.mega_text;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 
 namespace LibraryOfRuina.content.liberation.History;

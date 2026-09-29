@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.secondascension;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;

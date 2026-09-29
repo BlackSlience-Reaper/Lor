@@ -5,7 +5,6 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.relics;
 using LibraryLib.Entities.Creatures;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;

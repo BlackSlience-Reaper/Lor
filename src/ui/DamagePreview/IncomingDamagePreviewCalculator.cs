@@ -10,7 +10,6 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;

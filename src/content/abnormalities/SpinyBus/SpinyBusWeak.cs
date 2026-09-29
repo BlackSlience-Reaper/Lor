@@ -1,6 +1,6 @@
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
-using LibraryOfRuina.encounters;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
 
 namespace LibraryOfRuina.content.abnormalities.SpinyBus;

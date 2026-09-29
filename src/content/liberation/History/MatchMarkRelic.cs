@@ -6,7 +6,6 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;

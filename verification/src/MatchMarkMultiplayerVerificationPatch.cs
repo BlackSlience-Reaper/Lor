@@ -6,7 +6,6 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;

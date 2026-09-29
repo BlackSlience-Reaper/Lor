@@ -4,7 +4,6 @@ using HarmonyLib;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.patches;

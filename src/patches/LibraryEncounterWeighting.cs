@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using LibraryOfRuina.acts;
 using LibraryOfRuina.content.abnormalities.AddictedEmployee;
 using LibraryOfRuina.content.abnormalities.AllAroundHelper;
 using LibraryOfRuina.content.abnormalities.BigBadWolf;
@@ -30,22 +29,21 @@ using LibraryOfRuina.content.abnormalities.SpiderBud;
 using LibraryOfRuina.content.abnormalities.SpinyBus;
 using LibraryOfRuina.content.abnormalities.TodaysShyLook;
 using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
+using LibraryOfRuina.content.acts;
+using LibraryOfRuina.content.guests;
+using LibraryOfRuina.content.guests.WedgeOffice;
+using LibraryOfRuina.content.specialguests.Kali;
 using LibraryOfRuina.core;
 using LibraryOfRuina.core.settings;
-using LibraryOfRuina.encounters;
-using LibraryOfRuina.encounters.DawnOffice;
-using LibraryOfRuina.encounters.RedMist;
 using LibraryOfRuina.framework.encounters;
-using LibraryOfRuina.guests;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.patches.WedgeOffice;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LorActModel = LibraryOfRuina.acts.LibraryOfRuinaActModel;
+using LorActModel = LibraryOfRuina.content.acts.LibraryOfRuinaActModel;
 
 namespace LibraryOfRuina.patches;
 

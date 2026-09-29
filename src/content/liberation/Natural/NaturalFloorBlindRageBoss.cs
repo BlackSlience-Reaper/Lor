@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Entities.Ascension;

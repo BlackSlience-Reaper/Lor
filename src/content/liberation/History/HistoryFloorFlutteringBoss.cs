@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;

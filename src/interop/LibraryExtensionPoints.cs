@@ -4,8 +4,8 @@ using LibraryLib.Commands;
 using LibraryLib.Utils.Resistance;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Technology;
+using LibraryOfRuina.content.specialguests.Iori;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.specialguests.Iori;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 
 namespace LibraryOfRuina.interop;

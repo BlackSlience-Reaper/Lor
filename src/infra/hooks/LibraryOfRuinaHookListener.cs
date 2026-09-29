@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.settings;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Models;

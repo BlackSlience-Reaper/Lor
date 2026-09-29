@@ -8,7 +8,6 @@ using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.patches;

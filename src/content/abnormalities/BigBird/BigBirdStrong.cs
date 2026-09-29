@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;

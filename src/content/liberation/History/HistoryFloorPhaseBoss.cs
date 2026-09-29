@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.FairyFestival;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.monsters;

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;

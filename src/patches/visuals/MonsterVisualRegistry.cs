@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using LibraryOfRuina.content.guests.MusiciansOfBremen;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.guests.MusiciansOfBremen;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;

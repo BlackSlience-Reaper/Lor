@@ -13,12 +13,11 @@ using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.content.liberation.Philosophy;
 using LibraryOfRuina.content.liberation.Social;
+using LibraryOfRuina.content.specialguests.Iori;
+using LibraryOfRuina.content.specialguests.Kali;
+using LibraryOfRuina.content.specialguests.Rnfmabj;
+using LibraryOfRuina.content.specialguests.Xiao;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.powers;
-using LibraryOfRuina.specialguests.Iori;
-using LibraryOfRuina.specialguests.Kali;
-using LibraryOfRuina.specialguests.Rnfmabj;
-using LibraryOfRuina.specialguests.Xiao;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Combat.HealthBars;
 
@@ -124,7 +123,7 @@ internal static class LibraryHealthBarForecastFeature
         // }
         return creature.Monster switch
         {
-            LibraryOfRuina.reverberation.GearChurch.ReverberationEileen eileen => eileen.IsHealthBarLockActive,
+            LibraryOfRuina.content.reverberation.GearChurch.ReverberationEileen eileen => eileen.IsHealthBarLockActive,
             LanguageFloorCobaltScar scar => scar.IsHealthBarLockActive,
             FalseThrone throne => throne.IsHealthBarLockActive,
             Kali kali => kali.IsHealthBarLockActive,

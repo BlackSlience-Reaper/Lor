@@ -1,4 +1,4 @@
-using LibraryOfRuina.guests.DawnOffice;
+using LibraryOfRuina.content.guests.DawnOffice;
 
 namespace LibraryOfRuina.patches;
 

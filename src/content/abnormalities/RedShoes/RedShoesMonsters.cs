@@ -1,16 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.guests.DawnOffice;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.relics;
-using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Ascension;

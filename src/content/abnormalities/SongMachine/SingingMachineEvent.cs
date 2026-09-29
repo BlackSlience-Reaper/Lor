@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using LibraryOfRuina.acts;
+using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;

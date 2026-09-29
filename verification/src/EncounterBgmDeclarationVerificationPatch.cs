@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core;
 using LibraryOfRuina.core.settings;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -446,7 +446,7 @@ internal static class EncounterBgmDeclarationVerificationPatch
         if (canonical.GetType().Name == "KaliSpecialGuestEncounter")
         {
             Step(id, "force-ego", () => EncounterBgmController.ForceCurrentEncounterTrack(
-                LibraryOfRuina.specialguests.Kali.Kali.EgoBgmPath,
+                LibraryOfRuina.content.specialguests.Kali.Kali.EgoBgmPath,
                 "RedMistEgoBGM"));
             await SettleAndSnapshot(id, "force-ego");
         }

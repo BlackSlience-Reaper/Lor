@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.cards;
 using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;

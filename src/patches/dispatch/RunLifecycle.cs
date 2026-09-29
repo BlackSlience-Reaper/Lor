@@ -1,10 +1,9 @@
 using HarmonyLib;
+using LibraryOfRuina.content.specialguests;
+using LibraryOfRuina.content.specialguests.Iori;
+using LibraryOfRuina.content.specialguests.Xiao;
 using LibraryOfRuina.core.settings;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
-using LibraryOfRuina.specialguests;
-using LibraryOfRuina.specialguests.Iori;
-using LibraryOfRuina.specialguests.Xiao;
 using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.patches.dispatch;

@@ -2,8 +2,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.powers;
-using LibraryOfRuina.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;

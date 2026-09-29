@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;

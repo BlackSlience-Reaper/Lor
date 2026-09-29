@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.encounters;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;

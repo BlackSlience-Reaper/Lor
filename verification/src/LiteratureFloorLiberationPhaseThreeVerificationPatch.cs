@@ -10,7 +10,6 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.patches;

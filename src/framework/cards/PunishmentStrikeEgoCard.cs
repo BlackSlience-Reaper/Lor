@@ -4,7 +4,6 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;

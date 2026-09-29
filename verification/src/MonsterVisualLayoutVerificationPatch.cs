@@ -12,7 +12,6 @@ using LibraryOfRuina;
 using LibraryOfRuina.core;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
-using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;

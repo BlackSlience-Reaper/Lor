@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryOfRuina.events;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ancients;
 using MegaCrit.Sts2.Core.Entities.Relics;

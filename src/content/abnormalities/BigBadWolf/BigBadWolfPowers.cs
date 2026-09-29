@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.powers;
-using LibraryOfRuina.guests.DawnOffice;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;

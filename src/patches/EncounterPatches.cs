@@ -1,4 +1,3 @@
-using LibraryOfRuina.acts;
 using LibraryOfRuina.content.abnormalities.AddictedEmployee;
 using LibraryOfRuina.content.abnormalities.AllAroundHelper;
 using LibraryOfRuina.content.abnormalities.BigBadWolf;
@@ -33,13 +32,14 @@ using LibraryOfRuina.content.abnormalities.SpinyBus;
 using LibraryOfRuina.content.abnormalities.TodaysShyLook;
 using LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
 using LibraryOfRuina.content.abnormalities.WrathServant;
-using LibraryOfRuina.encounters.BrotherhoodOfIron;
-using LibraryOfRuina.encounters.DawnOffice;
-using LibraryOfRuina.encounters.HookOffice;
-using LibraryOfRuina.encounters.KuroKumo;
-using LibraryOfRuina.encounters.MusiciansOfBremen;
-using LibraryOfRuina.encounters.WedgeOffice;
-using LibraryOfRuina.encounters.YunOffice;
+using LibraryOfRuina.content.acts;
+using LibraryOfRuina.content.guests.BrotherhoodOfIron;
+using LibraryOfRuina.content.guests.DawnOffice;
+using LibraryOfRuina.content.guests.HookOffice;
+using LibraryOfRuina.content.guests.KuroKumo;
+using LibraryOfRuina.content.guests.MusiciansOfBremen;
+using LibraryOfRuina.content.guests.WedgeOffice;
+using LibraryOfRuina.content.guests.YunOffice;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.patches;

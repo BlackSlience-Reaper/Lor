@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;

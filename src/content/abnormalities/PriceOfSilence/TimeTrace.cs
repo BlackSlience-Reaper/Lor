@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
-using LibraryOfRuina.encounters;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;

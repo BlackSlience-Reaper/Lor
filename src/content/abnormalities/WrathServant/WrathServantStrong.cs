@@ -1,6 +1,6 @@
 using System.Linq;
 using Godot;
-using LibraryOfRuina.encounters;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Models;
