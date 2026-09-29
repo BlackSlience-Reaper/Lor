@@ -1,4 +1,6 @@
 {
   "SPECIAL_GUEST_RUN_STATE.title": "Special Guest Internal State",
-  "SPECIAL_GUEST_RUN_STATE.description": "Stores Special Guest unlock, consumption, stage, story, and draw states."
+  "SPECIAL_GUEST_RUN_STATE.description": "Stores Special Guest unlock, consumption, stage, story, and draw states.",
+  "LIBRARY_RUN_SETTINGS.title": "Library of Ruina Run Settings",
+  "LIBRARY_RUN_SETTINGS.description": "Stores the Library of Ruina settings fixed when this run began: whether Library of Ruina content is enabled, and the resistance mode."
 }

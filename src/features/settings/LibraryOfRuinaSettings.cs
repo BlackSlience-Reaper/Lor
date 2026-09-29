@@ -90,6 +90,8 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
         Callable.From(patchNotesScreen.Open).CallDeferred();
     }
 
+    // 局内的抗性由本局的 LibraryRunSettingsModifier 决定；这里只在局外改写基础库的静态值，
+    // 让主菜单、图鉴里的倍率说明跟随本地设置，离开本局时由 LibraryRunSettings 复位回这个值。
     [SettingsSection("Resistance")]
     [SliderRange(1, 3)]
     [SliderValueLabels("ignore", "weak", "normal")]
@@ -106,15 +108,27 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
             }
 
             _resistanceMode = clamped;
-            LibraryResistanceModeState.Current = _resistanceMode switch
-            {
-                1d => LibraryResistanceMode.Ignore,
-                2d => LibraryResistanceMode.Weak,
-                _ => LibraryResistanceMode.Normal
-            };
+            LibraryResistanceModeState.Current = ToLibraryResistanceMode(ResistanceSettingLevel);
             Log.Info($"[LibraryOfRuina.Settings] ResistanceMode changed to {_resistanceMode:0} ({LibraryResistanceModeState.Current}).");
         }
     }
+
+    internal const int NormalResistanceSetting = 3;
+
+    /// <summary>本地抗性设置映射到 1–3 的整数；只有恰好 1 或 2 才是无视或弱抗性，其余一律正常。</summary>
+    internal static int ResistanceSettingLevel => _resistanceMode switch
+    {
+        1d => 1,
+        2d => 2,
+        _ => NormalResistanceSetting
+    };
+
+    internal static LibraryResistanceMode ToLibraryResistanceMode(int level) => level switch
+    {
+        1 => LibraryResistanceMode.Ignore,
+        2 => LibraryResistanceMode.Weak,
+        _ => LibraryResistanceMode.Normal
+    };
 
     internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && MonsterExtensionEnabled;
 
