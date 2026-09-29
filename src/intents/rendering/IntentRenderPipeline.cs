@@ -14,7 +14,7 @@ internal enum IntentRenderStage
     /// <summary><c>NCreature.UpdateIntent</c> 后缀，优先级 First：重排意图节点（复合显示、反击队列）。必须早于下面的装饰。</summary>
     CreatureLayout,
 
-    /// <summary><c>NCreature.UpdateIntent</c> 后缀，默认优先级：在排好的节点上附加或清理（敌方卡牌、指示线、变暗）。</summary>
+    /// <summary><c>NCreature.UpdateIntent</c> 后缀，默认优先级：在排好的节点上附加或清理（敌方卡牌、指示线）。</summary>
     CreatureDecorate,
 
     /// <summary><c>NIntent.UpdateVisuals</c> 后缀，排在 RitsuLib 角标后缀之后。</summary>
@@ -101,6 +101,7 @@ internal readonly record struct IntentRenderTraceEntry(
 /// <item>徽记与详细意图先重建叠加节点，复合与反击意图随后记下动画；徽记遇到复合意图时只换友方攻击的着色方式。</item>
 /// <item>悬停时徽记与详细意图接手原版提示；原版悬停之后再画指示线。</item>
 /// <item>复合意图换掉提示图标后，徽记不再改写提示。</item>
+/// <item>每个意图刷新时，封印先重置并应用当前封印颜色，和弦再追加未解锁段的变暗。</item>
 /// </list>
 /// 装饰器抛出的异常照常向外传播，与原来同一个补丁方法里依次调用时相同：后面的装饰器不再执行。
 /// </summary>
@@ -121,8 +122,9 @@ internal static class IntentRenderPipeline
 
         var order = new IIntentDecorator[Enum.GetValues<IntentRenderStage>().Length][];
         order[(int)IntentRenderStage.CreatureLayout] = [combined, counter];
-        order[(int)IntentRenderStage.CreatureDecorate] = [enemyCard, targetIndicator, chordEgoDim, solemnMourningSeal];
-        order[(int)IntentRenderStage.IntentVisuals] = [badgeDetail, combined, counter, fox];
+        order[(int)IntentRenderStage.CreatureDecorate] = [enemyCard, targetIndicator];
+        // 原版战斗状态变化只刷新 NIntent.UpdateVisuals；逐节点调色同时覆盖格挡和封印变化。
+        order[(int)IntentRenderStage.IntentVisuals] = [badgeDetail, combined, counter, fox, solemnMourningSeal, chordEgoDim];
         order[(int)IntentRenderStage.IntentFrame] = [combined, counter];
         order[(int)IntentRenderStage.IntentHovered] = [badgeDetail];
         order[(int)IntentRenderStage.IntentHoveredAfter] = [targetIndicator];

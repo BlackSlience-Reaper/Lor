@@ -11,38 +11,40 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 namespace LibraryOfRuina.patches.TechnologyFloorLiberation;
 
 /// <summary>
-/// Runs after <see cref="NCreature.UpdateIntent"/> (IntentRenderPipeline, CreatureDecorate stage) and dims the second and third
+/// Runs after <c>NIntent.UpdateVisuals</c> (IntentRenderPipeline, IntentVisuals stage) and dims the second and third
 /// attack intents of the Chord EGO move when the player's block is insufficient.
 /// <para>
-/// Logic: HitA is always shown at full opacity. HitB is unlocked (full opacity) when any
+/// Logic: HitA does not receive additional dimming. HitB is unlocked when any
 /// alive player's block &gt;= HitA's final damage. HitC is unlocked when HitB is already
 /// unlocked AND any alive player's block &gt;= HitB's final damage.
+/// The seal decorator resets the previous color before this decorator runs; unlocked
+/// attacks retain that color so sealing and conditional attacks can both remain dimmed.
 /// </para>
 /// </summary>
 internal static class ChordEgoIntentDimPatch
 {
     private static readonly Color DimColor = new(1f, 1f, 1f, 0.5f);
 
-    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance)
+    internal static IntentDecoratorOutcome OnUpdateVisuals(NIntent intentNode, AbstractIntent intent, Creature owner)
     {
         try
         {
-            return ApplyChordEgoDimming(__instance)
+            return ApplyChordEgoDimming(intentNode, intent, owner)
                 ? IntentDecoratorOutcome.Applied
                 : IntentDecoratorOutcome.Skipped;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
-                "ChordEgoIntentDim.UpdateIntent",
+                "ChordEgoIntentDim.UpdateVisuals",
                 exception);
             return IntentDecoratorOutcome.Failed;
         }
     }
 
-    private static bool ApplyChordEgoDimming(NCreature creatureNode)
+    private static bool ApplyChordEgoDimming(NIntent intentNode, AbstractIntent currentIntent, Creature owner)
     {
-        if (creatureNode.Entity?.Monster is not TechnologyFloorChordBoss boss)
+        if (owner.Monster is not TechnologyFloorChordBoss boss || currentIntent is not AttackIntent)
         {
             return false;
         }
@@ -70,8 +72,15 @@ internal static class ChordEgoIntentDimPatch
             return false;
         }
 
+        // 只处理当前刷新的 B/C 段，避免每个 NIntent 的状态回调重复重绘整个意图容器。
+        bool isHitB = ReferenceEquals(currentIntent, attackIntents[1]);
+        bool isHitC = ReferenceEquals(currentIntent, attackIntents[2]);
+        if (!isHitB && !isHitC)
+        {
+            return false;
+        }
+
         // Compute final damage for each segment
-        Creature owner = creatureNode.Entity;
         IReadOnlyList<Creature> targets = owner.CombatState?.Players
             .Select(static p => p.Creature)
             .Where(static c => c.IsAlive)
@@ -95,35 +104,9 @@ internal static class ChordEgoIntentDimPatch
         // HitC unlocked when HitB is unlocked AND any player's block >= HitB damage
         bool hitCUnlocked = hitBUnlocked && maxPlayerBlock >= hitBDamage;
 
-        // Map attack intent index to NIntent child index
-        // Intent order: [BuffIntent, PlayCardAttackIntent(HitA), SingleAttack(HitB), SingleAttack(HitC), BuffIntent]
-        // NIntent children follow the same order
-        int attackIndex = 0;
-        int childIndex = 0;
-        foreach (var child in creatureNode.IntentContainer.GetChildren())
+        if ((isHitB && !hitBUnlocked) || (isHitC && !hitCUnlocked))
         {
-            if (child is NIntent intentNode)
-            {
-                // Check if this NIntent corresponds to one of our attack intents
-                if (childIndex < intents.Count && intents[childIndex] is AttackIntent)
-                {
-                    switch (attackIndex)
-                    {
-                        case 0: // HitA - always full opacity
-                            break;
-                        case 1: // HitB
-                            intentNode.Modulate = hitBUnlocked ? Colors.White : DimColor;
-                            break;
-                        case 2: // HitC
-                            intentNode.Modulate = hitCUnlocked ? Colors.White : DimColor;
-                            break;
-                    }
-
-                    attackIndex++;
-                }
-
-                childIndex++;
-            }
+            intentNode.Modulate = DimColor;
         }
 
         return true;

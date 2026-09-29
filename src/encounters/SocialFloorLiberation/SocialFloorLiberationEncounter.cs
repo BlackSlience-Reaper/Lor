@@ -783,9 +783,13 @@ public sealed class SocialFloorLiberationEncounter :
                 CourageRemoveAtTurnEnd);
         }
 
-        if (CowardApplied && catHolder != null)
+        if (CowardApplied)
         {
-            await SocialFloorPlayerMechanics.RestoreCoward(catHolder);
+            foreach (Player player in combatState.Players
+                         .Where(static player => player.Creature.IsAlive))
+            {
+                await SocialFloorPlayerMechanics.RestoreCoward(player);
+            }
         }
 
         await CurrentTrial.RestoreAfterSharedStateAsync(this, combatState);
