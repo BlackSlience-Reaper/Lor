@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.audio;
 using LibraryOfRuina.compat;
@@ -35,7 +34,6 @@ using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.monsters.BigBadWolf;
 
@@ -500,7 +498,7 @@ public sealed class BigBadWolf : LorMonsterModel
         }
 
         await CardPileCmd.RemoveFromCombat(cardToSteal);
-        SwipePower swipe = (SwipePower)ModelDb.Power<SwipePower>().ToMutable();
+        BigBadWolfSwipePower swipe = (BigBadWolfSwipePower)ModelDb.Power<BigBadWolfSwipePower>().ToMutable();
         swipe.Target = owner.Creature;
         swipe.StolenCard = cardToSteal;
         await PowerCmdCompat.Apply(swipe, Creature, 1m, Creature, null);
@@ -677,10 +675,10 @@ public sealed class BigBadWolf : LorMonsterModel
 
     private async Task RemoveSwipeMarkerPower()
     {
-        SwipePower[] swipePowers = _pendingCards
+        BigBadWolfSwipePower[] swipePowers = _pendingCards
             .Select(static pending => pending.SwipePower)
             .ToArray();
-        foreach (SwipePower swipe in swipePowers)
+        foreach (BigBadWolfSwipePower swipe in swipePowers)
         {
             swipe.StolenCard = null;
             if (Creature.Powers.Contains(swipe))
@@ -748,7 +746,7 @@ public sealed class BigBadWolf : LorMonsterModel
         CardModel CombatCard,
         CardModel DeckCard,
         Player Owner,
-        SwipePower SwipePower);
+        BigBadWolfSwipePower SwipePower);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
@@ -765,27 +763,5 @@ public sealed class BigBadWolf : LorMonsterModel
                 yield return intent;
             }
         }
-    }
-}
-
-[HarmonyPatch(typeof(SwipePower), nameof(SwipePower.BeforeDeath))]
-[LibraryPatch(Reason = "原版 SwipePower.BeforeDeath 会先于怪物自身把被吞的牌作为奖励归还，无 Hook；仅在拥有者是本模组大坏狼且死亡者就是拥有者时跳过，由狼自己的 BeforeDeath 归还。可改用自有能力，会新增模型 ID，留到阶段 6。")]
-internal static class BigBadWolfSwipePowerRewardPatch
-{
-    private static bool Prefix(SwipePower __instance, Creature target, ref Task __result)
-    {
-        Creature? owner = __instance.Owner;
-        if (owner?.Monster is not BigBadWolf)
-        {
-            return true;
-        }
-
-        if (owner != target)
-        {
-            return true;
-        }
-
-        __result = Task.CompletedTask;
-        return false;
     }
 }

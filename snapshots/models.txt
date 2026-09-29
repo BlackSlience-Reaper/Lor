@@ -278,6 +278,7 @@ LibraryOfRuina.guests.WedgeOffice.Oscar
 LibraryOfRuina.guests.WedgeOffice.Pamela
 LibraryOfRuina.guests.WedgeOffice.Pameli
 LibraryOfRuina.guests.YunOffice.Yun
+LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener
 LibraryOfRuina.monsters.AddictedEmployee.AddictedEmployee
 LibraryOfRuina.monsters.AllAroundHelper.AllAroundHelper
 LibraryOfRuina.monsters.ArtFloorLiberation.ArtFloorBeyondFragmentBoss
@@ -460,6 +461,7 @@ LibraryOfRuina.powers.ArtFloorLiberation.SilentPerformancePower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfBornToBePower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfCruelClawsPower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfPunishEvilPower
+LibraryOfRuina.powers.BigBadWolf.BigBadWolfSwipePower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfTemporaryThornsPower
 LibraryOfRuina.powers.BigBadWolf.BigBadWolfUntargetablePower
 LibraryOfRuina.powers.BigBird.BigBirdCharmedPower

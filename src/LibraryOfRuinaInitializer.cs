@@ -11,6 +11,7 @@ using LibraryOfRuina.features.intentgraph;
 using LibraryOfRuina.features.settings;
 using LibraryOfRuina.features.temporarymaps;
 using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.hooks;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.networking;
 using LibraryOfRuina.patches;
@@ -100,6 +101,7 @@ public static class LibraryOfRuinaInitializer
             new("SpecialGuests", true, SpecialGuestAutoRegistrar.Initialize),
             new("CardPools", true, RegisterRuntimeCardPools),
             new("LibraryExtensionPoints", true, LibraryExtensionPoints.Register),
+            new("HookListener", true, LibraryOfRuinaHookListener.Subscribe),
             new("GameplayPatches", true, () => patchResult = LibraryPatcher.ApplyAll(harmony)),
             new("Cursor", false, LibraryCursorPatch.ApplyToCurrentGame),
         ]);
