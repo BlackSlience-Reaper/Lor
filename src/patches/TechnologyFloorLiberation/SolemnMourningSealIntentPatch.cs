@@ -9,44 +9,37 @@ namespace LibraryOfRuina.patches.TechnologyFloorLiberation;
 
 internal static class SolemnMourningSealIntentPatch
 {
-    internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance)
+    internal static IntentDecoratorOutcome OnUpdateVisuals(NIntent intentNode, Creature owner)
     {
         try
         {
-            return ApplySealedIntentVisuals(__instance)
+            return ApplySealedIntentVisual(intentNode, owner)
                 ? IntentDecoratorOutcome.Applied
                 : IntentDecoratorOutcome.Skipped;
         }
         catch (Exception exception)
         {
             PatchFailureLog.Warn(
-                "SolemnMourningSealIntent.UpdateIntent",
+                "SolemnMourningSealIntent.UpdateVisuals",
                 exception);
             return IntentDecoratorOutcome.Failed;
         }
     }
 
-    private static bool ApplySealedIntentVisuals(NCreature creatureNode)
+    private static bool ApplySealedIntentVisual(NIntent intentNode, Creature owner)
     {
-        if (creatureNode.Entity?.Monster == null)
+        if (owner.Monster == null)
         {
             return false;
         }
 
-        var sealPower = creatureNode.Entity.GetPower<SolemnMourningSealOnEnemyPower>();
+        var sealPower = owner.GetPower<SolemnMourningSealOnEnemyPower>();
         int sealCount = sealPower?.Amount ?? 0;
 
-        int index = 0;
-        foreach (var child in creatureNode.IntentContainer.GetChildren())
-        {
-            if (child is NIntent intentNode)
-            {
-                intentNode.Modulate = index < sealCount
-                    ? new Color(1f, 1f, 1f, 0.5f)
-                    : Colors.White;
-                index++;
-            }
-        }
+        // 原版及本模组的意图容器只放 NIntent；重绘与封印移除时先恢复此节点，再由和弦追加变暗。
+        intentNode.Modulate = intentNode.GetIndex() < sealCount
+            ? new Color(1f, 1f, 1f, 0.5f)
+            : Colors.White;
 
         return true;
     }

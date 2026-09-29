@@ -27,31 +27,31 @@ namespace LibraryOfRuina.patches;
 
 internal static class CombinedIntentDisplayPatch
 {
-    private static readonly HashSet<string> LibraryReceptionMonsterTypeNames = new(StringComparer.Ordinal)
+    private static readonly HashSet<Type> LibraryReceptionMonsterTypes = new()
     {
-        nameof(Eri),
-        nameof(Finn),
-        nameof(Gin),
-        nameof(LittleRedRidingHoodedMercenary),
-        nameof(Meow),
-        nameof(MuMu),
-        nameof(Oink),
-        nameof(Oscar),
-        nameof(Philip),
-        nameof(Salvador),
-        nameof(Sayo),
-        nameof(Tomerry),
-        nameof(Yang),
-        nameof(Yun),
-        nameof(Yuna),
-        nameof(HistoryFloorPhaseBoss)
+        typeof(Eri),
+        typeof(Finn),
+        typeof(Gin),
+        typeof(LittleRedRidingHoodedMercenary),
+        typeof(Meow),
+        typeof(MuMu),
+        typeof(Oink),
+        typeof(Oscar),
+        typeof(Philip),
+        typeof(Salvador),
+        typeof(Sayo),
+        typeof(Tomerry),
+        typeof(Yang),
+        typeof(Yun),
+        typeof(Yuna),
+        typeof(HistoryFloorPhaseBoss)
     };
 
-    private static readonly HashSet<string> LibraryReceptionMonsterBaseTypeNames = new(StringComparer.Ordinal)
+    private static readonly HashSet<Type> LibraryReceptionMonsterBaseTypes = new()
     {
-        nameof(BrotherhoodOfIronMonster),
-        nameof(HookOfficeMonsterBase),
-        nameof(WedgeOfficeSpearTwinBase)
+        typeof(BrotherhoodOfIronMonster),
+        typeof(HookOfficeMonsterBase),
+        typeof(WedgeOfficeSpearTwinBase)
     };
 
     private static readonly IReadOnlyList<string> CombinedDisplayAssetPaths =
@@ -113,20 +113,19 @@ internal static class CombinedIntentDisplayPatch
         }
 
         Type type = monster.GetType();
-        if (type.Assembly != typeof(CombinedIntentDisplayPatch).Assembly
-            || !string.Equals(type.Namespace, typeof(CombinedIntentDisplayPatch).Namespace, StringComparison.Ordinal))
+        if (type.Assembly != typeof(CombinedIntentDisplayPatch).Assembly)
         {
             return false;
         }
 
-        if (LibraryReceptionMonsterTypeNames.Contains(type.Name))
+        if (LibraryReceptionMonsterTypes.Contains(type))
         {
             return true;
         }
 
         for (Type? baseType = type.BaseType; baseType != null; baseType = baseType.BaseType)
         {
-            if (LibraryReceptionMonsterBaseTypeNames.Contains(baseType.Name))
+            if (LibraryReceptionMonsterBaseTypes.Contains(baseType))
             {
                 return true;
             }
