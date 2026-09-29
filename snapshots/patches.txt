@@ -32,7 +32,6 @@ LibraryOfRuina.cards.SocialFloorLiberation.SocialFloorMagicalPowderCostPatch	Pos
 LibraryOfRuina.compat.MadokaLongbowRestorePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.RelicModel), "FromSerializable")
 LibraryOfRuina.compat.MadokaLongbowSavePatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Saves.Runs.SavedProperties), "FromInternal")
 LibraryOfRuina.compat.MainMenuIncompatibleModNoticePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
-LibraryOfRuina.encounters.FloorLiberationVictoryProgressPatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "AfterCombatVictory")
 LibraryOfRuina.encounters.NaturalFloorLiberation.NaturalFloorNihilTransition	Cleanup	Cleanup	returns=System.Void	target=
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch()
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch	Prepare	Prepare	returns=System.Boolean	target=HarmonyPatch()		HarmonyPrepare()

@@ -277,6 +277,7 @@ LibraryOfRuina.guests.WedgeOffice.Oscar
 LibraryOfRuina.guests.WedgeOffice.Pamela
 LibraryOfRuina.guests.WedgeOffice.Pameli
 LibraryOfRuina.guests.YunOffice.Yun
+LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener
 LibraryOfRuina.monsters.AddictedEmployee.AddictedEmployee
 LibraryOfRuina.monsters.AllAroundHelper.AllAroundHelper
 LibraryOfRuina.monsters.ArtFloorLiberation.ArtFloorBeyondFragmentBoss

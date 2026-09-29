@@ -1611,6 +1611,7 @@ LibraryOfRuina.infra.patching.LibraryPatcher
 LibraryOfRuina.infra.patching.LibraryPatchReportPatch
 LibraryOfRuina.infra.patching.PatchClassRules
 LibraryOfRuina.infra.patching.VanillaCopyGuard
+LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener
 LibraryOfRuina.helpers.AbnormalityAnimHelper
 LibraryOfRuina.helpers.CardPoolAttribute
 LibraryOfRuina.helpers.FakeDeathDebuffHelper
@@ -1812,7 +1813,6 @@ LibraryOfRuina.encounters.EncounterStateBag
 LibraryOfRuina.encounters.LiberationFloorIds
 LibraryOfRuina.encounters.IFloorLiberationEncounter
 LibraryOfRuina.encounters.FloorLiberationProgress
-LibraryOfRuina.encounters.FloorLiberationVictoryProgressPatch
 LibraryOfRuina.encounters.GuestReceptionPoolRegistry
 LibraryOfRuina.encounters.IEncounterBgmSource
 LibraryOfRuina.encounters.IEncounterDynamicBgmTrackSource

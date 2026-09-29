@@ -1,11 +1,7 @@
 using System;
 using System.Linq;
-using HarmonyLib;
 using LibraryOfRuina.specialguests;
-using MegaCrit.Sts2.Core.Hooks;
-using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.encounters;
 
@@ -133,25 +129,5 @@ public static class FloorLiberationProgress
         {
             state.SetValue(LegacyHistoryValueKey, bool.TrueString);
         }
-    }
-}
-
-[HarmonyPatch(typeof(Hook), nameof(Hook.AfterCombatVictory))]
-[LibraryPatch(Reason = "胜利时遭遇模型不是监听者，阶段怪物已被移出战斗、玩家能力已清，嘉宾载体可能正是在这里首次创建，没有已有模型能覆写；前缀早于 SaveRun，只对 IsFullyLiberated 的本模组解放遭遇写入进度。")]
-internal static class FloorLiberationVictoryProgressPatch
-{
-    private static void Prefix(IRunState runState, CombatRoom room)
-    {
-        if (room.Encounter is not IFloorLiberationEncounter
-            {
-                IsFullyLiberated: true
-            } liberation)
-        {
-            return;
-        }
-
-        FloorLiberationProgress.MarkFullyLiberated(
-            runState,
-            liberation.LiberationFloorId);
     }
 }
