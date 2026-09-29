@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.WarmheartedWoodsman;
 
-public sealed class WarmheartedWoodsmanStrong : EncounterModel
+public sealed class WarmheartedWoodsmanStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "WarmheartedWoodsmanBGM",
+        GuestReceptionPoolRegistry.SocialSciencesReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string TreeSlot = "woodsman_tree_left";
     public const string WoodsmanSlot = "warmhearted_woodsman_right";
 

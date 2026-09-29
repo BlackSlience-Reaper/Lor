@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.AddictedEmployee;
 
-public sealed class AddictedEmployeeWeak : EncounterModel
+public sealed class AddictedEmployeeWeak : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "AddictedEmployeeBGM",
+        GuestReceptionPoolRegistry.YesodReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool IsWeak => true;

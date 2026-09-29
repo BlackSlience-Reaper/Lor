@@ -3,8 +3,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.TodaysShyLook;
 
-public sealed class TodaysShyLookStrong : EncounterModel
+public sealed class TodaysShyLookStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "TodaysShyLookBGM",
+        GuestReceptionPoolRegistry.LiteratureReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

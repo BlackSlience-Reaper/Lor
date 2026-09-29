@@ -5,8 +5,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.PunishingBird;
 
-public sealed class PunishingBirdStrong : EncounterModel
+public sealed class PunishingBirdStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "PunishingBirdBGM",
+        GuestReceptionPoolRegistry.PhilosophyReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public const string LeftKeeperSlot = "punishing_bird_left_keeper";
     public const string BossSlot = "punishing_bird_boss";
     public const string RightKeeperSlot = "punishing_bird_right_keeper";

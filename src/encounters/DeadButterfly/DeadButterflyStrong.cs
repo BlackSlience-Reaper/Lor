@@ -4,8 +4,14 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.encounters.DeadButterfly;
 
-public sealed class DeadButterflyStrong : EncounterModel
+public sealed class DeadButterflyStrong : EncounterModel, IEncounterBgmSource
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.RoundBased(
+        "DeadButterflyBGM",
+        GuestReceptionPoolRegistry.LiteratureReceptionFloorBgmTracks,
+        volumeScale: 0.85f,
+        GuestReceptionPoolRegistry.StandardRoundThresholds);
+
     public override RoomType RoomType => RoomType.Monster;
 
     public override bool HasScene => true;

@@ -24,9 +24,15 @@ namespace LibraryOfRuina.encounters.ArtFloorLiberation;
 
 public sealed class ArtFloorLiberationEncounter :
     LiberationEncounterBase,
+    IEncounterBgmSource,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "ArtFloorLiberationBGM",
+        HistoryFloorLiberationEncounter.AngelaLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     internal const string DaCapoSlot = "da_capo";
     internal const string FirstPerformerSlot = "first_performer";
     internal const string GalaxyFriendLeftSlot = "galaxy_friend_left";

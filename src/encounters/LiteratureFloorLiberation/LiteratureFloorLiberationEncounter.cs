@@ -25,9 +25,15 @@ namespace LibraryOfRuina.encounters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorLiberationEncounter :
     LiberationEncounterBase,
+    IEncounterBgmSource,
     ILiberationPhaseBgmSource,
     IFloorLiberationEncounter
 {
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.PhaseBased(
+        "LiteratureFloorLiberationBGM",
+        HistoryFloorLiberationEncounter.AngelaLiberationBgmTracks,
+        volumeScale: 0.85f);
+
     public const int PlannedMaxPhase = 5;
     public const int ImplementedMaxPhase = 5;
     public const decimal PhaseTransitionHealAmount = 10m;
