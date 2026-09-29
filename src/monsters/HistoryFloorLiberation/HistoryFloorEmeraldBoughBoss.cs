@@ -32,7 +32,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorEmeraldBoughBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 5;
     internal const int StaggerResistance = 120;
@@ -52,7 +52,6 @@ public sealed class HistoryFloorEmeraldBoughBoss : LorMonsterModel, ILiberationP
     private const string GrudgeVineMoveId = "GRUDGE_VINE";
     private const string ExtendedMaliceMoveId = "EXTENDED_MALICE";
     private const string ShatteredLifeMoveId = "SHATTERED_LIFE";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     private const int EmeraldBoughRapidWearAmount = 9;
     private const int EmeraldBoughRapidWearTurns = 3;
@@ -96,10 +95,13 @@ public sealed class HistoryFloorEmeraldBoughBoss : LorMonsterModel, ILiberationP
     private bool _backgroundMoonTextLoopStarted;
     private MoveState? _shatteredLifeState;
     private MoveState? _emeraldBoughState;
-    private MoveState? _reviveAndEmpowerState;
     private ConditionalBranchState? _chooserState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Cast";
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -220,34 +222,9 @@ public sealed class HistoryFloorEmeraldBoughBoss : LorMonsterModel, ILiberationP
         }
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var summonVineBarriers = new MoveState(
             SummonVineBarriersMoveId,
@@ -324,12 +301,12 @@ public sealed class HistoryFloorEmeraldBoughBoss : LorMonsterModel, ILiberationP
         grudgeVine.FollowUpState = chooser;
         extendedMalice.FollowUpState = chooser;
         shatteredLife.FollowUpState = shatteredLifeFollowUp;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 summonVineBarriers,
                 emeraldBough,
                 delusionalVine,
@@ -494,26 +471,10 @@ public sealed class HistoryFloorEmeraldBoughBoss : LorMonsterModel, ILiberationP
         AdvanceTurn();
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature == null)
-        {
-            return;
-        }
-
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is HistoryFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is HistoryFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private void ResetStranglingVineCounts()
     {

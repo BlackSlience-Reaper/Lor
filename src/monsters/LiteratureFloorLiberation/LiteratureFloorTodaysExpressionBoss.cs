@@ -27,8 +27,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
 
 public sealed class LiteratureFloorTodaysExpressionBoss :
-    LorMonsterModel,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster
 {
     public const int Phase = 4;
     public const string JoyousFaceMoveId = "JOYOUS_FACE";
@@ -37,7 +36,6 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
     public const string SadFaceMoveId = "SAD_FACE";
     public const string AngryFaceMoveId = "ANGRY_FACE";
     public const string WaveringFeelingsMoveId = "WAVERING_FEELINGS";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
 
     public const int JoyousFaceBlock = 33;
     public const int SmilingFaceBlock = 24;
@@ -91,7 +89,6 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
 
     private Dictionary<int, MoveState> _normalStates = [];
     private MoveState? _waveringFeelingsState;
-    private MoveState? _reviveAndEmpowerState;
     private bool _backgroundTextStarted;
 
     protected override void DeepCloneFields()
@@ -99,10 +96,10 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
         base.DeepCloneFields();
         _normalStates = [];
         _waveringFeelingsState = null;
-        _reviveAndEmpowerState = null;
+        ClearReviveAndEmpowerState();
     }
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     public int CurrentExpression =>
         ExpressionFromMoveId(NextMove.StateId);
@@ -299,22 +296,6 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
         }
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
     internal async Task<bool> RandomizeExpressionFromUnblockedHit()
     {
         if (Creature.IsDead
@@ -417,14 +398,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
         {
             MustPerformOnceBeforeTransitioning = true
         };
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         _normalStates[1] = joyousFace;
         _normalStates[2] = smilingFace;
@@ -437,7 +411,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
         }
 
         _waveringFeelingsState.FollowUpState = restingFace;
-        _reviveAndEmpowerState.FollowUpState = restingFace;
+        reviveAndEmpower.FollowUpState = restingFace;
 
         return new MonsterMoveStateMachine(
         [
@@ -447,7 +421,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
             sadFace,
             angryFace,
             _waveringFeelingsState,
-            _reviveAndEmpowerState
+            reviveAndEmpower
         ], restingFace);
     }
 
@@ -571,24 +545,19 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
             playFeedback: true);
     }
 
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
+    protected override async Task PlayReviveAndEmpowerAnimation()
     {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
         await CreatureCmd.TriggerAnim(Creature, "Cast", 0f);
         await Cmd.Wait(
             LiteratureFloorTodaysExpressionAnimationContract
                 .CastDurationSeconds);
-        if (Creature.CombatState?.Encounter
-            is LiteratureFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
     }
+
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LiteratureFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task PlayGuardAnimation()
     {

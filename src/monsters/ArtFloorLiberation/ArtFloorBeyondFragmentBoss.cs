@@ -27,7 +27,7 @@ using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.monsters.ArtFloorLiberation;
 
-public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 2;
     private const string MelodiousSongMoveId = "MELODIOUS_SONG";
@@ -35,7 +35,6 @@ public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPri
     private const string BoundaryThornMoveId = "BOUNDARY_THORN";
     private const string OtherworldlyEchoMoveId = "OTHERWORLDLY_ECHO";
     private const string BeyondFragmentEgoMoveId = "BEYOND_FRAGMENT_EGO";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
     public const string Root = "res://images/monsters/beyond_fragment/";
@@ -48,9 +47,8 @@ public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPri
     private int _baseCadenceIndex;
     private bool _egoQueued;
     private MoveState? _egoState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -149,30 +147,9 @@ public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPri
         return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
-    public Task TriggerReviveAndEmpowerState()
-    {
-        ForceReviveAndEmpowerState();
-        return Task.CompletedTask;
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var melodiousSong = new MoveState(
             MelodiousSongMoveId,
@@ -219,12 +196,12 @@ public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPri
         boundaryThorn.FollowUpState = chooser;
         otherworldlyEcho.FollowUpState = chooser;
         _egoState.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
             new MonsterState[]
             {
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 melodiousSong,
                 penetrate,
                 boundaryThorn,
@@ -323,20 +300,10 @@ public sealed class ArtFloorBeyondFragmentBoss : LorMonsterModel, ILiberationPri
         }
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is ArtFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task<AttackCommand> ExecuteGroupAttack(
         int damage,

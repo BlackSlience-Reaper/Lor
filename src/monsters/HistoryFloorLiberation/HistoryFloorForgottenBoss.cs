@@ -31,7 +31,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.HistoryFloorLiberation;
 
-public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrimaryPhaseBoss
+public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
 {
     private const int Phase = 2;
 
@@ -59,7 +59,6 @@ public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrim
     private const string ExpressAffectionMoveId = "EXPRESS_AFFECTION";
     private const string RoughLoveMoveId = "ROUGH_LOVE";
     private const string LongingEmbraceMoveId = "LONGING_EMBRACE";
-    private const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     internal const string BackgroundTextScope = "history_floor_liberation_phase_2";
     private const float BackgroundTextIntervalSeconds = 5f;
 
@@ -112,9 +111,12 @@ public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrim
     private bool _longingEmbraceQueued;
     private bool _backgroundMoonTextLoopStarted;
     private MoveState? _longingEmbraceState;
-    private MoveState? _reviveAndEmpowerState;
 
-    public int LiberationPhase => Phase;
+    public override int LiberationPhase => Phase;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
+
+    protected override string? ReviveAndEmpowerAnimation => "Cast";
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -225,34 +227,9 @@ public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrim
         }
     }
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(_reviveAndEmpowerState, forceTransition: true);
-        }
-    }
-
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var cautiousLove = new MoveState(
             CautiousLoveMoveId,
@@ -293,10 +270,10 @@ public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrim
         expressAffection.FollowUpState = chooser;
         roughLove.FollowUpState = chooser;
         longingEmbrace.FollowUpState = chooser;
-        _reviveAndEmpowerState.FollowUpState = chooser;
+        reviveAndEmpower.FollowUpState = chooser;
 
         return new MonsterMoveStateMachine(
-            new MonsterState[] { _reviveAndEmpowerState, cautiousLove, expressAffection, roughLove, longingEmbrace, chooser },
+            new MonsterState[] { reviveAndEmpower, cautiousLove, expressAffection, roughLove, longingEmbrace, chooser },
             chooser);
     }
 
@@ -377,26 +354,10 @@ public sealed class HistoryFloorForgottenBoss : LorMonsterModel, ILiberationPrim
         }
     }
 
-    private async Task ReviveAndEmpowerMove(IReadOnlyList<Creature> targets)
-    {
-        if (Creature == null)
-        {
-            return;
-        }
-
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-
-        if (Creature.CombatState?.Encounter is HistoryFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter is HistoryFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     private async Task<IReadOnlyList<DamageResult>> ExecuteAttackSegment(string animation, int damage, string sfxPath)
     {

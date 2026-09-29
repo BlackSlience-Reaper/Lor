@@ -264,22 +264,13 @@ public sealed class LanguageFloorCobaltScar :
 
     public async Task TriggerReviveAndEmpowerState()
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
+        await LiberationPhaseBossMoves.TriggerHitAnimationIfVisible(Creature);
         ForceReviveAndEmpowerState();
     }
 
     public void ForceReviveAndEmpowerState()
     {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
+        LiberationPhaseBossMoves.ForceState(this, _reviveAndEmpowerState);
     }
 
     private async Task ReviveAndEmpowerMove(
@@ -332,14 +323,9 @@ public sealed class LanguageFloorCobaltScar :
             ShadowCompositeMoveId,
             PerformCompositeMove,
             _shadowPlannedIntents);
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
+        _reviveAndEmpowerState = LiberationPhaseBossMoves.CreateState(
             ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+            ReviveAndEmpowerMove);
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
             (_, rng) =>

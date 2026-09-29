@@ -27,14 +27,12 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
 public sealed class LanguageFloorLostEverythingWolf :
-    LorMonsterModel,
-    ITargetedMonsterAttackProvider,
-    ILiberationPrimaryPhaseBoss
+    LiberationPhaseBossMonster,
+    ITargetedMonsterAttackProvider
 {
     private const string HighCompositeMoveId = "LANGUAGE_FLOOR_WOLF_COMPOSITE_HIGH";
     private const string LowCompositeMoveId = "LANGUAGE_FLOOR_WOLF_COMPOSITE_LOW";
     private const string RouterMoveId = "LANGUAGE_FLOOR_WOLF_ROUTER";
-    public const string ReviveAndEmpowerMoveId = "REVIVE_AND_EMPOWER";
     private const string AttackSfxPath = "res://audio/sfx/little_red_mercenary/wolf_bite.ogg";
     private const string HowlSfxPath = "res://audio/sfx/little_red_mercenary/wolf_howl.ogg";
     private const string SlashAnimationTrigger = "WolfSlash";
@@ -63,11 +61,12 @@ public sealed class LanguageFloorLostEverythingWolf :
 
     private MoveState? _highCompositeState;
     private MoveState? _lowCompositeState;
-    private MoveState? _reviveAndEmpowerState;
     private AbstractIntent[]? _highCompositeIntents;
     private AbstractIntent[]? _lowCompositeIntents;
 
-    public int LiberationPhase => 1;
+    public override int LiberationPhase => 1;
+
+    protected override bool ReviveTriggerPlaysHitAnimation => true;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -163,14 +162,7 @@ public sealed class LanguageFloorLostEverythingWolf :
             LowCompositeMoveId,
             PerformCompositeMove,
             _lowCompositeIntents);
-        _reviveAndEmpowerState = new LibraryPhaseTransitionMoveState(
-            ReviveAndEmpowerMoveId,
-            ReviveAndEmpowerMove,
-            new HealIntent(),
-            new BuffIntent())
-        {
-            MustPerformOnceBeforeTransitioning = true
-        };
+        MoveState reviveAndEmpower = CreateReviveAndEmpowerState();
 
         var router = new DelegatingMonsterRouterState(
             RouterMoveId,
@@ -183,13 +175,13 @@ public sealed class LanguageFloorLostEverythingWolf :
             });
         _highCompositeState.FollowUpState = router;
         _lowCompositeState.FollowUpState = router;
-        _reviveAndEmpowerState.FollowUpState = router;
+        reviveAndEmpower.FollowUpState = router;
         MonsterState initialState = HasPlannedTurn
             ? LowHealthMode ? _lowCompositeState : _highCompositeState
             : router;
         return new MonsterMoveStateMachine(
             [
-                _reviveAndEmpowerState,
+                reviveAndEmpower,
                 _highCompositeState,
                 _lowCompositeState,
                 router
@@ -209,41 +201,11 @@ public sealed class LanguageFloorLostEverythingWolf :
     public string GetTargetedAttackTargetName(Creature owner) =>
         GetTargetedAttackTargets(owner).FirstOrDefault()?.Name ?? "未知目标";
 
-    public async Task TriggerReviveAndEmpowerState()
-    {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) != null)
-        {
-            await CreatureCmd.TriggerAnim(Creature, "Hit", 0f);
-        }
-
-        ForceReviveAndEmpowerState();
-    }
-
-    public void ForceReviveAndEmpowerState()
-    {
-        if (_reviveAndEmpowerState != null)
-        {
-            SetMoveImmediate(
-                _reviveAndEmpowerState,
-                forceTransition: true);
-        }
-    }
-
-    private async Task ReviveAndEmpowerMove(
-        IReadOnlyList<Creature> targets)
-    {
-        if (Creature.IsDead)
-        {
-            await CreatureCmd.SetCurrentHp(Creature, 1m);
-        }
-
-        await Cmd.CustomScaledWait(0.3f, 0.6f);
-        if (Creature.CombatState?.Encounter
-            is LanguageFloorLiberationEncounter encounter)
-        {
-            await encounter.CompletePhaseTransition(this);
-        }
-    }
+    protected override Task CompleteLiberationPhaseTransition() =>
+        Creature.CombatState?.Encounter
+            is LanguageFloorLiberationEncounter encounter
+            ? encounter.CompletePhaseTransition(this)
+            : Task.CompletedTask;
 
     public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
     {
