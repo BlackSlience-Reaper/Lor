@@ -327,7 +327,11 @@ internal static class IntentRenderVerificationPatch
         monster.SetMoveImmediate(chordEgo, forceTransition: true);
         try
         {
+            // 原版 NIntent 换动画后，精灵贴图要到下一帧 _Process 才换成新动画的帧；UpdateIntent 与 GainBlock 之间
+            // 是否恰好跑过一帧取决于时序。每次转储前固定等两帧（ProcessFrame 信号在节点 _Process 之前发出，等一帧不保证
+            // _Process 已跑），读到的总是当前意图的贴图（帧号在转储里已归一）。
             await node.UpdateIntent(players);
+            await WaitFrames(2);
             DumpContainer("chord.ego-no-block", node);
 
             foreach (Creature player in players)
@@ -336,6 +340,7 @@ internal static class IntentRenderVerificationPatch
             }
 
             await node.UpdateIntent(players);
+            await WaitFrames(2);
             DumpContainer("chord.ego-full-block", node);
         }
         finally
