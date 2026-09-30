@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.content.specialguests;
 using LibraryOfRuina.content.specialguests.Iori;
 using LibraryOfRuina.content.specialguests.Kali;
@@ -25,6 +26,7 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Characters;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes;
@@ -46,8 +48,10 @@ namespace LibraryOfRuinaVerification;
 /// 同一个验证程序集分别配改动前后的主模组构建各跑一次，逐行比较 TRACE 行。
 /// <c>rnfmabj-duo</c> 是两名玩家的 Rnfmabj 指令：两人进度不同、一人打错牌归零，存下三只怪的战斗状态（<see cref="CombatStateProperties"/>）后
 /// 在同种子的新跑图里读回再续战，读回后的参与者与逐人进度要与存档时一致（不一致记为失败）。
+/// <c>iori-death</c>、<c>rnfmabj-dead-teammate</c> 是击杀后复查的回归场景：伊织在招式中途被反伤打死后不再继续执行；
+/// 队友死亡后，Rnfmabj 的指令不再要求这名队友。
 /// 参数 <c>lor-verify-special-guest-plan-trace</c>；加 <c>-iori</c>、<c>-rnfmabj</c>、<c>-xiao</c>、<c>-kali</c>、
-/// <c>-rnfmabj-duo</c> 只跑一个场景。
+/// <c>-rnfmabj-duo</c>、<c>-iori-death</c>、<c>-rnfmabj-dead-teammate</c> 只跑一个场景。
 /// </summary>
 internal static class SpecialGuestPlanTraceVerificationPatch
 {
@@ -63,7 +67,12 @@ internal static class SpecialGuestPlanTraceVerificationPatch
         ("xiao", RunXiao),
         ("kali", RunKali),
         ("rnfmabj-duo", RunRnfmabjDuo),
+        ("iori-death", RunIoriDeath),
+        ("rnfmabj-dead-teammate", RunRnfmabjDeadTeammate),
     ];
+
+    /// <summary>嘉宾已死亡后仍触发的动画次数（<see cref="BeforeTriggerAnim"/> 计数），用于击杀后复查的回归场景。</summary>
+    private static int _animsOnDeadGuest;
 
     private static readonly JsonSerializerOptions SavedStateJson = new() { IncludeFields = true };
     private static readonly List<string> Failures = [];
@@ -389,6 +398,91 @@ internal static class SpecialGuestPlanTraceVerificationPatch
             await PlayDirectiveCard(label + "-resume", state, resumedTwo, correct: true);
             await PlayDirectiveCard(label + "-resume", state, resumedTwo, correct: true);
             return "directive plays";
+        });
+    }
+
+    /// <summary>
+    /// 击杀后复查：伊织二阶段血量设为 1、玩家带 999 层荆棘，直接执行“无处可逃”。攻击段命中时被反伤打死，
+    /// 同一招余下的格挡动画与格挡都不应再执行（死亡后的嘉宾动画计数必须为 0）。
+    /// </summary>
+    private static async Task RunIoriDeath()
+    {
+        const string label = "iori-death";
+        await StartRun("LORPLANTRACEIORIDEATH");
+        RunState runState = RunManager.Instance.DebugOnlyGetState()
+            ?? throw new InvalidOperationException("Run state is null.");
+        SpecialGuestRunStateModifier.GetOrCreate(runState).MarkStoryCompleted(IoriStoryId);
+        CombatState state = await EnterCombat(
+            label,
+            RoomType.Elite,
+            ModelDb.Encounter<IoriSpecialGuestStageTwoEncounter>().ToMutable());
+        IoriStageTwo ioriModel = Guest<IoriStageTwo>(state)
+            ?? throw new InvalidOperationException("Iori stage two is missing.");
+        Creature iori = ioriModel.Creature;
+        // 计划由种子决定，不一定有“攻击后接格挡”的招式；直接执行“无处可逃”（一段攻击 + 格挡动画与 30 格挡）。
+        MethodInfo performMove = AccessTools.Method(typeof(IoriMonsterBase), "PerformMove", [typeof(IoriMove)])
+            ?? throw new InvalidOperationException("IoriMonsterBase.PerformMove is missing.");
+        await PlayRounds(label, state, 1, async (_, combat) =>
+        {
+            var context = new ThrowingPlayerChoiceContext();
+            foreach (Creature player in combat.PlayerCreatures)
+            {
+                await PowerCmdCompat.Apply<ThornsPower>(context, player, 999m, player, null, silent: true);
+            }
+
+            await CreatureCmd.SetCurrentHp(iori, 1m);
+            _animsOnDeadGuest = 0;
+            await (Task)performMove.Invoke(ioriModel, [IoriMove.NoEscape])!;
+            return "thorns 999, iori hp 1, perform NoEscape";
+        });
+        TraceLine(label, "result", "ioriDead=" + iori.IsDead + " animsAfterDeath=" + _animsOnDeadGuest);
+        Check(iori.IsDead, label + ": Iori survived the thorns; the scenario did not reach the post-kill path.");
+        Check(_animsOnDeadGuest == 0,
+            label + ": Iori kept performing after being killed mid-move (" + _animsOnDeadGuest + " animation(s)).");
+    }
+
+    /// <summary>
+    /// 两名玩家的 Rnfmabj 指令：一号玩家打完本任务后二号玩家死亡，指令要求的人数必须只剩存活的一号玩家，
+    /// 一号玩家算作全部完成。
+    /// </summary>
+    private static async Task RunRnfmabjDeadTeammate()
+    {
+        const string label = "rnfmabj-dead-teammate";
+        await StartRun("LORPLANTRACERNFMABJDEAD", playerCount: 2);
+        CombatState state = await EnterCombat(
+            label,
+            RoomType.Elite,
+            ModelDb.Encounter<RnfmabjSpecialGuestEncounter>().ToMutable());
+        IReadOnlyList<Player> players = RunPlayers();
+        Player one = players[0];
+        Player two = players[1];
+        // 一号玩家先打完本任务（进度锁定，等二号玩家），再击杀二号玩家。
+        // 击杀后这场 headless 战斗会切到敌方回合，出牌钩子不再结算，所以完成判定只能靠名单与快照核对：
+        // 登记名单仍有两人（计划生成时写入），要求人数必须只剩存活的一号玩家。
+        await PlayRounds(label, state, 1, async (_, combat) =>
+        {
+            Rnfmabj body = Guest<Rnfmabj>(combat)
+                ?? throw new InvalidOperationException("Rnfmabj is missing.");
+            int checks = body.GetDirectiveSnapshot(one.NetId).Sequence.Length;
+            for (int i = 0; i < checks; i++)
+            {
+                await PlayDirectiveCard(label, combat, one, correct: true);
+            }
+
+            RnfmabjDirectiveSnapshot before = body.GetDirectiveSnapshot(one.NetId);
+            await CreatureCmd.Kill(two.Creature);
+            await WaitFrames(4);
+            RnfmabjDirectiveSnapshot after = body.GetDirectiveSnapshot(one.NetId);
+            TraceLine(label, "result", "p2Dead=" + two.Creature.IsDead
+                + " before=" + before.CompletedPlayers + "/" + before.RequiredPlayers
+                + " after=" + after.CompletedPlayers + "/" + after.RequiredPlayers
+                + DescribeDirectivePlayers(body));
+            Check(two.Creature.IsDead, label + ": player two is still alive.");
+            Check(before.LocalPlayerCompleted && before.RequiredPlayers == 2,
+                label + ": player one did not finish the task while both players were alive.");
+            Check(after.RequiredPlayers == 1 && after.CompletedPlayers == 1,
+                label + ": the dead teammate is still required by the directive:" + DescribeDirectivePlayers(body));
+            return "p1 finishes, p2 killed";
         });
     }
 
@@ -962,6 +1056,11 @@ internal static class SpecialGuestPlanTraceVerificationPatch
     {
         if (IsTraced(creature.Monster))
         {
+            if (creature.IsDead)
+            {
+                _animsOnDeadGuest++;
+            }
+
             TraceLine(_label, "exec", "anim " + creature.Monster!.GetType().Name + " " + triggerName);
         }
     }

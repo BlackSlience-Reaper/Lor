@@ -25,7 +25,7 @@ public sealed partial class Rnfmabj
             return;
         }
 
-        IReadOnlyList<ulong> requiredPlayers = ParseRequiredPlayerNetIds();
+        IReadOnlyList<ulong> requiredPlayers = ParseLivingRequiredPlayerNetIds();
         ulong playerNetId = cardPlay.Player.NetId;
         if (!requiredPlayers.Contains(playerNetId))
         {
@@ -33,18 +33,17 @@ public sealed partial class Rnfmabj
         }
 
         int progress = GetDirectiveProgress(playerNetId);
-        if (progress >= sequence.Length)
+        if (progress < sequence.Length)
         {
-            // A player who has completed the current directive stays locked
-            // while waiting for every other player.
-            return;
+            CardType playedType = cardPlay.Card.Type;
+            progress = playedType == sequence[progress]
+                ? progress + 1
+                : 0;
+            SetDirectiveProgress(playerNetId, progress);
         }
 
-        CardType playedType = cardPlay.Card.Type;
-        progress = playedType == sequence[progress]
-            ? progress + 1
-            : 0;
-        SetDirectiveProgress(playerNetId, progress);
+        // 已完成的玩家进度锁定，等其他玩家；他们再出牌时也复核一次，
+        // 这样还没完成的队友中途死亡后，指令能由存活玩家的下一张牌完成。
         if (progress < sequence.Length
             || requiredPlayers.Count == 0
             || requiredPlayers.Any(netId =>
@@ -74,7 +73,7 @@ public sealed partial class Rnfmabj
             return RnfmabjDirectiveSnapshot.Hidden;
         }
 
-        IReadOnlyList<ulong> requiredPlayers = ParseRequiredPlayerNetIds();
+        IReadOnlyList<ulong> requiredPlayers = ParseLivingRequiredPlayerNetIds();
         ulong? localPlayerNetId = requestedPlayerNetId;
         if (!localPlayerNetId.HasValue && requiredPlayers.Count > 0)
         {
@@ -185,9 +184,41 @@ public sealed partial class Rnfmabj
         return true;
     }
 
-    private IReadOnlyList<ulong> ParseRequiredPlayerNetIds() =>
-        RnfmabjDirectiveTracker.ParseRequiredPlayerNetIds(
+    /// <summary>
+    /// 计划生成时登记的玩家里当前仍存活的那些。登记名单写在计划生成时，包含当时已倒下的玩家，
+    /// 也不随回合中的死亡更新；死亡的玩家无法再出牌，算进名单指令就永远完成不了。
+    /// 存活状态是同步的战斗状态，两端在同一张牌的结算里得到相同名单；玩家被复活后重新计入。
+    /// </summary>
+    private IReadOnlyList<ulong> ParseLivingRequiredPlayerNetIds()
+    {
+        IReadOnlyList<ulong> registered = RnfmabjDirectiveTracker.ParseRequiredPlayerNetIds(
             DirectiveRequiredPlayerNetIds);
+        if (PlacedCombatState() is not { } combatState)
+        {
+            return registered;
+        }
+
+        return registered
+            .Where(netId => combatState.Players.Any(player =>
+                player.NetId == netId && player.Creature.IsAlive))
+            .ToArray();
+    }
+
+    /// <summary>
+    /// 指令快照也会在怪物还没放进战斗时读取（读回存档状态后、生成生物之前），这时原版的 <c>Creature</c> 访问器会抛异常；
+    /// 没有生物就按“不在战斗中”处理，名单不过滤。
+    /// </summary>
+    private CombatStateLike? PlacedCombatState()
+    {
+        try
+        {
+            return Creature.CombatState;
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+    }
 
     private int GetDirectiveProgress(ulong playerNetId)
     {

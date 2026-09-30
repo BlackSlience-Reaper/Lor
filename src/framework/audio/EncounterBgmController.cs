@@ -1,5 +1,6 @@
 using System;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Logging;
 
 namespace LibraryOfRuina.framework.audio;
@@ -14,7 +15,14 @@ namespace LibraryOfRuina.framework.audio;
 /// </summary>
 internal static class EncounterBgmController
 {
-    public static void RegisterMonster(Creature creature)
+    /// <summary>
+    /// 由怪物的 <c>AfterAddedToRoom</c> 调用，处在同步的生成流程里。载入与播放曲目只影响本机，
+    /// 出错时记录后返回，不能打断后面的状态写入（设计哲学 §4）。
+    /// </summary>
+    public static void RegisterMonster(Creature creature) =>
+        PresentationGuard.Run(() => RegisterMonsterCore(creature), "EncounterBgm register");
+
+    private static void RegisterMonsterCore(Creature creature)
     {
         if (!LibraryOfRuinaSettings.RuntimeSideEffectsEnabled
             || ReverberationEnsembleBgmController.IsActScope)
@@ -74,14 +82,17 @@ internal static class EncounterBgmController
 
     internal static bool IsRunning => BgmSession.IsRunning;
 
+    // 以下两个入口由卡莉 E.G.O. 与各解放层的阶段推进调用，都夹在同步状态写入之间，同样只记录本机的音频错误。
     public static void ForceCurrentEncounterTrack(string trackPath, string logTag, float volumeScale = 0.85f)
     {
-        BgmSession.ForceCurrentEncounterTrack(trackPath, logTag, volumeScale);
+        PresentationGuard.Run(
+            () => BgmSession.ForceCurrentEncounterTrack(trackPath, logTag, volumeScale),
+            "EncounterBgm force track");
     }
 
     public static void RefreshCurrentEncounterTrack()
     {
-        BgmSession.RefreshCurrentEncounterTrack();
+        PresentationGuard.Run(BgmSession.RefreshCurrentEncounterTrack, "EncounterBgm refresh");
     }
 
     public static void OnRunCleaningUp(bool graceful)

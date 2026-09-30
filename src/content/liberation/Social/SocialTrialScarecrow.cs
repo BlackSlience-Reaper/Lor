@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -14,7 +13,7 @@ namespace LibraryOfRuina.content.liberation.Social;
 
 /// <summary>
 /// 稻草人试炼：每名玩家拿到智慧卡。第 2 回合结束时智慧层数不到要求的存活玩家失去当前生命的一定比例，然后进入狮子试炼。
-/// 智慧卡张数读 <c>FalseThrone.UsesToughValues</c>，判定要求读本局的进阶等级，两处写法保持原样。
+/// 智慧卡张数与判定要求都读 <c>FalseThrone.UsesToughValues</c>，与试炼能力文案（<c>ToughAscensionVar</c>）和 Boss 其余数值同源。
 /// </summary>
 internal sealed class SocialTrialScarecrow : SocialTrial
 {
@@ -43,7 +42,7 @@ internal sealed class SocialTrialScarecrow : SocialTrial
     {
         if (encounter.TrialRound >= 2)
         {
-            await ResolveScarecrowPenalty(choiceContext, combatState);
+            await ResolveScarecrowPenalty(choiceContext, boss, combatState);
             encounter.QueueTrial(SocialFloorTrial.Lion);
             await encounter.EnterPendingTrial(choiceContext, boss, combatState);
         }
@@ -119,11 +118,10 @@ internal sealed class SocialTrialScarecrow : SocialTrial
 
     private static async Task ResolveScarecrowPenalty(
         PlayerChoiceContext choiceContext,
+        FalseThrone boss,
         CombatStateLike combatState)
     {
-        int required = combatState.RunState.AscensionLevel
-            >= (int)AscensionLevel
-                .ToughEnemies
+        int required = boss.UsesToughValues
             ? SocialFloorLiberationEncounter.ToughWisdomRequirement
             : SocialFloorLiberationEncounter.NormalWisdomRequirement;
         foreach (Player player in combatState.Players
