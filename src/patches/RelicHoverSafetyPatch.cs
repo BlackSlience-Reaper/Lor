@@ -14,7 +14,6 @@ namespace LibraryOfRuina.patches;
 internal static class RelicInventoryHolderOnFocusSafetyPatch
 {
     private const string LogTag = "LibraryOfRuina.RelicHoverSafety";
-    private static int _suppressedCount;
 
     [HarmonyFinalizer]
     private static Exception? Finalizer(
@@ -30,14 +29,13 @@ internal static class RelicInventoryHolderOnFocusSafetyPatch
 
         TryRemoveHoverTip(__instance);
 
-        if (Interlocked.Increment(ref _suppressedCount) <= 3)
-        {
-            Log.Warn(
-                "[" + LogTag + "] suppressed disposed relic hover tip"
-                + " relic=" + ResolveRelicId(__instance)
-                + " object=" + objectDisposedException.ObjectName
-                + " reason=" + objectDisposedException.Message);
-        }
+        LorLog.WarnFirst(
+            "RelicHoverSafety.Disposed",
+            3,
+            "[" + LogTag + "] suppressed disposed relic hover tip"
+            + " relic=" + ResolveRelicId(__instance)
+            + " object=" + objectDisposedException.ObjectName
+            + " reason=" + objectDisposedException.Message);
 
         return null;
     }
@@ -82,7 +80,6 @@ internal static class RelicInventoryHolderOnFocusSafetyPatch
 internal static class CardGridInitDisposedResourceSafetyPatch
 {
     private const string LogTag = "LibraryOfRuina.CardGridSafety";
-    private static int _suppressedCount;
 
     private static void Postfix(ref Task __result)
     {
@@ -102,12 +99,11 @@ internal static class CardGridInitDisposedResourceSafetyPatch
         }
         catch (Exception exception) when (DisposedGodotResourceSafety.IsKnown(exception))
         {
-            if (Interlocked.Increment(ref _suppressedCount) <= 3)
-            {
-                Log.Warn(
-                    "[" + LogTag + "] suppressed disposed card grid UI resource"
-                    + " reason=" + DisposedGodotResourceSafety.Describe(exception));
-            }
+            LorLog.WarnFirst(
+                "CardGridSafety.Disposed",
+                3,
+                "[" + LogTag + "] suppressed disposed card grid UI resource"
+                + " reason=" + DisposedGodotResourceSafety.Describe(exception));
         }
     }
 }

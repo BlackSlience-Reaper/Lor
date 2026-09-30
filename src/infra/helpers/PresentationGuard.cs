@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using MegaCrit.Sts2.Core.Logging;
 
 namespace LibraryOfRuina.infra.helpers;
 
@@ -13,8 +11,6 @@ namespace LibraryOfRuina.infra.helpers;
 /// </summary>
 internal static class PresentationGuard
 {
-    private static readonly HashSet<string> ReportedSurfaces = new(StringComparer.Ordinal);
-
     internal static async Task RunAsync(Func<Task> presentation, string surface)
     {
         try
@@ -59,15 +55,8 @@ internal static class PresentationGuard
 
     private static void Report(string surface, Exception exception)
     {
-        bool first;
-        lock (ReportedSurfaces)
-        {
-            first = ReportedSurfaces.Add(surface);
-        }
-
-        if (first)
-        {
-            Log.Warn("[LibraryOfRuina.Presentation] " + surface + " failed; state updates continue: " + exception);
-        }
+        LorLog.WarnOnce(
+            "Presentation:" + surface,
+            "[LibraryOfRuina.Presentation] " + surface + " failed; state updates continue: " + exception);
     }
 }

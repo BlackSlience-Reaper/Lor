@@ -359,13 +359,13 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
                     .Where(static c => !SolemnMourningPersistentSealAffliction.IsAnySeal(c))
                     .ToArray();
 
-                GD.Print($"[SolemnCeremony] Eligible cards for sealing: {allCards.Length}, sealCount: {sealCount}");
+                LorLog.Debug($"[SolemnCeremony] Eligible cards for sealing: {allCards.Length}, sealCount: {sealCount}");
 
                 foreach (CardModel card in allCards.TakeRandom(
                     sealCount, combatState.RunState.Rng.CombatCardSelection))
                 {
                     var result = await CardCmd.Afflict<SolemnMourningPersistentSealAffliction>(card, 1);
-                    GD.Print($"[SolemnCeremony] Afflict {card.Id} in {card.Pile?.Type}: result={result != null}");
+                    LorLog.Debug($"[SolemnCeremony] Afflict {card.Id} in {card.Pile?.Type}: result={result != null}");
                 }
             }
         }
@@ -636,7 +636,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
             .Where(static c => !SolemnMourningPersistentSealAffliction.IsAnySeal(c))
             .ToArray();
 
-        GD.Print($"[SealRandomHand] hand={target.Player.PlayerCombatState.Hand.Cards.Count}, eligible={eligibleCards.Length}");
+        LorLog.Debug($"[SealRandomHand] hand={target.Player.PlayerCombatState.Hand.Cards.Count}, eligible={eligibleCards.Length}");
 
         if (eligibleCards.Length == 0)
         {
@@ -654,7 +654,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
         if (card != null)
         {
             var result = await CardCmd.Afflict<SolemnMourningPersistentSealAffliction>(card, 1);
-            GD.Print($"[SealRandomHand] Afflicted {card.Id} in {card.Pile?.Type}: result={result != null}");
+            LorLog.Debug($"[SealRandomHand] Afflicted {card.Id} in {card.Pile?.Type}: result={result != null}");
         }
     }
 

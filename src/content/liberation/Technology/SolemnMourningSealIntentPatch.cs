@@ -18,7 +18,7 @@ internal static class SolemnMourningSealIntentPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "SolemnMourningSealIntent.UpdateVisuals",
                 exception);
             return IntentDecoratorOutcome.Failed;

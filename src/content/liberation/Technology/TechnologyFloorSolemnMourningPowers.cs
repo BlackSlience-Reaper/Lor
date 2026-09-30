@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.infra.helpers;
 using ISecondaryDisplayAmountPower = LibraryOfRuina.framework.powers.ISecondaryDisplayAmountPower;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -120,7 +121,7 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
         }
 
         bool isSeal = SolemnMourningPersistentSealAffliction.IsAnySeal(cardPlay.Card);
-        GD.Print($"[RedemptionHand] AfterCardPlayed: card={cardPlay.Card.Id}, affliction={cardPlay.Card.Affliction?.GetType().Name ?? "null"}, isSeal={isSeal}");
+        LorLog.Debug($"[RedemptionHand] AfterCardPlayed: card={cardPlay.Card.Id}, affliction={cardPlay.Card.Affliction?.GetType().Name ?? "null"}, isSeal={isSeal}");
 
         if (!isSeal)
         {
@@ -143,14 +144,11 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
         SolemnMourningPersistentSealAffliction.SetSealedCardsPlayedThisTurn(combatState, sealedCardsPlayed + 1);
         data.TriggerProgress++;
 
-        //GD.Print($"[RedemptionHand] Sealed card played! progress={data.TriggerProgress}/{Amount}, totalThisTurn={sealedCardsPlayed + 1}");
-
         if (data.TriggerProgress >= Amount)
         {
             data.TriggerProgress = 0;
             Flash();
             await PowerCmdCompat.Apply<StrengthPower>(Owner, data.StrengthPerTrigger, Owner, null);
-            // GD.Print($"[RedemptionHand] Triggered! Granted {data.StrengthPerTrigger} Strength to boss");
         }
 
         InvokeDisplayAmountChanged();

@@ -6,6 +6,7 @@ using LibraryOfRuina.content.acts;
 using LibraryOfRuina.content.specialguests;
 using LibraryOfRuina.content.specialguests.Kali;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -42,7 +43,6 @@ internal static class AbnormalityEliteBgmController
     private static string? _activeTrackPath;
     private static bool _initialized;
     private static bool _isRunning;
-    private static bool _loggedLoadError;
 
     public static void Initialize()
     {
@@ -306,11 +306,9 @@ internal static class AbnormalityEliteBgmController
         AudioStream? stream = ResourceLoader.Load<AudioStream>(trackPath);
         if (stream == null)
         {
-            if (!_loggedLoadError)
-            {
-                _loggedLoadError = true;
-                Log.Error("[" + LogTag + "] Unable to load audio stream: " + trackPath);
-            }
+            LorLog.ErrorOnce(
+                "AbnormalityEliteBgmController.LoadLoopStream",
+                "[" + LogTag + "] Unable to load audio stream: " + trackPath);
 
             return null;
         }
