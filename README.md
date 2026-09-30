@@ -83,7 +83,7 @@ mods/LibraryOfRuina/
 dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 ```
 
-把 `verification/bin/Release/` 下的 `LibraryOfRuinaVerification.dll` 和 `LibraryOfRuinaVerification.json` 放进 `mods/LibraryOfRuinaVerification/`，再用 `--lor-verify-<套件>` 启动游戏，例如 `--headless --lor-verify-king-greed-summon-king`。套件通过后以退出码 0 退出，失败时退出码为 1。比对仓库素材的套件需要环境变量 `LOR_PROJECT_ROOT`（仓库根目录）；Laetitia 原图哈希检查另需 `LOR_ART_SOURCE_ROOT`，未设置时跳过。
+把 `verification/bin/Release/` 下的 `LibraryOfRuinaVerification.dll` 和 `LibraryOfRuinaVerification.json` 放进 `mods/LibraryOfRuinaVerification/`，再用 `--lor-verify-<套件>` 启动游戏，例如 `--headless --lor-verify-king-greed-summon-king`。套件通过后以退出码 0 退出，失败时退出码为 1。比对仓库素材的套件需要环境变量 `LOR_PROJECT_ROOT`（仓库根目录）；Laetitia 原图哈希检查另需 `LOR_ART_SOURCE_ROOT`，未设置时跳过。`--lor-verify-font-screenshots` 是界面截图场景，要用窗口模式（不加 `--headless`）运行，截图和 `manifest.json` 写到环境变量 `LOR_FONT_SHOT_DIR` 指定的目录，用法见套件源码开头的说明。
 
 `multifight`、`multievent`、`tempmap` 控制台命令也在验证模组里。正式模组只保留 `lor_skip`（原名 `skip`），用于强制结算卡住的战斗或事件。
 
