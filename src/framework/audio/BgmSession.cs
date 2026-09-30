@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Logging;
@@ -209,7 +210,11 @@ internal static class BgmSession
         TryAdvanceTrack();
     }
 
-    private static void OnMonsterDied(Creature creature)
+    // 订阅在原版击杀流程的 Creature.Died 事件上，异常会沿击杀流程抛出、打断后面的同步写入；换曲只影响本机，出错时记录后返回。
+    private static void OnMonsterDied(Creature creature) =>
+        PresentationGuard.Run(() => AdvanceOnMonsterDeath(creature), "EncounterBgm monster death");
+
+    private static void AdvanceOnMonsterDeath(Creature creature)
     {
         if (!_isRunning || _activeCombatState == null || _activeConfig == null)
         {
