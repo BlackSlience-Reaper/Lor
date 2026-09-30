@@ -283,7 +283,7 @@ public sealed class BigBadWolfPageRelic : ModalPageRelic<BigBadWolfPageMode>
         if (Mode == BigBadWolfPageMode.PredatoryInstinct
             && _predatoryTriggerTurn
             && Owner.Creature is { IsAlive: true }
-            && side == Owner.Creature.Side
+            && TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
             && _predatoryUnblockedDamageThisTurn)
         {
             Flash();

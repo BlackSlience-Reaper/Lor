@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
@@ -112,7 +113,7 @@ public sealed class ArtFloorImbalancedPower : LibraryOfRuinaPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side == Owner.Side)
+        if (TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             await PowerCmd.Remove(this);
         }

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
@@ -119,7 +120,7 @@ public sealed class LanguageFloorScarPower : LibraryOfRuinaPowerModel
         CombatStateLike combatState)
     {
         await base.AfterSideTurnStart(side, participants, combatState);
-        if (side != Owner.Side || Owner.IsDead || Amount <= 0)
+        if (!TurnParticipants.IsOwnTurn(Owner, side, participants) || Owner.IsDead || Amount <= 0)
         {
             return;
         }
@@ -178,7 +179,7 @@ public sealed class LanguageFloorRagePower : LibraryDurationPowerModel
         CombatStateLike combatState)
     {
         await base.AfterSideTurnStart(side, participants, combatState);
-        if (side == CombatSide.Player && Owner.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Owner.IsAlive)
         {
             await LibraryPowerCmd.Apply<LibraryStrongPower>(
                 new ThrowingPlayerChoiceContext(),

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -76,8 +77,7 @@ public sealed class RnfmabjCorrosionPower :
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        _ = participants;
-        if (Owner.IsDead || side != Owner.Side || Amount <= 0)
+        if (Owner.IsDead || !TurnParticipants.IsOwnTurn(Owner, side, participants) || Amount <= 0)
         {
             return;
         }

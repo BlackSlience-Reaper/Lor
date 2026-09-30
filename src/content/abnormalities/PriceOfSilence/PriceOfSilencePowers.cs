@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using ISecondaryDisplayAmountPower = LibraryOfRuina.framework.powers.ISecondaryDisplayAmountPower;
@@ -512,7 +513,7 @@ public sealed class PriceOfSilenceEncounterTrackerPower : PriceOfSilencePowerMod
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             _lastDamage = new Dictionary<Player, int>(_currentDamage);
             _lastBlock = new Dictionary<Player, int>(_currentBlock);

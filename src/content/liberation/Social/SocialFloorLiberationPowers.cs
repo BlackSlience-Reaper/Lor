@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryLib.Light;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
@@ -159,7 +160,7 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants)
             || PendingTurnStartActivations <= 0
             || Owner.IsDead
             || Owner.Player is not { } player
@@ -179,7 +180,7 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Player || !RemoveAtNextPlayerTurnEnd)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants) || !RemoveAtNextPlayerTurnEnd)
         {
             return;
         }
@@ -368,7 +369,7 @@ public sealed class SocialFloorScaredyCatPower : SocialFloorPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsPlayerTurnFor(Owner, side, participants))
         {
             CardsSubmittedThisTurn = 0;
             if (Owner?.Player is { } player
@@ -432,7 +433,7 @@ public sealed class SocialFloorCowardPower : SocialFloorPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants)
             || Owner.IsDead
             || Owner.Player is not { } player
             || player.NetId != HolderNetId)

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;
@@ -109,7 +110,7 @@ public sealed class GalaxyChildPageRelic : ModalPageRelic<GalaxyChildPageMode>
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != Owner.Creature.Side
+        if (!TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
             || Mode != GalaxyChildPageMode.ProofOfFriendship
             || ProofTurnsRemainingThisCombat <= 0)
         {

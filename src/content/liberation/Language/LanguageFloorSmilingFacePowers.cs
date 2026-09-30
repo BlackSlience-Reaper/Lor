@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -68,7 +69,7 @@ public abstract class LanguageFloorSmilingFaceFakeDeathPower
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Player
+        return TurnParticipants.IsRoundPlayerTurn(side)
             && Owner.Monster is LanguageFloorSmilingFace boss
             && (boss.CorpseTrialPending || boss.CorpseTrialActive)
                 ? boss.TickCorpseTrialOnPlayerTurnStart(combatState)

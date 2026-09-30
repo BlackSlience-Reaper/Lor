@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -53,7 +54,7 @@ public sealed class LibrarySecondAscensionModifier : ModifierModel
 
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
-        if (side != CombatSide.Player)
+        if (!TurnParticipants.IsRoundPlayerTurn(side))
         {
             return;
         }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -31,7 +32,7 @@ public sealed class LibraryOfRuinaRedShoesBloodAttractionPower : LibraryOfRuinaP
 
     public override Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
-        if (Owner == null || Owner.CombatState == null || side == Owner.Side)
+        if (Owner == null || Owner.CombatState == null || !TurnParticipants.IsRoundPlayerTurn(side))
         {
             return Task.CompletedTask;
         }

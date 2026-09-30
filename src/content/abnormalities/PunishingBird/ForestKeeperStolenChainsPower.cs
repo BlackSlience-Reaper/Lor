@@ -36,7 +36,8 @@ public sealed class ForestKeeperStolenChainsPower : PunishingBirdBasePower
             return Task.CompletedTask;
         }
 
-        foreach (var player in Owner.CombatState.Players.Where(static player => player.Creature.IsAlive))
+        foreach (var player in Owner.CombatState.Players.Where(player =>
+                     player.Creature.IsAlive && participants.Contains(player.Creature)))
         {
             CardModel[] locks = PileType.Hand.GetPile(player).Cards
                 .Where(static card => card is ForestKeeperLockStatusCard)

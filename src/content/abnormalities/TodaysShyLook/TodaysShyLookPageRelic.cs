@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -109,7 +110,7 @@ public sealed class TodaysShyLookPageRelic : ModalPageRelic<TodaysShyLookPageMod
 
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
-        if (Mode != TodaysShyLookPageMode.Shyness || side != Owner.Creature.Side)
+        if (Mode != TodaysShyLookPageMode.Shyness || !TurnParticipants.IsOwnTurn(Owner.Creature, side, participants))
         {
             return;
         }

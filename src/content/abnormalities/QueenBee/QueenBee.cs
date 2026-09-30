@@ -4,6 +4,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Combat;
@@ -107,7 +108,7 @@ public sealed class QueenBee : LorMonsterModel
 
     public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
-        if (side != CombatSide.Player)
+        if (!TurnParticipants.IsRoundPlayerTurn(side))
         {
             return;
         }

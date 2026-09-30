@@ -85,7 +85,7 @@ public sealed class BurrowingHeavenPageRelic : ModalPageRelic<BurrowingHeavenPag
     {
         if (Mode != BurrowingHeavenPageMode.OthersGaze
             || Owner.Creature == null
-            || side != Owner.Creature.Side
+            || !TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
             || !Owner.Creature.IsAlive)
         {
             UpdateModeUiState();
