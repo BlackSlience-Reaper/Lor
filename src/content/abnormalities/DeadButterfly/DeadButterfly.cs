@@ -74,10 +74,10 @@ public sealed class DeadButterfly : LorMonsterModel
     private MoveState _move4 = null!;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 16, 13);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 14, 13);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 18, 15);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 15, 14);
 
     private int LightDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);

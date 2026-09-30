@@ -65,7 +65,7 @@ public sealed class LittleWitchFriend : LorMonsterModel
     public override int MaxInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 28, 26);
 
-    public override int DefaultChaoResistance => 35;
+    public override int DefaultChaoResistance => 20;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

@@ -1,0 +1,39 @@
+name: Qodana
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  checks: write
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check Qodana configuration
+        id: configuration
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        run: |
+          if [ -n "$QODANA_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Qodana skipped: QODANA_TOKEN is not configured in this repository." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        if: steps.configuration.outputs.enabled == 'true'
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Qodana Scan
+        if: steps.configuration.outputs.enabled == 'true'
+        uses: JetBrains/qodana-action@v2026.1
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        with:
+          pr-mode: false
+          use-caches: true
+          post-pr-comment: false
+          use-annotations: true
+          upload-result: false
+          push-fixes: 'none'

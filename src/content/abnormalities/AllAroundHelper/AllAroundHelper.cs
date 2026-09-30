@@ -75,12 +75,12 @@ public sealed class AllAroundHelper : CounterIntentMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 51, 49);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 44, 40);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 54, 50);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 47, 44);
 
-    public override int DefaultChaoResistance => 30;
+    public override int DefaultChaoResistance => 25;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

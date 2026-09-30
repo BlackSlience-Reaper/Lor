@@ -47,6 +47,9 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     private const int PredationHeal = 10;
     private const int PredationBlock = 8;
     private const int HungerWingsBleed = 1;
+    private const int HungerWingsHits = 3; // 饥饿之翼：攻击次数，每次攻击分别判定流血。
+    private const int HungerWingsBaseDamage = 4; // 饥饿之翼：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int HungerWingsHighAscensionDamage = 5; // 饥饿之翼：达到 DeadlyEnemies 进阶时的单次伤害。
     private const float SegmentDelaySeconds = 1.25f;
     internal const string BackgroundTextScope = "history_floor_liberation_phase_3";
     private const float BackgroundTextIntervalSeconds = 5f;
@@ -114,7 +117,10 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
 
     private static int HungerWingsDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            HungerWingsHighAscensionDamage,
+            HungerWingsBaseDamage);
 
     private static int PredationDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
@@ -240,9 +246,7 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         var hungerWings = new MoveState(
             HungerWingsMoveId,
             HungerWingsMove,
-            CreateBleedIntent(HungerWingsDamage, HungerWingsBleed),
-            CreateBleedIntent(HungerWingsDamage, HungerWingsBleed),
-            CreateBleedIntent(HungerWingsDamage, HungerWingsBleed));
+            CreateBleedIntent(HungerWingsDamage, HungerWingsBleed, HungerWingsHits));
 
         var predation = new MoveState(
             PredationMoveId,
@@ -290,10 +294,16 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
 
     private async Task HungerWingsMove(IReadOnlyList<Creature> targets)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < HungerWingsHits; i++)
         {
-            if (Creature.IsDead) return;
-            IReadOnlyList<DamageResult> results = await ExecuteAttackSegment(i % 2 == 0 ? "AttackSlash" : "AttackStrike", HungerWingsDamage);
+            if (Creature.IsDead)
+            {
+                return;
+            }
+
+            IReadOnlyList<DamageResult> results = await ExecuteAttackSegment(
+                i % 2 == 0 ? "AttackSlash" : "AttackStrike",
+                HungerWingsDamage);
             await ApplyBleedFromResults(results, HungerWingsBleed);
         }
 
@@ -383,9 +393,10 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         }
     }
 
-    private static BadgedAttackIntent CreateBleedIntent(int damage, int bleedAmount) =>
+    private static BadgedAttackIntent CreateBleedIntent(int damage, int bleedAmount, int hits = 1) =>
         new(
             damage,
+            hits,
             "FLUTTERING_UNBLOCKED_BLEED_ATTACK.description",
             IntentBadge.Bleed(bleedAmount));
 
@@ -422,7 +433,7 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     {
         yield return new SingleAttackIntent(BreathDamage);
         yield return new DefendIntent();
-        yield return CreateBleedIntent(HungerWingsDamage, HungerWingsBleed);
+        yield return CreateBleedIntent(HungerWingsDamage, HungerWingsBleed, HungerWingsHits);
         yield return new SingleAttackIntent(PredationDamage);
         yield return new HealIntent();
         yield return new PlayCardAttackIntent<FlutteringHungerFrenzyEgoCard>(
