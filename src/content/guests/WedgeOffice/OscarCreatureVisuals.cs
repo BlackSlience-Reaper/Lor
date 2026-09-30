@@ -17,7 +17,7 @@ public partial class OscarCreatureVisuals : DawnOfficeTripleAttackCreatureVisual
     internal static readonly SpriteVisualProfile Profile =
         BuildTripleAttackProfile(
             "oscar",
-            "res://images/monsters/oscar.webp",
+            WedgeOfficeAssets.OscarTexture,
             30f,
             -145.2f,
             0.54f);

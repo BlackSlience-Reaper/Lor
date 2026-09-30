@@ -19,7 +19,7 @@ public sealed class BlueStarMartyrdomCard() :
     public const int UpgradedChaoDamage = 9;
     public const int SelfHpLoss = 1;
     public const string SharedPortraitPath =
-        "res://images/packed/card_portraits/colorless/blue_star_martyrdom.png";
+        BlueStarAssets.BlueStarMartyrdomTexture;
 
     public override CardPoolModel VisualCardPool =>
         ModelDb.CardPool<ColorlessCardPool>();

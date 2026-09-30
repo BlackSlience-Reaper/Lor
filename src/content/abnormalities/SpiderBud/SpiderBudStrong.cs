@@ -34,7 +34,7 @@ public sealed class SpiderBudStrong : EncounterModel, IEncounterBgmSource
         {
             var paths = new List<string>
             {
-                "res://images/backgrounds/spider_bud_strong/spider_bud_strong_background.png"
+                SpiderBudAssets.StrongBackground
             };
             paths.AddRange(ModelDb.Monster<SpiderBud>().AssetPaths);
             paths.AddRange(ModelDb.Monster<SpiderBudSmallSpider>().AssetPaths);

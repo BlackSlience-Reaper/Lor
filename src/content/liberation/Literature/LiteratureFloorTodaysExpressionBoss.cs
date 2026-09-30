@@ -41,30 +41,26 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
     public const int AngryFaceHits = 3;
     public const int WaveringFeelingsConfusion = 1;
 
-    private const string Root =
-        "res://images/monsters/literature_floor_liberation/todays_expression/";
     public const string IdleTexturePath =
-        Root + "todays_expression_idle.png";
+        LiteratureFloorAssets.TodaysExpressionMonsterRoot + "todays_expression_idle.png";
     public const string HitTexturePath =
-        Root + "todays_expression_hit.png";
+        LiteratureFloorAssets.TodaysExpressionMonsterRoot + "todays_expression_hit.png";
     public const string ThrustTexturePath =
-        Root + "todays_expression_thrust.png";
+        LiteratureFloorAssets.TodaysExpressionMonsterRoot + "todays_expression_thrust.png";
     public const string GuardTexturePath =
-        Root + "todays_expression_guard.png";
+        LiteratureFloorAssets.TodaysExpressionMonsterRoot + "todays_expression_guard.png";
     public const string S1TexturePath =
-        Root + "todays_expression_s1.png";
+        LiteratureFloorAssets.TodaysExpressionMonsterRoot + "todays_expression_s1.png";
     public const string S2TexturePath =
-        Root + "todays_expression_s2.png";
+        LiteratureFloorAssets.TodaysExpressionMonsterRoot + "todays_expression_s2.png";
 
-    private const string SfxRoot =
-        "res://audio/sfx/literature_floor_liberation/todays_expression/";
-    public const string SmileSfxPath = SfxRoot + "shy_smile.ogg";
-    public const string AngrySfxPath = SfxRoot + "shy_angry.ogg";
-    public const string AttackSfxPath = SfxRoot + "shy_attack.ogg";
+    public const string SmileSfxPath = LiteratureFloorAssets.TodaysExpressionSfxRoot + "shy_smile.ogg";
+    public const string AngrySfxPath = LiteratureFloorAssets.TodaysExpressionSfxRoot + "shy_angry.ogg";
+    public const string AttackSfxPath = LiteratureFloorAssets.TodaysExpressionSfxRoot + "shy_attack.ogg";
     public const string StrongAttackSfxPath =
-        SfxRoot + "shy_strong_attack.ogg";
+        LiteratureFloorAssets.TodaysExpressionSfxRoot + "shy_strong_attack.ogg";
     public const string StrongGuardSfxPath =
-        SfxRoot + "shy_strong_guard.ogg";
+        LiteratureFloorAssets.TodaysExpressionSfxRoot + "shy_strong_guard.ogg";
 
     internal const string BackgroundTextScope =
         "literature_floor_todays_expression_phase_4";
@@ -195,8 +191,8 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
                 AttackSfxPath,
                 StrongAttackSfxPath,
                 StrongGuardSfxPath,
-                "res://images/powers/library_passive_green.png",
-                "res://images/powers/history_floor_corrosion_power.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon,
+                LiteratureFloorAssets.HistoryFloorCorrosionPowerIcon
             };
             paths.AddRange(
                 LiteratureFloorTodaysExpressionCreatureVisuals

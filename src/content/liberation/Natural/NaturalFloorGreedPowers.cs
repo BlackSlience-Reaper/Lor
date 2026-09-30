@@ -20,7 +20,7 @@ public abstract class NaturalFloorGreedPassivePower : LibraryOfRuinaPowerModel
 {
     protected abstract string IconName { get; }
 
-    public override string PackedIconPath => "res://images/powers/library_of_ruina_" + IconName + "_power.png";
+    public override string PackedIconPath => NaturalFloorAssets.PowerIconPrefix + IconName + "_power.png";
 
     public override string ResolvedBigIconPath => PackedIconPath;
 

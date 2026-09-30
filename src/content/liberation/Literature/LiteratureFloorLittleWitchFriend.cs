@@ -35,13 +35,6 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
     private const int MoveOneBleed = 3;
     private const int MoveTwoHits = 4;
 
-    private const string HitSfxPath =
-        "res://audio/sfx/leticia/friend_hit.ogg";
-    private const string PierceSfxPath =
-        "res://audio/sfx/leticia/friend_pierce.ogg";
-    private const string GiftCloseSfxPath =
-        "res://audio/sfx/leticia/gift_close.ogg";
-
     private LiteratureFloorLittleWitchFriendInitialMove _initialMove =
         LiteratureFloorLittleWitchFriendInitialMove.Move1;
 
@@ -92,11 +85,11 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
             var paths = new List<string>
             {
                 LiteratureFloorLittleWitchFriendCreatureVisuals.ScenePath,
-                HitSfxPath,
-                PierceSfxPath,
-                GiftCloseSfxPath,
+                LiteratureFloorAssets.FriendHitSfx,
+                LiteratureFloorAssets.FriendPierceSfx,
+                LiteratureFloorAssets.GiftCloseSfx,
                 LeticiaFilterOverlayController.FilterTwoTexturePath,
-                "res://images/powers/library_passive_green.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {
@@ -194,7 +187,7 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
 
     private async Task MoveOne(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(HitSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.FriendHitSfx, -2f);
         await DamageCmd.Attack(MoveOneDamage)
             .FromMonster(this)
             .WithAttackerAnim(
@@ -222,7 +215,7 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
     {
         for (int hit = 0; hit < MoveTwoHits && Creature.IsAlive; hit++)
         {
-            LocalOggOneShotPlayer.Play(PierceSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(LiteratureFloorAssets.FriendPierceSfx, -2f);
             await DamageCmd.Attack(MoveTwoDamage)
                 .FromMonster(this)
                 .WithAttackerAnim(
@@ -236,7 +229,7 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
 
     private async Task MoveThree(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GiftCloseSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.GiftCloseSfx, -2f);
         LeticiaFilterOverlayController.PlayGiftCloseOverlay();
         await CreatureCmd.TriggerAnim(
             Creature,

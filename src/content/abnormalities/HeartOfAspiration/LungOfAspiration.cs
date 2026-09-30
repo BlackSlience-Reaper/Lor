@@ -26,17 +26,17 @@ public sealed class LungOfAspiration : AspirationMonsterBase
     private const int ViolentPulseHits = 3;
     private const int StrengthAmount = 3;
 
-    public const string TextureRoot = "res://images/monsters/lung_of_aspiration/";
+    public const string TextureRoot = HeartOfAspirationAssets.LungOfAspirationMonsterRoot;
     public const string IdleTexturePath = TextureRoot + "idle.png";
     public const string AttackTexturePath = TextureRoot + "attack.png";
     public const string HitTexturePath = TextureRoot + "hit.png";
     public const string SpecialTexturePath = TextureRoot + "special.png";
-    public const string AttackSfxPath = "res://audio/sfx/heart_of_aspiration/lung_attack.ogg";
+    public const string AttackSfxPath = HeartOfAspirationAssets.LungAttackSfx;
 
     private static readonly string[] AdditionalAssetPaths =
     [
         AttackSfxPath,
-        "res://images/powers/lung_of_aspiration_desire_passive_power.png"
+        HeartOfAspirationAssets.LungOfAspirationDesirePassivePowerIcon
     ];
 
     private int? _contractingPulseDamageRoll;

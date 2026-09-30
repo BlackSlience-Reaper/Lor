@@ -38,11 +38,11 @@ public sealed class BlueStarAltar : LorMonsterModel
     public const string NovaVoiceMoveId = "NOVA_VOICE";
     private const string RouterStateId = "BLUE_STAR_ALTAR_ROUTER";
 
-    public const string TextureRoot = "res://images/monsters/blue_star_altar/";
+    public const string TextureRoot = BlueStarAssets.BlueStarAltarMonsterRoot;
     public const string IdleTexturePath = TextureRoot + "idle.png";
     public const string NovaTexturePath = TextureRoot + "nova.png";
 
-    public const string AudioRoot = "res://audio/sfx/blue_star/";
+    public const string AudioRoot = BlueStarAssets.BlueStarSfxRoot;
     public const string BgmPath = AudioRoot + "blue_star_bgm.ogg";
     public const string AttackSfxPath = AudioRoot + "blue_star_attack.ogg";
     public const string CastSfxPath = AudioRoot + "blue_star_cast.ogg";
@@ -53,12 +53,12 @@ public sealed class BlueStarAltar : LorMonsterModel
 
     private static readonly string[] PowerIconPaths =
     [
-        "res://images/powers/blue_star_divine_power.png",
-        "res://images/powers/blue_star_nova_voice_power.png",
-        "res://images/powers/blue_star_return_to_stars_power.png",
-        "res://images/powers/blue_star_martyr_power.png",
-        "res://images/powers/blue_star_follower_voice_power.png",
-        "res://images/powers/blue_star_martyrdom_power.png"
+        BlueStarAssets.DivinePowerIcon,
+        BlueStarAssets.NovaVoicePowerIcon,
+        BlueStarAssets.ReturnToStarsPowerIcon,
+        BlueStarAssets.MartyrPowerIcon,
+        BlueStarAssets.FollowerVoicePowerIcon,
+        BlueStarAssets.MartyrdomPowerIcon
     ];
 
     private static readonly string[] AudioPaths =

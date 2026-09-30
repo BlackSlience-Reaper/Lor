@@ -33,7 +33,7 @@ public sealed class KingOfGreedElite : EncounterModel
 
     public override MegaSkeletonDataResource? BossNodeSpineResource => null;
 
-    public override string BossNodePath => "res://images/map/placeholder/king_of_greed_boss_icon";
+    public override string BossNodePath => KingOfGreedAssets.PlaceholderBossMapIconPrefix;
 
     public override IEnumerable<MonsterModel> AllPossibleMonsters =>
     [

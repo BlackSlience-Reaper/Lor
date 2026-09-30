@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.framework.assets;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.ControllerInput;
 using MegaCrit.Sts2.Core.Helpers;
@@ -64,7 +65,7 @@ internal partial class NExtModButton : NButton
             LabelSettings = new LabelSettings
             {
                 FontSize = 24,
-                Font = PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_regular_glyph_space_one.tres"),
+                Font = PreloadManager.Cache.GetAsset<Font>(SharedAssets.KreonRegularGlyphSpaceOneResource),
                 FontColor = _textNormal,
                 ShadowSize = 2,
                 ShadowColor = new Color(0f, 0f, 0f, 0.8f)

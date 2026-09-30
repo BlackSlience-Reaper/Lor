@@ -8,7 +8,7 @@ namespace LibraryOfRuina.content.liberation.Natural;
 
 internal static class NaturalFloorNihilEffects
 {
-    internal const string ScenePath = "res://scenes/vfx/natural_floor_nihil_attack.tscn";
+    internal const string ScenePath = NaturalFloorAssets.NihilAttackScene;
     private const float FadeSeconds = 0.22f; // 专属攻击特效：结算后淡出的时间。
     private const float SwordScale = 0.42f; // 绝望与正义招式：飞剑特效的场景显示倍率。
 

@@ -1,0 +1,4 @@
+# 代码先探测（FileAccess.FileExists / ResourceLoader.Exists）再读取、允许不存在的 res:// 路径。手工维护，
+# tools/check_res_paths.py 核对；格式：路径<TAB>探测点与缺失时的行为。
+res://LibraryOfRuina/config/intentgraph_display.jsonc	IntentGraphDisplayConfigRepository：包内默认配置的覆盖口，仓库里没有这个文件，缺失时用代码里的 DefaultConfigTemplate；导出过滤只收 *.json，放了 .jsonc 也不会进 PCK
+res://LibraryOfRuina/config/intentgraph_display.json	IntentGraphDisplayConfigRepository：同上，旧文件名

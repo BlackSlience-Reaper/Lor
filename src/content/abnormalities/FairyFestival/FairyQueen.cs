@@ -38,14 +38,14 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     // 饥饿狂乱吞噬全部畸块时，女王剩余生命占最大生命的百分比阈值。
     public const int StarvedFrenzyHpThresholdPercent = 25;
 
-    public const string Root = "res://images/monsters/fairy_festival/";
+    public const string Root = FairyFestivalAssets.FairyFestivalMonsterRoot;
     public const string IdleTexturePath = Root + "fairy_queen.png";
     public const string IdleAltTexturePath = Root + "fairy_queen_idle_alt.png";
     public const string AttackTexturePath = Root + "fairy_queen_attack.png";
     public const string CastTexturePath = Root + "fairy_queen_cast.png";
     public const string HitTexturePath = Root + "fairy_queen_hit.png";
 
-    public const string SfxRoot = "res://audio/sfx/fairy_festival/";
+    public const string SfxRoot = FairyFestivalAssets.FairyFestivalSfxRoot;
     public const string AttackSfxPath = SfxRoot + "queen_attack.ogg";
     public const string PredationSfxPath = SfxRoot + "queen_predation.ogg";
     public const string BreathSfxPath = SfxRoot + "queen_breath.ogg";
@@ -132,7 +132,7 @@ public sealed class FairyQueen : CounterIntentMonsterModel
             BreathSfxPath,
             ChangeSfxPath,
             SpecialSfxPath,
-            "res://images/vfx/fairy_festival_predation_overlay.png"
+            FairyFestivalAssets.PredationOverlayTexture
         })
         .Concat(EnumerateIntentAssets().SelectMany(intent => intent.AssetPaths))
         .Distinct();

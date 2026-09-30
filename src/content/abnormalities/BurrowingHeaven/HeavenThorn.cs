@@ -37,7 +37,7 @@ public sealed class HeavenThorn : CounterIntentMonsterModel
     private const int ExtendingThornBlock = 23;
     private const int ExtendingThornStrength = 3;
 
-    internal const string TextureRoot = "res://images/monsters/heaven_thorn/";
+    internal const string TextureRoot = BurrowingHeavenAssets.HeavenThornMonsterRoot;
     internal const string AwakeTexturePath = TextureRoot + "idle_awake.png";
     internal const string SleepTexturePath = TextureRoot + "idle_sleep.png";
     internal const string AttackTexturePath = TextureRoot + "attack.png";
@@ -47,9 +47,9 @@ public sealed class HeavenThorn : CounterIntentMonsterModel
     private static readonly string[] AdditionalAssetPaths =
     [
         BurrowingHeaven.AttackSfxPath,
-        "res://images/powers/heaven_thorn_do_not_shift_gaze_passive_power.png",
-        "res://images/powers/heaven_thorn_invisible_connection_passive_power.png",
-        "res://images/powers/heaven_thorn_sleep_power.png"
+        BurrowingHeavenAssets.HeavenThornDoNotShiftGazePassivePowerIcon,
+        BurrowingHeavenAssets.HeavenThornInvisibleConnectionPassivePowerIcon,
+        BurrowingHeavenAssets.HeavenThornSleepPowerIcon
     ];
 
     private Dictionary<string, MoveState> _statesById = [];

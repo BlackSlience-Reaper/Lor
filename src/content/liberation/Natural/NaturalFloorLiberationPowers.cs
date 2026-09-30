@@ -55,7 +55,7 @@ public sealed class NaturalFloorBadGuyPower : LibraryOfRuinaPowerModel
         }
     }
 
-    public const string CustomIconPath = "res://images/powers/natural_floor_bad_guy_power.png";
+    public const string CustomIconPath = NaturalFloorAssets.BadGuyPowerIcon;
 
     public override string PackedIconPath => CustomIconPath;
 

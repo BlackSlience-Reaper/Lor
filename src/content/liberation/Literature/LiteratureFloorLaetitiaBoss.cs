@@ -44,17 +44,6 @@ public sealed class LiteratureFloorLaetitiaBoss :
     private const int DebuffTurns = 1;
     private const int SuperGiftCards = 2;
 
-    private const string AttackSfxPath =
-        "res://audio/sfx/leticia/leticia_attack.ogg";
-    private const string GuardSfxPath =
-        "res://audio/sfx/leticia/leticia_guard.ogg";
-    private const string GiftOpenSfxPath =
-        "res://audio/sfx/leticia/gift_open.ogg";
-    private const string StrongChargeSfxPath =
-        "res://audio/sfx/literature_floor_liberation/laetitia_strong_charge.ogg";
-    private const string StrongAttackSfxPath =
-        "res://audio/sfx/literature_floor_liberation/laetitia_strong_attack.ogg";
-
     private const string BackgroundTextScope =
         "literature_floor_laetitia_phase_1";
     private const float BackgroundTextIntervalSeconds = 5f;
@@ -144,14 +133,14 @@ public sealed class LiteratureFloorLaetitiaBoss :
             var paths = new List<string>
             {
                 LiteratureFloorLaetitiaBossCreatureVisuals.ScenePath,
-                AttackSfxPath,
-                GuardSfxPath,
-                GiftOpenSfxPath,
-                StrongChargeSfxPath,
-                StrongAttackSfxPath,
+                LiteratureFloorAssets.LeticiaAttackSfx,
+                LiteratureFloorAssets.LeticiaGuardSfx,
+                LiteratureFloorAssets.GiftOpenSfx,
+                LiteratureFloorAssets.LaetitiaStrongChargeSfx,
+                LiteratureFloorAssets.LaetitiaStrongAttackSfx,
                 LeticiaFilterOverlayController.FilterOneTexturePath,
-                "res://images/powers/library_passive_green.png",
-                "res://images/powers/history_floor_corrosion_power.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon,
+                LiteratureFloorAssets.HistoryFloorCorrosionPowerIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {
@@ -443,7 +432,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
 
     private async Task SendGiftMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.LeticiaAttackSfx, -2f);
         await PlayActionAnimationToCompletion("Attack");
         await DamageCmd.Attack(AttackDamage)
             .FromMonster(this)
@@ -456,7 +445,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
 
     private async Task DontGetHurtMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GuardSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.LeticiaGuardSfx, -2f);
         await PlayActionAnimationToCompletion("Cast");
         Creature[] enemies = LivingEnemies().ToArray();
         await GainAdjustedBlock(enemies, DontGetHurtBlock);
@@ -470,7 +459,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
 
     private async Task HaveFunMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GuardSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.LeticiaGuardSfx, -2f);
         await PlayActionAnimationToCompletion("Cast");
         Creature[] enemies = LivingEnemies().ToArray();
         foreach (Creature enemy in enemies)
@@ -488,7 +477,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
 
     private async Task ItsAGiftMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GiftOpenSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.GiftOpenSfx, -2f);
         LeticiaFilterOverlayController.PlayGiftOpenOverlay();
         await PlayActionAnimationToCompletion("Cast");
         await GainAdjustedBlock([Creature], ItsAGiftBlock);
@@ -513,10 +502,10 @@ public sealed class LiteratureFloorLaetitiaBoss :
 
     private async Task SuperGiftMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(StrongChargeSfxPath, -1f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.LaetitiaStrongChargeSfx, -1f);
         LeticiaFilterOverlayController.PlayGiftOpenOverlay();
         await PlayActionAnimationToCompletion("SuperGift");
-        LocalOggOneShotPlayer.Play(StrongAttackSfxPath, -1f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.LaetitiaStrongAttackSfx, -1f);
         await DamageCmd.Attack(AttackDamage)
             .FromMonster(this)
             .WithNoAttackerAnim()

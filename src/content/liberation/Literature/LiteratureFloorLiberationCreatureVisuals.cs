@@ -9,7 +9,7 @@ internal sealed partial class LiteratureFloorLaetitiaBossCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_laetitia_boss.tscn";
+        LiteratureFloorAssets.LaetitiaBossScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorLaetitiaAnimationContract.Library;
@@ -45,7 +45,7 @@ internal sealed partial class LiteratureFloorGiftBoxCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_surprise_gift_box.tscn";
+        LiteratureFloorAssets.SurpriseGiftBoxScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorGiftBoxAnimationContract.Library;
@@ -69,7 +69,7 @@ internal sealed partial class LiteratureFloorLittleWitchFriendCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_little_witch_friend.tscn";
+        LiteratureFloorAssets.LittleWitchFriendScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorLittleWitchFriendAnimationContract.Library;
@@ -91,7 +91,7 @@ internal sealed partial class LiteratureFloorRedEyesCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_red_eyes_boss.tscn";
+        LiteratureFloorAssets.RedEyesBossScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorRedEyesAnimationContract.Library;
@@ -121,7 +121,7 @@ internal sealed partial class
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_enhanced_small_spider.tscn";
+        LiteratureFloorAssets.EnhancedSmallSpiderScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorEnhancedSmallSpiderAnimationContract.Library;

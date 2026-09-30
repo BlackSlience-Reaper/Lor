@@ -68,7 +68,7 @@ public sealed class Ozma : LorMonsterModel
     private const string PainMoveId = "PAIN_OF_THE_ROBBED";
     private const string SorrowMoveId = "SORROW_OF_THE_ROBBED";
 
-    internal const string TextureRoot = "res://images/monsters/ozma/";
+    internal const string TextureRoot = OzmaAssets.OzmaMonsterRoot;
     public const string IdleTexturePath = TextureRoot + "ozma_idle.png";
     public const string AttackTexturePath = TextureRoot + "ozma_attack.png";
     public const string HitTexturePath = TextureRoot + "ozma_hit.png";
@@ -76,12 +76,11 @@ public sealed class Ozma : LorMonsterModel
     public const string PainTexturePath = TextureRoot + "ozma_pain.png";
     public const string SorrowTexturePath = TextureRoot + "ozma_sorrow.png";
 
-    private const string SfxRoot = "res://audio/sfx/ozma/";
-    public const string SummonJackSfxPath = SfxRoot + "summon_jacks.ogg";
-    public const string TrueJackGetCardSfxPath = SfxRoot + "true_jack_get_card.ogg";
-    public const string StrongAttackStartSfxPath = SfxRoot + "strong_attack_start.ogg";
-    public const string StrongAttackEndSfxPath = SfxRoot + "strong_attack_end.ogg";
-    public const string InterferenceHitSfxPath = SfxRoot + "interference_hit.ogg";
+    public const string SummonJackSfxPath = OzmaAssets.OzmaSfxRoot + "summon_jacks.ogg";
+    public const string TrueJackGetCardSfxPath = OzmaAssets.OzmaSfxRoot + "true_jack_get_card.ogg";
+    public const string StrongAttackStartSfxPath = OzmaAssets.OzmaSfxRoot + "strong_attack_start.ogg";
+    public const string StrongAttackEndSfxPath = OzmaAssets.OzmaSfxRoot + "strong_attack_end.ogg";
+    public const string InterferenceHitSfxPath = OzmaAssets.OzmaSfxRoot + "interference_hit.ogg";
 
     private static readonly string[] AssetPathsStatic =
         OzmaCreatureVisuals.Profile.AssetPaths
@@ -93,10 +92,10 @@ public sealed class Ozma : LorMonsterModel
         StrongAttackStartSfxPath,
         StrongAttackEndSfxPath,
         InterferenceHitSfxPath,
-        "res://images/powers/ozma_forgotten_power.png",
-        "res://images/powers/ozma_lost_memory_power.png",
-        "res://images/powers/ozma_pain_passive_power.png",
-        "res://images/powers/ozma_sorrow_passive_power.png"
+        OzmaAssets.ForgottenPowerIcon,
+        OzmaAssets.LostMemoryPowerIcon,
+        OzmaAssets.PainPassivePowerIcon,
+        OzmaAssets.SorrowPassivePowerIcon
         ])
         .ToArray();
 

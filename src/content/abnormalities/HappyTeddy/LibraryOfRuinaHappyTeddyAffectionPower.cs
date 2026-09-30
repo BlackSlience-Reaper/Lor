@@ -13,7 +13,6 @@ namespace LibraryOfRuina.content.abnormalities.HappyTeddy;
 public sealed class LibraryOfRuinaHappyTeddyAffectionPower : LibraryOfRuinaPowerModel
 {
     private const int MaxAffectionStacks = 3;
-    private const string AffectionGainSfxPath = "res://audio/sfx/happy_teddy/happy_teddy_music_box.ogg";
 
     protected override string LegacyPowerId => "HAPPY_TEDDY_AFFECTION_POWER";
 
@@ -53,7 +52,7 @@ public sealed class LibraryOfRuinaHappyTeddyAffectionPower : LibraryOfRuinaPower
         }
 
         Flash();
-        LocalOggOneShotPlayer.Play(AffectionGainSfxPath, -5f);
+        LocalOggOneShotPlayer.Play(HappyTeddyAssets.MusicBoxSfx, -5f);
         await PowerCmdCompat.ModifyAmount(this, 1m, cardDealer, cardPlay.Card);
 
         if (Amount >= MaxAffectionStacks)

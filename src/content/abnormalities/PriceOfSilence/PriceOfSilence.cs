@@ -40,12 +40,12 @@ public sealed class PriceOfSilence : LorMonsterModel
     internal const int InevitableDoomMaxDamage = 15;
     internal const int InevitableDoomHits = 3;
 
-    internal const string TextureRoot = "res://images/monsters/price_of_silence/";
+    internal const string TextureRoot = PriceOfSilenceAssets.PriceOfSilenceMonsterRoot;
     internal const string IdleTexturePath = TextureRoot + "idle.png";
     internal const string SpecialTexturePath = TextureRoot + "special.png";
-    internal const string BackgroundRoot = "res://images/backgrounds/price_of_silence_strong/";
+    internal const string BackgroundRoot = PriceOfSilenceAssets.PriceOfSilenceStrongBackgroundRoot;
     internal const string FilterTexturePath = BackgroundRoot + "filter.png";
-    internal const string SfxRoot = "res://audio/sfx/price_of_silence/";
+    internal const string SfxRoot = PriceOfSilenceAssets.PriceOfSilenceSfxRoot;
     internal const string MassAttackSfxPath = SfxRoot + "mass_attack.ogg";
     internal const string TraceDestroyedSfxPath = SfxRoot + "trace_destroyed.ogg";
     internal const string SilenceCardSfxPath = SfxRoot + "silence_card.ogg";
@@ -60,12 +60,12 @@ public sealed class PriceOfSilence : LorMonsterModel
         TraceDestroyedSfxPath,
         SilenceCardSfxPath,
         AmbientSfxPath,
-        "res://images/powers/price_of_silence_passive_power.png",
-        "res://images/powers/price_of_silence_silence_power.png",
-        "res://images/powers/accumulated_time_power.png",
-        "res://images/powers/unstoppable_time_power.png",
-        "res://images/powers/ticking_attack_power.png",
-        "res://images/powers/ticking_guard_power.png"
+        PriceOfSilenceAssets.PassivePowerIcon,
+        PriceOfSilenceAssets.SilencePowerIcon,
+        PriceOfSilenceAssets.AccumulatedTimePowerIcon,
+        PriceOfSilenceAssets.UnstoppableTimePowerIcon,
+        PriceOfSilenceAssets.TickingAttackPowerIcon,
+        PriceOfSilenceAssets.TickingGuardPowerIcon
     ];
 
     private Dictionary<string, MoveState> _statesById = [];

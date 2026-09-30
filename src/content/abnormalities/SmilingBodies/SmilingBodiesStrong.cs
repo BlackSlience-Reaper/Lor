@@ -47,7 +47,7 @@ public sealed class SmilingBodiesStrong : EncounterModel, IEncounterBgmSource
             .Concat(GuestReceptionPoolRegistry.LanguageReceptionFloorBgmTracks)
             .Concat(new[]
             {
-                "res://images/backgrounds/smiling_bodies_strong/background.png"
+                SmilingBodiesAssets.StrongBackground
             })
             .Distinct();
 

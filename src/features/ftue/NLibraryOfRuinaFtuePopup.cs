@@ -190,7 +190,7 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
         _arrow = new TextureRect
         {
             Name = "Arrow",
-            Texture = ResourceLoader.Load<Texture2D>("res://images/ftue/ftue_pointer_arrow.png"),
+            Texture = ResourceLoader.Load<Texture2D>(LibraryOfRuinaFtueAssets.FtuePointerArrowTexture),
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.Scale,
             MouseFilter = MouseFilterEnum.Ignore,
@@ -202,8 +202,8 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
 
         _panel = new TextureRect();
         _panel.Name = "FtuePopup";
-        _panel.Texture = ResourceLoader.Load<Texture2D>("res://images/ftue/ftue_popup.png");
-        _panel.Material = ResourceLoader.Load<Material>("res://shaders/ftue_popup.tres");
+        _panel.Texture = ResourceLoader.Load<Texture2D>(LibraryOfRuinaFtueAssets.FtuePopupTexture);
+        _panel.Material = ResourceLoader.Load<Material>(LibraryOfRuinaFtueAssets.FtuePopupResource);
         _panel.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
         _panel.StretchMode = TextureRect.StretchModeEnum.Scale;
         _panel.MouseFilter = MouseFilterEnum.Stop;
@@ -230,7 +230,7 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
         _titleLabel.AddThemeFontOverride(
             "normal_font",
             PreloadManager.Cache.GetAsset<Font>(
-                "res://themes/kreon_bold_glyph_space_two.tres"));
+                LibraryOfRuinaFtueAssets.KreonBoldGlyphSpaceTwoResource));
         _titleLabel.AddThemeColorOverride(
             "default_color",
             new Color(0.937255f, 0.784314f, 0.317647f));
@@ -272,7 +272,7 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
         _pageCountLabel.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         _pageCountLabel.Visible = _totalPages > 1;
 
-        var kreonNormal = PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_regular_shared.tres");
+        var kreonNormal = PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonRegularSharedResource);
         _pageCountLabel.AddThemeFontOverride("font", kreonNormal);
         _pageCountLabel.AddThemeFontSizeOverride("font_size", BodyFontSize);
         _pageCountLabel.AddThemeColorOverride("font_color", new Color(0.7f, 0.65f, 0.55f));
@@ -556,8 +556,8 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
 
     private static MegaRichTextLabel CreateRichLabel(string name, int fontSize)
     {
-        var kreonNormal = PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_regular_shared.tres");
-        var kreonBold = PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_bold_shared.tres");
+        var kreonNormal = PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonRegularSharedResource);
+        var kreonBold = PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonBoldSharedResource);
 
         var label = new MegaRichTextLabel
         {

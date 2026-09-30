@@ -54,14 +54,14 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
     private const int OldGodWeakStacks = 10;
     private const int OldGodWeakTurns = 1;
 
-    internal const string TextureRoot = "res://images/monsters/burrowing_heaven/";
+    internal const string TextureRoot = BurrowingHeavenAssets.BurrowingHeavenMonsterRoot;
     internal const string AwakeTexturePath = TextureRoot + "idle_awake.png";
     internal const string SleepTexturePath = TextureRoot + "idle_sleep.png";
     internal const string AttackTexturePath = TextureRoot + "attack.png";
     internal const string HitTexturePath = TextureRoot + "hit.png";
     internal const string SpecialTexturePath = TextureRoot + "special.png";
     internal const string GuardTexturePath = TextureRoot + "guard.png";
-    internal const string SfxRoot = "res://audio/sfx/burrowing_heaven/";
+    internal const string SfxRoot = BurrowingHeavenAssets.BurrowingHeavenSfxRoot;
     internal const string AttackSfxPath = SfxRoot + "attack.ogg";
     internal const string AwakeSfxPath = SfxRoot + "awake_strong.ogg";
     internal const string SpecialFirstSfxPath = SfxRoot + "special_attack_1.ogg";
@@ -79,10 +79,10 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
         SpecialFirstSfxPath,
         SpecialSecondSfxPath,
         ..ScreamSfxPaths,
-        "res://images/powers/burrowing_heaven_perfect_focus_passive_power.png",
-        "res://images/powers/burrowing_heaven_wings_toward_old_god_passive_power.png",
-        "res://images/powers/burrowing_heaven_in_cognition_passive_power.png",
-        "res://images/powers/burrowing_heaven_sleep_power.png"
+        BurrowingHeavenAssets.PerfectFocusPassivePowerIcon,
+        BurrowingHeavenAssets.WingsTowardOldGodPassivePowerIcon,
+        BurrowingHeavenAssets.InCognitionPassivePowerIcon,
+        BurrowingHeavenAssets.SleepPowerIcon
     ];
 
     private static readonly string PageRelicTitleLocKey = $"{ModelDb.GetId<BurrowingHeavenPageRelic>().Entry}.title";

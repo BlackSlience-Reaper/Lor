@@ -40,7 +40,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
     public const int FragrancePerHit = 2;
     public const int AtonementCrownAmount = 1;
 
-    public const string Root = "res://images/monsters/art_floor/nostalgic_scent/";
+    public const string Root = ArtFloorAssets.NostalgicScentMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string RangedTexturePath = Root + "ranged.png";
     public const string BluntTexturePath = Root + "blunt.png";
@@ -51,7 +51,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
     public const string EgoS2TexturePath = Root + "ego_s2.png";
     public const string EgoS3TexturePath = Root + "ego_s3.png";
 
-    public const string SfxRoot = "res://audio/sfx/art_floor/nostalgic_scent/";
+    public const string SfxRoot = ArtFloorAssets.NostalgicScentSfxRoot;
     public const string AttackSfxPath = SfxRoot + "attack.ogg";
     public const string RangedSfxPath = SfxRoot + "ranged.ogg";
     public const string EgoSfxPath = SfxRoot + "ego.ogg";

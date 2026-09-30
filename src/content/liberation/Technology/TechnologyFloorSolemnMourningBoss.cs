@@ -51,7 +51,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_4";
     private const float BackgroundTextIntervalSeconds = 5f;
 
-    public const string Root = "res://images/monsters/technology_floor/solemn_mourning/";
+    public const string Root = TechnologyFloorAssets.SolemnMourningMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string AttackTexturePath = Root + "attack.png";
     public const string HitTexturePath = Root + "hit.png";

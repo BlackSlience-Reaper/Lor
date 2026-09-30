@@ -59,14 +59,14 @@ public sealed class JudgementBird : LorMonsterModel
         "JUDGEMENT_BIRD_GAZE_RANDOM_ROUTER";
 
     internal const string TextureRoot =
-        "res://images/monsters/judgement_bird/";
+        JudgementBirdAssets.JudgementBirdMonsterRoot;
     internal const string IdleTexturePath = TextureRoot + "idle.png";
     internal const string FireTexturePath = TextureRoot + "fire.png";
     internal const string GuardTexturePath = TextureRoot + "guard.png";
     internal const string HitTexturePath = TextureRoot + "hit.png";
 
     internal const string SfxRoot =
-        "res://audio/sfx/judgement_bird/";
+        JudgementBirdAssets.JudgementBirdSfxRoot;
     internal const string OnSfxPath = SfxRoot + "on.ogg";
     internal const string DownSfxPath = SfxRoot + "down.ogg";
     internal const string HangSfxPath = SfxRoot + "hang.ogg";
@@ -541,7 +541,7 @@ public sealed class EscapedBird : LorMonsterModel
     internal const string RouterId = "ESCAPED_BIRD_ROUTER";
 
     internal const string TextureRoot =
-        "res://images/monsters/escaped_bird/";
+        JudgementBirdAssets.EscapedBirdMonsterRoot;
     internal const string IdleTexturePath = TextureRoot + "idle.png";
     internal const string AttackTexturePath = TextureRoot + "attack.png";
     internal const string AttackTwoTexturePath =

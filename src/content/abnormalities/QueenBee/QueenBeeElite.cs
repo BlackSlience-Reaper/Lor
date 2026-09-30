@@ -19,9 +19,9 @@ public sealed class QueenBeeElite : EncounterModel, ISporeWorkerSpawner
     public const string WorkerSlotOne = "worker_bee_1";
     public const string WorkerSlotTwo = "worker_bee_2";
     public const string EncounterScenePath =
-        "res://scenes/encounters/queen_bee_elite.tscn";
+        QueenBeeAssets.QueenBeeEliteEncounterScene;
     public const string BackgroundLayerScenePath =
-        "res://scenes/backgrounds/queen_bee_elite/layers/queen_bee_elite_bg_00_a.tscn";
+        QueenBeeAssets.EliteBg00ABackgroundScene;
 
     private const int MaxWorkerCount = 2;
 

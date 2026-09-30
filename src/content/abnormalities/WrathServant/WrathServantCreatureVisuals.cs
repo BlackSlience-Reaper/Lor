@@ -6,19 +6,19 @@ namespace LibraryOfRuina.content.abnormalities.WrathServant;
 [MonsterVisual(typeof(WrathServant), ScenePath = WrathServantCreatureVisuals.ScenePath)]
 internal sealed partial class WrathServantCreatureVisuals : SceneAnimatedCreatureVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/wrath_servant.tscn";
+    internal const string ScenePath = WrathServantAssets.WrathServantScene;
     internal static readonly IReadOnlyList<string> AssetPaths =
     [
-        ScenePath, "res://scenes/creature_visuals/wrath_servant_animations.tres",
-        "res://images/monsters/wrath_servant/idle.png",
-        "res://images/monsters/wrath_servant/attack_strike.png",
-        "res://images/monsters/wrath_servant/attack_slash.png",
-        "res://images/monsters/wrath_servant/attack_slash2.png",
-        "res://images/monsters/wrath_servant/s1.png",
-        "res://images/monsters/wrath_servant/s2.png",
-        "res://images/monsters/wrath_servant/s3.png",
-        "res://images/monsters/wrath_servant/hit.png",
-        "res://images/monsters/wrath_servant/special.png"
+        ScenePath, WrathServantAssets.WrathServantAnimationsResource,
+        WrathServantAssets.WrathServantIdleTexture,
+        WrathServantAssets.AttackStrikeTexture,
+        WrathServantAssets.AttackSlashTexture,
+        WrathServantAssets.AttackSlash2Texture,
+        WrathServantAssets.WrathServantS1Texture,
+        WrathServantAssets.WrathServantS2Texture,
+        WrathServantAssets.WrathServantS3Texture,
+        WrathServantAssets.WrathServantHitTexture,
+        WrathServantAssets.WrathServantSpecialTexture
     ];
 
     protected override string ResolveCurrentAnimationLibrary() => "main";

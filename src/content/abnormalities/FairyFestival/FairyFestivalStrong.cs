@@ -11,9 +11,9 @@ public sealed class FairyFestivalStrong : EncounterModel, IEncounterBgmSource
         "FairyFestivalBGM",
         new[]
         {
-            "res://audio/bgm/fairy_festival/history_layer_1.ogg",
-            "res://audio/bgm/fairy_festival/history_layer_2.ogg",
-            "res://audio/bgm/fairy_festival/history_layer_3.ogg"
+            FairyFestivalAssets.HistoryLayer1Bgm,
+            FairyFestivalAssets.HistoryLayer2Bgm,
+            FairyFestivalAssets.HistoryLayer3Bgm
         },
         volumeScale: 0.85f,
         4,
@@ -36,11 +36,11 @@ public sealed class FairyFestivalStrong : EncounterModel, IEncounterBgmSource
     public override IEnumerable<string> ExtraAssetPaths =>
         new[]
         {
-            "res://images/backgrounds/fairy_festival_strong/background_1.png",
-            "res://images/backgrounds/fairy_festival_strong/background_2.png",
-            "res://audio/bgm/fairy_festival/history_layer_1.ogg",
-            "res://audio/bgm/fairy_festival/history_layer_2.ogg",
-            "res://audio/bgm/fairy_festival/history_layer_3.ogg"
+            FairyFestivalAssets.Background1,
+            FairyFestivalAssets.Background2,
+            FairyFestivalAssets.HistoryLayer1Bgm,
+            FairyFestivalAssets.HistoryLayer2Bgm,
+            FairyFestivalAssets.HistoryLayer3Bgm
         }
         .Concat(ModelDb.Monster<FairyMass>().AssetPaths)
         .Concat(ModelDb.Monster<FairyQueen>().AssetPaths)

@@ -28,13 +28,6 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
     private const int DiscardGiftCards = 1;
     private const int SelfDestructGiftCards = 3;
 
-    private const string AttackSfxPath =
-        "res://audio/sfx/leticia/friend_hit.ogg";
-    private const string GiftOpenSfxPath =
-        "res://audio/sfx/leticia/gift_open.ogg";
-    private const string GiftCloseSfxPath =
-        "res://audio/sfx/leticia/gift_close.ogg";
-
     private bool _selfDestructStarted;
     private bool _selfDestructCompleted;
     private bool _friendScheduled;
@@ -84,11 +77,11 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
             var paths = new List<string>
             {
                 LiteratureFloorGiftBoxCreatureVisuals.ScenePath,
-                AttackSfxPath,
-                GiftOpenSfxPath,
-                GiftCloseSfxPath,
+                LiteratureFloorAssets.FriendHitSfx,
+                LiteratureFloorAssets.GiftOpenSfx,
+                LiteratureFloorAssets.GiftCloseSfx,
                 LeticiaFilterOverlayController.FilterOneTexturePath,
-                "res://images/powers/library_passive_green.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {
@@ -215,7 +208,7 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
 
     private async Task MoveOne(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GiftOpenSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.GiftOpenSfx, -2f);
         await CreatureCmd.TriggerAnim(
             Creature,
             "Cast",
@@ -227,7 +220,7 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
     {
         for (int i = 0; i < MoveTwoHits && Creature.IsAlive; i++)
         {
-            LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(LiteratureFloorAssets.FriendHitSfx, -2f);
             await DamageCmd.Attack(SmallDamage)
                 .FromMonster(this)
                 .WithAttackerAnim(
@@ -252,7 +245,7 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
         }
 
         _selfDestructStarted = true;
-        LocalOggOneShotPlayer.Play(GiftCloseSfxPath, -1f);
+        LocalOggOneShotPlayer.Play(LiteratureFloorAssets.GiftCloseSfx, -1f);
         LeticiaFilterOverlayController.PlayGiftCloseOverlay();
         await CreatureCmd.TriggerAnim(Creature, "SelfDestruct", 0f);
         await Cmd.Wait(

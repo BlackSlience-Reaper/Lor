@@ -1,0 +1,8 @@
+# 本模组引用、且存在于前置库 LibraryOfRuinaLib 的 PCK（创意工坊 3747541096）的资源路径。
+# 由 tools/check_res_paths.py --generate <原版.pck> <LibraryOfRuinaLib.pck> 生成，tools/check.sh 核对；
+# 只收 src/ 里完整字面量引用到的路径。游戏或前置库更新后重新生成，diff 里消失的行就是上游删掉或改名的资源。
+res://LibraryOfRuinaLib/images/powers/library_stagger_resistance.png
+res://LibraryOfRuinaLib/images/resistance/blunt_normal.png
+res://LibraryOfRuinaLib/images/resistance/pierce_normal.png
+res://LibraryOfRuinaLib/images/resistance/slash_chaos_immune.png
+res://LibraryOfRuinaLib/images/resistance/slash_normal.png

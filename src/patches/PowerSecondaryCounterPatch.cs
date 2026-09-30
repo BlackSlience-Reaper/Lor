@@ -4,6 +4,7 @@ using System.Reflection;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.addons.mega_text;
+using LibraryOfRuina.framework.assets;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
@@ -16,7 +17,6 @@ namespace LibraryOfRuina.patches;
 internal static class PowerSecondaryCounterUi
 {
     private const string SecondaryAmountLabelName = "LibraryOfRuinaSecondaryAmountLabel";
-    private const string FallbackLabelFontPath = "res://themes/kreon_bold_glyph_space_one.tres";
 
 
     public static void EnsureAndRefresh(NPower powerNode)
@@ -155,7 +155,7 @@ internal static class PowerSecondaryCounterUi
         Font? fallbackFont = label.GetThemeFont(ThemeConstants.Label.font, "Label");
         if (fallbackFont == null)
         {
-            fallbackFont = ResourceLoader.Load<Font>(FallbackLabelFontPath);
+            fallbackFont = ResourceLoader.Load<Font>(SharedAssets.KreonBoldGlyphSpaceOneResource);
         }
 
         if (fallbackFont != null)

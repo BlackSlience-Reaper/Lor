@@ -72,7 +72,7 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
         _ftueId = ftueId;
         _pages = pages.Length > 0
             ? pages
-            : [new LibraryOfRuinaCombatFtuePage(ftueId, ftueId, "res://images/ftue/combat_ftue_0.png")];
+            : [new LibraryOfRuinaCombatFtuePage(ftueId, ftueId, LibraryOfRuinaFtueAssets.CombatFtue0Texture)];
         _totalPages = _pages.Length;
     }
 
@@ -181,12 +181,12 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
         _pageCount.CustomMinimumSize = new Vector2(1200f, 60f);
         _contentRoot.AddChild(_pageCount);
 
-        _prevButton = CreateArrowButton("LeftArrow", "res://images/packed/common_ui/settings_tiny_left_arrow.png");
+        _prevButton = CreateArrowButton("LeftArrow", LibraryOfRuinaFtueAssets.SettingsTinyLeftArrowTexture);
         _prevButton.Position = new Vector2(40f, 476f);
         _contentRoot.AddChild(_prevButton);
         _prevButton.Pressed += () => ShowPage(_currentPage - 1, -1);
 
-        _nextButton = CreateArrowButton("RightArrow", "res://images/packed/common_ui/settings_tiny_right_arrow.png");
+        _nextButton = CreateArrowButton("RightArrow", LibraryOfRuinaFtueAssets.SettingsTinyRightArrowTexture);
         _nextButton.Position = new Vector2(1752f, 476f);
         _contentRoot.AddChild(_nextButton);
         _nextButton.Pressed += AdvanceOrClose;
@@ -213,7 +213,7 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
         _emotionTrack!.Visible = page.Visual == LibraryOfRuinaCombatFtueVisual.EmotionTrack;
         if (usesImage)
         {
-            string imagePath = page.ImagePath ?? "res://images/ftue/combat_ftue_0.png";
+            string imagePath = page.ImagePath ?? LibraryOfRuinaFtueAssets.CombatFtue0Texture;
             _image.StretchMode = page.Visual == LibraryOfRuinaCombatFtueVisual.CenteredImage
                 ? TextureRect.StretchModeEnum.KeepAspectCentered
                 : TextureRect.StretchModeEnum.Scale;
@@ -295,12 +295,12 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
         AddResistanceExample(
             panel,
             105f,
-            "res://LibraryOfRuinaLib/images/resistance/pierce_normal.png",
+            LibraryOfRuinaFtueAssets.PierceNormalTexture,
             "LOR_COMBAT_FTUE_20260827_PIERCE_PHYSICAL_NORMAL");
         AddResistanceExample(
             panel,
             285f,
-            "res://LibraryOfRuinaLib/images/resistance/slash_chaos_immune.png",
+            LibraryOfRuinaFtueAssets.SlashChaosImmuneTexture,
             "LOR_COMBAT_FTUE_20260827_SLASH_CHAOS_IMMUNE");
 
         return panel;
@@ -338,17 +338,17 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
         AddMappingColumn(
             panel,
             15f,
-            "res://LibraryOfRuinaLib/images/resistance/blunt_normal.png",
+            LibraryOfRuinaFtueAssets.BluntNormalTexture,
             "LOR_COMBAT_FTUE_20260827_SINGLE_TO_BLUNT");
         AddMappingColumn(
             panel,
             235f,
-            "res://LibraryOfRuinaLib/images/resistance/pierce_normal.png",
+            LibraryOfRuinaFtueAssets.PierceNormalTexture,
             "LOR_COMBAT_FTUE_20260827_MULTI_TO_PIERCE");
         AddMappingColumn(
             panel,
             455f,
-            "res://LibraryOfRuinaLib/images/resistance/slash_normal.png",
+            LibraryOfRuinaFtueAssets.SlashNormalTexture,
             "LOR_COMBAT_FTUE_20260827_AOE_TO_SLASH");
 
         MegaLabel modes = CreateLabel("ResistanceModes", 20, new Color(0.529412f, 0.807843f, 0.921569f));
@@ -379,19 +379,19 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
         AddSpecialGuestPortrait(
             panel,
             new Vector2(25f, 82f),
-            "res://images/events/kali_special_guest_event.png");
+            LibraryOfRuinaFtueAssets.KaliSpecialGuestEventTexture);
         AddSpecialGuestPortrait(
             panel,
             new Vector2(348f, 82f),
-            "res://images/events/xiao_special_guest_event.png");
+            LibraryOfRuinaFtueAssets.XiaoSpecialGuestEventTexture);
         AddSpecialGuestPortrait(
             panel,
             new Vector2(25f, 286f),
-            "res://images/events/rnfmabj_special_guest_event.png");
+            LibraryOfRuinaFtueAssets.RnfmabjSpecialGuestEventTexture);
         AddSpecialGuestPortrait(
             panel,
             new Vector2(348f, 286f),
-            "res://images/events/iori_special_guest_event.png");
+            LibraryOfRuinaFtueAssets.IoriSpecialGuestEventTexture);
 
         return panel;
     }
@@ -643,7 +643,7 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
             MouseFilter = MouseFilterEnum.Ignore
         };
 
-        label.AddThemeFontOverride("font", PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_regular_glyph_space_one.tres"));
+        label.AddThemeFontOverride("font", PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonRegularGlyphSpaceOneResource));
         label.AddThemeFontSizeOverride("font_size", fontSize);
         label.AddThemeColorOverride("font_color", fontColor);
         label.AddThemeColorOverride("font_shadow_color", new Color(0f, 0f, 0f, 0.5f));
@@ -665,8 +665,8 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
             VisibleCharactersBehavior = TextServer.VisibleCharactersBehavior.CharsAfterShaping
         };
 
-        label.AddThemeFontOverride("normal_font", PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_regular_glyph_space_one.tres"));
-        label.AddThemeFontOverride("bold_font", PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_bold_glyph_space_one.tres"));
+        label.AddThemeFontOverride("normal_font", PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonRegularGlyphSpaceOneResource));
+        label.AddThemeFontOverride("bold_font", PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonBoldGlyphSpaceOneResource));
         label.AddThemeColorOverride("default_color", new Color(1f, 0.964706f, 0.886275f));
         label.AddThemeColorOverride("font_shadow_color", new Color(0f, 0f, 0f, 0.5f));
         label.AddThemeConstantOverride("shadow_offset_x", 3);

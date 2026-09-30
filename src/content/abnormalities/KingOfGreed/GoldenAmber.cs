@@ -16,9 +16,9 @@ namespace LibraryOfRuina.content.abnormalities.KingOfGreed;
 
 public sealed class GoldenAmber : LorMonsterModel
 {
-    public const string Root = "res://images/monsters/king_of_greed/";
+    public const string Root = KingOfGreedAssets.KingOfGreedMonsterRoot;
     public const string IdleTexturePath = Root + "golden_amber.png";
-    public const string SfxRoot = "res://audio/sfx/king_of_greed/";
+    public const string SfxRoot = KingOfGreedAssets.KingOfGreedSfxRoot;
     public const string AwakenMagicalGirlSfxPath = SfxRoot + "awaken_magical_girl.ogg";
     public const string AwakenKingSfxPath = SfxRoot + "awaken_king.ogg";
 

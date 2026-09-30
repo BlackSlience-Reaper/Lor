@@ -32,7 +32,7 @@ public sealed class RoadHomePageRelic : ModalPageRelic<RoadHomePageMode>
     private const float CompanionSpawndeltaX = -200f;
     public const int HomeArtifact = 1;
     public const int HomeBuffer = 1;
-    public new const string IconPath = "res://images/relics/road_home_page_relic.png";
+    public new const string IconPath = RoadHomeAssets.PageRelicTexture;
 
     private int _courageMaxHpGainedThisCombat;
     private bool _companionDiedThisCombat;

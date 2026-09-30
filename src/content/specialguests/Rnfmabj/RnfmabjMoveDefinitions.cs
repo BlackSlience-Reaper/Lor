@@ -196,5 +196,5 @@ internal static class RnfmabjMoveDefinitions
         ImpactSfx: Sfx("Yan_Guard.ogg"));
 
     private static string Sfx(string file) =>
-        "res://audio/special_guests/rnfmabj/combat/" + file;
+        RnfmabjSpecialGuestIds.CombatAudioRoot + file;
 }

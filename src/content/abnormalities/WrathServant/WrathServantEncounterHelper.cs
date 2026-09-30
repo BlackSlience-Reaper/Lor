@@ -10,18 +10,18 @@ namespace LibraryOfRuina.content.abnormalities.WrathServant;
 
 internal static class WrathServantEncounterHelper
 {
-    public const string ServantSfxRoot = "res://audio/sfx/wrath_servant/";
-    public const string HermitSfxRoot = "res://audio/sfx/green_stem_hermit/";
+    public const string ServantSfxRoot = WrathServantAssets.WrathServantSfxRoot;
+    public const string HermitSfxRoot = WrathServantAssets.GreenStemHermitSfxRoot;
 
     public static readonly string[] PowerIconPaths =
     [
-        "res://images/powers/wrath_servant_corrosion_power.png",
-        "res://images/powers/wrath_servant_next_turn_corrosion_power.png",
-        "res://images/powers/wrath_servant_staff_mark_power.png",
-        "res://images/powers/wrath_servant_sinner_counter_power.png",
-        "res://images/powers/green_stem_hermit_protection_power.png",
-        "res://images/powers/cane_power.png",
-        "res://images/atlases/power_atlas.sprites/wrath_servant_today_play_power.tres"
+        WrathServantAssets.CorrosionPowerIcon,
+        WrathServantAssets.NextTurnCorrosionPowerIcon,
+        WrathServantAssets.StaffMarkPowerIcon,
+        WrathServantAssets.SinnerCounterPowerIcon,
+        WrathServantAssets.GreenStemHermitProtectionPowerIcon,
+        WrathServantAssets.CanePowerIcon,
+        WrathServantAssets.TodayPlayPowerResource
     ];
 
     public static bool IsWrathServantEncounter(CombatStateLike? combatState)

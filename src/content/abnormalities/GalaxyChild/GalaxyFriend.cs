@@ -37,13 +37,13 @@ internal enum GalaxyFriendInitialMove
 
 public sealed class GalaxyFriend : LorMonsterModel
 {
-    public const string IdleTexturePath = "res://images/monsters/galaxy_friend/idle.png";
-    public const string AttackTexturePath = "res://images/monsters/galaxy_friend/attack.png";
-    public const string HitTexturePath = "res://images/monsters/galaxy_friend/hit.png";
-    public const string ParryTexturePath = "res://images/monsters/galaxy_friend/parry.png";
-    public const string AttackSfxPath = "res://audio/sfx/galaxy_child/attack.ogg";
-    public const string HealSfxPath = "res://audio/sfx/galaxy_child/heal.ogg";
-    public const string ParrySfxPath = "res://audio/sfx/galaxy_child/parry.ogg";
+    public const string IdleTexturePath = GalaxyChildAssets.GalaxyFriendIdleTexture;
+    public const string AttackTexturePath = GalaxyChildAssets.GalaxyFriendAttackTexture;
+    public const string HitTexturePath = GalaxyChildAssets.GalaxyFriendHitTexture;
+    public const string ParryTexturePath = GalaxyChildAssets.GalaxyFriendParryTexture;
+    public const string AttackSfxPath = GalaxyChildAssets.GalaxyChildAttackSfx;
+    public const string HealSfxPath = GalaxyChildAssets.GalaxyChildHealSfx;
+    public const string ParrySfxPath = GalaxyChildAssets.GalaxyChildParrySfx;
 
     private const string WaitMoveId = "WAIT";
     private const string StarlightFallMoveId = "STARLIGHT_FALL";

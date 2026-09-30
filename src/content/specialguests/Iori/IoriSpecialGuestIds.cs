@@ -9,6 +9,8 @@ public static class IoriSpecialGuestIds
     public const string StageTwoEncounter =
         "IORI_SPECIAL_GUEST_STAGE_TWO_ENCOUNTER";
 
+    public const string EventImage =
+        "res://images/events/iori_special_guest_event.png";
     public const string CombatAudioRoot =
         "res://audio/special_guests/iori/combat/";
 

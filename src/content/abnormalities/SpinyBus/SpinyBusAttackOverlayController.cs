@@ -6,7 +6,7 @@ namespace LibraryOfRuina.content.abnormalities.SpinyBus;
 
 internal static class SpinyBusAttackOverlayController
 {
-    internal const string OverlayTexturePath = "res://images/vfx/spiny_bus_fullscreen_attack.png";
+    internal const string OverlayTexturePath = SpinyBusAssets.FullscreenAttackTexture;
 
     public static void PlayOverlay()
     {

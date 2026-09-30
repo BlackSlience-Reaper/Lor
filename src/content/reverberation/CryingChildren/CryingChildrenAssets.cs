@@ -1,4 +1,5 @@
 using LibraryOfRuina.content.guests.DawnOffice;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -17,8 +18,8 @@ internal static class CryingChildrenAssets
         AudioRoot + "philip_slash.ogg", AudioRoot + "philip_pierce.ogg",
         AudioRoot + "philip_strike.ogg", AudioRoot + "philip_ranged.ogg",
         AudioRoot + "child_slash.ogg", AudioRoot + "child_pierce.ogg",
-        "res://images/powers/library_passive_orange.png",
-        "res://images/powers/library_passive_purple.png"
+        SharedAssets.LibraryPassiveOrangeIcon,
+        SharedAssets.LibraryPassivePurpleIcon
     ];
 
     internal static string AttackSound(CryingChildMonsterBase monster, string animation)

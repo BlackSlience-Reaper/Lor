@@ -14,7 +14,7 @@ public sealed partial class EmeraldCrystalCreatureVisuals
     };
 
     internal const string DefaultTexturePath =
-        "res://images/monsters/social_floor_liberation/emerald_crystal/default.png";
+        SocialFloorAssets.EmeraldCrystalDefaultTexture;
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 

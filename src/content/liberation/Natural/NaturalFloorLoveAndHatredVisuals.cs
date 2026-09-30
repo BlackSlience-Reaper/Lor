@@ -7,9 +7,9 @@ namespace LibraryOfRuina.content.liberation.Natural;
 [MonsterVisual(typeof(NaturalFloorLoveAndHatredBoss), ScenePath = NaturalFloorLoveAndHatredVisuals.ScenePath)]
 internal sealed partial class NaturalFloorLoveAndHatredVisuals : SceneAnimatedCreatureVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_love_and_hatred_boss.tscn";
-    internal const string AnimationRoot = "res://scenes/creature_visuals/natural_floor_love_and_hatred_";
-    internal const string ImageRoot = "res://images/monsters/natural_floor_liberation/love_and_hatred/";
+    internal const string ScenePath = NaturalFloorAssets.LoveAndHatredBossScene;
+    internal const string AnimationRoot = NaturalFloorAssets.LoveAndHatredScenePrefix;
+    internal const string ImageRoot = NaturalFloorAssets.LoveAndHatredMonsterRoot;
     internal const float AttackHitTime = 0.36f;
     private string _lastLibrary = "";
 

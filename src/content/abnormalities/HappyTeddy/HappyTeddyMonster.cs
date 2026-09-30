@@ -62,9 +62,6 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
     private const int NostalgicEmbraceTriggerAffection = 3;
     private const int ConfusionTurns = 1;
 
-    private const string DisplayOfAffectionSfxPath = "res://audio/sfx/happy_teddy/happy_teddy_normal_attack.ogg";
-    private const string NostalgicEmbraceSfxPath = "res://audio/sfx/happy_teddy/happy_teddy_embrace.ogg";
-
     private static readonly string HappyTeddyPageRelicTitleLocKey = $"{ModelDb.GetId<HappyTeddyPageRelic>().Entry}.title";
 
     private int DisplayOfAffectionDamage =>
@@ -237,7 +234,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
         for (int i = 0; i < DisplayOfAffectionHits; i++)
         {
             if (Creature.IsDead) return;
-            LocalOggOneShotPlayer.Play(DisplayOfAffectionSfxPath, -2.5f);
+            LocalOggOneShotPlayer.Play(HappyTeddyAssets.NormalAttackSfx, -2.5f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(this, DisplayOfAffectionDamage);
         }
         //await LibraryOfRuinaDodgeDicePower.ApplyDodge(Creature, DodgeAmount, Creature, null);
@@ -256,7 +253,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
     private async Task NostalgicEmbraceMove(IReadOnlyList<Creature> targets)
     {
         RefreshBackgroundMoonTextLoop();
-        LocalOggOneShotPlayer.Play(NostalgicEmbraceSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(HappyTeddyAssets.HappyTeddyEmbraceSfx, -2f);
 
         await DamageCmd.Attack(NostalgicEmbraceDamage)
             .FromMonster(this)

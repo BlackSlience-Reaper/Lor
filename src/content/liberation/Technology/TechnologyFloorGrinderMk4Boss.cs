@@ -56,14 +56,14 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_2";
     private const float BackgroundTextIntervalSeconds = 5f;
 
-    public const string IdleTexturePath = "res://images/monsters/technology_floor/grinder_mk4_idle.png";
-    public const string HitTexturePath = "res://images/monsters/technology_floor/grinder_mk4_hit.png";
-    public const string DodgeTexturePath = "res://images/monsters/technology_floor/grinder_mk4_dodge.png";
-    public const string SlashTexturePath = "res://images/monsters/technology_floor/grinder_mk4_slash.png";
-    public const string ThrustTexturePath = "res://images/monsters/technology_floor/grinder_mk4_thrust.png";
-    public const string EgoS1TexturePath = "res://images/monsters/technology_floor/grinder_mk4_ego_s1.png";
-    public const string EgoS2TexturePath = "res://images/monsters/technology_floor/grinder_mk4_ego_s2.png";
-    public const string EgoS3TexturePath = "res://images/monsters/technology_floor/grinder_mk4_ego_s3.png";
+    public const string IdleTexturePath = TechnologyFloorAssets.GrinderMk4IdleTexture;
+    public const string HitTexturePath = TechnologyFloorAssets.GrinderMk4HitTexture;
+    public const string DodgeTexturePath = TechnologyFloorAssets.GrinderMk4DodgeTexture;
+    public const string SlashTexturePath = TechnologyFloorAssets.GrinderMk4SlashTexture;
+    public const string ThrustTexturePath = TechnologyFloorAssets.GrinderMk4ThrustTexture;
+    public const string EgoS1TexturePath = TechnologyFloorAssets.GrinderMk4EgoS1Texture;
+    public const string EgoS2TexturePath = TechnologyFloorAssets.GrinderMk4EgoS2Texture;
+    public const string EgoS3TexturePath = TechnologyFloorAssets.GrinderMk4EgoS3Texture;
 
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 190f, 980f, 470f);
 

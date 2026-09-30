@@ -6,18 +6,18 @@ namespace LibraryOfRuina.content.liberation.Natural;
 [MonsterVisual(typeof(NaturalFloorBlindRageBoss), ScenePath = NaturalFloorBlindRageVisuals.ScenePath)]
 internal sealed partial class NaturalFloorBlindRageVisuals : SceneAnimatedCreatureVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_blind_rage_boss.tscn";
+    internal const string ScenePath = NaturalFloorAssets.BlindRageBossScene;
     internal static readonly IReadOnlyList<string> AssetPaths =
     [
-        ScenePath, "res://scenes/creature_visuals/natural_floor_blind_rage_boss_animations.tres",
-        "res://images/monsters/natural_floor_liberation/blind_rage/idle.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/strike.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/thrust.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/slash.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/s1.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/s2.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/s3.png",
-        "res://images/monsters/natural_floor_liberation/blind_rage/hit.png"
+        ScenePath, NaturalFloorAssets.BlindRageBossAnimationsResource,
+        NaturalFloorAssets.BlindRageIdleTexture,
+        NaturalFloorAssets.BlindRageStrikeTexture,
+        NaturalFloorAssets.BlindRageThrustTexture,
+        NaturalFloorAssets.BlindRageSlashTexture,
+        NaturalFloorAssets.BlindRageS1Texture,
+        NaturalFloorAssets.BlindRageS2Texture,
+        NaturalFloorAssets.BlindRageS3Texture,
+        NaturalFloorAssets.BlindRageHitTexture
     ];
 
     protected override string ResolveCurrentAnimationLibrary() => "main";
@@ -35,16 +35,16 @@ internal sealed partial class NaturalFloorBlindRageVisuals : SceneAnimatedCreatu
 [MonsterVisual(typeof(NaturalFloorGreenStemHermit), ScenePath = NaturalFloorHermitVisuals.ScenePath)]
 internal sealed partial class NaturalFloorHermitVisuals : SceneAnimatedCreatureVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_green_stem_hermit.tscn";
+    internal const string ScenePath = NaturalFloorAssets.GreenStemHermitScene;
     internal static readonly IReadOnlyList<string> AssetPaths =
     [
-        ScenePath, "res://scenes/creature_visuals/natural_floor_green_stem_hermit_animations.tres",
-        "res://images/monsters/green_stem_hermit/idle.png",
-        "res://images/monsters/green_stem_hermit/reach.png",
-        "res://images/monsters/green_stem_hermit/ground.png",
-        "res://images/monsters/green_stem_hermit/thrust.png",
-        "res://images/monsters/natural_floor_liberation/green_stem_hermit/mental.png",
-        "res://images/monsters/green_stem_hermit/hit.png"
+        ScenePath, NaturalFloorAssets.GreenStemHermitAnimationsResource,
+        NaturalFloorAssets.GreenStemHermitIdleTexture,
+        NaturalFloorAssets.GreenStemHermitReachTexture,
+        NaturalFloorAssets.GreenStemHermitGroundTexture,
+        NaturalFloorAssets.GreenStemHermitThrustTexture,
+        NaturalFloorAssets.GreenStemHermitMentalTexture,
+        NaturalFloorAssets.GreenStemHermitHitTexture
     ];
 
     protected override string ResolveCurrentAnimationLibrary() => "main";

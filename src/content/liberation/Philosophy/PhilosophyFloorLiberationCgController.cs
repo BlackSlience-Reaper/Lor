@@ -19,22 +19,18 @@ namespace LibraryOfRuina.content.liberation.Philosophy;
 internal static class PhilosophyFloorLiberationCgController
 {
     internal const string ScenePath =
-        "res://scenes/vfx/philosophy_floor_liberation_cg.tscn";
+        PhilosophyFloorAssets.LiberationCgScene;
     internal const string AnimationLibraryPath =
-        "res://scenes/vfx/philosophy_floor_liberation_cg_animations.tres";
+        PhilosophyFloorAssets.LiberationCgAnimationsResource;
 
-    private const string ImageRoot =
-        "res://images/vfx/philosophy_floor_liberation/cg/";
-    private const string AudioRoot =
-        "res://audio/sfx/philosophy_floor_liberation/cg/";
-    private const string IntroTexturePath = ImageRoot + "boss_bird_appear.png";
-    private const string BigEyesTexturePath = ImageRoot + "big_bird_dead.png";
-    private const string SmallBeakTexturePath = ImageRoot + "small_bird_dead.png";
-    private const string LongArmsTexturePath = ImageRoot + "long_bird_dead.png";
-    private const string VictoryTexturePath = ImageRoot + "boss_bird_dead.png";
-    private const string BirthAudioPath = AudioRoot + "boss_bird_birth.ogg";
-    private const string StoryAudioPath = AudioRoot + "boss_bird_story_filter.ogg";
-    private const string VictoryAudioPath = AudioRoot + "boss_bird_story_filter_dead.ogg";
+    private const string IntroTexturePath = PhilosophyFloorAssets.LiberationCgVfxRoot + "boss_bird_appear.png";
+    private const string BigEyesTexturePath = PhilosophyFloorAssets.LiberationCgVfxRoot + "big_bird_dead.png";
+    private const string SmallBeakTexturePath = PhilosophyFloorAssets.LiberationCgVfxRoot + "small_bird_dead.png";
+    private const string LongArmsTexturePath = PhilosophyFloorAssets.LiberationCgVfxRoot + "long_bird_dead.png";
+    private const string VictoryTexturePath = PhilosophyFloorAssets.LiberationCgVfxRoot + "boss_bird_dead.png";
+    private const string BirthAudioPath = PhilosophyFloorAssets.LiberationCgSfxRoot + "boss_bird_birth.ogg";
+    private const string StoryAudioPath = PhilosophyFloorAssets.LiberationCgSfxRoot + "boss_bird_story_filter.ogg";
+    private const string VictoryAudioPath = PhilosophyFloorAssets.LiberationCgSfxRoot + "boss_bird_story_filter_dead.ogg";
     private const string IntroTextKey =
         "PHILOSOPHY_FLOOR_LIBERATION_CG_INTRO.text";
     private const string BigEyesTextKey =
@@ -54,9 +50,9 @@ internal static class PhilosophyFloorLiberationCgController
     [
         ScenePath,
         AnimationLibraryPath,
-        ImageRoot + "background.png",
-        ImageRoot + "foreground.png",
-        ImageRoot + "upper_frame.png",
+        PhilosophyFloorAssets.LiberationCgVfxRoot + "background.png",
+        PhilosophyFloorAssets.LiberationCgVfxRoot + "foreground.png",
+        PhilosophyFloorAssets.LiberationCgVfxRoot + "upper_frame.png",
         IntroTexturePath,
         BigEyesTexturePath,
         SmallBeakTexturePath,

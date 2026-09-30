@@ -10,9 +10,9 @@ public sealed class HappyTeddyWeak : EncounterModel, IEncounterBgmSource
         "HappyTeddyBGM",
         new[]
         {
-            "res://audio/bgm/scorched_girl/scorched_girl_battle_1.ogg",
-            "res://audio/bgm/scorched_girl/scorched_girl_battle_2.ogg",
-            "res://audio/bgm/scorched_girl/scorched_girl_battle_3.ogg"
+            HappyTeddyAssets.ScorchedGirlBattle1Bgm,
+            HappyTeddyAssets.ScorchedGirlBattle2Bgm,
+            HappyTeddyAssets.ScorchedGirlBattle3Bgm
         },
         volumeScale: 0.85f,
         4,

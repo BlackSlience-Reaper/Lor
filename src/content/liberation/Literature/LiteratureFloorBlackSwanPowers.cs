@@ -76,7 +76,7 @@ public sealed class LiteratureFloorBlackSwanVanishingFamilyPower :
     LibraryOfRuinaPowerModel
 {
     public const string CustomIconPath =
-        "res://images/powers/literature_floor_black_swan_vanishing_family_power.png";
+        LiteratureFloorAssets.BlackSwanVanishingFamilyPowerIcon;
 
     protected override string LegacyPowerId =>
         "LITERATURE_FLOOR_BLACK_SWAN_VANISHING_FAMILY_POWER";

@@ -40,8 +40,7 @@ public sealed class Nosferatu : LorMonsterModel
     private const string UnbearableThirstMoveId = "UNBEARABLE_THIRST";
     private const string ExtremeBloodthirstMoveId = "EXTREME_BLOODTHIRST";
 
-    internal const string TextureRoot = "res://images/monsters/nosferatu/";
-    private const string SfxRoot = "res://audio/sfx/nosferatu/";
+    internal const string TextureRoot = NosferatuAssets.NosferatuMonsterRoot;
     private const float LocalSfxVolumeScale = 0.85f;
     private static readonly float LocalSfxVolumeDb = Mathf.LinearToDb(LocalSfxVolumeScale);
 
@@ -66,18 +65,18 @@ public sealed class Nosferatu : LorMonsterModel
         NosferatuCreatureVisuals.Profile.AssetPaths
             .Concat(
             [
-                SfxRoot + "nosferatu_strong_attack.ogg",
-                SfxRoot + "nosferatu_transform.ogg",
-                SfxRoot + "nosferatu_transform_slash.ogg",
-                SfxRoot + "nosferatu_transform_strike.ogg",
-                SfxRoot + "nosferatu_transform_strong_attack_effect.ogg",
-                SfxRoot + "nosferatu_transform_vampire.ogg",
-                SfxRoot + "nosferatu_evade.ogg",
-                "res://images/powers/nosferatu_blood_power.png",
-                "res://images/powers/nosferatu_hydrophobia_passive_power.png",
-                "res://images/powers/nosferatu_hydrophobia_power.png",
-                "res://images/powers/nosferatu_transform_power.png",
-                "res://images/powers/nosferatu_flowing_blood_power.png"
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_strong_attack.ogg",
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform.ogg",
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_slash.ogg",
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_strike.ogg",
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_strong_attack_effect.ogg",
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_vampire.ogg",
+                NosferatuAssets.NosferatuSfxRoot + "nosferatu_evade.ogg",
+                NosferatuAssets.BloodPowerIcon,
+                NosferatuAssets.HydrophobiaPassivePowerIcon,
+                NosferatuAssets.HydrophobiaPowerIcon,
+                NosferatuAssets.TransformPowerIcon,
+                NosferatuAssets.FlowingBloodPowerIcon
             ])
             .ToArray();
 
@@ -259,7 +258,7 @@ public sealed class Nosferatu : LorMonsterModel
 
         _isTransformed = true;
         _cycleIndex = 0;
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform.ogg", LocalSfxVolumeDb);
 
         if (CombatQueries.CreatureNodeOf(this)?.Visuals is NosferatuCreatureVisuals visuals)
         {
@@ -305,7 +304,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task GracefulRestMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_evade.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_evade.ogg", LocalSfxVolumeDb);
         await AbnormalityAnimHelper.TriggerCast(Creature);
         if (!HasLivingBloodBat() && TryGetBloodBatSlot(out string slot))
         {
@@ -322,7 +321,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task ElegantDinnerMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform_strike.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_strike.ogg", LocalSfxVolumeDb);
         GroupAttackOutcome attack = await ExecuteStandardAttackDetailed(ElegantDinnerDamage, hits: 2, "Attack");
         foreach (DamageResult _ in attack.UnblockedResults)
         {
@@ -334,7 +333,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task ThirstMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform_strike.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_strike.ogg", LocalSfxVolumeDb);
         GroupAttackOutcome attack = await ExecuteStandardAttackDetailed(ThirstDamage, hits: 1, "Attack");
         if (attack.AnyUnblocked)
         {
@@ -370,7 +369,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task BloodFeastMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_strong_attack.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_strong_attack.ogg", LocalSfxVolumeDb);
         GroupAttackOutcome attack = await ExecuteGroupAttackDetailed(BloodFeastDamage, hits: 3, "SpecialAttack");
         foreach (Creature target in attack.Targets.Distinct())
         {
@@ -401,7 +400,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task ColdClawsMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform_strike.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_strike.ogg", LocalSfxVolumeDb);
         await ExecuteStandardAttackDetailed(ColdClawsDamage, hits: 12, "Attack");
         await PowerCmdCompat.Apply<StrengthPower>(Creature, 1, Creature, null);
         AdvanceCycle();
@@ -409,7 +408,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task ViolentGestureMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform_slash.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_slash.ogg", LocalSfxVolumeDb);
         GroupAttackOutcome attack = await ExecuteStandardAttackDetailed(ViolentGestureDamage, hits: 4, "Attack");
         foreach (Creature target in attack.UnblockedTargets.Distinct())
         {
@@ -428,7 +427,7 @@ public sealed class Nosferatu : LorMonsterModel
 
     private async Task UnbearableThirstMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform_vampire.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_vampire.ogg", LocalSfxVolumeDb);
         await AbnormalityAnimHelper.TriggerCast(Creature);
         await NosferatuBloodPower.Change(Creature, 3, Creature);
         await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, 16));
@@ -439,7 +438,7 @@ public sealed class Nosferatu : LorMonsterModel
     private async Task ExtremeBloodthirstMove(IReadOnlyList<Creature> targets)
     {
         GroupAttackOutcome attack = await ExecuteGroupAttackDetailed(ExtremeBloodthirstDamage, hits: 1, "SpecialAttack");
-        LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform_strong_attack_effect.ogg", LocalSfxVolumeDb);
+        LocalOggOneShotPlayer.Play(NosferatuAssets.NosferatuSfxRoot + "nosferatu_transform_strong_attack_effect.ogg", LocalSfxVolumeDb);
         foreach (Creature target in attack.UnblockedTargets.Distinct())
         {
             await PowerCmdCompat.ApplyDebuff<NosferatuHydrophobiaPower>(target, 2, Creature, null);

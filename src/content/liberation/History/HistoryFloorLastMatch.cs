@@ -44,11 +44,10 @@ public sealed class HistoryFloorLastMatch : CounterIntentMonsterModel
     private const int BrokenHopeGuardTurns = 2;
     private const int IgniteBurn = 2;
 
-    public const string IdleTexturePath = "res://images/monsters/history_floor/last_match.webp";
-    public const string AttackTexturePath = "res://images/monsters/history_floor/last_match_attack.png";
-    public const string HitTexturePath = "res://images/monsters/history_floor/last_match_hit.png";
-    public const string CastTexturePath = "res://images/monsters/history_floor/last_match_cast.png";
-    private const string MatchAttackSfxPath = "res://audio/sfx/scorched_girl/fourth_match_flame_attack.ogg";
+    public const string IdleTexturePath = HistoryFloorAssets.LastMatchTexture;
+    public const string AttackTexturePath = HistoryFloorAssets.LastMatchAttackTexture;
+    public const string HitTexturePath = HistoryFloorAssets.LastMatchHitTexture;
+    public const string CastTexturePath = HistoryFloorAssets.LastMatchCastTexture;
 
     private static readonly int[][] MovePatterns =
     [
@@ -77,7 +76,7 @@ public sealed class HistoryFloorLastMatch : CounterIntentMonsterModel
 
     public override IEnumerable<string> AssetPaths =>
         HistoryFloorLastMatchCreatureVisuals.Profile.AssetPaths
-            .Append(MatchAttackSfxPath)
+            .Append(HistoryFloorAssets.FourthMatchFlameAttackSfx)
             .Concat(EnumerateIntentAssets().SelectMany(static intent => intent.AssetPaths))
             .Distinct();
 
@@ -134,7 +133,7 @@ public sealed class HistoryFloorLastMatch : CounterIntentMonsterModel
         for (int i = 0; i < EmberHits; i++)
         {
             if (Creature.IsDead) return;
-            LocalOggOneShotPlayer.Play(MatchAttackSfxPath, -3f);
+            LocalOggOneShotPlayer.Play(HistoryFloorAssets.FourthMatchFlameAttackSfx, -3f);
 
             await DamageCmd.Attack(EmberDamage)
                 .FromMonster(this)
@@ -168,7 +167,7 @@ public sealed class HistoryFloorLastMatch : CounterIntentMonsterModel
 
     private async Task IgniteMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(MatchAttackSfxPath, -3f);
+        LocalOggOneShotPlayer.Play(HistoryFloorAssets.FourthMatchFlameAttackSfx, -3f);
 
         await DamageCmd.Attack(IgniteDamage)
             .FromMonster(this)

@@ -21,17 +21,17 @@ public sealed class PhilosophyFloorLiberationEncounter :
 
     internal const string TwilightSlot = "twilight";
     internal const string EncounterScenePath =
-        "res://scenes/encounters/philosophy_floor_liberation_encounter.tscn";
+        PhilosophyFloorAssets.LiberationEncounterScene;
     internal const string BackgroundScenePath =
-        "res://scenes/backgrounds/philosophy_floor_liberation_encounter/philosophy_floor_liberation_encounter_background.tscn";
+        PhilosophyFloorAssets.LiberationEncounterBackgroundScene;
     internal const string BackgroundLayerScenePath =
-        "res://scenes/backgrounds/philosophy_floor_liberation_encounter/layers/philosophy_floor_liberation_encounter_bg_00_a.tscn";
+        PhilosophyFloorAssets.LiberationEncounterBg00ABackgroundScene;
     internal const string EggAnimationLibraryPath =
-        "res://scenes/backgrounds/philosophy_floor_liberation_encounter/philosophy_floor_liberation_egg_animations.tres";
+        PhilosophyFloorAssets.LiberationEggAnimationsBackgroundScene;
     internal const string EndBirdAnimationLibraryPath =
-        "res://scenes/backgrounds/philosophy_floor_liberation_encounter/philosophy_floor_liberation_end_bird_animations.tres";
+        PhilosophyFloorAssets.LiberationEndBirdAnimationsBackgroundScene;
     internal const string BossNodeResourcePath =
-        "res://images/map/placeholder/philosophy_floor_liberation_encounter_icon";
+        PhilosophyFloorAssets.LiberationEncounterMapIconPrefix;
 
     private const string StateVersionKey = "TwilightStateVersion";
     private const string AliveEggMaskKey = "TwilightAliveEggMask";
@@ -108,8 +108,8 @@ public sealed class PhilosophyFloorLiberationEncounter :
                 BackgroundLayerScenePath,
                 EggAnimationLibraryPath,
                 EndBirdAnimationLibraryPath,
-                "res://images/ui/run_history/philosophy_floor_liberation_encounter.png",
-                "res://images/ui/run_history/philosophy_floor_liberation_encounter_outline.png",
+                PhilosophyFloorAssets.LiberationEncounterRunHistoryIcon,
+                PhilosophyFloorAssets.LiberationEncounterOutlineRunHistoryIcon,
                 BossNodeResourcePath + ".png",
                 BossNodeResourcePath + "_outline.png"
             })

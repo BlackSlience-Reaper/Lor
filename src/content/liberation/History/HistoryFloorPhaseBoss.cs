@@ -57,37 +57,37 @@ public sealed class HistoryFloorPhaseBoss : MonsterModel, ILiberationPrimaryPhas
 
     public static string IdleTexturePathForPhase(int phase) => Math.Clamp(phase, 1, HistoryFloorLiberationEncounter.MaxPhase) switch
     {
-        1 => "res://images/monsters/scorched_girl_monster.png",
-        2 => "res://images/monsters/happy_teddy.webp",
-        3 => "res://images/monsters/all_around_helper.webp",
+        1 => HistoryFloorAssets.ScorchedGirlMonsterTexture,
+        2 => HistoryFloorAssets.HappyTeddyTexture,
+        3 => HistoryFloorAssets.AllAroundHelperTexture,
         4 => FairyQueen.IdleTexturePath,
-        _ => "res://images/monsters/red_shoes/left_shoe.png"
+        _ => HistoryFloorAssets.LeftShoeTexture
     };
 
     public static string AttackTexturePathForPhase(int phase) => Math.Clamp(phase, 1, HistoryFloorLiberationEncounter.MaxPhase) switch
     {
-        1 => "res://images/monsters/scorched_girl_monster_attack.webp",
-        2 => "res://images/monsters/happy_teddy_attack_1.webp",
-        3 => "res://images/monsters/all_around_helper_attack.webp",
+        1 => HistoryFloorAssets.ScorchedGirlMonsterAttackTexture,
+        2 => HistoryFloorAssets.HappyTeddyAttack1Texture,
+        3 => HistoryFloorAssets.AllAroundHelperAttackTexture,
         4 => FairyQueen.AttackTexturePath,
-        _ => "res://images/monsters/red_shoes/left_shoe_attack.png"
+        _ => HistoryFloorAssets.LeftShoeAttackTexture
     };
 
     public static string CastTexturePathForPhase(int phase) => Math.Clamp(phase, 1, HistoryFloorLiberationEncounter.MaxPhase) switch
     {
-        2 => "res://images/monsters/happy_teddy_attack_2.webp",
+        2 => HistoryFloorAssets.HappyTeddyAttack2Texture,
         4 => FairyQueen.CastTexturePath,
-        5 => "res://images/monsters/red_shoes/left_shoe_parry.png",
+        5 => HistoryFloorAssets.LeftShoeParryTexture,
         _ => AttackTexturePathForPhase(phase)
     };
 
     public static string HitTexturePathForPhase(int phase) => Math.Clamp(phase, 1, HistoryFloorLiberationEncounter.MaxPhase) switch
     {
-        1 => "res://images/monsters/scorched_girl_monster_hit.webp",
-        2 => "res://images/monsters/happy_teddy_hit.webp",
-        3 => "res://images/monsters/all_around_helper_hit.webp",
+        1 => HistoryFloorAssets.ScorchedGirlMonsterHitTexture,
+        2 => HistoryFloorAssets.HappyTeddyHitTexture,
+        3 => HistoryFloorAssets.AllAroundHelperHitTexture,
         4 => FairyQueen.HitTexturePath,
-        _ => "res://images/monsters/red_shoes/left_shoe_hit.png"
+        _ => HistoryFloorAssets.LeftShoeHitTexture
     };
 
     public void ConfigurePhase(int phase)

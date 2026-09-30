@@ -20,7 +20,7 @@ public sealed class RoadHomeElite : EncounterModel
     public const string HouseSlot = "road_home_house_left";
     public const string RoadHomeSlot = "road_home_right";
     public const string ScaredyCatSlot = "scaredy_cat_center";
-    public const string EncounterScenePath = "res://scenes/encounters/road_home_elite.tscn";
+    public const string EncounterScenePath = RoadHomeAssets.RoadHomeEliteEncounterScene;
 
     public bool EndedByHouseDeath { get; private set; }
 
@@ -98,16 +98,16 @@ public sealed class RoadHomeElite : EncounterModel
 
 internal static class RoadHomeEncounterHelper
 {
-    public const string TextureRoot = "res://images/monsters/road_home/";
-    public const string CatTextureRoot = "res://images/monsters/scaredy_cat/";
-    public const string SfxRoot = "res://audio/sfx/road_home/";
+    public const string TextureRoot = RoadHomeAssets.RoadHomeMonsterRoot;
+    public const string CatTextureRoot = RoadHomeAssets.ScaredyCatMonsterRoot;
+    public const string SfxRoot = RoadHomeAssets.RoadHomeSfxRoot;
 
-    public const string BadWizardPassiveIconPath = "res://images/powers/road_home_bad_wizard_passive_power.png";
-    public const string FriendPassiveIconPath = "res://images/powers/road_home_friend_passive_power.png";
-    public const string CatCourageIconPath = "res://images/powers/scaredy_cat_courage_power.png";
-    public const string CatCowardIconPath = "res://images/powers/scaredy_cat_coward_power.png";
-    public const string CompanionCowardIconPath = "res://images/powers/scaredy_cat_companion_coward_power.png";
-    public const string HouseProtectionIconPath = "res://images/powers/road_home_house_protection_power.png";
+    public const string BadWizardPassiveIconPath = RoadHomeAssets.BadWizardPassivePowerIcon;
+    public const string FriendPassiveIconPath = RoadHomeAssets.FriendPassivePowerIcon;
+    public const string CatCourageIconPath = RoadHomeAssets.ScaredyCatCouragePowerIcon;
+    public const string CatCowardIconPath = RoadHomeAssets.ScaredyCatCowardPowerIcon;
+    public const string CompanionCowardIconPath = RoadHomeAssets.ScaredyCatCompanionCowardPowerIcon;
+    public const string HouseProtectionIconPath = RoadHomeAssets.HouseProtectionPowerIcon;
 
     private static readonly string[] PowerIconPaths =
     [
@@ -121,9 +121,9 @@ internal static class RoadHomeEncounterHelper
 
     public static readonly string[] SharedAssetPaths =
     [
-        "res://images/backgrounds/road_home_elite/background.png",
-        "res://scenes/backgrounds/road_home_elite/road_home_elite_background.tscn",
-        "res://scenes/backgrounds/road_home_elite/layers/road_home_elite_bg_00_a.tscn",
+        RoadHomeAssets.EliteBackground,
+        RoadHomeAssets.EliteBackgroundScene,
+        RoadHomeAssets.EliteBg00ABackgroundScene,
         ..PowerIconPaths,
         RoadHomePageRelic.IconPath,
         ..RoadHomePageChoiceCardBase.PortraitResourcePaths,

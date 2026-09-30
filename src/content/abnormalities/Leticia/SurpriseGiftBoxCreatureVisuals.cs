@@ -15,17 +15,15 @@ public partial class SurpriseGiftBoxCreatureVisuals : SpriteAttackCreatureVisual
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root =
-            "res://images/monsters/leticia/surprise_gift_box_";
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
             SpriteVisualProfile.DefaultVariantKey,
-            root + "idle.png");
-        profile.Frame("attack", root + "attack.png")
+            LeticiaAssets.SurpriseGiftBoxMonsterPrefix + "idle.png");
+        profile.Frame("attack", LeticiaAssets.SurpriseGiftBoxMonsterPrefix + "attack.png")
             .Nudge(23.4f, -106.6f)
             .Scale(0.65f);
-        profile.Frame("cast", root + "cast.png");
-        profile.Frame("hit", root + "hit.png");
+        profile.Frame("cast", LeticiaAssets.SurpriseGiftBoxMonsterPrefix + "cast.png");
+        profile.Frame("hit", LeticiaAssets.SurpriseGiftBoxMonsterPrefix + "hit.png");
         profile.Lunge("attack", 0.16f, 0.08f, 0.2f, "Attack");
         profile.Swap("cast", 0.36f, "Cast");
         profile.Swap("hit", 0.36f, "Hit");

@@ -7,14 +7,10 @@ namespace LibraryOfRuina.content.abnormalities.FairyFestival;
 
 internal static class FairyFestivalBackgroundController
 {
-    private const string NormalTexturePath = "res://images/backgrounds/fairy_festival_strong/background_1.png";
-    private const string StarvedTexturePath = "res://images/backgrounds/fairy_festival_strong/background_2.png";
-    private const string OverlayTexturePath = "res://images/vfx/fairy_festival_predation_overlay.png";
-
     public static void SetStarvedBackground(bool isStarved) =>
         CombatBackgroundImage.SetTexture(
             CombatBackgroundImage.Find("FairyFestivalBackgroundImage"),
-            isStarved ? StarvedTexturePath : NormalTexturePath);
+            isStarved ? FairyFestivalAssets.Background2 : FairyFestivalAssets.Background1);
 
     public static void PlayPredationOverlay()
     {
@@ -25,7 +21,7 @@ internal static class FairyFestivalBackgroundController
             return;
         }
 
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(OverlayTexturePath);
+        Texture2D? texture = ResourceLoader.Load<Texture2D>(FairyFestivalAssets.PredationOverlayTexture);
         if (texture == null)
         {
             return;

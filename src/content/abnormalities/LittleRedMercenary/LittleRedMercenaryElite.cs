@@ -25,8 +25,8 @@ public sealed class LittleRedMercenaryElite : EncounterModel
             .Concat(ModelDb.Monster<WolfInHerNightmares>().AssetPaths)
             .Concat(new[]
             {
-                "res://images/backgrounds/little_red_mercenary_elite/background_1.png",
-                "res://images/backgrounds/little_red_mercenary_elite/background_2.png",
+                LittleRedMercenaryAssets.Background1,
+                LittleRedMercenaryAssets.Background2,
                 LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_attack.ogg",
                 LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_fire.ogg",
                 LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_rage.ogg",

@@ -8,15 +8,15 @@ namespace LibraryOfRuina.content.liberation.History;
 
 internal static class HistoryFloorLiberationBackgroundController
 {
-    public const string PhaseOneTexturePath = "res://images/backgrounds/history_floor_liberation_encounter/background_1.png";
-    public const string ForgottenTexturePath = "res://images/backgrounds/history_floor_liberation_encounter/background_2.png";
-    public const string FlutteringTexturePath = "res://images/backgrounds/history_floor_liberation_encounter/fluttering_background_1.png";
-    public const string FlutteringStarvedTexturePath = "res://images/backgrounds/history_floor_liberation_encounter/fluttering_background_2.png";
-    public const string FlutteringPredationOverlayTexturePath = "res://images/vfx/history_floor_fluttering_predation_overlay.png";
-    public const string WaspTexturePath = "res://images/backgrounds/history_floor/wasp_background.png";
-    public const string WaspBuffOverlayTexturePath = "res://images/vfx/wasp_buff_overlay.png";
-    public const string WaspLoyaltyOverlayTexturePath = "res://images/vfx/wasp_loyalty_overlay.png";
-    public const string EmeraldBoughTexturePath = "res://images/backgrounds/history_floor/emerald_bough_background.png";
+    public const string PhaseOneTexturePath = HistoryFloorAssets.Background1;
+    public const string ForgottenTexturePath = HistoryFloorAssets.Background2;
+    public const string FlutteringTexturePath = HistoryFloorAssets.FlutteringBackground1;
+    public const string FlutteringStarvedTexturePath = HistoryFloorAssets.FlutteringBackground2;
+    public const string FlutteringPredationOverlayTexturePath = HistoryFloorAssets.FlutteringPredationOverlayTexture;
+    public const string WaspTexturePath = HistoryFloorAssets.WaspBackground;
+    public const string WaspBuffOverlayTexturePath = HistoryFloorAssets.WaspBuffOverlayTexture;
+    public const string WaspLoyaltyOverlayTexturePath = HistoryFloorAssets.WaspLoyaltyOverlayTexture;
+    public const string EmeraldBoughTexturePath = HistoryFloorAssets.EmeraldBoughBackground;
 
     public static string GetPhaseBackgroundTexturePath(int phase) =>
         phase switch

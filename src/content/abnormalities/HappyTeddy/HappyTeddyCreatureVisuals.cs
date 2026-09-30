@@ -19,18 +19,17 @@ public partial class HappyTeddyCreatureVisuals : SpriteAttackCreatureVisuals
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root = "res://images/monsters/happy_teddy";
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
             SpriteVisualProfile.DefaultVariantKey,
-            root + ".webp");
-        profile.Frame("attack", root + "_attack_1.webp")
+            HappyTeddyAssets.HappyTeddyMonsterPrefix + ".webp");
+        profile.Frame("attack", HappyTeddyAssets.HappyTeddyMonsterPrefix + "_attack_1.webp")
             .Nudge(20f, -120f)
             .Scale(0.60f);
-        profile.Frame("nostalgic_embrace", root + "_attack_2.webp")
+        profile.Frame("nostalgic_embrace", HappyTeddyAssets.HappyTeddyMonsterPrefix + "_attack_2.webp")
             .Nudge(30f, -112f)
             .Scale(0.62f);
-        profile.Frame("hit", root + "_hit.webp");
+        profile.Frame("hit", HappyTeddyAssets.HappyTeddyMonsterPrefix + "_hit.webp");
         profile.Lunge("attack", 0.2f, 0.1f, 0.25f, "Attack");
         profile.Lunge(
             "nostalgic_embrace",

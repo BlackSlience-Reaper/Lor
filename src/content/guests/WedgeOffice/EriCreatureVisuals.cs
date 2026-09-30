@@ -17,7 +17,7 @@ public partial class EriCreatureVisuals : DawnOfficeTripleAttackCreatureVisuals
     internal static readonly SpriteVisualProfile Profile =
         BuildTripleAttackProfile(
             "eri",
-            "res://images/monsters/eri.webp",
+            WedgeOfficeAssets.EriTexture,
             24f,
             -145.2f,
             0.48f);

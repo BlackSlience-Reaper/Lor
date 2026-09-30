@@ -44,17 +44,16 @@ public partial class QueenOfHatredCreatureVisuals
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root = "res://images/monsters/";
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
                 HumanVariant,
-                root + "queen_of_hatred.webp")
+                QueenOfHatredAssets.ImagesMonstersRoot + "queen_of_hatred.webp")
             .At(0f, -118f)
             .Scale(0.84f)
             .IdleOnly();
         profile.Variant(
                 SnakeVariant,
-                root + "queen_of_hatred_snake.webp")
+                QueenOfHatredAssets.ImagesMonstersRoot + "queen_of_hatred_snake.webp")
             .At(0f, -118f)
             .Scale(0.54f)
             .IdleOnly();
@@ -63,15 +62,15 @@ public partial class QueenOfHatredCreatureVisuals
         AddForm(
             profile,
             HumanVariant,
-            root + "queen_of_hatred_attack_",
-            root + "queen_of_hatred_hit.webp",
+            QueenOfHatredAssets.ImagesMonstersRoot + "queen_of_hatred_attack_",
+            QueenOfHatredAssets.ImagesMonstersRoot + "queen_of_hatred_hit.webp",
             attackScale: 0.68f,
             random: false);
         AddForm(
             profile,
             SnakeVariant,
-            root + "queen_of_hatred_snake_attack_",
-            root + "queen_of_hatred_snake_hit.webp",
+            QueenOfHatredAssets.ImagesMonstersRoot + "queen_of_hatred_snake_attack_",
+            QueenOfHatredAssets.ImagesMonstersRoot + "queen_of_hatred_snake_hit.webp",
             attackScale: 0.58f,
             random: true);
         return profile;

@@ -33,10 +33,6 @@ public sealed class BlackSwanDreamPageRelic : ModalPageRelic<BlackSwanDreamPageM
 
     private const decimal BrokenUmbrellaDamageMultiplier =
         (100m - BrokenUmbrellaDamageReductionPercent) / 100m;
-    private const string LiteratureFloorIconPath =
-        "res://images/ui/run_history/literature_floor_liberation_encounter.png";
-    private const string LiteratureFloorIconOutlinePath =
-        "res://images/ui/run_history/literature_floor_liberation_encounter_outline.png";
 
     private PowerModel? _filthPowerBeingModified;
     private PowerModel? _filthPowerAwaitingCommit;
@@ -46,12 +42,12 @@ public sealed class BlackSwanDreamPageRelic : ModalPageRelic<BlackSwanDreamPageM
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
-    public override string PackedIconPath => LiteratureFloorIconPath;
+    public override string PackedIconPath => LiteratureFloorAssets.LiberationEncounterRunHistoryIcon;
 
     protected override string PackedIconOutlinePath =>
-        LiteratureFloorIconOutlinePath;
+        LiteratureFloorAssets.LiberationEncounterOutlineRunHistoryIcon;
 
-    protected override string BigIconPath => LiteratureFloorIconPath;
+    protected override string BigIconPath => LiteratureFloorAssets.LiberationEncounterRunHistoryIcon;
 
     public override bool ShowCounter => Mode is
         BlackSwanDreamPageMode.BrokenUmbrella

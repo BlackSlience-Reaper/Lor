@@ -8,7 +8,7 @@ namespace LibraryOfRuina.content.liberation.Natural;
 [MonsterVisual(typeof(NaturalFloorGoldRushBoss), ScenePath = NaturalFloorGoldRushVisuals.ScenePath)]
 internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatureVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_gold_rush_boss.tscn";
+    internal const string ScenePath = NaturalFloorAssets.GoldRushBossScene;
     internal const float AttackHitTime = 0.48f; // 普通攻击：参照贪婪国王的单次动作时点。
     internal const float GuardTime = 0.48f; // 为了幸福：格挡姿态保持秒数。
     internal const float CastTime = 0.48f; // 强化与饥饿：施放姿态保持秒数。
@@ -24,7 +24,7 @@ internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatur
             .Select(NaturalFloorGoldRushBoss.SoundPath))
         .Concat(new[] { "flickering_desire", "self_intoxication", "momentary_happiness", "king_of_greed_passive",
                 "gluttony", "shining_happiness" }
-            .Select(icon => "res://images/powers/library_of_ruina_" + icon + "_power.png"))
+            .Select(icon => NaturalFloorAssets.PowerIconPrefix + icon + "_power.png"))
         .ToArray();
 
     private NaturalFloorGoldRushBoss? Boss =>
@@ -51,7 +51,7 @@ internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatur
 [MonsterVisual(typeof(NaturalFloorShiningHappiness), ScenePath = NaturalFloorHappinessVisuals.ScenePath)]
 internal sealed partial class NaturalFloorHappinessVisuals : SceneAnimatedCreatureVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_shining_happiness.tscn";
+    internal const string ScenePath = NaturalFloorAssets.ShiningHappinessScene;
 
     protected override string ResolveCurrentAnimationLibrary() => "happiness";
 

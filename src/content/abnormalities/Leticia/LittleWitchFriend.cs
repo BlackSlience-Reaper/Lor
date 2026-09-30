@@ -37,17 +37,12 @@ public sealed class LittleWitchFriend : LorMonsterModel
     private const int FlawTurns = 1;
     private const int BleedAmount = 1;
 
-    private const string HitSfxPath = "res://audio/sfx/leticia/friend_hit.ogg";
-    private const string PierceSfxPath = "res://audio/sfx/leticia/friend_pierce.ogg";
-    private const string SpawnSfxPath = "res://audio/sfx/leticia/friend_spawn.ogg";
-    private const string GiftCloseSfxPath = "res://audio/sfx/leticia/gift_close.ogg";
-
     private static readonly string[] ExtraAssetPaths =
     [
-        HitSfxPath,
-        PierceSfxPath,
-        SpawnSfxPath,
-        GiftCloseSfxPath,
+        LeticiaAssets.FriendHitSfx,
+        LeticiaAssets.FriendPierceSfx,
+        LeticiaAssets.FriendSpawnSfx,
+        LeticiaAssets.GiftCloseSfx,
         LeticiaFilterOverlayController.FilterTwoTexturePath
     ];
 
@@ -181,7 +176,7 @@ public sealed class LittleWitchFriend : LorMonsterModel
     {
         for (int i = 0; i < MoveOneHits; i++)
         {
-            LocalOggOneShotPlayer.Play(HitSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(LeticiaAssets.FriendHitSfx, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(this, SmallDamage);
         }
 
@@ -196,7 +191,7 @@ public sealed class LittleWitchFriend : LorMonsterModel
         for (int i = 0; i < MoveTwoHits; i++)
         {
             if (Creature.IsDead) return;
-            LocalOggOneShotPlayer.Play(PierceSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(LeticiaAssets.FriendPierceSfx, -2f);
             var command = await DamageCmd.Attack(SmallDamage)
                 .FromMonster(this)
                 .WithAttackerAnim("Attack", AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)
@@ -223,10 +218,10 @@ public sealed class LittleWitchFriend : LorMonsterModel
 
     private async Task MoveThree(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(SpawnSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.FriendSpawnSfx, -2f);
         LeticiaFilterOverlayController.PlayGiftCloseOverlay();
         await AbnormalityAnimHelper.TriggerCast(Creature);
-        LocalOggOneShotPlayer.Play(GiftCloseSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.GiftCloseSfx, -2f);
         await AbnormalityAnimHelper.ExecuteAttackSegment(this, SnatchGiftDamage);
 
         int maxRemovedFromOnePlayer = await RemoveLeticiaGiftsFromAllHands();

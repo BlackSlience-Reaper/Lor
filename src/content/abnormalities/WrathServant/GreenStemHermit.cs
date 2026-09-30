@@ -58,12 +58,11 @@ public sealed class GreenStemHermit : CounterIntentMonsterModel, ITargetedMonste
     private const float SegmentDelaySeconds = 0.48f;
     private const float GroundSlamDelaySeconds = 1.5f;
 
-    private const string Root = "res://images/monsters/green_stem_hermit/";
-    public const string IdleTexturePath = Root + "idle.png";
-    public const string HitTexturePath = Root + "hit.png";
-    public const string ReachTexturePath = Root + "reach.png";
-    public const string GroundTexturePath = Root + "ground.png";
-    public const string ThrustTexturePath = Root + "thrust.png";
+    public const string IdleTexturePath = WrathServantAssets.GreenStemHermitMonsterRoot + "idle.png";
+    public const string HitTexturePath = WrathServantAssets.GreenStemHermitMonsterRoot + "hit.png";
+    public const string ReachTexturePath = WrathServantAssets.GreenStemHermitMonsterRoot + "reach.png";
+    public const string GroundTexturePath = WrathServantAssets.GreenStemHermitMonsterRoot + "ground.png";
+    public const string ThrustTexturePath = WrathServantAssets.GreenStemHermitMonsterRoot + "thrust.png";
 
     private static readonly string[] SfxPaths =
     [

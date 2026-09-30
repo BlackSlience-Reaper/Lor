@@ -9,7 +9,7 @@ internal sealed partial class LiteratureFloorBloodlustCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_bloodlust_boss.tscn";
+        LiteratureFloorAssets.BloodlustBossScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorBloodlustAnimationContract.Library;

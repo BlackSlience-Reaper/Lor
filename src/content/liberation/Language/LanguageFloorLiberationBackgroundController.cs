@@ -7,19 +7,19 @@ namespace LibraryOfRuina.content.liberation.Language;
 internal static class LanguageFloorLiberationBackgroundController
 {
     public const string NormalTexturePath =
-        "res://images/backgrounds/language_floor_liberation_encounter/background_1.png";
+        LanguageFloorAssets.Background1;
 
     public const string RageTexturePath =
-        "res://images/backgrounds/language_floor_liberation_encounter/background_2.png";
+        LanguageFloorAssets.Background2;
 
     public const string PhaseThreeTexturePath =
-        "res://images/backgrounds/language_floor_liberation_encounter/background_3.png";
+        LanguageFloorAssets.Background3;
 
     public const string PhaseFourTexturePath =
-        "res://images/backgrounds/nosferatu_elite/nosferatu_background.png";
+        LanguageFloorAssets.NosferatuBackground;
 
     public const string PhaseFiveTexturePath =
-        "res://images/backgrounds/language_floor_liberation_encounter/background_5.png";
+        LanguageFloorAssets.Background5;
 
     public static string GetPhaseBackgroundTexturePath(int phase) =>
         phase >= 5

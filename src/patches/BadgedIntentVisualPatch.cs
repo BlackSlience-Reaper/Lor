@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 using LibraryOfRuina.content.liberation.Natural;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
@@ -59,7 +60,6 @@ internal static class BadgedIntentVisualPatch
     private const float TargetBadgeSize = 46.8f;
     private const float TargetTextWidth = 88f;
     private const string LabelFontPath = "res://themes/fonts/zhs/noto_sans_mono_cjksc_regular_shared.tres";
-    private const string FallbackLabelFontPath = "res://themes/kreon_bold_glyph_space_one.tres";
     private const int PreviewCardHoverZIndex = 0;
     private const int PileIconZIndex = DetailZIndex;
 
@@ -1043,7 +1043,7 @@ internal static class BadgedIntentVisualPatch
     private static Font? GetLabelFont()
     {
         return ResourceLoader.Load<Font>(LabelFontPath)
-            ?? ResourceLoader.Load<Font>(FallbackLabelFontPath);
+            ?? ResourceLoader.Load<Font>(SharedAssets.KreonBoldGlyphSpaceOneResource);
     }
 
     private static void RemoveDetailNodes(Control holder)

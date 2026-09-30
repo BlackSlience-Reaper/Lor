@@ -10,7 +10,7 @@ internal sealed partial class KingOfGreedCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/king_of_greed.tscn";
+        KingOfGreedAssets.KingOfGreedScene;
 
     private int _magicalGirlAttackCursor;
     private int _kingAttackCursor;

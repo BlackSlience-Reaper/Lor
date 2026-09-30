@@ -6,19 +6,19 @@ namespace LibraryOfRuina.content.liberation.Natural;
 internal sealed partial class NaturalFloorLiberationBackground : TextureRect
 {
     internal const string HumanTexturePath =
-        "res://images/backgrounds/natural_floor_liberation_encounter/love_and_hatred_human.png";
+        NaturalFloorAssets.LoveAndHatredHumanBackground;
     internal const string SnakeTexturePath =
-        "res://images/backgrounds/natural_floor_liberation_encounter/love_and_hatred_snake.png";
+        NaturalFloorAssets.LoveAndHatredSnakeBackground;
     internal const string WrathTexturePath =
-        "res://images/backgrounds/wrath_servant_strong/background.png";
+        NaturalFloorAssets.WrathServantStrongBackground;
     internal const string DespairTexturePath =
-        "res://images/backgrounds/despair_knight_strong/despair_knight_background.png";
+        NaturalFloorAssets.DespairKnightBackground;
 
     internal const string GreedTexturePath =
-        "res://images/backgrounds/king_of_greed/king_of_greed_background.png";
+        NaturalFloorAssets.KingOfGreedBackground;
 
     internal const string NihilTexturePath =
-        "res://images/backgrounds/natural_floor_liberation_encounter/nihil.png";
+        NaturalFloorAssets.LiberationEncounterNihilBackground;
 
     internal NaturalFloorLiberationEncounter Encounter { get; init; } = null!;
 

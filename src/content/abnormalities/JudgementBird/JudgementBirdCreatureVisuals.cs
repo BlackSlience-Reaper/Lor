@@ -10,7 +10,7 @@ internal sealed partial class JudgementBirdCreatureVisuals :
     private const string AnimationLibrary = "default";
 
     internal const string ScenePath =
-        "res://scenes/creature_visuals/judgement_bird.tscn";
+        JudgementBirdAssets.JudgementBirdScene;
 
     internal static IReadOnlyList<string> AssetPaths { get; } =
     [
@@ -42,7 +42,7 @@ internal sealed partial class EscapedBirdCreatureVisuals :
     private int _screamCursor;
 
     internal const string ScenePath =
-        "res://scenes/creature_visuals/escaped_bird.tscn";
+        JudgementBirdAssets.EscapedBirdScene;
 
     internal static IReadOnlyList<string> AssetPaths { get; } =
     [

@@ -8,7 +8,7 @@ namespace LibraryOfRuina.content.abnormalities.Ozma;
 internal static class OzmaTrueJackFlashOverlay
 {
     private const string OverlayNodeName = "OzmaTrueJackFlashOverlay";
-    internal const string TexturePath = "res://images/vfx/ozma_oblivion_meeting.png";
+    internal const string TexturePath = OzmaAssets.OblivionMeetingTexture;
 
     private static TextureRect? _activeOverlay;
     private static Tween? _activeTween;

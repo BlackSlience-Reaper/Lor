@@ -62,7 +62,6 @@ public sealed class AddictedEmployee : LorMonsterModel
     private const int TremblingStrikeBlock = 8;
     private const int TremblingStrikeBind = 3;
 
-    private const string AttackSfxPath = "res://audio/sfx/song_machine/song_machine_attack.ogg";
     private const string AttackSfxSlot = "SongMachineAttack";
 
     private static readonly string SongMachinePageRelicTitleLocKey =
@@ -104,7 +103,7 @@ public sealed class AddictedEmployee : LorMonsterModel
         .Concat(base.AssetPaths.Skip(1))
         .Concat(
         [
-            AttackSfxPath,
+            AddictedEmployeeAssets.SongMachineAttackSfx,
             SongMachineAttackOverlayController.OverlayTexturePath
         ])
         .Distinct();
@@ -214,7 +213,7 @@ public sealed class AddictedEmployee : LorMonsterModel
         for (int hit = 0; hit < 2; hit++)
         {
             if (Creature.IsDead) return;
-            LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AttackSfxPath, -2f);
+            LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AddictedEmployeeAssets.SongMachineAttackSfx, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(this, ShiveringDamage);
             LocalOggOneShotPlayer.StopExclusive(AttackSfxSlot);
             await Cmd.CustomScaledWait(0.09f, 0.18f);
@@ -231,7 +230,7 @@ public sealed class AddictedEmployee : LorMonsterModel
             if (Creature.IsDead) return;
             Dictionary<Creature, int> hpBefore = SnapshotPlayerHp(targets);
 
-            LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AttackSfxPath, -2f);
+            LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AddictedEmployeeAssets.SongMachineAttackSfx, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(this, MelodyDamage);
             LocalOggOneShotPlayer.StopExclusive(AttackSfxSlot);
             await Cmd.CustomScaledWait(0.09f, 0.18f);

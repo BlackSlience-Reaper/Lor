@@ -78,7 +78,7 @@ public sealed partial class LanguageFloorSmilingFace :
     private const string FormThreeCompositeMoveId = "FORM_THREE_COMPOSITE";
 
     public const string Root =
-        "res://images/monsters/language_floor_liberation/smiling_face/";
+        LanguageFloorAssets.SmilingFaceMonsterRoot;
     public const string IdleTexturePath = Root + "smiling_face_idle.png";
     public const string AttackThrustTexturePath =
         Root + "smiling_face_attack_thrust.png";
@@ -157,13 +157,13 @@ public sealed partial class LanguageFloorSmilingFace :
 
     public static readonly string[] PowerIconPaths =
     [
-        "res://images/powers/language_floor_smiling_face_find_corpses_power.png",
-        "res://images/powers/language_floor_smiling_face_form_one_split_power.png",
-        "res://images/powers/language_floor_smiling_face_fusion_power.png",
-        "res://images/powers/language_floor_smiling_face_split_and_fusion_power.png",
-        "res://images/powers/language_floor_smiling_face_scream_power.png",
-        "res://images/powers/language_floor_smiling_face_form_three_split_power.png",
-        "res://images/powers/language_floor_smiling_face_vomit_power.png"
+        LanguageFloorAssets.SmilingFaceFindCorpsesPowerIcon,
+        LanguageFloorAssets.SmilingFaceFormOneSplitPowerIcon,
+        LanguageFloorAssets.SmilingFaceFusionPowerIcon,
+        LanguageFloorAssets.SmilingFaceSplitAndFusionPowerIcon,
+        LanguageFloorAssets.SmilingFaceScreamPowerIcon,
+        LanguageFloorAssets.SmilingFaceFormThreeSplitPowerIcon,
+        LanguageFloorAssets.SmilingFaceVomitPowerIcon
     ];
 
     public static readonly string[] AssetPathsStatic =

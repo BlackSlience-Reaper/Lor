@@ -79,7 +79,7 @@ public sealed class LanguageFloorDipsia :
     private const string RouterMoveId = "LANGUAGE_FLOOR_DIPSIA_ROUTER";
 
     public const string TextureRoot =
-        "res://images/monsters/language_floor_liberation/dipsia/";
+        LanguageFloorAssets.LiberationDipsiaMonsterRoot;
     public const string IdleTexturePath = TextureRoot + "dipsia_idle.png";
     public const string GroupBreakTexturePath =
         TextureRoot + "dipsia_group_break.png";
@@ -91,17 +91,16 @@ public sealed class LanguageFloorDipsia :
     public const string HitTexturePath = TextureRoot + "dipsia_hit.png";
     public const string EvadeTexturePath = TextureRoot + "dipsia_evade.png";
 
-    private const string SfxRoot = "res://audio/sfx/nosferatu/";
     private const string NormalAttackSfxPath =
-        SfxRoot + "nosferatu_transform_strike.ogg";
+        LanguageFloorAssets.NosferatuSfxRoot + "nosferatu_transform_strike.ogg";
     private const string SlashAttackSfxPath =
-        SfxRoot + "nosferatu_transform_slash.ogg";
+        LanguageFloorAssets.NosferatuSfxRoot + "nosferatu_transform_slash.ogg";
     private const string NormalGroupAttackSfxPath =
-        SfxRoot + "nosferatu_strong_attack.ogg";
+        LanguageFloorAssets.NosferatuSfxRoot + "nosferatu_strong_attack.ogg";
     private const string TransformedGroupAttackSfxPath =
-        SfxRoot + "nosferatu_transform_strong_attack_effect.ogg";
-    private const string CastSfxPath = SfxRoot + "nosferatu_evade.ogg";
-    private const string TransformSfxPath = SfxRoot + "nosferatu_transform.ogg";
+        LanguageFloorAssets.NosferatuSfxRoot + "nosferatu_transform_strong_attack_effect.ogg";
+    private const string CastSfxPath = LanguageFloorAssets.NosferatuSfxRoot + "nosferatu_evade.ogg";
+    private const string TransformSfxPath = LanguageFloorAssets.NosferatuSfxRoot + "nosferatu_transform.ogg";
 
     private const float NormalAttackSegmentSeconds = 0.45f;
     public const float GroupBreakSegmentSeconds = 0.55f;
@@ -136,10 +135,10 @@ public sealed class LanguageFloorDipsia :
                 TransformedGroupAttackSfxPath,
                 CastSfxPath,
                 TransformSfxPath,
-                "res://images/powers/nosferatu_blood_power.png",
-                "res://images/powers/nosferatu_hydrophobia_passive_power.png",
-                "res://images/powers/nosferatu_transform_power.png",
-                "res://images/powers/nosferatu_flowing_blood_power.png"
+                LanguageFloorAssets.NosferatuBloodPowerIcon,
+                LanguageFloorAssets.NosferatuHydrophobiaPassivePowerIcon,
+                LanguageFloorAssets.NosferatuTransformPowerIcon,
+                LanguageFloorAssets.NosferatuFlowingBloodPowerIcon
             ])
             .ToArray();
 

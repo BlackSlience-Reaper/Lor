@@ -27,7 +27,7 @@ public sealed class DeadButterflyWeak : EncounterModel, IEncounterBgmSource
 
     public override IEnumerable<string> ExtraAssetPaths =>
     [
-        "res://images/backgrounds/dead_butterfly/funeral_background.png"
+        DeadButterflyAssets.FuneralBackground
     ];
 
     protected override IReadOnlyList<(MonsterModel, string?)> GenerateMonsters()

@@ -14,13 +14,13 @@ public sealed partial class ScowlingFaceCreatureVisuals
     };
 
     internal const string DefaultTexturePath =
-        "res://images/monsters/social_floor_liberation/scowling_face/default.png";
+        SocialFloorAssets.ScowlingFaceDefaultTexture;
     internal const string MoveTexturePath =
-        "res://images/monsters/social_floor_liberation/scowling_face/move.png";
+        SocialFloorAssets.ScowlingFaceMoveTexture;
     internal const string DamagedTexturePath =
-        "res://images/monsters/social_floor_liberation/scowling_face/damaged.png";
+        SocialFloorAssets.ScowlingFaceDamagedTexture;
     internal const string HitTexturePath =
-        "res://images/monsters/social_floor_liberation/scowling_face/hit.png";
+        SocialFloorAssets.ScowlingFaceHitTexture;
 
     private const float CharacterAnchorX = 256f;
     private const float MoveAnchorX = 235f;

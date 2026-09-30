@@ -36,8 +36,7 @@ public sealed class RnfmabjRightHand : RnfmabjHandBase
 
 internal static class RnfmabjCombatAssets
 {
-    private const string AudioRoot =
-        "res://audio/special_guests/rnfmabj/combat/";
+    private const string AudioRoot = RnfmabjSpecialGuestIds.CombatAudioRoot;
 
     public static readonly string[] All =
     [

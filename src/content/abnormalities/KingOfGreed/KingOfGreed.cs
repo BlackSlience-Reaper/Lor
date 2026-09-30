@@ -138,13 +138,13 @@ public sealed class KingOfGreed : LorMonsterModel
                 GoldenAmber.SfxRoot + "golden_path.ogg",
                 GoldenAmber.SfxRoot + "magical_girl_stab.ogg",
                 GoldenAmber.SfxRoot + "magical_girl_slash.ogg",
-                "res://images/powers/library_of_ruina_golden_amber_power.png",
-                "res://images/powers/library_of_ruina_flickering_desire_power.png",
-                "res://images/powers/library_of_ruina_self_intoxication_power.png",
-                "res://images/powers/library_of_ruina_momentary_happiness_power.png",
-                "res://images/powers/library_of_ruina_king_of_greed_passive_power.png",
-                "res://images/powers/library_of_ruina_gluttony_power.png",
-                "res://images/powers/library_of_ruina_shining_happiness_power.png"
+                KingOfGreedAssets.GoldenAmberPowerIcon,
+                KingOfGreedAssets.FlickeringDesirePowerIcon,
+                KingOfGreedAssets.SelfIntoxicationPowerIcon,
+                KingOfGreedAssets.MomentaryHappinessPowerIcon,
+                KingOfGreedAssets.PassivePowerIcon,
+                KingOfGreedAssets.GluttonyPowerIcon,
+                KingOfGreedAssets.ShiningHappinessPowerIcon
             ])
             .ToArray();
 

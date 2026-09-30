@@ -20,7 +20,7 @@ public sealed class QueenOfHatredStrong : EncounterModel, IEncounterBgmSource
 
     public override MegaSkeletonDataResource? BossNodeSpineResource => null;
 
-    public override string BossNodePath => "res://images/map/placeholder/queen_of_hatred_boss_icon";
+    public override string BossNodePath => QueenOfHatredAssets.PlaceholderBossMapIconPrefix;
 
     public override IEnumerable<MonsterModel> AllPossibleMonsters =>
     [

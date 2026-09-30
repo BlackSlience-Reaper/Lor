@@ -18,7 +18,7 @@ namespace LibraryOfRuina.content.liberation.Natural;
 
 public abstract class NaturalFloorDespairMonster : NaturalFloorPhaseMonster
 {
-    internal const string SfxRoot = "res://audio/sfx/natural_floor_liberation/despair/";
+    internal const string SfxRoot = NaturalFloorAssets.LiberationDespairSfxRoot;
     internal const float AttackTime = 0.96f; // 自然层绝望阶段：攻击结算等待秒数。
 
     protected virtual string[] SoundFiles =>
@@ -30,7 +30,7 @@ public abstract class NaturalFloorDespairMonster : NaturalFloorPhaseMonster
 
     public override IEnumerable<string> AssetPaths => base.AssetPaths
         .Concat(SoundFiles.Select(file => SfxRoot + file + ".ogg"))
-        .Concat(["res://images/powers/library_passive_green.png", "res://images/powers/forgotten_knight_sword_teardrop_power.png"])
+        .Concat([NaturalFloorAssets.LibraryPassiveGreenIcon, NaturalFloorAssets.ForgottenKnightSwordTeardropPowerIcon])
         .Distinct();
 
     public override Task AfterDamageReceivedLate(PlayerChoiceContext context, Creature target, DamageResult result,

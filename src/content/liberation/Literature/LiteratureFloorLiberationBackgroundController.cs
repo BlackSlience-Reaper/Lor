@@ -7,19 +7,19 @@ namespace LibraryOfRuina.content.liberation.Literature;
 internal static class LiteratureFloorLiberationBackgroundController
 {
     public const string PhaseOneTexturePath =
-        "res://images/backgrounds/literature_floor_liberation_encounter/creature_map_latitia_composite.png";
+        LiteratureFloorAssets.CreatureMapLatitiaCompositeBackground;
 
     public const string PhaseTwoTexturePath =
-        "res://images/backgrounds/spider_bud_strong/spider_bud_strong_background.png";
+        LiteratureFloorAssets.SpiderBudStrongBackground;
 
     public const string PhaseThreeTexturePath =
-        "res://images/backgrounds/red_shoes_strong/red_shoes_background.png";
+        LiteratureFloorAssets.RedShoesBackground;
 
     public const string PhaseFourTexturePath =
-        "res://images/backgrounds/literature_floor_liberation_encounter/todays_expression_background.png";
+        LiteratureFloorAssets.TodaysExpressionBackground;
 
     public const string PhaseFiveTexturePath =
-        "res://images/backgrounds/literature_floor_liberation_encounter/black_swan_background.png";
+        LiteratureFloorAssets.BlackSwanBackground;
 
     public static string GetPhaseBackgroundTexturePath(int phase) =>
         phase switch

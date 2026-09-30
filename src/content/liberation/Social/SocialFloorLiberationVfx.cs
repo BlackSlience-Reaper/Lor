@@ -13,38 +13,38 @@ namespace LibraryOfRuina.content.liberation.Social;
 internal static class SocialFloorLiberationVfx
 {
     internal const string FarPenetrateTexturePath =
-        "res://images/vfx/social_floor_liberation/far_penetrate_hit.png";
+        SocialFloorAssets.FarPenetrateHitTexture;
     internal const string FarCrystalRiseTexturePath =
-        "res://images/vfx/social_floor_liberation/far_hit_crystal_rise.png";
+        SocialFloorAssets.FarHitCrystalRiseTexture;
     internal const string AreaEffectTexturePath =
-        "res://images/vfx/social_floor_liberation/crystal_area_effect.png";
+        SocialFloorAssets.CrystalAreaEffectTexture;
     internal const string AreaFallTexturePath =
-        "res://images/vfx/social_floor_liberation/crystal_area_fall.png";
+        SocialFloorAssets.CrystalAreaFallTexture;
     internal const string AreaEmbeddedTexturePath =
-        "res://images/vfx/social_floor_liberation/crystal_area_embedded.png";
+        SocialFloorAssets.CrystalAreaEmbeddedTexture;
     internal const string AreaShockwaveTexturePath =
-        "res://images/vfx/social_floor_liberation/crystal_area_shockwave.png";
+        SocialFloorAssets.CrystalAreaShockwaveTexture;
     internal const string TransformationTexturePath =
-        "res://images/vfx/social_floor_liberation/transformation.png";
+        SocialFloorAssets.LiberationTransformationTexture;
     internal const string TransformationMaskTexturePath =
-        "res://images/vfx/social_floor_liberation/transformation_mask.png";
+        SocialFloorAssets.TransformationMaskTexture;
     internal const string TransformationMask2TexturePath =
-        "res://images/vfx/social_floor_liberation/transformation_mask2.png";
+        SocialFloorAssets.TransformationMask2Texture;
 
     internal const string AttackBoomSfxPath =
-        "res://audio/sfx/social_floor_liberation/attack_boom.ogg";
+        SocialFloorAssets.AttackBoomSfx;
     internal const string AttackUpSfxPath =
-        "res://audio/sfx/social_floor_liberation/attack_up.ogg";
+        SocialFloorAssets.AttackUpSfx;
     internal const string CardMagicSfxPath =
-        "res://audio/sfx/social_floor_liberation/card_magic.ogg";
+        SocialFloorAssets.CardMagicSfx;
     internal const string ChangeMagicSfxPath =
-        "res://audio/sfx/social_floor_liberation/change_magic.ogg";
+        SocialFloorAssets.ChangeMagicSfx;
     internal const string StrongAttackStartSfxPath =
-        "res://audio/sfx/social_floor_liberation/strong_attack_start.ogg";
+        SocialFloorAssets.StrongAttackStartSfx;
     internal const string StrongAttackDownSfxPath =
-        "res://audio/sfx/social_floor_liberation/strong_attack_down.ogg";
+        SocialFloorAssets.StrongAttackDownSfx;
     internal const string StrongAttackFinishSfxPath =
-        "res://audio/sfx/social_floor_liberation/strong_attack_finish.ogg";
+        SocialFloorAssets.StrongAttackFinishSfx;
 
     internal static readonly string[] AssetPaths =
     [

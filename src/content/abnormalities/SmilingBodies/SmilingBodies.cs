@@ -47,8 +47,8 @@ public sealed class SmilingBodies : LorMonsterModel, ITargetedMonsterAttackProvi
     public const string VomitMoveId = "VOMIT";
     public const string ReviveMoveId = "REVIVE";
 
-    public const string Root = "res://images/monsters/smiling_bodies/";
-    public const string SfxRoot = "res://audio/sfx/smiling_bodies/";
+    public const string Root = SmilingBodiesAssets.SmilingBodiesMonsterRoot;
+    public const string SfxRoot = SmilingBodiesAssets.SmilingBodiesSfxRoot;
 
     public const string Phase1IdleTexturePath = Root + "phase_1_idle.png";
     public const string Phase1AbsorbTexturePath = Root + "phase_1_absorb.png";
@@ -119,13 +119,13 @@ public sealed class SmilingBodies : LorMonsterModel, ITargetedMonsterAttackProvi
 
     public static readonly string[] PowerIconPaths =
     [
-        "res://images/powers/smiling_bodies_find_corpses_power.png",
-        "res://images/powers/smiling_bodies_dissolving_corpses_power.png",
-        "res://images/powers/smiling_bodies_split_power.png",
-        "res://images/powers/smiling_bodies_split_and_fusion_power.png",
-        "res://images/powers/smiling_bodies_fusion_power.png",
-        "res://images/powers/smiling_bodies_scream_power.png",
-        "res://images/powers/smiling_bodies_vomit_power.png"
+        SmilingBodiesAssets.FindCorpsesPowerIcon,
+        SmilingBodiesAssets.DissolvingCorpsesPowerIcon,
+        SmilingBodiesAssets.SplitPowerIcon,
+        SmilingBodiesAssets.SplitAndFusionPowerIcon,
+        SmilingBodiesAssets.FusionPowerIcon,
+        SmilingBodiesAssets.ScreamPowerIcon,
+        SmilingBodiesAssets.VomitPowerIcon
     ];
 
     public static readonly string[] AssetPathsStatic =

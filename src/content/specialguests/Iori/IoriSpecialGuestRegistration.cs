@@ -21,8 +21,6 @@ public static class IoriSpecialGuestRegistration
     private const int SourceStoryLineCount = 160;
     private const int PlayedStoryLineCount = 104;
     private const string StoryId = "IORI_SPECIAL_GUEST_STORY";
-    private const string EventImage =
-        "res://images/events/iori_special_guest_event.png";
     private const string StoryImageRoot =
         "res://images/special_guests/iori/story/";
     private const string StoryAudioRoot =
@@ -235,11 +233,11 @@ public static class IoriSpecialGuestRegistration
                         BeforeCombatStory: CreateBeforeCombatStory(),
                         BeforeCombatStorySetup: PauseCombatBgmForStory,
                         AfterCombatStoryRelease: ResumeCombatBgmAfterStory,
-                        ExtraAssetPaths: [EventImage]),
+                        ExtraAssetPaths: [IoriSpecialGuestIds.EventImage]),
                     new SpecialGuestStageDefinition(
                         static () => ModelDb.Encounter<
                             IoriSpecialGuestStageTwoEncounter>(),
-                        ExtraAssetPaths: [EventImage]),
+                        ExtraAssetPaths: [IoriSpecialGuestIds.EventImage]),
                 ],
                 AvailabilityCondition: CanAppear));
         _initialized = true;

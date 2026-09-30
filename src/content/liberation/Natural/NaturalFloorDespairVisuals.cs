@@ -57,7 +57,7 @@ internal abstract partial class NaturalFloorDespairVisuals : SceneAnimatedCreatu
 [MonsterVisual(typeof(NaturalFloorTearEdgeBoss), ScenePath = NaturalFloorTearEdgeVisuals.ScenePath)]
 internal sealed partial class NaturalFloorTearEdgeVisuals : NaturalFloorDespairVisuals
 {
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_tear_edge_boss.tscn";
+    internal const string ScenePath = NaturalFloorAssets.TearEdgeBossScene;
     internal static readonly string[] AssetPaths = new[] { ScenePath }
         .Concat(new[] { "normal", "despair", "stabbed1", "stabbed2", "stabbed3" }
             .Select(form => "res://scenes/creature_visuals/natural_floor_tear_edge_" + form + "_animations.tres"))
@@ -76,7 +76,7 @@ internal sealed partial class NaturalFloorForgottenSwordVisuals : NaturalFloorDe
     private bool _healthBarHiddenForFalseDeath;
     private bool _healthBarWasVisible;
 
-    internal const string ScenePath = "res://scenes/creature_visuals/natural_floor_forgotten_sword.tscn";
+    internal const string ScenePath = NaturalFloorAssets.ForgottenSwordScene;
     internal static readonly string[] AssetPaths = new[] { ScenePath }
         .Concat(new[] { "normal", "teardrop", "despair", "dead" }
             .Select(form => "res://scenes/creature_visuals/natural_floor_forgotten_sword_" + form + "_animations.tres"))

@@ -94,7 +94,7 @@ public sealed class ArtFloorLiberationEncounter :
 
     public override MegaSkeletonDataResource? BossNodeSpineResource => null;
 
-    public override string BossNodePath => "res://images/map/placeholder/art_floor_liberation_encounter_icon";
+    public override string BossNodePath => ArtFloorAssets.LiberationEncounterMapIconPrefix;
 
     public int CurrentPhase => _currentPhase;
 

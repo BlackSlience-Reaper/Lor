@@ -20,7 +20,7 @@ internal sealed partial class NaturalFloorNihilVisuals : SceneAnimatedCreatureVi
     internal const float HitTime = 0.48f; // 虚无与魔法少女：参照自然层普通动作的打击时点。
 
     // 特性参数只能是常量，所以登记处写成 SceneRoot + "<id>.tscn"，与 ScenePath(id) 拼出的路径相同。
-    internal const string SceneRoot = "res://scenes/creature_visuals/natural_floor_nihil_";
+    internal const string SceneRoot = NaturalFloorAssets.NaturalFloorNihilScenePrefix;
 
     internal static string ScenePath(string id) => SceneRoot + id + ".tscn";
 

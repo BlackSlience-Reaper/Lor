@@ -73,12 +73,12 @@ public sealed class TechnologyFloorMagicBulletBoss : LiberationPhaseBossMonster,
 
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_5";
 
-    public const string Root = "res://images/monsters/technology_floor/magic_bullet/";
+    public const string Root = TechnologyFloorAssets.MagicBulletMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string AttackTexturePath = Root + "attack.png";
     public const string HitTexturePath = Root + "hit.png";
     public const string SpecialTexturePath = Root + "special.png";
-    public const string AttackSfxPath = "res://audio/sfx/technology_floor/magic_bullet/attack.ogg";
+    public const string AttackSfxPath = TechnologyFloorAssets.MagicBulletAttackSfx;
 
     private int _internalPhase = 1;
     private bool _bypassClamp;

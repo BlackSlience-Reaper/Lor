@@ -9,7 +9,7 @@ internal sealed partial class SmilingBodiesCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/smiling_bodies.tscn";
+        SmilingBodiesAssets.SmilingBodiesScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         SmilingBodiesAnimationContract.LibraryForPhase(ResolvePhase());

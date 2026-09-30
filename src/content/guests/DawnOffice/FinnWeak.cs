@@ -8,7 +8,7 @@ public sealed class FinnWeak : EncounterModel, IGuestReceptionEncounter, IEncoun
 {
     EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
         "FinnBGM",
-        "res://audio/bgm/finn/finn_battle_1.ogg");
+        DawnOfficeAssets.FinnBattle1Bgm);
 
     public override RoomType RoomType => RoomType.Monster;
 

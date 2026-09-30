@@ -15,7 +15,7 @@ public sealed class ArtFloorFirstPerformer : LorMonsterModel
     private const string SilentMoveId = "SILENT_PERFORMANCE";
     private const int StaggerResistanceMax = 40;
 
-    public const string IdleTexturePath = "res://images/monsters/art_floor/first_performer.png";
+    public const string IdleTexturePath = ArtFloorAssets.FirstPerformerTexture;
 
     public override int DefaultChaoResistance => StaggerResistanceMax;
 

@@ -68,7 +68,7 @@ public sealed partial class NaturalFloorLiberationEncounter : LiberationEncounte
 
     public override MegaSkeletonDataResource? BossNodeSpineResource => null;
 
-    public override string BossNodePath => "res://images/map/placeholder/natural_floor_liberation_encounter_icon";
+    public override string BossNodePath => NaturalFloorAssets.LiberationEncounterMapIconPrefix;
 
     public string LiberationFloorId => LiberationFloorIds.Natural;
 

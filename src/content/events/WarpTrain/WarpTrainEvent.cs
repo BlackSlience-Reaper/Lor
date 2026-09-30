@@ -33,20 +33,20 @@ public sealed class WarpTrainEvent : EventModel
 {
     private const int EscapeHealAmount = 12;
 
-    public const string WarpBackgroundPath = "res://images/events/warp_train_event/warp_train_background.webp";
-    public const string BlackBackgroundPath = "res://images/events/warp_train_event/black_screen.webp";
-    public const string LoveTownBackgroundPath = "res://images/events/warp_train_event/love_town_background.webp";
+    public const string WarpBackgroundPath = WarpTrainAssets.WarpTrainBackgroundTexture;
+    public const string BlackBackgroundPath = WarpTrainAssets.BlackScreenTexture;
+    public const string LoveTownBackgroundPath = WarpTrainAssets.LoveTownBackgroundTexture;
 
-    public const string WarpTrainBgmPath = "res://audio/bgm/warp_train/warp_train_bgm.ogg";
-    public const string LoveTownEventBgmPath = "res://audio/bgm/warp_train/love_town_event_bgm.ogg";
+    public const string WarpTrainBgmPath = WarpTrainAssets.WarpTrainBgm;
+    public const string LoveTownEventBgmPath = WarpTrainAssets.LoveTownEventBgm;
 
     
-    public const string MaryVoicePath1 = "res://audio/sfx/warp_train_event/mary_dialogue.ogg";
-    public const string TommyVoicePath1 = "res://audio/sfx/warp_train_event/tommy_dialogue.ogg";
-    public const string MaryVoicePath2 = "res://audio/sfx/warp_train_event/townsfolk_dialogue_1.ogg";
-    public const string TommyVoicePath2 = "res://audio/sfx/warp_train_event/townsfolk_dialogue_2.ogg";
-    public const string TownsfolkCheerPath1 = "res://audio/sfx/warp_train_event/crowd_dialogue_1.ogg";
-    public const string TownsfolkCheerPath2 = "res://audio/sfx/warp_train_event/crowd_dialogue_2.ogg";
+    public const string MaryVoicePath1 = WarpTrainAssets.MaryDialogueSfx;
+    public const string TommyVoicePath1 = WarpTrainAssets.TommyDialogueSfx;
+    public const string MaryVoicePath2 = WarpTrainAssets.TownsfolkDialogue1Sfx;
+    public const string TommyVoicePath2 = WarpTrainAssets.TownsfolkDialogue2Sfx;
+    public const string TownsfolkCheerPath1 = WarpTrainAssets.CrowdDialogue1Sfx;
+    public const string TownsfolkCheerPath2 = WarpTrainAssets.CrowdDialogue2Sfx;
 
     private static readonly IReadOnlyList<string> PreloadAssetPaths =
     [

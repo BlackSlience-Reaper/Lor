@@ -5,6 +5,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.addons.mega_text;
@@ -598,8 +599,8 @@ internal sealed partial class DamagePreviewOverlay : Control
         MakeMouseTransparent(root);
         MegaRichTextLabel label = root.GetNode<MegaRichTextLabel>("%Description");
         label.AutoSizeEnabled = false;
-        label.AddThemeFontOverride("normal_font", ResourceLoader.Load<Font>("res://themes/kreon_regular_glyph_space_one.tres"));
-        label.AddThemeFontOverride("bold_font", ResourceLoader.Load<Font>("res://themes/kreon_bold_glyph_space_one.tres"));
+        label.AddThemeFontOverride("normal_font", ResourceLoader.Load<Font>(SharedAssets.KreonRegularGlyphSpaceOneResource));
+        label.AddThemeFontOverride("bold_font", ResourceLoader.Load<Font>(SharedAssets.KreonBoldGlyphSpaceOneResource));
         label.AddThemeConstantOverride("line_separation", 4);
         // 使用独立内容区域直接布局，避免容器的延迟排序让文字与背景尺寸错位。
         Node originalTextColumn = label.GetParent();
@@ -621,7 +622,7 @@ internal sealed partial class DamagePreviewOverlay : Control
             MouseFilter = MouseFilterEnum.Ignore
         };
         // MegaLabel 在进入场景树时沿用原版当前语言字体替换流程。
-        hint.AddThemeFontOverride("font", ResourceLoader.Load<Font>("res://themes/kreon_regular_glyph_space_one.tres"));
+        hint.AddThemeFontOverride("font", ResourceLoader.Load<Font>(SharedAssets.KreonRegularGlyphSpaceOneResource));
         hint.AddThemeFontSizeOverride("font_size", 18);
         hint.AddThemeColorOverride("font_color", StsColors.gray);
         body.AddChild(hint);

@@ -34,7 +34,7 @@ public sealed class ArtFloorDaCapoPerformer : LorMonsterModel
     private const string PerformMoveId = "PERFORM";
     private const string HiddenMoveId = "SILENT_CLIMAX";
 
-    public const string Root = "res://images/monsters/art_floor/dacapo_performers/";
+    public const string Root = ArtFloorAssets.DacapoPerformersMonsterRoot;
 
     private ArtFloorDaCapoPerformerVariant _variant = ArtFloorDaCapoPerformerVariant.First;
     private bool _showUnknownIntent;

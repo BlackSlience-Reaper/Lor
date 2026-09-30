@@ -30,21 +30,16 @@ public sealed class SilentOrchestraPageRelic : ModalPageRelic<SilentOrchestraPag
     internal const int FerventAdorationDamagePercent = 200;
     internal const int FinaleStunTurns = 1;
 
-    private const string ArtFloorIconPath =
-        "res://images/ui/run_history/art_floor_liberation_encounter.png";
-    private const string ArtFloorIconOutlinePath =
-        "res://images/ui/run_history/art_floor_liberation_encounter_outline.png";
-
     private bool _applyingFinaleStun;
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
-    public override string PackedIconPath => ArtFloorIconPath;
+    public override string PackedIconPath => ArtFloorAssets.LiberationEncounterRunHistoryIcon;
 
     protected override string PackedIconOutlinePath =>
-        ArtFloorIconOutlinePath;
+        ArtFloorAssets.LiberationEncounterOutlineRunHistoryIcon;
 
-    protected override string BigIconPath => ArtFloorIconPath;
+    protected override string BigIconPath => ArtFloorAssets.LiberationEncounterRunHistoryIcon;
 
     public override bool IsAllowed(IRunState runState)
     {

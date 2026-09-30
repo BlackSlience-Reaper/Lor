@@ -29,7 +29,7 @@ public sealed class AllReturnsToVoidCard() : CardModel(BaseEnergyCost, CardType.
 
     public override bool CanBeGeneratedInCombat => false;
 
-    public override string PortraitPath => "res://images/packed/card_portraits/colorless/nihil_emptiness.png";
+    public override string PortraitPath => NaturalFloorAssets.NihilEmptinessTexture;
 
     public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
 

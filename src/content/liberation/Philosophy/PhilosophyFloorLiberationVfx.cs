@@ -18,30 +18,24 @@ namespace LibraryOfRuina.content.liberation.Philosophy;
 /// </summary>
 internal static partial class PhilosophyFloorLiberationVfx
 {
-    private const string VfxRoot =
-        "res://images/vfx/philosophy_floor_liberation/";
-    private const string SfxRoot =
-        "res://audio/sfx/philosophy_floor_liberation/";
-    private const string PowerIconRoot = "res://images/powers/";
+    private const string EyeBulletPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "EyeBullet1.png";
+    private const string EyeLanternPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "EyeLantern.png";
+    private const string EyeTrailPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "EyeBulletTrail.png";
+    private const string EyeExplosionPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "EyeBulletExplosion.png";
+    private const string JusticeLinePath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "Justice1.png";
+    private const string JusticeWeightPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "Justice2.png";
+    private const string JusticeStarPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "Justice3.png";
+    private const string JusticeRingPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "Justice4.png";
+    private const string MeleeBurstPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "MeleeEffect2.png";
+    private const string MeleeWavePath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "MeleeEffect3.png";
+    private const string SurveillanceEyesPath = PhilosophyFloorAssets.PhilosophyFloorLiberationVfxRoot + "BigBird1.png";
 
-    private const string EyeBulletPath = VfxRoot + "EyeBullet1.png";
-    private const string EyeLanternPath = VfxRoot + "EyeLantern.png";
-    private const string EyeTrailPath = VfxRoot + "EyeBulletTrail.png";
-    private const string EyeExplosionPath = VfxRoot + "EyeBulletExplosion.png";
-    private const string JusticeLinePath = VfxRoot + "Justice1.png";
-    private const string JusticeWeightPath = VfxRoot + "Justice2.png";
-    private const string JusticeStarPath = VfxRoot + "Justice3.png";
-    private const string JusticeRingPath = VfxRoot + "Justice4.png";
-    private const string MeleeBurstPath = VfxRoot + "MeleeEffect2.png";
-    private const string MeleeWavePath = VfxRoot + "MeleeEffect3.png";
-    private const string SurveillanceEyesPath = VfxRoot + "BigBird1.png";
-
-    private const string EyeLaserSfxPath = SfxRoot + "eye_laser.ogg";
-    private const string JudgmentSfxPath = SfxRoot + "judgement.ogg";
-    private const string PeaceSlamSfxPath = SfxRoot + "peace_slam.ogg";
-    private const string PunishmentSfxPath = SfxRoot + "punishment.ogg";
-    private const string SurveillanceSfxPath = SfxRoot + "surveillance.ogg";
-    private const string EggBreakSfxPath = SfxRoot + "egg_break.ogg";
+    private const string EyeLaserSfxPath = PhilosophyFloorAssets.PhilosophyFloorLiberationSfxRoot + "eye_laser.ogg";
+    private const string JudgmentSfxPath = PhilosophyFloorAssets.PhilosophyFloorLiberationSfxRoot + "judgement.ogg";
+    private const string PeaceSlamSfxPath = PhilosophyFloorAssets.PhilosophyFloorLiberationSfxRoot + "peace_slam.ogg";
+    private const string PunishmentSfxPath = PhilosophyFloorAssets.PhilosophyFloorLiberationSfxRoot + "punishment.ogg";
+    private const string SurveillanceSfxPath = PhilosophyFloorAssets.PhilosophyFloorLiberationSfxRoot + "surveillance.ogg";
+    private const string EggBreakSfxPath = PhilosophyFloorAssets.PhilosophyFloorLiberationSfxRoot + "egg_break.ogg";
 
     internal static readonly IReadOnlyList<string> AssetPaths =
     [
@@ -66,16 +60,16 @@ internal static partial class PhilosophyFloorLiberationVfx
 
     internal static readonly IReadOnlyList<string> PowerIconPaths =
     [
-        PowerIconRoot + "philosophy_floor_twilight_black_monster_power.png",
-        PowerIconRoot + "philosophy_floor_twilight_three_birds_power.png",
-        PowerIconRoot + "philosophy_floor_twilight_broken_egg_power.png",
-        PowerIconRoot + "philosophy_floor_twilight_sin_power.png",
-        PowerIconRoot + "philosophy_floor_twilight_fear_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_black_monster_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_three_birds_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_broken_egg_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_sin_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_fear_power.png",
         // Canonical power ids come from Peace75/50/25 class names. The
         // underscored PEACE_75/50/25 ids are localization-only legacy keys.
-        PowerIconRoot + "philosophy_floor_twilight_peace75_power.png",
-        PowerIconRoot + "philosophy_floor_twilight_peace50_power.png",
-        PowerIconRoot + "philosophy_floor_twilight_peace25_power.png"
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_peace75_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_peace50_power.png",
+        PhilosophyFloorAssets.ImagesPowersRoot + "philosophy_floor_twilight_peace25_power.png"
     ];
 
     internal static void PlayPunishmentSfx() =>

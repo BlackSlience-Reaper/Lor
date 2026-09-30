@@ -19,16 +19,14 @@ public partial class ScorchedGirlMonsterCreatureVisuals : SpriteAttackCreatureVi
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root =
-            "res://images/monsters/scorched_girl_monster";
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
             SpriteVisualProfile.DefaultVariantKey,
-            root + ".png");
-        profile.Frame("attack", root + "_attack.webp")
+            ScorchedGirlAssets.ScorchedGirlMonsterPrefix + ".png");
+        profile.Frame("attack", ScorchedGirlAssets.ScorchedGirlMonsterPrefix + "_attack.webp")
             .Nudge(24f, -98f)
             .Scale(0.56f);
-        profile.Frame("hit", root + "_hit.webp");
+        profile.Frame("hit", ScorchedGirlAssets.ScorchedGirlMonsterPrefix + "_hit.webp");
         profile.Lunge("attack", 0.2f, 0.1f, 0.25f, "Attack");
         profile.Swap("hit", 0.12f, "Hit");
         return profile;

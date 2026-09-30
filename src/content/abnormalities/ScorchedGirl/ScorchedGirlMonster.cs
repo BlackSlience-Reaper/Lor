@@ -64,7 +64,6 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
     private const int FourthMatchFlameSelfDamage = 15;
     private const float AttackAnimDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
-    private const string GirlAttackSfxPath = "res://audio/sfx/scorched_girl/scorched_girl_explosion.ogg";
     private static readonly string MatchMarkRelicTitleLocKey = $"{ModelDb.GetId<MatchMarkRelic>().Entry}.title";
 
     private bool _matchFlamesAllExtinguished;
@@ -84,7 +83,7 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
 
     public override IEnumerable<string> AssetPaths =>
         ScorchedGirlMonsterCreatureVisuals.Profile.AssetPaths
-            .Append(GirlAttackSfxPath)
+            .Append(ScorchedGirlAssets.ScorchedGirlExplosionSfx)
             .Concat(base.AssetPaths.Skip(1))
             .Distinct();
 
@@ -229,7 +228,7 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
             ScorchedGirlDialogueHelper.SpeakRandom(this, AttackLines);
         }
 
-        LocalOggOneShotPlayer.Play(GirlAttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(ScorchedGirlAssets.ScorchedGirlExplosionSfx, -2f);
 
         await AbnormalityAnimHelper.ExecuteAttackSegment(this, FourthMatchFlameDamage, delaySeconds: AttackAnimDelaySeconds);
         await PowerCmdCompat.Apply<LibraryBurnPower>(targets, 9, Creature, null);

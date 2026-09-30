@@ -28,10 +28,10 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
     private const string BloodThirstMoveId = "BLOOD_THIRST";
     private const string DesireMoveId = "DESIRE";
 
-    public const string IdleTexturePath = "res://images/monsters/red_shoes/left_shoe.png";
-    public const string AttackTexturePath = "res://images/monsters/red_shoes/left_shoe_attack.png";
-    public const string HitTexturePath = "res://images/monsters/red_shoes/left_shoe_hit.png";
-    public const string ParryTexturePath = "res://images/monsters/red_shoes/left_shoe_parry.png";
+    public const string IdleTexturePath = RedShoesAssets.LeftShoeTexture;
+    public const string AttackTexturePath = RedShoesAssets.LeftShoeAttackTexture;
+    public const string HitTexturePath = RedShoesAssets.LeftShoeHitTexture;
+    public const string ParryTexturePath = RedShoesAssets.LeftShoeParryTexture;
 
     private int BloodThirstDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 10);
@@ -198,9 +198,9 @@ public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterA
     private const string DesireBurstMoveId = "DESIRE_BURST";
     private const string ObsessionMoveId = "OBSESSION";
 
-    public const string IdleTexturePath = "res://images/monsters/red_shoes/right_shoe.png";
-    public const string AttackTexturePath = "res://images/monsters/red_shoes/right_shoe_attack.png";
-    public const string HitTexturePath = "res://images/monsters/red_shoes/right_shoe_hit.png";
+    public const string IdleTexturePath = RedShoesAssets.RightShoeTexture;
+    public const string AttackTexturePath = RedShoesAssets.RightShoeAttackTexture;
+    public const string HitTexturePath = RedShoesAssets.RightShoeHitTexture;
 
     private MoveState _desireBurstState = null!;
     private MoveState _obsessionState = null!;

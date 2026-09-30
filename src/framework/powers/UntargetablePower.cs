@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.assets;
 using MegaCrit.Sts2.Core.Entities.Powers;
 
 namespace LibraryOfRuina.framework.powers;
@@ -9,7 +10,7 @@ public class UntargetablePower : LibraryOfRuinaPowerModel
 {
     protected override string LegacyPowerId => "UNTARGETABLE_POWER";
 
-    public override string PackedIconPath => "res://images/powers/spider_bud_untargetable_power.png";
+    public override string PackedIconPath => SharedAssets.SpiderBudUntargetablePowerIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 

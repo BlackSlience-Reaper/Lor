@@ -27,8 +27,7 @@ internal static class IoriPresentationAssets
         "res://images/special_guests/iori/combat/frames/";
     internal const string VfxRoot =
         "res://images/special_guests/iori/combat/vfx/";
-    internal const string AudioRoot =
-        "res://audio/special_guests/iori/combat/";
+    internal const string AudioRoot = IoriSpecialGuestIds.CombatAudioRoot;
 
     internal static IReadOnlyList<string> All { get; } =
     [

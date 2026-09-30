@@ -234,7 +234,7 @@ public sealed class NaturalFloorNihilPower : LibraryOfRuinaPowerModel
 {
     protected override string LegacyPowerId => "NATURAL_FLOOR_NIHIL_POWER";
 
-    public override string PackedIconPath => "res://images/powers/natural_floor_nihil.png";
+    public override string PackedIconPath => NaturalFloorAssets.NaturalFloorNihilIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 
@@ -262,7 +262,7 @@ public sealed class NaturalFloorNihilHatredStatus : LibraryOfRuinaPowerModel
 {
     protected override string LegacyPowerId => "NATURAL_FLOOR_NIHIL_HATRED_STATUS";
 
-    public override string PackedIconPath => "res://images/powers/natural_floor_nihil_hatred.png";
+    public override string PackedIconPath => NaturalFloorAssets.NihilHatredIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 

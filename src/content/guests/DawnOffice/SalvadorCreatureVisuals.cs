@@ -16,7 +16,7 @@ public partial class SalvadorCreatureVisuals : DawnOfficeTripleAttackCreatureVis
     internal static readonly SpriteVisualProfile Profile =
         BuildTripleAttackProfile(
             "salvador",
-            "res://images/monsters/salvador.png",
+            DawnOfficeAssets.SalvadorTexture,
             2f,
             -145.2f,
             0.55f);

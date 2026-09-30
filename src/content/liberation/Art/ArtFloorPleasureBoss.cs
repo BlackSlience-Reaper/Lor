@@ -38,7 +38,7 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
     private const int PiercingPleasureHits = 6;
     private const int PiercingPleasureCards = 5;
 
-    public const string Root = "res://images/monsters/art_floor/pleasure/";
+    public const string Root = ArtFloorAssets.ArtFloorPleasureMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string HitTexturePath = Root + "hit.png";
     public const string AttackBluntTexturePath = Root + "attack_blunt.png";

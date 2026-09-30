@@ -40,8 +40,8 @@ public abstract class NaturalFloorNihilMonster : NaturalFloorPhaseMonster
 
     public override IEnumerable<string> AssetPaths => base.AssetPaths
         .Concat(AvailableActions.SelectMany(action => CreateActionIntent(action, "B").AssetPaths))
-        .Append("res://images/powers/natural_floor_nihil.png")
-        .Append("res://images/powers/natural_floor_nihil_hatred.png")
+        .Append(NaturalFloorAssets.NaturalFloorNihilIcon)
+        .Append(NaturalFloorAssets.NihilHatredIcon)
         .Distinct();
 
     protected override bool ShouldShowMoveInBestiary(string moveStateId) => moveStateId != TurnId;

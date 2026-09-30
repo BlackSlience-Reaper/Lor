@@ -15,13 +15,12 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root = "res://images/monsters/all_around_helper";
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
             SpriteVisualProfile.DefaultVariantKey,
-            root + ".webp");
-        profile.Frame("attack", root + "_attack.webp");
-        profile.Frame("hit", root + "_hit.webp");
+            AllAroundHelperAssets.AllAroundHelperMonsterPrefix + ".webp");
+        profile.Frame("attack", AllAroundHelperAssets.AllAroundHelperMonsterPrefix + "_attack.webp");
+        profile.Frame("hit", AllAroundHelperAssets.AllAroundHelperMonsterPrefix + "_hit.webp");
         profile.Swap("attack", 0.18f, "Attack");
         profile.Swap("hit", 0.12f, "Hit");
         return profile;

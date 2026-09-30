@@ -52,23 +52,23 @@ public sealed class LiteratureFloorLiberationEncounter :
     public const string BlackSwanSlot = "black_swan";
 
     internal const string EncounterScenePath =
-        "res://scenes/encounters/literature_floor_liberation_encounter.tscn";
+        LiteratureFloorAssets.LiberationEncounterScene;
     internal const string BackgroundScenePath =
-        "res://scenes/backgrounds/literature_floor_liberation_encounter/literature_floor_liberation_encounter_background.tscn";
+        LiteratureFloorAssets.LiberationEncounterBackgroundScene;
     internal const string BackgroundLayerScenePath =
-        "res://scenes/backgrounds/literature_floor_liberation_encounter/layers/literature_floor_liberation_encounter_bg_00_a.tscn";
+        LiteratureFloorAssets.LiberationEncounterBg00ABackgroundScene;
     internal const string BackgroundTexturePath =
-        "res://images/backgrounds/literature_floor_liberation_encounter/creature_map_latitia_composite.png";
+        LiteratureFloorAssets.CreatureMapLatitiaCompositeBackground;
     internal const string RedEyesEncounterScenePath =
-        "res://scenes/encounters/literature_floor_liberation_red_eyes_encounter.tscn";
+        LiteratureFloorAssets.LiberationRedEyesEncounterScene;
     internal const string BloodlustEncounterScenePath =
-        "res://scenes/encounters/literature_floor_liberation_bloodlust_encounter.tscn";
+        LiteratureFloorAssets.LiberationBloodlustEncounterScene;
     internal const string TodaysExpressionEncounterScenePath =
-        "res://scenes/encounters/literature_floor_liberation_todays_expression_encounter.tscn";
+        LiteratureFloorAssets.LiberationTodaysExpressionEncounterScene;
     internal const string BlackSwanEncounterScenePath =
-        "res://scenes/encounters/literature_floor_liberation_black_swan_encounter.tscn";
+        LiteratureFloorAssets.LiberationBlackSwanEncounterScene;
     internal const string BossNodeResourcePath =
-        "res://images/map/placeholder/literature_floor_liberation_encounter_icon";
+        LiteratureFloorAssets.LiberationEncounterMapIconPrefix;
 
     private const string CurrentPhaseKey = "CurrentPhase";
     private const string KilledBossCountKey = "KilledBossCount";
@@ -206,11 +206,11 @@ public sealed class LiteratureFloorLiberationEncounter :
                     .PhaseFourTexturePath,
                 LiteratureFloorLiberationBackgroundController
                     .PhaseFiveTexturePath,
-                "res://images/ui/run_history/literature_floor_liberation_encounter.png",
-                "res://images/ui/run_history/literature_floor_liberation_encounter_outline.png",
+                LiteratureFloorAssets.LiberationEncounterRunHistoryIcon,
+                LiteratureFloorAssets.LiberationEncounterOutlineRunHistoryIcon,
                 BossNodeResourcePath + ".png",
                 BossNodeResourcePath + "_outline.png",
-                "res://images/powers/library_passive_green.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon
             ])
             .Concat(
                 HistoryFloorLiberationEncounter

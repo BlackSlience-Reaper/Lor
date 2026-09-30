@@ -24,15 +24,14 @@ public abstract class NosferatuBloodBatBase : LorMonsterModel
     protected const string DeepFangsMoveId = "DEEP_FANGS";
 
     internal const string TextureRoot = Nosferatu.TextureRoot;
-    private const string SfxRoot = "res://audio/sfx/nosferatu/";
 
     internal static readonly string[] SharedAssetPaths =
         BloodBatCreatureVisuals.Profile.AssetPaths
             .Concat(
             [
-                SfxRoot + "blood_bat_attack.ogg",
-                "res://images/powers/nosferatu_blood_power.png",
-                "res://images/powers/nosferatu_hydrophobia_passive_power.png"
+                NosferatuAssets.NosferatuSfxRoot + "blood_bat_attack.ogg",
+                NosferatuAssets.BloodPowerIcon,
+                NosferatuAssets.HydrophobiaPassivePowerIcon
             ])
             .ToArray();
 
@@ -156,7 +155,7 @@ public abstract class NosferatuBloodBatBase : LorMonsterModel
     private async Task VampirismMove(IReadOnlyList<Creature> targets)
     {
         LocalOggOneShotPlayer.Play(
-            SfxRoot + "blood_bat_attack.ogg",
+            NosferatuAssets.NosferatuSfxRoot + "blood_bat_attack.ogg",
             -2f);
         GroupAttackOutcome attack = await ExecuteAttackDetailed(
             VampirismDamage,
@@ -180,7 +179,7 @@ public abstract class NosferatuBloodBatBase : LorMonsterModel
     private async Task DeepFangsMove(IReadOnlyList<Creature> targets)
     {
         LocalOggOneShotPlayer.Play(
-            SfxRoot + "blood_bat_attack.ogg",
+            NosferatuAssets.NosferatuSfxRoot + "blood_bat_attack.ogg",
             -2f);
         GroupAttackOutcome attack = await ExecuteAttackDetailed(
             DeepFangsDamage,

@@ -50,9 +50,9 @@ public sealed class HistoryFloorLiberationEncounter :
     internal const string EmeraldBoughSlot = "emerald_bough";
     internal const string VineBarrierSlotOne = "vine_barrier_1";
     internal const string VineBarrierSlotTwo = "vine_barrier_2";
-    internal const string FlutteringEncounterScenePath = "res://scenes/encounters/history_floor_liberation_fluttering_encounter.tscn";
-    internal const string WaspEncounterScenePath = "res://scenes/encounters/history_floor_liberation_wasp_encounter.tscn";
-    internal const string EmeraldBoughEncounterScenePath = "res://scenes/encounters/history_floor_liberation_emerald_bough_encounter.tscn";
+    internal const string FlutteringEncounterScenePath = HistoryFloorAssets.LiberationFlutteringEncounterScene;
+    internal const string WaspEncounterScenePath = HistoryFloorAssets.LiberationWaspEncounterScene;
+    internal const string EmeraldBoughEncounterScenePath = HistoryFloorAssets.LiberationEmeraldBoughEncounterScene;
     private const float PhaseOneCameraScaling = 0.82f;
     private const string CurrentPhaseKey = "CurrentPhase";
     private const string KilledBossCountKey = "KilledBossCount";
@@ -63,9 +63,9 @@ public sealed class HistoryFloorLiberationEncounter :
     internal const int MaxPhase = 5;
     internal static readonly string[] AngelaLiberationBgmTracks =
     [
-        "res://audio/bgm/angela_liberation/angela_liberation_phase_1.ogg",
-        "res://audio/bgm/angela_liberation/angela_liberation_phase_2.ogg",
-        "res://audio/bgm/angela_liberation/angela_liberation_phase_3.ogg"
+        HistoryFloorAssets.AngelaLiberationPhase1Bgm,
+        HistoryFloorAssets.AngelaLiberationPhase2Bgm,
+        HistoryFloorAssets.AngelaLiberationPhase3Bgm
     ];
     private static readonly Vector2 PhaseOneCameraOffset = Vector2.Down * 50f + Vector2.Left * 100f;
 
@@ -100,7 +100,7 @@ public sealed class HistoryFloorLiberationEncounter :
 
     public override MegaSkeletonDataResource? BossNodeSpineResource => null;
 
-    public override string BossNodePath => "res://images/map/placeholder/history_floor_liberation_encounter_icon";
+    public override string BossNodePath => HistoryFloorAssets.LiberationEncounterMapIconPrefix;
 
     public int CurrentPhase => _currentPhase;
 

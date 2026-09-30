@@ -39,18 +39,18 @@ public sealed class HistoryFloorWorkerBee : LorMonsterModel
 
     public override int DefaultChaoResistance => StaggerResistance;
 
-    public const string Root = "res://images/monsters/history_floor/";
+    public const string Root = HistoryFloorAssets.HistoryFloorMonsterRoot;
     public const string IdleTexturePath = Root + "worker_bee_idle.png";
     public const string AttackTexturePath = Root + "worker_bee_attack.png";
     public const string Attack2TexturePath = Root + "worker_bee_attack2.png";
     public const string HitTexturePath = Root + "worker_bee_hit.png";
     public const string DodgeTexturePath = Root + "worker_bee_dodge.png";
 
-    public const string AttackThrustSfxPath = "res://audio/sfx/history_floor/wasp/worker_attack_thrust.ogg";
-    public const string AttackSlashSfxPath = "res://audio/sfx/history_floor/wasp/worker_attack_slash.ogg";
-    public const string DodgeSfxPath = "res://audio/sfx/history_floor/wasp/worker_dodge.ogg";
-    public const string SpawnSfxPath = "res://audio/sfx/history_floor/wasp/worker_spawn.ogg";
-    public const string SporeSfxPath = "res://audio/sfx/history_floor/wasp/spore_apply.ogg";
+    public const string AttackThrustSfxPath = HistoryFloorAssets.WorkerAttackThrustSfx;
+    public const string AttackSlashSfxPath = HistoryFloorAssets.WorkerAttackSlashSfx;
+    public const string DodgeSfxPath = HistoryFloorAssets.WorkerDodgeSfx;
+    public const string SpawnSfxPath = HistoryFloorAssets.WorkerSpawnSfx;
+    public const string SporeSfxPath = HistoryFloorAssets.SporeApplySfx;
 
     private int _cadenceIndex;
 

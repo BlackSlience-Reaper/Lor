@@ -20,10 +20,10 @@ public sealed class MeltingCorpse : LorMonsterModel
     private const int MoanHits = 2;
     private const float AttackAnimDelaySeconds = 0.35f;
 
-    public const string Root = "res://images/monsters/smiling_bodies/";
+    public const string Root = SmilingBodiesAssets.SmilingBodiesMonsterRoot;
     public const string IdleTexturePath = Root + "melting_corpse_idle.png";
 
-    public const string SfxRoot = "res://audio/sfx/smiling_bodies/";
+    public const string SfxRoot = SmilingBodiesAssets.SmilingBodiesSfxRoot;
     public const string MoanSfxPath = SfxRoot + "melting_corpse_moan.ogg";
     public const string SpawnSfxPath = SfxRoot + "corpse_spawn.ogg";
 

@@ -134,15 +134,15 @@ public static class LibraryOfRuinaCombatFtuePatch
         new(
             "LOR_FIRST_LIBERATION_FTUE_TITLE_1",
             "LOR_FIRST_LIBERATION_FTUE_BODY_1",
-            "res://images/ftue/liberation_ftue_0.png"),
+            LibraryOfRuinaFtueAssets.LiberationFtue0Texture),
         new(
             "LOR_FIRST_LIBERATION_FTUE_TITLE_2",
             "LOR_FIRST_LIBERATION_FTUE_BODY_2",
-            "res://images/ftue/liberation_ftue_1.png"),
+            LibraryOfRuinaFtueAssets.LiberationFtue1Texture),
         new(
             "LOR_FIRST_LIBERATION_FTUE_TITLE_3",
             "LOR_FIRST_LIBERATION_FTUE_BODY_3",
-            "res://images/ftue/liberation_ftue_2.png"),
+            LibraryOfRuinaFtueAssets.LiberationFtue2Texture),
     ];
 
     private static readonly LibraryOfRuinaCombatFtuePage[] GuestCombatFtuePages =
@@ -150,15 +150,15 @@ public static class LibraryOfRuinaCombatFtuePatch
         new(
             "LOR_FIRST_ENEMY_FTUE_TITLE",
             "LOR_FIRST_ENEMY_FTUE_BODY",
-            "res://images/ftue/guest_ftue_0.png"),
+            LibraryOfRuinaFtueAssets.GuestFtue0Texture),
         new(
             "LOR_FIRST_ENEMY_FTUE_TITLE_1",
             "LOR_FIRST_ENEMY_FTUE_BODY_1",
-            "res://images/ftue/guest_ftue_1.png"),
+            LibraryOfRuinaFtueAssets.GuestFtue1Texture),
         new(
             "LOR_FIRST_ENEMY_FTUE_TITLE_2",
             "LOR_FIRST_ENEMY_FTUE_BODY_2",
-            "res://images/ftue/guest_ftue_2.png"),
+            LibraryOfRuinaFtueAssets.GuestFtue2Texture),
     ];
 
     private static readonly LibraryOfRuinaCombatFtuePage[] AbnormalityCombatFtuePages =
@@ -166,15 +166,15 @@ public static class LibraryOfRuinaCombatFtuePatch
         new(
             "LOR_FIRST_ABNORMALITY_FTUE_TITLE_1",
             "LOR_FIRST_ABNORMALITY_FTUE_BODY_1",
-            "res://images/ftue/abnormality_ftue_0.png"),
+            LibraryOfRuinaFtueAssets.AbnormalityFtue0Texture),
         new(
             "LOR_FIRST_ABNORMALITY_FTUE_TITLE_2",
             "LOR_FIRST_ABNORMALITY_FTUE_BODY_2",
-            "res://images/ftue/abnormality_ftue_1.png"),
+            LibraryOfRuinaFtueAssets.AbnormalityFtue1Texture),
         new(
             "LOR_FIRST_ABNORMALITY_FTUE_TITLE_3",
             "LOR_FIRST_ABNORMALITY_FTUE_BODY_3",
-            "res://images/ftue/abnormality_ftue_2.png"),
+            LibraryOfRuinaFtueAssets.AbnormalityFtue2Texture),
     ];
 
     private static readonly LibraryOfRuinaCombatFtuePage[] CombatFtuePages20260827 =
@@ -196,32 +196,32 @@ public static class LibraryOfRuinaCombatFtuePatch
         new(
             "LOR_UPDATE_LOG_20260902_NOTICE_TITLE",
             "LOR_UPDATE_LOG_20260902_NOTICE_BODY",
-            "res://LibraryOfRuina/mod_image.png",
+            LibraryOfRuinaFtueAssets.ModImageTexture,
             LibraryOfRuinaCombatFtueVisual.CenteredImage),
         new(
             "LOR_UPDATE_LOG_20260902_SCOPE_TITLE",
             "LOR_UPDATE_LOG_20260902_SCOPE_BODY",
-            "res://LibraryOfRuina/mod_image.png",
+            LibraryOfRuinaFtueAssets.ModImageTexture,
             LibraryOfRuinaCombatFtueVisual.CenteredImage),
         new(
             "LOR_UPDATE_LOG_20260902_LITERATURE_TITLE",
             "LOR_UPDATE_LOG_20260902_LITERATURE_BODY",
-            "res://images/backgrounds/literature_floor_liberation_encounter/creature_map_latitia_composite.png",
+            LibraryOfRuinaFtueAssets.CreatureMapLatitiaCompositeBackground,
             LibraryOfRuinaCombatFtueVisual.CenteredImage),
         new(
             "LOR_UPDATE_LOG_20260902_ENCOUNTERS_TITLE",
             "LOR_UPDATE_LOG_20260902_ENCOUNTERS_BODY",
-            "res://images/backgrounds/blue_star_strong/blue_star_strong_background.png",
+            LibraryOfRuinaFtueAssets.BlueStarStrongBackground,
             LibraryOfRuinaCombatFtueVisual.CenteredImage),
         new(
             "LOR_UPDATE_LOG_20260902_PAGES_TITLE",
             "LOR_UPDATE_LOG_20260902_PAGES_BODY",
-            "res://images/relics/blue_star_page_relic.png",
+            LibraryOfRuinaFtueAssets.BlueStarPageRelicTexture,
             LibraryOfRuinaCombatFtueVisual.CenteredImage),
         new(
             "LOR_UPDATE_LOG_20260902_BALANCE_TITLE",
             "LOR_UPDATE_LOG_20260902_BALANCE_BODY",
-            "res://images/ftue/combat_ftue_0.png",
+            LibraryOfRuinaFtueAssets.CombatFtue0Texture,
             LibraryOfRuinaCombatFtueVisual.CenteredImage),
     ];
 

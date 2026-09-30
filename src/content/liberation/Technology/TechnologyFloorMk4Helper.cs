@@ -49,10 +49,9 @@ public sealed class TechnologyFloorMk4Helper : LorMonsterModel
     private const string CleanMoveId = "CLEAN";
     private const string RestMoveId = "REST";
 
-    private const string AttackSfxPath = "res://audio/sfx/all_around_helper/all_around_helper_attack.ogg";
-    public const string IdleTexturePath = "res://images/monsters/all_around_helper.webp";
-    public const string AttackTexturePath = "res://images/monsters/all_around_helper_attack.webp";
-    public const string HitTexturePath = "res://images/monsters/all_around_helper_hit.webp";
+    public const string IdleTexturePath = TechnologyFloorAssets.AllAroundHelperTexture;
+    public const string AttackTexturePath = TechnologyFloorAssets.AllAroundHelperAttackTexture;
+    public const string HitTexturePath = TechnologyFloorAssets.AllAroundHelperHitTexture;
 
     private TechnologyFloorMk4HelperInitialMove _initialMove = TechnologyFloorMk4HelperInitialMove.Charge;
 
@@ -74,7 +73,7 @@ public sealed class TechnologyFloorMk4Helper : LorMonsterModel
                 + 8);
             paths.AddRange(
                 TechnologyFloorMk4HelperCreatureVisuals.Profile.AssetPaths);
-            paths.Add(AttackSfxPath);
+            paths.Add(TechnologyFloorAssets.AllAroundHelperAttackSfx);
 
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {
@@ -164,7 +163,7 @@ public sealed class TechnologyFloorMk4Helper : LorMonsterModel
 
     private async Task CleanMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(TechnologyFloorAssets.AllAroundHelperAttackSfx, -2f);
         await DamageCmd.Attack(CleanDamage)
             .FromMonster(this)
             .WithAttackerAnim(

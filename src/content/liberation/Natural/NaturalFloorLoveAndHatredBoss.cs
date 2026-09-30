@@ -32,7 +32,7 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
 
     public int LiberationPhase => 1;
 
-    public const string VideoPath = "res://videos/natural_floor_love_and_hatred_inversion.ogv";
+    public const string VideoPath = NaturalFloorAssets.LoveAndHatredInversionVideo;
     public const int BlockAmount = 22; // 以爱之名！：自身格挡。
 
     public const int BindAmount = 7; // 以爱与正义之名：束缚层数。
@@ -53,7 +53,7 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
 
     public const int SnakeChao = 190; // 蛇形：初始混乱抗性。
 
-    public const string SfxRoot = "res://audio/sfx/natural_floor_liberation/love_and_hatred/";
+    public const string SfxRoot = NaturalFloorAssets.LoveAndHatredSfxRoot;
     private const float SfxVolumeDb = -1.5f; // 爱与憎恨：音效音量，单位 dB。
     private static readonly string[] SfxFiles =
     [
@@ -127,8 +127,8 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
             .Concat(new[] { "human_idle", "human_special", "human_fire", "human_strike", "human_hit", "human_guard",
                 "snake_idle", "snake_fire", "snake_strike", "snake_hit", "snake_guard" }
                 .Select(frame => NaturalFloorLoveAndHatredVisuals.ImageRoot + frame + ".png"))
-            .Concat(new[] { VideoPath, "res://images/powers/library_passive_green.png",
-                "res://images/powers/history_floor_corrosion_power.png", NaturalFloorBadGuyPower.CustomIconPath })
+            .Concat(new[] { VideoPath, NaturalFloorAssets.LibraryPassiveGreenIcon,
+                NaturalFloorAssets.HistoryFloorCorrosionPowerIcon, NaturalFloorBadGuyPower.CustomIconPath })
             .Concat(SfxFiles.Select(file => SfxRoot + file + ".ogg"))
             .Concat(Enumerable.Range(0, MoveIds.Length).SelectMany(i => CreateIntent(i).AssetPaths))
             .Distinct();

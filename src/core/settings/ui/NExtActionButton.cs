@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using LibraryOfRuina.framework.assets;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -41,7 +42,7 @@ internal partial class NExtActionButton : NSettingsButton
             VerticalAlignment = VerticalAlignment.Center,
             LabelSettings = new LabelSettings
             {
-                Font = PreloadManager.Cache.GetAsset<FontVariation>("res://themes/kreon_bold_glyph_space_two.tres"),
+                Font = PreloadManager.Cache.GetAsset<FontVariation>(SharedAssets.KreonBoldGlyphSpaceTwoResource),
                 FontSize = 28,
                 FontColor = new Color(0.91f, 0.86f, 0.74f),
                 OutlineSize = 12,
