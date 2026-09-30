@@ -1,6 +1,6 @@
 # GitHub Actions
 
-从 `BlackSlience-Reaper/LibraryOfRuina` 的 `1d6ce221` 同步三项轻量检查及已有 Qodana 配置，并纳入旧项目工作区的 Monster HP 检查。玩法变更来源为 `631b1c4d`（v0.22.2），按本项目 `bfe74b46` 的 `src/content/` 目录迁入。
+从 `BlackSlience-Reaper/LibraryOfRuina` 的 `1d6ce221` 同步三项轻量检查，并纳入旧项目工作区的 Monster HP 检查。玩法变更来源为 `631b1c4d`（v0.22.2），按本项目 `bfe74b46` 的 `src/content/` 目录迁入。
 
 ## 自动检查
 
@@ -12,10 +12,6 @@
 - `monster-hp.yml`：用独立 .NET 10 / Roslyn 工具分别解析 Beta 和 Public 分支，检查具体怪物的 `MinInitialHp <= MaxInitialHp`；先运行工具自带回归用例，再扫描源码。工具说明见 `tools/MonsterHpCheck/README.md`。
 
 `_copy_assets.ps1` 保留旧项目一个源素材复制到多个目标的修复。源目录改为必填 `-SourceDirectory`，目标目录默认当前仓库，避免使用旧项目的机器路径。CI 只检查该脚本语法。
-
-## Qodana
-
-`qodana_code_quality.yml` 保留为手动入口。目标仓库需要配置自己的 `QODANA_TOKEN`；缺少时在摘要中说明跳过。工作流不发布 PR 评论或自动修复。本项目的游戏及前置 DLL 尚未配置到托管 runner，Qodana 的完整语义分析需要另行提供这些构建依赖。
 
 ## 本地执行
 
