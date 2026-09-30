@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Combat;
@@ -13,7 +14,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -372,7 +372,7 @@ public sealed class ScaredyCat : LorMonsterModel
     }
 
     private Task RefreshIntents() =>
-        NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
 
     private int GetHowlDamage() => AscDamage(HowlLowDamage, HowlHighDamage);
 

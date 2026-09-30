@@ -7,6 +7,7 @@ using LibraryLib.Powers;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
@@ -209,44 +210,12 @@ public sealed class XiaoReverseScalePassivePower : XiaoGuestPowerBase
     {
         Dictionary<ulong, int> counts = ParseCounts();
         counts[playerNetId] = Math.Clamp(value, 0, CardLimit);
-        CardsPlayedByPlayerNetId = string.Join(
-            ';',
-            counts.OrderBy(static pair => pair.Key)
-                .Select(static pair =>
-                    pair.Key.ToString(CultureInfo.InvariantCulture)
-                    + ":"
-                    + pair.Value.ToString(CultureInfo.InvariantCulture)));
+        CardsPlayedByPlayerNetId = PlayerIntMapSerializer.Format(counts);
         InvokeDisplayAmountChanged();
     }
 
-    private Dictionary<ulong, int> ParseCounts()
-    {
-        var counts = new Dictionary<ulong, int>();
-        foreach (string entry in CardsPlayedByPlayerNetId.Split(
-                     ';',
-                     StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-        {
-            int separator = entry.IndexOf(':');
-            if (separator <= 0
-                || !ulong.TryParse(
-                    entry[..separator],
-                    NumberStyles.None,
-                    CultureInfo.InvariantCulture,
-                    out ulong netId)
-                || !int.TryParse(
-                    entry[(separator + 1)..],
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out int count))
-            {
-                continue;
-            }
-
-            counts[netId] = Math.Clamp(count, 0, CardLimit);
-        }
-
-        return counts;
-    }
+    private Dictionary<ulong, int> ParseCounts() =>
+        PlayerIntMapSerializer.ParseClamped(CardsPlayedByPlayerNetId, 0, CardLimit);
 }
 
 public sealed class XiaoAmphibiousPassivePower : XiaoGuestPowerBase

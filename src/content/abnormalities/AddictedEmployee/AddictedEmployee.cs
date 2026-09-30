@@ -324,10 +324,7 @@ public sealed class AddictedEmployee : LorMonsterModel
             return;
         }
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 }
 

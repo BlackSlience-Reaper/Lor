@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.SmilingBodies;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -97,8 +98,7 @@ public sealed class LanguageFloorMeltingCorpse : LorMonsterModel
             return;
         }
 
-        LanguageFloorSmilingFace? boss = Creature.CombatState?.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        LanguageFloorSmilingFace? boss = Creature.CombatState?.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LanguageFloorSmilingFace>()
             .FirstOrDefault();

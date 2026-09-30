@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -265,8 +266,7 @@ internal static class BurrowingHeavenEncounterHelper
 
     public static IReadOnlyList<Creature> LivingPlayers(CombatStateLike? combatState)
     {
-        return combatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        return combatState?.LivingPlayerCreatures()
             .ToArray()
             ?? [];
     }

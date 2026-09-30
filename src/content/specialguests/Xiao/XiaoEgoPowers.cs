@@ -47,8 +47,7 @@ public sealed class XiaoYaziVengeancePower : LibraryOfRuinaPowerModel
             return;
         }
 
-        Creature[] targets = Owner.CombatState.HittableEnemies
-            .Where(static target => target.IsAlive)
+        Creature[] targets = Owner.CombatState.LivingHittableEnemies()
             .OrderBy(static target => target.CombatId)
             .ToArray();
         if (targets.Length == 0)
@@ -116,8 +115,7 @@ public sealed class XiaoTaotieFeastPower : LibraryOfRuinaPowerModel
             return;
         }
 
-        Creature[] targets = Owner.CombatState.HittableEnemies
-            .Where(static target => target.IsAlive)
+        Creature[] targets = Owner.CombatState.LivingHittableEnemies()
             .OrderBy(static target => target.CombatId)
             .ToArray();
         if (targets.Length == 0)

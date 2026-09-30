@@ -5,6 +5,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.ScorchedGirl;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
@@ -661,8 +662,7 @@ public sealed class EscapedBird : LorMonsterModel
         if (Creature.CombatState != null)
         {
             await PowerCmdCompat.ApplyDebuff<WeakPower>(
-                Creature.CombatState.PlayerCreatures
-                    .Where(static target => target.IsAlive),
+                Creature.CombatState.LivingPlayerCreatures(),
                 ScreamWeak,
                 Creature,
                 null);

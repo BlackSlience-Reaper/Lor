@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -322,8 +323,7 @@ public abstract partial class IoriMonsterBase
         && CanPerformRegularMoves;
 
     private Creature[] LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .OrderBy(static creature => creature.CombatId)
             .ToArray()
         ?? [];

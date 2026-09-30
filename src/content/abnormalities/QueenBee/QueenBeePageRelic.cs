@@ -123,8 +123,7 @@ public sealed class QueenBeePageRelic : ModalPageRelic<QueenBeePageMode>
             int pending = PendingLoyaltyStrength;
             PendingLoyaltyStrength = 0;
             IReadOnlyList<Creature> players =
-                Owner.Creature.CombatState?.PlayerCreatures
-                    .Where(static playerCreature => playerCreature.IsAlive)
+                Owner.Creature.CombatState?.LivingPlayerCreatures()
                     .ToArray()
                 ?? [];
             if (players.Count > 0)

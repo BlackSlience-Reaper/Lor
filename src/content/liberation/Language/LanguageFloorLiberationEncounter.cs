@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Combat;
@@ -597,7 +598,7 @@ public sealed class LanguageFloorLiberationEncounter :
         _shouldReducePlayers = reducePlayers;
         if (reducePlayers)
         {
-            foreach (Creature player in combatState.PlayerCreatures.Where(static creature => creature.IsAlive))
+            foreach (Creature player in combatState.LivingPlayerCreatures())
             {
                 int reducedHp = Math.Max(
                     1,

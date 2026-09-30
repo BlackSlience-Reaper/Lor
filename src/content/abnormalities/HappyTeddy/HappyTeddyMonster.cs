@@ -4,6 +4,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
@@ -16,7 +17,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -181,7 +181,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
         _specialAttackQueued = true;
         SetMoveImmediate(NostalgicEmbraceState, forceTransition: true);
 
-        var creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        var creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -324,10 +324,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
             _ => NormalBackgroundTextLineKeys
         };
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private HappyTeddyBackgroundTextPool ResolveBackgroundTextPool()

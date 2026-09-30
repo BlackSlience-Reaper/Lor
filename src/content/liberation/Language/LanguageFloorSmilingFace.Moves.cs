@@ -294,8 +294,7 @@ public sealed partial class LanguageFloorSmilingFace
             return [];
         }
 
-        IEnumerable<Creature> players = combatState.PlayerCreatures
-            .Where(static target => target.IsAlive)
+        IEnumerable<Creature> players = combatState.LivingPlayerCreatures()
             .OrderBy(static target => target.Player?.NetId ?? 0UL);
         IEnumerable<Creature> corpses = combatState.Enemies
             .Where(static target =>
@@ -306,8 +305,7 @@ public sealed partial class LanguageFloorSmilingFace
     }
 
     private IReadOnlyList<Creature> GetLivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .ToArray()
         ?? [];
 

@@ -30,7 +30,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -559,8 +558,7 @@ public sealed class LanguageFloorCobaltScar :
         ICombatState combatState = CombatState;
         List<SerializableCard> snapshots = [];
         List<int> ownerIndexes = [];
-        Player[] players = combatState.Players
-            .Where(static player => player.Creature.IsAlive)
+        Player[] players = combatState.LivingPlayers()
             .OrderBy(static player => player.NetId)
             .ToArray();
         Player[] allPlayers = combatState.Players.ToArray();
@@ -867,7 +865,7 @@ public sealed class LanguageFloorCobaltScar :
 
     private async Task ApplyVisualState()
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals
             is LanguageFloorCobaltScarCreatureVisuals visuals)
         {
             visuals.SetForm(
@@ -1190,7 +1188,7 @@ public sealed class LanguageFloorCobaltScar :
         Plan.Reveal(GetCurrentCompositeState());
         Creature.GetPower<LanguageFloorShadowAmbushPassivePower>()
             ?.RefreshCardLimit();
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             TaskHelper.RunSafely(node.RefreshIntents());
         }

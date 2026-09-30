@@ -6,6 +6,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
@@ -26,7 +27,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -734,7 +734,7 @@ public sealed class BigBadWolf : LorMonsterModel
 
     private Marker2D? ResolveStolenCardMarker()
     {
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         return creatureNode?.Visuals.GetNodeOrNull<Marker2D>("%StolenCardPos");
     }
 

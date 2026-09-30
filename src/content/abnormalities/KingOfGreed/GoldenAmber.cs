@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -10,7 +11,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.abnormalities.KingOfGreed;
 
@@ -124,7 +124,7 @@ public sealed class GoldenAmber : LorMonsterModel
             Creature spawned = await CreatureCmd.Add(king, combatState, CombatSide.Enemy, slot);
             _hasAwakened = true;
 
-            NCreature? spawnedNode = NCombatRoom.Instance?.GetCreatureNode(spawned);
+            NCreature? spawnedNode = CombatQueries.CreatureNodeOf(spawned);
             if (spawnedNode?.Visuals is KingOfGreedCreatureVisuals visuals)
             {
                 visuals.SetKingForm(!magicalGirl);

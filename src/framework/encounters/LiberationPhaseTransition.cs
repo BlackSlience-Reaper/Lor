@@ -35,6 +35,8 @@ internal static class LiberationPhaseTransition
             boss.ForceReviveAndEmpowerState();
         }
 
+        // 保持 ?. 短路：没有战斗房间时不读 boss.Creature（原版 MonsterModel.Creature 未绑定时会抛异常）。
+        // ILiberationPhaseBoss 不是 MonsterModel，用不上 CombatQueries 的模型重载。
         if (NCombatRoom.Instance?.GetCreatureNode(boss.Creature)
             is not NCreature node)
         {

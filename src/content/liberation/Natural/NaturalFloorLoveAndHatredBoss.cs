@@ -7,6 +7,7 @@ using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
@@ -226,8 +227,7 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
         return CreatureCmd.TriggerAnim(Creature, "Guard", 0f);
     }
 
-    internal Creature[] LivingPlayers() => Creature.CombatState?.PlayerCreatures
-        .Where(static player => player.IsAlive).ToArray() ?? [];
+    internal Creature[] LivingPlayers() => Creature.CombatState?.LivingPlayerCreatures().ToArray() ?? [];
 
     private bool HasLivingMark() => LivingPlayers().Any(static p => p.HasPower<NaturalFloorBadGuyPower>());
 
@@ -351,7 +351,7 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
                 IntentBadge.FromPower<LibraryDisarmPower>(DisarmAmount, DisarmTurns.ToString(), DisarmAmount.ToString()),
                 IntentBadge.FromPower<LibraryVulnerablePower>(VulnerableAmount, VulnerableTurns.ToString(), VulnerableAmount.ToString())),
             4 or 8 => new IndiscriminateAttackIntent(() => Damage(move), () => Hits(move), key,
-                static owner => owner.CombatState?.PlayerCreatures.Where(static p => p.IsAlive).ToArray() ?? []),
+                static owner => owner.CombatState?.LivingPlayerCreatures().ToArray() ?? []),
             _ => throw new ArgumentOutOfRangeException(nameof(move), move, null)
         };
     }

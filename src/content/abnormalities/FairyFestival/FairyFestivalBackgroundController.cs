@@ -1,6 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.FairyFestival;
 
@@ -10,21 +11,10 @@ internal static class FairyFestivalBackgroundController
     private const string StarvedTexturePath = "res://images/backgrounds/fairy_festival_strong/background_2.png";
     private const string OverlayTexturePath = "res://images/vfx/fairy_festival_predation_overlay.png";
 
-    public static void SetStarvedBackground(bool isStarved)
-    {
-        TextureRect? image = FindBackgroundImage();
-        if (image == null)
-        {
-            return;
-        }
-
-        string texturePath = isStarved ? StarvedTexturePath : NormalTexturePath;
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(texturePath);
-        if (texture != null)
-        {
-            image.Texture = texture;
-        }
-    }
+    public static void SetStarvedBackground(bool isStarved) =>
+        CombatBackgroundImage.SetTexture(
+            CombatBackgroundImage.Find("FairyFestivalBackgroundImage"),
+            isStarved ? StarvedTexturePath : NormalTexturePath);
 
     public static void PlayPredationOverlay()
     {
@@ -70,17 +60,5 @@ internal static class FairyFestivalBackgroundController
                 overlay.QueueFree();
             }
         };
-    }
-
-    private static TextureRect? FindBackgroundImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        if (background == null)
-        {
-            return null;
-        }
-
-        return background.GetNodeOrNull<TextureRect>("%FairyFestivalBackgroundImage")
-            ?? background.FindChild("FairyFestivalBackgroundImage", recursive: true, owned: false) as TextureRect;
     }
 }

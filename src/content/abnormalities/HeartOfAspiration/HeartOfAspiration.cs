@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -107,8 +108,7 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(null);
 
-        IReadOnlyList<Creature> enemies = Creature.CombatState!.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> enemies = Creature.CombatState!.LivingEnemies()
             .ToArray();
         foreach (Creature enemy in enemies)
         {

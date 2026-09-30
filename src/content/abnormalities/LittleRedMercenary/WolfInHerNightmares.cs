@@ -22,7 +22,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.LittleRedMercenary;
@@ -292,8 +291,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
     {
         if (NextMove.Id == LittleRedFinaleExplodeMoveId)
         {
-            return owner.CombatState?.PlayerCreatures
-                .Where(static creature => creature.IsAlive)
+            return owner.CombatState?.LivingPlayerCreatures()
                 .ToArray()
                 ?? Array.Empty<Creature>();
         }
@@ -309,7 +307,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
             return [littleRed];
         }
 
-        return owner.CombatState?.PlayerCreatures.Where(static creature => creature.IsAlive).Take(1).ToArray()
+        return owner.CombatState?.LivingPlayerCreatures().Take(1).ToArray()
             ?? Array.Empty<Creature>();
     }
 
@@ -477,8 +475,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
 
     private async Task LittleRedFinaleExplodeMove(IReadOnlyList<Creature> targets)
     {
-        IReadOnlyList<Creature> actualTargets = Creature.CombatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        IReadOnlyList<Creature> actualTargets = Creature.CombatState?.LivingPlayerCreatures()
             .ToArray()
             ?? Array.Empty<Creature>();
 
@@ -602,7 +599,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
             SetMoveImmediate(replacement, forceTransition: true);
         }
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -676,7 +673,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
 
     private async Task RefreshIntents()
     {
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();

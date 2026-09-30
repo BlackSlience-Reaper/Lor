@@ -5,6 +5,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.patches;
@@ -15,7 +16,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;
@@ -188,7 +188,7 @@ public sealed class QueenBeeWorker : LorMonsterModel
             SetMoveImmediate(_deathEmbraceState, forceTransition: true);
         }
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode?.Visuals is QueenBeeWorkerCreatureVisuals visuals)
         {
             visuals.FaceQueen();
@@ -232,7 +232,7 @@ public sealed class QueenBeeWorker : LorMonsterModel
         }
 
         SetMoveImmediate(_promoteGrowthState, forceTransition: true);
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             TaskHelper.RunSafely(creatureNode.RefreshIntents());
@@ -295,7 +295,7 @@ public sealed class QueenBeeWorker : LorMonsterModel
         }
 
         QueenBeeWorkerCreatureVisuals? visuals =
-            NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+            CombatQueries.CreatureNodeOf(this)?.Visuals
                 as QueenBeeWorkerCreatureVisuals;
         visuals?.FaceQueen();
         LocalOggOneShotPlayer.Play(HistoryFloorWorkerBee.AttackThrustSfxPath, -2f);

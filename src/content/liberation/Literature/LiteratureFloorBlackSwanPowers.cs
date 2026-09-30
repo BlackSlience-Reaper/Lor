@@ -129,8 +129,7 @@ public abstract class LiteratureFloorBlackSwanBrotherPassivePower :
 {
     protected LiteratureFloorBlackSwanBoss? ResolveBlackSwan()
     {
-        return Owner.CombatState?.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        return Owner.CombatState?.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LiteratureFloorBlackSwanBoss>()
             .FirstOrDefault();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.patches;
@@ -16,7 +17,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.liberation.Literature;
 
@@ -260,7 +260,7 @@ public sealed class LiteratureFloorBloodlustBoss :
         }
 
         SetMoveImmediate(_unbearableState, forceTransition: true);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }
@@ -523,8 +523,7 @@ public sealed class LiteratureFloorBloodlustBoss :
     }
 
     private Creature[] LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .OrderBy(static player => player.Player?.NetId ?? 0UL)
             .ToArray() ?? [];
 

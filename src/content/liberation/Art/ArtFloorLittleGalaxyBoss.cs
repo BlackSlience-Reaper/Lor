@@ -19,7 +19,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
@@ -390,8 +389,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
 
     private async Task<AttackCommand> ExecuteGroupAttack(int damage, string anim)
     {
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
 
         await IndiscriminateAttackBlockBreaker.BreakBlockBeforeAttack(this, damage, players);
@@ -498,7 +496,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
 
     private Task RefreshNodeIntents()
     {
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        return CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
     private static IReadOnlyList<Creature> GetUnblockedPlayerHitTargets(AttackCommand attack)

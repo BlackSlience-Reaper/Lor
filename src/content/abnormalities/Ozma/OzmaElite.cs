@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using LibraryOfRuina.framework.combat;
 
 namespace LibraryOfRuina.content.abnormalities.Ozma;
 
@@ -68,8 +69,7 @@ internal static class OzmaEncounterHelper
             .FirstOrDefault();
 
     public static IReadOnlyList<Creature> LivingPlayers(CombatStateLike? combatState) =>
-        combatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        combatState?.LivingPlayerCreatures()
             .OrderBy(static creature => creature.CombatId ?? uint.MaxValue)
             .ToArray()
         ?? [];

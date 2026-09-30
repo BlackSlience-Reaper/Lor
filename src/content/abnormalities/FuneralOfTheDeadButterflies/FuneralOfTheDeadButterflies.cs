@@ -5,6 +5,7 @@ using LibraryOfRuina.content.abnormalities.DeadButterfly;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -278,7 +279,7 @@ public sealed class FuneralOfTheDeadButterflies : LorMonsterModel
             return;
         }
 
-        IReadOnlyList<Creature> enemies = Creature.CombatState.Enemies.Where(e => e.IsAlive).ToArray();
+        IReadOnlyList<Creature> enemies = Creature.CombatState.LivingEnemies().ToArray();
         if (enemies.Count > 0)
         {
             await PowerCmdCompat.Apply<StrengthPower>(enemies, 1m, Creature, null);
@@ -385,10 +386,7 @@ public sealed class FuneralOfTheDeadButterflies : LorMonsterModel
     private void StartBackgroundMoonTextLoopForCurrentTurn()
     {
         IReadOnlyList<string> lineKeys = IsFourthTurn() ? FourthTurnBackgroundTextLineKeys : NormalBackgroundTextLineKeys;
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private bool IsFourthTurn()

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.Leticia;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -192,8 +193,7 @@ internal static class LiteratureFloorGiftHandMetrics
             yield break;
         }
 
-        foreach (Creature player in combatState.PlayerCreatures
-                     .Where(static creature => creature.IsAlive))
+        foreach (Creature player in combatState.LivingPlayerCreatures())
         {
             if (player.Player == null)
             {

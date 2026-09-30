@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
@@ -125,7 +126,7 @@ public sealed class PunishingBird : LorMonsterModel, ITargetedMonsterAttackProvi
             return;
         }
 
-        foreach (Player player in Creature.CombatState.Players.Where(static player => player.Creature.IsAlive))
+        foreach (Player player in Creature.CombatState.LivingPlayers())
         {
             await CardPileCmdCompat.AddToCombatAndPreview<ForestKeeperLockStatusCard>(
                 player.Creature,

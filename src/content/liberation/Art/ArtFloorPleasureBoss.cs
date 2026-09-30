@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -306,8 +307,7 @@ public sealed class ArtFloorPleasureBoss : LiberationPhaseBossMonster
 
     private Task AddPleasureCardsToPlayers(int count)
     {
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
 
         return CardPileCmdCompat.AddToCombatAndPreview<PleasureCard>(

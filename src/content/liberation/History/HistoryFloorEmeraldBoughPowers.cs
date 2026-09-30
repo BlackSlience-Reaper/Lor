@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -303,8 +304,7 @@ public sealed class EmeraldBoughWhereAreYouPower : LibraryOfRuinaPowerModel
             return;
         }
 
-        IReadOnlyList<Creature> players = combatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = combatState.LivingPlayerCreatures()
             .ToArray();
 
         foreach (Creature player in players)

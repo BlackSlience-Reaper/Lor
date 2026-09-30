@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.combat;
 
 namespace LibraryOfRuina.framework.monsters;
 
@@ -50,7 +50,7 @@ internal static class LiberationPhaseBossMoves
     /// </summary>
     public static async Task TriggerHitAnimationIfVisible(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature) != null)
+        if (CombatQueries.CreatureNodeOf(creature) != null)
         {
             await CreatureCmd.TriggerAnim(creature, "Hit", 0f);
         }

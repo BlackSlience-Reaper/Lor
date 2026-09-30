@@ -158,8 +158,7 @@ public sealed class NosferatuPageRelic : ModalPageRelic<NosferatuPageMode>
             return;
         }
 
-        IReadOnlyList<Creature> players = Owner.Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = Owner.Creature.CombatState?.LivingPlayerCreatures()
             .OrderBy(static player => player.CombatId ?? uint.MaxValue)
             .ToArray() ?? [];
         if (players.Count == 0)

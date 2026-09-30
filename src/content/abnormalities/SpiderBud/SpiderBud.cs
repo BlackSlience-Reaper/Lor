@@ -223,8 +223,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
 
     private bool AreAllSmallSpidersDead()
     {
-        return Creature.CombatState?.Enemies
-            .Where(e => e.IsAlive)
+        return Creature.CombatState?.LivingEnemies()
             .Select(e => e.Monster)
             .OfType<SpiderBudSmallSpider>()
             .Any() != true;
@@ -324,10 +323,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
 
     private static void StartBackgroundMoonTextLoop(IReadOnlyList<string> lineKeys)
     {
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private static void ShowImmediateBackgroundMoonText(IReadOnlyList<string> lineKeys)

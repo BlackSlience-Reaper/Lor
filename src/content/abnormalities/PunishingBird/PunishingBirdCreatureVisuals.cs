@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Godot;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.abnormalities.PunishingBird;
 
@@ -220,7 +220,7 @@ public sealed partial class PunishingBirdCreatureVisuals : SpriteAttackCreatureV
 
     public static async Task PlayChainBreak(Creature creature, int segmentIndex)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals is not PunishingBirdCreatureVisuals visuals)
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals is not PunishingBirdCreatureVisuals visuals)
         {
             return;
         }
@@ -295,7 +295,7 @@ public sealed partial class PunishingBirdCreatureVisuals : SpriteAttackCreatureV
 
     public static async Task PlayCageDrop(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals is not PunishingBirdCreatureVisuals visuals)
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals is not PunishingBirdCreatureVisuals visuals)
         {
             return;
         }

@@ -1,6 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.content.liberation.History;
@@ -31,21 +32,8 @@ internal static class HistoryFloorLiberationBackgroundController
     public static TextureRect? GetCurrentBackgroundImage() =>
         PresentationGuard.Get(FindBackgroundImage, "HistoryFloorLiberation background lookup");
 
-    public static void SetPhaseBackground(int phase)
-    {
-        string texturePath = GetPhaseBackgroundTexturePath(phase);
-        TextureRect? image = FindBackgroundImage();
-        if (image == null)
-        {
-            return;
-        }
-
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(texturePath);
-        if (texture != null)
-        {
-            image.Texture = texture;
-        }
-    }
+    public static void SetPhaseBackground(int phase) =>
+        CombatBackgroundImage.SetTexture(FindBackgroundImage(), GetPhaseBackgroundTexturePath(phase));
 
     public static void PlayFlutteringPredationOverlay()
     {
@@ -185,15 +173,6 @@ internal static class HistoryFloorLiberationBackgroundController
         };
     }
 
-    private static TextureRect? FindBackgroundImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        if (background == null)
-        {
-            return null;
-        }
-
-        return background.GetNodeOrNull<TextureRect>("%HistoryFloorLiberationBackgroundImage")
-            ?? background.FindChild("HistoryFloorLiberationBackgroundImage", recursive: true, owned: false) as TextureRect;
-    }
+    private static TextureRect? FindBackgroundImage() =>
+        CombatBackgroundImage.Find("HistoryFloorLiberationBackgroundImage");
 }

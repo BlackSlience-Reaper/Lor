@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.cards;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
@@ -113,8 +114,7 @@ public sealed class XiaoPulaoBellEgoCard() : XiaoEgoCardBase(1,
             .SpawningHitVfxOnEachCreature()
             .Execute(choiceContext, cardPlay);
 
-        Creature[] targets = combatState.HittableEnemies
-            .Where(static target => target.IsAlive)
+        Creature[] targets = combatState.LivingHittableEnemies()
             .OrderBy(static target => target.CombatId)
             .ToArray();
         foreach (Creature target in targets)

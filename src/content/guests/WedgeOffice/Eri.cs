@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -106,8 +107,7 @@ public sealed class Eri : MonsterModel
 
     private async Task ApplyNextTurnStrengthToLivingEnemies(decimal amount)
     {
-        IReadOnlyList<Creature> livingEnemies = CombatState.Enemies
-        .Where(enemies => enemies.IsAlive)
+        IReadOnlyList<Creature> livingEnemies = CombatState.LivingEnemies()
         .ToList();
         foreach (var enemy in livingEnemies)
         {

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -7,7 +8,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.framework.powers;
 
@@ -55,7 +55,7 @@ public sealed class NextTurnVigorPower : LibraryOfRuinaPowerModel
         Flash();
         await PowerCmd.Remove(this);
         await PowerCmdCompat.Apply<VigorPower>(context, owner, vigor, applier, null);
-        if (owner.IsMonster && NCombatRoom.Instance?.GetCreatureNode(owner) is { } node)
+        if (owner.IsMonster && CombatQueries.CreatureNodeOf(owner) is { } node)
         {
             await node.RefreshIntents();
         }

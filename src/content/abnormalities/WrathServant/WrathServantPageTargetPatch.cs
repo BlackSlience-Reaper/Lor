@@ -3,6 +3,7 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.liberation.Natural;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -176,7 +177,7 @@ internal static class WrathServantPageTargetPatch
             foreach (Creature creature in GetWrathFriendlyFireTargets(card.Owner)
                 .Where(creature => creature.Side == card.Owner.Creature.Side))
             {
-                NCombatRoom.Instance?.GetCreatureNode(creature)?.ShowMultiselectReticle();
+                CombatQueries.CreatureNodeOf(creature)?.ShowMultiselectReticle();
             }
         }
     }

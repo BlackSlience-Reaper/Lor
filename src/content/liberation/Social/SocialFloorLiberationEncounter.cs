@@ -7,7 +7,9 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -673,7 +675,7 @@ public sealed class SocialFloorLiberationEncounter :
         }
 
         CowardApplied = true;
-        foreach (var player in combatState.Players.Where(p => p.Creature.IsAlive))
+        foreach (var player in combatState.LivingPlayers())
             await SocialFloorPlayerMechanics.ApplyCoward(player);
     }
 
@@ -827,8 +829,7 @@ public sealed class SocialFloorLiberationEncounter :
 
         if (CowardApplied)
         {
-            foreach (Player player in combatState.Players
-                         .Where(static player => player.Creature.IsAlive))
+            foreach (Player player in combatState.LivingPlayers())
             {
                 await SocialFloorPlayerMechanics.RestoreCoward(player);
             }
@@ -925,43 +926,16 @@ public sealed class SocialFloorLiberationEncounter :
             card is ScarecrowWisdomStatusCard
             && card.Pile?.Type != PileType.Exhaust) ?? 0;
 
+    // 写出与读回都把负值当 0。
     private static string SerializePlayerValues(
         IEnumerable<KeyValuePair<ulong, int>> values) =>
-        string.Join(
-            ";",
-            values.OrderBy(static entry => entry.Key).Select(entry =>
-                entry.Key.ToString(CultureInfo.InvariantCulture)
-                + ":"
-                + Math.Max(0, entry.Value).ToString(
-                    CultureInfo.InvariantCulture)));
+        PlayerIntMapSerializer.Format(
+            values.Select(static entry =>
+                new KeyValuePair<ulong, int>(entry.Key, Math.Max(0, entry.Value))));
 
     internal static IReadOnlyDictionary<ulong, int> ParsePlayerValues(
-        string serialized)
-    {
-        var values = new Dictionary<ulong, int>();
-        foreach (string entry in serialized.Split(
-                     ';',
-                     StringSplitOptions.RemoveEmptyEntries
-                     | StringSplitOptions.TrimEntries))
-        {
-            string[] parts = entry.Split(':', 2);
-            if (parts.Length == 2
-                && ulong.TryParse(
-                    parts[0],
-                    NumberStyles.None,
-                    CultureInfo.InvariantCulture,
-                    out ulong netId)
-                && int.TryParse(
-                    parts[1],
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out int value))
-            {
-                values[netId] = Math.Max(0, value);
-            }
-        }
-        return values;
-    }
+        string serialized) =>
+        PlayerIntMapSerializer.ParseClamped(serialized, 0, int.MaxValue);
 
     private static string SerializeSummonVitals(
         CombatStateLike combatState) =>
@@ -1061,8 +1035,7 @@ public sealed class SocialFloorLiberationEncounter :
     internal static Player? ChooseRandomLivingPlayer(
         CombatStateLike combatState)
     {
-        Player[] players = combatState.Players
-            .Where(static player => player.Creature.IsAlive)
+        Player[] players = combatState.LivingPlayers()
             .OrderBy(static player => player.NetId)
             .ToArray();
         return players.Length == 0
@@ -1073,8 +1046,7 @@ public sealed class SocialFloorLiberationEncounter :
 
     internal static IReadOnlyList<Creature> LivingPlayers(
         CombatStateLike combatState) =>
-        combatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        combatState.LivingPlayerCreatures()
             .OrderBy(static player => player.CombatId)
             .ToArray();
 

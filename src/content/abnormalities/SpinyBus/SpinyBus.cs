@@ -235,25 +235,18 @@ public sealed class SpinyBus : LorMonsterModel
             .Execute(null);
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (_backgroundMoonTextLoopStarted || Creature.IsDead)
-        {
-            return;
-        }
-
-        _backgroundMoonTextLoopStarted = true;
-        MoonTextService.StartRandomLoop(
-            Creature,
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
             BackgroundTextScope,
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
+            BackgroundTextLineKeys,
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
 
     private void StopBackgroundMoonTextLoop()
     {
-        MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
         _backgroundMoonTextLoopStarted = false;
     }
 

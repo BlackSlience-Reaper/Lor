@@ -1,5 +1,5 @@
 using Godot;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.content.liberation.Language;
@@ -51,26 +51,10 @@ internal static class LanguageFloorLiberationBackgroundController
     public static TextureRect? GetCurrentBackgroundImage() =>
         PresentationGuard.Get(FindCurrentBackgroundImage, "LanguageFloorLiberation background lookup");
 
-    private static TextureRect? FindCurrentBackgroundImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        return background?.GetNodeOrNull<TextureRect>("%LittleRedMercenaryBackgroundImage")
-            ?? background?.FindChild("LittleRedMercenaryBackgroundImage", recursive: true, owned: false) as TextureRect;
-    }
+    private static TextureRect? FindCurrentBackgroundImage() =>
+        CombatBackgroundImage.Find("LittleRedMercenaryBackgroundImage");
 
-    private static void SetBackground(string texturePath)
-    {
-        TextureRect? image = GetCurrentBackgroundImage();
-        if (image == null)
-        {
-            return;
-        }
-
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(
-            texturePath);
-        if (texture != null)
-        {
-            image.Texture = texture;
-        }
-    }
+    // 与其他楼层不同，这里换图也走带保护的查找。
+    private static void SetBackground(string texturePath) =>
+        CombatBackgroundImage.SetTexture(GetCurrentBackgroundImage(), texturePath);
 }

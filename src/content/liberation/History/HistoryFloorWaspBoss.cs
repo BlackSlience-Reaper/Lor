@@ -7,6 +7,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.cards;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -21,7 +22,6 @@ using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -214,7 +214,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         _chainedLoyaltyPending = true;
         SetMoveImmediate(_warlikeEnhancementState, forceTransition: true);
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -319,8 +319,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         await CreatureCmd.TriggerAnim(Creature, "Defend", 0.45f);
         await CreatureCmd.GainBlock(Creature, LoyaltyBlock, ValueProp.Move, null);
 
-        IReadOnlyList<Creature> allies = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> allies = CombatState.LivingEnemies()
             .Where(enemy => enemy != Creature)
             .ToArray();
         if (allies.Count > 0)
@@ -345,16 +344,14 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         await CreatureCmd.TriggerAnim(Creature, "Cast", 0.45f);
         await CreatureCmd.GainBlock(Creature, WarlikeBlock, ValueProp.Move, null);
 
-        IReadOnlyList<Creature> allies = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> allies = CombatState.LivingEnemies()
             .Where(enemy => enemy != Creature)
             .ToArray();
         foreach (Creature ally in allies)
         {
             await PowerCmdCompat.Apply<StrengthPower>(ally, WarlikeStrength, Creature, null);
         }
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
         foreach (var target in players)
         {
@@ -444,29 +441,17 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         }
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (_backgroundMoonTextLoopStarted || Creature == null || Creature.IsDead)
-        {
-            return;
-        }
-
-        _backgroundMoonTextLoopStarted = true;
-        MoonTextService.StartRandomLoop(
-            Creature,
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
             BackgroundTextScope,
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
+            BackgroundTextLineKeys,
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {

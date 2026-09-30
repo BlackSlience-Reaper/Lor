@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -80,8 +81,7 @@ internal sealed class SocialTrialScarecrow : SocialTrial
         int initialCards = boss.UsesToughValues
             ? SocialFloorLiberationEncounter.ToughWisdomCardCount
             : SocialFloorLiberationEncounter.NormalWisdomCardCount;
-        foreach (Player player in combatState.Players
-                     .Where(static player => player.Creature.IsAlive)
+        foreach (Player player in combatState.LivingPlayers()
                      .OrderBy(static player => player.NetId))
         {
             int stacks = Math.Max(
@@ -124,8 +124,7 @@ internal sealed class SocialTrialScarecrow : SocialTrial
         int required = boss.UsesToughValues
             ? SocialFloorLiberationEncounter.ToughWisdomRequirement
             : SocialFloorLiberationEncounter.NormalWisdomRequirement;
-        foreach (Player player in combatState.Players
-                     .Where(static player => player.Creature.IsAlive)
+        foreach (Player player in combatState.LivingPlayers()
                      .OrderBy(static player => player.NetId))
         {
             if (SocialFloorPlayerMechanics.GetWisdomStacks(player)

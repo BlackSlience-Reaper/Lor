@@ -5,6 +5,7 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
@@ -16,7 +17,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 
@@ -276,7 +276,7 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
             SetMoveImmediate(FourthMatchFlameState, forceTransition: true);
         }
 
-        var creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        var creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -320,10 +320,7 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
 
     private static void StartBackgroundMoonTextLoop()
     {
-        MoonTextService.StartRandomLoop(
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(BackgroundTextLineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private async Task ApplySelfHpLoss(int amount)

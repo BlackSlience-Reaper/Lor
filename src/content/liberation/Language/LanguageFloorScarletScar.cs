@@ -6,6 +6,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -18,7 +19,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -235,7 +235,7 @@ public sealed class LanguageFloorScarletScar :
         await LanguageFloorRagePower.ApplyWithDuration(Creature, Creature);
         await MultiplayerScalingPatchHelper.RescaleMonsterMaxHpAndRestoreDifference(
             Creature);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals
             is LanguageFloorScarletScarCreatureVisuals visuals)
         {
             visuals.FacePlayers();
@@ -250,7 +250,7 @@ public sealed class LanguageFloorScarletScar :
         if (!UnrelievedAnger)
         {
             LanguageFloorLiberationBackgroundController.SetRageBackground(false);
-            if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+            if (CombatQueries.CreatureNodeOf(this)?.Visuals
                 is LanguageFloorScarletScarCreatureVisuals visuals)
             {
                 visuals.FacePartner();
@@ -271,7 +271,7 @@ public sealed class LanguageFloorScarletScar :
         UnrelievedAnger = true;
         await MultiplayerScalingPatchHelper.RescaleMonsterMaxHpAndRestoreDifference(
             Creature);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals
             is LanguageFloorScarletScarCreatureVisuals visuals)
         {
             visuals.FacePlayers();
@@ -600,7 +600,7 @@ public sealed class LanguageFloorScarletScar :
 
     private Task RefreshIntents()
     {
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        return CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
 }

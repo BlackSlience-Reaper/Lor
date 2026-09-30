@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.content.specialguests.Iori;
 
@@ -85,48 +86,13 @@ internal static class IoriStanceController
     };
 
     /// <summary>解析 <c>网络ID:层数;…</c>；格式不对或层数不为正的条目跳过。</summary>
-    internal static Dictionary<ulong, int> ParseContributions(string serialized)
-    {
-        var result = new Dictionary<ulong, int>();
-        foreach (string item in serialized.Split(
-                     ';',
-                     StringSplitOptions.RemoveEmptyEntries
-                     | StringSplitOptions.TrimEntries))
-        {
-            int separator = item.IndexOf(':');
-            if (separator <= 0
-                || !ulong.TryParse(
-                    item[..separator],
-                    NumberStyles.None,
-                    CultureInfo.InvariantCulture,
-                    out ulong netId)
-                || !int.TryParse(
-                    item[(separator + 1)..],
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out int amount)
-                || amount <= 0)
-            {
-                continue;
-            }
-
-            result[netId] = amount;
-        }
-
-        return result;
-    }
+    internal static Dictionary<ulong, int> ParseContributions(string serialized) =>
+        PlayerIntMapSerializer.ParsePositive(serialized);
 
     /// <summary>按网络 ID 升序编码，联机各端得到相同的字符串。</summary>
     internal static string SerializeContributions(
         IReadOnlyDictionary<ulong, int> contributions) =>
-        string.Join(
-            ';',
-            contributions
-                .OrderBy(static pair => pair.Key)
-                .Select(static pair =>
-                    pair.Key.ToString(CultureInfo.InvariantCulture)
-                    + ":"
-                    + pair.Value.ToString(CultureInfo.InvariantCulture)));
+        PlayerIntMapSerializer.Format(contributions);
 
     private static int GetStanceMask(IEnumerable<IoriStance> stances) =>
         stances.Aggregate(0, (mask, stance) => mask | GetStanceBit(stance));

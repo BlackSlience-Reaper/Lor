@@ -6,6 +6,7 @@ using LibraryOfRuina.content.liberation.Technology;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -23,7 +24,6 @@ using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -200,7 +200,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         _egoQueued = true;
         SetMoveImmediate(_shatteredLifeState, forceTransition: true);
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -423,8 +423,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
             }
         }
 
-        IReadOnlyList<Creature> alivePlayers = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> alivePlayers = CombatState.LivingPlayerCreatures()
             .ToArray();
         foreach (Creature target in alivePlayers)
         {
@@ -444,8 +443,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         await CreatureCmd.TriggerAnim(Creature, "Parry", 0.5f);
         await CreatureCmd.GainBlock(Creature, ExtendedMaliceBlock, ValueProp.Move, null);
 
-        IReadOnlyList<Creature> alivePlayers = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> alivePlayers = CombatState.LivingPlayerCreatures()
             .ToArray();
         if (alivePlayers.Count > 0)
         {
@@ -507,29 +505,17 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         _firstTurn = false;
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (_backgroundMoonTextLoopStarted || Creature == null || Creature.IsDead)
-        {
-            return;
-        }
-
-        _backgroundMoonTextLoopStarted = true;
-        MoonTextService.StartRandomLoop(
-            Creature,
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
             BackgroundTextScope,
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
+            BackgroundTextLineKeys,
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {

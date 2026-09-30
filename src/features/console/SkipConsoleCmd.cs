@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -58,7 +59,7 @@ public sealed class SkipConsoleCmd : AbstractConsoleCmd
             return;
         }
 
-        List<Creature> enemies = state.Enemies.Where(static enemy => enemy.IsAlive).ToList();
+        List<Creature> enemies = state.LivingEnemies().ToList();
         foreach (Creature enemy in enemies)
         {
             enemy.RemoveAllPowersInternalExcept();

@@ -102,8 +102,7 @@ public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
         }
     }
 
-    internal Creature[] LivingPlayers() => Creature?.CombatState?.PlayerCreatures
-        .Where(target => target.IsAlive)
+    internal Creature[] LivingPlayers() => Creature?.CombatState?.LivingPlayerCreatures()
         .OrderBy(target => target.CombatId)
         .ToArray() ?? [];
 

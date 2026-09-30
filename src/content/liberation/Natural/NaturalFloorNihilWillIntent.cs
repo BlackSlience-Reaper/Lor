@@ -1,4 +1,5 @@
 using System.Linq;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 
 namespace LibraryOfRuina.content.liberation.Natural;
@@ -23,8 +24,7 @@ internal sealed class NaturalFloorNihilWillIntent : CombinedAttackIntentBase,
     public IReadOnlyList<IntentTargetLineTarget> GetIntentTargetLineTargets(
         Creature owner,
         IReadOnlyList<Creature>? fallbackTargets) =>
-        owner.CombatState?.PlayerCreatures
-            .Where(player => player.IsAlive)
+        owner.CombatState?.LivingPlayerCreatures()
             .OrderBy(player => player.Player!.NetId)
             .Select(player => new IntentTargetLineTarget(player, "NihilWill"))
             .ToArray() ?? [];

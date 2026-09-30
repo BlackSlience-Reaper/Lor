@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -18,7 +19,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -166,27 +166,17 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
         return Task.CompletedTask;
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (!_backgroundMoonTextLoopStarted && Creature.IsAlive)
-        {
-            _backgroundMoonTextLoopStarted = true;
-            MoonTextService.StartRandomLoop(
-                Creature,
-                BackgroundTextScope,
-                BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
-                BackgroundTextIntervalSeconds,
-                BackgroundTextSpawnArea);
-        }
-    }
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
+            BackgroundTextScope,
+            BackgroundTextLineKeys,
+            BackgroundTextIntervalSeconds,
+            BackgroundTextSpawnArea);
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     public override void BeforeRemovedFromRoom()
     {
@@ -219,7 +209,7 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
         _egoQueued = true;
         SetMoveImmediate(_egoState, forceTransition: true);
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
