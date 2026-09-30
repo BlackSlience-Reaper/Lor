@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.content.abnormalities.CosmicFragment;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.content.abnormalities.QueenBee;
 using LibraryOfRuina.content.abnormalities.WrathServant;
@@ -46,7 +45,7 @@ namespace LibraryOfRuinaVerification;
 /// <item><c>settlement-reload</c>：上一局留下待结算标志后，读入停在语言层终局奖励界面的另一局，结算事件的击杀数取自这一局的遭遇。</item>
 /// <item><c>solemn-mourning</c>：战斗中途退出后开新局，救赎之手在新战斗里照常计入封印牌。</item>
 /// <item><c>solemn-mourning-limit</c>：救赎之手计满 4 张封印牌后，同一回合里第 5 张封印牌不能打出（文案“每回合最多打出 4 张”）。</item>
-/// <item><c>combat-tables</c>：三份死亡归因表与顿悟卡触发表在离开本局后清空。</item>
+/// <item><c>combat-tables</c>：三份死亡归因表在离开本局后清空。</item>
 /// <item><c>page-preselect</c>：假双人局里一名玩家的书页预选等待期间，另一名玩家的书页遗物获得后跳过选择，照常移除。</item>
 /// </list>
 /// </summary>
@@ -305,20 +304,13 @@ internal static class StaticStateLifecycleVerificationPatch
         LittleRedDeathContext.Record(enemy, dealer);
         WrathServantDeathContext.Record(enemy, dealer);
 
-        Player player = combatState.Players.First();
-        CardModel epiphany = combatState.CreateCard<CosmicFragmentEpiphanyCard>(player);
-        MethodInfo onTurnEnd = typeof(CosmicFragmentEpiphanyCard).GetMethod("OnTurnEndInHand", PrivateInstance)
-            ?? throw new MissingMethodException(nameof(CosmicFragmentEpiphanyCard), "OnTurnEndInHand");
-        await (Task)onTurnEnd.Invoke(epiphany, [new ThrowingPlayerChoiceContext()])!;
-
         // 战斗中途离开本局：死亡结算与 AfterCombatEnd 都不会来清理。
         await LeaveRun("combat-tables leave");
         string after = "language=" + (LanguageFloorDeathContext.Consume(enemy) != null)
             + "|littleRed=" + (LittleRedDeathContext.Consume(enemy) != null)
-            + "|wrath=" + (WrathServantDeathContext.Consume(enemy) != null)
-            + "|epiphany=" + CosmicFragmentEpiphanyCard.ConsumeTriggeredThisTurn(combatState);
+            + "|wrath=" + (WrathServantDeathContext.Consume(enemy) != null);
         Trace("combat-tables", "afterCleanup", after);
-        Require(after == "language=False|littleRed=False|wrath=False|epiphany=False",
+        Require(after == "language=False|littleRed=False|wrath=False",
             "Leaving the run kept combat tables: " + after);
     }
 

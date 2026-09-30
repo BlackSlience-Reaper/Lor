@@ -170,12 +170,6 @@ public sealed class CosmicFragment : LorMonsterModel
             }
         }
 
-        // if (CosmicFragmentEpiphanyCard.ConsumeTriggeredThisTurn(CombatState))
-        // {
-        //     await LibraryDurationPowerModel.ApplyWithDuration<LibraryWeakPower>(
-        //         Creature, 99, turns: 1, Creature, null);
-        // }
-
         foreach (CardModel epiphany in allEpiphanies)
         {
             CosmicFragmentEpiphanyCard.UpgradeFromCosmicFragment(epiphany);
@@ -225,8 +219,6 @@ public sealed class CosmicFragment : LorMonsterModel
             return;
         }
 
-        // Removed cards will no longer receive AfterCombatEnd to release this combat reference.
-        CosmicFragmentEpiphanyCard.ResetTriggeredThisTurn(deadCreature.CombatState);
         foreach (Creature player in deadCreature.CombatState.PlayerCreatures)
         {
             if (player.Player?.PlayerCombatState == null)
