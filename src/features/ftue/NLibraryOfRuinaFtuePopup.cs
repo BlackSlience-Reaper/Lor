@@ -5,6 +5,7 @@ using LibraryOfRuina.addons.mega_text;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Localization.Fonts;
 using MegaCrit.Sts2.Core.Nodes.Ftue;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 
@@ -635,6 +636,10 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
         button.AddThemeColorOverride("font_color", new Color(0.9f, 0.85f, 0.7f));
         button.AddThemeColorOverride("font_hover_color", new Color(1f, 0.95f, 0.8f));
         button.AddThemeFontSizeOverride("font_size", ButtonFontSize);
+        // 没有 font 覆盖的 Button 用引擎默认字体。原版只替换主题覆盖 font，所以先设成与页码相同的 Kreon，
+        // 再按当前语言替换（MegaLabel 在 _Ready 里做同样的事，Button 要手动调用）。
+        button.AddThemeFontOverride("font", PreloadManager.Cache.GetAsset<Font>(LibraryOfRuinaFtueAssets.KreonRegularSharedResource));
+        FontControlUtils.ApplyLocaleFontSubstitution(button, FontType.Regular, "font");
 
         return button;
     }
