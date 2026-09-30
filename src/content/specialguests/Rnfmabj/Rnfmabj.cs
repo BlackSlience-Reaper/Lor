@@ -121,8 +121,14 @@ public sealed partial class Rnfmabj : RnfmabjMonsterBase
             creature,
             wasRemovalPrevented,
             deathAnimLength);
-        if (creature != Creature || wasRemovalPrevented)
+        if (wasRemovalPrevented)
         {
+            return;
+        }
+
+        if (creature != Creature)
+        {
+            await RecheckDirectiveAfterPlayerDeath(creature);
             return;
         }
 
