@@ -50,7 +50,9 @@ public sealed class LanguageFloorLostEverythingWolf :
     public bool LowHealthMode { get; private set; }
 
     // 规划只写前三个槽位。PlannedMoveFour 不经过控制器：规划从不写它，只有进场重置、DebugSetPlan 和
-    // HasPlannedTurn 直接读写。低血量模式下 HasPlannedTurn 要求它非负，所以这时读档总会清空状态重新规划。
+    // HasPlannedTurn 直接读写。低血量模式下 HasPlannedTurn 要求它非负，所以低血量时 HasPlannedTurn 总为假，
+    // 进场与建状态机都按未规划处理。原版中途读档会重开战斗、怪物状态回到初始值（不在低血量模式），碰不到这一点；
+    // 只有把属性写回新实例（验证套件）时会清空状态重新规划。
     private const int PlanSlotCount = 3;
 
     private MoveState? _lowCompositeState;
