@@ -104,6 +104,7 @@ internal static class RunSettingsVerificationPatch
             await VerifyDailyLoadScreen();
             VerifyWiring();
             VerifyInjectionMismatch(json);
+            VerifyAttachFailure();
             Log.Info(LogPrefix + "RUN_SETTINGS_OK checks=" + _checks);
             NGame.Instance?.GetTree().Quit();
         }
@@ -381,6 +382,32 @@ internal static class RunSettingsVerificationPatch
         var reader = new PacketReader();
         reader.Reset(writer.Buffer);
         return reader.Read<SerializableRun>();
+    }
+
+    // 载体挂不上（原版私有字段不可用）：单人退回本地设置，联机抛出，让原版开局界面的 catch 退出。
+    private static void VerifyAttachFailure()
+    {
+        static bool Fail(RunState _, IReadOnlyList<ModifierModel> __) => false;
+
+        SetLocal(A);
+        RunState single = CreateRun(Seed, 1);
+        int before = single.Modifiers.Count;
+        LibraryRunSettings.Attach(single, LibraryRunSettingsModifier.CreateFromLocalSettings(), "test", Fail);
+        Require(single.Modifiers.Count == before, "attach-failure: single-player list changed");
+
+        RunState duo = CreateRun(Seed, 2);
+        bool threw = false;
+        try
+        {
+            LibraryRunSettings.Attach(duo, LibraryRunSettingsModifier.CreateFromLocalSettings(), "test", Fail);
+        }
+        catch (InvalidOperationException)
+        {
+            threw = true;
+        }
+
+        Require(threw, "attach-failure: multiplayer fell back to local settings instead of failing");
+        Row("attach-failure ok");
     }
 
     private static RunState CreateRun(
