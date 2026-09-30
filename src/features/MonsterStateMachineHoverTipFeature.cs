@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using Godot;
 using LibraryOfRuina.features.intentgraph;
 using LibraryOfRuina.infra.helpers;
@@ -15,24 +14,25 @@ using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features;
 
+/// <summary>
+/// 从怪物的招式状态机生成意图图。状态机先转成状态节点（招式、分支），再由 <see cref="IntentGraphLayouter"/> 排版；
+/// 配置（intentgraph.json）沿用 Intent Graph（Chaofan，创意工坊 3747528152）的格式与语义：
+/// secondaryInitialStates 额外的起点行，moveReplacements 的次数写法，graph 整张图替换，graphPatch 追加招式、连线、标签和分组，
+/// 坐标都是 Intent Graph 布局里的格子坐标（招式为左上角、标签为基线起点）。
+/// </summary>
 internal static class MonsterStateMachineIntentGraphFeature
 {
-    private const int MaxDepth = 24;
-    private const float Dx = 1.62f;
-    private const float Dy = 1.1f;
+    private const string InitMoveId = "INIT_MOVE";
 
+    private readonly record struct BranchOption(MonsterState Target, string Label);
 
-
-
-
-
-    private readonly record struct RandomBranchOption(
-        MoveState Move,
-        float Weight,
-        RandomBranchState.StateWeight StateWeight,
-        string? ConditionText);
-
-    private readonly record struct ConditionalBranchOption(MoveState Move, string? ConditionText);
+    /// <summary>转换状态节点时共用的数据；RootNodes 按状态复用顶层节点。</summary>
+    private sealed record BuildContext(
+        MonsterMoveStateMachine Machine,
+        Creature Owner,
+        string MonsterTypeName,
+        Dictionary<MonsterState, IntentGraphStateNode> RootNodes,
+        Font LabelFont);
 
     public static bool TryBuild(Creature owner, out IntentGraphRenderModel render, out string monsterName)
     {
@@ -40,205 +40,355 @@ internal static class MonsterStateMachineIntentGraphFeature
         monsterName = string.Empty;
 
         MonsterModel? monster = owner.Monster;
-        if (monster == null || owner.CombatState == null || monster.MoveStateMachine == null)
-        {
-            return false;
-        }
-
-        Dictionary<string, MoveState> moves = monster.MoveStateMachine.States.Values
-            .OfType<MoveState>()
-            .ToDictionary(static m => m.Id, static m => m, StringComparer.Ordinal);
-        if (moves.Count == 0)
+        MonsterMoveStateMachine? machine = monster?.MoveStateMachine;
+        if (monster == null || owner.CombatState == null || machine == null || !machine.States.Values.OfType<MoveState>().Any())
         {
             return false;
         }
 
         string monsterTypeName = monster.GetType().FullName ?? monster.GetType().Name;
         IntentGraphMonsterConfig? config = IntentGraphConfigRepository.GetConfigForMonster(monsterTypeName);
-
-        List<string> roots = new List<string>();
-        AddInitialRootMoves(monster.MoveStateMachine, moves, roots);
+        IReadOnlyList<Creature> targets = owner.CombatState.Players.Select(static p => p.Creature).ToList();
         string? nextMoveId = monster.NextMove?.Id;
-        AddRootMoveId(roots, moves, nextMoveId);
+        Font labelFont = IntentGraphFonts.CreateLabelFont();
 
-        if (config != null)
+        IntentGraphMoveNode? CreateMove(MoveState move, float x, float y) =>
+            BuildMoveNode(move, x, y, owner, targets, monsterTypeName, config, nextMoveId);
+        IntentGraphLayouter layouter = new IntentGraphLayouter(
+            (node, x, y) => node.State is MoveState move ? CreateMove(move, x, y) : null,
+            node => node.State is MoveState move ? ResolveMoveName(monster, move.Id) : null);
+
+        if (config?.Graph != null)
         {
-            foreach (string id in config.SecondaryInitialStates)
+            render = BuildFromLayout(config.Graph, machine, CreateMove, move => ResolveMoveName(monster, move.Id));
+        }
+        else
+        {
+            List<IntentGraphStateNode> roots = BuildStateNodes(machine, owner, monsterTypeName, config, labelFont);
+            if (roots.Count == 0)
             {
-                AddRootMoveId(roots, moves, id);
+                return false;
+            }
+
+            IntentGraphLayouter.Simplify(roots);
+            render = layouter.Layout(roots);
+            if (config?.GraphPatch != null)
+            {
+                IntentGraphRenderModel patch = BuildFromLayout(config.GraphPatch, machine, CreateMove, move => ResolveMoveName(monster, move.Id));
+                render.Moves.AddRange(patch.Moves);
+                render.Arrows.AddRange(patch.Arrows);
+                render.Labels.AddRange(patch.Labels);
+                render.Groups.AddRange(patch.Groups);
+                render.WidthUnits = Math.Max(render.WidthUnits, patch.WidthUnits);
+                render.HeightUnits = Math.Max(render.HeightUnits, patch.HeightUnits);
             }
         }
 
-        if (roots.Count == 0)
-        {
-            roots.Add(moves.Keys.First());
-        }
-
-        Dictionary<string, int> depth = new Dictionary<string, int>(StringComparer.Ordinal);
-        Dictionary<string, int> order = new Dictionary<string, int>(StringComparer.Ordinal);
-        List<IntentGraphTransition> transitions = new List<IntentGraphTransition>();
-        Queue<string> queue = new Queue<string>();
-
-        int idx = 0;
-        foreach (string root in roots)
-        {
-            if (depth.TryAdd(root, 0))
-            {
-                order[root] = idx++;
-                queue.Enqueue(root);
-            }
-        }
-
-        while (queue.Count > 0)
-        {
-            string id = queue.Dequeue();
-            if (!moves.TryGetValue(id, out MoveState? move))
-            {
-                continue;
-            }
-
-            int d = depth[id];
-            if (d >= MaxDepth)
-            {
-                continue;
-            }
-
-            foreach (IntentGraphTransition t in ResolveTransitions(move, monster.MoveStateMachine, owner, monsterTypeName, moves))
-            {
-                transitions.Add(t);
-                if (!depth.ContainsKey(t.ToMoveId))
-                {
-                    depth[t.ToMoveId] = d + 1;
-                    order[t.ToMoveId] = idx++;
-                    queue.Enqueue(t.ToMoveId);
-                }
-            }
-        }
-
-        if (depth.Count == 0)
+        if (render.Moves.Count == 0)
         {
             return false;
         }
 
-        Dictionary<string, Vector2> autoPos = GenerateAutoPositions(depth, order);
-        IntentGraphLayoutDefinition autoLayout = BuildAutoLayout(autoPos, transitions);
-        IntentGraphLayoutDefinition layout = config?.Graph?.Clone() ?? autoLayout.Clone();
-        if (config?.GraphPatch != null)
+        monsterName = monster.Title.GetFormattedText();
+        return true;
+    }
+
+    public static void ReloadLocalization()
+    {
+        IntentGraphConfigRepository.ReloadLocalization();
+    }
+
+    // ---------------------------------------------------------------- state nodes
+
+    /// <summary>
+    /// 起点是状态机的初始状态（开局的条件分支按当前状态求值成具体招式），配置里的 secondaryInitialStates 各开一行。
+    /// </summary>
+    private static List<IntentGraphStateNode> BuildStateNodes(
+        MonsterMoveStateMachine machine,
+        Creature owner,
+        string monsterTypeName,
+        IntentGraphMonsterConfig? config,
+        Font labelFont)
+    {
+        BuildContext context = new BuildContext(machine, owner, monsterTypeName, new Dictionary<MonsterState, IntentGraphStateNode>(), labelFont);
+        List<IntentGraphStateNode> roots = new List<IntentGraphStateNode>();
+        MonsterState? initial = VanillaPrivate.MonsterMoveStateMachineInitialState.Get(machine) as MonsterState;
+        if (initial is ConditionalBranchState initialBranch
+            && TryEvaluateConditionalStateId(initialBranch, owner) is { } evaluatedId
+            && machine.States.TryGetValue(evaluatedId, out MonsterState? evaluated))
         {
-            layout.ApplyPatch(config.GraphPatch);
+            IntentGraphStateNode node = ToStateNode(evaluated, null, context);
+            if (node.Next?.State != initial)
+            {
+                roots.Add(node);
+            }
         }
 
-        if (layout.Moves == null)
+        if (roots.Count == 0 && initial != null && IsGraphable(initial))
         {
-            layout.Moves = autoLayout.Moves?.ConvertAll(static m => m.Clone()) ?? new List<IntentGraphMoveLayout>();
+            roots.Add(ToStateNode(initial, null, context));
         }
 
-        HashSet<string> known = new HashSet<string>(layout.Moves.Select(static m => m.Id), StringComparer.Ordinal);
-        foreach ((string moveId, Vector2 p) in autoPos)
+        if (roots.Count == 0 && owner.Monster?.NextMove is MoveState next)
         {
-            if (known.Contains(moveId))
+            roots.Add(ToStateNode(next, null, context));
+        }
+
+        foreach (string id in config?.SecondaryInitialStates ?? Enumerable.Empty<string>())
+        {
+            if (machine.States.TryGetValue(id, out MonsterState? state) && !context.RootNodes.ContainsKey(state))
+            {
+                roots.Add(ToStateNode(state, null, context));
+            }
+        }
+
+        return roots;
+    }
+
+    /// <summary>
+    /// 招式节点的下一个节点是它后续状态的顶层节点；分支节点的子节点是各分支目标（不复用顶层节点），
+    /// 子节点都通往同一个节点时改由分支节点连过去。分支条件文字比招式宽时，子节点按文字宽度加宽。
+    /// </summary>
+    private static IntentGraphStateNode ToStateNode(MonsterState state, IntentGraphStateNode? parent, BuildContext context)
+    {
+        Dictionary<MonsterState, IntentGraphStateNode> rootNodes = context.RootNodes;
+        if (parent == null && rootNodes.TryGetValue(state, out IntentGraphStateNode? existing))
+        {
+            return existing;
+        }
+
+        if (state is MoveState move)
+        {
+            IntentGraphStateNode moveNode = new IntentGraphStateNode
+            {
+                Id = move.Id,
+                State = move,
+                IconCount = move.Intents.Count,
+                Width = IntentGraphLayouter.MoveWidth(move.Intents.Count),
+                Height = 1f,
+                NextCount = 1,
+                Parent = parent
+            };
+            if (parent == null)
+            {
+                rootNodes[state] = moveNode;
+            }
+
+            MonsterState? follow = ResolveFollowUpState(move, context.Machine);
+            moveNode.Next = follow == null || !IsGraphable(follow) ? null : ToStateNode(follow, null, context);
+            return moveNode;
+        }
+
+        IntentGraphStateNode branchNode = new IntentGraphStateNode { Id = state.Id, State = state, Parent = parent };
+        if (parent == null)
+        {
+            rootNodes[state] = branchNode;
+        }
+
+        IReadOnlyList<BranchOption> options = state switch
+        {
+            RandomBranchState random => ResolveRandomOptions(random, context.Machine, context.MonsterTypeName),
+            ConditionalBranchState conditional => ResolveConditionalOptions(conditional, context.Machine, context.Owner, context.MonsterTypeName),
+            _ => Array.Empty<BranchOption>()
+        };
+
+        List<IntentGraphStateNode> children = new List<IntentGraphStateNode>();
+        foreach (BranchOption option in options)
+        {
+            if (!IsGraphable(option.Target) || IsInParentChain(branchNode, option.Target))
             {
                 continue;
             }
 
-            layout.Moves.Add(new IntentGraphMoveLayout { Id = moveId, X = p.X, Y = p.Y });
+            IntentGraphStateNode child = ToStateNode(option.Target, branchNode, context);
+            child.Label = option.Label;
+            float labelWidth = context.LabelFont.GetStringSize(option.Label, HorizontalAlignment.Left, -1f, IntentGraphLayouter.GroupLabelFontSize).X;
+            child.Width = Math.Max(child.Width, labelWidth / NIntentGraph.GridSize);
+            children.Add(child);
         }
 
-        Dictionary<string, Vector2> pos = new Dictionary<string, Vector2>(StringComparer.Ordinal);
-        foreach (IntentGraphMoveLayout m in layout.Moves)
+        List<IntentGraphStateNode?> nexts = children.Select(static c => c.Next).Distinct().ToList();
+        if (nexts.Count == 1)
         {
-            if (moves.ContainsKey(m.Id))
+            foreach (IntentGraphStateNode child in children)
             {
-                pos[m.Id] = new Vector2(m.X, m.Y);
+                child.Next = null;
+                child.NextCount = 0;
             }
         }
 
-        foreach ((string id, Vector2 p) in autoPos)
+        branchNode.Children = children;
+        branchNode.UpdateSize();
+        branchNode.Next = nexts.Count == 1 ? nexts[0] : null;
+        branchNode.NextCount = (branchNode.Next != null ? 1 : 0) + children.Select(static c => c.NextCount).DefaultIfEmpty(0).Max();
+        return branchNode;
+    }
+
+    /// <summary>
+    /// 能画进图的状态：招式、随机分支、条件分支。本模组的路由状态（DelegatingMonsterRouterState 这类按代码决定下一招的状态）
+    /// 看不出去向，画出来只会是一个空节点和一支悬空的箭头，所以在它这里断开。
+    /// </summary>
+    private static bool IsGraphable(MonsterState state) => state is MoveState or RandomBranchState or ConditionalBranchState;
+
+    private static bool IsInParentChain(IntentGraphStateNode node, MonsterState state)
+    {
+        for (IntentGraphStateNode? current = node; current != null; current = current.Parent)
         {
-            if (moves.ContainsKey(id) && !pos.ContainsKey(id))
+            if (current.State == state)
             {
-                pos[id] = p;
+                return true;
             }
         }
 
-        IReadOnlyList<Creature> targets = owner.CombatState.Players.Select(static p => p.Creature).ToList();
-        foreach ((string id, Vector2 p) in pos)
+        return false;
+    }
+
+    // ---------------------------------------------------------------- moves
+
+    private static IntentGraphMoveNode BuildMoveNode(
+        MoveState move,
+        float x,
+        float y,
+        Creature owner,
+        IReadOnlyList<Creature> targets,
+        string monsterTypeName,
+        IntentGraphMonsterConfig? config,
+        string? nextMoveId)
+    {
+        List<IntentGraphIntentIcon> icons = new List<IntentGraphIntentIcon>();
+        for (int i = 0; i < move.Intents.Count; i++)
         {
-            MoveState move = moves[id];
-            List<IntentGraphIntentIcon> icons = new List<IntentGraphIntentIcon>();
-            for (int i = 0; i < move.Intents.Count; i++)
+            AbstractIntent intent = move.Intents[i];
+            string intentTypeName = intent.GetType().FullName ?? intent.GetType().Name;
+            string resolveKeyPrefix = monsterTypeName + "::" + move.Id + "::" + intentTypeName;
+
+            string? text = null;
+            try
             {
-                AbstractIntent intent = move.Intents[i];
-                string intentTypeName = intent.GetType().FullName ?? intent.GetType().Name;
-                string resolveKeyPrefix = monsterTypeName + "::" + move.Id + "::" + intentTypeName;
-
-                string? text = null;
-                try
+                text = intent.GetIntentLabel(targets, owner).GetFormattedText();
+            }
+            catch (Exception exception)
+            {
+                if (LorLog.FirstTime("IntentGraphFeature.IntentResolve:" + resolveKeyPrefix + ":label"))
                 {
-                    text = intent.GetIntentLabel(targets, owner).GetFormattedText();
+                    LorLog.Warn("[LibraryOfRuina.IntentGraph] Failed to resolve intent label for " + resolveKeyPrefix + ". " + exception.Message);
                 }
-                catch (Exception exception)
-                {
-                    if (LorLog.FirstTime("IntentGraphFeature.IntentResolve:" + resolveKeyPrefix + ":label"))
-                    {
-                        LorLog.Warn(
-                            "[LibraryOfRuina.IntentGraph] Failed to resolve intent label for "
-                            + resolveKeyPrefix + ". " + exception.Message);
-                    }
-                }
-
-                text = ApplyMoveReplacement(config, move.Id, i, text);
-                if (string.IsNullOrWhiteSpace(text))
-                {
-                    text = null;
-                }
-
-                Texture2D? texture = null;
-                try
-                {
-                    texture = intent.GetTexture(targets, owner);
-                }
-                catch (Exception exception)
-                {
-                    if (LorLog.FirstTime("IntentGraphFeature.IntentResolve:" + resolveKeyPrefix + ":texture"))
-                    {
-                        LorLog.Warn(
-                            "[LibraryOfRuina.IntentGraph] Failed to resolve intent texture for "
-                            + resolveKeyPrefix + ". " + exception.Message);
-                    }
-                }
-
-                icons.Add(new IntentGraphIntentIcon(texture, text, intent.IntentType));
             }
 
-            render.Moves.Add(new IntentGraphMoveNode
+            text = ApplyMoveReplacement(config, move.Id, i, text);
+            Texture2D? texture = null;
+            try
             {
-                MoveId = id,
-                PositionUnits = p,
-                Intents = icons,
-                IsCurrentMove = !string.IsNullOrWhiteSpace(nextMoveId)
-                                && string.Equals(id, nextMoveId, StringComparison.Ordinal)
-            });
+                texture = intent.GetTexture(targets, owner);
+            }
+            catch (Exception exception)
+            {
+                if (LorLog.FirstTime("IntentGraphFeature.IntentResolve:" + resolveKeyPrefix + ":texture"))
+                {
+                    LorLog.Warn("[LibraryOfRuina.IntentGraph] Failed to resolve intent texture for " + resolveKeyPrefix + ". " + exception.Message);
+                }
+            }
+
+            icons.Add(new IntentGraphIntentIcon(texture, string.IsNullOrWhiteSpace(text) ? null : text, intent.IntentType));
         }
 
-        List<List<Vector2>> configuredPaths = ParseConfiguredPaths(layout);
-        HashSet<int> usedConfiguredPaths = new HashSet<int>();
-        foreach (IntentGraphTransition t in transitions)
+        return new IntentGraphMoveNode
         {
-            if (!pos.TryGetValue(t.FromMoveId, out Vector2 from) || !pos.TryGetValue(t.ToMoveId, out Vector2 to))
+            MoveId = move.Id,
+            PositionUnits = new Vector2(x, y),
+            Intents = icons,
+            IsCurrentMove = string.Equals(move.Id, nextMoveId, StringComparison.Ordinal)
+        };
+    }
+
+    /// <summary>
+    /// 招式名取怪物本地化表里的 &lt;怪物&gt;.moves.&lt;招式&gt;.title；招式 ID 带 _MOVE 后缀或数字编号时去掉再找，
+    /// 仍找不到时去掉第一个下划线前的部分（与 Intent Graph 的查找顺序相同）。
+    /// </summary>
+    private static string? ResolveMoveName(MonsterModel monster, string moveId)
+    {
+        string prefix = monster.Id.Entry + ".moves.";
+        string? Title(string id) => LocString.GetIfExists("monsters", prefix + id + ".title")?.GetFormattedText();
+
+        string? title = Title(moveId);
+        if (title != null)
+        {
+            return title;
+        }
+
+        string trimmed = moveId;
+        bool changed = true;
+        while (changed)
+        {
+            changed = false;
+            if (trimmed.EndsWith("_MOVE", StringComparison.Ordinal))
+            {
+                trimmed = trimmed[..^"_MOVE".Length];
+                changed = true;
+            }
+
+            int end = trimmed.Length;
+            while (end > 0 && (char.IsAsciiDigit(trimmed[end - 1]) || trimmed[end - 1] == '_'))
+            {
+                end--;
+            }
+
+            if (end < trimmed.Length)
+            {
+                trimmed = trimmed[..end];
+                changed = true;
+            }
+        }
+
+        title = Title(trimmed);
+        int underscore = trimmed.IndexOf('_');
+        if (title == null && underscore >= 0 && underscore + 1 < trimmed.Length)
+        {
+            title = Title(trimmed[(underscore + 1)..]);
+        }
+
+        return title;
+    }
+
+    // ---------------------------------------------------------------- config graphs
+
+    /// <summary>配置里的整张图或补丁：招式坐标是左上角，连线是 Intent Graph 的路径格式，标签左对齐、坐标是基线。</summary>
+    private static IntentGraphRenderModel BuildFromLayout(
+        IntentGraphLayoutDefinition layout,
+        MonsterMoveStateMachine machine,
+        Func<MoveState, float, float, IntentGraphMoveNode?> createMove,
+        Func<MoveState, string?> moveName)
+    {
+        IntentGraphRenderModel render = new IntentGraphRenderModel();
+        foreach (IntentGraphMoveLayout moveLayout in layout.Moves ?? Enumerable.Empty<IntentGraphMoveLayout>())
+        {
+            if (!machine.States.TryGetValue(moveLayout.Id, out MonsterState? state) || state is not MoveState move)
             {
                 continue;
             }
 
-            IReadOnlyList<Vector2> path = MatchConfiguredPath(configuredPaths, usedConfiguredPaths, from, to)
-                                          ?? CreateAutoArrowPoints(from, to);
-
-            render.Arrows.Add(new IntentGraphArrowPath { PointsUnits = path.ToList() });
-
-            if (!string.IsNullOrWhiteSpace(t.LabelText))
+            IntentGraphMoveNode? node = createMove(move, moveLayout.X, moveLayout.Y);
+            if (node == null)
             {
-                Vector2 mid = new Vector2((from.X + to.X) * 0.5f, (from.Y + to.Y) * 0.5f - 0.32f);
-                render.Labels.Add(new IntentGraphLabelNode(mid, t.LabelText!));
+                continue;
+            }
+
+            render.Moves.Add(node);
+            string? name = node.Intents.Count > 0 ? moveName(move) : null;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                float width = IntentGraphLayouter.MoveWidth(node.Intents.Count);
+                render.Labels.Add(new IntentGraphLabelNode(
+                    new Vector2(moveLayout.X + width / 2f, moveLayout.Y + 0.2f), name!, IntentGraphLayouter.MoveNameFontSize, 0.5f));
+            }
+        }
+
+        foreach (IntentGraphArrowLayout arrow in layout.Arrows ?? Enumerable.Empty<IntentGraphArrowLayout>())
+        {
+            List<Vector2> points = IntentGraphLayouter.ToPoints(arrow.Path);
+            if (points.Count >= 2)
+            {
+                render.Arrows.Add(new IntentGraphArrowPath { PointsUnits = points });
             }
         }
 
@@ -256,102 +406,12 @@ internal static class MonsterStateMachineIntentGraphFeature
             render.Groups.Add(new IntentGraphGroupNode(new Rect2(group.X, group.Y, group.Width, group.Height)));
         }
 
-        foreach (IGrouping<string, IntentGraphTransition> bySource in transitions
-                     .GroupBy(static t => t.FromMoveId)
-                     .Where(static g => g.Count() > 1))
-        {
-            List<Vector2> targetsPos = bySource
-                .Select(t => pos.TryGetValue(t.ToMoveId, out Vector2 p) ? (Vector2?)p : null)
-                .Where(static p => p.HasValue)
-                .Select(static p => p!.Value)
-                .ToList();
-
-            if (targetsPos.Count < 2)
-            {
-                continue;
-            }
-
-            float minX = targetsPos.Min(static p => p.X) - 0.55f;
-            float minY = targetsPos.Min(static p => p.Y) - 0.52f;
-            float maxX = targetsPos.Max(static p => p.X) + 0.55f;
-            float maxY = targetsPos.Max(static p => p.Y) + 0.52f;
-            render.Groups.Add(new IntentGraphGroupNode(new Rect2(minX, minY, maxX - minX, maxY - minY)));
-        }
-
-        NormalizeAndSize(render, layout);
-        monsterName = monster.Title.GetFormattedText();
-        return true;
+        render.WidthUnits = layout.Width ?? render.Moves.Select(static m => m.PositionUnits.X + IntentGraphLayouter.MoveWidth(m.Intents.Count)).DefaultIfEmpty(1f).Max();
+        render.HeightUnits = layout.Height ?? render.Moves.Select(static m => m.PositionUnits.Y + 1f).DefaultIfEmpty(1f).Max();
+        return render;
     }
 
-    public static void ReloadLocalization()
-    {
-        IntentGraphConfigRepository.ReloadLocalization();
-    }
-
-    private static IReadOnlyList<IntentGraphTransition> ResolveTransitions(
-        MoveState move,
-        MonsterMoveStateMachine stateMachine,
-        Creature owner,
-        string monsterTypeName,
-        IReadOnlyDictionary<string, MoveState> moves)
-    {
-        List<IntentGraphTransition> result = new List<IntentGraphTransition>();
-        MonsterState? follow = ResolveFollowUpState(move, stateMachine);
-        if (follow == null)
-        {
-            return result;
-        }
-
-        if (follow is MoveState next)
-        {
-            result.Add(new IntentGraphTransition(move.Id, next.Id, null));
-            return result;
-        }
-
-        if (follow is RandomBranchState random)
-        {
-            IReadOnlyList<RandomBranchOption> options = ResolveRandomOptions(random, stateMachine, monsterTypeName);
-            bool suppressPercent = false;
-            foreach (RandomBranchOption option in options)
-            {
-                List<string> parts = new List<string>();
-                if (!suppressPercent)
-                {
-                    parts.Add(FormatPercent(option.Weight, options));
-                }
-
-                if (!string.IsNullOrWhiteSpace(option.ConditionText))
-                {
-                    parts.Add(option.ConditionText!);
-                }
-
-                string? extra = BuildRandomConstraintText(option.StateWeight);
-                if (!string.IsNullOrWhiteSpace(extra))
-                {
-                    parts.Add(extra!);
-                }
-
-                if (parts.Count == 0)
-                {
-                    parts.Add(FormatPercent(option.Weight, options));
-                }
-
-                result.Add(new IntentGraphTransition(move.Id, option.Move.Id, string.Join(", ", parts)));
-            }
-
-            return result;
-        }
-
-        if (follow is ConditionalBranchState conditional)
-        {
-            foreach (ConditionalBranchOption option in ResolveConditionalOptions(conditional, owner, monsterTypeName, moves))
-            {
-                result.Add(new IntentGraphTransition(move.Id, option.Move.Id, option.ConditionText));
-            }
-        }
-
-        return result;
-    }
+    // ---------------------------------------------------------------- branches
 
     private static MonsterState? ResolveFollowUpState(MoveState moveState, MonsterMoveStateMachine machine)
     {
@@ -369,34 +429,28 @@ internal static class MonsterStateMachineIntentGraphFeature
         return machine.States.TryGetValue(id, out MonsterState? follow) ? follow : null;
     }
 
-    private static IReadOnlyList<ConditionalBranchOption> ResolveConditionalOptions(
+    /// <summary>条件分支：每个分支目标一项，条件文字取 branch.&lt;怪物&gt;.&lt;分支&gt;.&lt;目标&gt;；开局分支只保留当前求值出的那一项。</summary>
+    private static IReadOnlyList<BranchOption> ResolveConditionalOptions(
         ConditionalBranchState conditional,
+        MonsterMoveStateMachine machine,
         Creature owner,
-        string monsterTypeName,
-        IReadOnlyDictionary<string, MoveState> moves)
+        string monsterTypeName)
     {
-        List<ConditionalBranchOption> options = new List<ConditionalBranchOption>();
+        List<BranchOption> options = new List<BranchOption>();
         if (VanillaPrivate.ConditionalBranchStateStates.Get(conditional) is not IEnumerable branches || !VanillaPrivate.ConditionalBranchId.IsAvailable)
         {
             return options;
         }
 
-        string? forcedBranchId = null;
-        if (moves.Count > 0)
-        {
-            if (string.Equals(conditional.Id, "INIT_MOVE", StringComparison.Ordinal))
-            {
-                string? evaluatedStateId = TryEvaluateConditionalStateId(conditional);
-                if (!string.IsNullOrWhiteSpace(evaluatedStateId) && moves.ContainsKey(evaluatedStateId))
-                {
-                    forcedBranchId = evaluatedStateId;
-                }
-            }
-        }
-
+        string? forcedBranchId = string.Equals(conditional.Id, InitMoveId, StringComparison.Ordinal)
+            ? TryEvaluateConditionalStateId(conditional, owner)
+            : null;
         foreach (object? branch in branches)
         {
-            if (branch == null || VanillaPrivate.ConditionalBranchId.Get(branch) is not string id || !moves.TryGetValue(id, out MoveState? move))
+            if (branch == null
+                || VanillaPrivate.ConditionalBranchId.Get(branch) is not string id
+                || !machine.States.TryGetValue(id, out MonsterState? target)
+                || options.Any(o => o.Target == target))
             {
                 continue;
             }
@@ -406,26 +460,23 @@ internal static class MonsterStateMachineIntentGraphFeature
                 continue;
             }
 
-            string key = $"branch.{monsterTypeName}.{conditional.Id}.{move.Id}";
-            options.Add(new ConditionalBranchOption(move, ResolveLocalizationText(key)));
-            if (forcedBranchId != null)
-            {
-                break;
-            }
+            string key = $"branch.{monsterTypeName}.{conditional.Id}.{id}";
+            options.Add(new BranchOption(target, ResolveLocalizationText(key) ?? string.Empty));
         }
 
         return options;
     }
 
-    private static IReadOnlyList<RandomBranchOption> ResolveRandomOptions(
+    /// <summary>随机分支：条件文字是概率，加上本地化的附加条件和原版的重复限制。</summary>
+    private static IReadOnlyList<BranchOption> ResolveRandomOptions(
         RandomBranchState random,
-        MonsterMoveStateMachine stateMachine,
+        MonsterMoveStateMachine machine,
         string monsterTypeName)
     {
-        List<RandomBranchOption> options = new List<RandomBranchOption>();
+        List<(MonsterState Target, float Weight, RandomBranchState.StateWeight StateWeight)> weighted = new();
         foreach (RandomBranchState.StateWeight stateWeight in random.States)
         {
-            if (!stateMachine.States.TryGetValue(stateWeight.stateId, out MonsterState? state) || state is not MoveState move)
+            if (!machine.States.TryGetValue(stateWeight.stateId, out MonsterState? target))
             {
                 continue;
             }
@@ -440,16 +491,34 @@ internal static class MonsterStateMachineIntentGraphFeature
                 weight = 0f;
             }
 
-            string key = $"branch.{monsterTypeName}.{random.Id}.{move.Id}";
-            options.Add(new RandomBranchOption(move, weight, stateWeight, ResolveLocalizationText(key)));
+            weighted.Add((target, weight, stateWeight));
+        }
+
+        float total = weighted.Sum(static w => w.Weight);
+        List<BranchOption> options = new List<BranchOption>();
+        foreach ((MonsterState target, float weight, RandomBranchState.StateWeight stateWeight) in weighted)
+        {
+            List<string> parts = new List<string> { FormatPercent(weight, total) };
+            string? condition = ResolveLocalizationText($"branch.{monsterTypeName}.{random.Id}.{target.Id}");
+            if (!string.IsNullOrWhiteSpace(condition))
+            {
+                parts.Add(condition!);
+            }
+
+            string? extra = BuildRandomConstraintText(stateWeight);
+            if (!string.IsNullOrWhiteSpace(extra))
+            {
+                parts.Add(extra!);
+            }
+
+            options.Add(new BranchOption(target, string.Join(", ", parts)));
         }
 
         return options;
     }
 
-    private static string FormatPercent(float weight, IReadOnlyList<RandomBranchOption> options)
+    private static string FormatPercent(float weight, float total)
     {
-        float total = options.Sum(static o => o.Weight);
         if (total <= 0f)
         {
             return "0%";
@@ -511,8 +580,25 @@ internal static class MonsterStateMachineIntentGraphFeature
         return string.IsNullOrWhiteSpace(text) ? null : text;
     }
 
-    private static string? TryEvaluateConditionalStateId(ConditionalBranchState conditional)
+    /// <summary>
+    /// 条件分支当前会走哪一支。0.111 用公开的 GetNextState 求值：两个参数都不参与，只按顺序检查各分支条件，
+    /// 没有成立的分支时抛异常；较旧的游戏版本另有私有的 EvaluateStates。
+    /// </summary>
+    private static string? TryEvaluateConditionalStateId(ConditionalBranchState conditional, Creature owner)
     {
+        try
+        {
+            return conditional.GetNextState(owner, null!);
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (Exception)
+        {
+            // 条件本身出错时退回旧版本的私有方法（若存在），否则当作无法预判。
+        }
+
         if (!VanillaPrivate.ConditionalBranchStateEvaluateStates.IsAvailable)
         {
             return null;
@@ -528,144 +614,6 @@ internal static class MonsterStateMachineIntentGraphFeature
         }
     }
 
-    private static void AddRootMoveId(
-        ICollection<string> roots,
-        IReadOnlyDictionary<string, MoveState> moves,
-        string? moveId)
-    {
-        if (string.IsNullOrWhiteSpace(moveId)
-            || !moves.ContainsKey(moveId)
-            || roots.Contains(moveId, StringComparer.Ordinal))
-        {
-            return;
-        }
-
-        roots.Add(moveId);
-    }
-
-    private static void AddInitialRootMoves(
-        MonsterMoveStateMachine stateMachine,
-        IReadOnlyDictionary<string, MoveState> moves,
-        ICollection<string> roots)
-    {
-        if (VanillaPrivate.MonsterMoveStateMachineInitialState.Get(stateMachine) is not MonsterState initialState)
-        {
-            return;
-        }
-
-        HashSet<string> visitedStates = new HashSet<string>(StringComparer.Ordinal);
-        CollectRootMovesFromState(initialState, stateMachine, moves, roots, visitedStates);
-    }
-
-    private static void CollectRootMovesFromState(
-        MonsterState state,
-        MonsterMoveStateMachine stateMachine,
-        IReadOnlyDictionary<string, MoveState> moves,
-        ICollection<string> roots,
-        ISet<string> visitedStates)
-    {
-        if (!visitedStates.Add(state.Id))
-        {
-            return;
-        }
-
-        if (state is MoveState move)
-        {
-            AddRootMoveId(roots, moves, move.Id);
-            return;
-        }
-
-        if (state is ConditionalBranchState conditional)
-        {
-            string? evaluated = TryEvaluateConditionalStateId(conditional);
-            if (!string.IsNullOrWhiteSpace(evaluated)
-                && stateMachine.States.TryGetValue(evaluated, out MonsterState? evaluatedState))
-            {
-                CollectRootMovesFromState(evaluatedState, stateMachine, moves, roots, visitedStates);
-                return;
-            }
-
-            if (VanillaPrivate.ConditionalBranchStateStates.Get(conditional) is not IEnumerable branches
-                || !VanillaPrivate.ConditionalBranchId.IsAvailable)
-            {
-                return;
-            }
-
-            foreach (object? branch in branches)
-            {
-                if (branch == null
-                    || VanillaPrivate.ConditionalBranchId.Get(branch) is not string branchId
-                    || !stateMachine.States.TryGetValue(branchId, out MonsterState? branchState))
-                {
-                    continue;
-                }
-
-                CollectRootMovesFromState(branchState, stateMachine, moves, roots, visitedStates);
-            }
-
-            return;
-        }
-
-        if (state is RandomBranchState random)
-        {
-            foreach (RandomBranchState.StateWeight branch in random.States)
-            {
-                if (!stateMachine.States.TryGetValue(branch.stateId, out MonsterState? branchState))
-                {
-                    continue;
-                }
-
-                CollectRootMovesFromState(branchState, stateMachine, moves, roots, visitedStates);
-            }
-        }
-    }
-
-    private static Dictionary<string, Vector2> GenerateAutoPositions(IReadOnlyDictionary<string, int> depth, IReadOnlyDictionary<string, int> order)
-    {
-        Dictionary<string, Vector2> result = new Dictionary<string, Vector2>(StringComparer.Ordinal);
-        foreach (IGrouping<int, KeyValuePair<string, int>> g in depth.GroupBy(static p => p.Value).OrderBy(static g => g.Key))
-        {
-            List<string> ids = g.Select(static p => p.Key).OrderBy(id => order.TryGetValue(id, out int value) ? value : int.MaxValue).ToList();
-            float y0 = -0.5f * (ids.Count - 1) * Dy;
-            for (int i = 0; i < ids.Count; i++)
-            {
-                result[ids[i]] = new Vector2(g.Key * Dx, y0 + i * Dy);
-            }
-        }
-
-        return result;
-    }
-
-    private static IntentGraphLayoutDefinition BuildAutoLayout(IReadOnlyDictionary<string, Vector2> pos, IReadOnlyList<IntentGraphTransition> transitions)
-    {
-        IntentGraphLayoutDefinition layout = new IntentGraphLayoutDefinition
-        {
-            Moves = pos.Select(static p => new IntentGraphMoveLayout { Id = p.Key, X = p.Value.X, Y = p.Value.Y }).ToList(),
-            Arrows = new List<IntentGraphArrowLayout>(),
-            Labels = new List<IntentGraphLabelLayout>(),
-            IconGroups = new List<IntentGraphGroupLayout>()
-        };
-
-        foreach (IntentGraphTransition t in transitions)
-        {
-            if (!pos.TryGetValue(t.FromMoveId, out Vector2 from) || !pos.TryGetValue(t.ToMoveId, out Vector2 to))
-            {
-                continue;
-            }
-
-            List<float> path = new List<float>();
-            foreach (Vector2 p in CreateAutoArrowPoints(from, to))
-            {
-                path.Add(p.X);
-                path.Add(p.Y);
-            }
-
-            layout.Arrows!.Add(new IntentGraphArrowLayout { Path = path });
-        }
-
-        return layout;
-    }
-
     private static string ResolveInlineLabelText(string text)
     {
         if (text.StartsWith("text.", StringComparison.Ordinal) || text.StartsWith("branch.", StringComparison.Ordinal) || text.StartsWith("ui.", StringComparison.Ordinal))
@@ -674,83 +622,6 @@ internal static class MonsterStateMachineIntentGraphFeature
         }
 
         return text;
-    }
-
-    private static List<List<Vector2>> ParseConfiguredPaths(IntentGraphLayoutDefinition layout)
-    {
-        List<List<Vector2>> all = new List<List<Vector2>>();
-        foreach (IntentGraphArrowLayout arrow in layout.Arrows ?? Enumerable.Empty<IntentGraphArrowLayout>())
-        {
-            if (arrow.Path.Count < 4)
-            {
-                continue;
-            }
-
-            List<Vector2> points = new List<Vector2>();
-            for (int i = 0; i + 1 < arrow.Path.Count; i += 2)
-            {
-                points.Add(new Vector2(arrow.Path[i], arrow.Path[i + 1]));
-            }
-
-            if (points.Count >= 2)
-            {
-                all.Add(points);
-            }
-        }
-
-        return all;
-    }
-
-    private static IReadOnlyList<Vector2>? MatchConfiguredPath(IReadOnlyList<List<Vector2>> paths, ISet<int> used, Vector2 from, Vector2 to)
-    {
-        float best = float.MaxValue;
-        int bestIndex = -1;
-        bool reverse = false;
-
-        for (int i = 0; i < paths.Count; i++)
-        {
-            if (used.Contains(i))
-            {
-                continue;
-            }
-
-            IReadOnlyList<Vector2> path = paths[i];
-            float f = path[0].DistanceTo(from) + path[path.Count - 1].DistanceTo(to);
-            float r = path[0].DistanceTo(to) + path[path.Count - 1].DistanceTo(from);
-            float d = Math.Min(f, r);
-            if (d < best)
-            {
-                best = d;
-                bestIndex = i;
-                reverse = r < f;
-            }
-        }
-
-        if (bestIndex < 0 || best > 2.2f)
-        {
-            return null;
-        }
-
-        used.Add(bestIndex);
-        if (!reverse)
-        {
-            return paths[bestIndex];
-        }
-
-        List<Vector2> rev = new List<Vector2>(paths[bestIndex]);
-        rev.Reverse();
-        return rev;
-    }
-
-    private static IReadOnlyList<Vector2> CreateAutoArrowPoints(Vector2 from, Vector2 to)
-    {
-        if (Math.Abs(from.Y - to.Y) < 0.01f)
-        {
-            return new[] { from, to };
-        }
-
-        float midX = (from.X + to.X) * 0.5f;
-        return new[] { from, new Vector2(midX, from.Y), new Vector2(midX, to.Y), to };
     }
 
     private static string? ApplyMoveReplacement(IntentGraphMonsterConfig? config, string moveId, int index, string? label)
@@ -767,7 +638,7 @@ internal static class MonsterStateMachineIntentGraphFeature
 
         string times = replacements[index].TimesText!;
         // 原版各语言的 FORMAT_DAMAGE_MULTI 用拉丁 x、乘号 ×（简中）或西里尔字母 х（俄语）分隔伤害与次数。
-        char[] splitChars = { 'x', 'X', '\u00D7', '\u0445' };
+        char[] splitChars = { 'x', 'X', '×', 'х' };
         int split = label!.LastIndexOfAny(splitChars);
         if (split < 0)
         {
@@ -787,97 +658,5 @@ internal static class MonsterStateMachineIntentGraphFeature
         }
 
         return end > start ? label.Substring(0, start) + times + label.Substring(end) : label;
-    }
-
-    private static void NormalizeAndSize(IntentGraphRenderModel render, IntentGraphLayoutDefinition layout)
-    {
-        float minX = float.MaxValue;
-        float minY = float.MaxValue;
-        float maxX = float.MinValue;
-        float maxY = float.MinValue;
-
-        foreach (IntentGraphMoveNode move in render.Moves)
-        {
-            minX = Math.Min(minX, move.PositionUnits.X - 0.42f);
-            minY = Math.Min(minY, move.PositionUnits.Y - 0.42f);
-            maxX = Math.Max(maxX, move.PositionUnits.X + 0.42f);
-            maxY = Math.Max(maxY, move.PositionUnits.Y + 0.42f);
-        }
-
-        foreach (IntentGraphArrowPath arrow in render.Arrows)
-        {
-            foreach (Vector2 p in arrow.PointsUnits)
-            {
-                minX = Math.Min(minX, p.X);
-                minY = Math.Min(minY, p.Y);
-                maxX = Math.Max(maxX, p.X);
-                maxY = Math.Max(maxY, p.Y);
-            }
-        }
-
-        foreach (IntentGraphLabelNode label in render.Labels)
-        {
-            minX = Math.Min(minX, label.PositionUnits.X - 0.3f);
-            minY = Math.Min(minY, label.PositionUnits.Y - 0.3f);
-            maxX = Math.Max(maxX, label.PositionUnits.X + 0.3f);
-            maxY = Math.Max(maxY, label.PositionUnits.Y + 0.3f);
-        }
-
-        foreach (IntentGraphGroupNode group in render.Groups)
-        {
-            minX = Math.Min(minX, group.RectUnits.Position.X);
-            minY = Math.Min(minY, group.RectUnits.Position.Y);
-            maxX = Math.Max(maxX, group.RectUnits.End.X);
-            maxY = Math.Max(maxY, group.RectUnits.End.Y);
-        }
-
-        if (minX == float.MaxValue)
-        {
-            minX = 0f;
-            minY = 0f;
-            maxX = 1f;
-            maxY = 1f;
-        }
-
-        float ox = minX < 0f ? -minX + 0.5f : 0.5f;
-        float oy = minY < 0f ? -minY + 0.5f : 0.5f;
-
-        for (int i = 0; i < render.Moves.Count; i++)
-        {
-            IntentGraphMoveNode move = render.Moves[i];
-            move.PositionUnits = new Vector2(move.PositionUnits.X + ox, move.PositionUnits.Y + oy);
-        }
-
-        for (int i = 0; i < render.Arrows.Count; i++)
-        {
-            IntentGraphArrowPath arrow = render.Arrows[i];
-            render.Arrows[i] = new IntentGraphArrowPath { PointsUnits = arrow.PointsUnits.Select(p => new Vector2(p.X + ox, p.Y + oy)).ToList() };
-        }
-
-        for (int i = 0; i < render.Labels.Count; i++)
-        {
-            IntentGraphLabelNode label = render.Labels[i];
-            render.Labels[i] = label with { PositionUnits = new Vector2(label.PositionUnits.X + ox, label.PositionUnits.Y + oy) };
-        }
-
-        for (int i = 0; i < render.Groups.Count; i++)
-        {
-            Rect2 rect = render.Groups[i].RectUnits;
-            rect.Position += new Vector2(ox, oy);
-            render.Groups[i] = new IntentGraphGroupNode(rect);
-        }
-
-        render.WidthUnits = maxX - minX + 1f;
-        render.HeightUnits = maxY - minY + 1f;
-
-        if (layout.Width.HasValue)
-        {
-            render.WidthUnits = Math.Max(render.WidthUnits, layout.Width.Value);
-        }
-
-        if (layout.Height.HasValue)
-        {
-            render.HeightUnits = Math.Max(render.HeightUnits, layout.Height.Value);
-        }
     }
 }

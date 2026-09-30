@@ -142,7 +142,6 @@ LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._panelSc
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphRuntimeCache.GeneratedGraphs	instance	-	以 MonsterModel 为弱键：Store 写入生成好的意图图；随怪物实例回收，只用于显示
 LibraryOfRuina.features.intentgraph.NIntentGraph._arrowTexture	harmless	cache	LoadSharedTextures 加载一次
 LibraryOfRuina.features.intentgraph.NIntentGraph._groupBorderTexture	harmless	cache	LoadSharedTextures 加载一次
-LibraryOfRuina.features.intentgraph.NIntentGraph._iconTexture	harmless	cache	LoadSharedTextures 加载一次
 LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel._isGraphEnabled	harmless	ui	_Process 里按切换键翻转，不复位；只控制意图图显示
 LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel._toggleActionRegistered	harmless	once	RegisterToggleActionOnce 注册输入动作后置 true
 LibraryOfRuina.features.moontext.MoonTextService._currentController	harmless	ui	GetExistingController/GetOrCreateController 按 CombatRoom 校验后重新获取；月光文字节点引用
