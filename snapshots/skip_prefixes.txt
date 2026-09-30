@@ -18,15 +18,13 @@ LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjHandStunImmunityPatch	原版
 LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjSpecialGuestBackgroundAssetsPatch	原版背景标题只能是遭遇 id，本模组背景资源目录另有命名；只作用于 Rnfmabj 特殊来宾遭遇。
 LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjSpecialGuestCreateVisualsPatch	原版 CreateVisuals 非虚，外观需要额外初始化合体状态与手部偏移；只作用于 Rnfmabj 本体与双手。
 LibraryOfRuina.content.specialguests.SpecialGuestEventConsoleProcessPatch	原版 event 命令只在 ModelDb 事件表里查找，特邀嘉宾事件不在其中；只在参数是特邀嘉宾事件 ID 时接管，属于开发者控制台命令。
-LibraryOfRuina.content.specialguests.SpecialGuestHideRunStateTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组特邀嘉宾状态载体修饰符返回 null（原版 TestMode 同样返回 null）。
 LibraryOfRuina.content.specialguests.SpecialGuestRewardResumePatch	替代体与 0.111 原版 OfferRoomEndRewards 等价，Priority.First 是为了压住某个改写奖励流程的模组；该模组尚未确认，属于 §3 的例外，待实测后决定删除或保留。
 LibraryOfRuina.content.specialguests.SpecialGuestSuppressIntermediateParentFadeInPatch	RunManager.FadeIn 公开非虚且无 Hook；仅在本模组特邀嘉宾阶段衔接、当前房间为嘉宾父事件时抑制中间淡入，避免父事件闪现。
 LibraryOfRuina.content.specialguests.SpecialGuestTerminalRewardsProceedPatch	ProceedFromTerminalRewardsScreen 无 Hook；仅在本模组特邀嘉宾阶段衔接中吞掉重复/过期的继续调用，其余放行原版以复用其出栈与父事件恢复。
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBackgroundAssetsPatch	原版背景标题只能是遭遇 id，晓两阶段需要共用按种子抽取的接待层；只作用于晓特殊来宾遭遇。
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestCreateVisualsPatch	原版 CreateVisuals 非虚，晓与米莉丝的外观由代码或场景拼装；只作用于晓特殊来宾的三只怪物。
-LibraryOfRuina.core.settings.LibraryRunSettingsHideTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的本局设置载体返回 null（原版 TestMode 同样返回 null）。
+LibraryOfRuina.core.settings.LibraryHiddenModifierTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的状态载体（LibraryHiddenModifiers）返回 null（原版 TestMode 同样返回 null）。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionCharacterSelectModifiersChangedPatch	标准模式下原版 ModifiersChanged 固定抛 NotImplementedException，二层飞升借大厅修饰符同步时必然触发；接口实现非虚无 Hook，仅在大厅修饰符为空或全为本模组载体时跳过。
-LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组二层飞升载体修饰符返回 null（原版 TestMode 同样返回 null）。
 LibraryOfRuina.features.temporarymaps.TemporaryMapCreateRoomPatch	RunManager.CreateRoom 私有非虚且无建房 Hook，后缀会先让原版消耗遭遇/事件队列；仅在本模组临时地图会话激活且当前坐标属于临时地图节点时接管。
 LibraryOfRuina.framework.audio.MainMenuBgmMusicParameterPatch	原版 NMainMenu 切换子菜单时直接调用 UpdateMusicParameter("menu_progress")，无 Hook；仅在本模组主菜单 BGM 接管播放时丢弃该参数。
 LibraryOfRuina.framework.audio.MainMenuBgmPlayMusicPatch	原版在 NMainMenu._Ready 内联调用 PlayMusic 播放菜单曲，无 Hook 或虚方法；仅在本模组主菜单 BGM 开关开启且自有播放器接管时跳过 menu_update，其余曲目放行。
