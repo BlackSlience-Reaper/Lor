@@ -113,7 +113,7 @@ public sealed class RedShoesPageRelic : ModalPageRelic<RedShoesPageMode>
     public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
         if (Mode == RedShoesPageMode.Glitter
-            && Owner.Creature.IsAlive && side == Owner.Creature.Side)
+            && Owner.Creature.IsAlive && TurnParticipants.IsOwnTurn(Owner.Creature, side, participants))
         {
             Flash();
             await CreatureCmdCompat.Damage(

@@ -210,7 +210,9 @@ public sealed class MatchMarkRelic : ModalPageRelic<MatchMarkMode>
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Player || !ResolveAtNextPlayerTurnEnd || PendingDamage <= 0)
+        if (!TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
+            || !ResolveAtNextPlayerTurnEnd
+            || PendingDamage <= 0)
         {
             return;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -172,7 +173,7 @@ public sealed class ArtFloorFragrancePower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != Owner.Side || Owner.IsDead || Amount <= 0)
+        if (!TurnParticipants.IsOwnTurn(Owner, side, participants) || Owner.IsDead || Amount <= 0)
         {
             return;
         }
@@ -248,7 +249,7 @@ public sealed class ArtFloorCollapsePower : LibraryPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side == Owner.Side)
+        if (TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             await PowerCmd.TickDownDuration(this);
         }
@@ -269,7 +270,7 @@ public sealed class ArtFloorNextTurnCollapsePower : LibraryPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player || Owner.IsDead || Amount <= 0)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants) || Owner.IsDead || Amount <= 0)
         {
             return;
         }

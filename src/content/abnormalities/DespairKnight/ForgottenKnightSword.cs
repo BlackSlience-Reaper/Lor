@@ -6,6 +6,7 @@ using LibraryLib.Models;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -436,7 +437,7 @@ public sealed class ForgottenKnightSword : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             await TickFalseDeathOnPlayerTurnStart();
         }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -45,7 +46,7 @@ public sealed class LibraryOfRuinaQueenBindPower : LibraryOfRuinaPowerModel
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsPlayerTurnFor(Owner, side, participants))
         {
             await PowerCmd.Remove(this);
         }

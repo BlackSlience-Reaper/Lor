@@ -34,6 +34,7 @@ public static class VerificationRunner
         EgoCardPreviewVerificationPatch.Start,
         EncounterBgmDeclarationVerificationPatch.Start,
         EnemyCardIntentVerificationPatch.Start,
+        ExtraTurnParticipantsVerificationPatch.Start,
         FairyMassCareVerificationPatch.Start,
         GalaxyDoomVerificationPatch.Start,
         IntentRenderVerificationPatch.Start,

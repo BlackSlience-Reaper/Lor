@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
@@ -164,7 +165,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
     {
         await base.AfterSideTurnStart(side, participants, combatState);
         // 原版此时已生成本回合意图，玩家接下来仍有完整的应对回合。
-        if (side == CombatSide.Player && HuntPending)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && HuntPending)
         {
             StartHuntFromSmallSpiderDeath();
         }

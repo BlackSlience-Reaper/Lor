@@ -152,7 +152,7 @@ public sealed class PriceOfSilence : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player && Creature.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive)
         {
             if (_exposureActive)
             {
@@ -173,7 +173,7 @@ public sealed class PriceOfSilence : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player
+        if (TurnParticipants.IsRoundPlayerTurn(side)
             && Creature.IsAlive
             && PriceOfSilenceEncounterHelper.IsPriceOfSilenceEncounter(combatState))
         {

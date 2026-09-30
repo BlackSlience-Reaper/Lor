@@ -167,7 +167,7 @@ public sealed class HeartOfAspirationPageRelic : ModalPageRelic<HeartOfAspiratio
             return;
         }
 
-        if (side == Owner.Creature.Side)
+        if (TurnParticipants.IsOwnTurn(Owner.Creature, side, participants))
         {
             await ResolvePulseHpLoss(choiceContext);
             await TickViolentPulseDeath(choiceContext);

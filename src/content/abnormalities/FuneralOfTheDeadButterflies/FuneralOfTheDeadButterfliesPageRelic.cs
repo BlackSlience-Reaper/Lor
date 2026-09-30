@@ -96,8 +96,7 @@ public sealed class FuneralOfTheDeadButterfliesPageRelic : ModalPageRelic<Funera
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
         if (Mode != FuneralOfTheDeadButterfliesPageMode.Coffin
-            || side != Owner.Creature.Side
-            || Owner.Creature == null
+            || !TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
             || !Owner.Creature.Powers.Any(power => power.TypeForCurrentAmount == PowerType.Debuff))
         {
             return;

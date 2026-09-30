@@ -208,7 +208,8 @@ public sealed class PunishingBirdPageRelic : LibraryRelicModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side == CombatSide.Player && Mode == PunishingBirdPageMode.FlutteringWings)
+        if (Mode == PunishingBirdPageMode.FlutteringWings
+            && TurnParticipants.IsOwnTurn(Owner.Creature, side, participants))
         {
             await ClearWingsTemporaryBonuses();
         }

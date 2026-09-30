@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.ui;
@@ -64,7 +65,7 @@ public sealed class WrathServantNextTurnCorrosionPower : LibraryOfRuinaPowerMode
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (Owner.IsDead || side != CombatSide.Player || Amount <= 0)
+        if (Owner.IsDead || !TurnParticipants.IsPlayerTurnFor(Owner, side, participants) || Amount <= 0)
         {
             return;
         }
@@ -121,7 +122,7 @@ public sealed class WrathServantCorrosionPower :
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (Owner.IsDead || side != Owner.Side || Amount <= 0)
+        if (Owner.IsDead || !TurnParticipants.IsOwnTurn(Owner, side, participants) || Amount <= 0)
         {
             return;
         }

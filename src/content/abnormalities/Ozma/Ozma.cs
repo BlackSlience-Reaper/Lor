@@ -180,7 +180,8 @@ public sealed class Ozma : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (Mode == OzmaMode.Interference)
+        if (Mode == OzmaMode.Interference
+            && (side == CombatSide.Enemy || TurnParticipants.IsRoundPlayerTurn(side)))
         {
             await UpdateForgottenChallengeAtSideTurnStart(choiceContext, side);
         }

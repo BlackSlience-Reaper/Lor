@@ -5,6 +5,7 @@ using Godot;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
@@ -52,7 +53,7 @@ public sealed class HistoryFloorWaspSporePower :
 
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
-        if (Owner.IsDead || side != Owner.Side || side != CombatSide.Player || Amount <= 0)
+        if (Owner.IsDead || side != CombatSide.Player || !TurnParticipants.IsOwnTurn(Owner, side, participants) || Amount <= 0)
         {
             return;
         }
@@ -212,7 +213,7 @@ public sealed class HistoryFloorWaspParalysisPower : LibraryOfRuinaPowerModel, I
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (side != Owner.Side)
+        if (!TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             return;
         }
@@ -325,7 +326,7 @@ public sealed class HistoryFloorWaspPheromonePower : LibraryOfRuinaPowerModel
         CombatStateLike combatState)
     {
         Data data = GetInternalData<Data>();
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             data.EnemyTurnCount++;
             data.WarlikeQueuedForNextEnemyTurn = false;
