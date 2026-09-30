@@ -15,7 +15,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Xiao;
@@ -161,7 +160,6 @@ public sealed class XiaoReverseScalePassivePower : XiaoGuestPowerBase
         new DynamicVar("BuffStacks", FullBlockBuffStacks),
     ];
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public string CardsPlayedByPlayerNetId { get; private set; } = string.Empty;
 
     public override Task BeforeSideTurnStart(
@@ -404,10 +402,8 @@ public sealed class XiaoIgnitePower :
 
     public override PowerStackType StackType => PowerStackType.Single;
 
-    [SavedProperty]
     public bool TookBurnDamageThisTurn { get; private set; }
 
-    [SavedProperty]
     public int BurnStackBeforeDecay { get; private set; }
 
     public IEnumerable<LibraryHealthBarDamageForecast>

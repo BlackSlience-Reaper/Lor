@@ -3,6 +3,7 @@ LibraryOfRuina.audio.MainMenuBgmPlayMusicPatch	原版在 NMainMenu._Ready 内联
 LibraryOfRuina.audio.ReverberationEnsembleNativeMusicPatch	残响乐团幕由自有 ogg 播放器接管音乐，切歌、遭遇 CustomBgm、恢复幕曲均无 Hook；仅在当前幕为本模组残响乐团幕且自有曲目生效时跳过原版。UpdateMusic 上会连带跳过 RitsuLib 的映射音乐释放，见重构指导附录 A。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionCharacterSelectModifiersChangedPatch	标准模式下原版 ModifiersChanged 固定抛 NotImplementedException，二层飞升借大厅修饰符同步时必然触发；接口实现非虚无 Hook，仅在大厅修饰符为空或全为本模组载体时跳过。
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组二层飞升载体修饰符返回 null（原版 TestMode 同样返回 null）。
+LibraryOfRuina.features.settings.LibraryRunSettingsHideTopBarPatch	NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的本局设置载体返回 null（原版 TestMode 同样返回 null）。
 LibraryOfRuina.features.temporarymaps.TemporaryMapCreateRoomPatch	RunManager.CreateRoom 私有非虚且无建房 Hook，后缀会先让原版消耗遭遇/事件队列；仅在本模组临时地图会话激活且当前坐标属于临时地图节点时接管。
 LibraryOfRuina.patches.AllyMultiplayerChaoScalingPatch	基础库在多人生命缩放后缀里无条件缩放混乱值，没有扩展点；只对本模组盟友 provider 登记的友方/中立单位跳过多人混乱值缩放。
 LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch	原版多人生命缩放没有 Hook 或虚方法；只对本模组盟友 provider 登记的友方/中立单位跳过，敌对形态仍按原版缩放。

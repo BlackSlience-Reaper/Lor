@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
@@ -41,22 +40,16 @@ public sealed class LanguageFloorLostEverythingWolf :
     internal const int HowlWeak = 2;
     private const int HowlWeakTurns = 1;
 
-    [SavedProperty]
     public int PlannedMoveOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveTwo { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PlannedMoveThree { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PlannedMoveFour { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int WolfTurnCount { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool LowHealthMode { get; private set; }
 
     // 规划只写前三个槽位。PlannedMoveFour 不经过控制器：规划从不写它，只有进场重置、DebugSetPlan 和

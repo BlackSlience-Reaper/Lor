@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Random;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 
-// 指令（Prescript）任务：状态是 Rnfmabj.cs 里 Directive* 开头的 SavedProperty，规则在 RnfmabjDirectiveTracker。
+// 指令（Prescript）任务：状态是 Rnfmabj.cs 里 Directive* 开头的战斗内属性，规则在 RnfmabjDirectiveTracker。
 public sealed partial class Rnfmabj
 {
     public override async Task AfterCardPlayed(

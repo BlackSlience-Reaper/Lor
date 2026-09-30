@@ -10,7 +10,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using static LibraryOfRuina.reverberation.GearChurch.GearChurchRules;
 
@@ -49,10 +48,8 @@ public sealed class EileenNuovoFabricPower : GearChurchPassivePower
 
     private List<AttackPlay> _plays = [];
 
-    [SavedProperty]
     public int HitsReceived { get; private set; }
 
-    [SavedProperty]
     public int LastResetRound { get; private set; } = -1;
 
     public override string PackedIconPath => "res://images/powers/library_passive_orange.png";

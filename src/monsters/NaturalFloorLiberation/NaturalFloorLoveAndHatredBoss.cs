@@ -23,7 +23,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
@@ -74,19 +73,14 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
     private Dictionary<string, string> _restoredState = [];
     private string? _restoredMove;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool IsSnakeForm { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int CompletedFormActions { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int CompletedMoveCycleMask { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int LastMoveNumber { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int SnakeBaseHp { get; private set; }
 
     public override int MinInitialHp =>

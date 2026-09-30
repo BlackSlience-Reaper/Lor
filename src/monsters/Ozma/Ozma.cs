@@ -126,33 +126,24 @@ public sealed class Ozma : LorMonsterModel
             .Concat(EnumerateIntentAssets().SelectMany(static intent => intent.AssetPaths))
             .Distinct();
 
-    [SavedProperty]
     public OzmaMode Mode { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int ForgetCount { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool NextInterferenceUsesPressure { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int[] ForgottenPlayerCombatIds { get; private set; } = [];
 
     // 全体玩家共享的真杰克剩余击中次数，各玩家的遗忘层数只同步显示此值。
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int TrueJackHitsRemaining { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int ForgottenPlayerTurnsStarted { get; private set; }
 
     // 全体玩家共享的本回合真杰克方位，每个玩家回合开始时重新抽取。
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public JackDirection TrueJackDirection { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool StunAfterForgottenRestorePending { get; private set; }
 
-    [SavedProperty]
     public List<SerializableCard> ForgottenOriginalCards
     {
         get => _forgottenOriginalCards;
@@ -165,7 +156,6 @@ public sealed class Ozma : LorMonsterModel
     }
 
     // 与 ForgottenOriginalCards 按下标对应，记录每张被遗忘书页所属玩家的 CombatId。
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int[] ForgottenOriginalOwnerCombatIds { get; private set; } = [];
 
     public override async Task AfterAddedToRoom()

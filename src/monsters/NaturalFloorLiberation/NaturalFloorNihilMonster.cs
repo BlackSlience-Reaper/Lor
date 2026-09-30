@@ -14,7 +14,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
@@ -26,7 +25,6 @@ public abstract class NaturalFloorNihilMonster : NaturalFloorPhaseMonster
 
     internal int RestoringStunTurns { get; set; }
 
-    [SavedProperty]
     public string PlannedActions { get; private set; } = "";
 
     protected override string[] MoveIds => Ids;

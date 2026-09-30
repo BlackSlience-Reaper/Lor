@@ -12,7 +12,6 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -20,31 +19,22 @@ namespace LibraryOfRuina.monsters.NaturalFloorLiberation;
 
 public sealed class NaturalFloorNihilBoss : NaturalFloorNihilMonster, ILiberationPrimaryPhaseBoss
 {
-    [SavedProperty]
     public NaturalFloorNihilForm Form { get; private set; }
 
-    [SavedProperty]
     public int PendingForm { get; private set; } = -1;
 
-    [SavedProperty]
     public int CompletedFormTurns { get; private set; }
 
-    [SavedProperty]
     public int NormalMoveIndex { get; private set; }
 
-    [SavedProperty]
     public int HatredHitCount { get; private set; }
 
-    [SavedProperty]
     public int SealedSwords { get; private set; }
 
-    [SavedProperty]
     public bool WrathStaggered { get; private set; }
 
-    [SavedProperty]
     public bool NihilApplied { get; private set; }
 
-    [SavedProperty]
     public bool GreedGroupPending { get; private set; }
 
     public int LiberationPhase => 5;

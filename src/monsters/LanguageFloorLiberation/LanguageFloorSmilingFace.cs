@@ -13,7 +13,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
@@ -36,9 +35,10 @@ internal enum LanguageFloorSmilingFaceMove
     Vomit//呕吐
 }
 
-// 按职责分部：本文件放存档状态、状态机与回合钩子；.Forms 放假死与形态切换，.CorpseTrial 放尸体生成与尸体审判，
+// 按职责分部：本文件放战斗状态、状态机与回合钩子；.Forms 放假死与形态切换，.CorpseTrial 放尸体生成与尸体审判，
 // .Plan 放每回合计划与目标，.Moves 放招式执行与意图，.Debug 放只给验证程序集用的入口。
-// SavedProperty 只在本文件声明：原版按“特性 order + 属性名”分配 net-id，与声明所在文件无关，集中放便于核对。
+// 战斗状态只在本场战斗内有效：原版不存怪物模型（中途退出重进会重开战斗），联机也只同步生命、格挡与能力层数，
+// 所以这些属性不标 [SavedProperty]。
 public sealed partial class LanguageFloorSmilingFace :
     LiberationPhaseBossMonster,
     ITargetedMonsterAttackProvider
@@ -91,80 +91,55 @@ public sealed partial class LanguageFloorSmilingFace :
 
     private const float SegmentDelaySeconds = 0.45f;
 
-    [SavedProperty]
     public LanguageFloorSmilingFaceForm Form { get; private set; } =
         LanguageFloorSmilingFaceForm.Third;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool Initialized { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormOneMaxHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormTwoMaxHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormThreeMaxHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormTurnCount { get; private set; }
 
-    [SavedProperty]
     public int PreviousNormalMove { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PendingCorpseSpawns { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int HpAtLastSpawnThreshold { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool WaitingForDowngrade { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FakeDeathPlayerTurnsRemaining { get; private set; }
 
-    [SavedProperty]
     public int PendingFormTransition { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool PendingFormTransitionIsPromotion { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool CorpseTrialPending { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool CorpseTrialActive { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int CorpseTrialPlayerTurnsRemaining { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool ForceKillable { get; private set; }
 
-    [SavedProperty]
     public int PlannedMoveOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveTwo { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveThree { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveFour { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetTwo { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetThree { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedTargetFour { get; private set; } = -1;
 
     private bool _isApplyingFormStats;

@@ -44,7 +44,7 @@ namespace LibraryOfRuinaVerification;
 /// 计划槽位、意图（类型、标签、伤害）、状态机、嘉宾自身状态和战斗摘要记为 <c>TRACE|</c> 行；敌方回合里的
 /// 行动切换（SetMoveImmediate）、行动执行、动画触发、格挡获得记为 <c>TRACE|…|exec|</c> 行。
 /// 同一个验证程序集分别配改动前后的主模组构建各跑一次，逐行比较 TRACE 行。
-/// <c>rnfmabj-duo</c> 是两名玩家的 Rnfmabj 指令：两人进度不同、一人打错牌归零，存下三只怪的 SavedProperty 后
+/// <c>rnfmabj-duo</c> 是两名玩家的 Rnfmabj 指令：两人进度不同、一人打错牌归零，存下三只怪的战斗状态（<see cref="CombatStateProperties"/>）后
 /// 在同种子的新跑图里读回再续战，读回后的参与者与逐人进度要与存档时一致（不一致记为失败）。
 /// 参数 <c>lor-verify-special-guest-plan-trace</c>；加 <c>-iori</c>、<c>-rnfmabj</c>、<c>-xiao</c>、<c>-kali</c>、
 /// <c>-rnfmabj-duo</c> 只跑一个场景。
@@ -329,13 +329,13 @@ internal static class SpecialGuestPlanTraceVerificationPatch
         string expected = DescribeDirectivePlayers(savedBody);
         Check(expected.Contains("dirProgressBy=[P1:2,P2:1]", StringComparison.Ordinal),
             label + ": progress before the save was not P1:2,P2:1: " + expected);
-        // 存档格式与本模组自存怪物状态时相同：SavedProperties 经 JSON 往返。按槽位存，读档时按槽位放回。
+        // 怪物状态按 CombatStateProperties 列出的属性打成 SavedProperties，经 JSON 往返。按槽位存，读档时按槽位放回。
         Dictionary<string, string> saved = first.Enemies
             .Where(static enemy => enemy.Monster != null && enemy.SlotName != null)
             .ToDictionary(
                 static enemy => enemy.SlotName!,
                 static enemy => JsonSerializer.Serialize(
-                    SavedProperties.From(enemy.Monster!),
+                    CombatStateProperties.From(enemy.Monster!),
                     SavedStateJson));
         TraceLine(label, "save", "slots=" + string.Join(",", saved.Keys.OrderBy(static key => key, StringComparer.Ordinal))
             + expected);

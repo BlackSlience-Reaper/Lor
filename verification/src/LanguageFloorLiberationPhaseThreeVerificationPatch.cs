@@ -237,24 +237,11 @@ internal static class LanguageFloorLiberationPhaseThreeVerificationPatch
                     LanguageFloorSmilingFaceForm.Third, 4),
             "Vomit was not scheduled on turns 1, 4, 7...");
 
-        Type[] savedTypes = SavedPropertiesTypeCacheCompat
-            .GetAllModSavedPropertyTypes();
-        Require(savedTypes.Contains(typeof(LanguageFloorSmilingFace)),
-            "Smiling Face SavedProperties type was not auto-discovered.");
-        Require(!SavedPropertiesTypeCacheCompat.ModSavedPropertyTypes
-                .Contains(typeof(LanguageFloorSmilingFace)),
-            "Smiling Face changed the existing manual NetId order.");
-        string schema = SavedPropertiesTypeCacheCompat
-            .BuildSchemaFingerprintMaterial();
-        Require(schema.Contains(
-                typeof(LanguageFloorSmilingFace).FullName!,
-                StringComparison.Ordinal)
-            && schema.Contains(nameof(LanguageFloorSmilingFace.Form),
-                StringComparison.Ordinal)
-            && schema.Contains(
-                typeof(LanguageFloorSmilingFaceForm).FullName!,
-                StringComparison.Ordinal),
-            "Smiling Face save fields or form enum were absent from the schema fingerprint.");
+        Require(CombatStateProperties.IsTransient(typeof(LanguageFloorSmilingFace))
+                && CombatStateProperties.IsListed(
+                    typeof(LanguageFloorSmilingFace),
+                    nameof(LanguageFloorSmilingFace.Form)),
+            "Smiling Face combat state is a SavedProperty again, or its Form is missing from the reload list.");
 
         VerifySceneLayoutContract();
     }
@@ -938,7 +925,7 @@ internal static class LanguageFloorLiberationPhaseThreeVerificationPatch
     private static void VerifySavedPropertyRoundTrip(
         LanguageFloorSmilingFace source)
     {
-        SavedProperties props = SavedProperties.From(source)
+        SavedProperties props = CombatStateProperties.From(source)
             ?? throw new InvalidOperationException(
                 "Smiling Face SavedProperties were empty.");
         var clone = (LanguageFloorSmilingFace)ModelDb

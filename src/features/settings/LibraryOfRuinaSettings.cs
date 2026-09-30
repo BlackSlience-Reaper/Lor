@@ -90,6 +90,8 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
         Callable.From(patchNotesScreen.Open).CallDeferred();
     }
 
+    // 局内的抗性由本局的 LibraryRunSettingsModifier 决定；这里只在局外改写基础库的静态值，
+    // 让主菜单、图鉴里的倍率说明跟随本地设置，离开本局时由 LibraryRunSettings 复位回这个值。
     [SettingsSection("Resistance")]
     [SliderRange(1, 3)]
     [SliderValueLabels("ignore", "weak", "normal")]
@@ -106,22 +108,34 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
             }
 
             _resistanceMode = clamped;
-            LibraryResistanceModeState.Current = _resistanceMode switch
-            {
-                1d => LibraryResistanceMode.Ignore,
-                2d => LibraryResistanceMode.Weak,
-                _ => LibraryResistanceMode.Normal
-            };
+            LibraryResistanceModeState.Current = ToLibraryResistanceMode(ResistanceSettingLevel);
             Log.Info($"[LibraryOfRuina.Settings] ResistanceMode changed to {_resistanceMode:0} ({LibraryResistanceModeState.Current}).");
         }
     }
 
-    internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && MonsterExtensionEnabled;
+    internal const int NormalResistanceSetting = 3;
 
-    // Gameplay settings are locked while a run is in progress (the settings screen is reachable
-    // from the pause menu). Changing them mid-run rewrote the current run's rooms and flipped
-    // dozens of gameplay gates on one client only (design philosophy §4). The rows are hidden
-    // in-run; this also covers other writers such as "Restore Defaults".
+    /// <summary>本地抗性设置映射到 1–3 的整数；只有恰好 1 或 2 才是无视或弱抗性，其余一律正常。</summary>
+    internal static int ResistanceSettingLevel => _resistanceMode switch
+    {
+        1d => 1,
+        2d => 2,
+        _ => NormalResistanceSetting
+    };
+
+    internal static LibraryResistanceMode ToLibraryResistanceMode(int level) => level switch
+    {
+        1 => LibraryResistanceMode.Ignore,
+        2 => LibraryResistanceMode.Weak,
+        _ => LibraryResistanceMode.Normal
+    };
+
+    // 局内以本局是否有图书馆内容为准（联机时是房主开局时的设置），局外读本地设置。BGM 控制器用它决定是否接管音乐。
+    internal static bool RuntimeSideEffectsEnabled => _runtimeSideEffectsEnabled && LibraryRunSettings.MonsterExtensionEnabled;
+
+    // 这两项玩法设置在局内不能改（暂停菜单里能打开设置界面）：局内的值已由本局的 LibraryRunSettingsModifier 固定，
+    // 本地设置只影响之后新开的局，局内改了也不会生效。所以这两行在局内不显示，setter 也拒绝“恢复默认”之类的写入，
+    // 免得玩家以为改动作用于当前这局。
     private static bool RejectDuringRun(string setting)
     {
         if (!RunManager.Instance.IsInProgress)
@@ -137,6 +151,9 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     {
         _runtimeSideEffectsEnabled = true;
     }
+
+    /// <summary>本次启动是否注入了内容（初始化越过了“关闭内容 / 不兼容模组”分支）；进程内不再改变。</summary>
+    internal static bool ContentInjected => _runtimeSideEffectsEnabled;
 
     [SettingsSection("MonsterExtension")]
     [SettingsLockedDuringRun]

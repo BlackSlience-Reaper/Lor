@@ -36,5 +36,7 @@
   "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.title": "Library of Ruina は読み込まれませんでした",
   "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.body": "Library of Ruina と互換性のないMODを検出しました：\n\n{mods}\n\nセーブデータ保護のため、今回の起動では Library of Ruina のコンテンツ注入をすべてスキップしました：モンスター、エンカウント、ページレリック、関連設定は有効になりません。\n\n上記のMODの購読を解除するか無効化してから、ゲームを再起動してください。",
   "LIBRARYOFRUINA-INCOMPATIBLE_MOD_NOTICE.item": "· {mod}\n  {reason}",
-  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES": "このMODはバニラの「ニューロサージ」パワーの種別判定を書き換え、ページ報酬および三択画面で例外を発生させて報酬画面を停止させます。"
+  "LIBRARYOFRUINA-INCOMPATIBLE_MOD_REASON.HEXTECH_RUNES": "このMODはバニラの「ニューロサージ」パワーの種別判定を書き換え、ページ報酬および三択画面で例外を発生させて報酬画面を停止させます。",
+  "LIBRARYOFRUINA-INJECTION_MISMATCH.host_injected": "ホストはLibrary of Ruinaのコンテンツを使用していますが、このPCでは今回の起動でLibrary of Ruinaのコンテンツが読み込まれていません（「Library of Ruinaのコンテンツを有効化」がオフ、または互換性のないMODを検出）。このまま続けると同期がずれます。設定をオンにしてゲームを再起動し、もう一度参加してください。",
+  "LIBRARYOFRUINA-INJECTION_MISMATCH.host_not_injected": "ホストは今回の起動でLibrary of Ruinaのコンテンツを読み込んでいません（「Library of Ruinaのコンテンツを有効化」がオフ、または互換性のないMODを検出）が、このPCでは読み込まれています。このまま続けると同期がずれます。両者を揃えてください：このPCで設定をオフにしてゲームを再起動するか、ホストに設定をオンにしてゲームを再起動してもらってください。"
 }

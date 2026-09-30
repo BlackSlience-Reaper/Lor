@@ -71,10 +71,15 @@ public static class LibraryOfRuinaInitializer
         // 仅本次启动不注入内容，并由 MainMenuIncompatibleModNoticePatch 在主菜单弹窗说明。
         if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || blockedByIncompatibleMod)
         {
-            report.RunAll([new("SettingsUiPatches", true, () => PatchSettingsUi(harmony))]);
+            // 联机时与注入内容的一端混用会分叉；未注入也要装上诊断补丁，发现不一致就退出开局或读档。
+            report.RunAll(
+            [
+                new("SettingsUiPatches", true, () => PatchSettingsUi(harmony)),
+                new("InjectionMismatchGuard", true, () => LibraryRunInjectionGuard.PatchForNonInjectedProcess(harmony)),
+            ]);
             report.LogSummary(
-                "library injection disabled; settings UI remains available. Skipped content pools, "
-                + "runtime controllers, BGM, encounters, and gameplay Harmony patches");
+                "library injection disabled; settings UI and the multiplayer injection-mismatch guard remain. "
+                + "Skipped content pools, runtime controllers, BGM, encounters, and gameplay Harmony patches");
             report.RethrowRequiredFailure();
             return;
         }

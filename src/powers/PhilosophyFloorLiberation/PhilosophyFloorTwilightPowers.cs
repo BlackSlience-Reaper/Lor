@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using LibraryOfRuina.infra.patching;
 
@@ -228,10 +227,8 @@ public sealed class PhilosophyFloorTwilightBrokenEggPower :
     // 第二进阶10：长臂蛋破碎后，每回合最多反弹的负面效果次数。
     internal const int BrokenLongArmsReflectionLimit = 3;
 
-    [SavedProperty]
     public int ReflectionRound { get; set; }
 
-    [SavedProperty]
     public int ReflectionsThisRound { get; set; }
 
     protected override string LegacyPowerId =>
