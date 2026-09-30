@@ -674,7 +674,7 @@ public sealed class SocialFloorLiberationEncounter :
         }
 
         CowardApplied = true;
-        foreach (var player in combatState.Players.Where(p => p.Creature.IsAlive))
+        foreach (var player in combatState.LivingPlayers())
             await SocialFloorPlayerMechanics.ApplyCoward(player);
     }
 
@@ -828,8 +828,7 @@ public sealed class SocialFloorLiberationEncounter :
 
         if (CowardApplied)
         {
-            foreach (Player player in combatState.Players
-                         .Where(static player => player.Creature.IsAlive))
+            foreach (Player player in combatState.LivingPlayers())
             {
                 await SocialFloorPlayerMechanics.RestoreCoward(player);
             }
@@ -1062,8 +1061,7 @@ public sealed class SocialFloorLiberationEncounter :
     internal static Player? ChooseRandomLivingPlayer(
         CombatStateLike combatState)
     {
-        Player[] players = combatState.Players
-            .Where(static player => player.Creature.IsAlive)
+        Player[] players = combatState.LivingPlayers()
             .OrderBy(static player => player.NetId)
             .ToArray();
         return players.Length == 0

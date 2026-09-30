@@ -558,8 +558,7 @@ public sealed class LanguageFloorCobaltScar :
         ICombatState combatState = CombatState;
         List<SerializableCard> snapshots = [];
         List<int> ownerIndexes = [];
-        Player[] players = combatState.Players
-            .Where(static player => player.Creature.IsAlive)
+        Player[] players = combatState.LivingPlayers()
             .OrderBy(static player => player.NetId)
             .ToArray();
         Player[] allPlayers = combatState.Players.ToArray();

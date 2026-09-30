@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -257,8 +258,7 @@ public sealed class BigBirdPageRelic : ModalPageRelic<BigBirdPageMode>
         Flash();
         await PlayerCmd.SetEnergy(owner.PlayerCombatState.MaxEnergy, owner);
 
-        IReadOnlyList<Player> livingPlayers = ownerCreature.CombatState.Players
-            .Where(static player => player.Creature.IsAlive)
+        IReadOnlyList<Player> livingPlayers = ownerCreature.CombatState.LivingPlayers()
             .ToArray();
         Player? sealedPlayer = livingPlayers.Count > 0
             ? owner.RunState.Rng.CombatTargets.NextItem(livingPlayers)
