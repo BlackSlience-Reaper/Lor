@@ -766,7 +766,8 @@ internal static class MonsterStateMachineIntentGraphFeature
         }
 
         string times = replacements[index].TimesText!;
-        char[] splitChars = { 'x', 'X', '脳' };
+        // 原版各语言的 FORMAT_DAMAGE_MULTI 用拉丁 x、乘号 ×（简中）或西里尔字母 х（俄语）分隔伤害与次数。
+        char[] splitChars = { 'x', 'X', '\u00D7', '\u0445' };
         int split = label!.LastIndexOfAny(splitChars);
         if (split < 0)
         {
