@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Commands.Builders;
 
@@ -45,7 +46,9 @@ internal static class AttackAnimationHitSuppression
 
 
     private static readonly object Gate = new();
-    private static readonly Dictionary<Creature, int> ActiveAttackAnimations = new();
+    // 攻击动画进行中的生物（计数支持同一生物的嵌套攻击）。只影响表现。按生物弱键存放：攻击命令的任务随战斗中途退出而
+    // 永远不完成时，作用域不会被释放，条目不能把生物及其战斗一直留在内存里；离开本局时也会清空。
+    private static readonly CombatScoped<Creature, int> ActiveAttackAnimations = new();
 
     public static Scope? Begin(AttackCommand command)
     {
@@ -68,7 +71,7 @@ internal static class AttackAnimationHitSuppression
             foreach (Creature creature in creatures)
             {
                 ActiveAttackAnimations.TryGetValue(creature, out int count);
-                ActiveAttackAnimations[creature] = count + 1;
+                ActiveAttackAnimations.Set(creature, count + 1);
             }
         }
 
@@ -92,7 +95,7 @@ internal static class AttackAnimationHitSuppression
 
         lock (Gate)
         {
-            return ActiveAttackAnimations.ContainsKey(creature);
+            return ActiveAttackAnimations.TryGetValue(creature, out _);
         }
     }
 
@@ -141,7 +144,7 @@ internal static class AttackAnimationHitSuppression
                     }
                     else
                     {
-                        ActiveAttackAnimations[creature] = count - 1;
+                        ActiveAttackAnimations.Set(creature, count - 1);
                     }
                 }
             }

@@ -1,4 +1,5 @@
 using LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models;
@@ -9,7 +10,16 @@ public sealed class SolemnMourningPersistentSealAffliction : AfflictionModel
 {
     private const int MaxSealedCardsPerTurn = 6;
 
-    internal static int SealedCardsPlayedThisTurn;
+    // 本回合已计入救赎之手的封印牌数，全队共用一个计数，玩家回合开始时由救赎之手清零。
+    // 按战斗状态存放：同一场战斗里两端按同样的出牌顺序累加；读档重开的战斗、之后的战斗和另一局都从 0 开始，
+    // 不会读到上一场没有清零（例如战斗中途退出）留下的值。
+    private static readonly CombatScoped<CombatStateLike, int> SealedCardsPlayedThisTurn = new();
+
+    internal static int GetSealedCardsPlayedThisTurn(CombatStateLike? combatState) =>
+        SealedCardsPlayedThisTurn.GetValueOrDefault(combatState, 0);
+
+    internal static void SetSealedCardsPlayedThisTurn(CombatStateLike combatState, int count) =>
+        SealedCardsPlayedThisTurn.Set(combatState, count);
 
     public override bool HasExtraCardText => true;
 
@@ -18,7 +28,7 @@ public sealed class SolemnMourningPersistentSealAffliction : AfflictionModel
     public override bool ShouldPlay(CardModel card, AutoPlayType autoPlayType)
     {
         if (card != Card) return true;
-        return SealedCardsPlayedThisTurn < MaxSealedCardsPerTurn;
+        return GetSealedCardsPlayedThisTurn(card.CombatState) < MaxSealedCardsPerTurn;
     }
 
     internal static bool IsPersistentSeal(CardModel card) =>
