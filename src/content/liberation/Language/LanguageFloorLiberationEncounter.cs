@@ -225,8 +225,9 @@ public sealed class LanguageFloorLiberationEncounter :
     public override void LoadCustomState(Dictionary<string, string> state)
     {
         var bag = new EncounterStateBag(state);
-        // 阶段只保证不小于 1，不按 MaxPhase 钳制上限。
-        CurrentPhase = Math.Max(1, bag.ReadInt(CurrentPhaseKey, 1));
+        // 本遭遇写出的阶段在 1..MaxPhase 内；超出的只可能来自损坏或手改的存档，钳到最近的合法阶段，
+        // 避免阶段分支与“按阶段推算击杀数”落到不存在的阶段。
+        CurrentPhase = Math.Clamp(bag.ReadInt(CurrentPhaseKey, 1), 1, MaxPhase);
         PhaseComplete = bag.ReadBool(PhaseCompleteKey);
         TransitionPending = bag.ReadBool(TransitionPendingKey);
         // 没有击杀数的旧档按阶段推算：本阶段已完成则算上本阶段。
