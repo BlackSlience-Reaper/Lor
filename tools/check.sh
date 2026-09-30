@@ -57,6 +57,9 @@ if grep -qE $'(\tunlisted$|^stale\t)' "$TMP/discovery_order.txt"; then
   exit 1
 fi
 
+# 有状态的静态字段必须在 tools/static_state.txt 登记为局级、战斗级、按实例或无害；在 --accept 之前检查，接受快照也盖不住。
+python3 "$ROOT/tools/check_static_state.py" "$TMP/static_fields.txt" "$ROOT/tools/static_state.txt"
+
 if [[ "${1:-}" == "--accept" ]]; then
   cp "$TMP"/*.txt "$ROOT/snapshots/"
   echo "snapshots updated"

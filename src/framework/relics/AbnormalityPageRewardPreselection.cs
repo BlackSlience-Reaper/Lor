@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
@@ -25,10 +26,37 @@ internal static class AbnormalityPageRewardPreselection
     private static readonly Lazy<IReadOnlyDictionary<ModelId, PageRelicRegistration>> PageRelicsById =
         new(DiscoverPageRelics);
 
-    [ThreadStatic]
-    private static bool _isPreselectingPageReward;
+    // 正在奖励界面预选模式的书页遗物实例（值是嵌套深度）。必须按实例记录：对端玩家的书页奖励在本机回放时同样进入预选，
+    // 并一直等到对端选完；这段时间里其他书页遗物在获得后跳过选择，两端都要照常移除，只有这一个实例自己的跳过属于预选。
+    // 全局标志会在等待期间挡住所有遗物（两端等待的时间段不同，结果随之不同），[ThreadStatic] 还会在续体换线程后残留。
+    private static readonly ConditionalWeakTable<RelicModel, StrongBox<int>> PreselectDepths = new();
 
-    public static bool IsPreselectingPageReward => _isPreselectingPageReward;
+    public static bool IsPreselectingPageReward(RelicModel relic)
+    {
+        lock (PreselectDepths)
+        {
+            return PreselectDepths.TryGetValue(relic, out StrongBox<int>? depth) && depth.Value > 0;
+        }
+    }
+
+    private static void EnterPreselect(RelicModel relic)
+    {
+        lock (PreselectDepths)
+        {
+            PreselectDepths.GetOrCreateValue(relic).Value++;
+        }
+    }
+
+    private static void ExitPreselect(RelicModel relic)
+    {
+        lock (PreselectDepths)
+        {
+            if (PreselectDepths.TryGetValue(relic, out StrongBox<int>? depth) && --depth.Value <= 0)
+            {
+                PreselectDepths.Remove(relic);
+            }
+        }
+    }
 
     /// <summary>接入三选一管线的异想体书页遗物（<see cref="IModalPageRelic"/>）。</summary>
     public static bool IsPageRelic(RelicModel? relic) => relic is IModalPageRelic;
@@ -43,7 +71,7 @@ internal static class AbnormalityPageRewardPreselection
             return true;
         }
 
-        _isPreselectingPageReward = true;
+        EnterPreselect(relic);
         try
         {
             relic.Owner = player;
@@ -77,7 +105,7 @@ internal static class AbnormalityPageRewardPreselection
         }
         finally
         {
-            _isPreselectingPageReward = false;
+            ExitPreselect(relic);
         }
     }
 

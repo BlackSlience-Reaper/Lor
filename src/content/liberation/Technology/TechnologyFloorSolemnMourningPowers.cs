@@ -38,7 +38,6 @@ public sealed class SolemnMourningSealPower : LibraryOfRuinaPowerModel
             SolemnMourningPersistentSealAffliction.ClearAllPersistentSeals(combatState);
         }
 
-        SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn = 0;
         return Task.CompletedTask;
     }
 }
@@ -104,15 +103,22 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
         }
 
         Data data = GetInternalData<Data>();
-        if (SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn >= MaxSealedCardsPerTurn)
+        CombatStateLike? combatState = Owner.CombatState ?? cardPlay.Card.CombatState;
+        if (combatState == null)
         {
             return;
         }
 
-        SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn++;
+        int sealedCardsPlayed = SolemnMourningPersistentSealAffliction.GetSealedCardsPlayedThisTurn(combatState);
+        if (sealedCardsPlayed >= MaxSealedCardsPerTurn)
+        {
+            return;
+        }
+
+        SolemnMourningPersistentSealAffliction.SetSealedCardsPlayedThisTurn(combatState, sealedCardsPlayed + 1);
         data.TriggerProgress++;
 
-        //GD.Print($"[RedemptionHand] Sealed card played! progress={data.TriggerProgress}/{Amount}, totalThisTurn={SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn}");
+        //GD.Print($"[RedemptionHand] Sealed card played! progress={data.TriggerProgress}/{Amount}, totalThisTurn={sealedCardsPlayed + 1}");
 
         if (data.TriggerProgress >= Amount)
         {
@@ -133,7 +139,7 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
     {
         if (side == CombatSide.Player)
         {
-            SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn = 0;
+            SolemnMourningPersistentSealAffliction.SetSealedCardsPlayedThisTurn(combatState, 0);
         }
 
         return Task.CompletedTask;
