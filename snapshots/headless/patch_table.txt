@@ -1,5 +1,5 @@
 # mod ActLikeIt2 v0.2.1
-# mod LibraryOfRuina v0.21.2
+# mod LibraryOfRuina v0.22.0
 # mod LibraryOfRuinaLib 1.3.0
 # mod STS2-RitsuLib 0.6.3
 LibraryOfRuinaLib|LibraryLib.Commands.LibraryCreatureCmd::ChaoDamage(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardPlay,LibraryLib.Utils.Resistance.LibraryDamageType,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.DamageResult, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
@@ -579,7 +579,7 @@ sts2|MegaCrit.Sts2.Core.Nodes.CommonUi.NCursorManager::_EnterTree()
 sts2|MegaCrit.Sts2.Core.Nodes.CommonUi.NTopBar::Initialize(MegaCrit.Sts2.Core.Runs.IRunState)
   Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.CardPiles.Patches.ModCardPileTopBarInitializePatch.Postfix
   Postfix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.TopBar.Patches.ModTopBarActionButtonInitializePatch.Postfix
-  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.content.specialguests.SpecialGuestHideEmptyModifierContainerPatch.Postfix
+  Postfix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryHiddenModifierEmptyContainerPatch.Postfix
   Postfix priority=400 index=3 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.CommonUi.NTopBar::UpdateNavigation()
   Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarNavigationSafetyPatch.Finalizer
@@ -667,8 +667,8 @@ sts2|MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen::InitializeSing
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.CustomRun.NCustomRunScreen::ModifiersChanged()
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunModifiersChangedPatch.Postfix
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunLoadScreen::InitializeDisplay()
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryRunSettingsDailyLoadScreenPatch.Prefix
-  Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryRunSettingsDailyLoadScreenPatch.Finalizer
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryHiddenModifierDailyLoadScreenPatch.Prefix
+  Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryHiddenModifierDailyLoadScreenPatch.Finalizer
 sts2|MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScreen::AddScoreLine(System.String,System.String,System.Int32,System.String,System.String)
   Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Prefix
   Finalizer priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Finalizer
@@ -797,8 +797,6 @@ sts2|MegaCrit.sts2.Core.Nodes.TopBar.NTopBarBossIcon::OnFocus()
   Prefix priority=400 index=0 owner=ActLikeIt2 ActLikeIt2.Patches.ForkBossHoverPatch.Prefix
   Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.LiberationBossTopBarHoverPatch.Prefix
 sts2|MegaCrit.sts2.Core.Nodes.TopBar.NTopBarModifier::Create(MegaCrit.Sts2.Core.Models.ModifierModel)
-  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.content.specialguests.SpecialGuestHideRunStateTopBarPatch.Prefix
-  Prefix priority=400 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryRunSettingsHideTopBarPatch.Prefix
-  Prefix priority=400 index=2 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch.Prefix
+  Prefix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.core.settings.LibraryHiddenModifierTopBarPatch.Prefix
 sts2|MegaCrit.sts2.Core.Nodes.TopBar.NTopBarPortraitTip::Initialize(MegaCrit.Sts2.Core.Runs.IRunState)
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.features.secondascension.LibrarySecondAscensionPortraitTipPatch.Postfix
