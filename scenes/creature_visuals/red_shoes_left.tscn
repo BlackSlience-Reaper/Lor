@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://src/visuals/RedShoesLeftCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Script" path="res://src/content/abnormalities/RedShoes/RedShoesLeftCreatureVisuals.cs" id="1_visuals"]
 [ext_resource type="Texture2D" path="res://images/monsters/red_shoes/left_shoe.png" id="2_tex"]
 
 [node name="RedShoesLeft" type="Node2D"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://src/visuals/QueenOfHatredCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Script" path="res://src/content/abnormalities/QueenOfHatred/QueenOfHatredCreatureVisuals.cs" id="1_visuals"]
 
 [node name="QueenOfHatred" type="Node2D"]
 script = ExtResource("1_visuals")
