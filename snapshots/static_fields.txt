@@ -1104,6 +1104,7 @@ readonly	LibraryOfRuina.content.liberation.Social.SocialTrial.ScarecrowTrial	Lib
 readonly	LibraryOfRuina.content.liberation.Social.SocialTrial.UndefinedTrial	LibraryOfRuina.content.liberation.Social.SocialTrial
 readonly	LibraryOfRuina.content.liberation.Social.SocialTrial.WoodsmanTrial	LibraryOfRuina.content.liberation.Social.SocialTrial
 readonly	LibraryOfRuina.content.liberation.Technology.ChordEgoIntentDimPatch.DimColor	Godot.Color
+readonly	LibraryOfRuina.content.liberation.Technology.SolemnMourningPersistentSealAffliction.SealedCardsAdmittedThisTurn	LibraryOfRuina.infra.lifecycle.CombatScoped`2[MegaCrit.Sts2.Core.Combat.ICombatState,System.Int32]
 readonly	LibraryOfRuina.content.liberation.Technology.SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn	LibraryOfRuina.infra.lifecycle.CombatScoped`2[MegaCrit.Sts2.Core.Combat.ICombatState,System.Int32]
 readonly	LibraryOfRuina.content.liberation.Technology.TechnologyFloorChordBoss.BackgroundTextSpawnArea	Godot.Rect2
 readonly	LibraryOfRuina.content.liberation.Technology.TechnologyFloorChordBoss.CompositionBackgroundTextLineKeys	System.String[]
