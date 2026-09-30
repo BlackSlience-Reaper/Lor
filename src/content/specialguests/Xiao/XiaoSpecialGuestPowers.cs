@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Powers;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -372,8 +373,7 @@ public sealed class XiaoStarfireStatusPower : LibraryDurationPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        _ = participants;
-        if (side != CombatSide.Player || IsPermanent)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants) || IsPermanent)
         {
             return;
         }
@@ -438,8 +438,7 @@ public sealed class XiaoIgnitePower :
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        _ = participants;
-        if (side != CombatSide.Player)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants))
         {
             return;
         }

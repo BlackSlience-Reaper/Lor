@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -157,7 +158,7 @@ public sealed class JudgementBirdSinPower :
         IEnumerable<Creature> participants)
     {
         if (Owner.IsDead
-            || side != Owner.Side
+            || !TurnParticipants.IsOwnTurn(Owner, side, participants)
             || Amount < Owner.MaxHp)
         {
             return;

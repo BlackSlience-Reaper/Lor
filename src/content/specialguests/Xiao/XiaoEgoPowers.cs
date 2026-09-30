@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -70,8 +71,7 @@ public sealed class XiaoYaziVengeancePower : LibraryOfRuinaPowerModel
         IEnumerable<Creature> participants)
     {
         _ = choiceContext;
-        _ = participants;
-        if (side == Owner.Side)
+        if (TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             await PowerCmd.Remove(this);
         }

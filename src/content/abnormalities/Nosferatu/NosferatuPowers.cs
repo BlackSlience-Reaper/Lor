@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.AllAroundHelper;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -339,7 +340,7 @@ public sealed class NosferatuHydrophobiaPower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (Owner.IsDead || side != Owner.Side || Amount <= 0)
+        if (Owner.IsDead || !TurnParticipants.IsOwnTurn(Owner, side, participants) || Amount <= 0)
         {
             return;
         }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -65,7 +66,7 @@ public sealed class LibraryOfRuinaConfusionPower : LibraryOfRuinaPowerModel
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Player)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants))
         {
             return;
         }
