@@ -7,6 +7,7 @@ using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.ui.scene_transitions;
@@ -423,8 +424,7 @@ public sealed class LiteratureFloorLiberationEncounter :
         }
 
         _superGiftPending = true;
-        LiteratureFloorLaetitiaBoss? laetitia = combatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        LiteratureFloorLaetitiaBoss? laetitia = combatState.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LiteratureFloorLaetitiaBoss>()
             .FirstOrDefault();
@@ -947,8 +947,7 @@ public sealed class LiteratureFloorLiberationEncounter :
     private static async Task NotifyLaetitiaRosterChanged(
         CombatStateLike combatState)
     {
-        LiteratureFloorLaetitiaBoss? laetitia = combatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        LiteratureFloorLaetitiaBoss? laetitia = combatState.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LiteratureFloorLaetitiaBoss>()
             .FirstOrDefault();

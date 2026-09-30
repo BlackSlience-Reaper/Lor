@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.content.liberation.Art;
@@ -140,7 +139,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 
         _egoQueued = true;
         SetMoveImmediate(_egoState, forceTransition: true);
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        return CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -251,7 +250,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
     private async Task OtherworldlyEchoMove(IReadOnlyList<Creature> targets)
     {
         int consumed = 0;
-        foreach (Creature player in CombatState.PlayerCreatures.Where(static p => p.IsAlive))
+        foreach (Creature player in CombatState.LivingPlayerCreatures())
         {
             CardModel? epiphany = player.Player?.PlayerCombatState?.AllCards
                 .FirstOrDefault(static card => card is CosmicFragmentEpiphanyCard);
@@ -289,7 +288,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
             await Cmd.CustomScaledWait(0.04f, 0.08f);
         }
 
-        foreach (Creature player in CombatState.PlayerCreatures.Where(static p => p.IsAlive))
+        foreach (Creature player in CombatState.LivingPlayerCreatures())
         {
             await PowerCmdCompat.Apply<StrengthPower>(player, -ArtFloorEgoNumbers.BeyondFragmentStrengthLoss, Creature, null);
             await PowerCmdCompat.Apply<DexterityPower>(player, -ArtFloorEgoNumbers.BeyondFragmentDexterityLoss, Creature, null);
@@ -307,8 +306,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
         string hitFx,
         bool indiscriminate = false)
     {
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
 
         if (indiscriminate)
@@ -331,8 +329,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 
     private Task AddEpiphanyToPlayers(int count)
     {
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
 
         return CardPileCmdCompat.AddToCombatAndPreview<CosmicFragmentEpiphanyCard>(

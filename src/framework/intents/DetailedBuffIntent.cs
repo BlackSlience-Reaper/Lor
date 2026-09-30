@@ -3,6 +3,7 @@ using System.Linq;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+using LibraryOfRuina.framework.combat;
 
 namespace LibraryOfRuina.framework.intents;
 
@@ -86,8 +87,7 @@ public sealed class DetailedBuffIntent<TPower> : BuffIntent, IDetailedIntentVisu
             case DetailedBuffTargetScope.Self:
                 return new[] { owner };
             case DetailedBuffTargetScope.AllEnemies:
-                return owner.CombatState?.Enemies
-                    .Where(e => e.IsAlive)
+                return owner.CombatState?.LivingEnemies()
                     .ToArray() ?? Array.Empty<Creature>();
             case DetailedBuffTargetScope.OtherEnemies:
                 return owner.CombatState?.Enemies

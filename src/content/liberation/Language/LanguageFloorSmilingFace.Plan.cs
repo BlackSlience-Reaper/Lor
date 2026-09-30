@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 
 namespace LibraryOfRuina.content.liberation.Language;
@@ -51,7 +51,7 @@ public sealed partial class LanguageFloorSmilingFace
             return Task.CompletedTask;
         }
 
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)
+        return CombatQueries.CreatureNodeOf(this)
                    ?.UpdateIntent(combatState.PlayerCreatures)
             ?? Task.CompletedTask;
     }

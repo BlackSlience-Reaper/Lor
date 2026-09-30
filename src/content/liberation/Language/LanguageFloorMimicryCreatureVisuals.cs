@@ -2,13 +2,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
 
 namespace LibraryOfRuina.content.liberation.Language;
@@ -381,7 +381,7 @@ internal static class LanguageFloorMimicrySpecialEffects
         Creature creature)
     {
         Node? visuals =
-            NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals;
+            CombatQueries.CreatureNodeOf(creature)?.Visuals;
         if (visuals == null)
         {
             return null;

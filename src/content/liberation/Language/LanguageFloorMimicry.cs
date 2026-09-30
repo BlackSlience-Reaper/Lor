@@ -25,7 +25,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -1432,7 +1431,7 @@ public sealed class LanguageFloorMimicry :
 
     private async Task ApplyVisualState()
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals
             is LanguageFloorMimicryCreatureVisuals visuals)
         {
             visuals.SetForm(Form);

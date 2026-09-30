@@ -19,7 +19,6 @@ using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
@@ -986,7 +985,7 @@ internal static class BadgedIntentVisualPatch
         }
 
         texture = null;
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(target);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(target);
         Sprite2D? sprite = creatureNode?.Visuals?.GetNodeOrNull<Sprite2D>("%Visuals");
         Texture2D? source = sprite?.Texture;
         if (source == null)
@@ -1260,7 +1259,7 @@ internal static class BadgedIntentHoverTipDisplayPatch
 
         hoverTips = IHoverTip.RemoveDupes(hoverTips).ToList();
 
-        NCombatRoom.Instance?.GetCreatureNode(____owner)?.ShowHoverTips(hoverTips);
+        CombatQueries.CreatureNodeOf(____owner)?.ShowHoverTips(hoverTips);
         return false;
     }
 }

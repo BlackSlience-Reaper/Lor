@@ -383,8 +383,7 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
 
     private static async Task ApplyWantAHeartFromEnergyGainInternal(CombatState combatState, int energyGained)
     {
-        foreach (WarmheartedWoodsman woodsman in combatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        foreach (WarmheartedWoodsman woodsman in combatState.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<WarmheartedWoodsman>())
         {

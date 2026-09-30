@@ -1,10 +1,10 @@
 using System;
 using Godot;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.specialguests.Kali;
 
@@ -59,7 +59,7 @@ internal sealed partial class KaliCreatureVisuals
 
     internal static void SetEgoState(Creature creature, bool active)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals
             is KaliCreatureVisuals visuals)
         {
             // The model owns the form. The scene only switches to that
@@ -70,7 +70,7 @@ internal sealed partial class KaliCreatureVisuals
 
     internal static void BeginAttackChain(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals
             is IContinuousAttackVisuals visuals)
         {
             visuals.BeginContinuousAttackChain();
@@ -79,7 +79,7 @@ internal sealed partial class KaliCreatureVisuals
 
     internal static void EndAttackChain(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals
             is IContinuousAttackVisuals visuals)
         {
             visuals.EndContinuousAttackChain();

@@ -3,6 +3,7 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.liberation.Art;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -152,7 +153,7 @@ internal static class FanaticWorshipTargetPatch
 
             foreach (Creature creature in GetFanaticTargets(card.Owner))
             {
-                NCombatRoom.Instance?.GetCreatureNode(creature)?.ShowMultiselectReticle();
+                CombatQueries.CreatureNodeOf(creature)?.ShowMultiselectReticle();
             }
         }
     }

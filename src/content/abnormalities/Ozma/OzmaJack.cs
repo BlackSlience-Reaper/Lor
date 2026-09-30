@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
@@ -10,7 +11,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.Ozma;
@@ -183,7 +183,7 @@ public sealed class OzmaJack : LorMonsterModel
 
     private void UpdateVisualState(bool awake)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals
             is OzmaJackCreatureVisuals visuals)
         {
             visuals.SetAwake(awake);

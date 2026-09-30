@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -127,7 +128,7 @@ internal static partial class PhilosophyFloorLiberationVfx
         Creature target,
         out Vector2 position)
     {
-        NCreature? node = NCombatRoom.Instance?.GetCreatureNode(target);
+        NCreature? node = CombatQueries.CreatureNodeOf(target);
         if (node == null
             || !GodotObject.IsInstanceValid(node)
             || !node.IsInsideTree())

@@ -106,8 +106,7 @@ public abstract class GearChurchMonsterBase : SpecialGuestMonsterBase, ITargeted
     }
 
     internal Creature[] LivingPlayers() =>
-        Creature?.CombatState?.PlayerCreatures
-            .Where(creature => creature.IsAlive)
+        Creature?.CombatState?.LivingPlayerCreatures()
             .OrderBy(creature => creature.CombatId)
             .ToArray() ?? [];
 
@@ -555,8 +554,7 @@ public sealed class GearChurchFollower : GearChurchMonsterBase
         {
             return;
         }
-        ReverberationEileen? eileen = state.Enemies
-            .Where(creature => creature.IsAlive)
+        ReverberationEileen? eileen = state.LivingEnemies()
             .Select(creature => creature.Monster)
             .OfType<ReverberationEileen>()
             .FirstOrDefault();

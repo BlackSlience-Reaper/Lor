@@ -117,8 +117,7 @@ public sealed class GalaxyChildPageRelic : ModalPageRelic<GalaxyChildPageMode>
             return;
         }
 
-        IReadOnlyList<Creature> targets = combatState.Creatures
-            .Where(static creature => creature.IsAlive)
+        IReadOnlyList<Creature> targets = combatState.LivingCreatures()
             .OrderBy(static creature => creature.Side)
             .ThenBy(static creature => creature.CombatId ?? uint.MaxValue)
             .ToArray();

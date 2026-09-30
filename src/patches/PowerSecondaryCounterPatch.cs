@@ -7,8 +7,8 @@ using LibraryOfRuina.addons.mega_text;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using ISecondaryDisplayAmountPower = LibraryOfRuina.framework.powers.ISecondaryDisplayAmountPower;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
@@ -69,7 +69,7 @@ internal static class PowerSecondaryCounterUi
 
         if (!isVisible && model?.Owner != null)
         {
-            NCombatRoom.Instance?.GetCreatureNode(model.Owner)?.HideHoverTips();
+            CombatQueries.CreatureNodeOf(model.Owner)?.HideHoverTips();
         }
     }
 
@@ -228,7 +228,7 @@ internal static class PowerSecondaryCounterUi
             return;
         }
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(model.Owner);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(model.Owner);
         Control? hitbox = creatureNode?.Hitbox;
         if (hitbox == null || !HasActiveHoverTips(hitbox))
         {

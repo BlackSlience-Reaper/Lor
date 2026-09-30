@@ -6,6 +6,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -278,8 +279,7 @@ public sealed class FlutteringFreshMeatPassivePower : LibraryOfRuinaPowerModel
             return;
         }
 
-        List<Creature> targets = combatState.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        List<Creature> targets = combatState.LivingPlayerCreatures()
             .ToList();
         if (targets.Count == 0)
         {

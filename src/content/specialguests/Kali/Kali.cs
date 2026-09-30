@@ -17,7 +17,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -319,7 +318,7 @@ public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwn
         Log.Info("[LibraryOfRuina.RedMist] Kali opening powers: "
                  + string.Join(",", Creature.Powers.Select(static power => power.Id.Entry)));
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }

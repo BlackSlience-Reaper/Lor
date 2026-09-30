@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
@@ -56,8 +57,7 @@ public sealed class CryingChildrenEncounter : ReverberationEncounterModel
         {
             return;
         }
-        UnspeakingChild[] children = state.Enemies
-            .Where(creature => creature.IsAlive)
+        UnspeakingChild[] children = state.LivingEnemies()
             .OrderBy(creature => creature.CombatId)
             .Select(creature => creature.Monster)
             .OfType<UnspeakingChild>()

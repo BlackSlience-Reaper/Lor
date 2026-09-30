@@ -32,6 +32,8 @@ fi
 dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 # The verification suites reach into internals; build them too so they do not silently rot.
 dotnet build "$ROOT/verification/LibraryOfRuinaVerification.csproj" -c Release -nologo -v q -clp:ErrorsOnly
+# 玩家网络 ID → 整数映射的字符串是存档格式：PlayerIntMapSerializer 必须与合并前的四份实现逐字节一致。
+dotnet run --project "$ROOT/tools/PlayerIntMapCheck/PlayerIntMapCheck.csproj" -c Release
 "$ROOT/tools/snapshot.sh" "$TMP" Debug >/dev/null
 
 # The skip-prefix scan must see every patch class form Harmony installs: the fixture program compares the

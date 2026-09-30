@@ -1,5 +1,5 @@
 using Godot;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.content.liberation.Art;
@@ -44,12 +44,7 @@ internal static class ArtFloorLiberationBackgroundController
             return;
         }
 
-        string texturePath = GetPhaseBackgroundTexturePath(phase);
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(texturePath);
-        if (texture != null)
-        {
-            backgroundImage.Texture = texture;
-        }
+        CombatBackgroundImage.SetTexture(backgroundImage, GetPhaseBackgroundTexturePath(phase));
 
         if (FindGalaxyFilterImage() is { } filterImage)
         {
@@ -70,37 +65,15 @@ internal static class ArtFloorLiberationBackgroundController
             return;
         }
 
-        string texturePath = crying ? GalaxyFilterFakeDeathTexturePath : GalaxyFilterNormalTexturePath;
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(texturePath);
-        if (texture != null)
-        {
-            filterImage.Texture = texture;
-        }
-
+        CombatBackgroundImage.SetTexture(
+            filterImage,
+            crying ? GalaxyFilterFakeDeathTexturePath : GalaxyFilterNormalTexturePath);
         filterImage.Visible = _currentPhase == 3;
     }
 
-    private static TextureRect? FindBackgroundImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        if (background == null)
-        {
-            return null;
-        }
+    private static TextureRect? FindBackgroundImage() =>
+        CombatBackgroundImage.Find("ArtFloorLiberationBackgroundImage");
 
-        return background.GetNodeOrNull<TextureRect>("%ArtFloorLiberationBackgroundImage")
-            ?? background.FindChild("ArtFloorLiberationBackgroundImage", recursive: true, owned: false) as TextureRect;
-    }
-
-    private static TextureRect? FindGalaxyFilterImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        if (background == null)
-        {
-            return null;
-        }
-
-        return background.GetNodeOrNull<TextureRect>("%GalaxyChildFilterImage")
-            ?? background.FindChild("GalaxyChildFilterImage", recursive: true, owned: false) as TextureRect;
-    }
+    private static TextureRect? FindGalaxyFilterImage() =>
+        CombatBackgroundImage.Find("GalaxyChildFilterImage");
 }

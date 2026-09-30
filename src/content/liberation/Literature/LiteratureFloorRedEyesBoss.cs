@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Literature;
@@ -328,7 +327,7 @@ public sealed class LiteratureFloorRedEyesBoss :
         StartBackgroundText(huntMode: true);
         ShowImmediateHuntText();
         SetMoveImmediate(_screechState, forceTransition: true);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }
@@ -453,8 +452,7 @@ public sealed class LiteratureFloorRedEyesBoss :
             })
             .Execute(null);
 
-        foreach (Creature player in Creature.CombatState?.PlayerCreatures
-                     .Where(static player => player.IsAlive)
+        foreach (Creature player in Creature.CombatState?.LivingPlayerCreatures()
                      .ToArray() ?? [])
         {
             await LiteratureFloorCocoonBindPower.ApplyOrRefresh(

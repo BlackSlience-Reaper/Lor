@@ -9,7 +9,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
@@ -29,7 +28,7 @@ internal static class TargetedIntentIndicatorPatch
         IEnumerable<Creature> ordinaryTargets,
         Creature owner)
     {
-        NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+        NCreature? ownerNode = CombatQueries.CreatureNodeOf(owner);
         if (ownerNode == null
             || (intent is not AttackIntent
                 && intent is not IIntentTargetLineProvider)
@@ -60,7 +59,7 @@ internal static class TargetedIntentIndicatorPatch
 
     internal static void Hide(Creature owner)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(owner) is { } ownerNode)
+        if (CombatQueries.CreatureNodeOf(owner) is { } ownerNode)
         {
             RemoveOverlay(ownerNode);
         }
@@ -280,7 +279,7 @@ internal partial class NTargetedIntentLines : Node2D
     private bool TryGetTargetCenter(Creature target, out Vector2 center)
     {
         center = Vector2.Zero;
-        NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
+        NCreature? targetNode = CombatQueries.CreatureNodeOf(target);
         if (targetNode == null
             || _owner == null
             || !IsInstanceValid(targetNode)

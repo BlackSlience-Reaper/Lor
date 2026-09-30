@@ -98,7 +98,7 @@ public sealed class FairyFestivalPageRelic : ModalPageRelic<FairyFestivalPageMod
         else if (Mode == FairyFestivalPageMode.Predation)
         {
             Flash();
-            foreach (Creature creature in combatState.Creatures.Where(static creature => creature.IsAlive).ToList())
+            foreach (Creature creature in combatState.LivingCreatures().ToList())
             {
                 await CreatureCmdCompat.Damage(
                     new BlockingPlayerChoiceContext(),

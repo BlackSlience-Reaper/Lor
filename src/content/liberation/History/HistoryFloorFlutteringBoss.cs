@@ -6,6 +6,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.patches;
@@ -18,7 +19,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -202,7 +202,7 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         _hungerFrenzyQueued = true;
         SetMoveImmediate(_hungerFrenzyState, forceTransition: true);
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -405,29 +405,17 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
         _baseCadenceIndex = (_baseCadenceIndex + 1) % 3;
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (_backgroundMoonTextLoopStarted || Creature.IsDead)
-        {
-            return;
-        }
-
-        _backgroundMoonTextLoopStarted = true;
-        MoonTextService.StartRandomLoop(
-            Creature,
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
             BackgroundTextScope,
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
+            BackgroundTextLineKeys,
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {

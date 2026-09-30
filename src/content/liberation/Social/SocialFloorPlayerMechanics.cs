@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -417,8 +418,7 @@ public static class SocialFloorPlayerMechanics
             return;
         }
 
-        foreach (Player player in combatState.Players
-                     .Where(static player => player.Creature.IsAlive)
+        foreach (Player player in combatState.LivingPlayers()
                      .OrderBy(static player => player.NetId))
         {
             await CardPileCmdCompat

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
@@ -23,8 +24,7 @@ internal static class LiberationPhaseCleanup
         }
 
         var restored = new List<Creature>();
-        foreach (Creature creature in combatState.Enemies
-                     .Where(static enemy => enemy.IsAlive)
+        foreach (Creature creature in combatState.LivingEnemies()
                      .ToArray())
         {
             if (room.GetCreatureNode(creature) != null)

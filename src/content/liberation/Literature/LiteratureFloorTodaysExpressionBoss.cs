@@ -7,6 +7,7 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -17,7 +18,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Literature;
@@ -337,7 +337,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
         SetMoveImmediate(
             _waveringFeelingsState,
             forceTransition: true);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }
@@ -627,7 +627,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
             _normalStates[selected],
             forceTransition: true);
         ApplyExpressionPresentation(selected, playFeedback);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }
@@ -642,7 +642,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
             return;
         }
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals
             is LiteratureFloorTodaysExpressionCreatureVisuals visuals)
         {
             visuals.SetExpression(expression, playFeedback);
@@ -686,8 +686,7 @@ public sealed class LiteratureFloorTodaysExpressionBoss :
     }
 
     private Creature[] LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .OrderBy(static player => player.Player?.NetId ?? 0UL)
             .ToArray() ?? [];
 

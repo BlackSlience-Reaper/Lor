@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.RedShoes;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Commands;
@@ -148,8 +149,7 @@ public sealed class LiteratureFloorEnhancedLeftShoe :
 
     private async Task ApplyBleedToLivingPlayers()
     {
-        Creature[] players = Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature[] players = Creature.CombatState?.LivingPlayerCreatures()
             .OrderBy(static player => player.Player?.NetId ?? 0UL)
             .ToArray() ?? [];
         if (players.Length > 0)

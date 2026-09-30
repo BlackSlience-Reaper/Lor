@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Commands;
@@ -271,8 +272,7 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
 
     private async Task AddGiftsToPlayers(int count, PileType pileType)
     {
-        Creature[] players = Creature.CombatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        Creature[] players = Creature.CombatState?.LivingPlayerCreatures()
             .ToArray() ?? [];
         if (players.Length == 0)
         {

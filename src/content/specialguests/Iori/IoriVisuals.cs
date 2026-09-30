@@ -1,12 +1,12 @@
 using System;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.specialguests.Iori;
 
@@ -128,7 +128,7 @@ internal sealed partial class IoriCreatureVisuals
 
     internal static void RefreshStance(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals
             is IoriCreatureVisuals visuals)
         {
             visuals.TryPlayTrigger("Idle");
@@ -137,7 +137,7 @@ internal sealed partial class IoriCreatureVisuals
 
     internal static void BeginAttackChain(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals
             is IContinuousAttackVisuals visuals)
         {
             visuals.BeginContinuousAttackChain();
@@ -146,7 +146,7 @@ internal sealed partial class IoriCreatureVisuals
 
     internal static void EndAttackChain(Creature creature)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(creature)?.Visuals
+        if (CombatQueries.CreatureNodeOf(creature)?.Visuals
             is IContinuousAttackVisuals visuals)
         {
             visuals.EndContinuousAttackChain();

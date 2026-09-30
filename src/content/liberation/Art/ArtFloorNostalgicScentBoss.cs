@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Combat;
@@ -325,8 +326,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
     {
         await ExecuteGroupAttack(SpringDamage, "Blunt", "vfx/vfx_attack_blunt", AttackSfxPath);
 
-        IReadOnlyList<Creature> allies = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> allies = CombatState.LivingEnemies()
             .ToArray();
         if (allies.Count > 0)
         {
@@ -415,8 +415,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
             return RunRng.MonsterAi.NextItem(livingTargets);
         }
 
-        IReadOnlyList<Creature> fallbackTargets = CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> fallbackTargets = CombatState?.LivingPlayerCreatures()
             .ToArray() ?? Array.Empty<Creature>();
         return fallbackTargets.Count > 0
             ? RunRng.MonsterAi.NextItem(fallbackTargets)

@@ -6,6 +6,7 @@ using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.infra.helpers;
@@ -20,7 +21,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -187,7 +187,7 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
 
         SwitchToNextExpression(refreshMoonText: true);
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();
@@ -399,7 +399,7 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
 
     private void ApplyVisualExpression()
     {
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode?.Visuals is TodaysShyLookCreatureVisuals visuals)
         {
             visuals.SetExpression(_currentExpression);
@@ -413,10 +413,7 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
             return;
         }
 
-        MoonTextService.StartRandomLoop(
-            BackgroundTextLineKeys[_currentExpression - 1].Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(BackgroundTextLineKeys[_currentExpression - 1], BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private static bool IsTodaysShyLookEncounter(CombatRoom room)

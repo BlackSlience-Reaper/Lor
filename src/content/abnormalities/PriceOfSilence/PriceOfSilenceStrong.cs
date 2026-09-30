@@ -1,6 +1,7 @@
 using System.Linq;
 using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 
@@ -71,8 +72,7 @@ internal static class PriceOfSilenceEncounterHelper
 
     public static IReadOnlyList<Creature> LivingPlayers(CombatStateLike? combatState)
     {
-        return combatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        return combatState?.LivingPlayerCreatures()
             .ToArray()
             ?? [];
     }

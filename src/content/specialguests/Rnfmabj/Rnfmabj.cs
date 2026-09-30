@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
@@ -228,8 +229,7 @@ public sealed partial class Rnfmabj : RnfmabjMonsterBase
             case RnfmabjMoveEffect.ExecuteAlert:
                 if (Creature.CombatState != null)
                 {
-                    foreach (Creature player in Creature.CombatState.PlayerCreatures
-                                 .Where(static player => player.IsAlive)
+                    foreach (Creature player in Creature.CombatState.LivingPlayerCreatures()
                                  .OrderBy(static player => player.CombatId))
                     {
                         await PowerCmdCompat.Apply<NullifyPower>(

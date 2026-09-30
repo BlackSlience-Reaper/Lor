@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LibraryOfRuina.content.specialguests.Iori;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Localization;
@@ -67,8 +68,7 @@ internal static class CryingChildrenIntents
     }
 
     internal static IReadOnlyList<IntentTargetLineTarget> PlayerLines(Creature owner) =>
-        owner.CombatState?.PlayerCreatures
-            .Where(target => target.IsAlive)
+        owner.CombatState?.LivingPlayerCreatures()
             .Select(target => new IntentTargetLineTarget(target))
             .ToArray() ?? [];
 }

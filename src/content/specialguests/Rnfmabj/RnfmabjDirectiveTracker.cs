@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Random;
+using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.content.specialguests.Rnfmabj;
 
@@ -190,47 +191,11 @@ internal static class RnfmabjDirectiveTracker
     /// <summary>解析 <c>网络ID:进度;…</c>，进度夹到 [0, 序列长度]；格式不对的条目跳过。</summary>
     internal static Dictionary<ulong, int> ParseProgress(
         string serialized,
-        int sequenceLength)
-    {
-        var result = new Dictionary<ulong, int>();
-        foreach (string entry in serialized.Split(
-                     ';',
-                     StringSplitOptions.RemoveEmptyEntries
-                     | StringSplitOptions.TrimEntries))
-        {
-            int separator = entry.IndexOf(':');
-            if (separator <= 0
-                || !ulong.TryParse(
-                    entry[..separator],
-                    NumberStyles.None,
-                    CultureInfo.InvariantCulture,
-                    out ulong netId)
-                || !int.TryParse(
-                    entry[(separator + 1)..],
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out int value))
-            {
-                continue;
-            }
-
-            result[netId] = Math.Clamp(
-                value,
-                0,
-                Math.Max(0, sequenceLength));
-        }
-
-        return result;
-    }
+        int sequenceLength) =>
+        PlayerIntMapSerializer.ParseClamped(serialized, 0, Math.Max(0, sequenceLength));
 
     internal static string FormatProgress(IReadOnlyDictionary<ulong, int> progress) =>
-        string.Join(
-            ";",
-            progress.OrderBy(static pair => pair.Key)
-                .Select(static pair =>
-                    pair.Key.ToString(CultureInfo.InvariantCulture)
-                    + ":"
-                    + pair.Value.ToString(CultureInfo.InvariantCulture)));
+        PlayerIntMapSerializer.Format(progress);
 
     private static CardType RollRandomDirectiveCardType(
         Rng rng,

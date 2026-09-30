@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using VoidCard = MegaCrit.Sts2.Core.Models.Cards.Void;
 
@@ -381,7 +380,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
             await ExecuteGroupAttack(FourthMovementDamage, "Attack");
         }
 
-        foreach (Creature player in CombatState.PlayerCreatures.Where(static player => player.IsAlive))
+        foreach (Creature player in CombatState.LivingPlayerCreatures())
         {
             await CardPileCmdCompat.AddToCombatAndPreview<VoidCard>(
                 player,
@@ -475,8 +474,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
             throw new InvalidOperationException("Final Da Capo group attack cannot execute without a combat state.");
         }
 
-        Creature[] players = combatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature[] players = combatState.LivingPlayerCreatures()
             .ToArray();
         if (players.Length == 0)
         {
@@ -763,7 +761,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
 
     private Task RefreshNodeIntents()
     {
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        return CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
     private void SyncPerformerHiddenIntents()

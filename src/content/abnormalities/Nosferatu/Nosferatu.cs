@@ -22,7 +22,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -262,7 +261,7 @@ public sealed class Nosferatu : LorMonsterModel
         _cycleIndex = 0;
         LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform.ogg", LocalSfxVolumeDb);
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is NosferatuCreatureVisuals visuals)
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals is NosferatuCreatureVisuals visuals)
         {
             visuals.SetBloodfiendForm(true);
         }
@@ -470,7 +469,7 @@ public sealed class Nosferatu : LorMonsterModel
             .WithAttackerAnim(anim, AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
-        return GroupAttackOutcome.From(CombatState.PlayerCreatures.Where(static c => c.IsAlive).ToArray(), AttackCommandCompat.Results(attack).ToArray());
+        return GroupAttackOutcome.From(CombatState.LivingPlayerCreatures().ToArray(), AttackCommandCompat.Results(attack).ToArray());
     }
 
     private async Task<GroupAttackOutcome> ExecuteGroupAttackDetailed(int damage, int hits, string anim)
@@ -502,10 +501,10 @@ public sealed class Nosferatu : LorMonsterModel
     }
 
     private IEnumerable<Creature> LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures.Where(static creature => creature.IsAlive).ToArray() ?? [];
+        Creature.CombatState?.LivingPlayerCreatures().ToArray() ?? [];
 
     private IEnumerable<Creature> LivingEnemies() =>
-        Creature.CombatState?.Enemies.Where(static creature => creature.IsAlive).ToArray() ?? [];
+        Creature.CombatState?.LivingEnemies().ToArray() ?? [];
 
     private bool HasLivingBloodBat() =>
         Creature.CombatState?.Enemies.Any(static enemy => enemy.IsAlive && enemy.Monster is BloodBat) ?? false;

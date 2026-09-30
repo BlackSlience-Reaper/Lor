@@ -269,8 +269,7 @@ public sealed class HistoryFloorWaspExpansionPower : LibraryOfRuinaPowerModel
             return;
         }
 
-        IReadOnlyList<Creature> players = combatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = combatState.LivingPlayerCreatures()
             .ToArray();
         if (players.Count == 0)
         {
