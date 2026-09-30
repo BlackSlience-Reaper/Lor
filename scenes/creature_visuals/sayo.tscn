@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://src/visuals/SayoCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Script" path="res://src/content/guests/DawnOffice/SayoCreatureVisuals.cs" id="1_visuals"]
 [ext_resource type="Texture2D" path="res://images/monsters/sayo.png" id="2_tex"]
 [ext_resource type="Texture2D" path="res://images/monsters/sayo_attack_slash.png" id="5_slash"]
 

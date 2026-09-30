@@ -21,7 +21,7 @@ namespace LibraryOfRuina.content.abnormalities.BigBadWolf;
 /// </para>
 /// <para>
 /// 按 <c>is SwipePower</c> 判断的代码不再认得它：0.111.0 原版只有偷窃草蜢创建 <see cref="SwipePower"/>，没有其他类型判断；
-/// 本模组只有崩溃诊断的描述里用到。能力不存档（原版战斗状态只同步 id 与层数），联机两端都用本类型。
+/// 本模组也没有。能力不存档（原版战斗状态只同步 id 与层数），联机两端都用本类型。
 /// </para>
 /// </summary>
 public sealed class BigBadWolfSwipePower : PowerModel, IModPowerAssetOverrides

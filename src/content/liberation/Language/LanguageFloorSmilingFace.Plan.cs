@@ -56,19 +56,6 @@ public sealed partial class LanguageFloorSmilingFace
             ?? Task.CompletedTask;
     }
 
-    private string ChooseNextMoveId(Rng rng)
-    {
-        FormTurnCount++;
-        if (ShouldUseSpecial(Form, FormTurnCount))
-        {
-            return MoveId(Form == LanguageFloorSmilingFaceForm.Second
-                ? LanguageFloorSmilingFaceMove.Scream
-                : LanguageFloorSmilingFaceMove.Vomit);
-        }
-
-        return MoveId(ChooseNormalMove(rng));
-    }
-
     // 每个槽位先掷招式、再为指向性招式掷目标，随机数按槽位交替消耗；目标在写槽位的委托里一并写入。
     // 形态容量之外的招式与目标都写空。
     private void PlanTurn(Rng rng)

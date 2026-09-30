@@ -66,7 +66,9 @@ internal static class IntentRenderVerificationPatch
 
     private static readonly BindingFlags PrivateInstance = BindingFlags.Instance | BindingFlags.NonPublic;
     private static readonly StringBuilder Digest = new();
-    private static readonly System.Text.RegularExpressions.Regex FrameNumber = new(@"(?<=/frames/.*)_\d{2}\.png$");
+    // 逐帧动画的帧号：意图贴图是 frames/ 下的 png，原版 buff、defend 等动画是 intent_atlas.sprites/ 下的图集 tres。
+    private static readonly System.Text.RegularExpressions.Regex FrameNumber =
+        new(@"(?<=(?:/frames/|/intent_atlas\.sprites/).*)_\d{2}(?=\.(?:png|tres)$)");
     private static readonly List<string> CapturedHoverTips = [];
     private static readonly List<string> Failures = [];
     private static bool _started;
@@ -327,7 +329,11 @@ internal static class IntentRenderVerificationPatch
         monster.SetMoveImmediate(chordEgo, forceTransition: true);
         try
         {
+            // 原版 NIntent 换动画后，精灵贴图要到下一帧 _Process 才换成新动画的帧；UpdateIntent 与 GainBlock 之间
+            // 是否恰好跑过一帧取决于时序。每次转储前固定等两帧（ProcessFrame 信号在节点 _Process 之前发出，等一帧不保证
+            // _Process 已跑），读到的总是当前意图的贴图（帧号在转储里已归一）。
             await node.UpdateIntent(players);
+            await WaitFrames(2);
             DumpContainer("chord.ego-no-block", node);
 
             foreach (Creature player in players)
@@ -336,6 +342,7 @@ internal static class IntentRenderVerificationPatch
             }
 
             await node.UpdateIntent(players);
+            await WaitFrames(2);
             DumpContainer("chord.ego-full-block", node);
         }
         finally
@@ -839,7 +846,7 @@ internal static class IntentRenderVerificationPatch
         {
             case Sprite2D sprite:
                 // 节点树里的意图精灵可能已被引擎按真实时间推进过动画，帧号不记录；固定帧的对照在 frame@ 行。
-                text.Append(" tex=").Append(FrameNumber.Replace(TexturePath(sprite.Texture), "_##.png"));
+                text.Append(" tex=").Append(FrameNumber.Replace(TexturePath(sprite.Texture), "_##"));
                 break;
             case TextureRect rect:
                 text.Append(" tex=").Append(TexturePath(rect.Texture))

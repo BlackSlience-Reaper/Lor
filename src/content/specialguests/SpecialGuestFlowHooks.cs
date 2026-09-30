@@ -4,21 +4,17 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.specialguests.Iori;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Audio;
-using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
@@ -500,46 +496,6 @@ internal static class SpecialGuestRelicRemovedPatch
         if (LibraryRunSettings.IsMonsterExtensionEnabled(__instance.RunState))
         {
             SpecialGuestRegistry.EnsureUnlocks(__instance.RunState);
-        }
-    }
-}
-
-[HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
-[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组特邀嘉宾状态载体修饰符返回 null（原版 TestMode 同样返回 null）。")]
-internal static class SpecialGuestHideRunStateTopBarPatch
-{
-    [HarmonyPrefix]
-    private static bool Prefix(ModifierModel modifier, ref NTopBarModifier? __result)
-    {
-        if (modifier is not SpecialGuestRunStateModifier)
-        {
-            return true;
-        }
-
-        __result = null;
-        return false;
-    }
-}
-
-[HarmonyPatch(typeof(NTopBar), nameof(NTopBar.Initialize))]
-internal static class SpecialGuestHideEmptyModifierContainerPatch
-{
-
-    [HarmonyPostfix]
-    private static void Postfix(NTopBar __instance, IRunState runState)
-    {
-        if (!runState.Modifiers.Any(static modifier => modifier is SpecialGuestRunStateModifier)
-            || VanillaPrivate.TopBarModifiersContainer.Get(__instance) is not Control container)
-        {
-            return;
-        }
-
-        bool hasVisibleChildren = container.GetChildren()
-            .OfType<Control>()
-            .Any(static child => GodotObject.IsInstanceValid(child));
-        if (!hasVisibleChildren)
-        {
-            container.Visible = false;
         }
     }
 }

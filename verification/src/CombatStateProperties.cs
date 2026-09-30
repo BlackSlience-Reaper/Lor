@@ -133,7 +133,7 @@ internal static class CombatStateProperties
             ["CardsSubmittedThisTurn", "CourageCardGranted", "IsHolderActive", "SerializedHolderNetId"],
             []),
         [typeof(global::LibraryOfRuina.content.reverberation.CryingChildren.CryingChildMonsterBase)] = new(
-            ["Overheated", "TargetCombatId"],
+            ["Overheated"],
             []),
         [typeof(global::LibraryOfRuina.content.reverberation.CryingChildren.CryingChildrenEncounter)] = new(
             ["LastChildrenPlanRound"],

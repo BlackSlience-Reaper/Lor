@@ -120,23 +120,6 @@ internal static class LibrarySecondAscensionPanelTextPatch
     }
 }
 
-[HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
-[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组二层飞升载体修饰符返回 null（原版 TestMode 同样返回 null）。")]
-internal static class LibrarySecondAscensionHideCarrierTopBarPatch
-{
-    [HarmonyPrefix]
-    private static bool Prefix(ModifierModel modifier, ref NTopBarModifier? __result)
-    {
-        if (modifier is not LibrarySecondAscensionModifier)
-        {
-            return true;
-        }
-
-        __result = null;
-        return false;
-    }
-}
-
 [HarmonyPatch(typeof(NTopBar), nameof(NTopBar.Initialize))]
 internal static class LibrarySecondAscensionTopBarPatch
 {
