@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.SmilingBodies;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Combat;
@@ -251,7 +252,7 @@ public sealed partial class LanguageFloorSmilingFace :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             int playerTurn = GetCurrentPlayerTurn(combatState);
             if (playerTurn >= 0 && playerTurn == _lastCorpseTrialTickPlayerTurn)

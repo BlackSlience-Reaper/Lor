@@ -111,9 +111,9 @@ public sealed class DespairKnightPageRelic : ModalPageRelic<DespairKnightPageMod
         CombatStateLike combatState)
     {
         if (Mode != DespairKnightPageMode.Blessing
-            || side != Owner.Creature.Side
-            || !BlessingPendingNextPlayerTurn
             || Owner.Creature == null
+            || !TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
+            || !BlessingPendingNextPlayerTurn
             || !Owner.Creature.IsAlive)
         {
             UpdateModeUiState();

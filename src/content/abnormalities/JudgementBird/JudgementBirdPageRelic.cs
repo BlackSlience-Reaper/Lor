@@ -123,7 +123,7 @@ public sealed class JudgementBirdPageRelic : ModalPageRelic<JudgementBirdPageMod
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == Owner.Creature.Side)
+        if (TurnParticipants.IsOwnTurn(Owner.Creature, side, participants))
         {
             TiltedScaleTriggersThisTurn = 0;
             _highestEnemySnapshots.Clear();
@@ -279,7 +279,7 @@ public sealed class JudgementBirdPageRelic : ModalPageRelic<JudgementBirdPageMod
         IEnumerable<Creature> participants)
     {
         if (Mode != JudgementBirdPageMode.Judgement
-            || side != Owner.Creature.Side
+            || !TurnParticipants.IsOwnTurn(Owner.Creature, side, participants)
             || Owner.Creature.CombatState == null)
         {
             return;

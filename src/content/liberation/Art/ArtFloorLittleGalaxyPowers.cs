@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -54,7 +55,7 @@ public sealed class ArtFloorLittleGalaxyEternalFarewellPower : LibraryOfRuinaPow
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Player && Owner.Monster is ArtFloorLittleGalaxyBoss boss
+        return TurnParticipants.IsRoundPlayerTurn(side) && Owner.Monster is ArtFloorLittleGalaxyBoss boss
             ? boss.RefreshTurnStartState()
             : Task.CompletedTask;
     }
@@ -79,7 +80,7 @@ public sealed class ArtFloorLittleGalaxyPebblePower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || Owner.IsDead
             || Owner.Monster is not ArtFloorLittleGalaxyBoss boss
             || !boss.IsHealingForm)
@@ -145,7 +146,7 @@ public sealed class ArtFloorGalaxyDoNotLeaveMePower : LibraryFakeDeathPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Player && Owner.Monster is ArtFloorGalaxyFriend friend
+        return TurnParticipants.IsRoundPlayerTurn(side) && Owner.Monster is ArtFloorGalaxyFriend friend
             ? friend.TickFakeDeathOnPlayerTurnStart()
             : Task.CompletedTask;
     }

@@ -78,10 +78,10 @@ public sealed class AddictedEmployee : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 1);
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 42, 29);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 36, 32);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 44, 31);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 38, 34);
 
     public override int DefaultChaoResistance => 20;
 

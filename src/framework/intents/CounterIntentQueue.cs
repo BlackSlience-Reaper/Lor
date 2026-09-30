@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
@@ -264,7 +265,7 @@ public abstract class CounterIntentMonsterModel : LorMonsterModel, ICounterInten
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             if (Creature.IsDead)
             {

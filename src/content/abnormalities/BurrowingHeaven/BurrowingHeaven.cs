@@ -169,7 +169,7 @@ public sealed class BurrowingHeaven : CounterIntentMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             await BurrowingHeavenEncounterHelper.RefreshEncounterState(choiceContext, combatState);
             if (_isAwake && !Creature.IsStunned && Creature.IsAlive)

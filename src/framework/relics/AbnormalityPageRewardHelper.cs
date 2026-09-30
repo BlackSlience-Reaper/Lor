@@ -72,7 +72,7 @@ internal static class AbnormalityPageRewardHelper
 
     public static async Task SkipObtainedPageRelic(RelicModel relic, string context)
     {
-        if (AbnormalityPageRewardPreselection.IsPreselectingPageReward)
+        if (AbnormalityPageRewardPreselection.IsPreselectingPageReward(relic))
         {
             Log.Info("[LibraryOfRuina.PageRelic] "
                 + relic.GetType().Name

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -126,7 +127,7 @@ public sealed class BlueStarMartyrPower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || Owner.IsDead
             || !BlueStarEncounterHelper.IsBlueStarEncounter(combatState)
             || BlueStarEncounterHelper.LivingFollowers(combatState).Count
@@ -242,7 +243,7 @@ public sealed class BlueStarMartyrdomPower : LibraryOfRuinaPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side == Owner.Side)
+        if (TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             await PowerCmd.Remove(this);
         }

@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
@@ -79,12 +80,12 @@ public sealed class SpiderBud : CounterIntentMonsterModel
     public bool HuntPending { get; private set; }
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 69, 47);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 59, 47);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 73, 50);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 61, 50);
 
-    public override int DefaultChaoResistance => 50;
+    public override int DefaultChaoResistance => 40;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -164,7 +165,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
     {
         await base.AfterSideTurnStart(side, participants, combatState);
         // 原版此时已生成本回合意图，玩家接下来仍有完整的应对回合。
-        if (side == CombatSide.Player && HuntPending)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && HuntPending)
         {
             StartHuntFromSmallSpiderDeath();
         }

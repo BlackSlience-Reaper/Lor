@@ -6,6 +6,7 @@ using LibraryLib.Hooks;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
@@ -181,7 +182,7 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             await ResolvePendingEmptyHeartChaoStun();
             await RespawnTreeIfPending(choiceContext);

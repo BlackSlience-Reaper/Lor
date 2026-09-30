@@ -43,7 +43,7 @@ public sealed class LibraryOfRuinaSalvationHandPower : LibraryOfRuinaPowerModel
             return;
         }
 
-        foreach (var player in combatState.Players)
+        foreach (var player in combatState.Players.Where(player => participants.Contains(player.Creature)))
         {
             IReadOnlyList<CardModel> candidates = player.PlayerCombatState?.Hand.Cards
                 .Where(card => ModelDb.Affliction<FuneralSealAffliction>().CanAfflict(card))

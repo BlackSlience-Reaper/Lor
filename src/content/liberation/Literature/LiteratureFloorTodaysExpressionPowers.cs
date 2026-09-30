@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
@@ -154,7 +155,7 @@ public sealed class LiteratureFloorWaveringFeelingsPassivePower :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || Owner.IsDead
             || Owner.Monster
                 is not LiteratureFloorTodaysExpressionBoss expression

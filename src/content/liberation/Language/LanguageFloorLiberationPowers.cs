@@ -2,7 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -12,6 +14,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Language;
@@ -118,7 +121,7 @@ public sealed class LanguageFloorScarPower : LibraryOfRuinaPowerModel
         CombatStateLike combatState)
     {
         await base.AfterSideTurnStart(side, participants, combatState);
-        if (side != Owner.Side || Owner.IsDead || Amount <= 0)
+        if (!TurnParticipants.IsOwnTurn(Owner, side, participants) || Owner.IsDead || Amount <= 0)
         {
             return;
         }
@@ -177,7 +180,7 @@ public sealed class LanguageFloorRagePower : LibraryDurationPowerModel
         CombatStateLike combatState)
     {
         await base.AfterSideTurnStart(side, participants, combatState);
-        if (side == CombatSide.Player && Owner.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Owner.IsAlive)
         {
             await LibraryPowerCmd.Apply<LibraryStrongPower>(
                 new ThrowingPlayerChoiceContext(),
@@ -601,6 +604,17 @@ public sealed class LanguageFloorLiberationControllerPower : LibraryOfRuinaPower
             && encounter.ShouldKeepCombatOpen(combatState);
     }
 
+    public override Task AfterCombatEnd(CombatRoom room)
+    {
+        if (Owner?.CombatState is { } combatState
+            && combatState.Encounter is LanguageFloorLiberationEncounter encounter)
+        {
+            encounter.RecoverMissingTerminalPhaseBossAtCombatEnd(combatState);
+        }
+
+        return Task.CompletedTask;
+    }
+
     public override bool ShouldDieLate(Creature creature)
     {
         if (Owner?.CombatState?.Encounter
@@ -780,19 +794,21 @@ public sealed class LanguageFloorDeathTrackerPower : LibraryOfRuinaPowerModel
 
 internal static class LanguageFloorDeathContext
 {
-    private static readonly Dictionary<Creature, Creature?> DealersByDeadCreature = [];
+    // 致死者按死亡生物弱键存放：死亡被阻止、没有走到 AfterDeath 的条目不会把整场战斗留在内存里，离开本局时也会清空。
+    private static readonly CombatScoped<Creature, Creature?> DealersByDeadCreature = new();
 
     public static void Clear() => DealersByDeadCreature.Clear();
 
     public static void Record(Creature creature, Creature? dealer) =>
-        DealersByDeadCreature[creature] = dealer;
+        DealersByDeadCreature.Set(creature, dealer);
 
     public static Creature? GetDealer(Creature creature) =>
-        DealersByDeadCreature.GetValueOrDefault(creature);
+        DealersByDeadCreature.GetValueOrDefault(creature, null);
 
     public static Creature? Consume(Creature creature)
     {
-        DealersByDeadCreature.Remove(creature, out Creature? dealer);
+        DealersByDeadCreature.TryGetValue(creature, out Creature? dealer);
+        DealersByDeadCreature.Remove(creature);
         return dealer;
     }
 }

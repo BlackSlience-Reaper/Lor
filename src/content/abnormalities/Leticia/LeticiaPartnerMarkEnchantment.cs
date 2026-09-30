@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -38,7 +39,9 @@ public sealed class LeticiaPartnerMarkEnchantment : EnchantmentModel
 
     public override Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (!HasCard || Card.Owner?.Creature?.Side != side || Card.Pile?.Type != PileType.Hand)
+        if (!HasCard
+            || !TurnParticipants.IsOwnTurn(Card.Owner?.Creature, side, participants)
+            || Card.Pile?.Type != PileType.Hand)
         {
             return Task.CompletedTask;
         }

@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -215,7 +216,8 @@ public sealed class LittleRedNightmareEndPower : LibraryOfRuinaPowerModel
 
 internal static class LittleRedDeathContext
 {
-    private static readonly Dictionary<Creature, Creature?> DealersByDeadCreature = [];
+    // 致死者按死亡生物弱键存放：没有走到 AfterDeath 的条目不会把整场战斗留在内存里，离开本局时也会清空。
+    private static readonly CombatScoped<Creature, Creature?> DealersByDeadCreature = new();
 
     public static void Clear()
     {
@@ -224,16 +226,17 @@ internal static class LittleRedDeathContext
 
     public static void Record(Creature deadCreature, Creature? dealer)
     {
-        DealersByDeadCreature[deadCreature] = dealer;
+        DealersByDeadCreature.Set(deadCreature, dealer);
     }
 
     public static Creature? Consume(Creature deadCreature)
     {
-        if (!DealersByDeadCreature.Remove(deadCreature, out Creature? dealer))
+        if (!DealersByDeadCreature.TryGetValue(deadCreature, out Creature? dealer))
         {
             return null;
         }
 
+        DealersByDeadCreature.Remove(deadCreature);
         return dealer;
     }
 }

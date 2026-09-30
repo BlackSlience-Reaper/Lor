@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.guests;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -446,7 +447,7 @@ public sealed class XiaoEgo : XiaoSpecialGuestMonsterBase
             side,
             participants,
             combatState);
-        if (side == CombatSide.Player && Creature.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive)
         {
             await ApplyBurnToAllPlayers(
                 XiaoDragonBornPassivePower.BurnStacksPerRound);
