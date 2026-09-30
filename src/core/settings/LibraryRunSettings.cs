@@ -116,11 +116,26 @@ internal static class LibraryRunSettings
             LibraryOfRuinaSettings.ToLibraryResistanceMode(LibraryOfRuinaSettings.ResistanceSettingLevel);
     }
 
-    private static void Attach(RunState runState, LibraryRunSettingsModifier carrier, string source)
+    /// <param name="setModifiers">写回 <c>RunState.Modifiers</c>；验证套件传入会失败的版本来覆盖挂载失败的分支。</param>
+    internal static void Attach(
+        RunState runState,
+        LibraryRunSettingsModifier carrier,
+        string source,
+        Func<RunState, IReadOnlyList<ModifierModel>, bool>? setModifiers = null)
     {
-        if (!VanillaPrivate.RunStateModifiers.Set(runState, runState.Modifiers.Append(carrier).ToList()))
+        setModifiers ??= static (state, modifiers) => VanillaPrivate.RunStateModifiers.Set(state, modifiers);
+        if (!setModifiers(runState, runState.Modifiers.Append(carrier).ToList()))
         {
-            // 挂不上时各读取点退回本地设置；联机两端的本地设置不同就会分叉，所以记错误。
+            // 挂不上时各读取点退回本地设置。联机两端的本地设置可能不同，退回就会分叉，而开局消息里有载体，
+            // 注入状态检查也认不出这种失败，所以联机时直接失败：建局与读档构造都在原版界面的 try 里调用，
+            // catch 会断开大厅、回主菜单并显示这条信息。单人没有另一端，退回本地设置即可。
+            if (runState.Players.Count > 1)
+            {
+                throw new InvalidOperationException(
+                    "LibraryOfRuina: could not attach the run settings carrier to RunState.Modifiers "
+                    + "(vanilla backing field unavailable); a multiplayer run cannot start without it.");
+            }
+
             Log.Error(LogPrefix + "RunState.Modifiers backing field is unavailable; run settings fall back to local settings.");
             return;
         }
