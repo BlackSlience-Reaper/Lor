@@ -365,7 +365,7 @@
   "SMILING_BODIES_VOMIT_POWER.description": "每一回合开始时获得2层力量。",
   "SMILING_BODIES_VOMIT_POWER.smartDescription": "每个敌方回合开始时，[gold]{OwnerName}[/gold]获得[red]{Strength}[/red]点[gold]力量[/gold]。",
   "SMILING_BODIES_VOMIT_POWER.title": "呕吐",
-  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "每回合最多打出6张被封印的牌。每打出3张，庄严哀悼获得1点力量。",
+  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "每回合最多打出4张被封印的牌。每打出3张，庄严哀悼获得1点力量。",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.smartDescription": "每回合最多打出[blue]{MaxCards}[/blue]张被[gold]封印[/gold]的牌。每打出[blue]{Threshold}[/blue]张，[gold]{OwnerName}[/gold]获得[red]{StrengthGain}[/red]点[gold]力量[/gold]。",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.title": "救赎之手",
   "SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.description": "使敌方的前X个意图失效。",

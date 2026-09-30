@@ -9,7 +9,6 @@ content/abnormalities/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	FocusO
 # This mod's own methods, and public vanilla/Godot methods, used as transpiler operands or delegate targets.
 content/abnormalities/LittleRedMercenary/FocusOfAttentionTargetPatches.cs	FocusOfAttentionPatchTargets.ChooseFocusedTargetAfterRngRollMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
 patches/GroupAttackEnemyTurnPriorityPatch.cs	GroupAttackEnemyTurnPriorityPatch.PrioritizeGroupAttackersMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
-patches/HarborMistDodgePatch.cs	HarborMistDodgePatch.InvokeOnPlayOrSkipMethod	AccessTools.Method	本模组方法（nameof），Transpiler 插入的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	AccessTools.Method	本模组方法（nameof），Transpiler 替换的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.Transpiler	AccessTools.Method	本模组方法 DamagePreviewTrace.Record（nameof），Transpiler 插入的调用目标
 core/localization/PowerInlineIconSizing.cs	MeasureInlineDimensionsPatch.Transpiler	AccessTools.Method	Godot 公开方法 Texture2D.GetSize 与本模组方法（nameof），Transpiler 的匹配与替换目标

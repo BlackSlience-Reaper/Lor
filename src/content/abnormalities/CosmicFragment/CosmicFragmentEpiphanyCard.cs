@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
-using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -12,7 +11,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.content.abnormalities.CosmicFragment;
@@ -21,10 +19,6 @@ namespace LibraryOfRuina.content.abnormalities.CosmicFragment;
 public sealed class CosmicFragmentEpiphanyCard : CardModel
 {
     private const int BaseEffectAmount = 1;
-
-    // 本场战斗最近一次回合末触发的回合号（全队共用）。读取方 CosmicFragment 的虚弱判定目前被注释掉，只有写入与清除。
-    // 按战斗状态弱键存放：牌被移出战斗、战斗中途退出而没收到 AfterCombatEnd 时，条目不会把整场战斗留在内存里。
-    private static readonly CombatScoped<CombatStateLike, int> TriggeredCombatRounds = new();
 
     [ThreadStatic]
     private static bool _cosmicFragmentUpgradeInProgress;
@@ -69,48 +63,12 @@ public sealed class CosmicFragmentEpiphanyCard : CardModel
         int strengthLossAmount = DynamicVars["StrengthLoss"].IntValue;
         await PowerCmdCompat.Apply<DexterityPower>(choiceContext, Owner.Creature, dexterityAmount, Owner.Creature, this);
         await PowerCmdCompat.Apply<StrengthPower>(choiceContext, Owner.Creature, -strengthLossAmount, Owner.Creature, this);
-
-        CombatStateLike? combatState = Owner.Creature.CombatState;
-        if (combatState != null)
-        {
-            TriggeredCombatRounds.Set(combatState, combatState.RoundNumber);
-        }
     }
 
     protected override void OnUpgrade()
     {
         DynamicVars["Dexterity"].UpgradeValueBy(1m);
         DynamicVars["StrengthLoss"].UpgradeValueBy(1m);
-    }
-
-    public static bool ConsumeTriggeredThisTurn(CombatStateLike? combatState)
-    {
-        if (combatState == null)
-        {
-            return false;
-        }
-
-        if (!TriggeredCombatRounds.TryGetValue(combatState, out int triggeredRound))
-        {
-            return false;
-        }
-
-        TriggeredCombatRounds.Remove(combatState);
-        return triggeredRound == combatState.RoundNumber;
-    }
-
-    public static void ResetTriggeredThisTurn(CombatStateLike? combatState)
-    {
-        if (combatState != null)
-        {
-            TriggeredCombatRounds.Remove(combatState);
-        }
-    }
-
-    public override Task AfterCombatEnd(CombatRoom room)
-    {
-        ResetTriggeredThisTurn(room.CombatState);
-        return Task.CompletedTask;
     }
 
     public static void UpgradeFromCosmicFragment(CardModel card)

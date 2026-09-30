@@ -294,7 +294,6 @@ LibraryOfRuina.patches.GroupAttackEnemyTurnPriorityPatch	Prepare	Prepare	returns
 LibraryOfRuina.patches.GroupAttackEnemyTurnPriorityPatch	TargetMethod	TargetMethod	returns=System.Reflection.MethodBase	target=HarmonyPatch()		HarmonyTargetMethod()
 LibraryOfRuina.patches.GroupAttackEnemyTurnPriorityPatch	Transpiler	Transpiler	returns=System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction]	target=HarmonyPatch()
 LibraryOfRuina.patches.GuestReceptionBackgroundPoolPatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.EncounterModel), "CreateBackgroundAssetsForCustom")
-LibraryOfRuina.patches.HarborMistDodgePatch	Transpiler	Transpiler	returns=System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction]	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.CardModel), "OnPlayWrapper")
 LibraryOfRuina.patches.HeavyBluntVfxLifecyclePatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Vfx.NHeavyBluntVfx), "_Ready")
 LibraryOfRuina.patches.InjectSettingsScreenModConfigPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Settings.NSettingsScreen), "_Ready")
 LibraryOfRuina.patches.LiberationBossTopBarHoverPatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.sts2.Core.Nodes.TopBar.NTopBarBossIcon), "OnFocus")

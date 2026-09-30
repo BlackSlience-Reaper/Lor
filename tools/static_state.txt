@@ -16,7 +16,6 @@ LibraryOfRuina.addons.mega_text.MegaLabelHelper._cachedBbcodeObjects	harmless	ca
 LibraryOfRuina.content.abnormalities.AddictedEmployee.AddictedEmployee.MoonTextRng	harmless	ui	不设种子的 System.Random，只用来打乱背景月光文字的显示顺序，不参与玩法随机
 LibraryOfRuina.content.abnormalities.BigBird.BigBirdFilterOverlay._charmedLayer	harmless	ui	EnsureCharmedOverlay 创建滤镜层；StopCharmedOverlay（由 Clear/RefreshForCombat 调用，BigBird.cs:139、BigBirdPowers.cs:98）QueueFree 后置空；只影响画面
 LibraryOfRuina.content.abnormalities.BigBird.BigBirdFilterOverlay._charmedLoop	harmless	ui	EnsureCharmedOverlay 里 LocalOggLoopPlayer.StartLoop 写入；StopCharmedOverlay 停止并置空；只影响循环音效
-LibraryOfRuina.content.abnormalities.CosmicFragment.CosmicFragmentEpiphanyCard.TriggeredCombatRounds	combat	-	按战斗状态记录回合末触发的回合号；AfterCombatEnd 与宇宙碎片死亡时移除；读取方目前被注释掉
 LibraryOfRuina.content.abnormalities.CosmicFragment.CosmicFragmentEpiphanyCard._cosmicFragmentUpgradeInProgress	harmless	scope	UpgradeFromCosmicFragment 里 try/finally 置 true，结束后还原为 previous；是升级期间的作用域标记
 LibraryOfRuina.content.abnormalities.DespairKnight.DespairKnightPierceDespairOverlayController._activePlayback	harmless	ui	PlayAsync 写入，用来串行化过场，播完后按 ReferenceEquals 置空；只影响过场播放
 LibraryOfRuina.content.abnormalities.ForsakenMurderer.ForsakenMurdererFearBackgroundOverlay._overlayVisible	harmless	ui	SetOverlayVisible 写入（恐惧能力切换；ForsakenMurderer.AddedToRoomAsync/BeforeRemovedFromRoom 置 false）；只控制背景遮罩是否可见
@@ -63,7 +62,8 @@ LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightJudgmentPowe
 LibraryOfRuina.content.liberation.Technology.MagicBulletShooterCreatureDamagePatch._cardSourceIndex	harmless	cache	TargetMethod 反射解析一次参数下标，之后只读
 LibraryOfRuina.content.liberation.Technology.MagicBulletShooterCreatureDamagePatch._propsIndex	harmless	cache	TargetMethod 反射解析一次参数下标，之后只读
 LibraryOfRuina.content.liberation.Technology.MagicBulletShooterCreatureDamagePatch._targetsIndex	harmless	cache	TargetMethod 反射解析一次参数下标，之后只读
-LibraryOfRuina.content.liberation.Technology.SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn	combat	-	救赎之手本回合已计入的封印牌数，按战斗状态存放；玩家回合开始时救赎之手清零，ShouldPlay 读取
+LibraryOfRuina.content.liberation.Technology.SolemnMourningPersistentSealAffliction.SealedCardsAdmittedThisTurn	combat	-	救赎之手本回合已占用的封印牌出牌名额，出牌开始时累加，按战斗状态存放；玩家回合开始时救赎之手清零，ShouldPlay 读取
+LibraryOfRuina.content.liberation.Technology.SolemnMourningPersistentSealAffliction.SealedCardsPlayedThisTurn	combat	-	救赎之手本回合已计入力量进度的封印牌数，按战斗状态存放；玩家回合开始时救赎之手清零
 LibraryOfRuina.content.liberation.Technology.TechnologyFloorLiberationSettlementStore.CurrentState	run	-	解放战 Record 写入、结算事件读取的击杀数；离开本局时复位
 LibraryOfRuina.content.liberation.Technology.TechnologyFloorLiberationSettlementStore.PendingState	run	-	待结算标志：Record 置位，终局奖励跳转取走；离开本局时复位
 LibraryOfRuina.content.reverberation.GearChurch.GearChurchHitContext.Current	harmless	scope	AsyncLocal：Enter/Preview 写入本次命中表，Restore/PreviewScope.Dispose 还原为 Previous
@@ -275,8 +275,6 @@ LibraryOfRuina.patches.EgoCardVisualPatch.TextureCache	harmless	cache	按图片�
 LibraryOfRuina.patches.EnergyCounterCompatibilityPatch._loggedCompatFix	harmless	log	EnsureParticleAlias 只记一次
 LibraryOfRuina.patches.ExtSettingsSubmenuHost.SubmenuCache	instance	-	以 NMainMenuSubmenuStack 为弱键：GetOrCreateSubmenu 写入设置子菜单
 LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Depths	combat	-	以 ICombatState 为弱键的击杀批次深度：Prefix 自增，TriggerAfter 在 finally 中自减；深度为 0 时才判定“离别之泪”胜利
-LibraryOfRuina.patches.HarborMistDodgePatch.PendingDodges	combat	-	以卡牌为键的闪避标记；登记入口 MarkCardPlayForDodge 没有调用方，表始终为空
-LibraryOfRuina.patches.HarborMistDodgePatch.ResolvedDodges	combat	-	以卡牌为键的已闪避计数；只在 PendingDodges 命中时写入，始终为空
 LibraryOfRuina.patches.LibraryCursorPatch._applied	harmless	once	Apply 设置鼠标光标后置 true
 LibraryOfRuina.patches.LibraryCursorPatch._defaultCursor	harmless	cache	Apply 里用 ??= LoadImage 加载
 LibraryOfRuina.patches.LibraryCursorPatch._inspectCursor	harmless	cache	Apply 里用 ??= LoadImage 加载

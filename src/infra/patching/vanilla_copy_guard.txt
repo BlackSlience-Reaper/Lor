@@ -36,8 +36,6 @@ sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyDamageInternal(MegaCrit.Sts2.Core.Runs
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ModifyHpLost(MegaCrit.Sts2.Core.Runs.IRunState,MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Hooks.HpLossHookPhase,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Models.AbstractModel, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]&)	477c3f676896aae8bc53fb56503559c889afe241
 sts2|MegaCrit.Sts2.Core.Hooks.Hook::ShouldClearBlock(MegaCrit.Sts2.Core.Combat.ICombatState,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.AbstractModel&)	a4be223c48ce1f956e0ae3af0dc7a61694665211
 sts2|MegaCrit.Sts2.Core.Models.ActModel::PullNextEncounter(MegaCrit.Sts2.Core.Rooms.RoomType)	12a1aded76022f625b8f72860cd4e8d79e12505e
-sts2|MegaCrit.Sts2.Core.Models.CardModel+<OnPlayWrapper>d__339::MoveNext()	947db47755616612a3f9e3072f5353c37baeb297
-sts2|MegaCrit.Sts2.Core.Models.CardModel::OnPlayWrapper(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean,MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo,System.Boolean)	8340d2199a7051be7f88077d21665641b7ede519
 sts2|MegaCrit.Sts2.Core.Models.Cards.BeatDown+<OnPlay>d__3::MoveNext()	8e88bfcf6aceb043ccf6fe833a05dcd014d50407
 sts2|MegaCrit.Sts2.Core.Models.Cards.BouncingFlask+<OnPlay>d__6::MoveNext()	10412d737a4c89477962680be4fda2145efc4002
 sts2|MegaCrit.Sts2.Core.Models.EncounterModel::CreateBackgroundAssetsForCustom(MegaCrit.Sts2.Core.Random.Rng)	c89ec8f61b94007b12914da9fc90a3fbeab75ef7

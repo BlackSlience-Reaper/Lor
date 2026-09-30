@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina.content.abnormalities.CosmicFragment;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.content.abnormalities.QueenBee;
 using LibraryOfRuina.content.abnormalities.WrathServant;
@@ -22,9 +21,11 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Models.Encounters;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -44,7 +45,9 @@ namespace LibraryOfRuinaVerification;
 /// <item><c>settlement-stores</c>：六层结算记录在离开本局后回到初值。</item>
 /// <item><c>settlement-reload</c>：上一局留下待结算标志后，读入停在语言层终局奖励界面的另一局，结算事件的击杀数取自这一局的遭遇。</item>
 /// <item><c>solemn-mourning</c>：战斗中途退出后开新局，救赎之手在新战斗里照常计入封印牌。</item>
-/// <item><c>combat-tables</c>：三份死亡归因表与顿悟卡触发表在离开本局后清空。</item>
+/// <item><c>solemn-mourning-limit</c>：救赎之手计满 4 张封印牌后，同一回合里第 5 张封印牌不能打出（文案“每回合最多打出 4 张”）。</item>
+/// <item><c>solemn-mourning-nested</c>：已打出 3 张封印牌后，被封印的破灭自动打出的封印牌不能再打出（名额在出牌开始时占用）。</item>
+/// <item><c>combat-tables</c>：三份死亡归因表在离开本局后清空。</item>
 /// <item><c>page-preselect</c>：假双人局里一名玩家的书页预选等待期间，另一名玩家的书页遗物获得后跳过选择，照常移除。</item>
 /// </list>
 /// </summary>
@@ -86,6 +89,8 @@ internal static class StaticStateLifecycleVerificationPatch
             await RunGuarded("settlement-stores", VerifySettlementStores);
             await RunGuarded("settlement-reload", VerifySettlementReload);
             await RunGuarded("solemn-mourning", VerifySolemnMourningCounter);
+            await RunGuarded("solemn-mourning-limit", VerifySolemnMourningLimit);
+            await RunGuarded("solemn-mourning-nested", VerifySolemnMourningNestedAutoPlay);
             await RunGuarded("combat-tables", VerifyCombatTables);
             await RunGuarded("page-preselect", VerifyPagePreselect);
             if (Failures.Count > 0)
@@ -224,6 +229,93 @@ internal static class StaticStateLifecycleVerificationPatch
         Require(secondStrength == 1, "The first sealed card in a new run gave " + secondStrength + " Strength.");
     }
 
+    private static async Task VerifySolemnMourningLimit()
+    {
+        // 上限写成字面量 4（文案的数），不引用主模组常量，同一个验证程序集可以配修复前的主模组跑。
+        const int limit = 4;
+        CombatState combatState = await StartFight("STATICSTATE_SOLEMN_LIMIT");
+        Creature boss = combatState.Enemies.First(static enemy => enemy.IsAlive);
+        Player player = combatState.Players.First();
+        await WaitUntil(
+            () => !CombatManager.Instance.PlayerActionsDisabled && player.PlayerCombatState!.Hand.Cards.Count > 0,
+            "first player turn");
+        await WaitFrames(4);
+        var context = new ThrowingPlayerChoiceContext();
+        SolemnMourningRedemptionHandPower hand = await PowerCmdCompat.Apply<SolemnMourningRedemptionHandPower>(
+                context, boss, 1m, boss, null, silent: true)
+            ?? throw new InvalidOperationException("Redemption Hand was not applied.");
+        Require(hand.Owner == boss, "Redemption Hand is not on the boss.");
+
+        // 经原版 CardCmd.AutoPlay 真正打出（ShouldPlay → OnPlayWrapper → Before/AfterCardPlayed），不直接调用能力的钩子。
+        for (int i = 0; i < limit; i++)
+        {
+            CardModel sealedDefend = await CreateSealedCard<DefendIronclad>(combatState, player, PileType.Hand);
+            Require(Hook.ShouldPlay(combatState, sealedDefend, out _, AutoPlayType.None),
+                "Sealed card " + (i + 1) + " was blocked before the limit.");
+            await CardCmd.AutoPlay(context, sealedDefend, null);
+        }
+
+        CardModel fifth = await CreateSealedCard<DefendIronclad>(combatState, player, PileType.Hand);
+        bool lastPlayable = Hook.ShouldPlay(combatState, fifth, out AbstractModel? preventer, AutoPlayType.None);
+        Trace("solemn-mourning-limit", "fifth", "playable=" + lastPlayable
+            + "|preventer=" + (preventer?.GetType().Name ?? "none"));
+        Require(!lastPlayable && preventer is SolemnMourningPersistentSealAffliction,
+            "The fifth sealed card in one turn was still playable.");
+    }
+
+    /// <summary>
+    /// 已打出 3 张封印牌后，打出被封印的破灭（Havoc），它自动打出的抽牌堆顶牌也被封印：
+    /// 破灭在开始结算时就占用第 4 个名额，内层的封印牌不能再打出。只按结算后的计数判断时，两张牌都看到 3，一回合打出 5 张。
+    /// </summary>
+    private static async Task VerifySolemnMourningNestedAutoPlay()
+    {
+        const string label = "solemn-mourning-nested";
+        CombatState combatState = await StartFight("STATICSTATE_SOLEMN_NESTED");
+        Creature boss = combatState.Enemies.First(static enemy => enemy.IsAlive);
+        Player player = combatState.Players.First();
+        await WaitUntil(
+            () => !CombatManager.Instance.PlayerActionsDisabled && player.PlayerCombatState!.Hand.Cards.Count > 0,
+            "first player turn");
+        await WaitFrames(4);
+        var context = new ThrowingPlayerChoiceContext();
+        await PowerCmdCompat.Apply<SolemnMourningRedemptionHandPower>(
+            context, boss, 1m, boss, null, silent: true);
+
+        for (int i = 0; i < 3; i++)
+        {
+            CardModel sealedDefend = await CreateSealedCard<DefendIronclad>(combatState, player, PileType.Hand);
+            await CardCmd.AutoPlay(context, sealedDefend, null);
+        }
+
+        decimal blockBefore = player.Creature.Block;
+        CardModel inner = await CreateSealedCard<DefendIronclad>(combatState, player, PileType.Draw, CardPilePosition.Top);
+        CardModel havoc = await CreateSealedCard<Havoc>(combatState, player, PileType.Hand);
+        Require(Hook.ShouldPlay(combatState, havoc, out _, AutoPlayType.None), "The sealed Havoc was blocked as the fourth card.");
+        await CardCmd.AutoPlay(context, havoc, null);
+        await WaitFrames(4);
+        decimal blockAfter = player.Creature.Block;
+        Trace(label, "result", "blockBefore=" + blockBefore + "|blockAfter=" + blockAfter
+            + "|innerPile=" + (inner.Pile?.Type.ToString() ?? "none"));
+        Require(blockBefore > 0, "The first three sealed Defends did not give Block.");
+        Require(blockAfter == blockBefore,
+            "The sealed card auto-played by the sealed Havoc was played as a fifth sealed card (Block "
+            + blockBefore + " -> " + blockAfter + ").");
+    }
+
+    private static async Task<CardModel> CreateSealedCard<T>(
+        CombatState combatState,
+        Player player,
+        PileType pile,
+        CardPilePosition position = CardPilePosition.Bottom)
+        where T : CardModel
+    {
+        CardModel card = combatState.CreateCard<T>(player);
+        await CardPileCmd.Add(card, pile, position);
+        await CardCmd.Afflict<SolemnMourningPersistentSealAffliction>(card, 1);
+        Require(SolemnMourningPersistentSealAffliction.IsPersistentSeal(card), "Could not seal " + card.Id.Entry + ".");
+        return card;
+    }
+
     private static async Task<int> PlaySealedCards(CombatState combatState, int count)
     {
         Creature boss = combatState.Enemies.First(static enemy => enemy.IsAlive);
@@ -262,20 +354,13 @@ internal static class StaticStateLifecycleVerificationPatch
         LittleRedDeathContext.Record(enemy, dealer);
         WrathServantDeathContext.Record(enemy, dealer);
 
-        Player player = combatState.Players.First();
-        CardModel epiphany = combatState.CreateCard<CosmicFragmentEpiphanyCard>(player);
-        MethodInfo onTurnEnd = typeof(CosmicFragmentEpiphanyCard).GetMethod("OnTurnEndInHand", PrivateInstance)
-            ?? throw new MissingMethodException(nameof(CosmicFragmentEpiphanyCard), "OnTurnEndInHand");
-        await (Task)onTurnEnd.Invoke(epiphany, [new ThrowingPlayerChoiceContext()])!;
-
         // 战斗中途离开本局：死亡结算与 AfterCombatEnd 都不会来清理。
         await LeaveRun("combat-tables leave");
         string after = "language=" + (LanguageFloorDeathContext.Consume(enemy) != null)
             + "|littleRed=" + (LittleRedDeathContext.Consume(enemy) != null)
-            + "|wrath=" + (WrathServantDeathContext.Consume(enemy) != null)
-            + "|epiphany=" + CosmicFragmentEpiphanyCard.ConsumeTriggeredThisTurn(combatState);
+            + "|wrath=" + (WrathServantDeathContext.Consume(enemy) != null);
         Trace("combat-tables", "afterCleanup", after);
-        Require(after == "language=False|littleRed=False|wrath=False|epiphany=False",
+        Require(after == "language=False|littleRed=False|wrath=False",
             "Leaving the run kept combat tables: " + after);
     }
 

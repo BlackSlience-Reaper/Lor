@@ -51,7 +51,9 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
         public int TriggerProgress;
     }
 
-    private const int MaxSealedCardsPerTurn = 4;
+    // 文案的 {MaxCards}、本能力的计数上限、封印附魔的可打出判定共用这一个值；计数到上限后，
+    // 同一回合里再有封印牌就不能打出。
+    internal const int MaxSealedCardsPerTurn = 4;
 
     protected override string LegacyPowerId => "SOLEMN_MOURNING_REDEMPTION_HAND_POWER";
 
@@ -84,6 +86,29 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
     public override Task BeforeApplied(Creature target, decimal amount, Creature? applier, CardModel? cardSource)
     {
         DynamicVars["Threshold"].BaseValue = amount;
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// 封印牌开始结算时占用本回合的出牌名额（见 <see cref="SolemnMourningPersistentSealAffliction"/> 的说明）。
+    /// 只在第一次打出（<c>PlayIndex == 0</c>）时占用：重放属于同一次打出，原版也不再询问 ShouldPlay。
+    /// 不看救赎之手的持有者是否存活：名额限制的是玩家，能力还在场上就生效。
+    /// </summary>
+    public override Task BeforeCardPlayed(CardPlay cardPlay)
+    {
+        if (cardPlay.PlayIndex != 0 || !SolemnMourningPersistentSealAffliction.IsAnySeal(cardPlay.Card))
+        {
+            return Task.CompletedTask;
+        }
+
+        CombatStateLike? combatState = Owner.CombatState ?? cardPlay.Card.CombatState;
+        if (combatState != null)
+        {
+            SolemnMourningPersistentSealAffliction.SetSealedCardsAdmittedThisTurn(
+                combatState,
+                SolemnMourningPersistentSealAffliction.GetSealedCardsAdmittedThisTurn(combatState) + 1);
+        }
+
         return Task.CompletedTask;
     }
 
@@ -140,6 +165,7 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
         if (side == CombatSide.Player)
         {
             SolemnMourningPersistentSealAffliction.SetSealedCardsPlayedThisTurn(combatState, 0);
+            SolemnMourningPersistentSealAffliction.SetSealedCardsAdmittedThisTurn(combatState, 0);
         }
 
         return Task.CompletedTask;

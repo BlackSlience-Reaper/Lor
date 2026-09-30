@@ -163,7 +163,6 @@ patch	LibraryOfRuina.patches.FriendlyAllyLibraryChaoTargetsPatch
 patch	LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch
 patch	LibraryOfRuina.patches.GroupAttackEnemyTurnPriorityPatch
 patch	LibraryOfRuina.patches.GuestReceptionBackgroundPoolPatch
-patch	LibraryOfRuina.patches.HarborMistDodgePatch
 patch	LibraryOfRuina.patches.HeavyBluntVfxLifecyclePatch
 patch	LibraryOfRuina.patches.LiberationBossTopBarHoverPatch
 patch	LibraryOfRuina.patches.LibraryBossMapColorPatch
