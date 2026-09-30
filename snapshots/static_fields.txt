@@ -1770,9 +1770,8 @@ readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyNa
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals.VisibleBottomByTexturePath	System.Collections.Generic.Dictionary`2[System.String,System.Single]
 readonly	LibraryOfRuina.infra.helpers.GodotTextureSafety.SourcePaths	System.Runtime.CompilerServices.ConditionalWeakTable`2[Godot.Texture2D,LibraryOfRuina.infra.helpers.GodotTextureSafety+TextureSourcePath]
 readonly	LibraryOfRuina.infra.helpers.LibraryAssemblyTypes.Scan	System.Lazy`1[System.ValueTuple`2[System.Type[],System.Reflection.ReflectionTypeLoadException]]
+readonly	LibraryOfRuina.infra.helpers.LorLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]
 readonly	LibraryOfRuina.infra.helpers.ModOwnership.Assembly	System.Reflection.Assembly
-readonly	LibraryOfRuina.infra.helpers.PatchFailureLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]
-readonly	LibraryOfRuina.infra.helpers.PresentationGuard.ReportedSurfaces	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.infra.lifecycle.ScopedState.Gate	System.Object
 readonly	LibraryOfRuina.infra.lifecycle.ScopedState.Registered	System.Collections.Generic.List`1[LibraryOfRuina.infra.lifecycle.IScopedState]
 readonly	LibraryOfRuina.infra.patching.IlFingerprint.OneByte	System.Reflection.Emit.OpCode[]

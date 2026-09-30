@@ -247,8 +247,7 @@ LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.PreselectDepth
 LibraryOfRuina.framework.relics.AbnormalityPageRewardResumePatch.RestoredRooms	combat	-	以 CombatRoom 为弱键：MarkRestored（读档恢复时）写入；OfferRoomEndRewards 的 Postfix 消费后移除
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals.VisibleBottomByTexturePath	harmless	cache	按贴图路径缓存可见底边位置
 LibraryOfRuina.infra.helpers.GodotTextureSafety.SourcePaths	instance	-	以 Texture2D 为弱键：RegisterSourcePath 记录源路径，供失效后重新加载
-LibraryOfRuina.infra.helpers.PatchFailureLog.Counts	harmless	log	Warn 里按调用点计数，用来节流日志
-LibraryOfRuina.infra.helpers.PresentationGuard.ReportedSurfaces	harmless	log	Report 每个调用点只报告一次
+LibraryOfRuina.infra.helpers.LorLog.Counts	harmless	log	InfoOnce/WarnOnce/ErrorOnce/FirstTime 的去重与 WarnFirst/PatchFailure 的节流计数；键是调用方加前缀的字符串，存活到进程结束，不参与玩法
 LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener._listeners	harmless	cache	ActiveListeners 里用 ??= 取 ModelDb 单例一次
 LibraryOfRuina.infra.lifecycle.ScopedState.Registered	harmless	registry	RunScoped / CombatScoped 构造时登记，RunLifecycle 离开本局时逐个复位
 LibraryOfRuina.infra.patching.LibraryPatchReportPatch._reported	harmless	once	Postfix 输出补丁报告后置 true
