@@ -4,6 +4,7 @@ using Godot;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -86,7 +87,7 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player || Owner.IsDead)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead)
         {
             return;
         }
@@ -116,12 +117,17 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
 
     public IEnumerable<HealthBarForecastSegment> GetHealthBarForecastSegments(HealthBarForecastContext context)
     {
+        Creature creature = context.Creature;
+        // 蜂后血条：当前生命严格低于最大生命的 30% 时，才显示低血量颜色。
+        decimal thresholdHp = creature.MaxHp * (QueenBeeWorkerDeathEmbracePassivePower.HpThresholdPercent / 100m);
+        if (creature.IsDead || creature.CurrentHp <= 0 || creature.CurrentHp >= thresholdHp)
+        {
+            return [];
+        }
+
         return HealthBarForecasts.Single(
-            QueenBeeWorkerDeathEmbracePassivePower.HpThresholdPercent * context.Creature.MaxHp, // 展示的数量（例如如果你的能力有2倍效果可以乘2）
-            new Color(0.4f, 0.2f, 0.0f), // 颜色
-            HealthBarForecastGrowthDirection.FromLeft // 从左边开始延伸还是右边开始
-            // 0, // 顺序，越大越远离血条边缘，默认0
-            // PreloadManager.Cache.GetMaterial("res://xxx.tres") // 如果需要自定义材质
-        );
+            creature.CurrentHp,
+            new Color(0.4f, 0.2f, 0.0f),
+            HealthBarForecastGrowthDirection.FromLeft);
     }
 }

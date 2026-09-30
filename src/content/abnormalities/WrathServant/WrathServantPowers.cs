@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -63,7 +65,7 @@ public sealed class WrathServantNextTurnCorrosionPower : LibraryOfRuinaPowerMode
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (Owner.IsDead || side != CombatSide.Player || Amount <= 0)
+        if (Owner.IsDead || !TurnParticipants.IsPlayerTurnFor(Owner, side, participants) || Amount <= 0)
         {
             return;
         }
@@ -120,7 +122,7 @@ public sealed class WrathServantCorrosionPower :
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (Owner.IsDead || side != Owner.Side || Amount <= 0)
+        if (Owner.IsDead || !TurnParticipants.IsOwnTurn(Owner, side, participants) || Amount <= 0)
         {
             return;
         }
@@ -365,7 +367,8 @@ public sealed class GreenStemHermitProtectionPower : LibraryOfRuinaPowerModel, L
 /// </summary>
 internal static class WrathServantDeathContext
 {
-    private static readonly Dictionary<Creature, Creature?> DealersByDeadCreature = [];
+    // 致死者按死亡生物弱键存放：没有走到 AfterDeath 的条目不会把整场战斗留在内存里，离开本局时也会清空。
+    private static readonly CombatScoped<Creature, Creature?> DealersByDeadCreature = new();
 
     public static void Clear()
     {
@@ -374,16 +377,17 @@ internal static class WrathServantDeathContext
 
     public static void Record(Creature deadCreature, Creature? dealer)
     {
-        DealersByDeadCreature[deadCreature] = dealer;
+        DealersByDeadCreature.Set(deadCreature, dealer);
     }
 
     public static Creature? Consume(Creature deadCreature)
     {
-        if (!DealersByDeadCreature.Remove(deadCreature, out Creature? dealer))
+        if (!DealersByDeadCreature.TryGetValue(deadCreature, out Creature? dealer))
         {
             return null;
         }
 
+        DealersByDeadCreature.Remove(deadCreature);
         return dealer;
     }
 }

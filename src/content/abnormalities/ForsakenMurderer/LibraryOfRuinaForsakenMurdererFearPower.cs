@@ -16,7 +16,7 @@ public sealed class LibraryOfRuinaForsakenMurdererFearPower : LibraryOfRuinaPowe
 {
     private const string FearSfxPath = "res://audio/sfx/forsaken_murderer/forsaken_murderer_fear.ogg";
     private static readonly float FearSfxVolumeDb = -3f + Mathf.LinearToDb(0.8f);
-    private const int StrengthDownAmount = 4;
+    private const int StrengthDownAmount = 6;
 
     protected override string LegacyPowerId => "FORSAKEN_MURDERER_FEAR_POWER";
 

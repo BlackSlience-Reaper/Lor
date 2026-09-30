@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryLib.SpeedDice;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -143,7 +144,7 @@ public sealed class LibraryOfRuinaParalysisPower : LibraryOfRuinaPowerModel, ISe
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (side != Owner.Side)
+        if (!TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             return;
         }

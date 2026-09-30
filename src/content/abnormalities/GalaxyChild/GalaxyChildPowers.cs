@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -34,7 +35,7 @@ public sealed class GalaxyChildPebblePower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player || Owner.IsDead || Owner.CurrentHp <= GalaxyFriend.FakeDeathHp)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead || Owner.CurrentHp <= GalaxyFriend.FakeDeathHp)
         {
             return;
         }
@@ -84,7 +85,7 @@ public sealed class GalaxyDoNotLeaveMePower : LibraryFakeDeathPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Player && Owner.Monster is GalaxyFriend friend
+        return TurnParticipants.IsRoundPlayerTurn(side) && Owner.Monster is GalaxyFriend friend
             ? friend.TickFakeDeathOnPlayerTurnStart()
             : Task.CompletedTask;
     }

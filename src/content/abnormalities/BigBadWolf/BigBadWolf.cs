@@ -103,10 +103,10 @@ public sealed class BigBadWolf : LorMonsterModel
     public bool HasPendingCard => _pendingCards.Count > 0;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 502, 490);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 472, 450);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 505, 498);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 475, 458);
 
     public override int DefaultChaoResistance => 80;
 

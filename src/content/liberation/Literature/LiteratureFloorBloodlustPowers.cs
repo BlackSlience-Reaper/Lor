@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -55,7 +56,7 @@ public sealed class LiteratureFloorDeepWoundPower :
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side == Owner.Side)
+        if (TurnParticipants.IsOwnTurn(Owner, side, participants))
         {
             await PowerCmd.Decrement(this);
         }
@@ -125,7 +126,7 @@ public sealed class LiteratureFloorBloodlustGlitterPassivePower :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || Owner.IsDead
             || Owner.Monster is not LiteratureFloorBloodlustBoss boss)
         {

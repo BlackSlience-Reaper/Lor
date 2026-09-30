@@ -6,6 +6,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -354,7 +355,7 @@ public sealed class DespairKnight : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             if (_brokenHeartPending)
             {

@@ -158,11 +158,11 @@ public sealed class TimeTrace : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player && _isFakeDead)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && _isFakeDead)
         {
             ForceFakeDeathRestoreIntent();
         }
-        else if (side == CombatSide.Player && Creature.IsAlive)
+        else if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive)
         {
             PrepareSnapshotForIntent();
         }
@@ -175,7 +175,7 @@ public sealed class TimeTrace : LorMonsterModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player && Creature.IsAlive && !_isFakeDead)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive && !_isFakeDead)
         {
             await CaptureSnapshot();
         }

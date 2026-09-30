@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -104,7 +105,7 @@ public sealed class BigBirdCharmedPower : LibraryOfRuinaPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Player || Owner.IsDead)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants) || Owner.IsDead)
         {
             return;
         }
@@ -224,7 +225,7 @@ public sealed class BigBirdPatrolPower : LibraryOfRuinaPowerModel
         CombatSide side,
         IEnumerable<Creature> participants)
     {
-        if (side != CombatSide.Player)
+        if (!TurnParticipants.IsPlayerTurnFor(Owner, side, participants))
         {
             return;
         }

@@ -652,6 +652,10 @@ LibraryOfRuina.infra.patching.LibraryPatchAttribute
 LibraryOfRuina.infra.patching.LibraryPatcher
 LibraryOfRuina.infra.patching.PatchClassRules
 LibraryOfRuina.infra.patching.VanillaCopyGuard
+LibraryOfRuina.infra.lifecycle.ScopedState
+LibraryOfRuina.infra.lifecycle.IScopedState
+LibraryOfRuina.infra.lifecycle.RunScoped`1
+LibraryOfRuina.infra.lifecycle.CombatScoped`2
 LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener
 LibraryOfRuina.infra.helpers.AbnormalityAnimHelper
 LibraryOfRuina.infra.helpers.CardPoolAttribute
@@ -876,6 +880,7 @@ LibraryOfRuina.framework.combat.CombatSafetyNet
 LibraryOfRuina.framework.combat.CombatTargets
 LibraryOfRuina.framework.combat.IndiscriminateAttackBlockBreaker
 LibraryOfRuina.framework.combat.IndiscriminateAttackExecutor
+LibraryOfRuina.framework.combat.TurnParticipants
 LibraryOfRuina.framework.cards.IEnemyAttackPreviewCard
 LibraryOfRuina.framework.cards.EgoCardBase
 LibraryOfRuina.framework.cards.LibraryOfRuinaCharacterEgoCardPool

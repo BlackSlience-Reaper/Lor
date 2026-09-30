@@ -1,3 +1,4 @@
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Utils.Resistance;
@@ -249,7 +250,7 @@ public sealed class NaturalFloorNihilPower : LibraryOfRuinaPowerModel
     public override async Task BeforeSideTurnStart(PlayerChoiceContext context, CombatSide side,
         IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
-        if (side == CombatSide.Player && Owner.IsAlive)
+        if (TurnParticipants.IsPlayerTurnFor(Owner, side, participants) && Owner.IsAlive)
         {
             await LibraryPowerCmd.Apply<LibraryWeakPower>(Owner, NaturalFloorNihilMoves.NihilDebuffStacks, NaturalFloorNihilMoves.NihilDebuffTurns - 1, Owner, null);
             await LibraryPowerCmd.Apply<LibraryVulnerablePower>(Owner, NaturalFloorNihilMoves.NihilDebuffStacks, NaturalFloorNihilMoves.NihilDebuffTurns - 1, Owner, null);
@@ -276,7 +277,7 @@ public sealed class NaturalFloorNihilHatredStatus : LibraryOfRuinaPowerModel
     public override async Task BeforeSideTurnStart(PlayerChoiceContext context, CombatSide side,
         IReadOnlyList<Creature> participants, CombatStateLike combatState)
     {
-        if (side == CombatSide.Player && Owner.IsAlive && Amount > 0)
+        if (TurnParticipants.IsPlayerTurnFor(Owner, side, participants) && Owner.IsAlive && Amount > 0)
         {
             await LibraryPowerCmd.Apply<LibraryVulnerablePower>(Owner, NaturalFloorNihilMoves.HatredVulnerable, NaturalFloorNihilMoves.HatredVulnerableTurns - 1, Applier, null);
             await PowerCmd.ModifyAmount(context, this, -1, Owner, null);

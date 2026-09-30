@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -36,7 +37,7 @@ public sealed class LiteratureFloorBlackSwanNettleGarmentPassivePower :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Player
+        return TurnParticipants.IsRoundPlayerTurn(side)
                && Owner.Monster is LiteratureFloorBlackSwanBoss boss
             ? boss.OnPlayerSideTurnStart(combatState)
             : Task.CompletedTask;

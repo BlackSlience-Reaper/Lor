@@ -370,7 +370,7 @@ public sealed class LanguageFloorMimicry :
             await RecoverPendingEvolution(side);
         }
 
-        if (side == CombatSide.Player
+        if (TurnParticipants.IsRoundPlayerTurn(side)
             && Form == LanguageFloorMimicryForm.Third)
         {
             RoundDamageTaken = 0;
