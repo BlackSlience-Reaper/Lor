@@ -81,23 +81,6 @@ internal static class CodeHealthVerificationPatch
 
     private static void VerifyCompatibilityFingerprint()
     {
-        string suffix = LibraryOfRuinaCompatibilityFingerprint
-            .GetGameplayRelevantSuffix();
-        foreach (string segment in new[]
-                 {
-                     "+compat.",
-                     "+dll.",
-                     "+schema.",
-                     "+cfg."
-                 })
-        {
-            if (!suffix.Contains(segment, StringComparison.Ordinal))
-            {
-                throw new InvalidOperationException(
-                    "Gameplay fingerprint is missing segment " + segment);
-            }
-        }
-
         string schema = SavedPropertiesTypeCacheCompat
             .BuildSchemaFingerprintMaterial();
         foreach (Type enumType in SavedPropertiesTypeCacheCompat

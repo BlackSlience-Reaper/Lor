@@ -65,6 +65,7 @@ public static class VerificationRunner
         PowerIconVerificationPatch.Start,
         QueenOfHatredPageMultiplayerVerificationPatch.Start,
         RelicRunHistoryDescriptionVerificationPatch.Start,
+        RunSettingsVerificationPatch.Start,
         SceneBackedAbnormalityAnimationVerificationPatch.Start,
         SmilingBodiesAnimationVerificationPatch.Start,
         SmilingBodiesDeathVerificationPatch.Start,

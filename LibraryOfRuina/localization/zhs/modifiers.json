@@ -1,4 +1,6 @@
 {
   "SPECIAL_GUEST_RUN_STATE.title": "特殊来宾内部状态",
-  "SPECIAL_GUEST_RUN_STATE.description": "保存特殊来宾的解锁、消费、舞台、剧情与抽取状态。"
+  "SPECIAL_GUEST_RUN_STATE.description": "保存特殊来宾的解锁、消费、舞台、剧情与抽取状态。",
+  "LIBRARY_RUN_SETTINGS.title": "废墟图书馆本局设置",
+  "LIBRARY_RUN_SETTINGS.description": "保存本局开始时确定的废墟图书馆设置：是否启用废墟图书馆内容，以及抗性模式。"
 }

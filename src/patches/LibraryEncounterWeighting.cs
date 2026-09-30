@@ -169,7 +169,7 @@ internal static partial class LibraryEncounterWeighting
 
     public static void ReweightGeneratedRoomSet(ActModel act, Rng sourceRng)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (!LibraryRunSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act))
         {
             return;
@@ -227,7 +227,7 @@ internal static partial class LibraryEncounterWeighting
         out EncounterModel replacement)
     {
         replacement = current;
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (!LibraryRunSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act)
             || (IsModEncounter(current) && current is not IGuestReceptionEncounter)
             || roomType is not (RoomType.Monster or RoomType.Elite or RoomType.Boss))
@@ -269,7 +269,7 @@ internal static partial class LibraryEncounterWeighting
 
     public static void ReweightGeneratedRoomSets(RunState? state)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || state == null)
+        if (state == null || !LibraryRunSettings.IsMonsterExtensionEnabled(state))
         {
             return;
         }
@@ -473,7 +473,7 @@ internal static partial class LibraryEncounterWeighting
         RoomType roomType,
         EncounterModel current)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled
+        if (!LibraryRunSettings.MonsterExtensionEnabled
             || !IsOwnedAct(act)
             || roomType is not (RoomType.Monster or RoomType.Elite))
         {

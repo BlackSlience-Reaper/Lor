@@ -157,7 +157,8 @@ internal static class LibrarySecondAscensionState
 
     public static void CaptureStandardBeginRunModifiers(StartRunLobby lobby, ref IReadOnlyList<ModifierModel> modifiers)
     {
-        if (!IsSelectionEnabled)
+        // 客户端收到的是房主的修改器列表，第二进阶开没开由房主决定，不看本机开关。
+        if (lobby.NetService.Type != NetGameType.Client && !IsSelectionEnabled)
         {
             _pendingSingleplayerStandardLevel = null;
             modifiers = WithoutCarrier(modifiers);
@@ -275,7 +276,8 @@ internal static class LibrarySecondAscensionState
 
     public static IReadOnlyList<ModifierModel> ResolveMultiplayerRunModifiers(StartRunLobby lobby, IReadOnlyList<ModifierModel> modifiers)
     {
-        if (!IsSelectionEnabled)
+        // 同上：客户端照用房主的载体。
+        if (lobby.NetService.Type != NetGameType.Client && !IsSelectionEnabled)
         {
             return WithoutCarrier(modifiers);
         }

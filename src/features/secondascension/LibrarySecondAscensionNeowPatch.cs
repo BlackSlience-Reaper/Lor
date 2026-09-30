@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using LibraryOfRuina.features.settings;
 using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Events;
@@ -72,7 +73,8 @@ internal static class LibrarySecondAscensionNeowModifierFilter
         IEnumerable<ModifierModel> modifiers) =>
         modifiers.Where(static modifier =>
                 modifier is not LibrarySecondAscensionModifier
-                && modifier is not SpecialGuestRunStateModifier)
+                && modifier is not SpecialGuestRunStateModifier
+                && modifier is not LibraryRunSettingsModifier)
             .ToList();
 
     public static void RestoreModifiers(Neow neow, IReadOnlyList<ModifierModel>? original)

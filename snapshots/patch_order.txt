@@ -238,6 +238,9 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "SetUpBackgroun
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Bestiary.NBestiary), "AddAct")
   Postfix LibraryOfRuina.reverberation.GearChurch.GearChurchBestiaryPatch.Postfix
   Postfix LibraryOfRuina.reverberation.CryingChildren.CryingChildrenBestiaryPatch.Postfix
+HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunLoadScreen), "InitializeDisplay")
+  Finalizer LibraryOfRuina.features.settings.LibraryRunSettingsDailyLoadScreenPatch.Finalizer
+  Prefix LibraryOfRuina.features.settings.LibraryRunSettingsDailyLoadScreenPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScreen), "AddScoreLine")
   Finalizer LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Finalizer
   Prefix LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Prefix
@@ -257,10 +260,15 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunManager), "ProceedFromTerminalRew
   Prefix LibraryOfRuina.specialguests.SpecialGuestTerminalRewardsProceedPatch.Prefix
   Postfix LibraryOfRuina.features.temporarymaps.TemporaryMapTerminalRewardsProceedPatch.Postfix
   Prefix LibraryOfRuina.patches.dispatch.LiberationSettlementPatches+RedirectToSettlement.Prefix
+HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunState), "CreateForNewRun")
+  Postfix LibraryOfRuina.features.settings.LibraryRunSettingsNewRunPatch.Postfix
+  Postfix LibraryOfRuina.features.secondascension.LibrarySecondAscensionRunStateCreatePatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunState), "FromSerializable")
   Postfix LibraryOfRuina.specialguests.SpecialGuestRunStateLoadPatch.Postfix
   Prefix LibraryOfRuina.specialguests.SpecialGuestRunStateLoadPatch.Prefix
   Postfix LibraryOfRuina.features.temporarymaps.TemporaryMapLoadPatch.Postfix
+  Postfix LibraryOfRuina.features.settings.LibraryRunSettingsLoadPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.sts2.Core.Nodes.TopBar.NTopBarModifier), "Create")
   Prefix LibraryOfRuina.specialguests.SpecialGuestHideRunStateTopBarPatch.Prefix
+  Prefix LibraryOfRuina.features.settings.LibraryRunSettingsHideTopBarPatch.Prefix
   Prefix LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch.Prefix

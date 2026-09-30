@@ -15,7 +15,7 @@ internal static class LibraryOfRuinaEventPool
         LibraryActFamily family,
         IEnumerable<EventModel> baseEvents)
     {
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
+        if (!LibraryRunSettings.MonsterExtensionEnabled)
         {
             return baseEvents;
         }
