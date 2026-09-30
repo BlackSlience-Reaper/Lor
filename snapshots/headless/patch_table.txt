@@ -1,5 +1,5 @@
 # mod ActLikeIt2 v0.2.1
-# mod LibraryOfRuina v0.22.0
+# mod LibraryOfRuina v0.22.2
 # mod LibraryOfRuinaLib 1.3.0
 # mod STS2-RitsuLib 0.6.3
 LibraryOfRuinaLib|LibraryLib.Commands.LibraryCreatureCmd::ChaoDamage(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]],System.Decimal,MegaCrit.Sts2.Core.ValueProps.ValueProp,MegaCrit.Sts2.Core.Entities.Creatures.Creature,MegaCrit.Sts2.Core.Models.CardModel,MegaCrit.Sts2.Core.Entities.Cards.CardPlay,LibraryLib.Utils.Resistance.LibraryDamageType,System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.DamageResult, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]])
@@ -301,11 +301,6 @@ sts2|MegaCrit.Sts2.Core.Models.CardModel::IsValidTarget(MegaCrit.Sts2.Core.Entit
   Prefix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.CardTargeting.Patches.CardModelIsValidTargetCustomTargetTypePatch.Prefix
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTarget.Postfix
   Postfix priority=0 index=1 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.dispatch.TargetingDispatch+IsValidTargetLast.Postfix
-sts2|MegaCrit.Sts2.Core.Models.CardModel::OnPlayWrapper(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext,MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Boolean,MegaCrit.Sts2.Core.Entities.Cards.ResourceInfo,System.Boolean)
-  Prefix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.SecondaryResources.Patches.CardModelOnPlayWrapperSecondaryResourcesPatch.Prefix
-  Postfix priority=400 index=0 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Cards.FreePlay.Patches.CardModelFreeAfterPlayedCleanupPatch.Postfix
-  Postfix priority=400 index=1 owner=com.ritsukage.sts2-RitsuLib.framework-core STS2RitsuLib.Combat.SecondaryResources.Patches.CardModelOnPlayWrapperSecondaryResourcesPatch.Postfix
-  Transpiler priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.patches.HarborMistDodgePatch.Transpiler
 sts2|MegaCrit.Sts2.Core.Models.CardModel::OnTurnEndInHandWrapper(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext)
   Postfix priority=400 index=0 owner=FYY.LibraryOfRuina LibraryOfRuina.content.liberation.Language.LanguageFloorFearCardTurnEndPilePatch.Postfix
 sts2|MegaCrit.Sts2.Core.Models.CardModel::get_IsUpgradable()

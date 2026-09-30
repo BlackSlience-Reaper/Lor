@@ -275,8 +275,6 @@ LibraryOfRuina.patches.EgoCardVisualPatch.TextureCache	harmless	cache	按图片�
 LibraryOfRuina.patches.EnergyCounterCompatibilityPatch._loggedCompatFix	harmless	log	EnsureParticleAlias 只记一次
 LibraryOfRuina.patches.ExtSettingsSubmenuHost.SubmenuCache	instance	-	以 NMainMenuSubmenuStack 为弱键：GetOrCreateSubmenu 写入设置子菜单
 LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Depths	combat	-	以 ICombatState 为弱键的击杀批次深度：Prefix 自增，TriggerAfter 在 finally 中自减；深度为 0 时才判定“离别之泪”胜利
-LibraryOfRuina.patches.HarborMistDodgePatch.PendingDodges	combat	-	以卡牌为键的闪避标记；登记入口 MarkCardPlayForDodge 没有调用方，表始终为空
-LibraryOfRuina.patches.HarborMistDodgePatch.ResolvedDodges	combat	-	以卡牌为键的已闪避计数；只在 PendingDodges 命中时写入，始终为空
 LibraryOfRuina.patches.LibraryCursorPatch._applied	harmless	once	Apply 设置鼠标光标后置 true
 LibraryOfRuina.patches.LibraryCursorPatch._defaultCursor	harmless	cache	Apply 里用 ??= LoadImage 加载
 LibraryOfRuina.patches.LibraryCursorPatch._inspectCursor	harmless	cache	Apply 里用 ??= LoadImage 加载

@@ -1797,7 +1797,6 @@ readonly	LibraryOfRuina.interop.VanillaPrivate.CardLibraryColorlessFilter	Librar
 readonly	LibraryOfRuina.interop.VanillaPrivate.CardLibraryLastHoveredControl	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.NCardLibrary,Godot.Control]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CardLibraryPoolFilters	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.NCardLibrary,System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.NCardPoolFilter,System.Func`2[MegaCrit.Sts2.Core.Models.CardModel,System.Boolean]]]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CardLibraryUpdateCardPoolFilter	LibraryOfRuina.interop.VanillaPrivateMethod`1[MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary.NCardLibrary]
-readonly	LibraryOfRuina.interop.VanillaPrivate.CardModelOnPlay	LibraryOfRuina.interop.VanillaPrivateMethod`1[MegaCrit.Sts2.Core.Models.CardModel]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CardTypeLabel	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Cards.NCard,Godot.Control]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CardTypePlaque	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Cards.NCard,Godot.Control]
 readonly	LibraryOfRuina.interop.VanillaPrivate.ChooseACardScreenCards	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NChooseACardSelectionScreen,System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Models.CardModel]]
@@ -1884,10 +1883,6 @@ readonly	LibraryOfRuina.patches.FourthActMultiplayerScalingPatch.FourthActEncoun
 readonly	LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Depths	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Combat.ICombatState,System.Runtime.CompilerServices.StrongBox`1[System.Int32]]
 readonly	LibraryOfRuina.patches.GameOverScreenPatchHelper.ScoreLineScenePath	System.String
 readonly	LibraryOfRuina.patches.GroupAttackEnemyTurnPriorityPatch.PrioritizeGroupAttackersMethod	System.Reflection.MethodInfo
-readonly	LibraryOfRuina.patches.HarborMistDodgePatch.InvokeOnPlayOrSkipMethod	System.Reflection.MethodInfo
-readonly	LibraryOfRuina.patches.HarborMistDodgePatch.PendingDodges	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32]
-readonly	LibraryOfRuina.patches.HarborMistDodgePatch.ResolvedDodges	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Models.CardModel,System.Int32]
-readonly	LibraryOfRuina.patches.HarborMistDodgePatch.Sync	System.Object
 readonly	LibraryOfRuina.patches.LibraryCursorPatch.CursorHotSpot	Godot.Vector2
 readonly	LibraryOfRuina.patches.LibraryEncounterWeighting.ModAssembly	System.Reflection.Assembly
 readonly	LibraryOfRuina.patches.LibraryEncounterWeighting.PriorityAbnormalityEncounterTypes	System.Collections.Generic.HashSet`1[System.Type]

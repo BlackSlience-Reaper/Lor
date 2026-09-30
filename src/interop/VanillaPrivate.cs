@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
@@ -32,7 +31,6 @@ using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.sts2.Core.Nodes.TopBar;
-using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace LibraryOfRuina.interop;
 
@@ -50,8 +48,6 @@ internal static class VanillaPrivate
     internal static readonly VanillaPrivateField<AttackCommand, bool> AttackCommandShouldPlayAnimation = new("_shouldPlayAnimation");
     internal static readonly VanillaPrivateField<AttackCommand, Creature> AttackCommandVisualAttacker = new("_visualAttacker");
     internal static readonly VanillaPrivateField<MonsterModel, bool> MonsterModelIsPerformingMove = new("_isPerformingMove");
-    internal static readonly VanillaPrivateMethod<CardModel> CardModelOnPlay =
-        new("OnPlay", [typeof(PlayerChoiceContext), typeof(CardPlay)]);
     internal static readonly VanillaPrivateProperty<OrbModel, string> OrbModelIconPath = new("IconPath");
     internal static readonly VanillaPrivateMethod<OrbModel> OrbModelPlayEvokeSfx = new("PlayEvokeSfx");
     internal static readonly VanillaPrivateFieldRef<MegaCrit.Sts2.Core.Models.Relics.BeatingRemnant, decimal> BeatingRemnantDamageReceivedThisTurn =
