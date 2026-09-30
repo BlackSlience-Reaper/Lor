@@ -35,7 +35,7 @@ public sealed class Leticia : LorMonsterModel
     private const int HealOtherEnemies = 9;
     private const int DontGetHurtBlock = 6;
     private const int HaveFunStrength = 3;
-    private const int HaveFunGuard = 3;
+    private const int HaveFunGuard = 2;
     private const int HaveFunGuardTurns = 3;
     private const int HaveFunBlock = 11;
     private const int HaveFunWeak = 2;
@@ -97,12 +97,12 @@ public sealed class Leticia : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 96, 93);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 94, 91);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 99, 95);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 96, 93);
 
-    public override int DefaultChaoResistance => 70;
+    public override int DefaultChaoResistance => 60;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

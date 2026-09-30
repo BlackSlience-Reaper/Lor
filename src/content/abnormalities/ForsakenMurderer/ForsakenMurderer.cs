@@ -62,7 +62,7 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
     public override int MaxInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 54, 52);
 
-    public override int DefaultChaoResistance => 35;
+    public override int DefaultChaoResistance => 30;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

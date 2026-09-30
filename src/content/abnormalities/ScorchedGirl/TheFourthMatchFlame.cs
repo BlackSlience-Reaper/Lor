@@ -47,7 +47,7 @@ public sealed class TheFourthMatchFlame : LorMonsterModel
             .Concat(base.AssetPaths.Skip(1))
             .Distinct();
 
-    public override int DefaultChaoResistance => 28;
+    public override int DefaultChaoResistance => 25;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
