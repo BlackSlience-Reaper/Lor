@@ -650,6 +650,8 @@ LibraryOfRuina.infra.patching.LibraryPatchAttribute
 LibraryOfRuina.infra.patching.LibraryPatcher
 LibraryOfRuina.infra.patching.PatchClassRules
 LibraryOfRuina.infra.patching.VanillaCopyGuard
+LibraryOfRuina.infra.lifecycle.CurrentRun
+LibraryOfRuina.infra.lifecycle.CurrentCombat
 LibraryOfRuina.infra.lifecycle.ScopedState
 LibraryOfRuina.infra.lifecycle.IScopedState
 LibraryOfRuina.infra.lifecycle.RunScoped`1
