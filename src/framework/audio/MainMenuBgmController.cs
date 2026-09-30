@@ -2,6 +2,7 @@ using System;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
@@ -41,7 +42,6 @@ internal static class MainMenuBgmController
     private static bool _initialized;
     private static bool _isPlaying;
     private static bool _isPaused;
-    private static bool _loggedLoadError;
     private static float _resumePositionSeconds;
     private static PauseReason _pauseReasons = PauseReason.None;
 
@@ -447,11 +447,9 @@ internal static class MainMenuBgmController
         AudioStream? stream = ResourceLoader.Load<AudioStream>(TrackPath);
         if (stream == null)
         {
-            if (!_loggedLoadError)
-            {
-                _loggedLoadError = true;
-                Log.Error("[" + LogTag + "] Unable to load audio stream: " + TrackPath);
-            }
+            LorLog.ErrorOnce(
+                "MainMenuBgmController.LoadLoopStream",
+                "[" + LogTag + "] Unable to load audio stream: " + TrackPath);
 
             return null;
         }

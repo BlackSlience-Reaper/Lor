@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Logging;
 
 namespace LibraryOfRuina.framework.audio;
@@ -19,7 +20,6 @@ internal static class LibrarySfxMixer
     private const string SfxResourceRoot = "res://audio/sfx/";
 
     private static readonly object Sync = new();
-    private static bool _busCreationLogged;
 
     internal static void Initialize()
     {
@@ -82,11 +82,7 @@ internal static class LibrarySfxMixer
                 AudioServer.SetBusName(busIndex, BusName);
                 AudioServer.SetBusSend(busIndex, "Master");
 
-                if (!_busCreationLogged)
-                {
-                    _busCreationLogged = true;
-                    Log.Info("[LibraryOfRuina.Audio] Created the LibraryOfRuinaSfx mixer bus.");
-                }
+                LorLog.InfoOnce("LibrarySfxMixer.BusCreated", "[LibraryOfRuina.Audio] Created the LibraryOfRuinaSfx mixer bus.");
 
                 return busIndex;
             }

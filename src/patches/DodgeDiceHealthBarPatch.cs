@@ -42,7 +42,7 @@ internal static class DodgeDiceHealthBarReadyPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "DodgeDiceHealthBar.Ready",
                 exception);
         }
@@ -97,7 +97,7 @@ internal static class DodgeDiceHealthBarReadyPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "DodgeDiceHealthBar.Apply",
                 exception);
         }

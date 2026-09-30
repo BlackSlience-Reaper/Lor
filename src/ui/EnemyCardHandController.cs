@@ -4,6 +4,7 @@ using Godot;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.UI;
@@ -27,9 +28,6 @@ internal interface IEnemyCardRuntimeOwner
 
 internal static class EnemyCardIntentRuntimePatch
 {
-    private static readonly HashSet<string> LoggedRuntimeIntentRefreshes = [];
-    private static readonly HashSet<string> LoggedMoveIntentRefreshes = [];
-
     internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance, IEnumerable<Creature> targets)
     {
         try
@@ -99,9 +97,11 @@ internal static class EnemyCardIntentRuntimePatch
                                   + attachedCount
                                   + "/"
                                   + displayIntents.Count;
-        if (displayCards.Count > 0 && LoggedRuntimeIntentRefreshes.Add(displaySignature))
+        // 布局日志只在 Debug 下按签名去重：签名含运行时实例与计划下标，每回合都会变，
+        // 常开时每个敌人每回合一条，去重表也会一直增长。RenderMoveIntents 同理。
+        if (displayCards.Count > 0 && LorLog.IsDebugEnabled && LorLog.FirstTime("EnemyCards.RuntimeIntents:" + displaySignature))
         {
-            Log.Info("[LibraryOfRuina.EnemyCards] Attached enemy cards to runtime intent nodes: owner="
+            LorLog.Debug("[LibraryOfRuina.EnemyCards] Attached enemy cards to runtime intent nodes: owner="
                      + creature.Monster!.Id.Entry
                      + " cards="
                      + string.Join(",", displayCards.Select(static card => card.Id))
@@ -137,9 +137,9 @@ internal static class EnemyCardIntentRuntimePatch
                                   + attachedCount
                                   + "/"
                                   + displayIntents.Count;
-        if (LoggedMoveIntentRefreshes.Add(displaySignature))
+        if (LorLog.IsDebugEnabled && LorLog.FirstTime("EnemyCards.MoveIntents:" + displaySignature))
         {
-            Log.Info("[LibraryOfRuina.EnemyCards] Attached enemy cards to move intent nodes: owner="
+            LorLog.Debug("[LibraryOfRuina.EnemyCards] Attached enemy cards to move intent nodes: owner="
                      + creature.Monster.Id.Entry
                      + " move="
                      + creature.Monster.NextMove.StateId

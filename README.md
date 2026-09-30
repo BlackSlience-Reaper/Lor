@@ -16,6 +16,16 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 | STS2-RitsuLib | 0.6.2 | https://github.com/BAKAOLC/STS2-RitsuLib |
 | ActLikeIt2 | 0.2.2 | https://github.com/BlackSlience-Reaper/ActLikeIt2 |
 
+## 使用说明 / Notes
+
+**主界面音乐**：启用本模组后，主界面默认改为播放本模组的 BGM，替换原版主界面音乐。想听原版音乐时，在设置里「废墟图书馆」一行点「模组设置」，进入「音乐与音效」，先勾选「展开音乐与音效设置」，再关闭「启用自定义主界面BGM」。关闭「启用废墟图书馆内容」也会恢复原版音乐。
+
+**Main menu music**: with this mod enabled, the main menu plays the mod's own BGM instead of the vanilla track by default. To keep the vanilla music, open Settings, click "Mod Configuration" on the "Library of Ruina" row, go to "Music and Sound Effects", turn on "Expand audio settings", then turn off "Enable custom main menu BGM". Turning off "Enable Library of Ruina content" also restores the vanilla music.
+
+**调试日志**：逐张牌、逐次伤害之类的详细日志属于 Debug 级别，默认不输出。需要时用启动参数 `-log Generic Debug`，或在开发者控制台输入 `log debug`（这会同时打开原版的 Debug 日志）。
+
+**Debug logging**: verbose per-card and per-hit logs are at Debug level and are off by default. Enable them with the launch option `-log Generic Debug`, or type `log debug` in the developer console (this also enables the game's own Debug logs).
+
 ## 构建 / Building
 
 需要 .NET 9 SDK 和 Godot 4.5.1 .NET 版。

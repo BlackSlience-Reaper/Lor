@@ -83,7 +83,7 @@ internal static class CounterIntentVisualPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "CounterIntentVisual.UpdateIntent",
                 exception);
             return IntentDecoratorOutcome.Failed;
@@ -148,7 +148,7 @@ internal static class CounterIntentAppendPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "CounterIntentAppend.UpdateIntent",
                 exception);
             return IntentDecoratorOutcome.Failed;

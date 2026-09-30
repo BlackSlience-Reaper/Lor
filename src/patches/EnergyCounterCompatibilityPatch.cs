@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Logging;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
@@ -20,7 +20,6 @@ public static class EnergyCounterCompatibilityPatch
     private static bool ExpectsBurstVfx => VanillaPrivate.EnergyCounterBackParticles.IsAvailable;
     private static readonly Type ParticlesContainerType = typeof(NParticlesContainer);
 
-    private static bool _loggedCompatFix;
 
     [HarmonyPrefix]
     public static void Prefix(NEnergyCounter __instance)
@@ -84,11 +83,9 @@ public static class EnergyCounterCompatibilityPatch
         counter.AddChild(alias);
         alias.Owner = counter;
 
-        if (!_loggedCompatFix)
-        {
-            _loggedCompatFix = true;
-            Log.Warn("[EnergyCounterCompat] Added runtime-compatible energy counter VFX alias nodes.");
-        }
+        LorLog.WarnOnce(
+            "EnergyCounterCompat.AliasAdded",
+            "[EnergyCounterCompat] Added runtime-compatible energy counter VFX alias nodes.");
     }
 
     private static Type? GetExpectedType(string aliasName)

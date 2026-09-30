@@ -34,7 +34,7 @@ internal static class ChordEgoIntentDimPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "ChordEgoIntentDim.UpdateVisuals",
                 exception);
             return IntentDecoratorOutcome.Failed;

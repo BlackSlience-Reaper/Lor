@@ -4,6 +4,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -40,7 +41,6 @@ internal static class NonCombatRunBgmController
     private static bool _suppressRunMusicStopHook;
     private static bool _isRestoringRunMusic;
     private static bool _deferredSyncPending;
-    private static bool _loggedLoadError;
     private static float _resumePositionSeconds;
 
     public static void Initialize()
@@ -434,11 +434,9 @@ internal static class NonCombatRunBgmController
         AudioStream? stream = ResourceLoader.Load<AudioStream>(TrackPath);
         if (stream == null)
         {
-            if (!_loggedLoadError)
-            {
-                _loggedLoadError = true;
-                Log.Error("[" + LogTag + "] Unable to load audio stream: " + TrackPath);
-            }
+            LorLog.ErrorOnce(
+                "NonCombatRunBgmController.LoadLoopStream",
+                "[" + LogTag + "] Unable to load audio stream: " + TrackPath);
 
             return null;
         }
