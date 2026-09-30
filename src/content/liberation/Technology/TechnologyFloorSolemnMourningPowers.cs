@@ -51,7 +51,9 @@ public sealed class SolemnMourningRedemptionHandPower : LibraryOfRuinaPowerModel
         public int TriggerProgress;
     }
 
-    private const int MaxSealedCardsPerTurn = 4;
+    // 文案的 {MaxCards}、本能力的计数上限、封印附魔的可打出判定共用这一个值；计数到上限后，
+    // 同一回合里再有封印牌就不能打出。
+    internal const int MaxSealedCardsPerTurn = 4;
 
     protected override string LegacyPowerId => "SOLEMN_MOURNING_REDEMPTION_HAND_POWER";
 

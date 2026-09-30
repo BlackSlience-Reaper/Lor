@@ -22,6 +22,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
@@ -44,6 +45,7 @@ namespace LibraryOfRuinaVerification;
 /// <item><c>settlement-stores</c>：六层结算记录在离开本局后回到初值。</item>
 /// <item><c>settlement-reload</c>：上一局留下待结算标志后，读入停在语言层终局奖励界面的另一局，结算事件的击杀数取自这一局的遭遇。</item>
 /// <item><c>solemn-mourning</c>：战斗中途退出后开新局，救赎之手在新战斗里照常计入封印牌。</item>
+/// <item><c>solemn-mourning-limit</c>：救赎之手计满 4 张封印牌后，同一回合里第 5 张封印牌不能打出（文案“每回合最多打出 4 张”）。</item>
 /// <item><c>combat-tables</c>：三份死亡归因表与顿悟卡触发表在离开本局后清空。</item>
 /// <item><c>page-preselect</c>：假双人局里一名玩家的书页预选等待期间，另一名玩家的书页遗物获得后跳过选择，照常移除。</item>
 /// </list>
@@ -86,6 +88,7 @@ internal static class StaticStateLifecycleVerificationPatch
             await RunGuarded("settlement-stores", VerifySettlementStores);
             await RunGuarded("settlement-reload", VerifySettlementReload);
             await RunGuarded("solemn-mourning", VerifySolemnMourningCounter);
+            await RunGuarded("solemn-mourning-limit", VerifySolemnMourningLimit);
             await RunGuarded("combat-tables", VerifyCombatTables);
             await RunGuarded("page-preselect", VerifyPagePreselect);
             if (Failures.Count > 0)
@@ -222,6 +225,46 @@ internal static class StaticStateLifecycleVerificationPatch
         int secondStrength = await PlaySealedCards(second, 1);
         Trace("solemn-mourning", "second", "strength=" + secondStrength);
         Require(secondStrength == 1, "The first sealed card in a new run gave " + secondStrength + " Strength.");
+    }
+
+    private static async Task VerifySolemnMourningLimit()
+    {
+        // 上限写成字面量 4（文案的数），不引用主模组常量，同一个验证程序集可以配修复前的主模组跑。
+        const int limit = 4;
+        CombatState combatState = await StartFight("STATICSTATE_SOLEMN_LIMIT");
+        Creature boss = combatState.Enemies.First(static enemy => enemy.IsAlive);
+        Player player = combatState.Players.First();
+        await WaitUntil(
+            () => !CombatManager.Instance.PlayerActionsDisabled && player.PlayerCombatState!.Hand.Cards.Count > 0,
+            "first player turn");
+        await WaitFrames(4);
+        var context = new ThrowingPlayerChoiceContext();
+        SolemnMourningRedemptionHandPower hand = await PowerCmdCompat.Apply<SolemnMourningRedemptionHandPower>(
+                context, boss, 1m, boss, null, silent: true)
+            ?? throw new InvalidOperationException("Redemption Hand was not applied.");
+        CardModel[] cards = player.PlayerCombatState!.AllCards
+            .Where(static card => !SolemnMourningPersistentSealAffliction.IsAnySeal(card))
+            .Take(limit + 1)
+            .ToArray();
+        Require(cards.Length == limit + 1, "Not enough cards to seal.");
+        foreach (CardModel card in cards)
+        {
+            await CardCmd.Afflict<SolemnMourningPersistentSealAffliction>(card, 1);
+            Require(SolemnMourningPersistentSealAffliction.IsAnySeal(card), "Could not seal " + card.Id.Entry + ".");
+        }
+
+        for (int i = 0; i < limit; i++)
+        {
+            Require(Hook.ShouldPlay(combatState, cards[i], out _, AutoPlayType.None),
+                "Sealed card " + (i + 1) + " was blocked before the limit.");
+            await hand.AfterCardPlayed(context, CreateCardPlay(cards[i]));
+        }
+
+        bool lastPlayable = Hook.ShouldPlay(combatState, cards[limit], out AbstractModel? preventer, AutoPlayType.None);
+        Trace("solemn-mourning-limit", "fifth", "playable=" + lastPlayable
+            + "|preventer=" + (preventer?.GetType().Name ?? "none"));
+        Require(!lastPlayable && preventer is SolemnMourningPersistentSealAffliction,
+            "The fifth sealed card in one turn was still playable.");
     }
 
     private static async Task<int> PlaySealedCards(CombatState combatState, int count)

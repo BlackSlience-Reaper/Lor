@@ -8,8 +8,6 @@ namespace LibraryOfRuina.content.liberation.Technology;
 
 public sealed class SolemnMourningPersistentSealAffliction : AfflictionModel
 {
-    private const int MaxSealedCardsPerTurn = 6;
-
     // 本回合已计入救赎之手的封印牌数，全队共用一个计数，玩家回合开始时由救赎之手清零。
     // 按战斗状态存放：同一场战斗里两端按同样的出牌顺序累加；读档重开的战斗、之后的战斗和另一局都从 0 开始，
     // 不会读到上一场没有清零（例如战斗中途退出）留下的值。
@@ -28,7 +26,10 @@ public sealed class SolemnMourningPersistentSealAffliction : AfflictionModel
     public override bool ShouldPlay(CardModel card, AutoPlayType autoPlayType)
     {
         if (card != Card) return true;
-        return GetSealedCardsPlayedThisTurn(card.CombatState) < MaxSealedCardsPerTurn;
+        // 原版 CanPlay 与自动打出都经 Hook.ShouldPlay 问到这里；计数由救赎之手在出牌后累加、玩家回合开始时清零，
+        // 两端按同样的出牌顺序得到同样的结果。
+        return GetSealedCardsPlayedThisTurn(card.CombatState)
+               < SolemnMourningRedemptionHandPower.MaxSealedCardsPerTurn;
     }
 
     internal static bool IsPersistentSeal(CardModel card) =>
