@@ -9,6 +9,7 @@ usage: check_res_paths.py                          检查；有坏路径时列�
 
 判定规则：
 - 只检查“完整”字面量：不是插值字符串（$"…"），两侧都没有 `+`，不含 `{`（string.Format 模板）。
+  字面量按 C# 运行期值判断（普通字符串解码转义，verbatim 还原 "" ，原始字符串去缩进与首尾换行），每次运行先跑解码自检。
   其余含 res:// 的字面量按“拼接/插值/模板”计数，不检查——它们的最终路径在运行时才确定。
 - 最后一段没有扩展名的完整字面量是前缀常量（目录，或 BossNodePath 这类由原版补 .png 的文件名前缀），
   检查至少有一个文件以它开头。
@@ -36,9 +37,54 @@ PREFIX = "res://"
 ATLAS_SPRITE = re.compile(r"^images/atlases/([^/]+)\.sprites/(.+)\.tres$")
 
 
+SIMPLE_ESCAPES = {"'": "'", '"': '"', "\\": "\\", "0": "\0", "a": "\a", "b": "\b", "f": "\f",
+                  "n": "\n", "r": "\r", "t": "\t", "v": "\v", "e": "\x1b"}
+
+
+def decode_regular(body):
+    """普通字符串字面量的运行期值：处理 \\n、\\uXXXX、\\UXXXXXXXX、\\xH{1,4} 等转义。"""
+    out, k, n = [], 0, len(body)
+    while k < n:
+        ch = body[k]
+        if ch != "\\" or k + 1 >= n:
+            out.append(ch)
+            k += 1
+            continue
+        esc = body[k + 1]
+        if esc in SIMPLE_ESCAPES:
+            out.append(SIMPLE_ESCAPES[esc])
+            k += 2
+        elif esc == "u":
+            out.append(chr(int(body[k + 2:k + 6], 16)))
+            k += 6
+        elif esc == "U":
+            out.append(chr(int(body[k + 2:k + 10], 16)))
+            k += 10
+        elif esc == "x":
+            m = re.match(r"[0-9A-Fa-f]{1,4}", body[k + 2:])
+            out.append(chr(int(m.group(0), 16)))
+            k += 2 + len(m.group(0))
+        else:
+            out.append(esc)
+            k += 2
+    return "".join(out)
+
+
+def decode_raw(body):
+    """原始字符串（\"\"\"…\"\"\"）的运行期值。多行形式：去掉开头引号后的换行与结尾引号前的换行，
+    每行去掉与结尾引号所在行相同的前导空白（C# 11 规则）；单行形式原样。"""
+    if "\n" not in body:
+        return body
+    lines = body.split("\n")
+    indent = lines[-1] if lines[-1].strip() == "" else ""
+    inner = lines[1:-1]
+    return "\n".join(line[len(indent):] if line.startswith(indent) else line.lstrip() for line in inner).replace("\r", "")
+
+
 def read_literal(text, i, out):
     """text[i] 是 $、@ 或 "：若从这里开始一个字符串字面量，把它（以及插值洞里的嵌套字面量）追加到 out，
-    元素为 (起点, 终点, 是否插值, 内容)，返回终点；不是字面量时返回 i + 1。"""
+    元素为 (起点, 终点, 是否插值, 运行期值)，返回终点；不是字面量时返回 i + 1。
+    运行期值按 C# 规则解码：普通字符串处理转义，verbatim 把 \"\" 还原成 \"，原始字符串去掉缩进与首尾换行。"""
     n = len(text)
     j = i
     interpolated = verbatim = False
@@ -49,9 +95,13 @@ def read_literal(text, i, out):
     if j >= n or text[j] != '"':
         return i + 1
     if text.startswith('"""', j):
-        end = text.find('"""', j + 3)
-        end = n if end < 0 else end + 3
-        out.append((i, end, interpolated, text[j + 3:end - 3]))
+        quotes = 3
+        while text.startswith('"', j + quotes):
+            quotes += 1
+        delimiter = '"' * quotes
+        end = text.find(delimiter, j + quotes)
+        end = n if end < 0 else end + quotes
+        out.append((i, end, interpolated, decode_raw(text[j + quotes:end - quotes])))
         return end
     j += 1
     start = j
@@ -85,8 +135,35 @@ def read_literal(text, i, out):
             j = skip_char(text, j)
         else:
             j += 1
-    out.append((i, j + 1, interpolated, text[start:j]))
+    body = text[start:j]
+    value = body.replace('""', '"') if verbatim else decode_regular(body)
+    out.append((i, j + 1, interpolated, value))
     return j + 1
+
+
+SELF_TEST_CASES = [
+    # (C# 源码片段, 期望的字面量运行期值)
+    ('var a = "res://a/b.png";', ["res://a/b.png"]),
+    ('var a = @"res://a/""q"".png";', ['res://a/"q".png']),
+    ('var a = "r\\u0065s://esc/u.png";', ["res://esc/u.png"]),
+    ('var a = "res:\\x2F/esc/x.png";', ["res://esc/x.png"]),
+    ('var a = """res://raw/one.png""";', ["res://raw/one.png"]),
+    ('const string P = """\n    res://raw/multi.png\n    """;', ["res://raw/multi.png"]),
+    ('var a = """"res://raw/"""quoted.png"""";', ['res://raw/"""quoted.png']),
+    ('// "res://comment.png"\nvar c = \'"\'; var a = "res://after/char.png";', ["res://after/char.png"]),
+]
+
+
+def self_test():
+    """字面量解码的自检：普通、verbatim、转义、单行与多行原始字符串、注释与字符字面量。"""
+    failures = []
+    for source, expected in SELF_TEST_CASES:
+        got = [value for _, _, _, value in iter_string_literals(source)]
+        if got != expected:
+            failures.append(f"{source!r}: expected {expected!r}, got {got!r}")
+    for failure in failures:
+        print(f"check_res_paths self-test failed: {failure}", file=sys.stderr)
+    return not failures
 
 
 def skip_char(text, i):
@@ -225,6 +302,8 @@ FOOTER = ("# 由 tools/check_res_paths.py --generate <原版.pck> <LibraryOfRuin
 
 def main():
     args = sys.argv[1:]
+    if not self_test():
+        return 1
     checked, skipped = collect()
     repo = repo_files()
     missing = sorted({(p, w) for p, w in checked if not repo.has(p[len(PREFIX):])})
