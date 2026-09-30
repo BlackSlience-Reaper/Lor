@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -120,12 +121,12 @@ public sealed class KingOfGreedPageRelic : ModalPageRelic<KingOfGreedPageMode>
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == Owner.Creature.Side)
+        if (TurnParticipants.IsOwnTurn(Owner.Creature, side, participants))
         {
             HappinessPathEnduranceThisTurn = 0;
             UpdateModeUiState();
         }
-        else
+        else if (side != Owner.Creature.Side)
         {
             _blockedAttackersThisEnemyTurn.Clear();
             _receivedAttackThisEnemyTurn = false;
@@ -140,7 +141,7 @@ public sealed class KingOfGreedPageRelic : ModalPageRelic<KingOfGreedPageMode>
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != Owner.Creature.Side || !StunNextAttackerPending)
+        if (!TurnParticipants.IsOwnTurn(Owner.Creature, side, participants) || !StunNextAttackerPending)
         {
             return;
         }
