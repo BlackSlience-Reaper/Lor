@@ -290,8 +290,6 @@ LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace._current	harmless	scope	构�
 LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation._current	harmless	scope	Enter 写入模拟上下文，Dispose 还原为 previous；只在同步预览计算期间存在
 LibraryOfRuina.ui.DamagePreview.RolandDicePreviewModifiers._getPreview	harmless	cache	首次调用时 BindPreview 绑定委托
 LibraryOfRuina.ui.DamagePreview.RolandDicePreviewModifiers._initialized	harmless	once	首次绑定委托后置 true
-LibraryOfRuina.ui.EnemyCardIntentRuntimePatch.LoggedMoveIntentRefreshes	harmless	log	RenderMoveIntents 每个签名只记一次
-LibraryOfRuina.ui.EnemyCardIntentRuntimePatch.LoggedRuntimeIntentRefreshes	harmless	log	RenderRuntimeIntents 每个签名只记一次
 LibraryOfRuina.ui.LibraryHealthBarForecastFeature._initialized	harmless	once	Initialize 执行后置 true
 LibraryOfRuina.ui.LibraryHealthBarLockForegroundPatch.VisibilitySnapshots	instance	-	以 NHealthBar 为弱键：CaptureForecastContainers 写入可见性快照，RestoreForecastContainers 还原后移除
 LibraryOfRuina.ui.scene_transitions.LorexSceneTransitionController._activeReveal	harmless	ui	PlayRevealAsync/PlayPreparedRevealAsync 写入；完成后或 WaitForActiveRevealAsync 中置空；只影响转场

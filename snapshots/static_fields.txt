@@ -1971,8 +1971,6 @@ readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+PropertyName._unti
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay+PropertyName._untilRefresh	Godot.StringName
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlay.HasModeHotkey	System.Boolean
 readonly	LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	System.Reflection.MethodInfo
-readonly	LibraryOfRuina.ui.EnemyCardIntentRuntimePatch.LoggedMoveIntentRefreshes	System.Collections.Generic.HashSet`1[System.String]
-readonly	LibraryOfRuina.ui.EnemyCardIntentRuntimePatch.LoggedRuntimeIntentRefreshes	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.ui.EnemyCardIntentVisualNode+MethodName.ApplyCardHoverLayout	Godot.StringName
 readonly	LibraryOfRuina.ui.EnemyCardIntentVisualNode+MethodName.ApplyVisualState	Godot.StringName
 readonly	LibraryOfRuina.ui.EnemyCardIntentVisualNode+MethodName.CalculateBaseHoverPushDistance	Godot.StringName
