@@ -44,7 +44,7 @@ namespace LibraryOfRuinaVerification;
 /// 两端各自建两名玩家的局，房间序列相同。</item>
 /// <item><c>mp-load</c>：房主规范化旧存档时补建，报文往返后本地设置不同的客户端读到同一个值。</item>
 /// <item><c>daily-load</c>：联机每日挑战读档界面的修改器格子数量，以及带三种载体（本局设置、特邀嘉宾、第二升华）的存档经过该界面初始化后载体仍在。</item>
-/// <item><c>hidden</c>：三种载体都不创建顶栏图标。</item>
+/// <item><c>hidden</c>：三种载体都不创建顶栏图标；未注入模式安装的补丁里包含隐藏载体的三个补丁。</item>
 /// <item><c>wiring</c>：Neow 过滤排除载体；离开本局后抗性回到本地设置。</item>
 /// <item><c>mismatch</c>：两端注入状态不一致的判定与文案（开局报文、读档存档两条路径，房主注入 / 未注入两个方向）。</item>
 /// </list>
@@ -329,7 +329,8 @@ internal static class RunSettingsVerificationPatch
         Row("daily-load ok");
     }
 
-    // 三种载体的顶栏图标都不创建。
+    // 三种载体的顶栏图标都不创建；未注入模式要额外安装的补丁里包含三个隐藏补丁。未注入进程本身在这个套件里起不来，
+    // 这里核对的是它会安装的补丁表，以及这些补丁在本进程里的行为。
     private static void VerifyHiddenModifiers()
     {
         ModifierModel[] carriers =
@@ -349,6 +350,15 @@ internal static class RunSettingsVerificationPatch
         ModifierModel dailyModifier = ModifierModel.Pick2Good1Bad(new Rng(7uL), []).First();
         Require(!LibraryHiddenModifiers.IsHidden(dailyModifier), "hidden: a vanilla modifier is hidden");
 
+        Type[] required =
+        [
+            typeof(LibraryHiddenModifierTopBarPatch),
+            typeof(LibraryHiddenModifierEmptyContainerPatch),
+            typeof(LibraryHiddenModifierDailyLoadScreenPatch),
+        ];
+        bool installed = required.All(LibraryRunInjectionGuard.NonInjectedPatchTypes.Contains);
+        Row("hidden nonInjectedPatches=" + string.Join(",", LibraryRunInjectionGuard.NonInjectedPatchTypes.Select(static type => type.Name)));
+        Require(installed, "hidden: the non-injected process does not install the hidden-modifier patches");
         Row("hidden ok");
     }
 

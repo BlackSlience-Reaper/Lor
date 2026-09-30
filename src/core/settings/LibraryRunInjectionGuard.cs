@@ -32,13 +32,28 @@ internal static class LibraryRunInjectionGuard
     // 客户端 BeginRunLocally 看到的开局消息里有没有载体，由随后的 SetUpNewMultiplayer 取走。
     private static bool? _lobbyHostInjected;
 
-    /// <summary>未注入模式只装这几个类；注入模式下它们作为普通补丁由 LibraryPatcher 安装。</summary>
+    /// <summary>
+    /// 未注入模式只装这几个类；注入模式下它们作为普通补丁由 LibraryPatcher 安装。
+    /// 后三个隐藏本模组的状态载体：未注入的一端读取注入时开的旧局，存档里仍有特邀嘉宾、第二升华载体
+    /// （本局设置载体只在联机规范化时去掉，单人读档仍在），不装就会出现在顶栏，联机每日挑战读档界面还会越界。
+    /// </summary>
+    internal static readonly Type[] NonInjectedPatchTypes =
+    [
+        typeof(LibraryRunSettingsBeginRunLocallyPatch),
+        typeof(LibraryRunInjectionNewRunGuardPatch),
+        typeof(LibraryRunInjectionLoadGuardPatch),
+        typeof(LibraryRunInjectionCanonicalizePatch),
+        typeof(LibraryHiddenModifierTopBarPatch),
+        typeof(LibraryHiddenModifierEmptyContainerPatch),
+        typeof(LibraryHiddenModifierDailyLoadScreenPatch),
+    ];
+
     internal static void PatchForNonInjectedProcess(Harmony harmony)
     {
-        harmony.CreateClassProcessor(typeof(LibraryRunSettingsBeginRunLocallyPatch)).Patch();
-        harmony.CreateClassProcessor(typeof(LibraryRunInjectionNewRunGuardPatch)).Patch();
-        harmony.CreateClassProcessor(typeof(LibraryRunInjectionLoadGuardPatch)).Patch();
-        harmony.CreateClassProcessor(typeof(LibraryRunInjectionCanonicalizePatch)).Patch();
+        foreach (Type patchType in NonInjectedPatchTypes)
+        {
+            harmony.CreateClassProcessor(patchType).Patch();
+        }
     }
 
     internal static void RecordLobbyHost(bool hostSentCarrier) => _lobbyHostInjected = hostSentCarrier;
