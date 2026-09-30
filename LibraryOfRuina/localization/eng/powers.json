@@ -365,7 +365,7 @@
   "SMILING_BODIES_VOMIT_POWER.description": "At the start of each turn, gain 2 Strength.",
   "SMILING_BODIES_VOMIT_POWER.smartDescription": "At the start of each enemy turn, [gold]{OwnerName}[/gold] gains [red]{Strength}[/red] [gold]Strength[/gold].",
   "SMILING_BODIES_VOMIT_POWER.title": "Vomit",
-  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "Up to 6 sealed cards may be played per turn. For every 3 sealed cards played, Solemn Mourning gains 1 Strength.",
+  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "Up to 4 sealed cards may be played per turn. For every 3 sealed cards played, Solemn Mourning gains 1 Strength.",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.smartDescription": "Up to [blue]{MaxCards}[/blue] [gold]sealed[/gold] cards may be played per turn. For every [blue]{Threshold}[/blue] sealed cards played, [gold]{OwnerName}[/gold] gains [red]{StrengthGain}[/red] [gold]Strength[/gold].",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.title": "Redemption Hand",
   "SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.description": "Nullifies the next X attack intents.",

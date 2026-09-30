@@ -365,7 +365,7 @@
   "SMILING_BODIES_VOMIT_POWER.description": "各ターン開始時に筋力を2獲得します。",
   "SMILING_BODIES_VOMIT_POWER.smartDescription": "敵のターン開始時に、[gold]{OwnerName}[/gold]獲得[red]{Strength}[/red]ポイント[gold]筋力[/gold]。",
   "SMILING_BODIES_VOMIT_POWER.title": "嘔吐",
-  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "1ターンに最大6枚の封印カードをプレイできます。 3コインプレイするごとに、厳粛な喪は1の力を得ます。",
+  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "1ターンに最大4枚の封印カードをプレイできます。封印カードを3枚プレイするごとに、厳粛な喪は筋力を1得ます。",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.smartDescription": "1ターンあたりの最大カード枚数[blue]{MaxCards}[/blue]キルト[gold]封印[/gold]カードだ。 彼が攻撃するたびに、[blue]{Threshold}[/blue]メイ、[gold]{OwnerName}[/gold]獲得[red]{StrengthGain}[/red]ポイント[gold]筋力[/gold]。",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.title": "贖罪の手",
   "SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.description": "敵の最初のXの意図を無効化する。",
