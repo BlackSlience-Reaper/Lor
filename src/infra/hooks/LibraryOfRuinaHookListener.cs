@@ -4,6 +4,7 @@ using LibraryOfRuina.features.settings;
 using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.infra.hooks;
 
@@ -23,7 +24,7 @@ namespace LibraryOfRuina.infra.hooks;
 /// 只走 <c>CombatState</c> 的钩子（回合、能量、数值修正等）不经过局级订阅者，这里收不到。
 /// </para>
 /// <para>
-/// 订阅委托在每次迭代监听者时调用，是否参与由当时的设置决定。联机两端必须用同一设置，否则一端收不到钩子。
+/// 订阅委托在每次迭代监听者时调用，是否参与由本局设置（<see cref="LibraryRunSettingsModifier"/>）决定。
 /// </para>
 /// </summary>
 public sealed class LibraryOfRuinaHookListener : ModifierModel
@@ -33,12 +34,13 @@ public sealed class LibraryOfRuinaHookListener : ModifierModel
     private static AbstractModel[]? _listeners;
 
     internal static void Subscribe() =>
-        ModHelper.SubscribeForRunStateHooks(SubscriptionId, static _ => ActiveListeners());
+        ModHelper.SubscribeForRunStateHooks(SubscriptionId, static runState => ActiveListeners(runState));
 
-    private static IEnumerable<AbstractModel> ActiveListeners()
+    private static IEnumerable<AbstractModel> ActiveListeners(RunState runState)
     {
-        // 关闭“启用废墟图书馆内容”的局里本模组不出现解放战等内容，整个监听者不参与。
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
+        // 关闭“启用废墟图书馆内容”的局里本模组不出现解放战等内容，整个监听者不参与。按本局设置判断，
+        // 联机两端读到的是房主的同一个值。
+        if (!LibraryRunSettings.IsMonsterExtensionEnabled(runState))
         {
             return [];
         }
