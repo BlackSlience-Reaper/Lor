@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.reverberation.CryingChildren;
@@ -19,7 +18,6 @@ public sealed class CryingChildrenEncounter : ReverberationEncounterModel
 
     internal static readonly string[] ChildSlots = ["child_1", "child_2", "child_3"];
 
-    [SavedProperty]
     public int LastChildrenPlanRound { get; private set; } = -1;
 
     protected override IReadOnlyList<string> EnemySlots => [PhilipSlot, .. ChildSlots];

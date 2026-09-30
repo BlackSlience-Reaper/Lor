@@ -762,7 +762,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             LanguageFloorMoveKind.DecisiveStrike,
             LanguageFloorMoveKind.ExplosiveShot,
             unrelievedAnger: true);
-        SavedProperties scarletProps = SavedProperties.From(scarletSource)
+        SavedProperties scarletProps = CombatStateProperties.From(scarletSource)
             ?? throw new InvalidOperationException("Scarlet SavedProperties were empty.");
         var scarletClone =
             (LanguageFloorScarletScar)ModelDb.Monster<LanguageFloorScarletScar>().ToMutable();
@@ -788,7 +788,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             LanguageFloorMoveKind.BrutalFangs,
             LanguageFloorMoveKind.HorrifyingClaws,
             LanguageFloorMoveKind.BloodstainedHunt);
-        SavedProperties wolfProps = SavedProperties.From(wolfSource)
+        SavedProperties wolfProps = CombatStateProperties.From(wolfSource)
             ?? throw new InvalidOperationException("Wolf SavedProperties were empty.");
         var wolfClone =
             (LanguageFloorLostEverythingWolf)ModelDb
@@ -1119,7 +1119,7 @@ internal static class LanguageFloorLiberationVerificationPatch
         Require(fight.CobaltCreature.GetPower<LanguageFloorHideInDarknessPassivePower>() == null,
             "Cobalt Scar started with Big Bad Wolf passives.");
 
-        SavedProperties saved = SavedProperties.From(fight.Cobalt)
+        SavedProperties saved = CombatStateProperties.From(fight.Cobalt)
             ?? throw new InvalidOperationException("Cobalt SavedProperties were empty.");
         var clone = (LanguageFloorCobaltScar)ModelDb
             .Monster<LanguageFloorCobaltScar>()
@@ -1775,7 +1775,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             Require(fight.Cobalt.GetShadowCardsPlayed(playerModel) == 0,
                 "Shadow Ambush did not reset its per-player counter at player-turn start.");
 
-            SavedProperties savedCounters = SavedProperties.From(fight.Cobalt)
+            SavedProperties savedCounters = CombatStateProperties.From(fight.Cobalt)
                 ?? throw new InvalidOperationException(
                     "Shadow Ambush counters produced no SavedProperties.");
             var counterClone = (LanguageFloorCobaltScar)ModelDb

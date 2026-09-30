@@ -10,7 +10,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using static LibraryOfRuina.reverberation.CryingChildren.CryingChildrenRules;
 
@@ -172,10 +171,8 @@ public sealed class CryingHotHeartPower : CryingPassivePower
 
 public sealed class CryingSwiftPower : CryingPassivePower
 {
-    [SavedProperty]
     public int ObtainedRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int ActiveRound { get; private set; } = -1;
 
     public override PowerType Type => PowerType.Buff;

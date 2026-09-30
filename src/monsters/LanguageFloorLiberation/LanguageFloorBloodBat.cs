@@ -6,7 +6,6 @@ using LibraryOfRuina.powers.LanguageFloorLiberation;
 using LibraryOfRuina.powers.Nosferatu;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
 
@@ -17,7 +16,6 @@ public sealed class LanguageFloorBloodBat : NosferatuBloodBatBase
     public const int HydrophobiaBloodThreshold = 1;
     public const int HydrophobiaStrong = 2;
 
-    [SavedProperty]
     public int LastHydrophobiaRound { get; private set; } = -1;
 
     protected override string RightBatSlotName =>

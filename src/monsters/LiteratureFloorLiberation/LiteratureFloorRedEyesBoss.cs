@@ -25,7 +25,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.LiteratureFloorLiberation;
@@ -91,7 +90,6 @@ public sealed class LiteratureFloorRedEyesBoss :
     private bool _backgroundTextStarted;
     private bool _backgroundTextHuntMode;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool HuntPending { get; private set; }
 
     public override int LiberationPhase => Phase;

@@ -20,7 +20,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using static LibraryOfRuina.reverberation.GearChurch.GearChurchRules;
 
@@ -31,16 +30,12 @@ public abstract class GearChurchMonsterBase : SpecialGuestMonsterBase, ITargeted
     private MoveState? _action;
     private AbstractIntent[]? _intents;
 
-    [SavedProperty]
     public int TargetCombatId { get; private set; } = -1;
 
-    [SavedProperty]
     public int LastPerformedMove { get; private set; } = -1;
 
-    [SavedProperty]
     public int NextMoveSlot { get; private set; }
 
-    [SavedProperty]
     public int LastPreparedRound { get; protected set; } = -1;
 
     public override bool HasDeathSfx => false;
@@ -301,19 +296,14 @@ public sealed class ReverberationEileen : GearChurchMonsterBase, IFinalHpLossCla
 {
     private bool _wasChaoedBeforeStun;
 
-    [SavedProperty]
     public int Phase { get; private set; } = 1;
 
-    [SavedProperty]
     public bool TransitionPending { get; private set; }
 
-    [SavedProperty]
     public int PhaseFollowerDeaths { get; private set; }
 
-    [SavedProperty]
     public int LastFollowerDeathRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int LastChaoRound { get; private set; } = -1;
 
     public override int MinInitialHp => HpValue(EileenMinHp, EileenHighMinHp);
@@ -520,7 +510,6 @@ public sealed class ReverberationEileen : GearChurchMonsterBase, IFinalHpLossCla
 
 public sealed class GearChurchFollower : GearChurchMonsterBase
 {
-    [SavedProperty]
     public bool DeathRecorded { get; private set; }
 
     public override int MinInitialHp => HpValue(FollowerMinHp, FollowerHighMinHp);

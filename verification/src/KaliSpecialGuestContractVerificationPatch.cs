@@ -284,10 +284,11 @@ internal static class KaliSpecialGuestContractVerificationPatch
                      nameof(Kali.PersistedEnemyCardPlanNumber),
                  })
         {
-            PropertyInfo property = typeof(Kali).GetProperty(propertyName, InstanceFlags)
+            _ = typeof(Kali).GetProperty(propertyName, InstanceFlags)
                 ?? throw new MissingMemberException(typeof(Kali).FullName, propertyName);
-            Require(property.GetCustomAttribute<SavedPropertyAttribute>() != null,
-                $"Kali.{propertyName} is not save-persistent.");
+            // 怪物状态不进存档也不同步；这里守住它们不再带 [SavedProperty]，并且在套件的读档模拟里。
+            Require(CombatStateProperties.IsListed(typeof(Kali), propertyName),
+                $"Kali.{propertyName} is a SavedProperty again, or missing from the reload list.");
         }
     }
 

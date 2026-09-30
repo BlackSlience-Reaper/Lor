@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.powers.SocialFloorLiberation;
 
@@ -46,19 +45,15 @@ public sealed class SocialFloorCouragePower : SocialFloorPowerModel
 
     public override PowerStackType StackType => PowerStackType.Single;
 
-    [SavedProperty]
     public string SerializedHolderNetId { get; private set; } = "0";
 
     public ulong HolderNetId =>
         SocialFloorPlayerMechanics.ParseHolderNetId(SerializedHolderNetId);
 
-    [SavedProperty]
     public int PendingTurnStartActivations { get; private set; }
 
-    [SavedProperty]
     public bool IsEnergyOverrideActive { get; private set; }
 
-    [SavedProperty]
     public bool RemoveAtNextPlayerTurnEnd { get; private set; }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -269,19 +264,15 @@ public sealed class SocialFloorScaredyCatPower : SocialFloorPowerModel
 
     public override PowerStackType StackType => PowerStackType.Single;
 
-    [SavedProperty]
     public string SerializedHolderNetId { get; private set; } = "0";
 
     public ulong HolderNetId =>
         SocialFloorPlayerMechanics.ParseHolderNetId(SerializedHolderNetId);
 
-    [SavedProperty]
     public int CardsSubmittedThisTurn { get; private set; }
 
-    [SavedProperty]
     public bool CourageCardGranted { get; private set; }
 
-    [SavedProperty]
     public bool IsHolderActive { get; private set; } = true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -405,7 +396,6 @@ public sealed class SocialFloorCowardPower : SocialFloorPowerModel
 
     public override PowerStackType StackType => PowerStackType.Single;
 
-    [SavedProperty]
     public string SerializedHolderNetId { get; private set; } = "0";
 
     public ulong HolderNetId =>
@@ -493,13 +483,11 @@ public sealed class SocialFloorOzmaPower : SocialFloorPowerModel
 
     public override PowerStackType StackType => PowerStackType.Single;
 
-    [SavedProperty]
     public string SerializedHolderNetId { get; private set; } = "0";
 
     public ulong HolderNetId =>
         SocialFloorPlayerMechanics.ParseHolderNetId(SerializedHolderNetId);
 
-    [SavedProperty]
     public bool IsHolderActive { get; private set; } = true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
