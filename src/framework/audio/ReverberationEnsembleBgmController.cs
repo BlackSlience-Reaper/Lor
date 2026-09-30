@@ -5,6 +5,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -36,7 +37,7 @@ internal static class ReverberationEnsembleBgmController
 
     internal static bool IsActScope =>
         LibraryOfRuinaSettings.RuntimeSideEffectsEnabled
-        && RunManager.Instance.DebugOnlyGetState()?.Act is ReverberationEnsembleAct;
+        && CurrentRun.State?.Act is ReverberationEnsembleAct;
 
     internal static bool OwnsMusic => ResolveTrack() != null;
 
@@ -69,7 +70,7 @@ internal static class ReverberationEnsembleBgmController
 
     private static void OnCombatWon(CombatRoom room)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state?.Act is not ReverberationEnsembleAct
             || !ReferenceEquals(room.CombatState.RunState, state))
         {
@@ -89,7 +90,7 @@ internal static class ReverberationEnsembleBgmController
 
     private static string? ResolveTrack()
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (!IsActScope || _cleaningUp || NonInteractiveMode.IsActive || !RunManager.Instance.IsInProgress
             || state == null || (ReferenceEquals(_run, state) && _lost))
         {
@@ -137,7 +138,7 @@ internal static class ReverberationEnsembleBgmController
         _syncing = true;
         try
         {
-            RunState? state = RunManager.Instance.DebugOnlyGetState();
+            RunState? state = CurrentRun.State;
             if (!ReferenceEquals(_run, state))
             {
                 Reset();

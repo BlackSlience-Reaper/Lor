@@ -4,6 +4,7 @@ using LibraryOfRuina.content.guests;
 using LibraryOfRuina.content.specialguests;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
@@ -24,7 +25,7 @@ internal static class BookShadowEncounterReplacement
             || !CanReplaceRoomType(roomType)
             || current is ISpecialGuestEncounterStage
             || LiberationBossRegistry.IsLiberationEncounter(current)
-            || RunManager.Instance.DebugOnlyGetState() is not RunState runState)
+            || CurrentRun.State is not RunState runState)
         {
             return false;
         }

@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using HarmonyLib;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
@@ -49,7 +50,7 @@ internal static class LibrarySecondAscensionState
     public static int GetLevelFromModifiers(IReadOnlyList<ModifierModel> modifiers) =>
         Clamp(modifiers.OfType<LibrarySecondAscensionModifier>().FirstOrDefault()?.Level ?? 0);
 
-    public static int GetCurrentRunLevel() => GetRunLevel(RunManager.Instance.DebugOnlyGetState());
+    public static int GetCurrentRunLevel() => GetRunLevel(CurrentRun.State);
 
     public static bool HasLevel(LibrarySecondAscensionLevel level, IRunState? runState = null)
     {

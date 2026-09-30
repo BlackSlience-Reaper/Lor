@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -203,7 +204,7 @@ internal static class CombatSafetyNet
 
         try
         {
-            return CombatManager.Instance.DebugOnlyGetState();
+            return CurrentCombat.State;
         }
         catch
         {

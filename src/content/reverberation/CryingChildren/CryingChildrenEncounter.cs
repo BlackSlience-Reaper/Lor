@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -84,7 +85,7 @@ internal static class CryingChildrenHistoryReceptionPatch
 {
     private static bool Prefix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        RunState? run = RunManager.Instance.DebugOnlyGetState();
+        RunState? run = CurrentRun.State;
         if (__instance is ReverberationEnsembleAct
             && ReferenceEquals(run?.Act, __instance)
             && roomType == RoomType.Elite

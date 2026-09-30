@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
@@ -32,7 +33,7 @@ internal static class LiberationBossTopBarHoverPatch
             return true;
         }
 
-        IRunState? runState = RunManager.Instance.DebugOnlyGetState();
+        IRunState? runState = CurrentRun.State;
         if (runState == null)
         {
             return true;

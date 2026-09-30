@@ -8,6 +8,7 @@ using HarmonyLib;
 using LibraryOfRuina.content.specialguests.Iori;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Hooks;
@@ -231,7 +232,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
             _activeProceedTask = null;
         }
 
-        if (__instance.DebugOnlyGetState() is RunState eventRunState
+        if (CurrentRun.Of(__instance) is RunState eventRunState
             && eventRunState.CurrentRoom is EventRoom { CanonicalEvent: SpecialGuestEventBase }
             && SpecialGuestRunStateModifier.TryGet(eventRunState) is { ActiveGuestId: { } activeGuestId } eventState
             && eventState.CurrentStageIndex > 0
@@ -246,7 +247,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
             return false;
         }
 
-        if (__instance.DebugOnlyGetState() is not RunState runState
+        if (CurrentRun.Of(__instance) is not RunState runState
             || runState.CurrentRoom is not CombatRoom { Encounter: ISpecialGuestEncounterStage completed } combatRoom
             || !SpecialGuestRegistry.TryGet(completed.SpecialGuestId, out SpecialGuestDefinition? guest)
             || SpecialGuestRunStateModifier.TryGet(runState) is not { } state)
@@ -327,7 +328,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
             await nativeProceed;
             ReleaseFadeSuppression();
             suppressionHeld = false;
-            if (manager.DebugOnlyGetState() is not RunState runState
+            if (CurrentRun.Of(manager) is not RunState runState
                 || SpecialGuestRunStateModifier.TryGet(runState) is not { } state)
             {
                 gate.Completion.TrySetResult();
@@ -374,13 +375,13 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
                 suppressionHeld = false;
             }
 
-            if (manager.DebugOnlyGetState() is { } runState
+            if (CurrentRun.Of(manager) is { } runState
                 && SpecialGuestRunStateModifier.TryGet(runState) is { } state)
             {
                 state.SetValue(pending.TokenKey, null);
             }
 
-            if (manager.DebugOnlyGetState() is RunState currentRunState
+            if (CurrentRun.Of(manager) is RunState currentRunState
                 && currentRunState.CurrentRoom is EventRoom)
             {
                 try
@@ -464,7 +465,7 @@ internal static class SpecialGuestSuppressIntermediateParentFadeInPatch
     {
         // 只在特邀嘉宾阶段衔接、且原版已把房间恢复成嘉宾父事件时吞掉淡入；窗口内其他代码的 FadeIn 照常执行。
         if (!SpecialGuestTerminalRewardsProceedPatch.ShouldSuppressParentFadeIn
-            || RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom { CanonicalEvent: SpecialGuestEventBase })
+            || CurrentRun.State?.CurrentRoom is not EventRoom { CanonicalEvent: SpecialGuestEventBase })
         {
             return true;
         }

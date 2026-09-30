@@ -3,6 +3,7 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Models;
@@ -138,7 +139,7 @@ internal static class RnfmabjSpecialGuestBgmRemovedPatch
 
     private static void StopBgmIfEncounterWasCleared()
     {
-        CombatState? state = CombatManager.Instance?.DebugOnlyGetState();
+        CombatState? state = CurrentCombat.State;
         if (state?.Encounter is RnfmabjSpecialGuestEncounter
             && state.Enemies.All(static enemy =>
                 enemy.Monster is not RnfmabjMonsterBase))
@@ -154,7 +155,7 @@ internal static class RnfmabjSpecialGuestPlayerPositionPatch
     [HarmonyPostfix]
     private static void Postfix(List<NCreature> creatureNodes)
     {
-        if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom
+        if (CurrentRun.State?.CurrentRoom
             is not CombatRoom { Encounter: RnfmabjSpecialGuestEncounter })
         {
             return;

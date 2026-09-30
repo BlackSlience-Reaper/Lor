@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
@@ -38,7 +39,7 @@ internal static class LibraryRunSettings
 
     /// <summary>当前局是否启用废墟图书馆内容；没有局时为本地设置。</summary>
     internal static bool MonsterExtensionEnabled =>
-        IsMonsterExtensionEnabled(RunManager.Instance.DebugOnlyGetState());
+        IsMonsterExtensionEnabled(CurrentRun.State);
 
     internal static bool IsMonsterExtensionEnabled(IRunState? runState) =>
         Find(runState)?.MonsterExtensionEnabled ?? LibraryOfRuinaSettings.MonsterExtensionEnabled;

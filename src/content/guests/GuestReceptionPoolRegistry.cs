@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LibraryOfRuina.content.specialguests;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
@@ -184,7 +185,7 @@ internal static class GuestReceptionPoolRegistry
 
     private static void ResetLayerCycleIfRunChanged()
     {
-        ulong? currentRunSeed = RunManager.Instance?.DebugOnlyGetState()?.Rng.Seed;
+        ulong? currentRunSeed = CurrentRun.State?.Rng.Seed;
         if (_activeRunSeed == currentRunSeed)
         {
             return;

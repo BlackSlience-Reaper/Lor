@@ -4,6 +4,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -243,7 +244,7 @@ internal static class NonCombatRunBgmController
             return false;
         }
 
-        if (RunManager.Instance.DebugOnlyGetState()?.Act is not LibraryOfRuinaActModel)
+        if (CurrentRun.State?.Act is not LibraryOfRuinaActModel)
         {
             return false;
         }
@@ -537,7 +538,7 @@ internal static class NonCombatRunBgmController
             return;
         }
 
-        if (RunManager.Instance?.DebugOnlyGetState()?.CurrentRoom == null)
+        if (CurrentRun.State?.CurrentRoom == null)
         {
             return;
         }

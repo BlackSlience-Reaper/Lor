@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
@@ -83,7 +84,7 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
 
     // 用 Late：Start 一遍（以及排在前面的 Late，例如石化蟾蜍）结算完再播战前剧情，原版效果的先后与原来的后缀一致。
     public override Task BeforeCombatStartLate() =>
-        RunManager.Instance.DebugOnlyGetState() is { } runState
+        CurrentRun.State is { } runState
             ? SpecialGuestStageFlow.BeforeCombatStartAsync(runState)
             : Task.CompletedTask;
 

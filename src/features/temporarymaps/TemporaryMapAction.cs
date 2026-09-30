@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.networking;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions;
@@ -72,7 +73,7 @@ public sealed class TemporaryMapAction : GameAction
 
         IRunState? runState = player.RunState;
         if (runState == null
-            || !ReferenceEquals(RunManager.Instance.DebugOnlyGetState(), runState))
+            || !ReferenceEquals(CurrentRun.State, runState))
         {
             return;
         }
@@ -159,7 +160,7 @@ public sealed class TemporaryMapAction : GameAction
     {
         try
         {
-            IRunState? state = RunManager.Instance.DebugOnlyGetState();
+            IRunState? state = CurrentRun.State;
             var netService = RunManager.Instance.NetService;
             bool canSend = netService.Type == NetGameType.Singleplayer
                 || (netService.Type is NetGameType.Host or NetGameType.Client

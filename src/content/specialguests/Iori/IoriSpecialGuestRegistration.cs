@@ -5,6 +5,7 @@ using LibraryOfRuina.content.specialguests.Kali;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
@@ -391,7 +392,7 @@ public static class IoriSpecialGuestRegistration
         if (!RunManager.Instance.IsInProgress
             || !CombatManager.Instance.IsInProgress
             || !ReferenceEquals(
-                CombatManager.Instance.DebugOnlyGetState(),
+                CurrentCombat.State,
                 context.Room.CombatState))
         {
             return Task.CompletedTask;

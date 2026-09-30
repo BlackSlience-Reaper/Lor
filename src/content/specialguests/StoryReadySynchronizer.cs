@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.core.networking;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Multiplayer;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
@@ -354,7 +355,7 @@ public static class StoryReadySynchronizer
     {
         return manager.RunLobby != null
             ? RunLobbyEventsCompat.GetConnectedPlayerIds(manager)
-            : manager.DebugOnlyGetState()?.Players
+            : CurrentRun.Of(manager)?.Players
                 .Select(static player => player.NetId)
                 .ToArray()
               ?? Array.Empty<ulong>();
@@ -439,7 +440,7 @@ public static class StoryReadySynchronizer
 
     private static string BuildBarrierId(RunManager manager, string storyId)
     {
-        IRunState? state = manager.DebugOnlyGetState();
+        IRunState? state = CurrentRun.Of(manager);
         string location = state == null
             ? "no-run"
             : state.CurrentActIndex + ":" + (state.CurrentMapCoord?.ToString() ?? "none") + ":" + state.CurrentRoomCount;

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Hooks;
@@ -18,7 +19,7 @@ internal static class TechnologyFloorLiberationSettlementRedirect
 {
     internal static bool TryRedirect(RunManager __instance, ref Task __result)
     {
-        if (__instance.DebugOnlyGetState()?.CurrentRoom is not CombatRoom { Encounter: TechnologyFloorLiberationEncounter encounter })
+        if (CurrentRun.Of(__instance)?.CurrentRoom is not CombatRoom { Encounter: TechnologyFloorLiberationEncounter encounter })
         {
             return true;
         }
@@ -51,7 +52,7 @@ internal static class TechnologyFloorLiberationSettlementRedirect
 
     private static async Task RecoverLegacySingleKillDefeat(RunManager runManager)
     {
-        var state = runManager.DebugOnlyGetState();
+        var state = CurrentRun.Of(runManager);
         if (state == null)
         {
             return;

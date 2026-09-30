@@ -1,4 +1,5 @@
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Runs;
@@ -24,7 +25,7 @@ internal static class LibraryEncounterBossWeightPatch
     [HarmonyPostfix]
     private static void Postfix(RunManager __instance)
     {
-        LibraryEncounterWeighting.AfterRunRoomsGenerated(__instance.DebugOnlyGetState());
+        LibraryEncounterWeighting.AfterRunRoomsGenerated(CurrentRun.Of(__instance));
     }
 }
 
@@ -44,6 +45,6 @@ internal static class LibraryEncounterBossBeforeMapPatch
     [HarmonyPrefix]
     private static void Prefix(RunManager __instance)
     {
-        LibraryEncounterWeighting.BeforeMapGenerated(__instance.DebugOnlyGetState());
+        LibraryEncounterWeighting.BeforeMapGenerated(CurrentRun.Of(__instance));
     }
 }

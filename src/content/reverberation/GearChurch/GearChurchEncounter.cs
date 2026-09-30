@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -126,7 +127,7 @@ internal static class GearChurchTechnologyReceptionPatch
 {
     private static bool Prefix(ActModel __instance, RoomType roomType, ref EncounterModel __result)
     {
-        RunState? run = RunManager.Instance.DebugOnlyGetState();
+        RunState? run = CurrentRun.State;
         if (__instance is ReverberationEnsembleAct
             && ReferenceEquals(run?.Act, __instance)
             && roomType == RoomType.Elite

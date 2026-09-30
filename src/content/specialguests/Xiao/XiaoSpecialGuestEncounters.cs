@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using HarmonyLib;
 using LibraryOfRuina.content.guests;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Models;
@@ -101,7 +102,7 @@ internal static class XiaoSpecialGuestBackgroundAssetsPatch
             return true;
         }
 
-        IRunState? runState = RunManager.Instance?.DebugOnlyGetState();
+        IRunState? runState = CurrentRun.State;
         SpecialGuestRunStateModifier? state =
             SpecialGuestRunStateModifier.TryGet(runState);
         string? selectedLayer = state?.GetValue(StageOneLayerValueKey);

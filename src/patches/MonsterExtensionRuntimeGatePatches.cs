@@ -4,6 +4,7 @@ using HarmonyLib;
 using LibraryOfRuina.content.relics.BookShadow;
 using LibraryOfRuina.core;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Rooms;
@@ -64,7 +65,7 @@ internal static class MonsterExtensionPullNextEncounterGatePatch
 
         // 本局的开关在局内不会再变，走到这里的是关闭内容的局里仍排着本模组遭遇的情况：开启时建的旧局
         // 按关闭补建了本局设置，或本模组的幕原生遭遇池里就有本模组遭遇。两端读同一份本局设置，对称执行。
-        LibraryEncounterWeighting.RestoreVanillaEncounters(RunManager.Instance.DebugOnlyGetState());
+        LibraryEncounterWeighting.RestoreVanillaEncounters(CurrentRun.State);
         if (LibraryEncounterWeighting.TryGetScheduledVanillaEncounter(
                 __instance,
                 roomType,

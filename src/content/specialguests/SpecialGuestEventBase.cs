@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -190,7 +191,7 @@ public abstract class SpecialGuestEventBase : EventModel
         // the exact EventRoom after it is current; saving null here would save
         // post-roll RNG and make an Unknown node reroll on load.
         if (Owner?.RunState is RunState runState
-            && ReferenceEquals(RunManager.Instance.DebugOnlyGetState(), runState)
+            && ReferenceEquals(CurrentRun.State, runState)
             && SpecialGuestRunStateModifier.TryGet(runState) is not
             {
                 ActiveGuestId: not null,
@@ -230,7 +231,7 @@ public abstract class SpecialGuestEventBase : EventModel
         state.ClearActiveGuest();
         SetEventFinished(new LocString("events", Id.Entry + ".pages.COMPLETE.description"));
         if (Owner.NetId == RunManager.Instance.NetService.NetId
-            && ReferenceEquals(RunManager.Instance.DebugOnlyGetState(), runState))
+            && ReferenceEquals(CurrentRun.State, runState))
         {
             await SpecialGuestRoomPersistence.SaveFinishedCurrentEventRoomAsync(runState, Id);
         }
@@ -318,7 +319,7 @@ public abstract class SpecialGuestEventBase : EventModel
         // itself writes only in singleplayer or on the host.
         if (Owner?.RunState is RunState ownerRunState
             && Owner.NetId == RunManager.Instance.NetService.NetId
-            && ReferenceEquals(RunManager.Instance.DebugOnlyGetState(), ownerRunState))
+            && ReferenceEquals(CurrentRun.State, ownerRunState))
         {
             await SpecialGuestRoomPersistence.SaveFinishedCurrentEventRoomAsync(ownerRunState, Id);
         }

@@ -2,6 +2,7 @@ using System;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -269,7 +270,7 @@ internal static class MainMenuBgmController
     {
         CombatManager? combatManager = CombatManager.Instance;
         return combatManager != null &&
-            (combatManager.IsInProgress || combatManager.DebugOnlyGetState() != null);
+            (combatManager.IsInProgress || CurrentCombat.Of(combatManager) != null);
     }
 
     private static void AddPauseReason(PauseReason reason)
