@@ -30,9 +30,6 @@ public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
     private MoveState? _action;
     private AbstractIntent[]? _intents;
 
-    // 没有读写者：当前攻击不使用单体目标，也不再抽取单体目标 RNG。
-    public int TargetCombatId { get; private set; } = -1;
-
     public bool Overheated { get; private set; }
 
     protected abstract LibraryResistanceLevel BaselineResistance { get; }

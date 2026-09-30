@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Random;
 
 namespace LibraryOfRuina.content.liberation.Language;
 
@@ -24,11 +23,6 @@ public sealed partial class LanguageFloorSmilingFace
             _ => VomitMove([])
         };
 
-    internal string DebugChooseNextMoveId(Rng rng) => ChooseNextMoveId(rng);
-
-    internal string DebugChooseNextMoveId() =>
-        ChooseNextMoveId(RunRng.MonsterAi);
-
     internal void DebugSetMovePlanState(
         LanguageFloorSmilingFaceForm form,
         int formTurnCount = 0,
@@ -38,11 +32,6 @@ public sealed partial class LanguageFloorSmilingFace
         FormTurnCount = formTurnCount;
         PreviousNormalMove = previousNormalMove;
     }
-
-    internal Creature? DebugChooseDevourTarget() => GetPlannedTarget(0);
-
-    internal void DebugSetNextMove(LanguageFloorSmilingFaceMove move) =>
-        SetMoveImmediate(GetMoveState(MoveId(move)), forceTransition: true);
 
     internal void DebugPlanTurn()
     {
@@ -86,10 +75,4 @@ public sealed partial class LanguageFloorSmilingFace
         PlayerChoiceContext choiceContext,
         CombatStateLike combatState) =>
         ResolvePlayerTurnStart(choiceContext, combatState);
-
-    internal async Task DebugRevive()
-    {
-        await ReviveMove([]);
-        await ResolvePendingFormTransition();
-    }
 }
