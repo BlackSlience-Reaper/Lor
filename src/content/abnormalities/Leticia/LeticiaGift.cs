@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -51,8 +52,7 @@ public sealed class LeticiaGift : CardModel
             return;
         }
 
-        IReadOnlyList<Creature> targets = CombatState.Creatures
-            .Where(creature => creature.IsAlive)
+        IReadOnlyList<Creature> targets = CombatState.LivingCreatures()
             .ToArray();
 
         if (targets.Count == 0)
