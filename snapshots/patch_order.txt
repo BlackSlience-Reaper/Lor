@@ -212,7 +212,7 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NIntent), "OnHovered")
   Prefix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+Hovered.Prefix
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+HoveredAfter.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.CommonUi.NTopBar), "Initialize")
-  Postfix LibraryOfRuina.content.specialguests.SpecialGuestHideEmptyModifierContainerPatch.Postfix
+  Postfix LibraryOfRuina.core.settings.LibraryHiddenModifierEmptyContainerPatch.Postfix
   Postfix LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout), "SetEvent")
   Postfix LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestEventGradientPatch.Postfix
@@ -239,8 +239,8 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.Bestiary.NBestiary), "AddAc
   Postfix LibraryOfRuina.content.reverberation.GearChurch.GearChurchBestiaryPatch.Postfix
   Postfix LibraryOfRuina.content.reverberation.CryingChildren.CryingChildrenBestiaryPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.DailyRun.NDailyRunLoadScreen), "InitializeDisplay")
-  Finalizer LibraryOfRuina.core.settings.LibraryRunSettingsDailyLoadScreenPatch.Finalizer
-  Prefix LibraryOfRuina.core.settings.LibraryRunSettingsDailyLoadScreenPatch.Prefix
+  Finalizer LibraryOfRuina.core.settings.LibraryHiddenModifierDailyLoadScreenPatch.Finalizer
+  Prefix LibraryOfRuina.core.settings.LibraryHiddenModifierDailyLoadScreenPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScreen), "AddScoreLine")
   Finalizer LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Finalizer
   Prefix LibraryOfRuina.patches.GameOverScoreLineCompatibilityPatch.Prefix
@@ -268,7 +268,3 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunState), "FromSerializable")
   Prefix LibraryOfRuina.content.specialguests.SpecialGuestRunStateLoadPatch.Prefix
   Postfix LibraryOfRuina.features.temporarymaps.TemporaryMapLoadPatch.Postfix
   Postfix LibraryOfRuina.core.settings.LibraryRunSettingsLoadPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.sts2.Core.Nodes.TopBar.NTopBarModifier), "Create")
-  Prefix LibraryOfRuina.content.specialguests.SpecialGuestHideRunStateTopBarPatch.Prefix
-  Prefix LibraryOfRuina.core.settings.LibraryRunSettingsHideTopBarPatch.Prefix
-  Prefix LibraryOfRuina.features.secondascension.LibrarySecondAscensionHideCarrierTopBarPatch.Prefix

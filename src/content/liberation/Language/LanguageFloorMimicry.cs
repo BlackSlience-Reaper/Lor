@@ -707,7 +707,8 @@ public sealed class LanguageFloorMimicry :
             await CreatureCmd.SetCurrentHp(Creature, 1m);
         }
 
-        // 待进化形态缺失或无效时按当前形态推进，假死不能因为存档状态不完整而永远无法结束。
+        // 待进化形态缺失或无效时按当前形态推进，假死不能因为状态不完整而永远无法结束。进入假死时总会写入有效的
+        // PendingForm；原版中途读档会重开战斗、不恢复怪物状态，所以只有属性被外部写回（验证套件）时才会走到回退分支。
         LanguageFloorMimicryForm target = PendingForm switch
         {
             (int)LanguageFloorMimicryForm.Second =>

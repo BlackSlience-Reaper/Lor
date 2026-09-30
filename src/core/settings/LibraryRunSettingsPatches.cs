@@ -1,11 +1,16 @@
 using System;
 using System.Linq;
+using Godot;
 using HarmonyLib;
+using LibraryOfRuina.content.specialguests;
+using LibraryOfRuina.features.secondascension;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using MegaCrit.sts2.Core.Nodes.TopBar;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Multiplayer.Game.Lobby;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Screens.DailyRun;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
@@ -124,14 +129,37 @@ internal static class LibraryRunSettingsLoadPatch
     }
 }
 
+/// <summary>
+/// 本模组挂在 <c>RunState.Modifiers</c> 上的状态载体：本局设置、特邀嘉宾状态、第二升华。它们只借修改器随存档与开局、读档消息保存，
+/// 没有给玩家看的效果，而原版界面按 <c>Modifiers</c> 逐个显示（顶栏图标、联机每日挑战读档界面的格子）。
+/// 这些界面都只经这里判断要不要跳过；以后新增载体只改这里。
+/// <para>
+/// 未注入模式也用它（见 <see cref="LibraryRunInjectionGuard.PatchForNonInjectedProcess"/>）：模型类型随程序集登记，
+/// 未注入的一端照样能读出带载体的旧局；判断只看类型或模型 ID，不依赖注入时的任何状态。
+/// </para>
+/// </summary>
+internal static class LibraryHiddenModifiers
+{
+    private static readonly Type[] CarrierTypes =
+    [
+        typeof(LibraryRunSettingsModifier),
+        typeof(SpecialGuestRunStateModifier),
+        typeof(LibrarySecondAscensionModifier),
+    ];
+
+    internal static bool IsHidden(ModifierModel modifier) => CarrierTypes.Contains(modifier.GetType());
+
+    internal static bool IsHidden(ModelId id) => CarrierTypes.Any(type => ModelDb.GetId(type) == id);
+}
+
 [HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
-[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的本局设置载体返回 null（原版 TestMode 同样返回 null）。")]
-internal static class LibraryRunSettingsHideTopBarPatch
+[LibraryPatch(Reason = "NTopBar.Initialize 为每个局内修饰符创建顶栏图标，ModifierModel 无隐藏开关；仅对本模组的状态载体（LibraryHiddenModifiers）返回 null（原版 TestMode 同样返回 null）。")]
+internal static class LibraryHiddenModifierTopBarPatch
 {
     [HarmonyPrefix]
     private static bool Prefix(ModifierModel modifier, ref NTopBarModifier? __result)
     {
-        if (modifier is not LibraryRunSettingsModifier)
+        if (!LibraryHiddenModifiers.IsHidden(modifier))
         {
             return true;
         }
@@ -142,30 +170,52 @@ internal static class LibraryRunSettingsHideTopBarPatch
 }
 
 /// <summary>
+/// 原版按 <c>Modifiers.Count &gt; 0</c> 显示修改器容器；载体的图标都跳过之后容器是空的，原版 <c>UpdateNavigation</c>
+/// 对空容器取 <c>First()</c> 会抛出（它经 CallDeferred 调用，在这个后缀之后）。只要有载体而容器里没有图标，就隐藏容器。
+/// 注入模式下第二升华的顶栏后缀随后会按同样的条件再算一次可见性。
+/// </summary>
+[HarmonyPatch(typeof(NTopBar), nameof(NTopBar.Initialize))]
+internal static class LibraryHiddenModifierEmptyContainerPatch
+{
+    [HarmonyPostfix]
+    private static void Postfix(NTopBar __instance, IRunState runState)
+    {
+        if (!runState.Modifiers.Any(LibraryHiddenModifiers.IsHidden)
+            || VanillaPrivate.TopBarModifiersContainer.Get(__instance) is not Control container)
+        {
+            return;
+        }
+
+        bool hasVisibleChildren = container.GetChildren()
+            .OfType<Control>()
+            .Any(static child => GodotObject.IsInstanceValid(child));
+        if (!hasVisibleChildren)
+        {
+            container.Visible = false;
+        }
+    }
+}
+
+/// <summary>
 /// 联机每日挑战的读档界面按 <c>Run.Modifiers</c> 的下标逐个填进场景里固定数量的格子（与每日的 3 个修改器一一对应），
 /// 多出的载体会越界抛出，房主一端建大厅失败。只在填充期间换成不含载体的列表，结束后换回：
 /// 大厅稍后发给客户端的仍是完整的存档。
 /// </summary>
 [HarmonyPatch(typeof(NDailyRunLoadScreen), "InitializeDisplay")]
-internal static class LibraryRunSettingsDailyLoadScreenPatch
+internal static class LibraryHiddenModifierDailyLoadScreenPatch
 {
     [HarmonyPrefix]
     private static void Prefix(LoadRunLobby? ____lobby, out List<SerializableModifier>? __state)
     {
         __state = null;
-        if (____lobby?.Run is not { Modifiers: { } modifiers } run)
-        {
-            return;
-        }
-
-        ModelId carrierId = ModelDb.Modifier<LibraryRunSettingsModifier>().Id;
-        if (!modifiers.Any(modifier => modifier.Id == carrierId))
+        if (____lobby?.Run is not { Modifiers: { } modifiers } run
+            || !modifiers.Any(static modifier => LibraryHiddenModifiers.IsHidden(modifier.Id)))
         {
             return;
         }
 
         __state = modifiers;
-        run.Modifiers = modifiers.Where(modifier => modifier.Id != carrierId).ToList();
+        run.Modifiers = modifiers.Where(static modifier => !LibraryHiddenModifiers.IsHidden(modifier.Id)).ToList();
     }
 
     [HarmonyFinalizer]

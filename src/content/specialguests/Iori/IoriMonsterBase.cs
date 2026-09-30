@@ -249,7 +249,8 @@ public abstract partial class IoriMonsterBase :
             return;
         }
 
-        // 读档回到已规划过的回合：只重建意图并揭示，不再掷一次计划（多掷会让 MonsterAi 与存档时分叉）。
+        // 本回合已经规划过时只重建意图并揭示，不再掷一次计划：多掷会多消耗 MonsterAi，改变之后所有 AI 随机结果。
+        // 这不是读档恢复路径：原版中途读档会重开战斗，怪物状态不恢复，LastPlannedRound 回到初始值。
         if (LastPlannedRound == combatState.RoundNumber
             && HasStoredIntentPlan)
         {

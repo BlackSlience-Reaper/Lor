@@ -14,13 +14,6 @@ using MegaCrit.Sts2.Core.Runs;
 
 namespace LibraryOfRuina.core.settings;
 
-public enum DisplayDensity
-{
-    Compact,
-    Normal,
-    Spacious
-}
-
 internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
 {
     private const string PatchNotesDirectory = "res://localization/eng/patch_notes";
@@ -331,23 +324,6 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     [SettingsHideInUI]
     [SliderRange(0, 10)]
     public static int PreferredSecondAscensionLevel { get; set; } = 0;
-
-    [SettingsHideInUI]
-    [SliderRange(0.5, 2.0, 0.1)]
-    [SliderLabelFormat("{0:0.0}x")]
-    public static double UiScale { get; set; } = 1.0;
-
-    [SettingsHideInUI]
-    [SliderRange(0.5, 2.0, 0.1)]
-    [SliderLabelFormat("{0:0.0}x")]
-    public static double OverlayOpacity { get; set; } = 0.8;
-
-    [SettingsHideInUI]
-    public static DisplayDensity Density { get; set; } = DisplayDensity.Normal;
-
-    [SettingsHideInUI]
-    [SettingsTextInput(TextInputPreset.SafeDisplayName)]
-    public static string PlayerTag { get; set; } = "";
 
     [SettingsHideInUI]
     public static bool DebugMode { get; set; }

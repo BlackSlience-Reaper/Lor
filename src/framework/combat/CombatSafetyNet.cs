@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.content.abnormalities.BigBadWolf;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -220,7 +219,6 @@ internal static class CombatSafetyNet
         string monster = context.Monster?.Id.Entry ?? context.Creature?.Monster?.Id.Entry ?? "none";
         string action = context.Action?.ToString() ?? "none";
         string multiplayer = ResolveMultiplayerLabel();
-        string beforeDeathListeners = TryDescribeBeforeDeathListenersForContext(context);
 
         return "surface=" + context.Surface
             + ",encounter=" + encounter
@@ -229,150 +227,7 @@ internal static class CombatSafetyNet
             + ",creature=" + creature
             + ",monster=" + monster
             + ",action=" + action
-            + ",multiplayer=" + multiplayer
-            + beforeDeathListeners;
-    }
-
-    private static string TryDescribeBeforeDeathListenersForContext(CombatSafetyContext context)
-    {
-        if (!string.Equals(context.Surface, "Hook.BeforeDeath", StringComparison.Ordinal))
-        {
-            return string.Empty;
-        }
-
-        CombatStateLike? combatState = ResolveCombatState(context);
-        IRunState? runState = combatState?.RunState;
-        Creature? target = context.Creature;
-        if (runState == null || target == null)
-        {
-            return string.Empty;
-        }
-
-        try
-        {
-            List<string> listeners = runState
-                .IterateHookListeners(combatState)
-                .Where(OverridesBeforeDeath)
-                .Select(model => DescribeBeforeDeathListener(model, target))
-                .Distinct()
-                .Take(24)
-                .ToList();
-
-            return listeners.Count == 0
-                ? ",beforeDeathListeners=none"
-                : ",beforeDeathListeners=" + string.Join(" | ", listeners) + (listeners.Count >= 24 ? " | ..." : string.Empty);
-        }
-        catch (Exception exception)
-        {
-            return ",beforeDeathListeners=enumeration_failed:" + exception.GetType().Name;
-        }
-    }
-
-    private static bool OverridesBeforeDeath(AbstractModel model)
-    {
-        try
-        {
-            MethodInfo? method = model.GetType().GetMethod(
-                nameof(AbstractModel.BeforeDeath),
-                BindingFlags.Instance | BindingFlags.Public,
-                binder: null,
-                types: [typeof(Creature)],
-                modifiers: null);
-            return method?.DeclaringType != null && method.DeclaringType != typeof(AbstractModel);
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private static string DescribeBeforeDeathListener(AbstractModel model, Creature target)
-    {
-        string modelType = model.GetType().FullName ?? model.GetType().Name;
-        string modelId = SafeDescribeModelId(model);
-        string scope = model switch
-        {
-            MonsterModel monsterModel when ReferenceEquals(monsterModel.Creature, target) =>
-                DescribeTargetMonsterScope(monsterModel),
-            MonsterModel monsterModel => "monster-owner=" + monsterModel.Id.Entry,
-            PowerModel powerModel => DescribePowerScope(powerModel, target),
-            CardModel cardModel => "card-owner=" + (cardModel.Owner?.NetId.ToString() ?? "none"),
-            _ => string.Empty
-        };
-
-        return string.IsNullOrEmpty(scope)
-            ? modelType + "[" + modelId + "]"
-            : modelType + "[" + modelId + "]@" + scope;
-    }
-
-    private static string DescribeTargetMonsterScope(MonsterModel monsterModel)
-    {
-        if (monsterModel is BigBadWolf bigBadWolf)
-        {
-            return "target-monster,pendingCard=" + bigBadWolf.HasPendingCard.ToString().ToLowerInvariant();
-        }
-
-        return "target-monster";
-    }
-
-    private static string DescribePowerScope(PowerModel powerModel, Creature target)
-    {
-        List<string> parts = [];
-
-        if (ReferenceEquals(powerModel.Owner, target))
-        {
-            parts.Add("power-owner-is-target");
-        }
-        else
-        {
-            parts.Add("power-owner=" + DescribeCreature(powerModel.Owner));
-        }
-
-        parts.Add("power-target=" + DescribeCreature(powerModel.Target));
-
-        if (powerModel is SwipePower swipePower)
-        {
-            parts.Add("stolenCard=" + (swipePower.StolenCard?.Id.Entry ?? "none"));
-        }
-
-        return string.Join(",", parts);
-    }
-
-    private static string DescribeCreature(Creature? creature)
-    {
-        if (creature == null)
-        {
-            return "none";
-        }
-
-        if (creature.Monster != null)
-        {
-            return creature.Monster.Id.Entry;
-        }
-
-        if (creature.Player != null)
-        {
-            return "player-" + creature.Player.NetId;
-        }
-
-        if (creature.PetOwner != null)
-        {
-            return "pet-" + creature.PetOwner.NetId;
-        }
-
-        return creature.Name;
-    }
-
-    private static string SafeDescribeModelId(AbstractModel model)
-    {
-        try
-        {
-            return model.Id.Entry;
-        }
-        catch
-        {
-            return "unknown";
-        }
+            + ",multiplayer=" + multiplayer;
     }
 
     private static string ResolveMultiplayerLabel()

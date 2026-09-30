@@ -1351,6 +1351,8 @@ readonly	LibraryOfRuina.core.networking.LibraryNetwork.StoryBarrierDescriptor	ST
 readonly	LibraryOfRuina.core.networking.LibraryNetwork.TemporaryMapTransitionDescriptor	STS2RitsuLib.Networking.ManagedActions.RitsuLibManagedNetActionDescriptor`1[LibraryOfRuina.core.networking.LibraryNetwork+TemporaryMapTransitionPayload]
 readonly	LibraryOfRuina.core.settings.ExtModSettings.JsonOptions	System.Text.Json.JsonSerializerOptions
 readonly	LibraryOfRuina.core.settings.ExtSettingsRegistry.Configs	System.Collections.Generic.Dictionary`2[System.String,LibraryOfRuina.core.settings.ExtModSettings]
+readonly	LibraryOfRuina.core.settings.LibraryHiddenModifiers.CarrierTypes	System.Type[]
+readonly	LibraryOfRuina.core.settings.LibraryRunInjectionGuard.NonInjectedPatchTypes	System.Type[]
 readonly	LibraryOfRuina.core.settings.ui.NBetterConfigOptionRow+MethodName.AddHoverTip	Godot.StringName
 readonly	LibraryOfRuina.core.settings.ui.NBetterConfigOptionRow+MethodName.RemoveHoverTip	Godot.StringName
 readonly	LibraryOfRuina.core.settings.ui.NBetterConfigOptionRow+PropertyName.SettingControl	Godot.StringName
