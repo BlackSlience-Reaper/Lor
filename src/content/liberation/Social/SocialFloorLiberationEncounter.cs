@@ -461,33 +461,26 @@ public sealed class SocialFloorLiberationEncounter :
             combatState);
     }
 
-    internal async Task NotifyCrystalDestroyed(
+    // 摧毁水晶只记进掩码，由掩码放宽能量上限；不当场给能量（作者裁定），与文案“每摧毁一个翡翠水晶，
+    // 解除 1 点上限限制”一致。
+    internal Task NotifyCrystalDestroyed(
         EmeraldCrystal crystal)
     {
         if (Trial != SocialFloorTrial.Woodsman
             || crystal.Creature.SlotName is not { } slot)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         int index = IndexOfSlot(CrystalSlots, slot);
         int bit = index < 0 ? 0 : 1 << index;
         if (bit == 0 || (DestroyedCrystalMask & bit) != 0)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         DestroyedCrystalMask |= bit;
-        if (crystal.Creature.CombatState is not { } combatState)
-        {
-        }
-
-        // foreach (var player in combatState.Players
-        //              .Where(static player => player.Creature.IsAlive)
-        //              .OrderBy(static player => player.NetId))
-        // {
-        //     await PlayerCmd.GainEnergy(1m, player);
-        // }
+        return Task.CompletedTask;
     }
 
     internal Task NotifyFaceDestroyed(ScowlingFace face)
