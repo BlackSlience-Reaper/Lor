@@ -439,10 +439,7 @@ public sealed class DespairKnight : LorMonsterModel
             return;
         }
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private void AddDespairKnightPageRewards()

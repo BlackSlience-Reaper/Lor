@@ -375,10 +375,7 @@ public sealed class Leticia : LorMonsterModel
         }
 
         IReadOnlyList<string> lineKeys = ResolveBackgroundTextLineKeys(combatState);
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private IReadOnlyList<string> ResolveBackgroundTextLineKeys(CombatStateLike combatState)

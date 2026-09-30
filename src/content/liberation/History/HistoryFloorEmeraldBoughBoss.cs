@@ -505,29 +505,17 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         _firstTurn = false;
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (_backgroundMoonTextLoopStarted || Creature == null || Creature.IsDead)
-        {
-            return;
-        }
-
-        _backgroundMoonTextLoopStarted = true;
-        MoonTextService.StartRandomLoop(
-            Creature,
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
             BackgroundTextScope,
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
+            BackgroundTextLineKeys,
             BackgroundTextIntervalSeconds,
             BackgroundTextSpawnArea);
-    }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {

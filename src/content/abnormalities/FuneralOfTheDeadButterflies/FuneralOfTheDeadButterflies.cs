@@ -386,10 +386,7 @@ public sealed class FuneralOfTheDeadButterflies : LorMonsterModel
     private void StartBackgroundMoonTextLoopForCurrentTurn()
     {
         IReadOnlyList<string> lineKeys = IsFourthTurn() ? FourthTurnBackgroundTextLineKeys : NormalBackgroundTextLineKeys;
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private bool IsFourthTurn()

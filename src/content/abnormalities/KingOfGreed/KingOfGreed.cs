@@ -965,10 +965,7 @@ public sealed class KingOfGreed : LorMonsterModel
 
     private static void StartBackgroundMoonTextLoop(IReadOnlyList<string> lineKeys)
     {
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private void ShowImmediateBackgroundMoonText(IReadOnlyList<string> lineKeys)

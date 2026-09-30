@@ -886,10 +886,7 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
 
     private static void StartBackgroundMoonTextLoop(IReadOnlyList<string> lineKeys)
     {
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private static TargetedSegmentedAttackPreview BuildLoveAndJusticePreview(Creature owner, IReadOnlyList<Creature>? fallbackTargets)

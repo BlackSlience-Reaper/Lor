@@ -358,10 +358,7 @@ public sealed class FairyQueen : CounterIntentMonsterModel
         if (_momentarySatietyTextQueuedForNextRefresh && nextPool != FairyQueenBackgroundTextPool.StarvedFrenzy)
         {
             _momentarySatietyTextQueuedForNextRefresh = false;
-            MoonTextService.StartRandomLoop(
-                MomentarySatietyBackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
-                BackgroundTextIntervalSeconds,
-                BackgroundTextSpawnArea);
+            MonsterMoonTextLoop.Start(MomentarySatietyBackgroundTextLineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
             return;
         }
 
@@ -372,10 +369,7 @@ public sealed class FairyQueen : CounterIntentMonsterModel
             _ => NormalBackgroundTextLineKeys
         };
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private FairyQueenBackgroundTextPool ResolveBackgroundTextPool()

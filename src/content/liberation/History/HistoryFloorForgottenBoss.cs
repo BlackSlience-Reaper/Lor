@@ -167,19 +167,14 @@ public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
         return Task.CompletedTask;
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (!_backgroundMoonTextLoopStarted && Creature.IsAlive)
-        {
-            _backgroundMoonTextLoopStarted = true;
-            MoonTextService.StartRandomLoop(
-                Creature,
-                BackgroundTextScope,
-                BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
-                BackgroundTextIntervalSeconds,
-                BackgroundTextSpawnArea);
-        }
-    }
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
+            BackgroundTextScope,
+            BackgroundTextLineKeys,
+            BackgroundTextIntervalSeconds,
+            BackgroundTextSpawnArea);
 
     public override void BeforeRemovedFromRoom()
     {
@@ -434,11 +429,6 @@ public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
             static (card, damages) => { card.UpgradePreview(); card.SetPreviewDamage(damages[0]); });
     }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 }

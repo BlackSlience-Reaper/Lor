@@ -229,9 +229,6 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
             ? StrengthDownBackgroundTextLineKeys
             : NormalBackgroundTextLineKeys;
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 }

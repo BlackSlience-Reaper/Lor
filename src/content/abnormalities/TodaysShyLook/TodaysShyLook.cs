@@ -413,10 +413,7 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
             return;
         }
 
-        MoonTextService.StartRandomLoop(
-            BackgroundTextLineKeys[_currentExpression - 1].Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(BackgroundTextLineKeys[_currentExpression - 1], BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private static bool IsTodaysShyLookEncounter(CombatRoom room)

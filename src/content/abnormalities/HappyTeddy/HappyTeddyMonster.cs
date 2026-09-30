@@ -324,10 +324,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
             _ => NormalBackgroundTextLineKeys
         };
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private HappyTeddyBackgroundTextPool ResolveBackgroundTextPool()

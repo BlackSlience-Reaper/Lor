@@ -731,13 +731,8 @@ public sealed class TechnologyFloorMagicBulletBoss : LiberationPhaseBossMonster,
             .ToArray();
     }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {

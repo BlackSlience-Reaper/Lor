@@ -260,10 +260,7 @@ public sealed class AllAroundHelper : CounterIntentMonsterModel
 
         _recognizedTextQueuedForNextTurn = false;
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private static bool IsAllAroundHelperEncounter(CombatRoom room)

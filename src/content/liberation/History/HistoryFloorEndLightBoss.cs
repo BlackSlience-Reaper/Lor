@@ -221,11 +221,6 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
         _turnIndex++;
     }
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 }

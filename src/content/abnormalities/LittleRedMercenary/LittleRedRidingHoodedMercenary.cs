@@ -577,10 +577,7 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
                 ? RageBackgroundTextLineKeys
                 : NormalBackgroundTextLineKeys;
 
-        MoonTextService.StartRandomLoop(
-            lineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(lineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
 }

@@ -320,10 +320,7 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
 
     private static void StartBackgroundMoonTextLoop()
     {
-        MoonTextService.StartRandomLoop(
-            BackgroundTextLineKeys.Select(L10NMonsterLookup).ToArray(),
-            BackgroundTextIntervalSeconds,
-            BackgroundTextSpawnArea);
+        MonsterMoonTextLoop.Start(BackgroundTextLineKeys, BackgroundTextIntervalSeconds, BackgroundTextSpawnArea);
     }
 
     private async Task ApplySelfHpLoss(int amount)

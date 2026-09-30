@@ -166,30 +166,17 @@ public sealed class TechnologyFloorChordBoss : LiberationPhaseBossMonster
         return Task.CompletedTask;
     }
 
-    private void StartBackgroundMoonTextLoop()
-    {
-        if (!_backgroundMoonTextLoopStarted && Creature.IsAlive)
-        {
-            _backgroundMoonTextLoopStarted = true;
-            string[] keys = _usingCompositionText
-                ? CompositionBackgroundTextLineKeys
-                : NormalBackgroundTextLineKeys;
-            MoonTextService.StartRandomLoop(
-                Creature,
-                BackgroundTextScope,
-                keys.Select(L10NMonsterLookup).ToArray(),
-                BackgroundTextIntervalSeconds,
-                BackgroundTextSpawnArea);
-        }
-    }
+    private void StartBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.StartOnce(
+            this,
+            ref _backgroundMoonTextLoopStarted,
+            BackgroundTextScope,
+            _usingCompositionText ? CompositionBackgroundTextLineKeys : NormalBackgroundTextLineKeys,
+            BackgroundTextIntervalSeconds,
+            BackgroundTextSpawnArea);
 
-    internal void StopBackgroundMoonTextLoop()
-    {
-        if (Creature != null)
-        {
-            MoonTextService.StopRandomLoop(Creature, BackgroundTextScope);
-        }
-    }
+    internal void StopBackgroundMoonTextLoop() =>
+        MonsterMoonTextLoop.Stop(this, BackgroundTextScope);
 
     internal void OnStaffMelodyCravingTriggered()
     {
