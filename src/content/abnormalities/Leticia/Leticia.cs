@@ -44,15 +44,12 @@ public sealed class Leticia : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 8);
 
     private const int GiftCardCount = 2;
-    private const string AttackSfxPath = "res://audio/sfx/leticia/leticia_attack.ogg";
-    private const string GuardSfxPath = "res://audio/sfx/leticia/leticia_guard.ogg";
-    private const string GiftOpenSfxPath = "res://audio/sfx/leticia/gift_open.ogg";
 
     private static readonly string[] ExtraAssetPaths =
     [
-        AttackSfxPath,
-        GuardSfxPath,
-        GiftOpenSfxPath,
+        LeticiaAssets.LeticiaAttackSfx,
+        LeticiaAssets.LeticiaGuardSfx,
+        LeticiaAssets.GiftOpenSfx,
         LeticiaFilterOverlayController.FilterOneTexturePath
     ];
 
@@ -257,7 +254,7 @@ public sealed class Leticia : LorMonsterModel
 
     private async Task SendGiftMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.LeticiaAttackSfx, -2f);
         await AbnormalityAnimHelper.ExecuteAttackSegment(this, SendGiftDamage);
 
         await AddGiftsToPlayers(GiftCardCount);
@@ -266,7 +263,7 @@ public sealed class Leticia : LorMonsterModel
 
     private async Task DontGetHurtMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.LeticiaAttackSfx, -2f);
         await AbnormalityAnimHelper.TriggerCast(Creature);
 
         foreach (Creature enemy in LivingOtherEnemies())
@@ -279,7 +276,7 @@ public sealed class Leticia : LorMonsterModel
 
     private async Task HaveFunMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GuardSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.LeticiaGuardSfx, -2f);
         await AbnormalityAnimHelper.TriggerCast(Creature);
 
         IReadOnlyList<Creature> otherEnemies = LivingOtherEnemies().ToArray();
@@ -302,7 +299,7 @@ public sealed class Leticia : LorMonsterModel
 
     private async Task ItsAGiftMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GiftOpenSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.GiftOpenSfx, -2f);
         await AbnormalityAnimHelper.TriggerCast(Creature);
         await PowerCmdCompat.Apply<StrengthPower>(Creature, ItsAGiftStrength, Creature, null);
         await AddGiftsToPlayers(GiftCardCount);

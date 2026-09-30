@@ -28,7 +28,7 @@ public sealed class OzmaJack : LorMonsterModel
 {
     private const string HiddenMoveId = "UNKNOWN";
 
-    internal const string TextureRoot = "res://images/monsters/ozma/";
+    internal const string TextureRoot = OzmaAssets.OzmaMonsterRoot;
     public const string DormantTexturePath = TextureRoot + "jack_dormant.png";
     public const string AwakeTexturePath = TextureRoot + "jack_awake.png";
     public const string HitTexturePath = TextureRoot + "jack_hit.png";
@@ -37,12 +37,12 @@ public sealed class OzmaJack : LorMonsterModel
         OzmaJackCreatureVisuals.Profile.AssetPaths
         .Concat(
         [
-        "res://images/powers/ozma_east_jack_power.png",
-        "res://images/powers/ozma_south_jack_power.png",
-        "res://images/powers/ozma_west_jack_power.png",
-        "res://images/powers/ozma_north_jack_power.png",
-        "res://images/powers/ozma_which_is_real_power.png",
-        "res://images/powers/ozma_take_or_be_taken_power.png"
+        OzmaAssets.EastJackPowerIcon,
+        OzmaAssets.SouthJackPowerIcon,
+        OzmaAssets.WestJackPowerIcon,
+        OzmaAssets.NorthJackPowerIcon,
+        OzmaAssets.WhichIsRealPowerIcon,
+        OzmaAssets.TakeOrBeTakenPowerIcon
         ])
         .ToArray();
 

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.addons.mega_text;
 using LibraryOfRuina.core.settings.ui;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
@@ -490,8 +491,8 @@ internal abstract partial class ExtModSettings
 
     public static MegaRichTextLabel CreateRawLabelControl(string labelText, int fontSize)
     {
-        var kreonNormal = PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_regular_shared.tres");
-        var kreonBold = PreloadManager.Cache.GetAsset<Font>("res://themes/kreon_bold_shared.tres");
+        var kreonNormal = PreloadManager.Cache.GetAsset<Font>(SharedAssets.KreonRegularSharedResource);
+        var kreonBold = PreloadManager.Cache.GetAsset<Font>(SharedAssets.KreonBoldSharedResource);
 
         MegaRichTextLabel label = new()
         {

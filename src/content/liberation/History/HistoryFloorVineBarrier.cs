@@ -30,7 +30,7 @@ public sealed class HistoryFloorVineBarrier : LorMonsterModel
         Blunt = LibraryResistanceLevel.Resist
     };
 
-    public const string Root = "res://images/monsters/history_floor/emerald_bough/";
+    public const string Root = HistoryFloorAssets.EmeraldBoughMonsterRoot;
     public const string IdleTexturePath = Root + "vine_barrier_idle.png";
 
     public override int MinInitialHp =>

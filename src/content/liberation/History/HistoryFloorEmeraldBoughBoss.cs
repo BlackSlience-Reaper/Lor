@@ -67,7 +67,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
 
     internal const string BackgroundTextScope = "history_floor_liberation_phase_5";
 
-    public const string Root = "res://images/monsters/history_floor/emerald_bough/";
+    public const string Root = HistoryFloorAssets.EmeraldBoughMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string AttackTexturePath = Root + "attack.png";
     public const string HitTexturePath = Root + "hit.png";

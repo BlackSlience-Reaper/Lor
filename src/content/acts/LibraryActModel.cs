@@ -88,13 +88,13 @@ public abstract class LibraryOfRuinaActModel : TemplateActModel
 public sealed class Malkuth : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/malkuth/map_top_malkuth.png";
+        LibraryActAssets.MapTopMalkuthTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/malkuth/map_middle_malkuth.png";
+        LibraryActAssets.MapMiddleMalkuthTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/malkuth/map_bottom_malkuth.png";
+        LibraryActAssets.MapBottomMalkuthTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -118,13 +118,13 @@ public sealed class Malkuth : LibraryOfRuinaActModel
 public sealed class Yesod : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/yesod/map_top_yesod.png";
+        LibraryActAssets.MapTopYesodTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/yesod/map_middle_yesod.png";
+        LibraryActAssets.MapMiddleYesodTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/yesod/map_bottom_yesod.png";
+        LibraryActAssets.MapBottomYesodTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -148,13 +148,13 @@ public sealed class Yesod : LibraryOfRuinaActModel
 public sealed class Hod : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/hod/map_top_hod.png";
+        LibraryActAssets.MapTopHodTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/hod/map_middle_hod.png";
+        LibraryActAssets.MapMiddleHodTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/hod/map_bottom_hod.png";
+        LibraryActAssets.MapBottomHodTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -178,13 +178,13 @@ public sealed class Hod : LibraryOfRuinaActModel
 public sealed class NetZech : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/netzach/map_top_netzach.png";
+        LibraryActAssets.MapTopNetzachTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/netzach/map_middle_netzach.png";
+        LibraryActAssets.MapMiddleNetzachTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/netzach/map_bottom_netzach.png";
+        LibraryActAssets.MapBottomNetzachTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -208,13 +208,13 @@ public sealed class NetZech : LibraryOfRuinaActModel
 public sealed class Gebura : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/gebura/map_top_gebura.png";
+        LibraryActAssets.MapTopGeburaTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/gebura/map_middle_gebura.png";
+        LibraryActAssets.MapMiddleGeburaTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/gebura/map_bottom_gebura.png";
+        LibraryActAssets.MapBottomGeburaTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -238,13 +238,13 @@ public sealed class Gebura : LibraryOfRuinaActModel
 public sealed class Tiphereth : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/tiphereth/map_top_tiphereth.png";
+        LibraryActAssets.MapTopTipherethTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/tiphereth/map_middle_tiphereth.png";
+        LibraryActAssets.MapMiddleTipherethTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/tiphereth/map_bottom_tiphereth.png";
+        LibraryActAssets.MapBottomTipherethTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -267,13 +267,13 @@ public sealed class Tiphereth : LibraryOfRuinaActModel
 public sealed class Chesed : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/chesed/map_top_chesed.png";
+        LibraryActAssets.MapTopChesedTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/chesed/map_middle_chesed.png";
+        LibraryActAssets.MapMiddleChesedTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/chesed/map_bottom_chesed.png";
+        LibraryActAssets.MapBottomChesedTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 
@@ -297,13 +297,13 @@ public sealed class Chesed : LibraryOfRuinaActModel
 public sealed class Binah : LibraryOfRuinaActModel
 {
     internal const string MapTopBackgroundPath =
-        "res://images/packed/map/map_bgs/binah/map_top_binah.png";
+        LibraryActAssets.MapTopBinahTexture;
 
     internal const string MapMiddleBackgroundPath =
-        "res://images/packed/map/map_bgs/binah/map_middle_binah.png";
+        LibraryActAssets.MapMiddleBinahTexture;
 
     internal const string MapBottomBackgroundPath =
-        "res://images/packed/map/map_bgs/binah/map_bottom_binah.png";
+        LibraryActAssets.MapBottomBinahTexture;
 
     internal override string MapTopBackground => MapTopBackgroundPath;
 

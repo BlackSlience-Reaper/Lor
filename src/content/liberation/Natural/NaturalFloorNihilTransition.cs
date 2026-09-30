@@ -9,9 +9,7 @@ namespace LibraryOfRuina.content.liberation.Natural;
 
 internal static class NaturalFloorNihilTransition
 {
-    private const string ScenePath = "res://scenes/vfx/natural_floor_nihil_transition.tscn";
-    private const string SoundPath = "res://audio/sfx/natural_floor_nihil/Nihil_Filter.ogg";
-    internal static readonly string[] AssetPaths = [ScenePath, SoundPath];
+    internal static readonly string[] AssetPaths = [NaturalFloorAssets.NihilTransitionScene, NaturalFloorAssets.NihilFilterSfx];
     private static Control? _root;
     private static TaskCompletionSource? _completion;
 
@@ -24,7 +22,7 @@ internal static class NaturalFloorNihilTransition
             return;
         }
 
-        Control root = ResourceLoader.Load<PackedScene>(ScenePath).Instantiate<Control>();
+        Control root = ResourceLoader.Load<PackedScene>(NaturalFloorAssets.NihilTransitionScene).Instantiate<Control>();
         TextureRect icon = root.GetNode<TextureRect>("Center/PhaseIcon");
         icon.Visible = form != NaturalFloorNihilForm.Nihil;
         if (icon.Visible)
@@ -40,7 +38,7 @@ internal static class NaturalFloorNihilTransition
         root.TreeExiting += () => completion.TrySetResult();
         AnimationPlayer animation = root.GetNode<AnimationPlayer>("AnimationPlayer");
         animation.AnimationFinished += _ => completion.TrySetResult();
-        LocalOggOneShotPlayer.Play(SoundPath);
+        LocalOggOneShotPlayer.Play(NaturalFloorAssets.NihilFilterSfx);
         animation.Play("ChangeFilter");
         try
         {

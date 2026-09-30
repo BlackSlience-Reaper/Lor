@@ -30,17 +30,12 @@ public sealed class SurpriseGiftBox : LorMonsterModel
     private const int SelfDestructDamage = 10;
     private const int GiftCardCount = 1;
 
-    private const string AttackSfxPath = "res://audio/sfx/leticia/friend_hit.ogg";
-    private const string GiftOpenSfxPath = "res://audio/sfx/leticia/gift_open.ogg";
-    private const string GiftCloseSfxPath = "res://audio/sfx/leticia/gift_close.ogg";
-    private const string FriendSpawnSfxPath = "res://audio/sfx/leticia/friend_spawn.ogg";
-
     private static readonly string[] ExtraAssetPaths =
     [
-        AttackSfxPath,
-        GiftOpenSfxPath,
-        GiftCloseSfxPath,
-        FriendSpawnSfxPath,
+        LeticiaAssets.FriendHitSfx,
+        LeticiaAssets.GiftOpenSfx,
+        LeticiaAssets.GiftCloseSfx,
+        LeticiaAssets.FriendSpawnSfx,
         LeticiaFilterOverlayController.FilterOneTexturePath
     ];
 
@@ -164,7 +159,7 @@ public sealed class SurpriseGiftBox : LorMonsterModel
 
     private async Task MoveOne(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.FriendHitSfx, -2f);
         await AbnormalityAnimHelper.ExecuteAttackSegment(this, SmallDamage);
 
         await AddGiftsToPlayers(GiftCardCount);
@@ -174,14 +169,14 @@ public sealed class SurpriseGiftBox : LorMonsterModel
     {
         for (int i = 0; i < MoveTwoHits; i++)
         {
-            LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(LeticiaAssets.FriendHitSfx, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(this, SmallDamage);
         }
     }
 
     private async Task MoveThree(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(GiftCloseSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.GiftCloseSfx, -2f);
         await AbnormalityAnimHelper.ExecuteAttackSegment(this, SelfDestructDamage);
 
         await AddGiftsToPlayers(GiftCardCount);
@@ -196,7 +191,7 @@ public sealed class SurpriseGiftBox : LorMonsterModel
         }
 
         _giftGranted = true;
-        LocalOggOneShotPlayer.Play(GiftOpenSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.GiftOpenSfx, -2f);
         await AddGiftsToPlayers(GiftCardCount);
     }
 
@@ -240,7 +235,7 @@ public sealed class SurpriseGiftBox : LorMonsterModel
         }
 
         _friendSpawned = true;
-        LocalOggOneShotPlayer.Play(FriendSpawnSfxPath, -2f);
+        LocalOggOneShotPlayer.Play(LeticiaAssets.FriendSpawnSfx, -2f);
         var friend = (LittleWitchFriend)ModelDb.Monster<LittleWitchFriend>().ToMutable();
         friend.ConfigureInitialMoveForSlot(slot);
         Creature friendCreature = await CreatureCmd.Add(friend, combatState, CombatSide.Enemy, slot);

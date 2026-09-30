@@ -59,7 +59,7 @@ public sealed class NaturalFloorTeardropPower : LibraryOfRuinaPowerModel
 {
     protected override string LegacyPowerId => "NATURAL_FLOOR_TEARDROP_POWER";
 
-    public override string PackedIconPath => "res://images/powers/forgotten_knight_sword_teardrop_power.png";
+    public override string PackedIconPath => NaturalFloorAssets.ForgottenKnightSwordTeardropPowerIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 
@@ -80,7 +80,7 @@ public sealed class NaturalFloorSwordFalseDeathPower : LibraryFakeDeathPowerMode
 {
     protected override string LegacyPowerId => "NATURAL_FLOOR_SWORD_FALSE_DEATH_POWER";
 
-    public override string PackedIconPath => "res://images/powers/library_passive_green.png";
+    public override string PackedIconPath => NaturalFloorAssets.LibraryPassiveGreenIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 

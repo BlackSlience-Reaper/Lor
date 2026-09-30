@@ -16,7 +16,7 @@ public partial class YunaCreatureVisuals : DawnOfficeTripleAttackCreatureVisuals
     internal static readonly SpriteVisualProfile Profile =
         BuildTripleAttackProfile(
             "yuna",
-            "res://images/monsters/yuna.png",
+            DawnOfficeAssets.YunaTexture,
             12f,
             -145.2f,
             0.53f);

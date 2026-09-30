@@ -9,7 +9,7 @@ namespace LibraryOfRuina.content.abnormalities.QueenOfHatred;
 
 internal static class QueenOfHatredInversionVideoController
 {
-    internal const string VideoPath = "res://videos/queen_of_hatred_inversion.ogv";
+    internal const string VideoPath = QueenOfHatredAssets.QueenOfHatredInversionVideo;
     private const float VideoAspectRatio = 16f / 9f;
     private const double UnknownStreamFallbackSeconds = 10.0;
     private const double PlaybackFallbackPaddingSeconds = 0.5;

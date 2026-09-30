@@ -9,9 +9,9 @@ public sealed class KuroKumoNormal : EncounterModel, IGuestReceptionEncounter, I
 {
     EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
         "KuroKumoBGM",
-        "res://audio/bgm/kurokumo/kurokumo_guest_battle_1.ogg",
-        "res://audio/bgm/kurokumo/kurokumo_guest_battle_2.ogg",
-        "res://audio/bgm/kurokumo/kurokumo_guest_battle_3.ogg");
+        KuroKumoAssets.KurokumoGuestBattle1Bgm,
+        KuroKumoAssets.KurokumoGuestBattle2Bgm,
+        KuroKumoAssets.KurokumoGuestBattle3Bgm);
 
     public override RoomType RoomType => RoomType.Monster;
 

@@ -25,42 +25,40 @@ public partial class LittleRedMercenaryCreatureVisuals
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root =
-            "res://images/monsters/little_red_mercenary/";
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
                 SpriteVisualProfile.DefaultVariantKey,
-                root + "idle.png")
+                LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "idle.png")
             .At(-8f, -130f)
             .Scale(-0.74f, 0.74f)
             .AnchorX(76f)
             .IdleOnly();
 
-        profile.Frame("attack_1", root + "attack_1.png")
+        profile.Frame("attack_1", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "attack_1.png")
             .Nudge(24f, -140f)
             .Scale(-0.76f, 0.76f)
             .AnchorX(274f);
-        profile.Frame("attack_2", root + "attack_2.png")
+        profile.Frame("attack_2", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "attack_2.png")
             .Nudge(24f, -140f)
             .Scale(-0.76f, 0.76f)
             .AnchorX(438f);
-        profile.Frame("fire_1", root + "fire_1.png")
+        profile.Frame("fire_1", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "fire_1.png")
             .Nudge(30f, -140f)
             .Scale(-0.58f, 0.58f)
             .AnchorX(570f);
-        profile.Frame("fire_2", root + "fire_2.png")
+        profile.Frame("fire_2", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "fire_2.png")
             .Nudge(30f, -140f)
             .Scale(-0.58f, 0.58f)
             .AnchorX(614f);
-        profile.Frame("fire_3", root + "fire_3.png")
+        profile.Frame("fire_3", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "fire_3.png")
             .Nudge(30f, -140f)
             .Scale(-0.58f, 0.58f)
             .AnchorX(525f);
-        profile.Frame("fire_4", root + "fire_4.png")
+        profile.Frame("fire_4", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "fire_4.png")
             .Nudge(30f, -140f)
             .Scale(-0.58f, 0.58f)
             .AnchorX(1297f);
-        profile.Frame("hit", root + "hit.png");
+        profile.Frame("hit", LittleRedMercenaryAssets.LittleRedMercenaryMonsterRoot + "hit.png");
 
         profile.Lunge(
                 ["attack_1", "attack_2"],

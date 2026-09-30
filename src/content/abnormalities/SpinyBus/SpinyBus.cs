@@ -50,17 +50,15 @@ public sealed class SpinyBus : LorMonsterModel
         "SPINY_BUS.backgroundText.normal.4"
     ];
 
-    private const string Root = "res://images/monsters/spiny_bus/";
-    public const string IdleTexturePath = Root + "idle.png";
-    public const string ParryTexturePath = Root + "parry.png";
-    public const string AttackTexturePath = Root + "attack.png";
-    public const string Attack2TexturePath = Root + "attack2.png";
-    public const string HitTexturePath = Root + "hit.png";
+    public const string IdleTexturePath = SpinyBusAssets.SpinyBusMonsterRoot + "idle.png";
+    public const string ParryTexturePath = SpinyBusAssets.SpinyBusMonsterRoot + "parry.png";
+    public const string AttackTexturePath = SpinyBusAssets.SpinyBusMonsterRoot + "attack.png";
+    public const string Attack2TexturePath = SpinyBusAssets.SpinyBusMonsterRoot + "attack2.png";
+    public const string HitTexturePath = SpinyBusAssets.SpinyBusMonsterRoot + "hit.png";
 
-    private const string SfxRoot = "res://audio/sfx/spiny_bus/";
-    public const string ParrySfxPath = SfxRoot + "special.ogg";
-    public const string HitSfxPath = SfxRoot + "hit.ogg";
-    public const string AttackSfxPath = SfxRoot + "thrust.ogg";
+    public const string ParrySfxPath = SpinyBusAssets.SpinyBusSfxRoot + "special.ogg";
+    public const string HitSfxPath = SpinyBusAssets.SpinyBusSfxRoot + "hit.ogg";
+    public const string AttackSfxPath = SpinyBusAssets.SpinyBusSfxRoot + "thrust.ogg";
 
     private static readonly string[] SfxPaths =
     [

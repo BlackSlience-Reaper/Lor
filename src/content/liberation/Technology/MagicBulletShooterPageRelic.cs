@@ -33,22 +33,17 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
     internal const int BlackFlameDamageTakenPercent = 10;
     internal const int BlackFlameTurnInterval = 2;
 
-    private const string TechnologyFloorIconPath =
-        "res://images/ui/run_history/technology_floor_liberation_encounter.png";
-    private const string TechnologyFloorIconOutlinePath =
-        "res://images/ui/run_history/technology_floor_liberation_encounter_outline.png";
-
     private HashSet<Creature> _pendingCommissionKills = [];
     private CardModel? _seventhAttackCard;
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
-    public override string PackedIconPath => TechnologyFloorIconPath;
+    public override string PackedIconPath => TechnologyFloorAssets.LiberationEncounterRunHistoryIcon;
 
     protected override string PackedIconOutlinePath =>
-        TechnologyFloorIconOutlinePath;
+        TechnologyFloorAssets.LiberationEncounterOutlineRunHistoryIcon;
 
-    protected override string BigIconPath => TechnologyFloorIconPath;
+    protected override string BigIconPath => TechnologyFloorAssets.LiberationEncounterRunHistoryIcon;
 
     public override bool ShowCounter =>
         CombatManager.Instance.IsInProgress

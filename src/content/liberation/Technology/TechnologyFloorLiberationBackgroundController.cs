@@ -6,11 +6,11 @@ namespace LibraryOfRuina.content.liberation.Technology;
 
 internal static class TechnologyFloorLiberationBackgroundController
 {
-    public const string PhaseOneTexturePath = "res://images/backgrounds/technology_floor_liberation_encounter/background_1.webp";
-    public const string PhaseTwoTexturePath = "res://images/backgrounds/technology_floor_liberation_encounter/background_2.webp";
-    public const string PhaseThreeTexturePath = "res://images/backgrounds/technology_floor_liberation_encounter/phase3_background.png";
-    public const string PhaseFourTexturePath = "res://images/backgrounds/technology_floor_liberation_encounter/phase4_background.png";
-    public const string PhaseFiveTexturePath = "res://images/backgrounds/technology_floor_liberation_encounter/phase5_background.png";
+    public const string PhaseOneTexturePath = TechnologyFloorAssets.Background1;
+    public const string PhaseTwoTexturePath = TechnologyFloorAssets.Background2;
+    public const string PhaseThreeTexturePath = TechnologyFloorAssets.Phase3Background;
+    public const string PhaseFourTexturePath = TechnologyFloorAssets.Phase4Background;
+    public const string PhaseFiveTexturePath = TechnologyFloorAssets.Phase5Background;
 
     public static string GetPhaseBackgroundTexturePath(int phase) =>
         phase switch

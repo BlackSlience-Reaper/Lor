@@ -42,8 +42,7 @@ public sealed class RnfmabjWillOfThePrescriptCard() : CardModel(
 {
     public const string PortraitAssetPath =
         "res://images/packed/card_portraits/quest/rnfmabj_will_of_the_prescript_card.png";
-    internal const string CardHoverTipScenePath =
-        "res://scenes/ui/card_hover_tip.tscn";
+    internal const string CardHoverTipScenePath = RnfmabjDirectiveOverlay.CardHoverTipScenePath;
 
     internal const int MaxCardsPerTurn = 6;
     internal const int NextTurnEnergy = 3;

@@ -32,13 +32,12 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
     public override int DefaultChaoResistance => 30;
 
 
-    public const string IdleTexturePath = "res://images/monsters/history_floor/end_light.png";
-    public const string AttackTexturePath = "res://images/monsters/history_floor/end_light_attack.png";
-    public const string HitTexturePath = "res://images/monsters/history_floor/end_light_hit.png";
-    public const string CastTexturePath = "res://images/monsters/history_floor/end_light_cast.png";
+    public const string IdleTexturePath = HistoryFloorAssets.EndLightTexture;
+    public const string AttackTexturePath = HistoryFloorAssets.EndLightAttackTexture;
+    public const string HitTexturePath = HistoryFloorAssets.EndLightHitTexture;
+    public const string CastTexturePath = HistoryFloorAssets.EndLightCastTexture;
 
-    internal const string EndLightAttackSfxPath = "res://audio/sfx/scorched_girl/scorched_girl_explosion.ogg";
-    private const string MatchEnhancementSfxPath = "res://audio/sfx/scorched_girl/fourth_match_flame_attack.ogg";
+    internal const string EndLightAttackSfxPath = HistoryFloorAssets.ScorchedGirlExplosionSfx;
 
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 190f, 980f, 470f);
     private static readonly string[] BackgroundTextLineKeys =
@@ -58,7 +57,7 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
     private static readonly string[] SfxAssetPaths =
     [
         EndLightAttackSfxPath,
-        MatchEnhancementSfxPath
+        HistoryFloorAssets.FourthMatchFlameAttackSfx
     ];
 
     private int _turnIndex;
@@ -196,7 +195,7 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
 
     private async Task MatchEnhancementMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(MatchEnhancementSfxPath, -4f);
+        LocalOggOneShotPlayer.Play(HistoryFloorAssets.FourthMatchFlameAttackSfx, -4f);
 
         await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
 

@@ -32,7 +32,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
     private const string BeyondFragmentEgoMoveId = "BEYOND_FRAGMENT_EGO";
     private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
-    public const string Root = "res://images/monsters/beyond_fragment/";
+    public const string Root = ArtFloorAssets.BeyondFragmentMonsterRoot;
     public const string IdleTexturePath = Root + "beyond_fragment_idle.png";
     public const string HitTexturePath = Root + "beyond_fragment_hit.png";
     public const string AttackTexturePath = Root + "beyond_fragment_attack.png";

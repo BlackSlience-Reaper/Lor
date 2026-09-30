@@ -22,21 +22,21 @@ public sealed partial class FalseThroneCreatureVisuals
 
     private const string TransformedVariantKey = "transformed";
     internal const string DefaultTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/default.png";
+        SocialFloorAssets.FalseThroneDefaultTexture;
     internal const string DamagedTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/damaged.png";
+        SocialFloorAssets.FalseThroneDamagedTexture;
     internal const string GuardTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/guard.png";
+        SocialFloorAssets.FalseThroneGuardTexture;
     internal const string FireTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/fire.png";
+        SocialFloorAssets.FalseThroneFireTexture;
     internal const string OverflowingLightTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/fire_s1.png";
+        SocialFloorAssets.FireS1Texture;
     internal const string AreaTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/area_s2.png";
+        SocialFloorAssets.AreaS2Texture;
     internal const string PolymorphTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/polymorph_s4.png";
+        SocialFloorAssets.PolymorphS4Texture;
     internal const string RageTexturePath =
-        "res://images/monsters/social_floor_liberation/false_throne/rage_s3.png";
+        SocialFloorAssets.RageS3Texture;
 
     private const float CharacterAnchorX = 220f;
     private const float DamagedAnchorX = 377f;

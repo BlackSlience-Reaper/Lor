@@ -21,7 +21,7 @@ namespace LibraryOfRuina.content.liberation.Natural;
 
 public abstract class NaturalFloorWrathMonster : LorMonsterModel, ITargetedMonsterAttackProvider
 {
-    internal const string SfxRoot = "res://audio/sfx/natural_floor_liberation/blind_rage/";
+    internal const string SfxRoot = NaturalFloorAssets.BlindRageSfxRoot;
     internal const float HitTime = 0.96f; // 自然层怒火阶段：攻击结算等待秒数。
     private Dictionary<string, MoveState> _moves = [];
     private Dictionary<string, string> _restoredState = [];
@@ -56,7 +56,7 @@ public abstract class NaturalFloorWrathMonster : LorMonsterModel, ITargetedMonst
     public override IEnumerable<string> AssetPaths => VisualAssets
         .Concat(new[] { "strike", "slash", "thrust", "decay", "special_1", "special_2", "special_3", "hermit_attack", "hermit_strong", "hermit_ground", "meet" }
             .Select(file => SfxRoot + file + ".ogg"))
-        .Concat(new[] { "res://images/powers/library_passive_green.png" })
+        .Concat(new[] { NaturalFloorAssets.LibraryPassiveGreenIcon })
         .Concat(Enumerable.Range(0, MoveIds.Length).SelectMany(i => CreateIntents(i)).SelectMany(i => i.AssetPaths))
         .Distinct();
 

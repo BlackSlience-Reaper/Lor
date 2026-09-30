@@ -64,9 +64,9 @@ public sealed class BlueStarStrong : EncounterModel, IEncounterBgmSource
             .Concat(
             [
                 BlueStarAltar.BgmPath,
-                "res://images/backgrounds/blue_star_strong/blue_star_strong_background.png",
-                "res://scenes/backgrounds/blue_star_strong/blue_star_strong_background.tscn",
-                "res://scenes/backgrounds/blue_star_strong/layers/blue_star_strong_bg_00_a.tscn"
+                BlueStarAssets.StrongBackground,
+                BlueStarAssets.StrongBackgroundScene,
+                BlueStarAssets.StrongBg00ABackgroundScene
             ])
             .Distinct();
 

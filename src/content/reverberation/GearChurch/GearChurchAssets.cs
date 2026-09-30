@@ -1,4 +1,5 @@
 using LibraryOfRuina.content.guests.DawnOffice;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Helpers;
@@ -12,6 +13,7 @@ internal static class GearChurchAssets
     internal const string EileenScene = "res://scenes/creature_visuals/reverberation_eileen.tscn";
     internal const string FollowerScene = "res://scenes/creature_visuals/gear_church_follower.tscn";
     internal const string AudioRoot = "res://audio/sfx/reverberation/gear_church/";
+    internal const string SmokePowerIcon = "res://images/powers/gear_church_smoke_power.png";
 
     internal static readonly string[] Paths =
     [
@@ -20,9 +22,9 @@ internal static class GearChurchAssets
         AudioRoot + "strike.ogg", AudioRoot + "steam.ogg",
         AudioRoot + "eileen_slash.ogg", AudioRoot + "eileen_pierce.ogg",
         AudioRoot + "eileen_strike.ogg", AudioRoot + "eileen_ranged.ogg",
-        "res://images/powers/gear_church_smoke_power.png",
-        "res://images/powers/library_passive_orange.png",
-        "res://images/powers/library_passive_purple.png"
+        SmokePowerIcon,
+        SharedAssets.LibraryPassiveOrangeIcon,
+        SharedAssets.LibraryPassivePurpleIcon
     ];
 
     internal static string AttackSound(GearChurchMonsterBase monster, string animation)

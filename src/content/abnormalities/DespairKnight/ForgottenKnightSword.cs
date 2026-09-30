@@ -47,7 +47,7 @@ public sealed class ForgottenKnightSword : LorMonsterModel
     public const string FalseDeathMoveId = "FALSE_DEATH";
     private const string FalseDeathHiddenMoveId = "FALSE_DEATH_HIDDEN";
 
-    public const string Root = "res://images/monsters/forgotten_knight_sword/";
+    public const string Root = DespairKnightAssets.ForgottenKnightSwordMonsterRoot;
     public const string NormalIdleTexturePath = Root + "normal_idle.png";
     public const string NormalBluntTexturePath = Root + "normal_blunt.png";
     public const string NormalPierceTexturePath = Root + "normal_pierce.png";
@@ -64,7 +64,7 @@ public sealed class ForgottenKnightSword : LorMonsterModel
     public const string DespairAttackTexturePath = Root + "despair_attack.png";
     public const string DespairHitTexturePath = Root + "despair_hit.png";
 
-    public const string SfxRoot = "res://audio/sfx/despair_knight/";
+    public const string SfxRoot = DespairKnightAssets.DespairKnightSfxRoot;
     public const string NormalBluntSfxPath = SfxRoot + "sword_protected_blunt.ogg";
     public const string NormalPierceSfxPath = SfxRoot + "sword_protected_pierce.ogg";
     public const string NormalSlashSfxPath = SfxRoot + "sword_protected_slash.ogg";
@@ -84,9 +84,9 @@ public sealed class ForgottenKnightSword : LorMonsterModel
 
     public static readonly string[] PowerIconPaths =
     [
-        "res://images/powers/forgotten_knight_sword_teardrop_power.png",
-        "res://images/powers/forgotten_knight_sword_false_death_power.png",
-        "res://images/powers/forgotten_knight_sword_pierce_despair_power.png"
+        DespairKnightAssets.ForgottenKnightSwordTeardropPowerIcon,
+        DespairKnightAssets.ForgottenKnightSwordFalseDeathPowerIcon,
+        DespairKnightAssets.ForgottenKnightSwordPierceDespairPowerIcon
     ];
 
     public static readonly string[] AssetPathsStatic =

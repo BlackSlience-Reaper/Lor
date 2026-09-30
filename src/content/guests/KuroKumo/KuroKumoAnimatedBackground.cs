@@ -8,7 +8,7 @@ namespace LibraryOfRuina.content.guests.KuroKumo;
 public partial class KuroKumoAnimatedBackground : TextureRect
 {
     [Export(PropertyHint.File, "*.json")]
-    public string ManifestPath = "res://images/backgrounds/kuro_kumo_normal/frames/manifest.json";
+    public string ManifestPath = KuroKumoAssets.FramesManifestJson;
 
     private readonly List<Texture2D> _frames = new();
     private readonly List<double> _durationsSeconds = new();

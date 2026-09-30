@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.guests;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -522,10 +523,10 @@ internal static class XiaoSpecialGuestAssets
 
     public static readonly string[] PassiveIcons =
     [
-        "res://images/powers/library_passive_orange.png",
-        "res://images/powers/library_passive_purple.png",
+        SharedAssets.LibraryPassiveOrangeIcon,
+        SharedAssets.LibraryPassivePurpleIcon,
         "res://images/powers/library_passive_blue.png",
-        "res://images/powers/library_passive_green.png",
+        SharedAssets.LibraryPassiveGreenIcon,
         "res://images/powers/nullify_power.png",
     ];
 

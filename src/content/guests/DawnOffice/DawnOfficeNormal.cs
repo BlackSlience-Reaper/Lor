@@ -8,9 +8,9 @@ public sealed class DawnOfficeNormal : EncounterModel, IGuestReceptionEncounter,
 {
     EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
         "DawnOfficeBGM",
-        "res://audio/bgm/dawn_office/dawn_office_battle_1.ogg",
-        "res://audio/bgm/dawn_office/dawn_office_battle_2.ogg",
-        "res://audio/bgm/dawn_office/dawn_office_battle_3.ogg");
+        DawnOfficeAssets.Battle1Bgm,
+        DawnOfficeAssets.Battle2Bgm,
+        DawnOfficeAssets.Battle3Bgm);
 
     public override RoomType RoomType => RoomType.Monster;
 

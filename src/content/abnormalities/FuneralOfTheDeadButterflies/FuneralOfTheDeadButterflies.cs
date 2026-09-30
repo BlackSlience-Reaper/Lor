@@ -33,19 +33,19 @@ public sealed class FuneralOfTheDeadButterflies : LorMonsterModel
     private const string Move3Id = "SALVATION_HAND";
     private const string Move4Id = "FUNERAL_SHOT";
 
-    public const string IdleTexturePath = "res://images/monsters/funeral_of_the_dead_butterflies/idle.png";
-    public const string CoffinPrepareTexturePath = "res://images/monsters/funeral_of_the_dead_butterflies/coffin_prepare.png";
-    public const string CoffinAttackTexturePath = "res://images/monsters/funeral_of_the_dead_butterflies/coffin_attack.png";
-    public const string FireBlackTexturePath = "res://images/monsters/funeral_of_the_dead_butterflies/fire_black.png";
-    public const string FireWhiteTexturePath = "res://images/monsters/funeral_of_the_dead_butterflies/fire_white.png";
-    public const string HitTexturePath = "res://images/monsters/funeral_of_the_dead_butterflies/hit.png";
-    public const string WhiteFilterTexturePath = "res://images/vfx/funeral_white_filter_overlay.png";
+    public const string IdleTexturePath = FuneralOfTheDeadButterfliesAssets.FuneralOfTheDeadButterfliesIdleTexture;
+    public const string CoffinPrepareTexturePath = FuneralOfTheDeadButterfliesAssets.CoffinPrepareTexture;
+    public const string CoffinAttackTexturePath = FuneralOfTheDeadButterfliesAssets.CoffinAttackTexture;
+    public const string FireBlackTexturePath = FuneralOfTheDeadButterfliesAssets.FireBlackTexture;
+    public const string FireWhiteTexturePath = FuneralOfTheDeadButterfliesAssets.FireWhiteTexture;
+    public const string HitTexturePath = FuneralOfTheDeadButterfliesAssets.FuneralOfTheDeadButterfliesHitTexture;
+    public const string WhiteFilterTexturePath = FuneralOfTheDeadButterfliesAssets.FuneralWhiteFilterOverlayTexture;
 
-    public const string AttackBlackSfxPath = "res://audio/sfx/funeral_of_the_dead_butterflies/funeral_attack_black.ogg";
-    public const string AttackWhiteSfxPath = "res://audio/sfx/funeral_of_the_dead_butterflies/funeral_attack_white.ogg";
-    public const string StrongPrepareSfxPath = "res://audio/sfx/funeral_of_the_dead_butterflies/funeral_strong_prepare.ogg";
-    public const string ParrySfxPath = "res://audio/sfx/funeral_of_the_dead_butterflies/funeral_parry.ogg";
-    public const string StunSfxPath = "res://audio/sfx/funeral_of_the_dead_butterflies/funeral_stun.ogg";
+    public const string AttackBlackSfxPath = FuneralOfTheDeadButterfliesAssets.FuneralAttackBlackSfx;
+    public const string AttackWhiteSfxPath = FuneralOfTheDeadButterfliesAssets.FuneralAttackWhiteSfx;
+    public const string StrongPrepareSfxPath = FuneralOfTheDeadButterfliesAssets.FuneralStrongPrepareSfx;
+    public const string ParrySfxPath = FuneralOfTheDeadButterfliesAssets.FuneralParrySfx;
+    public const string StunSfxPath = FuneralOfTheDeadButterfliesAssets.FuneralStunSfx;
 
     private static readonly string[] NormalBackgroundTextLineKeys =
     [

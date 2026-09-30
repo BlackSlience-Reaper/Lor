@@ -63,9 +63,9 @@ public sealed class WrathServantStrong : EncounterModel, IEncounterBgmSource
             .Concat(GuestReceptionPoolRegistry.NaturalReceptionFloorBgmTracks)
             .Concat(new[]
             {
-                "res://images/backgrounds/wrath_servant_strong/background.png",
-                "res://scenes/backgrounds/wrath_servant_strong/wrath_servant_strong_background.tscn",
-                "res://scenes/backgrounds/wrath_servant_strong/layers/wrath_servant_strong_bg_00_a.tscn"
+                WrathServantAssets.StrongBackground,
+                WrathServantAssets.StrongBackgroundScene,
+                WrathServantAssets.StrongBg00ABackgroundScene
             })
             .Distinct();
 

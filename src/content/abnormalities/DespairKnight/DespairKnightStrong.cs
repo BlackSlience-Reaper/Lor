@@ -47,9 +47,9 @@ public sealed class DespairKnightStrong : EncounterModel, IEncounterBgmSource
             .Concat(GuestReceptionPoolRegistry.NaturalReceptionFloorBgmTracks)
             .Concat(new[]
             {
-                "res://images/backgrounds/despair_knight_strong/despair_knight_background.png",
-                "res://scenes/backgrounds/despair_knight_strong/despair_knight_strong_background.tscn",
-                "res://scenes/backgrounds/despair_knight_strong/layers/despair_knight_strong_bg_00_a.tscn"
+                DespairKnightAssets.DespairKnightBackground,
+                DespairKnightAssets.StrongBackgroundScene,
+                DespairKnightAssets.StrongBg00ABackgroundScene
             })
             .Distinct();
 

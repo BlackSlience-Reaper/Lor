@@ -30,10 +30,6 @@ public sealed class LanguageFloorScarletScar :
 {
     private const string CompositeMoveId = "LANGUAGE_FLOOR_SCARLET_COMPOSITE";
     private const string RouterMoveId = "LANGUAGE_FLOOR_SCARLET_ROUTER";
-    private const string AttackSfxPath = "res://audio/sfx/little_red_mercenary/little_red_attack.ogg";
-    private const string FireSfxPath = "res://audio/sfx/little_red_mercenary/little_red_fire.ogg";
-    private const string RageSfxPath = "res://audio/sfx/little_red_mercenary/little_red_rage.ogg";
-    private const string UnrelievedSfxPath = "res://audio/sfx/little_red_mercenary/little_red_unrelieved.ogg";
 
     public int PlannedMoveOne { get; private set; } = -1;
 
@@ -94,12 +90,12 @@ public sealed class LanguageFloorScarletScar :
             return LanguageFloorScarletScarCreatureVisuals.Profile.AssetPaths
                 .Concat(
                 [
-                    "res://images/powers/language_floor_anger_gauge_power.png",
-                    "res://images/powers/language_floor_death_tracker_power.png",
-                    AttackSfxPath,
-                    FireSfxPath,
-                    RageSfxPath,
-                    UnrelievedSfxPath
+                    LanguageFloorAssets.AngerGaugePowerIcon,
+                    LanguageFloorAssets.DeathTrackerPowerIcon,
+                    LanguageFloorAssets.LittleRedAttackSfx,
+                    LanguageFloorAssets.LittleRedFireSfx,
+                    LanguageFloorAssets.LittleRedRageSfx,
+                    LanguageFloorAssets.LittleRedUnrelievedSfx
                 ])
                 .Concat(EnumerateIntentAssets().SelectMany(static intent => intent.AssetPaths))
                 .Distinct();
@@ -231,7 +227,7 @@ public sealed class LanguageFloorScarletScar :
             return;
         }
 
-        LocalOggOneShotPlayer.Play(RageSfxPath);
+        LocalOggOneShotPlayer.Play(LanguageFloorAssets.LittleRedRageSfx);
         await LanguageFloorRagePower.ApplyWithDuration(Creature, Creature);
         await MultiplayerScalingPatchHelper.RescaleMonsterMaxHpAndRestoreDifference(
             Creature);
@@ -290,7 +286,7 @@ public sealed class LanguageFloorScarletScar :
         }
 
         Creature.GetPower<LanguageFloorAngerGaugePower>()?.ResetAnger();
-        LocalOggOneShotPlayer.Play(UnrelievedSfxPath);
+        LocalOggOneShotPlayer.Play(LanguageFloorAssets.LittleRedUnrelievedSfx);
         await CreatureCmd.Heal(Creature, (int)Math.Ceiling(Creature.MaxHp * 0.5m));
         if (Creature is LibraryCreature libraryCreature)
         {
@@ -317,15 +313,15 @@ public sealed class LanguageFloorScarletScar :
         switch (move)
         {
             case LanguageFloorMoveKind.StableBreath:
-                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Attack", AttackSfxPath);
+                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Attack", LanguageFloorAssets.LittleRedAttackSfx);
                 await CreatureCmd.GainBlock(Creature, 11m, ValueProp.Move, null);
                 break;
             case LanguageFloorMoveKind.HuntTarget:
-                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Attack", AttackSfxPath);
+                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Attack", LanguageFloorAssets.LittleRedAttackSfx);
                 await ApplyHuntMarkToCurrentTarget();
                 break;
             case LanguageFloorMoveKind.HuntBeast:
-                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Attack", AttackSfxPath);
+                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Attack", LanguageFloorAssets.LittleRedAttackSfx);
                 Creature? flawTarget = LanguageFloorLiberationCombatHelper.GetPartnerThenPlayerTarget(Creature);
                 if (flawTarget?.IsAlive == true)
                 {
@@ -340,7 +336,7 @@ public sealed class LanguageFloorScarletScar :
                 await PowerCmdCompat.Apply<LibraryOfRuinaNextTurnStrength>(Creature, 1m, Creature, null);
                 break;
             case LanguageFloorMoveKind.ExplosiveShot:
-                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Fire", FireSfxPath);
+                await ExecuteTargetedHits(GetMoveDamage(move), 2, "Fire", LanguageFloorAssets.LittleRedFireSfx);
                 await ApplyHuntMarkToCurrentTarget();
                 break;
             case LanguageFloorMoveKind.DecisiveStrike:
@@ -396,7 +392,7 @@ public sealed class LanguageFloorScarletScar :
             }
 
             using var forcedTargets = TargetedMonsterAttackHelper.ForceTargets(Creature, actualTargets);
-            string sfx = animation == "Shoot" ? FireSfxPath : AttackSfxPath;
+            string sfx = animation == "Shoot" ? LanguageFloorAssets.LittleRedFireSfx : LanguageFloorAssets.LittleRedAttackSfx;
             string trigger = animation == "Shoot" ? $"ShootS{i + 1}" : animation;
             LocalOggOneShotPlayer.Play(sfx);
             AttackCommand command = await DamageCmd.Attack(damage)

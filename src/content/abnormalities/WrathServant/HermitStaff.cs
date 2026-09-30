@@ -26,10 +26,9 @@ public sealed class HermitStaff : LorMonsterModel, ITargetedMonsterAttackProvide
     private const int CrackCrackBlock = 9;
     private const float SegmentDelaySeconds = 0.48f;
 
-    private const string Root = "res://images/monsters/hermit_staff/";
-    public const string IdleTexturePath = Root + "idle.png";
-    public const string AttackTexturePath = Root + "attack.png";
-    public const string HitTexturePath = Root + "hit.png";
+    public const string IdleTexturePath = WrathServantAssets.HermitStaffMonsterRoot + "idle.png";
+    public const string AttackTexturePath = WrathServantAssets.HermitStaffMonsterRoot + "attack.png";
+    public const string HitTexturePath = WrathServantAssets.HermitStaffMonsterRoot + "hit.png";
 
     private const string SfxRoot = WrathServantEncounterHelper.HermitSfxRoot;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LibraryOfRuina.content.specialguests;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
@@ -57,7 +58,7 @@ internal static class GuestReceptionPoolRegistry
 
     internal static readonly string[] LiteratureReceptionFloorBgmTracks =
     {
-        "res://audio/bgm/literature_reception_floor/literature_reception_floor_1.ogg",
+        SharedAssets.LiteratureReceptionFloor1Bgm,
         "res://audio/bgm/literature_reception_floor/literature_reception_floor_2.ogg",
         "res://audio/bgm/literature_reception_floor/literature_reception_floor_3.ogg"
     };
@@ -71,7 +72,7 @@ internal static class GuestReceptionPoolRegistry
 
     internal static readonly string[] LanguageReceptionFloorBgmTracks =
     {
-        "res://audio/bgm/language_reception_floor/GeburaBattle1.ogg",
+        SharedAssets.LanguageReceptionFloorGeburabattle1Bgm,
         "res://audio/bgm/language_reception_floor/GeburaBattle2.ogg",
         "res://audio/bgm/language_reception_floor/GeburaBattle3.ogg"
     };

@@ -35,11 +35,6 @@ public sealed class TechnologyFloorChordStaff : LorMonsterModel
     private const string FeelMelodyMoveId = "FEEL_THE_MELODY";
     private const string IWantMoreMoveId = "I_WANT_MORE";
 
-    private const string IdleTexturePath = "res://images/monsters/addicted_employee/addicted_employee_idle.png";
-    private const string AttackTexturePath = "res://images/monsters/addicted_employee/addicted_employee_attack.png";
-    private const string GuardTexturePath = "res://images/monsters/addicted_employee/addicted_employee_guard.png";
-    private const string HitTexturePath = "res://images/monsters/addicted_employee/addicted_employee_hit.png";
-    private const string AttackSfxPath = "res://audio/sfx/song_machine/song_machine_attack.ogg";
     private const string AttackSfxSlot = "SongMachineAttack";
 
     private const int ShiveringBlock = 8;
@@ -86,11 +81,11 @@ public sealed class TechnologyFloorChordStaff : LorMonsterModel
         base.AssetPaths.Skip(1)
             .Concat(
             [
-                IdleTexturePath,
-                AttackTexturePath,
-                GuardTexturePath,
-                HitTexturePath,
-                AttackSfxPath
+                TechnologyFloorAssets.AddictedEmployeeIdleTexture,
+                TechnologyFloorAssets.AddictedEmployeeAttackTexture,
+                TechnologyFloorAssets.AddictedEmployeeGuardTexture,
+                TechnologyFloorAssets.AddictedEmployeeHitTexture,
+                TechnologyFloorAssets.SongMachineAttackSfx
             ])
             .Distinct();
 
@@ -259,7 +254,7 @@ public sealed class TechnologyFloorChordStaff : LorMonsterModel
 
     private async Task<IReadOnlyList<DamageResult>> ExecuteAttackSegment(int damage)
     {
-        LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AttackSfxPath, -2f);
+        LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, TechnologyFloorAssets.SongMachineAttackSfx, -2f);
         AttackCommand attack = await DamageCmd.Attack(damage)
             .FromMonster(this)
             .WithAttackerAnim("Attack", AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)

@@ -30,17 +30,17 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
     private const int PulseBlock = 32;
     private const int PulseRegen = 20;
 
-    public const string TextureRoot = "res://images/monsters/heart_of_aspiration/";
+    public const string TextureRoot = HeartOfAspirationAssets.HeartOfAspirationMonsterRoot;
     public const string IdleTexturePath = TextureRoot + "idle.png";
     public const string AttackTexturePath = TextureRoot + "attack.png";
     public const string HitTexturePath = TextureRoot + "hit.png";
     public const string GuardTexturePath = TextureRoot + "guard.png";
-    public const string AttackSfxPath = "res://audio/sfx/heart_of_aspiration/heart_attack.ogg";
+    public const string AttackSfxPath = HeartOfAspirationAssets.HeartAttackSfx;
 
     private static readonly string[] AdditionalAssetPaths =
     [
         AttackSfxPath,
-        "res://images/powers/heart_of_aspiration_desire_passive_power.png"
+        HeartOfAspirationAssets.DesirePassivePowerIcon
     ];
 
     private static readonly string PageRelicTitleLocKey = $"{ModelDb.GetId<HeartOfAspirationPageRelic>().Entry}.title";

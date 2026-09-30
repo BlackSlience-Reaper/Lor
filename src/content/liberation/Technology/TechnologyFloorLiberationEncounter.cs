@@ -42,20 +42,20 @@ public sealed class TechnologyFloorLiberationEncounter :
     internal const string HelperCenterLeftSlot = "helper_center_left";
     internal const string HelperCenterRightSlot = "helper_center_right";
     internal const string Mk4BossSlot = "mk4_boss";
-    internal const string Mk4EncounterScenePath = "res://scenes/encounters/technology_floor_liberation_mk4_encounter.tscn";
+    internal const string Mk4EncounterScenePath = TechnologyFloorAssets.LiberationMk4EncounterScene;
     internal const string ChordBossSlot = "chord_boss";
     internal const string ChordStaffSlotOne = "chord_staff_1";
     internal const string ChordStaffSlotTwo = "chord_staff_2";
     internal const string ChordStaffSlotThree = "chord_staff_3";
-    internal const string ChordEncounterScenePath = "res://scenes/encounters/technology_floor_liberation_chord_encounter.tscn";
+    internal const string ChordEncounterScenePath = TechnologyFloorAssets.LiberationChordEncounterScene;
     internal const string SolemnMourningBossSlot = "solemn_mourning_boss";
     internal const string SolemnButterflySlotOne = "solemn_butterfly_1";
     internal const string SolemnButterflySlotTwo = "solemn_butterfly_2";
     internal const string SolemnButterflySlotThree = "solemn_butterfly_3";
     internal const string SolemnButterflySlotFour = "solemn_butterfly_4";
-    internal const string SolemnMourningEncounterScenePath = "res://scenes/encounters/technology_floor_liberation_solemn_mourning_encounter.tscn";
+    internal const string SolemnMourningEncounterScenePath = TechnologyFloorAssets.LiberationSolemnMourningEncounterScene;
     internal const string MagicBulletBossSlot = "magic_bullet_boss";
-    internal const string MagicBulletEncounterScenePath = "res://scenes/encounters/technology_floor_liberation_magic_bullet_encounter.tscn";
+    internal const string MagicBulletEncounterScenePath = TechnologyFloorAssets.LiberationMagicBulletEncounterScene;
     internal const int MaxPhase = 5;
 
 
@@ -100,7 +100,7 @@ public sealed class TechnologyFloorLiberationEncounter :
 
     public override MegaSkeletonDataResource? BossNodeSpineResource => null;
 
-    public override string BossNodePath => "res://images/map/placeholder/technology_floor_liberation_encounter_icon";
+    public override string BossNodePath => TechnologyFloorAssets.LiberationEncounterMapIconPrefix;
 
     public int CurrentPhase => _currentPhase;
 

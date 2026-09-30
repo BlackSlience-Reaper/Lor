@@ -8,11 +8,11 @@ internal sealed partial class BlueStarAltarCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/blue_star_altar.tscn";
+        BlueStarAssets.BlueStarAltarScene;
     internal const string NormalAnimationsPath =
-        "res://scenes/creature_visuals/blue_star_altar_normal_animations.tres";
+        BlueStarAssets.AltarNormalAnimationsResource;
     internal const string NovaAnimationsPath =
-        "res://scenes/creature_visuals/blue_star_altar_nova_animations.tres";
+        BlueStarAssets.AltarNovaAnimationsResource;
 
     internal static IReadOnlyList<string> AssetPaths { get; } =
     [
@@ -57,9 +57,9 @@ internal sealed partial class BlueStarFollowerCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/blue_star_follower.tscn";
+        BlueStarAssets.BlueStarFollowerScene;
     internal const string AnimationsPath =
-        "res://scenes/creature_visuals/blue_star_follower_animations.tres";
+        BlueStarAssets.FollowerAnimationsResource;
 
     internal static IReadOnlyList<string> AssetPaths { get; } =
     [

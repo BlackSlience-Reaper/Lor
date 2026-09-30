@@ -63,7 +63,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
 
     internal const string BackgroundTextScope = "history_floor_liberation_phase_4";
 
-    public const string Root = "res://images/monsters/history_floor/wasp/";
+    public const string Root = HistoryFloorAssets.HistoryFloorWaspMonsterRoot;
     public const string IdleTexturePath = Root + "wasp_idle.png";
     public const string AttackStrikeTexturePath = Root + "wasp_attack_strike.png";
     public const string AttackPierceTexturePath = Root + "wasp_attack_pierce.png";
@@ -71,7 +71,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
     public const string EffectTexturePath = Root + "wasp_effect.png";
     public const string LoyaltyTexturePath = Root + "wasp_loyalty.png";
 
-    public const string AttackBuffSfxPath = "res://audio/sfx/history_floor/wasp/wasp_attack_buff.ogg";
+    public const string AttackBuffSfxPath = HistoryFloorAssets.WaspAttackBuffSfx;
 
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 190f, 980f, 470f);
     private static readonly string[] BackgroundTextLineKeys =

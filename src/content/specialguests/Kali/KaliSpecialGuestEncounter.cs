@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LibraryOfRuina.content.guests;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
@@ -15,7 +16,7 @@ public sealed class KaliSpecialGuestEncounter :
 {
     EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
         "RedMistSpecialGuestBGM",
-        "res://audio/bgm/language_reception_floor/GeburaBattle1.ogg");
+        SharedAssets.LanguageReceptionFloorGeburabattle1Bgm);
 
     private const string KaliSlot = "kali";
 

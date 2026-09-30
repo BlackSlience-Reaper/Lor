@@ -68,14 +68,14 @@ public sealed class TechnologyFloorRegretBoss : LiberationPhaseBossMonster
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_1";
     private const float BackgroundTextIntervalSeconds = 5f;
 
-    public const string IdleTexturePath = "res://images/monsters/technology_floor/regret_idle.png";
-    public const string AttackRightTexturePath = "res://images/monsters/technology_floor/regret_attack_right.png";
-    public const string AttackLeftTexturePath = "res://images/monsters/technology_floor/regret_attack_left.png";
-    public const string AttackSlashTexturePath = "res://images/monsters/technology_floor/regret_attack_slash.png";
-    public const string HitTexturePath = "res://images/monsters/technology_floor/regret_hit.png";
-    public const string ParryTexturePath = "res://images/monsters/technology_floor/regret_parry.png";
-    public const string EgoTexturePath = "res://images/monsters/technology_floor/regret_ego_s1.png";
-    public const string AttackSfxPath = "res://audio/sfx/technology_floor/regret/regret_attack.ogg";
+    public const string IdleTexturePath = TechnologyFloorAssets.RegretIdleTexture;
+    public const string AttackRightTexturePath = TechnologyFloorAssets.RegretAttackRightTexture;
+    public const string AttackLeftTexturePath = TechnologyFloorAssets.RegretAttackLeftTexture;
+    public const string AttackSlashTexturePath = TechnologyFloorAssets.RegretAttackSlashTexture;
+    public const string HitTexturePath = TechnologyFloorAssets.RegretHitTexture;
+    public const string ParryTexturePath = TechnologyFloorAssets.RegretParryTexture;
+    public const string EgoTexturePath = TechnologyFloorAssets.RegretEgoS1Texture;
+    public const string AttackSfxPath = TechnologyFloorAssets.RegretAttackSfx;
 
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 190f, 980f, 470f);
 

@@ -6,6 +6,7 @@ using System.Threading;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
@@ -591,7 +592,7 @@ internal static class LibrarySecondAscensionUi
             return;
         }
 
-        label.AddThemeFontOverride(LabelFontTheme, ResourceLoader.Load<Font>("res://themes/kreon_bold_glyph_space_one.tres"));
+        label.AddThemeFontOverride(LabelFontTheme, ResourceLoader.Load<Font>(SharedAssets.KreonBoldGlyphSpaceOneResource));
     }
 
     private static void SetLabelTextAutoSize(Label label, string text)

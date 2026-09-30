@@ -30,7 +30,7 @@ public abstract class JudgementBirdPassivePower :
     IModPowerAssetOverrides
 {
     internal const string GreenPassiveIconPath =
-        "res://images/powers/library_passive_green.png";
+        JudgementBirdAssets.LibraryPassiveGreenIcon;
 
     public override string PackedIconPath => GreenPassiveIconPath;
 

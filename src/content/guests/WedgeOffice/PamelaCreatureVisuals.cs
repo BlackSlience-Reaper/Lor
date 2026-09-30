@@ -17,7 +17,7 @@ public partial class PamelaCreatureVisuals : DawnOfficeTripleAttackCreatureVisua
     internal static readonly SpriteVisualProfile Profile =
         BuildTripleAttackProfile(
             "pamela",
-            "res://images/monsters/pamela.webp",
+            WedgeOfficeAssets.PamelaTexture,
             18f,
             -145.2f,
             0.52f);

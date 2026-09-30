@@ -23,7 +23,7 @@ namespace LibraryOfRuina.content.abnormalities.QueenBee;
 public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHealthBarForecastSource
 {
     internal const int SporeAmount = 3;
-    internal const string SporeSfxPath = "res://audio/sfx/queen_bee/queen_spore.ogg";
+    internal const string SporeSfxPath = QueenBeeAssets.QueenSporeSfx;
 
     private bool _tookAttackDamageLastPlayerTurn;
     private HashSet<ulong> _playersGrantedEnergy = [];

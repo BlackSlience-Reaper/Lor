@@ -41,7 +41,7 @@ public sealed class TechnologyFloorChordBoss : LiberationPhaseBossMonster
     internal const string BackgroundTextScope = "technology_floor_liberation_phase_3";
     private const float BackgroundTextIntervalSeconds = 5f;
 
-    public const string Root = "res://images/monsters/technology_floor/chord/";
+    public const string Root = TechnologyFloorAssets.TechnologyFloorChordMonsterRoot;
     public const string IdleTexturePath = Root + "chord_idle.png";
     public const string AttackFireTexturePath = Root + "chord_attack_fire.png";
     public const string AttackStrikeTexturePath = Root + "chord_attack_strike.png";

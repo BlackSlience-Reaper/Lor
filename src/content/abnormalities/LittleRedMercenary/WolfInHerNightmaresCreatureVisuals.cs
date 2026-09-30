@@ -9,7 +9,7 @@ internal sealed partial class WolfInHerNightmaresCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/wolf_in_her_nightmares.tscn";
+        LittleRedMercenaryAssets.WolfInHerNightmaresScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         WolfInHerNightmaresAnimationContract.Library;

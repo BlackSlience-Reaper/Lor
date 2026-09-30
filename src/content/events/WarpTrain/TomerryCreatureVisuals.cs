@@ -48,17 +48,16 @@ public partial class TomerryCreatureVisuals : SpriteAttackCreatureVisuals
 
     private static SpriteVisualProfile BuildProfile()
     {
-        const string root = "res://images/monsters/tomerry";
         var profile = new SpriteVisualProfile().Centered();
-        profile.Variant(PhaseOneVariant, root + ".webp");
-        profile.Variant(PhaseTwoVariant, root + "_phase2.webp");
+        profile.Variant(PhaseOneVariant, WarpTrainAssets.TomerryMonsterPrefix + ".webp");
+        profile.Variant(PhaseTwoVariant, WarpTrainAssets.TomerryMonsterPrefix + "_phase2.webp");
         profile.InitialVariant(PhaseOneVariant);
 
-        AddPhaseFrames(profile, PhaseOneVariant, root + "_phase1");
-        AddPhaseFrames(profile, PhaseTwoVariant, root + "_phase2");
+        AddPhaseFrames(profile, PhaseOneVariant, WarpTrainAssets.TomerryMonsterPrefix + "_phase1");
+        AddPhaseFrames(profile, PhaseTwoVariant, WarpTrainAssets.TomerryMonsterPrefix + "_phase2");
         profile.Frame(
                 "triangle_sounds_better",
-                root + "_triangle_sounds_better.webp")
+                WarpTrainAssets.TomerryMonsterPrefix + "_triangle_sounds_better.webp")
             .Nudge(24f, -118f)
             .Scale(0.5f);
         profile.Lunge(

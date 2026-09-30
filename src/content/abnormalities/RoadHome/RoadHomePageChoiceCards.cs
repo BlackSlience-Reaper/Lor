@@ -11,9 +11,9 @@ public abstract class RoadHomePageChoiceCardBase : PageChoiceCard<RoadHomePageMo
 {
     public static readonly string[] PortraitResourcePaths =
     [
-        "res://images/packed/card_portraits/colorless/road_home_courage_choice_card.png",
-        "res://images/packed/card_portraits/colorless/road_home_companion_road_choice_card.png",
-        "res://images/packed/card_portraits/colorless/road_home_home_choice_card.png"
+        RoadHomeAssets.CourageChoiceCardTexture,
+        RoadHomeAssets.CompanionRoadChoiceCardTexture,
+        RoadHomeAssets.HomeChoiceCardTexture
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>

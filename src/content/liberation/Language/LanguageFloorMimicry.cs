@@ -107,7 +107,7 @@ public sealed class LanguageFloorMimicry :
     private const string RouterMoveId = "LANGUAGE_FLOOR_MIMICRY_ROUTER";
 
     public const string TextureRoot =
-        "res://images/monsters/language_floor_liberation/mimicry/";
+        LanguageFloorAssets.LiberationMimicryMonsterRoot;
     public const string FormOneIdleTexturePath =
         TextureRoot + "form1_idle.png";
     public const string FormOneThrustTexturePath =
@@ -133,30 +133,28 @@ public sealed class LanguageFloorMimicry :
     public const string FormThreeGoodbyeTexturePath =
         TextureRoot + "form3_goodbye.png";
 
-    private const string SfxRoot =
-        "res://audio/sfx/language_floor_liberation/mimicry/";
-    public const string ChangeSfxPath = SfxRoot + "change.ogg";
-    public const string GoodbyeSfxPath = SfxRoot + "goodbye.ogg";
-    public const string GuardSfxPath = SfxRoot + "guard.ogg";
-    public const string HelloSfxPath = SfxRoot + "hello.ogg";
+    public const string ChangeSfxPath = LanguageFloorAssets.LiberationMimicrySfxRoot + "change.ogg";
+    public const string GoodbyeSfxPath = LanguageFloorAssets.LiberationMimicrySfxRoot + "goodbye.ogg";
+    public const string GuardSfxPath = LanguageFloorAssets.LiberationMimicrySfxRoot + "guard.ogg";
+    public const string HelloSfxPath = LanguageFloorAssets.LiberationMimicrySfxRoot + "hello.ogg";
     public const string NormalFleshSfxPath =
-        SfxRoot + "normal_flesh.ogg";
-    public const string SkinSfxPath = SfxRoot + "skin.ogg";
+        LanguageFloorAssets.LiberationMimicrySfxRoot + "normal_flesh.ogg";
+    public const string SkinSfxPath = LanguageFloorAssets.LiberationMimicrySfxRoot + "skin.ogg";
     public const string StrongFleshSfxPath =
-        SfxRoot + "strong_flesh.ogg";
+        LanguageFloorAssets.LiberationMimicrySfxRoot + "strong_flesh.ogg";
     public const string StrongHorizontalSfxPath =
-        SfxRoot + "strong_hori.ogg";
+        LanguageFloorAssets.LiberationMimicrySfxRoot + "strong_hori.ogg";
     public const string StrongVerticalSfxPath =
-        SfxRoot + "strong_vert.ogg";
+        LanguageFloorAssets.LiberationMimicrySfxRoot + "strong_vert.ogg";
     public const string GoodbyeAttackSfxPath =
-        SfxRoot + "goodbye_attack.ogg";
+        LanguageFloorAssets.LiberationMimicrySfxRoot + "goodbye_attack.ogg";
     public const string GoodbyeBloodSfxPath =
-        SfxRoot + "goodbye_blood.ogg";
+        LanguageFloorAssets.LiberationMimicrySfxRoot + "goodbye_blood.ogg";
 
     public const string MimicPowerIconPath =
-        "res://images/powers/language_floor_mimicry_mimic_power.png";
+        LanguageFloorAssets.MimicryMimicPowerIcon;
     public const string FearCardPortraitPath =
-        "res://images/packed/card_portraits/status/language_floor_fear_card.png";
+        LanguageFloorAssets.FearCardTexture;
 
     private const float AttackSegmentSeconds = 0.45f;
 

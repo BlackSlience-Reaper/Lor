@@ -15,31 +15,28 @@ namespace LibraryOfRuina.content.liberation.Philosophy;
 public sealed partial class PhilosophyFloorTwilightCreatureVisuals
     : SpriteAttackCreatureVisuals, INonSpineVisualTriggerHandler
 {
-    private const string AnimationLibraryPath =
-        "res://scenes/creature_visuals/philosophy_floor_twilight_animations.tres";
-
     internal const string DefaultTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/default.png";
+        PhilosophyFloorAssets.TwilightDefaultTexture;
     internal const string GuardTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/guard.png";
+        PhilosophyFloorAssets.TwilightGuardTexture;
     internal const string HitTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/hit.png";
+        PhilosophyFloorAssets.TwilightHitTexture;
     internal const string SlashTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/j.png";
+        PhilosophyFloorAssets.TwilightJTexture;
     internal const string PenetrateTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/z.png";
+        PhilosophyFloorAssets.TwilightZTexture;
     internal const string ForestLightTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/f.png";
+        PhilosophyFloorAssets.TwilightFTexture;
     internal const string BigEyeTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/s1.png";
+        PhilosophyFloorAssets.TwilightS1Texture;
     internal const string PunishmentTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/s2.png";
+        PhilosophyFloorAssets.TwilightS2Texture;
     internal const string PunishmentFollowupTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/s3.png";
+        PhilosophyFloorAssets.TwilightS3Texture;
     internal const string JudgementTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/s4.png";
+        PhilosophyFloorAssets.TwilightS4Texture;
     internal const string PeaceTexturePath =
-        "res://images/monsters/philosophy_floor_twilight/s5.png";
+        PhilosophyFloorAssets.TwilightS5Texture;
 
     // Scene scale used by the catalog/static QA scene. Unity-root Y alignment
     // is represented as a state-specific scene-space offset.
@@ -104,11 +101,11 @@ public sealed partial class PhilosophyFloorTwilightCreatureVisuals
         if (_animationPlayer == null)
         {
             AnimationLibrary? library =
-                ResourceLoader.Load<AnimationLibrary>(AnimationLibraryPath);
+                ResourceLoader.Load<AnimationLibrary>(PhilosophyFloorAssets.TwilightAnimationsResource);
             if (library == null)
             {
                 throw new InvalidOperationException(
-                    $"Unable to load Twilight animation library: {AnimationLibraryPath}");
+                    $"Unable to load Twilight animation library: {PhilosophyFloorAssets.TwilightAnimationsResource}");
             }
 
             _animationPlayer = new AnimationPlayer

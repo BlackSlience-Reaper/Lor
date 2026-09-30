@@ -58,17 +58,17 @@ public sealed class LanguageFloorLiberationEncounter :
         CorpseSlotFour
     ];
     public const string EncounterScenePath =
-        "res://scenes/encounters/language_floor_liberation_encounter.tscn";
+        LanguageFloorAssets.LiberationEncounterScene;
 
     public const string BossNodeResourcePath =
-        "res://images/map/placeholder/language_floor_liberation_encounter_icon";
+        LanguageFloorAssets.LiberationEncounterMapIconPrefix;
 
     private bool _shouldReducePlayers;
     public static readonly string[] RolandLiberationBgmTracks =
     [
-        "res://audio/bgm/language_floor_liberation/roland_liberation_phase_1.ogg",
-        "res://audio/bgm/language_floor_liberation/roland_liberation_phase_2.ogg",
-        "res://audio/bgm/language_floor_liberation/roland_liberation_phase_3.ogg"
+        LanguageFloorAssets.RolandLiberationPhase1Bgm,
+        LanguageFloorAssets.RolandLiberationPhase2Bgm,
+        LanguageFloorAssets.RolandLiberationPhase3Bgm
     ];
 
     public override RoomType RoomType => RoomType.Boss;
@@ -136,21 +136,21 @@ public sealed class LanguageFloorLiberationEncounter :
             .Concat(ModelDb.Monster<LanguageFloorMimicry>().AssetPaths)
             .Concat(new[]
             {
-                "res://images/backgrounds/language_floor_liberation_encounter/background_1.png",
-                "res://images/backgrounds/language_floor_liberation_encounter/background_2.png",
+                LanguageFloorAssets.Background1,
+                LanguageFloorAssets.Background2,
                 LanguageFloorLiberationBackgroundController.PhaseThreeTexturePath,
                 LanguageFloorLiberationBackgroundController.PhaseFourTexturePath,
                 LanguageFloorLiberationBackgroundController.PhaseFiveTexturePath,
                 EncounterScenePath,
-                "res://scenes/backgrounds/language_floor_liberation_encounter/language_floor_liberation_encounter_background.tscn",
+                LanguageFloorAssets.LiberationEncounterBackgroundScene,
                 LanguageFloorLiberationBackgroundController.NormalTexturePath,
                 LanguageFloorLiberationBackgroundController.RageTexturePath,
-                "res://images/powers/language_floor_hunt_mark_power.png",
-                "res://images/powers/language_floor_scar_power.png",
-                "res://images/powers/language_floor_rage_power.png",
-                "res://images/powers/language_floor_unrelieved_anger_power.png",
-                "res://images/ui/run_history/language_floor_liberation_encounter.png",
-                "res://images/ui/run_history/language_floor_liberation_encounter_outline.png",
+                LanguageFloorAssets.HuntMarkPowerIcon,
+                LanguageFloorAssets.ScarPowerIcon,
+                LanguageFloorAssets.RagePowerIcon,
+                LanguageFloorAssets.UnrelievedAngerPowerIcon,
+                LanguageFloorAssets.LiberationEncounterRunHistoryIcon,
+                LanguageFloorAssets.LiberationEncounterOutlineRunHistoryIcon,
                 BossNodeResourcePath + ".png",
                 BossNodeResourcePath + "_outline.png"
             })

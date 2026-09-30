@@ -29,8 +29,6 @@ public sealed class LanguageFloorLostEverythingWolf :
     private const string HighCompositeMoveId = "LANGUAGE_FLOOR_WOLF_COMPOSITE_HIGH";
     private const string LowCompositeMoveId = "LANGUAGE_FLOOR_WOLF_COMPOSITE_LOW";
     private const string RouterMoveId = "LANGUAGE_FLOOR_WOLF_ROUTER";
-    private const string AttackSfxPath = "res://audio/sfx/little_red_mercenary/wolf_bite.ogg";
-    private const string HowlSfxPath = "res://audio/sfx/little_red_mercenary/wolf_howl.ogg";
     private const string SlashAnimationTrigger = "WolfSlash";
     private const string SpecialAnimationTrigger = "WolfS2";
     private const string HowlAnimationTrigger = "WolfHowl";
@@ -106,18 +104,18 @@ public sealed class LanguageFloorLostEverythingWolf :
                 .AssetPaths
                 .Concat(
                 [
-                    "res://images/powers/art_floor_green_passive_power.png",
-                    "res://images/powers/language_floor_scar_power.png",
-                    "res://images/powers/language_floor_rip_open_claw_passive_power.png",
-                    "res://images/powers/language_floor_wolf_howl_passive_power.png",
-                    "res://images/powers/language_floor_punish_evil_passive_power.png",
-                    "res://images/powers/language_floor_destined_big_bad_wolf_passive_power.png",
-                    "res://images/powers/language_floor_hide_in_darkness_passive_power.png",
-                    "res://images/powers/language_floor_shadow_ambush_passive_power.png",
-                    "res://images/powers/language_floor_exhaustion_passive_power.png",
-                    "res://images/powers/language_floor_shadow_wolf_power.png",
-                    AttackSfxPath,
-                    HowlSfxPath
+                    LanguageFloorAssets.ArtFloorGreenPassivePowerIcon,
+                    LanguageFloorAssets.ScarPowerIcon,
+                    LanguageFloorAssets.RipOpenClawPassivePowerIcon,
+                    LanguageFloorAssets.WolfHowlPassivePowerIcon,
+                    LanguageFloorAssets.PunishEvilPassivePowerIcon,
+                    LanguageFloorAssets.DestinedBigBadWolfPassivePowerIcon,
+                    LanguageFloorAssets.HideInDarknessPassivePowerIcon,
+                    LanguageFloorAssets.ShadowAmbushPassivePowerIcon,
+                    LanguageFloorAssets.ExhaustionPassivePowerIcon,
+                    LanguageFloorAssets.ShadowWolfPowerIcon,
+                    LanguageFloorAssets.WolfBiteSfx,
+                    LanguageFloorAssets.WolfHowlSfx
                 ])
                 .Concat(EnumerateIntentAssets().SelectMany(static intent => intent.AssetPaths))
                 .Distinct();
@@ -323,7 +321,7 @@ public sealed class LanguageFloorLostEverythingWolf :
                 return;
             }
 
-            LocalOggOneShotPlayer.Play(AttackSfxPath);
+            LocalOggOneShotPlayer.Play(LanguageFloorAssets.WolfBiteSfx);
             using var forcedTargets = TargetedMonsterAttackHelper.ForceTargets(Creature, [target]);
             AttackCommand command = await DamageCmd.Attack(damage)
                 .FromMonster(this)
@@ -354,7 +352,7 @@ public sealed class LanguageFloorLostEverythingWolf :
             }
 
             using var forcedTargets = TargetedMonsterAttackHelper.ForceTargets(Creature, actualTargets);
-            LocalOggOneShotPlayer.Play(HowlSfxPath);
+            LocalOggOneShotPlayer.Play(LanguageFloorAssets.WolfHowlSfx);
             AttackCommand command = await DamageCmd.Attack(damage)
                 .FromMonster(this)
                 .WithAttackerAnim(HowlAnimationTrigger, AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)

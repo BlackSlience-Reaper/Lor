@@ -39,21 +39,16 @@ public sealed class SnowWhiteApplePageRelic : ModalPageRelic<SnowWhiteApplePageM
     internal const int MaliceMaxDamage = 120;
     internal const int MaliceMaxDamageHpThresholdPercent = 50;
 
-    private const string HistoryFloorIconPath =
-        "res://images/ui/run_history/history_floor_liberation_encounter.png";
-    private const string HistoryFloorIconOutlinePath =
-        "res://images/ui/run_history/history_floor_liberation_encounter_outline.png";
-
     private bool _poisonBarrierTriggerTurn;
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
-    public override string PackedIconPath => HistoryFloorIconPath;
+    public override string PackedIconPath => HistoryFloorAssets.LiberationEncounterRunHistoryIcon;
 
     protected override string PackedIconOutlinePath =>
-        HistoryFloorIconOutlinePath;
+        HistoryFloorAssets.LiberationEncounterOutlineRunHistoryIcon;
 
-    protected override string BigIconPath => HistoryFloorIconPath;
+    protected override string BigIconPath => HistoryFloorAssets.LiberationEncounterRunHistoryIcon;
 
     public override bool ShowCounter =>
         Mode == SnowWhiteApplePageMode.PoisonStingBarrier;

@@ -11,15 +11,15 @@ internal sealed partial class LiteratureFloorTodaysExpressionCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_todays_expression_boss.tscn";
+        LiteratureFloorAssets.TodaysExpressionBossScene;
 
     internal static IReadOnlyList<string> FaceTexturePaths { get; } =
     [
-        "res://images/vfx/literature_floor_liberation/todays_expression/face_1.png",
-        "res://images/vfx/literature_floor_liberation/todays_expression/face_2.png",
-        "res://images/vfx/literature_floor_liberation/todays_expression/face_3.png",
-        "res://images/vfx/literature_floor_liberation/todays_expression/face_4.png",
-        "res://images/vfx/literature_floor_liberation/todays_expression/face_5.png"
+        LiteratureFloorAssets.Face1Texture,
+        LiteratureFloorAssets.Face2Texture,
+        LiteratureFloorAssets.Face3Texture,
+        LiteratureFloorAssets.Face4Texture,
+        LiteratureFloorAssets.Face5Texture
     ];
 
     private Sprite2D? _expressionFace;

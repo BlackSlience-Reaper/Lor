@@ -24,7 +24,7 @@ public sealed partial class ArtFloorDaCapoPerformerCreatureVisuals : SpriteAttac
         string id = monster.Id.Entry;
         string idleTexturePath = monster is ArtFloorDaCapoPerformer performer
             ? performer.IdleTexturePath
-            : "res://images/monsters/art_floor/dacapo_performers/performer_1_idle.png";
+            : ArtFloorAssets.Performer1IdleTexture;
         return WrappedMonsterVisualFactory.CreateScriptedSpriteVisuals<ArtFloorDaCapoPerformerCreatureVisuals>(
             id,
             idleTexturePath);

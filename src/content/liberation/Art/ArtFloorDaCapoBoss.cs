@@ -41,7 +41,7 @@ public sealed class ArtFloorDaCapoBoss : LiberationPhaseBossMonster
     private const int FourthMovementHits = 3;
     private const int FinaleChaosDamage = 1;
 
-    public const string Root = "res://images/monsters/art_floor/dacapo/";
+    public const string Root = ArtFloorAssets.ArtFloorDacapoMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string AttackTexturePath = Root + "attack.png";
     public const string HitTexturePath = Root + "hit.png";

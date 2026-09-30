@@ -67,11 +67,11 @@ public sealed class SocialFloorLiberationEncounter :
     ];
 
     internal const string EncounterScenePath =
-        "res://scenes/encounters/social_floor_liberation_encounter.tscn";
+        SocialFloorAssets.LiberationEncounterScene;
     internal const string BackgroundScenePath =
-        "res://scenes/backgrounds/social_floor_liberation_encounter/social_floor_liberation_encounter_background.tscn";
+        SocialFloorAssets.LiberationEncounterBackgroundScene;
     internal const string BossNodeResourcePath =
-        "res://images/map/placeholder/social_floor_liberation_encounter_icon";
+        SocialFloorAssets.LiberationEncounterMapIconPrefix;
 
     private const string StateVersionKey = "SocialFloorStateVersion";
     private const string TrialKey = "SocialFloorTrial";
@@ -253,9 +253,9 @@ public sealed class SocialFloorLiberationEncounter :
             [
                 EncounterScenePath,
                 BackgroundScenePath,
-                "res://scenes/backgrounds/social_floor_liberation_encounter/layers/social_floor_liberation_encounter_bg_00_a.tscn",
-                "res://images/ui/run_history/social_floor_liberation_encounter.png",
-                "res://images/ui/run_history/social_floor_liberation_encounter_outline.png",
+                SocialFloorAssets.LiberationEncounterBg00ABackgroundScene,
+                SocialFloorAssets.LiberationEncounterRunHistoryIcon,
+                SocialFloorAssets.LiberationEncounterOutlineRunHistoryIcon,
                 BossNodeResourcePath + ".png",
                 BossNodeResourcePath + "_outline.png"
             ])

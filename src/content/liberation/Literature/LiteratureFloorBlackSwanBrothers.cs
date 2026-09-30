@@ -28,14 +28,12 @@ public abstract class LiteratureFloorBlackSwanBrotherBase :
     public const int WeakTurns = 1;
     public const int BluffNextTurnStrength = 1;
 
-    private const string Root =
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/";
-    public const string SharedIdleTexturePath = Root + "brother_idle.png";
-    public const string SharedAttackTexturePath = Root + "brother_attack.png";
-    public const string SharedHitTexturePath = Root + "brother_hit.png";
-    public const string SixthAttackTexturePath = Root + "brother_6_attack.png";
-    public const string SixthFireTexturePath = Root + "brother_6_fire.png";
-    public const string SixthHitTexturePath = Root + "brother_6_hit.png";
+    public const string SharedIdleTexturePath = LiteratureFloorAssets.BlackSwanBrothersMonsterRoot + "brother_idle.png";
+    public const string SharedAttackTexturePath = LiteratureFloorAssets.BlackSwanBrothersMonsterRoot + "brother_attack.png";
+    public const string SharedHitTexturePath = LiteratureFloorAssets.BlackSwanBrothersMonsterRoot + "brother_hit.png";
+    public const string SixthAttackTexturePath = LiteratureFloorAssets.BlackSwanBrothersMonsterRoot + "brother_6_attack.png";
+    public const string SixthFireTexturePath = LiteratureFloorAssets.BlackSwanBrothersMonsterRoot + "brother_6_fire.png";
+    public const string SixthHitTexturePath = LiteratureFloorAssets.BlackSwanBrothersMonsterRoot + "brother_6_hit.png";
 
     private bool _deathReported;
 
@@ -104,7 +102,7 @@ public abstract class LiteratureFloorBlackSwanBrotherBase :
                 SixthHitTexturePath,
                 LiteratureFloorBlackSwanBoss.SlashUpSfxPath,
                 LiteratureFloorBlackSwanBoss.SlashDownSfxPath,
-                "res://images/powers/library_passive_green.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {
@@ -337,7 +335,7 @@ public sealed class LiteratureFloorBlackSwanFirstBrother :
     public override int BrotherNumber => 1;
 
     public override string IdleTexturePath =>
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_1_idle.png";
+        LiteratureFloorAssets.Brother1IdleTexture;
 }
 
 public sealed class LiteratureFloorBlackSwanSecondBrother :
@@ -346,7 +344,7 @@ public sealed class LiteratureFloorBlackSwanSecondBrother :
     public override int BrotherNumber => 2;
 
     public override string IdleTexturePath =>
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_2_idle.png";
+        LiteratureFloorAssets.Brother2IdleTexture;
 }
 
 public sealed class LiteratureFloorBlackSwanThirdBrother :
@@ -355,7 +353,7 @@ public sealed class LiteratureFloorBlackSwanThirdBrother :
     public override int BrotherNumber => 3;
 
     public override string IdleTexturePath =>
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_3_idle.png";
+        LiteratureFloorAssets.Brother3IdleTexture;
 }
 
 public sealed class LiteratureFloorBlackSwanFourthBrother :
@@ -364,7 +362,7 @@ public sealed class LiteratureFloorBlackSwanFourthBrother :
     public override int BrotherNumber => 4;
 
     public override string IdleTexturePath =>
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_4_idle.png";
+        LiteratureFloorAssets.Brother4IdleTexture;
 }
 
 public sealed class LiteratureFloorBlackSwanFifthBrother :
@@ -373,7 +371,7 @@ public sealed class LiteratureFloorBlackSwanFifthBrother :
     public override int BrotherNumber => 5;
 
     public override string IdleTexturePath =>
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_5_idle.png";
+        LiteratureFloorAssets.Brother5IdleTexture;
 }
 
 public sealed class LiteratureFloorBlackSwanSixthBrother :
@@ -382,5 +380,5 @@ public sealed class LiteratureFloorBlackSwanSixthBrother :
     public override int BrotherNumber => 6;
 
     public override string IdleTexturePath =>
-        "res://images/monsters/literature_floor_liberation/black_swan_brothers/brother_6_idle.png";
+        LiteratureFloorAssets.Brother6IdleTexture;
 }

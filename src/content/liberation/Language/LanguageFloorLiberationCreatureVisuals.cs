@@ -32,7 +32,7 @@ public sealed partial class LanguageFloorScarletScarCreatureVisuals
     private static SpriteVisualProfile BuildProfile()
     {
         const string root =
-            "res://images/monsters/language_floor_liberation/";
+            LanguageFloorAssets.LanguageFloorLiberationMonsterRoot;
         var profile = new SpriteVisualProfile();
         profile.Variant(
                 SpriteVisualProfile.DefaultVariantKey,
@@ -77,7 +77,7 @@ public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals
     private static SpriteVisualProfile BuildProfile()
     {
         const string root =
-            "res://images/monsters/language_floor_liberation/";
+            LanguageFloorAssets.LanguageFloorLiberationMonsterRoot;
         var profile = new SpriteVisualProfile();
         profile.Variant(
                 SpriteVisualProfile.DefaultVariantKey,
@@ -163,7 +163,7 @@ public sealed partial class LanguageFloorCobaltScarCreatureVisuals
     private static SpriteVisualProfile BuildProfile()
     {
         const string root =
-            "res://images/monsters/language_floor_liberation/";
+            LanguageFloorAssets.LanguageFloorLiberationMonsterRoot;
         var profile = new SpriteVisualProfile();
         profile.Variant(CobaltVariant, root + "cobalt_scar.png")
             .AnchorX(247f);

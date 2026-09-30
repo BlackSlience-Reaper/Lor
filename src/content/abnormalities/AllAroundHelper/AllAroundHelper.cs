@@ -63,8 +63,6 @@ public sealed class AllAroundHelper : CounterIntentMonsterModel
     private const int CleanHits = 2;
     private const int RestDazedCount = 2;
 
-    private const string AttackSfxPath = "res://audio/sfx/all_around_helper/all_around_helper_attack.ogg";
-
     private static readonly string AllAroundHelperPageRelicTitleLocKey =
         $"{ModelDb.GetId<AllAroundHelperPageRelic>().Entry}.title";
 
@@ -229,7 +227,7 @@ public sealed class AllAroundHelper : CounterIntentMonsterModel
         for (int i = 0; i < CleanHits; i++)
         {
             if (Creature.IsDead) return;
-            LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+            LocalOggOneShotPlayer.Play(AllAroundHelperAssets.AllAroundHelperAttackSfx, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(this, CleanDamage);
         }
     }

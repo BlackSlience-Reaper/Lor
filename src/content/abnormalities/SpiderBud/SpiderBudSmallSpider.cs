@@ -18,12 +18,11 @@ public sealed class SpiderBudSmallSpider : CounterIntentMonsterModel
     private const string AttackMoveId = "SHARP_FANGS";
     private const string WebMoveId = "SLENDER_WEB";
 
-    private const string Root = "res://images/monsters/spider_bud/";
-    public const string IdleTexturePath = Root + "small_spider_idle.png";
-    public const string AttackTexturePath = Root + "small_spider_attack.png";
-    public const string CastTexturePath = Root + "small_spider_cast.png";
+    public const string IdleTexturePath = SpiderBudAssets.SpiderBudMonsterRoot + "small_spider_idle.png";
+    public const string AttackTexturePath = SpiderBudAssets.SpiderBudMonsterRoot + "small_spider_attack.png";
+    public const string CastTexturePath = SpiderBudAssets.SpiderBudMonsterRoot + "small_spider_cast.png";
 
-    public const string SfxRoot = "res://audio/sfx/spider_bud/";
+    public const string SfxRoot = SpiderBudAssets.SpiderBudSfxRoot;
     public const string AttackSfxPath = SfxRoot + "small_spider_attack.ogg";
     public const string CastSfxPath = SfxRoot + "small_spider_cast.ogg";
 

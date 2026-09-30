@@ -11,7 +11,6 @@ namespace LibraryOfRuina.content.abnormalities.DespairKnight;
 
 internal static class DespairKnightPierceDespairOverlayController
 {
-    private const string Root = "res://images/vfx/despair_knight_pierce_despair";
     private const float AspectRatio = 564f / 316f;
     private const double FallbackFrameSeconds = 0.10;
 
@@ -215,7 +214,7 @@ internal static class DespairKnightPierceDespairOverlayController
     }
 
     private static string FramePath(int segment, int frame) =>
-        $"{Root}/segment_{segment}/frame_{frame:00}.png";
+        $"{DespairKnightAssets.PierceDespairVfxPrefix}/segment_{segment}/frame_{frame:00}.png";
 
     private static IReadOnlyList<double> GetFrameDurations(int segment)
     {

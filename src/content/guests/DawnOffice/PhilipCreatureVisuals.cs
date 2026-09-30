@@ -16,7 +16,7 @@ public partial class PhilipCreatureVisuals : DawnOfficeTripleAttackCreatureVisua
     internal static readonly SpriteVisualProfile Profile =
         BuildTripleAttackProfile(
             "philip",
-            "res://images/monsters/philip.png",
+            DawnOfficeAssets.PhilipTexture,
             18f,
             -145.2f,
             0.5f);

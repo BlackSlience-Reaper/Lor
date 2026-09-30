@@ -6,10 +6,10 @@ namespace LibraryOfRuina.content.abnormalities.GalaxyChild;
 
 internal static class GalaxyChildBackgroundController
 {
-    public const string BackgroundTexturePath = "res://images/backgrounds/galaxy_child/background.png";
-    public const string NormalFilterTexturePath = "res://images/backgrounds/galaxy_child/filter_normal.png";
-    public const string FakeDeathFilterTexturePath = "res://images/backgrounds/galaxy_child/filter_fake_death.png";
-    public const string CryLoopPath = "res://audio/sfx/galaxy_child/cry_loop.ogg";
+    public const string BackgroundTexturePath = GalaxyChildAssets.GalaxyChildBackground;
+    public const string NormalFilterTexturePath = GalaxyChildAssets.FilterNormalBackground;
+    public const string FakeDeathFilterTexturePath = GalaxyChildAssets.FilterFakeDeathBackground;
+    public const string CryLoopPath = GalaxyChildAssets.CryLoopSfx;
 
     private const string CryLoopSlot = "GalaxyChildCryLoop";
 

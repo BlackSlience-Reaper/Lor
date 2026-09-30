@@ -18,13 +18,13 @@ public sealed class ReverberationEnsembleAct : TemplateActModel
     internal const int InteriorFloorCount = 6;
 
     internal const string MapAssetRoot =
-        "res://images/packed/map/map_bgs/reverberation_ensemble/";
+        LibraryActAssets.ReverberationEnsembleRoot;
 
     internal const string BossIconPath =
-        "res://images/map/reverberation_ensemble/blue_reverberation.png";
+        LibraryActAssets.BlueReverberationTexture;
 
     internal const string BossOutlineShaderPath =
-        "res://shaders/reverberation_boss_outline.gdshader";
+        LibraryActAssets.ReverberationBossOutlineTexture;
 
     public override ActModel TemplateAct => ModelDb.Act<Glory>();
 

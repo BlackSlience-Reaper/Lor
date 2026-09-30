@@ -36,28 +36,24 @@ public sealed class LiteratureFloorBloodlustBoss :
     public const int UnbearableBleedMultiplier = 2;
     public const int ChainsApplied = 2;
 
-    private const string Root =
-        "res://images/monsters/literature_floor_liberation/bloodlust/";
-    public const string IdleTexturePath = Root + "bloodlust_idle.png";
-    public const string StrikeTexturePath = Root + "bloodlust_strike.png";
-    public const string SlashTexturePath = Root + "bloodlust_slash.png";
-    public const string S1TexturePath = Root + "bloodlust_s1.png";
-    public const string S2TexturePath = Root + "bloodlust_s2.png";
-    public const string EvadeTexturePath = Root + "bloodlust_evade.png";
-    public const string HitTexturePath = Root + "bloodlust_hit.png";
+    public const string IdleTexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_idle.png";
+    public const string StrikeTexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_strike.png";
+    public const string SlashTexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_slash.png";
+    public const string S1TexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_s1.png";
+    public const string S2TexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_s2.png";
+    public const string EvadeTexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_evade.png";
+    public const string HitTexturePath = LiteratureFloorAssets.LiberationBloodlustMonsterRoot + "bloodlust_hit.png";
 
-    private const string SfxRoot =
-        "res://audio/sfx/literature_floor_liberation/bloodlust/";
     public const string AttackSfxPath =
-        SfxRoot + "red_shoes_attack.ogg";
+        LiteratureFloorAssets.LiberationBloodlustSfxRoot + "red_shoes_attack.ogg";
     public const string HorizontalSfxPath =
-        SfxRoot + "red_shoes_horizontal.ogg";
+        LiteratureFloorAssets.LiberationBloodlustSfxRoot + "red_shoes_horizontal.ogg";
     public const string StrongHorizontalSfxPath =
-        SfxRoot + "red_shoes_strong_horizontal.ogg";
+        LiteratureFloorAssets.LiberationBloodlustSfxRoot + "red_shoes_strong_horizontal.ogg";
     public const string StrongVerticalSfxPath =
-        SfxRoot + "red_shoes_strong_vertical.ogg";
+        LiteratureFloorAssets.LiberationBloodlustSfxRoot + "red_shoes_strong_vertical.ogg";
     public const string StrongFinishSfxPath =
-        SfxRoot + "red_shoes_strong_finish.ogg";
+        LiteratureFloorAssets.LiberationBloodlustSfxRoot + "red_shoes_strong_finish.ogg";
 
     private MoveState? _persistenceState;
     private MoveState? _obsessionState;
@@ -171,9 +167,9 @@ public sealed class LiteratureFloorBloodlustBoss :
                 StrongHorizontalSfxPath,
                 StrongVerticalSfxPath,
                 StrongFinishSfxPath,
-                "res://images/powers/library_passive_green.png",
-                "res://images/powers/history_floor_corrosion_power.png",
-                "res://images/powers/literature_floor_deep_wound_power.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon,
+                LiteratureFloorAssets.HistoryFloorCorrosionPowerIcon,
+                LiteratureFloorAssets.DeepWoundPowerIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {

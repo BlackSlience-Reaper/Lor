@@ -36,15 +36,14 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
     private const float LocalSfxVolumeScale = 0.85f;
     private static readonly float LocalSfxVolumeDb = Mathf.LinearToDb(LocalSfxVolumeScale);
 
-    private const string QueenSfxRoot = "res://audio/sfx/queen_of_hatred/";
-    private const string QueenAttackSfxPath = QueenSfxRoot + "queen_attack.ogg";
-    private const string QueenMarkSfxPath = QueenSfxRoot + "queen_fire_mark.ogg";
-    private const string QueenTransformEndSfxPath = QueenSfxRoot + "transform_end.ogg";
-    private const string QueenSnakeAttackSfxPath = QueenSfxRoot + "snake_attack.ogg";
-    private const string QueenSnakeFireSfxPath = QueenSfxRoot + "snake_fire.ogg";
-    private const string QueenMagicSummonSfxPath = QueenSfxRoot + "magic_summon.ogg";
-    private const string QueenMagicLoopSfxPath = QueenSfxRoot + "magic_loop.ogg";
-    private const string QueenMagicEndSfxPath = QueenSfxRoot + "magic_end.ogg";
+    private const string QueenAttackSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "queen_attack.ogg";
+    private const string QueenMarkSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "queen_fire_mark.ogg";
+    private const string QueenTransformEndSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "transform_end.ogg";
+    private const string QueenSnakeAttackSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "snake_attack.ogg";
+    private const string QueenSnakeFireSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "snake_fire.ogg";
+    private const string QueenMagicSummonSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "magic_summon.ogg";
+    private const string QueenMagicLoopSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "magic_loop.ogg";
+    private const string QueenMagicEndSfxPath = QueenOfHatredAssets.QueenOfHatredSfxRoot + "magic_end.ogg";
 
     private static readonly string[] NormalBackgroundTextLineKeys =
     [

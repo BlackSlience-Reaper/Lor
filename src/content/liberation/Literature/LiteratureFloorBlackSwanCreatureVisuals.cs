@@ -11,7 +11,7 @@ internal sealed partial class LiteratureFloorBlackSwanCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_black_swan_boss.tscn";
+        LiteratureFloorAssets.BlackSwanBossScene;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorBlackSwanAnimationContract.Library;
@@ -63,7 +63,7 @@ internal sealed partial class
     SceneAnimatedCreatureVisuals
 {
     internal const string ScenePath =
-        "res://scenes/creature_visuals/literature_floor_black_swan_brother.tscn";
+        LiteratureFloorAssets.BlackSwanBrotherScene;
 
     protected override string ResolveCurrentAnimationLibrary()
     {

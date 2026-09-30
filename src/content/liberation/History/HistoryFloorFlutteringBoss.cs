@@ -54,7 +54,7 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     internal const string BackgroundTextScope = "history_floor_liberation_phase_3";
     private const float BackgroundTextIntervalSeconds = 5f;
 
-    public const string Root = "res://images/monsters/history_floor/fluttering/";
+    public const string Root = HistoryFloorAssets.HistoryFloorFlutteringMonsterRoot;
     public const string IdleTexturePath = Root + "idle_s1.png";
     public const string HungerFrenzyS2TexturePath = Root + "idle_s2.png";
     public const string HungerFrenzyS3TexturePath = Root + "idle_s3.png";
@@ -63,10 +63,10 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     public const string AttackSlashTexturePath = Root + "attack_slash.png";
     public const string HitTexturePath = Root + "hit.png";
 
-    public const string BossAttackSfxPath = "res://audio/sfx/history_floor/fluttering/boss_attack.ogg";
-    public const string ChangeSfxPath = "res://audio/sfx/history_floor/fluttering/boss_change.ogg";
-    public const string DevourSfxPath = "res://audio/sfx/history_floor/fluttering/boss_devour.ogg";
-    public const string SpecialSfxPath = "res://audio/sfx/history_floor/fluttering/special.ogg";
+    public const string BossAttackSfxPath = HistoryFloorAssets.BossAttackSfx;
+    public const string ChangeSfxPath = HistoryFloorAssets.BossChangeSfx;
+    public const string DevourSfxPath = HistoryFloorAssets.BossDevourSfx;
+    public const string SpecialSfxPath = HistoryFloorAssets.FlutteringSpecialSfx;
 
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 190f, 980f, 470f);
     private static readonly string[] BackgroundTextLineKeys =

@@ -21,7 +21,7 @@ public sealed class LanguageFloorMeltingCorpse : LorMonsterModel
     private const float AttackAnimDelaySeconds = 0.35f;
 
     public const string Root =
-        "res://images/monsters/language_floor_liberation/smiling_face/";
+        LanguageFloorAssets.SmilingFaceMonsterRoot;
     public const string IdleTexturePath = Root + "melting_corpse_idle.png";
     public const string AttackTexturePath = Root + "melting_corpse_attack.png";
 
@@ -31,7 +31,7 @@ public sealed class LanguageFloorMeltingCorpse : LorMonsterModel
             [
                 MeltingCorpse.MoanSfxPath,
                 MeltingCorpse.SpawnSfxPath,
-                "res://images/powers/language_floor_melting_corpse_rot_power.png"
+                LanguageFloorAssets.MeltingCorpseRotPowerIcon
             ])
             .ToArray();
 

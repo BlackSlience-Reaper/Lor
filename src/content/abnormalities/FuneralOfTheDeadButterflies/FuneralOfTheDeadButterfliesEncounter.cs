@@ -9,7 +9,7 @@ public sealed class FuneralOfTheDeadButterfliesEncounter : EncounterModel, IEnco
 {
     EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
         "FuneralOfTheDeadButterfliesBGM",
-        "res://audio/bgm/literature_reception_floor/literature_reception_floor_1.ogg");
+        FuneralOfTheDeadButterfliesAssets.LiteratureReceptionFloor1Bgm);
 
     public override RoomType RoomType => RoomType.Elite;
 
@@ -40,7 +40,7 @@ public sealed class FuneralOfTheDeadButterfliesEncounter : EncounterModel, IEnco
         {
             var paths = new List<string>
             {
-                "res://images/backgrounds/dead_butterfly/funeral_background.png",
+                FuneralOfTheDeadButterfliesAssets.FuneralBackground,
                 ModelDb.Affliction<FuneralSealAffliction>().OverlayPath
             };
             paths.AddRange(ModelDb.Monster<FuneralOfTheDeadButterflies>().AssetPaths);

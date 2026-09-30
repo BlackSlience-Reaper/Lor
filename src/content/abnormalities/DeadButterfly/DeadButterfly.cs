@@ -51,11 +51,11 @@ public sealed class DeadButterfly : LorMonsterModel
     public const string PainfulReleaseMoveId = "PAINFUL_RELEASE";
     public const string PeacefulReposeMoveId = "PEACEFUL_REPOSE";
 
-    public const string IdleTexturePath = "res://images/monsters/dead_butterfly/idle.png";
-    public const string AttackTexturePath = "res://images/monsters/dead_butterfly/attack.png";
-    public const string HitTexturePath = "res://images/monsters/dead_butterfly/hit.png";
-    public const string AttackSfxPath = "res://audio/sfx/dead_butterfly/dead_butterfly_attack.ogg";
-    public const string DodgeSfxPath = "res://audio/sfx/dead_butterfly/dead_butterfly_dodge.ogg";
+    public const string IdleTexturePath = DeadButterflyAssets.DeadButterflyIdleTexture;
+    public const string AttackTexturePath = DeadButterflyAssets.DeadButterflyAttackTexture;
+    public const string HitTexturePath = DeadButterflyAssets.DeadButterflyHitTexture;
+    public const string AttackSfxPath = DeadButterflyAssets.DeadButterflyAttackSfx;
+    public const string DodgeSfxPath = DeadButterflyAssets.DeadButterflyDodgeSfx;
 
     private static readonly string BookRelicTitleLocKey =
         $"{ModelDb.GetId<DeadButterfliesBookRelic>().Entry}.title";

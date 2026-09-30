@@ -18,23 +18,23 @@ public partial class SayoCreatureVisuals : SpriteAttackCreatureVisuals
         var profile = new SpriteVisualProfile().Centered();
         profile.Variant(
             SpriteVisualProfile.DefaultVariantKey,
-            "res://images/monsters/sayo.png");
+            DawnOfficeAssets.SayoTexture);
         profile.Frame(
                 "strike",
-                "res://images/monsters/sayo_attack_strike.png")
+                DawnOfficeAssets.SayoAttackStrikeTexture)
             .Nudge(15f, -145.2f)
             .Scale(0.51f);
         profile.Frame(
                 "thrust",
-                "res://images/monsters/sayo_attack_thrust.png")
+                DawnOfficeAssets.SayoAttackThrustTexture)
             .Nudge(0f, -145.2f)
             .Scale(0.403f);
         profile.Frame(
                 "slash",
-                "res://images/monsters/sayo_attack_slash.png")
+                DawnOfficeAssets.SayoAttackSlashTexture)
             .Nudge(20f, -145.2f)
             .Scale(0.482f);
-        profile.Frame("hit", "res://images/monsters/sayo_hit.webp");
+        profile.Frame("hit", DawnOfficeAssets.SayoHitTexture);
         profile.Lunge(
             "strike",
             0.2f,

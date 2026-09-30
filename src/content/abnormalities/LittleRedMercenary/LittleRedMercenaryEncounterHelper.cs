@@ -18,7 +18,7 @@ namespace LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 
 internal static class LittleRedMercenaryEncounterHelper
 {
-    public const string SfxRoot = "res://audio/sfx/little_red_mercenary/";
+    public const string SfxRoot = LittleRedMercenaryAssets.LittleRedMercenarySfxRoot;
     private static readonly string LittleRedMercenaryPageRelicTitleLocKey =
         $"{ModelDb.GetId<LittleRedMercenaryPageRelic>().Entry}.title";
 

@@ -33,12 +33,12 @@ public sealed class FairyMass : CounterIntentMonsterModel
     private const int GluttonyHealPerHit = 3;
     private const int WingbeatBleed = 1;
 
-    public const string Root = "res://images/monsters/fairy_festival/";
+    public const string Root = FairyFestivalAssets.FairyFestivalMonsterRoot;
     public const string IdleTexturePath = Root + "fairy_mass.png";
     public const string IdleAltTexturePath = Root + "fairy_mass_idle_alt.png";
     public const string AttackTexturePath = Root + "fairy_mass_attack.png";
     public const string HitTexturePath = Root + "fairy_mass_hit.png";
-    public const string AttackSfxPath = "res://audio/sfx/fairy_festival/mass_attack.ogg";
+    public const string AttackSfxPath = FairyFestivalAssets.MassAttackSfx;
 
     private FairyMassVariant _variant = FairyMassVariant.Left;
 

@@ -54,29 +54,25 @@ public sealed class LiteratureFloorBlackSwanBoss :
     public const int VileRealityVulnerableTurns = 3;
     public const int SwanSongConfusion = 1;
 
-    private const string Root =
-        "res://images/monsters/literature_floor_liberation/black_swan/";
-    public const string IdleTexturePath = Root + "black_swan_idle.png";
-    public const string HitTexturePath = Root + "black_swan_hit.png";
-    public const string SpecialTexturePath = Root + "black_swan_special.png";
-    public const string PierceTexturePath = Root + "black_swan_pierce.png";
-    public const string SlashOneTexturePath = Root + "black_swan_slash_1.png";
-    public const string SlashTwoTexturePath = Root + "black_swan_slash_2.png";
-    public const string GuardOneTexturePath = Root + "black_swan_guard_1.png";
-    public const string GuardTwoTexturePath = Root + "black_swan_guard_2.png";
+    public const string IdleTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_idle.png";
+    public const string HitTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_hit.png";
+    public const string SpecialTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_special.png";
+    public const string PierceTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_pierce.png";
+    public const string SlashOneTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_slash_1.png";
+    public const string SlashTwoTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_slash_2.png";
+    public const string GuardOneTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_guard_1.png";
+    public const string GuardTwoTexturePath = LiteratureFloorAssets.BlackSwanMonsterRoot + "black_swan_guard_2.png";
 
-    private const string SfxRoot =
-        "res://audio/sfx/literature_floor_liberation/black_swan/";
     public const string SlashUpSfxPath =
-        SfxRoot + "black_swan_slash_up.ogg";
+        LiteratureFloorAssets.BlackSwanSfxRoot + "black_swan_slash_up.ogg";
     public const string SlashDownSfxPath =
-        SfxRoot + "black_swan_slash_down.ogg";
+        LiteratureFloorAssets.BlackSwanSfxRoot + "black_swan_slash_down.ogg";
     public const string PierceSfxPath =
-        SfxRoot + "black_swan_pierce.ogg";
+        LiteratureFloorAssets.BlackSwanSfxRoot + "black_swan_pierce.ogg";
     public const string GuardSfxPath =
-        SfxRoot + "black_swan_guard.ogg";
+        LiteratureFloorAssets.BlackSwanSfxRoot + "black_swan_guard.ogg";
     public const string ShoutSfxPath =
-        SfxRoot + "black_swan_shout.ogg";
+        LiteratureFloorAssets.BlackSwanSfxRoot + "black_swan_shout.ogg";
 
     private MoveState? _swanSongState;
 
@@ -196,9 +192,9 @@ public sealed class LiteratureFloorBlackSwanBoss :
                 PierceSfxPath,
                 GuardSfxPath,
                 ShoutSfxPath,
-                "res://images/powers/library_passive_green.png",
+                LiteratureFloorAssets.LibraryPassiveGreenIcon,
                 LiteratureFloorBlackSwanVanishingFamilyPower.CustomIconPath,
-                "res://images/powers/history_floor_corrosion_power.png"
+                LiteratureFloorAssets.HistoryFloorCorrosionPowerIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {

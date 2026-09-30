@@ -73,15 +73,13 @@ public sealed class LanguageFloorCobaltScar :
     private const float AttackDelay = 0.62f;
     private const float RoarDelay = 3.0f;
 
-    private const string SfxRoot =
-        "res://audio/sfx/language_floor_liberation/cobalt_scar/";
-    private const string BiteSfx = SfxRoot + "wolf_bite.ogg";
-    private const string ScratchSfx = SfxRoot + "wolf_scratch.ogg";
-    private const string GuardSfx = SfxRoot + "wolf_guard.ogg";
-    private const string TransformSfx = SfxRoot + "wolf_phase2.ogg";
-    private const string ShadowSfx = SfxRoot + "wolf_fog_change.ogg";
-    private const string RoarSfx = SfxRoot + "wolf_howl.ogg";
-    private const string SpitSfx = SfxRoot + "wolf_eat_out.ogg";
+    private const string BiteSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_bite.ogg";
+    private const string ScratchSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_scratch.ogg";
+    private const string GuardSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_guard.ogg";
+    private const string TransformSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_phase2.ogg";
+    private const string ShadowSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_fog_change.ogg";
+    private const string RoarSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_howl.ogg";
+    private const string SpitSfx = LanguageFloorAssets.CobaltScarSfxRoot + "wolf_eat_out.ogg";
 
     public int PlannedMoveOne { get; private set; } = -1;
 
@@ -208,14 +206,14 @@ public sealed class LanguageFloorCobaltScar :
 
     private static readonly string[] PowerAssetPaths =
     [
-        "res://images/powers/language_floor_scar_power.png",
-        "res://images/powers/language_floor_rip_open_claw_passive_power.png",
-        "res://images/powers/language_floor_punish_evil_passive_power.png",
-        "res://images/powers/language_floor_destined_big_bad_wolf_passive_power.png",
-        "res://images/powers/language_floor_hide_in_darkness_passive_power.png",
-        "res://images/powers/language_floor_shadow_ambush_passive_power.png",
-        "res://images/powers/language_floor_exhaustion_passive_power.png",
-        "res://images/powers/language_floor_shadow_wolf_power.png"
+        LanguageFloorAssets.ScarPowerIcon,
+        LanguageFloorAssets.RipOpenClawPassivePowerIcon,
+        LanguageFloorAssets.PunishEvilPassivePowerIcon,
+        LanguageFloorAssets.DestinedBigBadWolfPassivePowerIcon,
+        LanguageFloorAssets.HideInDarknessPassivePowerIcon,
+        LanguageFloorAssets.ShadowAmbushPassivePowerIcon,
+        LanguageFloorAssets.ExhaustionPassivePowerIcon,
+        LanguageFloorAssets.ShadowWolfPowerIcon
     ];
 
     public override async Task AfterAddedToRoom()

@@ -13,7 +13,7 @@ namespace LibraryOfRuina.content.abnormalities.JudgementBird;
 internal static class JudgementBirdJudgementVideoController
 {
     internal const string VideoPath =
-        "res://videos/judgement_bird_judgement.ogv";
+        JudgementBirdAssets.JudgementBirdJudgementVideo;
 
     internal const double HangCueSeconds = 0.56;
     internal const double ResolutionCueSeconds = 3.22;

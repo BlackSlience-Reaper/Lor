@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using Godot;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -18,7 +19,6 @@ internal static class MonsterIntentGraphOverlayController
     private const bool UseSceneBackedPanel = false;
     private const string IntentGraphPanelScenePath = "res://LibraryOfRuina/intentgraph/scenes/intent_graph_panel.tscn";
     private const string HoverTipTexturePath = "res://images/ui/hover_tip.png";
-    private const string HoverTitleFontPath = "res://themes/kreon_bold_glyph_space_one.tres";
     private const float SideSpacing = 12f;
     private const float ScreenPadding = 8f;
 
@@ -331,7 +331,7 @@ internal static class MonsterIntentGraphOverlayController
         try
         {
             _fallbackHoverTipTexture = GD.Load<Texture2D>(HoverTipTexturePath);
-            _fallbackHoverTitleFont = GD.Load<Font>(HoverTitleFontPath);
+            _fallbackHoverTitleFont = GD.Load<Font>(SharedAssets.KreonBoldGlyphSpaceOneResource);
         }
         catch (Exception exception)
         {

@@ -170,7 +170,7 @@ internal static class LibraryOfRuinaNeowFtuePatch
         new(
             "BOOK_SHADOW_RELIC.title",
             "LOR_NEOW_SPECIAL_GUEST_FTUE_RELIC_BODY",
-            "res://images/relics/book_shadow_relic.png",
+            LibraryOfRuinaFtueAssets.BookShadowRelicTexture,
             LibraryOfRuinaCombatFtueVisual.CenteredImage,
             TitleTable: "relics"),
         new(

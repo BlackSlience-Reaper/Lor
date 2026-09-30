@@ -37,26 +37,22 @@ public sealed class LiteratureFloorRedEyesBoss :
     public const int ScreechHits = 3;
     public const int CocoonStacksApplied = 1;
 
-    private const string Root =
-        "res://images/monsters/literature_floor_liberation/red_eyes/";
-    public const string IdleTexturePath = Root + "red_eyes_idle.png";
-    public const string StrikeTexturePath = Root + "red_eyes_strike.png";
-    public const string S1TexturePath = Root + "red_eyes_s1.png";
-    public const string SpecialTexturePath = Root + "red_eyes_special.png";
-    public const string SlashTexturePath = Root + "red_eyes_slash.png";
-    public const string HitTexturePath = Root + "red_eyes_hit.png";
+    public const string IdleTexturePath = LiteratureFloorAssets.RedEyesMonsterRoot + "red_eyes_idle.png";
+    public const string StrikeTexturePath = LiteratureFloorAssets.RedEyesMonsterRoot + "red_eyes_strike.png";
+    public const string S1TexturePath = LiteratureFloorAssets.RedEyesMonsterRoot + "red_eyes_s1.png";
+    public const string SpecialTexturePath = LiteratureFloorAssets.RedEyesMonsterRoot + "red_eyes_special.png";
+    public const string SlashTexturePath = LiteratureFloorAssets.RedEyesMonsterRoot + "red_eyes_slash.png";
+    public const string HitTexturePath = LiteratureFloorAssets.RedEyesMonsterRoot + "red_eyes_hit.png";
 
-    private const string SfxRoot =
-        "res://audio/sfx/literature_floor_liberation/red_eyes/";
     public const string ScreechSfxPath =
-        SfxRoot + "red_eyes_screech.ogg";
+        LiteratureFloorAssets.RedEyesSfxRoot + "red_eyes_screech.ogg";
     public const string FlickeringEyesSfxPath =
-        SfxRoot + "red_eyes_flickering_eyes.ogg";
+        LiteratureFloorAssets.RedEyesSfxRoot + "red_eyes_flickering_eyes.ogg";
     public const string VigilanceSfxPath =
-        SfxRoot + "red_eyes_vigilance.ogg";
-    public const string HitSfxPath = SfxRoot + "red_eyes_hit.ogg";
+        LiteratureFloorAssets.RedEyesSfxRoot + "red_eyes_vigilance.ogg";
+    public const string HitSfxPath = LiteratureFloorAssets.RedEyesSfxRoot + "red_eyes_hit.ogg";
     public const string HuntStartSfxPath =
-        SfxRoot + "red_eyes_hunt_start.ogg";
+        LiteratureFloorAssets.RedEyesSfxRoot + "red_eyes_hunt_start.ogg";
 
     private const string BackgroundTextScope =
         "literature_floor_red_eyes_phase_2";
@@ -151,10 +147,10 @@ public sealed class LiteratureFloorRedEyesBoss :
                 VigilanceSfxPath,
                 HitSfxPath,
                 HuntStartSfxPath,
-                "res://images/powers/library_passive_green.png",
-                "res://images/powers/history_floor_corrosion_power.png",
-                "res://images/powers/spider_bud_untargetable_power.png",
-                "res://images/powers/literature_floor_cocoon_bind_power.png"
+                LiteratureFloorAssets.LibraryPassiveGreenIcon,
+                LiteratureFloorAssets.HistoryFloorCorrosionPowerIcon,
+                LiteratureFloorAssets.SpiderBudUntargetablePowerIcon,
+                LiteratureFloorAssets.CocoonBindPowerIcon
             };
             foreach (AbstractIntent intent in EnumerateIntentAssets())
             {

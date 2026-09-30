@@ -46,7 +46,7 @@ public sealed class TimeTrace : LorMonsterModel
     internal const int CopyDefenseStrength = 3;
     private const int MinimumRecoveryHp = 1;
 
-    internal const string TextureRoot = "res://images/monsters/time_trace/";
+    internal const string TextureRoot = PriceOfSilenceAssets.TimeTraceMonsterRoot;
     internal const string IdleTexturePath = TextureRoot + "idle.png";
     internal const string AttackBluntTexturePath = TextureRoot + "attack_blunt.png";
     internal const string AttackThrustTexturePath = TextureRoot + "attack_thrust.png";
@@ -56,8 +56,8 @@ public sealed class TimeTrace : LorMonsterModel
 
     private static readonly string[] AdditionalAssetPaths =
     [
-        "res://images/powers/price_of_silence_your_time_passive_power.png",
-        "res://images/powers/time_trace_restoration_power.png"
+        PriceOfSilenceAssets.YourTimePassivePowerIcon,
+        PriceOfSilenceAssets.TimeTraceRestorationPowerIcon
     ];
 
     private static readonly string[] CopyMoveIds =

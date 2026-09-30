@@ -44,11 +44,11 @@ public sealed class HistoryFloorFlutteringMass : LorMonsterModel
     private const int WingbeatBlock = 4;
     private const int BleedAmount = 1;
 
-    public const string Root = "res://images/monsters/history_floor/fluttering/";
+    public const string Root = HistoryFloorAssets.HistoryFloorFlutteringMonsterRoot;
     public const string IdleTexturePath = Root + "mass_idle.png";
     public const string AttackTexturePath = Root + "mass_attack.png";
     public const string HitTexturePath = Root + "mass_hit.png";
-    public const string AttackSfxPath = "res://audio/sfx/history_floor/fluttering/mass_attack.ogg";
+    public const string AttackSfxPath = HistoryFloorAssets.MassAttackSfx;
 
     private HistoryFloorFlutteringMassPattern _pattern = HistoryFloorFlutteringMassPattern.GluttonyFirst;
 

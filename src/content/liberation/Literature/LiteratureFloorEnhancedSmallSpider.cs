@@ -24,20 +24,16 @@ public sealed class LiteratureFloorEnhancedSmallSpider :
     public const int SlenderWebBlock = 6;
     public const int DebuffTurns = 1;
 
-    private const string Root =
-        "res://images/monsters/literature_floor_liberation/enhanced_small_spider/";
-    public const string IdleTexturePath = Root + "small_spider_idle.png";
-    public const string MoveTexturePath = Root + "small_spider_move.png";
-    public const string AttackTexturePath = Root + "small_spider_attack.png";
-    public const string GuardTexturePath = Root + "small_spider_guard.png";
-    public const string HitTexturePath = Root + "small_spider_hit.png";
+    public const string IdleTexturePath = LiteratureFloorAssets.EnhancedSmallSpiderMonsterRoot + "small_spider_idle.png";
+    public const string MoveTexturePath = LiteratureFloorAssets.EnhancedSmallSpiderMonsterRoot + "small_spider_move.png";
+    public const string AttackTexturePath = LiteratureFloorAssets.EnhancedSmallSpiderMonsterRoot + "small_spider_attack.png";
+    public const string GuardTexturePath = LiteratureFloorAssets.EnhancedSmallSpiderMonsterRoot + "small_spider_guard.png";
+    public const string HitTexturePath = LiteratureFloorAssets.EnhancedSmallSpiderMonsterRoot + "small_spider_hit.png";
 
-    private const string SfxRoot =
-        "res://audio/sfx/literature_floor_liberation/red_eyes/";
     public const string AttackSfxPath =
-        SfxRoot + "enhanced_small_spider_fangs.ogg";
+        LiteratureFloorAssets.RedEyesSfxRoot + "enhanced_small_spider_fangs.ogg";
     public const string WebSfxPath =
-        SfxRoot + "enhanced_small_spider_web.ogg";
+        LiteratureFloorAssets.RedEyesSfxRoot + "enhanced_small_spider_web.ogg";
 
     private MoveState? _sharpFangsState;
     private MoveState? _slenderWebState;

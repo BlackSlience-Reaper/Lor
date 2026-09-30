@@ -52,10 +52,10 @@ public sealed class NihilPageRelic : EnhancedMagicalGirlPageRelic<NihilPageMode>
     public const int NihilityCombatLimit = 12;
 
     public override string PackedIconPath =>
-        "res://images/ui/run_history/natural_floor_liberation_encounter.png";
+        NaturalFloorAssets.LiberationEncounterRunHistoryIcon;
 
     protected override string PackedIconOutlinePath =>
-        "res://images/ui/run_history/natural_floor_liberation_encounter_outline.png";
+        NaturalFloorAssets.LiberationEncounterOutlineRunHistoryIcon;
 
     protected override string BigIconPath => PackedIconPath;
 

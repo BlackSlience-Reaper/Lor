@@ -4,11 +4,9 @@ namespace LibraryOfRuina.content.guests.WedgeOffice;
 
 public abstract partial class WedgeOfficeSingleImageCreatureVisuals : SpriteAttackCreatureVisuals
 {
-    private const string FallbackTexturePath = "res://images/monsters/philip.png";
-
     private SpriteVisualProfile? _profile;
 
-    protected virtual string SharedTexturePath => FallbackTexturePath;
+    protected virtual string SharedTexturePath => WedgeOfficeAssets.PhilipTexture;
 
     protected abstract float AttackEndX { get; }
 

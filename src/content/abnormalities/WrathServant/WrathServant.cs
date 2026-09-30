@@ -51,16 +51,15 @@ public sealed class WrathServant : LorMonsterModel, ITargetedMonsterAttackProvid
     private const float SegmentDelaySeconds = 0.48f;
     private const float SpecialSegmentDelaySeconds = 0.6f;
 
-    private const string Root = "res://images/monsters/wrath_servant/";
-    public const string IdleTexturePath = Root + "idle.png";
-    public const string HitTexturePath = Root + "hit.png";
-    public const string AttackStrikeTexturePath = Root + "attack_strike.png";
-    public const string AttackSlashTexturePath = Root + "attack_slash.png";
-    public const string AttackSlash2TexturePath = Root + "attack_slash2.png";
-    public const string S1TexturePath = Root + "s1.png";
-    public const string S2TexturePath = Root + "s2.png";
-    public const string S3TexturePath = Root + "s3.png";
-    public const string SpecialTexturePath = Root + "special.png";
+    public const string IdleTexturePath = WrathServantAssets.WrathServantMonsterRoot + "idle.png";
+    public const string HitTexturePath = WrathServantAssets.WrathServantMonsterRoot + "hit.png";
+    public const string AttackStrikeTexturePath = WrathServantAssets.WrathServantMonsterRoot + "attack_strike.png";
+    public const string AttackSlashTexturePath = WrathServantAssets.WrathServantMonsterRoot + "attack_slash.png";
+    public const string AttackSlash2TexturePath = WrathServantAssets.WrathServantMonsterRoot + "attack_slash2.png";
+    public const string S1TexturePath = WrathServantAssets.WrathServantMonsterRoot + "s1.png";
+    public const string S2TexturePath = WrathServantAssets.WrathServantMonsterRoot + "s2.png";
+    public const string S3TexturePath = WrathServantAssets.WrathServantMonsterRoot + "s3.png";
+    public const string SpecialTexturePath = WrathServantAssets.WrathServantMonsterRoot + "special.png";
 
     private static readonly string[] SfxPaths =
     [

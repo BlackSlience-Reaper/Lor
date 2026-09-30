@@ -18,7 +18,7 @@ public sealed class NaturalFloorNihilHappinessShard() : CardModel(
 {
     public override int MaxUpgradeLevel => 0;
 
-    public override string PortraitPath => "res://images/packed/card_portraits/status/happiness_shard.png";
+    public override string PortraitPath => NaturalFloorAssets.HappinessShardTexture;
 
     public override IEnumerable<string> AllPortraitPaths => [PortraitPath];
 

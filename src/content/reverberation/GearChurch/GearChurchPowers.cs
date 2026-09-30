@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -27,7 +28,7 @@ public abstract class GearChurchPassivePower : LibraryOfRuinaPowerModel
 
     public override PowerInstanceType InstanceType => PowerInstanceType.None;
 
-    public override string PackedIconPath => "res://images/powers/library_passive_purple.png";
+    public override string PackedIconPath => SharedAssets.LibraryPassivePurpleIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 
@@ -52,7 +53,7 @@ public sealed class EileenNuovoFabricPower : GearChurchPassivePower
 
     public int LastResetRound { get; private set; } = -1;
 
-    public override string PackedIconPath => "res://images/powers/library_passive_orange.png";
+    public override string PackedIconPath => SharedAssets.LibraryPassiveOrangeIcon;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         [new DynamicVar("Reduction", FabricReduction), new DynamicVar("ProtectedHits", FabricProtectedHits)];
@@ -228,7 +229,7 @@ public sealed class GearChurchSmokePower : LibraryOfRuinaPowerModel
 
     public override PowerInstanceType InstanceType => PowerInstanceType.None;
 
-    public override string PackedIconPath => "res://images/powers/gear_church_smoke_power.png";
+    public override string PackedIconPath => GearChurchAssets.SmokePowerIcon;
 
     public override string ResolvedBigIconPath => PackedIconPath;
 

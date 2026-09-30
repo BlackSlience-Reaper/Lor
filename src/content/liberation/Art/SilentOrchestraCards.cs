@@ -21,7 +21,7 @@ public sealed class EverRepeatingPerformanceCard() :
     internal const int NextTurnEnergy = 4;
     internal const int NextTurnCards = 4;
     internal const string SharedPortraitPath =
-        "res://images/packed/card_portraits/colorless/ever_repeating_performance.png";
+        ArtFloorAssets.EverRepeatingPerformanceTexture;
 
     public override CardPoolModel VisualCardPool =>
         ModelDb.CardPool<ColorlessCardPool>();

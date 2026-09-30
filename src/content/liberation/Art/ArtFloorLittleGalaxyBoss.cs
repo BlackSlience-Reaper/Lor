@@ -42,7 +42,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
     private const int EternalFarewellHits = 3;
     private const int EternalFarewellStrength = 2;
 
-    public const string Root = "res://images/monsters/art_floor/little_galaxy/";
+    public const string Root = ArtFloorAssets.LittleGalaxyMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string HitTexturePath = Root + "hit.png";
     public const string AttackFrameS4TexturePath = Root + "attack_s4.png";

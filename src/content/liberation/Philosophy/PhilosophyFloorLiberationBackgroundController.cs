@@ -17,9 +17,6 @@ internal static class PhilosophyFloorLiberationBackgroundController
 {
     internal const int EndBirdEyeCount = 16;
 
-    private const string EggBreakSfxPath =
-        "res://audio/sfx/philosophy_floor_liberation/egg_break.ogg";
-
     // BlackForest/Scenes/end_bird.tscn source transforms. EYES is a sibling
     // of Visuals, so each marker is first converted into the source Visuals'
     // local space, then mapped through this encounter's live Visuals node.
@@ -103,7 +100,7 @@ internal static class PhilosophyFloorLiberationBackgroundController
     /// </summary>
     internal static async Task PlayEggBreak(PhilosophyFloorTwilightEgg egg)
     {
-        LocalOggOneShotPlayer.Play(EggBreakSfxPath, -1.5f);
+        LocalOggOneShotPlayer.Play(PhilosophyFloorAssets.EggBreakSfx, -1.5f);
         Node2D? root = FindEggRoot(egg);
         if (root == null)
         {

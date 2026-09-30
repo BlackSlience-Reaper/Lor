@@ -6,15 +6,15 @@ namespace LibraryOfRuina.content.liberation.Art;
 
 internal static class ArtFloorLiberationBackgroundController
 {
-    public const string PhaseOneTexturePath = "res://images/backgrounds/art_floor_liberation_encounter/background.png";
-    public const string PhaseTwoTexturePath = "res://images/backgrounds/art_floor_liberation_encounter/beyond_fragment_background.png";
-    public const string PhaseThreeTexturePath = "res://images/backgrounds/galaxy_child/background.png";
-    public const string PhaseFourTexturePath = "res://images/backgrounds/spiny_bus_weak/background.png";
-    public const string PhaseFiveTexturePath = "res://images/backgrounds/art_floor_liberation_encounter/nostalgic_scent_background.png";
-    public const string GalaxyFilterNormalTexturePath = "res://images/backgrounds/galaxy_child/filter_normal.png";
-    public const string GalaxyFilterFakeDeathTexturePath = "res://images/backgrounds/galaxy_child/filter_fake_death.png";
+    public const string PhaseOneTexturePath = ArtFloorAssets.LiberationEncounterBackground;
+    public const string PhaseTwoTexturePath = ArtFloorAssets.BeyondFragmentBackground;
+    public const string PhaseThreeTexturePath = ArtFloorAssets.GalaxyChildBackground;
+    public const string PhaseFourTexturePath = ArtFloorAssets.SpinyBusWeakBackground;
+    public const string PhaseFiveTexturePath = ArtFloorAssets.NostalgicScentBackground;
+    public const string GalaxyFilterNormalTexturePath = ArtFloorAssets.FilterNormalBackground;
+    public const string GalaxyFilterFakeDeathTexturePath = ArtFloorAssets.FilterFakeDeathBackground;
     public const string BackgroundTexturePath = PhaseOneTexturePath;
-    public const string BackgroundScenePath = "res://scenes/backgrounds/art_floor_liberation_encounter/art_floor_liberation_encounter_background.tscn";
+    public const string BackgroundScenePath = ArtFloorAssets.LiberationEncounterBackgroundScene;
 
     private static int _currentPhase = 1;
 

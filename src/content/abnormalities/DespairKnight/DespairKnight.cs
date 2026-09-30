@@ -32,14 +32,14 @@ public sealed class DespairKnight : LorMonsterModel
     public const string GrantTeardropMoveId = "GRANT_TEARDROP";
     public const int TeardropFalseDeathHpLossPercent = 10;
 
-    public const string Root = "res://images/monsters/despair_knight/";
+    public const string Root = DespairKnightAssets.DespairKnightMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string StabbedOneTexturePath = Root + "stabbed_1.png";
     public const string StabbedTwoTexturePath = Root + "stabbed_2.png";
     public const string StabbedThreeTexturePath = Root + "stabbed_3.png";
     public const string DespairTexturePath = Root + "despair.png";
 
-    public const string SfxRoot = "res://audio/sfx/despair_knight/";
+    public const string SfxRoot = DespairKnightAssets.DespairKnightSfxRoot;
     public const string EnterDespairSfxPath = SfxRoot + "enter_despair.ogg";
     public const string CryingLoopSfxPath = SfxRoot + "crying_loop.ogg";
     public const string StabbedSfxPath = SfxRoot + "stabbed.ogg";
@@ -57,10 +57,10 @@ public sealed class DespairKnight : LorMonsterModel
 
     public static readonly string[] PowerIconPaths =
     [
-        "res://images/powers/despair_knight_sorrow_power.png",
-        "res://images/powers/despair_knight_despair_power.png",
-        "res://images/powers/despair_knight_protection_power.png",
-        "res://images/powers/despair_knight_broken_heart_power.png"
+        DespairKnightAssets.SorrowPowerIcon,
+        DespairKnightAssets.DespairPowerIcon,
+        DespairKnightAssets.ProtectionPowerIcon,
+        DespairKnightAssets.BrokenHeartPowerIcon
     ];
 
     public static readonly string[] AssetPathsStatic =

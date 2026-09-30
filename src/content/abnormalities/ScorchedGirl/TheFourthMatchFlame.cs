@@ -21,8 +21,6 @@ public sealed class TheFourthMatchFlame : LorMonsterModel
     private const int EmberBurnAmount = 6;
     private const int BrokenHopeGuardAmount = 3;
 
-    private const string MatchAttackSfxPath = "res://audio/sfx/scorched_girl/fourth_match_flame_attack.ogg";
-
     private bool _startsWithBrokenHope;
 
     public bool StartsWithBrokenHope
@@ -43,7 +41,7 @@ public sealed class TheFourthMatchFlame : LorMonsterModel
 
     public override IEnumerable<string> AssetPaths =>
         TheFourthMatchFlameCreatureVisuals.Profile.AssetPaths
-            .Append(MatchAttackSfxPath)
+            .Append(ScorchedGirlAssets.FourthMatchFlameAttackSfx)
             .Concat(base.AssetPaths.Skip(1))
             .Distinct();
 
@@ -107,7 +105,7 @@ public sealed class TheFourthMatchFlame : LorMonsterModel
 
     private async Task EmberMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(MatchAttackSfxPath, -3f);
+        LocalOggOneShotPlayer.Play(ScorchedGirlAssets.FourthMatchFlameAttackSfx, -3f);
 
         await AbnormalityAnimHelper.ExecuteAttackSegment(this, EmberDamage);
 

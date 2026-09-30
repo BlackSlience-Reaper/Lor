@@ -50,7 +50,7 @@ public sealed class BlueStarFollower : LorMonsterModel
     private const string RouterStateId = "BLUE_STAR_FOLLOWER_ROUTER";
 
     public const string TextureRoot =
-        "res://images/monsters/blue_star_follower/";
+        BlueStarAssets.BlueStarFollowerMonsterRoot;
     public const string IdleTexturePath = TextureRoot + "idle.png";
     public const string BasicAttackTexturePath =
         TextureRoot + "basic_attack.png";
@@ -67,7 +67,7 @@ public sealed class BlueStarFollower : LorMonsterModel
             [
                 BlueStarAltar.SubAttackSfxPath,
                 BlueStarAltar.SuicideSfxPath,
-                "res://images/powers/blue_star_follower_voice_power.png"
+                BlueStarAssets.FollowerVoicePowerIcon
             ])
             .Distinct()
             .ToArray();

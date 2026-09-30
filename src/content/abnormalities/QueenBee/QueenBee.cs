@@ -35,16 +35,16 @@ public sealed class QueenBee : LorMonsterModel
     private const int MaxWorkerCount = 2;
     internal const decimal DeathEmbraceHpThresholdPercent = 0.25m;
 
-    public const string Root = "res://images/monsters/queen_bee/";
+    public const string Root = QueenBeeAssets.QueenBeeMonsterRoot;
     public const string IdleTexturePath = Root + "idle.png";
     public const string HitTexturePath = Root + "hit.png";
     public const string DefendTexturePath = Root + "defend.png";
     public const string CastTexturePath = Root + "cast.png";
 
-    public const string BuffSfxPath = "res://audio/sfx/queen_bee/queen_buff.ogg";
-    public const string BlockSfxPath = "res://audio/sfx/queen_bee/queen_evasion.ogg";
-    public const string SpawnSfxPath = "res://audio/sfx/queen_bee/queen_spawn.ogg";
-    public const string SporeSfxPath = "res://audio/sfx/queen_bee/queen_spore.ogg";
+    public const string BuffSfxPath = QueenBeeAssets.QueenBuffSfx;
+    public const string BlockSfxPath = QueenBeeAssets.QueenEvasionSfx;
+    public const string SpawnSfxPath = QueenBeeAssets.QueenSpawnSfx;
+    public const string SporeSfxPath = QueenBeeAssets.QueenSporeSfx;
     //private bool _shouldStun;
     private int _currentStep;
     private bool _nextBuffIsWarlike = true;

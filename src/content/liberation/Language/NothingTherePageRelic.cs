@@ -25,22 +25,17 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
 {
     public const int GoodbyeDamageMultiplier = 2;
 
-    private const string LanguageFloorIconPath =
-        "res://images/ui/run_history/language_floor_liberation_encounter.png";
-    private const string LanguageFloorIconOutlinePath =
-        "res://images/ui/run_history/language_floor_liberation_encounter_outline.png";
-
     private CardModel? _goodbyeActiveCard;
     private CardModel? _helloActiveCard;
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
-    public override string PackedIconPath => LanguageFloorIconPath;
+    public override string PackedIconPath => LanguageFloorAssets.LiberationEncounterRunHistoryIcon;
 
     protected override string PackedIconOutlinePath =>
-        LanguageFloorIconOutlinePath;
+        LanguageFloorAssets.LiberationEncounterOutlineRunHistoryIcon;
 
-    protected override string BigIconPath => LanguageFloorIconPath;
+    protected override string BigIconPath => LanguageFloorAssets.LiberationEncounterRunHistoryIcon;
 
     public override bool IsAllowed(IRunState runState)
     {

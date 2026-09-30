@@ -6,8 +6,8 @@ namespace LibraryOfRuina.content.abnormalities.Leticia;
 
 internal static class LeticiaFilterOverlayController
 {
-    internal const string FilterOneTexturePath = "res://images/vfx/leticia_filter_1.png";
-    internal const string FilterTwoTexturePath = "res://images/vfx/leticia_filter_2.png";
+    internal const string FilterOneTexturePath = LeticiaAssets.Filter1Texture;
+    internal const string FilterTwoTexturePath = LeticiaAssets.Filter2Texture;
 
     public static void PlayGiftOpenOverlay()
     {

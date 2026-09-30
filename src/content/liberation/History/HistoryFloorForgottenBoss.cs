@@ -54,14 +54,14 @@ public sealed class HistoryFloorForgottenBoss : LiberationPhaseBossMonster
     internal const string BackgroundTextScope = "history_floor_liberation_phase_2";
     private const float BackgroundTextIntervalSeconds = 5f;
 
-    public const string IdleTexturePath = "res://images/monsters/history_floor/forgotten_idle.png";
-    public const string StrikeTexturePath = "res://images/monsters/history_floor/forgotten_attack_strike.png";
-    public const string SlashTexturePath = "res://images/monsters/history_floor/forgotten_attack_slash.png";
-    public const string SpecialTexturePath = "res://images/monsters/history_floor/forgotten_special.png";
-    public const string HitTexturePath = "res://images/monsters/history_floor/forgotten_hit.png";
-    public const string AttackSfxPath = "res://audio/sfx/happy_teddy/happy_teddy_forgotten_attack.ogg";
-    public const string ParrySfxPath = "res://audio/sfx/happy_teddy/happy_teddy_forgotten_parry.ogg";
-    public const string LongingEmbraceSfxPath = "res://audio/sfx/happy_teddy/happy_teddy_forgotten_embrace.ogg";
+    public const string IdleTexturePath = HistoryFloorAssets.ForgottenIdleTexture;
+    public const string StrikeTexturePath = HistoryFloorAssets.ForgottenAttackStrikeTexture;
+    public const string SlashTexturePath = HistoryFloorAssets.ForgottenAttackSlashTexture;
+    public const string SpecialTexturePath = HistoryFloorAssets.ForgottenSpecialTexture;
+    public const string HitTexturePath = HistoryFloorAssets.ForgottenHitTexture;
+    public const string AttackSfxPath = HistoryFloorAssets.HappyTeddyForgottenAttackSfx;
+    public const string ParrySfxPath = HistoryFloorAssets.HappyTeddyForgottenParrySfx;
+    public const string LongingEmbraceSfxPath = HistoryFloorAssets.HappyTeddyForgottenEmbraceSfx;
 
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 190f, 980f, 470f);
     private static readonly string[] BackgroundTextLineKeys =

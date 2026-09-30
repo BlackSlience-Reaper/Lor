@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LibraryOfRuina.framework.assets;
 
 namespace LibraryOfRuina.content.specialguests.Iori;
 
@@ -30,7 +31,7 @@ internal static class IoriSpecialGuestAssets
 
     internal static readonly string[] PowerIcons =
     [
-        "res://images/powers/library_passive_orange.png",
+        SharedAssets.LibraryPassiveOrangeIcon,
         "res://images/powers/iori_probability_fluctuation_passive_power.png",
         "res://images/powers/iori_dimensional_walk_passive_power.png",
         "res://images/powers/iori_stance_shift_passive_power.png",
