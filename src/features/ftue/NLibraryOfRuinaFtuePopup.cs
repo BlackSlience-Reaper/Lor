@@ -39,6 +39,10 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
     private const float ArrowHeight = 204f;
     private const float HighlightPadding = 10f;
     private static readonly Vector2 PageTurnAnimOffset = new(80f, 0f);
+    // 原版教程弹窗（res://images/ftue/ftue_popup.png，579 宽）的标题左边距是 82，正文是 37；本弹窗把同一张贴图横向拉到 PanelWidth。
+    private const float VanillaPopupWidth = 579f;
+    private const float VanillaTitleLeft = 82f;
+    private const float TitleIndent = VanillaTitleLeft * PanelWidth / VanillaPopupWidth - PanelPaddingLeft;
 
     private readonly string _ftueId;
     private readonly string[] _titleKeys;
@@ -239,7 +243,13 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
             "font_outline_color",
             new Color(0.33f, 0.2475f, 0f));
         _titleLabel.AddThemeConstantOverride("outline_size", 12);
-        vbox.AddChild(_titleLabel);
+        // 面板贴图左上角画着灯泡（贴图坐标 x≤67、y≤67），正文的左边距会让标题压住它；原版教程弹窗的标题比正文多缩进，
+        // 这里按贴图拉伸比例同样缩进。灯泡纵向拉伸后底边约在 107，标题下方再留 10，正文首行才不碰到灯泡底座。
+        var titleMargin = new MarginContainer { Name = "TitleMargin", MouseFilter = MouseFilterEnum.Ignore };
+        titleMargin.AddThemeConstantOverride("margin_left", Mathf.RoundToInt(TitleIndent));
+        titleMargin.AddThemeConstantOverride("margin_bottom", 10);
+        titleMargin.AddChild(_titleLabel);
+        vbox.AddChild(titleMargin);
 
         // Body text
         _bodyLabel = CreateRichLabel("Body", BodyFontSize);
@@ -266,7 +276,8 @@ public partial class NLibraryOfRuinaFtuePopup : NFtue
         }
 
         // Page count label (only shown for multi-page)
-        _pageCountLabel = new MegaLabel();
+        // 自动字号会把页码放大到 MaxFontSize（100），撑高底栏，把翻页按钮挤出面板；页码固定用正文字号。
+        _pageCountLabel = new MegaLabel { AutoSizeEnabled = false };
         _pageCountLabel.Name = "PageCount";
         _pageCountLabel.HorizontalAlignment = HorizontalAlignment.Left;
         _pageCountLabel.VerticalAlignment = VerticalAlignment.Center;
