@@ -1,6 +1,6 @@
 using Godot;
 using LibraryOfRuina.framework.audio;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.GalaxyChild;
 
@@ -40,30 +40,6 @@ internal static class GalaxyChildBackgroundController
         SetFakeDeathMode(false);
     }
 
-    private static void SetFilterTexture(string texturePath)
-    {
-        TextureRect? image = FindFilterImage();
-        if (image == null)
-        {
-            return;
-        }
-
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(texturePath);
-        if (texture != null)
-        {
-            image.Texture = texture;
-        }
-    }
-
-    private static TextureRect? FindFilterImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        if (background == null)
-        {
-            return null;
-        }
-
-        return background.GetNodeOrNull<TextureRect>("%GalaxyChildFilterImage")
-            ?? background.FindChild("GalaxyChildFilterImage", recursive: true, owned: false) as TextureRect;
-    }
+    private static void SetFilterTexture(string texturePath) =>
+        CombatBackgroundImage.SetTexture(CombatBackgroundImage.Find("GalaxyChildFilterImage"), texturePath);
 }

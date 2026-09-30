@@ -1,5 +1,5 @@
 using Godot;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.content.liberation.Literature;
@@ -35,35 +35,9 @@ internal static class LiteratureFloorLiberationBackgroundController
     public static TextureRect? GetCurrentBackgroundImage() =>
         PresentationGuard.Get(FindBackgroundImage, "LiteratureFloorLiberation background lookup");
 
-    public static void SetPhaseBackground(int phase)
-    {
-        TextureRect? image = FindBackgroundImage();
-        if (image == null)
-        {
-            return;
-        }
+    public static void SetPhaseBackground(int phase) =>
+        CombatBackgroundImage.SetTexture(FindBackgroundImage(), GetPhaseBackgroundTexturePath(phase));
 
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(
-            GetPhaseBackgroundTexturePath(phase));
-        if (texture != null)
-        {
-            image.Texture = texture;
-        }
-    }
-
-    private static TextureRect? FindBackgroundImage()
-    {
-        NCombatBackground? background = NCombatRoom.Instance?.Background;
-        if (background == null)
-        {
-            return null;
-        }
-
-        return background.GetNodeOrNull<TextureRect>(
-                   "%LiteratureFloorLiberationBackgroundImage")
-               ?? background.FindChild(
-                       "LiteratureFloorLiberationBackgroundImage",
-                       recursive: true,
-                       owned: false) as TextureRect;
-    }
+    private static TextureRect? FindBackgroundImage() =>
+        CombatBackgroundImage.Find("LiteratureFloorLiberationBackgroundImage");
 }
