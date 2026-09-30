@@ -42,10 +42,42 @@ public sealed partial class Rnfmabj
             SetDirectiveProgress(playerNetId, progress);
         }
 
-        // 已完成的玩家进度锁定，等其他玩家；他们再出牌时也复核一次，
-        // 这样还没完成的队友中途死亡后，指令能由存活玩家的下一张牌完成。
-        if (progress < sequence.Length
-            || requiredPlayers.Count == 0
+        // 已完成的玩家进度锁定，等其他玩家。
+        if (progress < sequence.Length)
+        {
+            return;
+        }
+
+        await TryCompleteCurrentDirective(sequence);
+    }
+
+    /// <summary>
+    /// 玩家回合里有玩家死亡时复核指令：还没完成的队友死了，已完成的玩家可能不会再出牌，
+    /// 只在出牌时复核的话指令就停在“全员完成”却不取消意图。死亡与存活都是同步的战斗状态，两端在同一次死亡结算里复核。
+    /// 敌方回合不复核：那时意图正在执行，取消槽位会打乱本回合的出招。
+    /// </summary>
+    private async Task RecheckDirectiveAfterPlayerDeath(Creature creature)
+    {
+        if (!creature.IsPlayer
+            || Creature.IsDead
+            || Creature.CombatState?.CurrentSide != CombatSide.Player
+            || CurrentDirectiveCompleted
+            || !TryGetCurrentDirectiveSequence(out CardType[] sequence))
+        {
+            return;
+        }
+
+        await TryCompleteCurrentDirective(sequence);
+    }
+
+    /// <summary>
+    /// 仍存活的登记玩家都完成当前任务时取消最左边的指令意图并进入下一个任务。不改任何玩家的进度；
+    /// 进入下一个任务时进度清空，所以同一个任务不会被重复推进。
+    /// </summary>
+    private async Task TryCompleteCurrentDirective(CardType[] sequence)
+    {
+        IReadOnlyList<ulong> requiredPlayers = ParseLivingRequiredPlayerNetIds();
+        if (requiredPlayers.Count == 0
             || requiredPlayers.Any(netId =>
                 GetDirectiveProgress(netId) < sequence.Length))
         {
@@ -92,7 +124,9 @@ public sealed partial class Rnfmabj
             CurrentDirectiveTaskIndex.ToString(CultureInfo.InvariantCulture),
             CurrentDirectiveCompleted ? "1" : "0",
             DirectiveProgressByPlayerNetId,
-            localPlayerNetId?.ToString(CultureInfo.InvariantCulture) ?? "none");
+            localPlayerNetId?.ToString(CultureInfo.InvariantCulture) ?? "none",
+            // 要求人数随队友死亡、复活变化，而计划与进度可能都没变；不计入指纹时指令卡不会重画。
+            string.Join(',', requiredPlayers));
         return new RnfmabjDirectiveSnapshot(
             IsVisible: true,
             Sequence: sequence,

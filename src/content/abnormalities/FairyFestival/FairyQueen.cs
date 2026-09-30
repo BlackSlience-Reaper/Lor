@@ -31,6 +31,9 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     private const int QueensDecreeBlock = 9;
     private const int PredationHeal = 6;
     private const int PredationBlock = 10;
+    private const int StarvedFlutteringHits = 3; // 饥饿振翅：攻击次数，每次攻击分别判定流血。
+    private const int StarvedFlutteringBaseDamage = 3; // 饥饿振翅：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int StarvedFlutteringHighAscensionDamage = 4; // 饥饿振翅：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int StarvedFlutteringBleed = 1;
     // 饥饿狂乱吞噬全部畸块时，女王剩余生命占最大生命的百分比阈值。
     public const int StarvedFrenzyHpThresholdPercent = 25;
@@ -114,17 +117,11 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     private static int PredationDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
 
-    private static int StarvedFlutteringFirstDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
-
-    private static int StarvedFlutteringSecondDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
-
-    private static int StarvedFlutteringThirdDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
-
-    private static int[] StarvedFlutteringDamages =>
-        [StarvedFlutteringFirstDamage, StarvedFlutteringSecondDamage, StarvedFlutteringThirdDamage];
+    private static int StarvedFlutteringDamage =>
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            StarvedFlutteringHighAscensionDamage,
+            StarvedFlutteringBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         FairyQueenCreatureVisuals.Profile.AssetPaths
@@ -255,15 +252,8 @@ public sealed class FairyQueen : CounterIntentMonsterModel
             StarvedFlutteringMoveId,
             StarvedFlutteringMove,
             new BadgedAttackIntent(
-                StarvedFlutteringFirstDamage,
-                "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
-                IntentBadge.Bleed(StarvedFlutteringBleed)),
-            new BadgedAttackIntent(
-                StarvedFlutteringSecondDamage,
-                "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
-                IntentBadge.Bleed(StarvedFlutteringBleed)),
-            new BadgedAttackIntent(
-                StarvedFlutteringThirdDamage,
+                StarvedFlutteringDamage,
+                StarvedFlutteringHits,
                 "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
                 IntentBadge.Bleed(StarvedFlutteringBleed)));
 
@@ -313,11 +303,15 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     private async Task StarvedFlutteringMove(IReadOnlyList<Creature> targets)
     {
         RefreshBackgroundMoonTextLoop();
-        foreach (int damage in StarvedFlutteringDamages)
+        for (int i = 0; i < StarvedFlutteringHits; i++)
         {
-            if (Creature.IsDead) return;
+            if (Creature.IsDead)
+            {
+                return;
+            }
+
             LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-            AttackCommand attack = await ExecuteSegmentAttack(damage);
+            AttackCommand attack = await ExecuteSegmentAttack(StarvedFlutteringDamage);
             IReadOnlyList<Creature> bleedTargets = AttackCommandCompat.Results(attack)
                 .Where(result => result.Receiver.IsPlayer && result.UnblockedDamage > 0)
                 .Select(result => result.Receiver)
@@ -416,15 +410,8 @@ public sealed class FairyQueen : CounterIntentMonsterModel
         yield return new HealIntent();
         yield return new DefendIntent();
         yield return new BadgedAttackIntent(
-            StarvedFlutteringFirstDamage,
-            "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
-            IntentBadge.Bleed(StarvedFlutteringBleed));
-        yield return new BadgedAttackIntent(
-            StarvedFlutteringSecondDamage,
-            "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
-            IntentBadge.Bleed(StarvedFlutteringBleed));
-        yield return new BadgedAttackIntent(
-            StarvedFlutteringThirdDamage,
+            StarvedFlutteringDamage,
+            StarvedFlutteringHits,
             "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
             IntentBadge.Bleed(StarvedFlutteringBleed));
     }

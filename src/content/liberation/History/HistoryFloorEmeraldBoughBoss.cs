@@ -52,7 +52,13 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
 
     private const int EmeraldBoughRapidWearAmount = 9;
     private const int EmeraldBoughRapidWearTurns = 3;
+    private const int DelusionalVineHits = 3; // 妄执之藤：攻击次数，仅最后一击判定束缚。
+    private const int DelusionalVineBaseDamage = 7; // 妄执之藤：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int DelusionalVineHighAscensionDamage = 9; // 妄执之藤：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int DelusionalVineBindAmount = 1;
+    private const int GrudgeVineHits = 2; // 怨恨之藤：攻击次数，完成全部攻击后添加伤口。
+    private const int GrudgeVineBaseDamage = 10; // 怨恨之藤：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int GrudgeVineHighAscensionDamage = 12; // 怨恨之藤：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int GrudgeVineWoundCount = 2;
     private const int ExtendedMaliceBlock = 17;
     private const int ExtendedMaliceWeak = 3;
@@ -108,17 +114,17 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
     private static int EmeraldBoughDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 10, 8);
 
-    private static int DelusionalVineHitADamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 7);
-
-    private static int DelusionalVineHitBDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 7);
-
-    private static int DelusionalVineHitCDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 7);
+    private static int DelusionalVineDamage =>
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            DelusionalVineHighAscensionDamage,
+            DelusionalVineBaseDamage);
 
     private static int GrudgeVineDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 10);
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            GrudgeVineHighAscensionDamage,
+            GrudgeVineBaseDamage);
 
     private static int ShatteredLifeDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, HistoryFloorEgoNumbers.ShatteredLifeAscensionDamage, HistoryFloorEgoNumbers.ShatteredLifeBaseDamage);
@@ -239,16 +245,13 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         var delusionalVine = new MoveState(
             DelusionalVineMoveId,
             DelusionalVineMove,
-            new SingleAttackIntent(DelusionalVineHitADamage),
-            new SingleAttackIntent(DelusionalVineHitBDamage),
-            new SingleAttackIntent(DelusionalVineHitCDamage),
+            new MultiAttackIntent(DelusionalVineDamage, DelusionalVineHits),
             new DebuffIntent());
 
         var grudgeVine = new MoveState(
             GrudgeVineMoveId,
             GrudgeVineMove,
-            new SingleAttackIntent(GrudgeVineDamage),
-            new SingleAttackIntent(GrudgeVineDamage),
+            new MultiAttackIntent(GrudgeVineDamage, GrudgeVineHits),
             new DetailedStatusCardIntent<Wound>(GrudgeVineWoundCount, PileType.Draw, showSingleTargetMarker: false));
 
         var extendedMalice = new MoveState(
@@ -366,34 +369,39 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
 
     private async Task DelusionalVineMove(IReadOnlyList<Creature> targets)
     {
-        await DamageCmd.Attack(DelusionalVineHitADamage)
-            .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(null);
-
-        if (Creature.IsDead) return;
-        await DamageCmd.Attack(DelusionalVineHitBDamage)
-            .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(null);
-
-        if (Creature.IsDead) return;
-        AttackCommand finalAttack = await DamageCmd.Attack(DelusionalVineHitCDamage)
-            .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(null);
-
-        IReadOnlyList<Creature> bindTargets = AttackCommandCompat.Results(finalAttack)
-            .Where(static result => result.Receiver.IsAlive && result.UnblockedDamage > 0)
-            .Select(static result => result.Receiver)
-            .Distinct()
-            .ToArray();
-        if (bindTargets.Count > 0)
+        for (int i = 0; i < DelusionalVineHits; i++)
         {
-            await LibraryPowerCmd.Apply<LibraryBindingPower>(new ThrowingPlayerChoiceContext(), bindTargets, DelusionalVineBindAmount, 0, false, Creature, null);
+            if (Creature.IsDead)
+            {
+                return;
+            }
+
+            AttackCommand attack = await DamageCmd.Attack(DelusionalVineDamage)
+                .FromMonster(this)
+                .WithAttackerAnim("Attack", SegmentDelaySeconds)
+                .WithHitFx("vfx/vfx_attack_slash")
+                .Execute(null);
+            if (i != DelusionalVineHits - 1)
+            {
+                continue;
+            }
+
+            IReadOnlyList<Creature> bindTargets = AttackCommandCompat.Results(attack)
+                .Where(static result => result.Receiver.IsAlive && result.UnblockedDamage > 0)
+                .Select(static result => result.Receiver)
+                .Distinct()
+                .ToArray();
+            if (bindTargets.Count > 0)
+            {
+                await LibraryPowerCmd.Apply<LibraryBindingPower>(
+                    new ThrowingPlayerChoiceContext(),
+                    bindTargets,
+                    DelusionalVineBindAmount,
+                    0,
+                    false,
+                    Creature,
+                    null);
+            }
         }
 
         AdvanceTurn();
@@ -401,28 +409,29 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
 
     private async Task GrudgeVineMove(IReadOnlyList<Creature> targets)
     {
-        await DamageCmd.Attack(GrudgeVineDamage)
-            .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(null);
+        for (int i = 0; i < GrudgeVineHits; i++)
+        {
+            await DamageCmd.Attack(GrudgeVineDamage)
+                .FromMonster(this)
+                .WithAttackerAnim("Attack", SegmentDelaySeconds)
+                .WithHitFx("vfx/vfx_attack_slash")
+                .Execute(null);
 
-        if (!CanContinueCombatMove()) return;
-
-        await DamageCmd.Attack(GrudgeVineDamage)
-            .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(null);
-
-        if (!CanContinueCombatMove()) return;
+            if (!CanContinueCombatMove())
+            {
+                return;
+            }
+        }
 
         IReadOnlyList<Creature> alivePlayers = CombatState.PlayerCreatures
             .Where(static player => player.IsAlive)
             .ToArray();
         foreach (Creature target in alivePlayers)
         {
-            if (!CanContinueCombatMove()) return;
+            if (!CanContinueCombatMove())
+            {
+                return;
+            }
 
             await CardPileCmdCompat.AddToCombatAndPreview<Wound>(target, PileType.Draw, GrudgeVineWoundCount, addedByPlayer: false, CardPilePosition.Random);
         }
@@ -531,11 +540,9 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
                 EmeraldBoughRapidWearAmount,
                 downText: $"x{EmeraldBoughRapidWearTurns}"),
             EmeraldBoughRapidWearAmount);
-        yield return new SingleAttackIntent(DelusionalVineHitADamage);
-        yield return new SingleAttackIntent(DelusionalVineHitBDamage);
-        yield return new SingleAttackIntent(DelusionalVineHitCDamage);
+        yield return new MultiAttackIntent(DelusionalVineDamage, DelusionalVineHits);
         yield return new DetailedBuffIntent<LibraryBindingPower>(DelusionalVineBindAmount, DetailedBuffTargetScope.Target);
-        yield return new SingleAttackIntent(GrudgeVineDamage);
+        yield return new MultiAttackIntent(GrudgeVineDamage, GrudgeVineHits);
         yield return new DetailedStatusCardIntent<Wound>(GrudgeVineWoundCount, PileType.Draw, showSingleTargetMarker: false);
         yield return new DefendIntent();
         yield return new DetailedBuffIntent<WeakPower>(ExtendedMaliceWeak, DetailedBuffTargetScope.Target);

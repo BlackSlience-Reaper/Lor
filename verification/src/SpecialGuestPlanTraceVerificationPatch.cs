@@ -480,8 +480,25 @@ internal static class SpecialGuestPlanTraceVerificationPatch
             Check(two.Creature.IsDead, label + ": player two is still alive.");
             Check(before.LocalPlayerCompleted && before.RequiredPlayers == 2,
                 label + ": player one did not finish the task while both players were alive.");
-            Check(after.RequiredPlayers == 1 && after.CompletedPlayers == 1,
-                label + ": the dead teammate is still required by the directive:" + DescribeDirectivePlayers(body));
+            // 一号玩家死亡后不再出牌：指令必须在二号玩家的死亡结算里完成（进入下一个任务或标记完成），
+            // 而不是停在“全员完成”等下一张牌。进入下一个任务时进度清空，所以只看任务推进。
+            Check(!before.CurrentTaskCompleted
+                && (after.TaskNumber > before.TaskNumber || after.CurrentTaskCompleted),
+                label + ": the directive was not completed when the unfinished teammate died (task "
+                + before.TaskNumber + "->" + after.TaskNumber + ", completed=" + after.CurrentTaskCompleted + ").");
+            if (after.TaskNumber == before.TaskNumber)
+            {
+                Check(after.RequiredPlayers == 1 && after.CompletedPlayers == 1,
+                    label + ": the dead teammate is still required by the directive:" + DescribeDirectivePlayers(body));
+            }
+            else
+            {
+                Check(after.RequiredPlayers == 1,
+                    label + ": the dead teammate is still required by the next task:" + DescribeDirectivePlayers(body));
+            }
+
+            Check(before.Fingerprint != after.Fingerprint,
+                label + ": the directive overlay fingerprint did not change after the teammate died.");
             return "p1 finishes, p2 killed";
         });
     }

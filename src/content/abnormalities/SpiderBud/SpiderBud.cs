@@ -80,12 +80,12 @@ public sealed class SpiderBud : CounterIntentMonsterModel
     public bool HuntPending { get; private set; }
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 69, 47);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 59, 47);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 73, 50);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 61, 50);
 
-    public override int DefaultChaoResistance => 50;
+    public override int DefaultChaoResistance => 40;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
