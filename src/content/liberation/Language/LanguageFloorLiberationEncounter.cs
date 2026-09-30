@@ -302,6 +302,11 @@ public sealed class LanguageFloorLiberationEncounter :
         }
     }
 
+    /// <summary>
+    /// 原版 <c>ShouldStopCombatFromEnding</c> 的判断。必须是纯函数：<c>CombatManager.IsEnding/IsOverOrEnding</c>
+    /// 每次读取都会调用它，读取方包括各命令的入口检查，也包括只在本机运行的界面代码（例如 <c>NPlayerHand</c>），
+    /// 在这里写状态会让两端在不同时刻改变阶段与结算字段。终局 Boss 缺失时的补记在 <see cref="RecoverMissingTerminalPhaseBossAtCombatEnd"/>。
+    /// </summary>
     public bool ShouldKeepCombatOpen(CombatStateLike combatState)
     {
         if (SettlementTriggered || PhaseComplete)
@@ -309,23 +314,29 @@ public sealed class LanguageFloorLiberationEncounter :
             return false;
         }
 
-        if (LiberationCombatEndGuard.ShouldKeepCombatOpen(
+        return LiberationCombatEndGuard.ShouldKeepCombatOpen(
+            combatState,
+            CurrentPhase,
+            TransitionPending,
+            encounterComplete: false);
+    }
+
+    /// <summary>
+    /// 第 3、5 阶段的终局 Boss 已不在场（死亡后被移出战斗而阶段没有完成）、战斗以胜利结束时，补记阶段完成与结算。
+    /// 由控制能力的 <c>AfterCombatEnd</c> 调用：原版在胜利流程里按固定顺序执行它，早于 <c>AfterCombatVictory</c> 与战后存档，
+    /// 两端在同一处写入。多名玩家各持一个控制能力，第一次调用后阶段已完成，其余调用直接返回。
+    /// </summary>
+    internal void RecoverMissingTerminalPhaseBossAtCombatEnd(
+        CombatStateLike combatState)
+    {
+        if (SettlementTriggered
+            || PhaseComplete
+            || CurrentPhase is not (3 or 5)
+            || LiberationCombatEndGuard.ShouldKeepCombatOpen(
                 combatState,
                 CurrentPhase,
                 TransitionPending,
                 encounterComplete: false))
-        {
-            return true;
-        }
-
-        RecoverMissingTerminalPhaseBoss(combatState);
-        return false;
-    }
-
-    private void RecoverMissingTerminalPhaseBoss(
-        CombatStateLike combatState)
-    {
-        if (CurrentPhase is not (3 or 5))
         {
             return;
         }
@@ -356,12 +367,11 @@ public sealed class LanguageFloorLiberationEncounter :
         LanguageFloorLiberationSettlementStore.Record(this);
         LanguageFloorDeathContext.Clear();
         Log.Warn(
-            "[LanguageFloorLiberation] Recovered missing terminal phase boss before combat end: phase="
+            "[LanguageFloorLiberation] Recovered missing terminal phase boss at combat end: phase="
             + CurrentPhase
             + ", settledKills="
             + KilledBossCount
             + ".");
-        ScheduleDeferredWinConditionCheck();
     }
 
     public bool ShouldKeepPhaseBossAfterDeath(Creature creature)

@@ -12,6 +12,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Language;
@@ -599,6 +600,17 @@ public sealed class LanguageFloorLiberationControllerPower : LibraryOfRuinaPower
             && combatState.Encounter
                 is LanguageFloorLiberationEncounter encounter
             && encounter.ShouldKeepCombatOpen(combatState);
+    }
+
+    public override Task AfterCombatEnd(CombatRoom room)
+    {
+        if (Owner?.CombatState is { } combatState
+            && combatState.Encounter is LanguageFloorLiberationEncounter encounter)
+        {
+            encounter.RecoverMissingTerminalPhaseBossAtCombatEnd(combatState);
+        }
+
+        return Task.CompletedTask;
     }
 
     public override bool ShouldDieLate(Creature creature)
