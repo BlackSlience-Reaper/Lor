@@ -3,7 +3,8 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using Godot;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core;
+using LibraryOfRuina.core.settings;
 using MegaCrit.Sts2.Core.Logging;
 using FileAccess = Godot.FileAccess;
 

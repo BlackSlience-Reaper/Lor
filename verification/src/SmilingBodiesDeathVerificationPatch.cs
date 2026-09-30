@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.encounters.SmilingBodies;
-using LibraryOfRuina.monsters.SmilingBodies;
+using LibraryOfRuina.content.abnormalities.SmilingBodies;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
@@ -18,7 +17,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using Environment = System.Environment;
-using SmilingBodiesMonster = LibraryOfRuina.monsters.SmilingBodies.SmilingBodies;
+using SmilingBodiesMonster = LibraryOfRuina.content.abnormalities.SmilingBodies.SmilingBodies;
 
 namespace LibraryOfRuinaVerification;
 

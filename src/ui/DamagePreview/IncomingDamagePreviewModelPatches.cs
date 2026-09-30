@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.monsters.HistoryFloorLiberation;
-using LibraryOfRuina.relics.HistoryFloorLiberation;
-using LibraryOfRuina.relics.QueenOfHatred;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
+using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 

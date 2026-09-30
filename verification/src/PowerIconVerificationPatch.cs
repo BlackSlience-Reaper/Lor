@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Powers.LibraryPowerMode;
-using LibraryOfRuina.helpers;
-using LibraryOfRuina.intents;
-using LibraryOfRuina.monsters.AddictedEmployee;
+using LibraryOfRuina.content.abnormalities.AddictedEmployee;
+using LibraryOfRuina.core;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -17,7 +18,6 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using Environment = System.Environment;
 
-using LibraryOfRuina;
 
 namespace LibraryOfRuinaVerification;
 

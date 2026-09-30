@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <!-- Same global usings as the main mod, so the suites moved out of src/debug compile unchanged. -->
-    <Compile Include="../src/compat/GlobalUsings.cs" Link="GlobalUsings.cs" />
+    <Compile Include="../src/core/compat/GlobalUsings.cs" Link="GlobalUsings.cs" />
     <None Include="LibraryOfRuinaVerification.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

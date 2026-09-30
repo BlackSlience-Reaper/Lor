@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
-using LibraryOfRuina.patches.QueenOfHatred;
-using LibraryOfRuina.patches.TechnologyFloorLiberation;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
+using LibraryOfRuina.content.liberation.Technology;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -15,7 +16,6 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.ValueProps;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 

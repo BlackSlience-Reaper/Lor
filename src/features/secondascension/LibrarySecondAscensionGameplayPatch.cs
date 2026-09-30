@@ -1,7 +1,7 @@
 using System;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Logging;

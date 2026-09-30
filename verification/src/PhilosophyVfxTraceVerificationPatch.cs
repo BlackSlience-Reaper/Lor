@@ -7,11 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.audio;
-using LibraryOfRuina.backgrounds.PhilosophyFloorLiberation;
-using LibraryOfRuina.encounters.PhilosophyFloorLiberation;
-using LibraryOfRuina.monsters.PhilosophyFloorLiberation;
-using LibraryOfRuina.visuals.PhilosophyFloorLiberation;
+using LibraryOfRuina.content.liberation.Philosophy;
+using LibraryOfRuina.framework.audio;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -42,8 +39,8 @@ internal static class PhilosophyVfxTraceVerificationPatch
 {
     private const string VerifyArg = "lor-verify-philosophy-vfx-trace";
     private const string LogPrefix = "[LibraryOfRuina.PhilosophyVfxTrace.Verify] ";
-    private const string VfxNamespace = "LibraryOfRuina.visuals.PhilosophyFloorLiberation";
-    private const string CommonVfxNamespace = "LibraryOfRuina.visuals.common";
+    private const string VfxNamespace = "LibraryOfRuina.content.liberation.Philosophy";
+    private const string CommonVfxNamespace = "LibraryOfRuina.framework.visuals.common";
     private const string VfxRootPrefix = "PhilosophyTwilight";
 
     private static readonly List<string> Failures = [];

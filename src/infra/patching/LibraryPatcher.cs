@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using HarmonyLib;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using Environment = System.Environment;

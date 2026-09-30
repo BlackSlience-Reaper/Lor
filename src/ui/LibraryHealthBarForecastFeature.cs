@@ -3,22 +3,21 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.monsters.LanguageFloorLiberation;
-using LibraryOfRuina.monsters.SocialFloorLiberation;
-using LibraryOfRuina.powers;
-using LibraryOfRuina.powers.ArtFloorLiberation;
-using LibraryOfRuina.powers.FairyFestival;
-using LibraryOfRuina.powers.KingOfGreed;
-using LibraryOfRuina.powers.LanguageFloorLiberation;
-using LibraryOfRuina.powers.NaturalFloorLiberation;
-using LibraryOfRuina.powers.Nosferatu;
-using LibraryOfRuina.powers.PhilosophyFloorLiberation;
-using LibraryOfRuina.powers.RoadHome;
-using LibraryOfRuina.powers.WrathServant;
-using LibraryOfRuina.specialguests.Iori;
-using LibraryOfRuina.specialguests.Kali;
-using LibraryOfRuina.specialguests.Rnfmabj;
-using LibraryOfRuina.specialguests.Xiao;
+using LibraryOfRuina.content.abnormalities.FairyFestival;
+using LibraryOfRuina.content.abnormalities.KingOfGreed;
+using LibraryOfRuina.content.abnormalities.Nosferatu;
+using LibraryOfRuina.content.abnormalities.RoadHome;
+using LibraryOfRuina.content.abnormalities.WrathServant;
+using LibraryOfRuina.content.liberation.Art;
+using LibraryOfRuina.content.liberation.Language;
+using LibraryOfRuina.content.liberation.Natural;
+using LibraryOfRuina.content.liberation.Philosophy;
+using LibraryOfRuina.content.liberation.Social;
+using LibraryOfRuina.content.specialguests.Iori;
+using LibraryOfRuina.content.specialguests.Kali;
+using LibraryOfRuina.content.specialguests.Rnfmabj;
+using LibraryOfRuina.content.specialguests.Xiao;
+using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Combat.HealthBars;
 
@@ -88,7 +87,7 @@ internal static class LibraryHealthBarForecastFeature
         {
             return true;
         }
-        if (creature.Powers.OfType<LibraryOfRuina.powers.NaturalFloorLiberation.NaturalFloorExploitedPower>()
+        if (creature.Powers.OfType<LibraryOfRuina.content.liberation.Natural.NaturalFloorExploitedPower>()
             .Any(static power => power.IsHealthBarLockActive))
         {
             return true;
@@ -124,7 +123,7 @@ internal static class LibraryHealthBarForecastFeature
         // }
         return creature.Monster switch
         {
-            LibraryOfRuina.reverberation.GearChurch.ReverberationEileen eileen => eileen.IsHealthBarLockActive,
+            LibraryOfRuina.content.reverberation.GearChurch.ReverberationEileen eileen => eileen.IsHealthBarLockActive,
             LanguageFloorCobaltScar scar => scar.IsHealthBarLockActive,
             FalseThrone throne => throne.IsHealthBarLockActive,
             Kali kali => kali.IsHealthBarLockActive,

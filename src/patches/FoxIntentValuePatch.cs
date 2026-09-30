@@ -1,5 +1,5 @@
-using LibraryOfRuina.intents;
-using LibraryOfRuina.intents.rendering;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.intents.rendering;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 

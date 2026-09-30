@@ -46,6 +46,8 @@
   <ItemGroup>
     <!-- IL hashes of vanilla methods behind skip prefixes and transpilers; see VanillaCopyGuard. -->
     <EmbeddedResource Include="src/infra/patching/vanilla_copy_guard.txt" LogicalName="LibraryOfRuina.vanilla_copy_guard.txt" />
+    <!-- Fixed order of auto-discovered patch classes, pool cards, relics and ally providers; see TypeDiscoveryOrder. -->
+    <EmbeddedResource Include="src/infra/helpers/type_discovery_order.txt" LogicalName="LibraryOfRuina.type_discovery_order.txt" />
   </ItemGroup>
 
   <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">

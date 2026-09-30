@@ -1,7 +1,7 @@
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.acts;
-using LibraryOfRuina.events;
+using LibraryOfRuina.content.acts;
+using LibraryOfRuina.content.reverberation;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Events;
 using MegaCrit.Sts2.Core.Rooms;

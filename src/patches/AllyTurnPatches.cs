@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using JetBrains.Annotations;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models.Singleton;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches;
 

@@ -1,6 +1,6 @@
-using LibraryOfRuina.guests.DawnOffice;
+using LibraryOfRuina.content.guests.DawnOffice;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 // 没有外观类可挂 [MonsterVisual] 的登记放在这里（目前只有芬恩）。其余登记都写在各自的外观类上；
 // 同一只怪物登记两次会在建表时报错。

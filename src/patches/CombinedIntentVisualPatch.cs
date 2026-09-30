@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.CompilerServices;
 using Godot;
-using LibraryOfRuina.helpers;
-using LibraryOfRuina.intents;
-using LibraryOfRuina.intents.rendering;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.intents.rendering;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;

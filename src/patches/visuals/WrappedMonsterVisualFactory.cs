@@ -2,14 +2,14 @@ using System;
 using System.IO;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.helpers;
-using LibraryOfRuina.visuals;
+using LibraryOfRuina.framework.visuals;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using Environment = System.Environment;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 internal static class WrappedMonsterVisualFactory
 {

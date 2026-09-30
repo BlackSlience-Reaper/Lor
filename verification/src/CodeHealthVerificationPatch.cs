@@ -4,12 +4,14 @@ using System.Linq;
 using System.Reflection;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.compat;
-using LibraryOfRuina.encounters.JudgementBird;
-using LibraryOfRuina.encounters.QueenOfHatred;
+using LibraryOfRuina;
+using LibraryOfRuina.content.abnormalities.JudgementBird;
+using LibraryOfRuina.content.abnormalities.QueenOfHatred;
+using LibraryOfRuina.content.specialguests;
+using LibraryOfRuina.core;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.ftue;
 using LibraryOfRuina.features.intentgraph;
-using LibraryOfRuina.specialguests;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
@@ -21,7 +23,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using Environment = System.Environment;
 
-using LibraryOfRuina;
 
 namespace LibraryOfRuinaVerification;
 
@@ -154,10 +155,10 @@ internal static class CodeHealthVerificationPatch
         }
 
         RequireSecondaryInitialState(
-            "LibraryOfRuina.monsters.Nosferatu.BloodBat",
+            "LibraryOfRuina.content.abnormalities.Nosferatu.BloodBat",
             "THIRST");
         RequireSecondaryInitialState(
-            "LibraryOfRuina.monsters.Nosferatu.Nosferatu",
+            "LibraryOfRuina.content.abnormalities.Nosferatu.Nosferatu",
             "GRACEFUL_REST");
     }
 

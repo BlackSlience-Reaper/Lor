@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using LibraryOfRuina.encounters;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Runs;
-using LorActModel = LibraryOfRuina.acts.LibraryOfRuinaActModel;
+using LorActModel = LibraryOfRuina.content.acts.LibraryOfRuinaActModel;
 
 namespace LibraryOfRuina.patches;
 

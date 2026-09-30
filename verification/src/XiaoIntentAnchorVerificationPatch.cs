@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.specialguests.Xiao;
+using LibraryOfRuina.content.specialguests.Xiao;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;

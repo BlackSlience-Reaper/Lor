@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 // src/interop/VanillaPrivate.cs, so a game update shows every missing member in one startup summary.
 //
 // Any call to a by-name reflection API counts, whatever its argument looks like (literal, constant, variable, wrapped
-// over many lines). Exempt: src/interop/ and src/compat/ (version shims), and Harmony target resolution — code whose
+// over many lines). Exempt: src/interop/ and src/core/compat/ (version shims), and Harmony target resolution — code whose
 // enclosing method is TargetMethod(s)/Prepare/Cleanup or carries the matching Harmony attribute (LibraryPatcher reports
 // those failures at install time). Everything else must be listed in the allowlist with a reason.
 //
@@ -37,7 +37,7 @@ if (args.Length != 2)
 List<AllowEntry> allow = LoadAllowlist(args[1]);
 var used = new HashSet<AllowEntry>();
 var violations = new List<Finding>();
-foreach (Finding finding in Scan(args[0], exemptDirectories: ["interop/", "compat/"]))
+foreach (Finding finding in Scan(args[0], exemptDirectories: ["interop/", "core/compat/"]))
 {
     AllowEntry? entry = allow.FirstOrDefault(e => e.Path == finding.Path && e.Member == finding.Member && e.Api == finding.Api);
     if (entry != null)

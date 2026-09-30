@@ -1,8 +1,9 @@
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.features.settings;
-using LibraryOfRuina.relics.BookShadow;
+using LibraryOfRuina.content.relics.BookShadow;
+using LibraryOfRuina.core;
+using LibraryOfRuina.core.settings;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Rooms;

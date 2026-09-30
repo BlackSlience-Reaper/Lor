@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using LibraryOfRuina.guests.MusiciansOfBremen;
-using LibraryOfRuina.helpers;
-using LibraryOfRuina.visuals;
+using LibraryOfRuina.content.guests.MusiciansOfBremen;
+using LibraryOfRuina.framework.visuals;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 /// <summary>
 /// 把一只本模组怪物登记进外观目录（<see cref="MonsterVisualCatalog"/>）。

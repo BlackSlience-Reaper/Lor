@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
 using LibraryOfRuina.features.secondascension;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;

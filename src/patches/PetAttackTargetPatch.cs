@@ -1,5 +1,5 @@
 using HarmonyLib;
-using LibraryOfRuina.intents;
+using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Commands.Builders;
 
 namespace LibraryOfRuina.patches;

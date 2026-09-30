@@ -3,15 +3,15 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using HarmonyLib;
-using LibraryOfRuina.compat;
-using LibraryOfRuina.features.settings;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.core.settings;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Multiplayer.Game.Lobby;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.features.secondascension;
 

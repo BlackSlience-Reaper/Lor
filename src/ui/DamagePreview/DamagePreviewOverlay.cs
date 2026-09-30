@@ -4,8 +4,9 @@ using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
-using LibraryOfRuina.combat;
-using LibraryOfRuina.compat;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
@@ -19,7 +20,6 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 

@@ -8,9 +8,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Godot;
-using LibraryOfRuina;
-using LibraryOfRuina.patches;
-using LibraryOfRuina.visuals;
+using LibraryOfRuina.core;
+using LibraryOfRuina.framework.visuals;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
@@ -46,11 +46,11 @@ internal static class MonsterVisualLayoutVerificationPatch
     /// <summary>自定义工厂按怪物状态选贴图：状态字段名与要试的取值。</summary>
     private static readonly (string MonsterType, string Field, object[] Values)[] StateVariants =
     [
-        ("LibraryOfRuina.monsters.BurrowingHeaven.BurrowingHeaven", "_isAwake", [false, true]),
-        ("LibraryOfRuina.monsters.BurrowingHeaven.HeavenThorn", "_isAwake", [false, true]),
-        ("LibraryOfRuina.monsters.Ozma.OzmaJack", "<IsAwake>k__BackingField", [false, true]),
-        ("LibraryOfRuina.monsters.HistoryFloorLiberation.HistoryFloorPhaseBoss", "_phase", [1, 2, 3, 4, 5]),
-        ("LibraryOfRuina.monsters.ArtFloorLiberation.ArtFloorDaCapoPerformer", "_variant", [1, 2, 3, 4]),
+        ("LibraryOfRuina.content.abnormalities.BurrowingHeaven.BurrowingHeaven", "_isAwake", [false, true]),
+        ("LibraryOfRuina.content.abnormalities.BurrowingHeaven.HeavenThorn", "_isAwake", [false, true]),
+        ("LibraryOfRuina.content.abnormalities.Ozma.OzmaJack", "<IsAwake>k__BackingField", [false, true]),
+        ("LibraryOfRuina.content.liberation.History.HistoryFloorPhaseBoss", "_phase", [1, 2, 3, 4, 5]),
+        ("LibraryOfRuina.content.liberation.Art.ArtFloorDaCapoPerformer", "_variant", [1, 2, 3, 4]),
     ];
 
     private static bool _started;

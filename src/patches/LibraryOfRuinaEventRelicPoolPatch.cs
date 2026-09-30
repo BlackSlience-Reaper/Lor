@@ -4,7 +4,7 @@ using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.infra.helpers;
 
 namespace LibraryOfRuina.patches;
 

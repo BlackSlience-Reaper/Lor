@@ -48,6 +48,15 @@ for list in skip_prefixes hook_patches; do
   fi
 done
 
+# Types found by order-sensitive discovery (patches, card pools, relics, ally providers) must be listed in
+# src/infra/helpers/type_discovery_order.txt; an unlisted one falls back to TypeDef order and moves whenever files move.
+# Checked before --accept so accepting cannot hide it.
+if grep -qE $'(\tunlisted$|^stale\t)' "$TMP/discovery_order.txt"; then
+  echo "type_discovery_order.txt is out of date (add unlisted types in their intended position, drop stale keys):" >&2
+  grep -E $'(\tunlisted$|^stale\t)' "$TMP/discovery_order.txt" >&2
+  exit 1
+fi
+
 if [[ "${1:-}" == "--accept" ]]; then
   cp "$TMP"/*.txt "$ROOT/snapshots/"
   echo "snapshots updated"

@@ -1,12 +1,12 @@
 using System;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.helpers;
+using LibraryOfRuina.framework.visuals;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
-using LibraryOfRuina.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
-namespace LibraryOfRuina.patches;
+namespace LibraryOfRuina.patches.visuals;
 
 /// <summary>
 /// 本模组怪物的外观不是 Spine，原版 SetAnimationTrigger 只驱动 Spine 动画机，对它们不起作用；这里把触发转给

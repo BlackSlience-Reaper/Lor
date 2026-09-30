@@ -1,9 +1,9 @@
 using HarmonyLib;
-using LibraryOfRuina.intents.rendering;
+using LibraryOfRuina.framework.intents.rendering;
+using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using LibraryOfRuina.infra.patching;
 
 namespace LibraryOfRuina.patches.dispatch;
 

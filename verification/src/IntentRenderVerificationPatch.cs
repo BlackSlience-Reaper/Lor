@@ -10,20 +10,14 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryLib.Models;
-using LibraryOfRuina.cards.TechnologyFloorLiberation;
-using LibraryOfRuina.compat;
-using LibraryOfRuina.encounters;
-using LibraryOfRuina.encounters.PunishingBird;
-using LibraryOfRuina.encounters.RedMist;
-using LibraryOfRuina.encounters.ScorchedGirl;
-using LibraryOfRuina.encounters.TechnologyFloorLiberation;
-using LibraryOfRuina.intents;
-using LibraryOfRuina.intents.rendering;
-using LibraryOfRuina.monsters.PunishingBird;
-using LibraryOfRuina.monsters.ScorchedGirl;
-using LibraryOfRuina.monsters.TechnologyFloorLiberation;
-using LibraryOfRuina.powers.TechnologyFloorLiberation;
-using LibraryOfRuina.specialguests.Kali;
+using LibraryOfRuina.content.abnormalities.PunishingBird;
+using LibraryOfRuina.content.abnormalities.ScorchedGirl;
+using LibraryOfRuina.content.liberation.Technology;
+using LibraryOfRuina.content.specialguests.Kali;
+using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.intents.rendering;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -688,7 +682,7 @@ internal static class IntentRenderVerificationPatch
 
     /// <summary>重构前的构建里没有这些类型；只在类型存在时调用，这些方法在调用前不会被 JIT。</summary>
     private static bool PipelineAvailable() =>
-        typeof(IntentBadge).Assembly.GetType("LibraryOfRuina.intents.rendering.IntentRenderPipeline", throwOnError: false) != null;
+        typeof(IntentBadge).Assembly.GetType("LibraryOfRuina.framework.intents.rendering.IntentRenderPipeline", throwOnError: false) != null;
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DumpPipeline(string name, AbstractIntent intent, IReadOnlyList<Creature> targets, Creature owner, Control host)

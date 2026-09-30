@@ -1,0 +1,59 @@
+using System.Linq;
+using LibraryOfRuina.framework.audio;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Rooms;
+
+namespace LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
+
+public sealed class FuneralOfTheDeadButterfliesEncounter : EncounterModel, IEncounterBgmSource
+{
+    EncounterBgmConfig IEncounterBgmSource.Bgm => EncounterBgmConfig.DeathBased(
+        "FuneralOfTheDeadButterfliesBGM",
+        "res://audio/bgm/literature_reception_floor/literature_reception_floor_1.ogg");
+
+    public override RoomType RoomType => RoomType.Elite;
+
+    public override bool ShouldGiveRewards => true;
+
+    public override bool HasScene => true;
+
+    public override IReadOnlyList<string> Slots =>
+    [
+        "butterfly_left",
+        "butterfly_middle_left",
+        "butterfly_middle_right",
+        "butterfly_right",
+        "boss"
+    ];
+
+    protected override bool HasCustomBackground => true;
+
+    public override IEnumerable<MonsterModel> AllPossibleMonsters =>
+    [
+        ModelDb.Monster<FuneralOfTheDeadButterflies>(),
+        ModelDb.Monster<DeadButterfly.DeadButterfly>()
+    ];
+
+    public override IEnumerable<string> ExtraAssetPaths
+    {
+        get
+        {
+            var paths = new List<string>
+            {
+                "res://images/backgrounds/dead_butterfly/funeral_background.png",
+                ModelDb.Affliction<FuneralSealAffliction>().OverlayPath
+            };
+            paths.AddRange(ModelDb.Monster<FuneralOfTheDeadButterflies>().AssetPaths);
+            paths.AddRange(ModelDb.Monster<DeadButterfly.DeadButterfly>().AssetPaths);
+            return paths.Distinct();
+        }
+    }
+
+    protected override IReadOnlyList<(MonsterModel, string?)> GenerateMonsters()
+    {
+        return
+        [
+            (ModelDb.Monster<FuneralOfTheDeadButterflies>().ToMutable(), "boss")
+        ];
+    }
+}

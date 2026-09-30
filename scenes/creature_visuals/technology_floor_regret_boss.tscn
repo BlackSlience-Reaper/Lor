@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://laty22mfinud" path="res://src/visuals/TechnologyFloorLiberation/TechnologyFloorRegretBossCreatureVisuals.cs" id="1_visuals"]
+[ext_resource type="Script" uid="uid://laty22mfinud" path="res://src/content/liberation/Technology/TechnologyFloorRegretBossCreatureVisuals.cs" id="1_visuals"]
 [ext_resource type="Texture2D" uid="uid://qs8qf81xvtbd" path="res://images/monsters/technology_floor/regret_idle.png" id="2_idle"]
 
 [node name="TechnologyFloorRegretBoss" type="Node2D"]

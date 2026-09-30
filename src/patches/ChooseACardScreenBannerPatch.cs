@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using LibraryOfRuina.cards.Xiao;
-using LibraryOfRuina.relics;
+using LibraryOfRuina.content.specialguests.Xiao;
+using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
-using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.patches;
 

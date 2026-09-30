@@ -1,6 +1,6 @@
 using System.Linq;
 using HarmonyLib;
-using LibraryOfRuina.intents;
+using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 

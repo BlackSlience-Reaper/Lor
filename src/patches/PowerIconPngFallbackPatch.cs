@@ -1,8 +1,8 @@
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.helpers;
-using MegaCrit.Sts2.Core.Models;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
+using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.patches;
 

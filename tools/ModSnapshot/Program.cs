@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 
 // usage: ModSnapshot <mod.dll> <out-dir> <reference-dir-or-dll>...
@@ -45,7 +46,9 @@ foreach (string dll in Directory.EnumerateFiles(Path.GetDirectoryName(typeof(obj
 using var context = new MetadataLoadContext(new PathAssemblyResolver(referencePaths.Values), "System.Private.CoreLib");
 var missing = new SortedSet<string>(StringComparer.Ordinal);
 Assembly mod = context.LoadFromAssemblyPath(modPath);
-Type[] types = LoadTypes(mod);
+// The order LibraryAssemblyTypes hands to every auto-discovery step (same shared source file).
+IReadOnlyList<string> discoveryTable = TypeDiscoveryOrder.ReadTable(mod, required: false);
+Type[] types = TypeDiscoveryOrder.Sort(LoadTypes(mod), discoveryTable);
 
 WriteLines("models.txt", Models());
 WriteLines("saved_properties.txt", SavedProperties());
@@ -54,11 +57,13 @@ WriteLines("patch_order.txt", order);
 WriteLines("static_fields.txt", StaticFields());
 WriteLines("skip_prefixes.txt", SkipPrefixes());
 WriteLines("hook_patches.txt", HookPatches());
-// Not sorted: GetTypes() returns TypeDef order, which LibraryPatcher and the other auto-discovery steps
-// (LibraryAssemblyTypes) iterate. Moving a source file can reorder it, so a move shows up here and must be justified.
+// Not sorted: the discovery order LibraryPatcher and the other auto-discovery steps iterate (types listed in
+// type_discovery_order.txt first, the rest in TypeDef order, which moves when source files move).
 WriteLines("type_order.txt", types
     .Where(static type => type != null && !type.FullName!.Contains('<'))
     .Select(static type => type!.FullName!));
+// The types whose discovery order is behaviour, in that order; "unlisted" ones follow TypeDef order and move with files.
+WriteLines("discovery_order.txt", DiscoveryOrder());
 WriteLines("unresolved.txt", missing);
 Console.WriteLine($"snapshot written to {outDir} ({types.Length} types, {missing.Count} unresolved)");
 return 0;
@@ -116,6 +121,43 @@ IEnumerable<string> Models()
         .Where(type => type.IsClass && !type.IsAbstract && DerivesFrom(type, "MegaCrit.Sts2.Core.Models.AbstractModel"))
         .Select(type => type.FullName!)
         .Order(StringComparer.Ordinal);
+}
+
+// Same filters as the order-dependent consumers: LibraryPatcher, RegisterRuntimeCardPools, RegisterAllyTurnProviders,
+// LibraryOfRuinaEventRelicPoolPatch. Table keys that match no type are listed as "stale".
+IEnumerable<string> DiscoveryOrder()
+{
+    var listed = new HashSet<string>(discoveryTable, StringComparer.Ordinal);
+    var seen = new HashSet<string>(StringComparer.Ordinal);
+    foreach (Type type in types)
+    {
+        string? category;
+        try
+        {
+            category = PatchClassRules.IsInstalled(type) ? "patch"
+                : type.GetCustomAttributesData().Any(static data => data.AttributeType.Name == "CardPoolAttribute") ? "card-pool"
+                : !type.IsAbstract && !type.IsInterface && type.GetInterfaces().Any(static i => i.Name == "IAllyTurnProvider") ? "ally-provider"
+                : !type.IsAbstract && DerivesFrom(type, "MegaCrit.Sts2.Core.Models.RelicModel") ? "relic"
+                : null;
+        }
+        catch (FileNotFoundException exception)
+        {
+            missing.Add("discovery-order: " + type.FullName + " -> " + exception.Message);
+            continue;
+        }
+
+        string key = TypeDiscoveryOrder.Key(type);
+        seen.Add(key);
+        if (category != null)
+        {
+            yield return category + "\t" + type.FullName + (listed.Contains(key) ? "" : "\tunlisted");
+        }
+    }
+
+    foreach (string key in discoveryTable.Where(key => !seen.Contains(key)))
+    {
+        yield return "stale\t" + key;
+    }
 }
 
 IEnumerable<string> SavedProperties()
