@@ -876,6 +876,7 @@ LibraryOfRuina.framework.combat.CombatSafetyNet
 LibraryOfRuina.framework.combat.CombatTargets
 LibraryOfRuina.framework.combat.IndiscriminateAttackBlockBreaker
 LibraryOfRuina.framework.combat.IndiscriminateAttackExecutor
+LibraryOfRuina.framework.combat.TurnParticipants
 LibraryOfRuina.framework.cards.IEnemyAttackPreviewCard
 LibraryOfRuina.framework.cards.EgoCardBase
 LibraryOfRuina.framework.cards.LibraryOfRuinaCharacterEgoCardPool
