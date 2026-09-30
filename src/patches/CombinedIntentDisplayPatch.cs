@@ -81,7 +81,7 @@ internal static class CombinedIntentDisplayPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "CombinedIntentDisplay.UpdateIntent",
                 exception);
             return IntentDecoratorOutcome.Failed;
@@ -433,7 +433,7 @@ internal static class CombinedIntentDisplayAssetPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "CombinedIntentDisplay.EncounterAssetPaths",
                 exception);
         }
@@ -452,7 +452,7 @@ internal static class CombinedIntentCombatRoomAssetPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "CombinedIntentDisplay.CombatRoomAssetPaths",
                 exception);
         }

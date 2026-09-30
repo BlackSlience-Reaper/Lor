@@ -8,7 +8,6 @@ using HarmonyLib;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Localization;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.core.localization;
@@ -34,11 +33,6 @@ internal static class PowerIconLocalizationPatch
     private static readonly Dictionary<string, Dictionary<string, PowerNameMap.Entry[]>> NamesByLanguage = new(StringComparer.Ordinal);
 
     private static PowerNameMap.Entry[]? vanillaEntries;
-
-    // 读取 Type 抛错的 Power 类型与装饰失败的条目各只记录一次，避免刷屏。
-    private static readonly HashSet<Type> ReportedTypeFailures = [];
-
-    private static readonly HashSet<(string Table, string Key)> ReportedDecorateFailures = [];
 
     private static Dictionary<string, PowerNameMap.Entry[]> GetNames(string language)
     {
@@ -98,9 +92,9 @@ internal static class PowerIconLocalizationPatch
         catch (Exception exception)
         {
             type = PowerType.None;
-            if (ReportedTypeFailures.Add(power.GetType()))
+            if (LorLog.FirstTime("PowerIcon.Type:" + power.GetType().AssemblyQualifiedName))
             {
-                Log.Warn("[LibraryOfRuina.PowerIcon] Skipped name icon for "
+                LorLog.Warn("[LibraryOfRuina.PowerIcon] Skipped name icon for "
                     + power.Id
                     + ": reading Type on the canonical model threw "
                     + exception.GetType().Name
@@ -195,9 +189,9 @@ internal static class PowerIconLocalizationPatch
         }
         catch (Exception exception)
         {
-            if (ReportedDecorateFailures.Add((table, key)))
+            if (LorLog.FirstTime("PowerIcon.Decorate:" + table + "\n" + key))
             {
-                Log.Warn("[LibraryOfRuina.PowerIcon] Kept undecorated text for "
+                LorLog.Warn("[LibraryOfRuina.PowerIcon] Kept undecorated text for "
                     + table
                     + "."
                     + key

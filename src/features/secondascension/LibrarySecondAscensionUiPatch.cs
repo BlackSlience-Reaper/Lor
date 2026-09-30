@@ -6,6 +6,7 @@ using System.Threading;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Assets;
@@ -131,7 +132,6 @@ internal static class LibrarySecondAscensionTopBarPatch
 [HarmonyPatch(typeof(NTopBar), "UpdateNavigation")]
 internal static class LibrarySecondAscensionTopBarNavigationSafetyPatch
 {
-    private static int _suppressedCount;
 
     [HarmonyFinalizer]
     private static Exception? Finalizer(NTopBar __instance, Exception? __exception)
@@ -146,10 +146,10 @@ internal static class LibrarySecondAscensionTopBarNavigationSafetyPatch
             return __exception;
         }
 
-        if (Interlocked.Increment(ref _suppressedCount) <= 4)
-        {
-            Log.Warn("[LibrarySecondAscension] suppressed empty top-bar modifier navigation update.");
-        }
+        LorLog.WarnFirst(
+            "SecondAscension.TopBarNavigation",
+            4,
+            "[LibrarySecondAscension] suppressed empty top-bar modifier navigation update.");
 
         return null;
     }

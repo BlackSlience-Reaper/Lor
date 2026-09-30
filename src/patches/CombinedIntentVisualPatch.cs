@@ -73,7 +73,7 @@ internal static class CombinedIntentVisualPatch
         }
         catch (Exception exception)
         {
-            PatchFailureLog.Warn(
+            LorLog.PatchFailure(
                 "CombinedIntentVisual.UpdateIntent",
                 exception);
             return IntentDecoratorOutcome.Failed;

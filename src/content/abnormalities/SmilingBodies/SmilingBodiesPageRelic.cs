@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -200,15 +201,19 @@ public sealed class SmilingBodiesPageRelic : ModalPageRelic<SmilingBodiesPageMod
         Creature target,
         CardModel? cardSource)
     {
-        Log.Info("[LibraryOfRuina.SmilingBodies] AfterDamageGiven mode="
-            + Mode
-            + " dealer=" + (dealer?.Name ?? "null")
-            + " target=" + target.Name
-            + " killed=" + result.WasTargetKilled
-            + " targetSide=" + target.Side
-            + " ownerAlive=" + (Owner?.Creature?.IsAlive ?? false)
-            + " ownerSource=" + (Owner?.Creature == null ? "noOwner" : IsOwnerDamageSource(dealer, cardSource).ToString())
-            + " used=" + AbsorptionHealsUsed);
+        // 遗物钩子对场上每一次伤害都会调用，过滤在后面，所以只在 Debug 下记录。
+        if (LorLog.IsDebugEnabled)
+        {
+            LorLog.Debug("[LibraryOfRuina.SmilingBodies] AfterDamageGiven mode="
+                + Mode
+                + " dealer=" + (dealer?.Name ?? "null")
+                + " target=" + target.Name
+                + " killed=" + result.WasTargetKilled
+                + " targetSide=" + target.Side
+                + " ownerAlive=" + (Owner?.Creature?.IsAlive ?? false)
+                + " ownerSource=" + (Owner?.Creature == null ? "noOwner" : IsOwnerDamageSource(dealer, cardSource).ToString())
+                + " used=" + AbsorptionHealsUsed);
+        }
 
         if (Mode != SmilingBodiesPageMode.CorpseAbsorption
             || Owner?.Creature == null

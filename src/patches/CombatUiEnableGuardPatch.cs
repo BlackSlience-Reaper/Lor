@@ -1,5 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using LibraryOfRuina.infra.patching;
@@ -28,7 +29,6 @@ internal static class CombatUiEnableGuardPatch
 
     private static int _loggedSkips;
 
-    private static bool _loggedMissingFields;
 
     private static bool Prefix(NCombatUi __instance)
     {
@@ -96,13 +96,13 @@ internal static class CombatUiEnableGuardPatch
 
     private static void WarnOnceIfFieldsMissing()
     {
-        if (_loggedMissingFields || (VanillaPrivate.CombatUiState.IsAvailable && VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable))
+        if (VanillaPrivate.CombatUiState.IsAvailable && VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable)
         {
             return;
         }
 
-        _loggedMissingFields = true;
-        Log.Warn(
+        LorLog.WarnOnce(
+            "CombatUiEnableGuard.MissingFields",
             "[LibraryOfRuina] NCombatUi initialization fields are missing in this game build"
             + " (_state=" + (VanillaPrivate.CombatUiState.IsAvailable)
             + ", _combatPilesContainer=" + (VanillaPrivate.CombatUiCombatPilesContainer.IsAvailable)
