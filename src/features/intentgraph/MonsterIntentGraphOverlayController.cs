@@ -322,7 +322,11 @@ internal static class MonsterIntentGraphOverlayController
 
     private static void EnsureFallbackThemeAssetsLoaded()
     {
-        if (_fallbackThemeLoadAttempted)
+        // 缓存的是资源对象本身；游戏在局与局之间会释放没有其他引用的缓存资源，之后这里拿到的是已释放的对象，
+        // 再用来设主题覆盖会抛 ObjectDisposedException、面板建不起来。失效时重新加载。
+        bool cachedValid = (_fallbackHoverTipTexture == null || GodotObject.IsInstanceValid(_fallbackHoverTipTexture))
+                           && (_fallbackHoverTitleFont == null || GodotObject.IsInstanceValid(_fallbackHoverTitleFont));
+        if (_fallbackThemeLoadAttempted && cachedValid)
         {
             return;
         }
