@@ -701,7 +701,7 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
 
     private List<Creature> GetLivingPlayers()
     {
-        return CombatState.PlayerCreatures.Where(creature => creature.IsAlive).ToList();
+        return CombatState.LivingPlayerCreatures().ToList();
     }
 
     private void AdvanceFormTurnCounter()

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.Leticia;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Commands;
@@ -259,8 +260,7 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
     {
         int maxRemoved = 0;
         var giftsToRemove = new List<CardModel>();
-        foreach (Creature player in Creature.CombatState?.PlayerCreatures
-                     .Where(static creature => creature.IsAlive)
+        foreach (Creature player in Creature.CombatState?.LivingPlayerCreatures()
                      ?? [])
         {
             if (player.Player == null)

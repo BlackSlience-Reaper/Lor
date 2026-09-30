@@ -353,8 +353,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         {
             await PowerCmdCompat.Apply<StrengthPower>(ally, WarlikeStrength, Creature, null);
         }
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
         foreach (var target in players)
         {

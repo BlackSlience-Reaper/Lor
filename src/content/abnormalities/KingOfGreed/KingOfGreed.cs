@@ -921,7 +921,7 @@ public sealed class KingOfGreed : LorMonsterModel
     private List<Creature> GetLivingPlayers()
     {
         CombatStateLike? combatState = Creature.CombatState;
-        return combatState?.PlayerCreatures.Where(creature => creature.IsAlive).ToList() ?? [];
+        return combatState?.LivingPlayerCreatures().ToList() ?? [];
     }
 
     private bool ShouldSummonShiningHappiness() =>

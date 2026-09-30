@@ -846,8 +846,7 @@ public sealed class FalseThrone :
 
     private static IReadOnlyList<Creature> ResolveLivingPlayers(
         Creature owner) =>
-        owner.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        owner.CombatState?.LivingPlayerCreatures()
             .OrderBy(static player => player.CombatId)
             .ToArray()
         ?? [];

@@ -380,7 +380,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
             await ExecuteGroupAttack(FourthMovementDamage, "Attack");
         }
 
-        foreach (Creature player in CombatState.PlayerCreatures.Where(static player => player.IsAlive))
+        foreach (Creature player in CombatState.LivingPlayerCreatures())
         {
             await CardPileCmdCompat.AddToCombatAndPreview<VoidCard>(
                 player,
@@ -474,8 +474,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
             throw new InvalidOperationException("Final Da Capo group attack cannot execute without a combat state.");
         }
 
-        Creature[] players = combatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature[] players = combatState.LivingPlayerCreatures()
             .ToArray();
         if (players.Length == 0)
         {

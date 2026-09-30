@@ -389,8 +389,7 @@ public sealed class ArtFloorLittleGalaxyBoss : LiberationPhaseBossMonster
 
     private async Task<AttackCommand> ExecuteGroupAttack(int damage, string anim)
     {
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
 
         await IndiscriminateAttackBlockBreaker.BreakBlockBeforeAttack(this, damage, players);

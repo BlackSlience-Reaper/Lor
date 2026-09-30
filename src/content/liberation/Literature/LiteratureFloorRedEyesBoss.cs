@@ -452,8 +452,7 @@ public sealed class LiteratureFloorRedEyesBoss :
             })
             .Execute(null);
 
-        foreach (Creature player in Creature.CombatState?.PlayerCreatures
-                     .Where(static player => player.IsAlive)
+        foreach (Creature player in Creature.CombatState?.LivingPlayerCreatures()
                      .ToArray() ?? [])
         {
             await LiteratureFloorCocoonBindPower.ApplyOrRefresh(

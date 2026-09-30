@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Commands;
@@ -287,8 +288,7 @@ public abstract class LiteratureFloorBlackSwanBrotherBase :
             .FirstOrDefault();
 
     private IEnumerable<Creature> LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .ToArray() ?? [];
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

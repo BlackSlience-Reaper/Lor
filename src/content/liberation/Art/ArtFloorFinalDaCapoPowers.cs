@@ -73,7 +73,7 @@ public sealed class ArtFloorAdagioCantabilePower : LibraryOfRuinaPowerModel
             return;
         }
 
-        foreach (Creature player in Owner.CombatState?.PlayerCreatures.Where(static player => player.IsAlive) ?? [])
+        foreach (Creature player in Owner.CombatState?.LivingPlayerCreatures() ?? [])
         {
             await CreatureCmd.Heal(player, HealAmount);
         }

@@ -638,8 +638,7 @@ public sealed class LiteratureFloorBlackSwanBoss :
             .ToArray();
 
     private IEnumerable<Creature> LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .ToArray() ?? [];
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

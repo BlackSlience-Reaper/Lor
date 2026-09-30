@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.ui.scene_transitions;
@@ -428,7 +429,7 @@ public sealed partial class NaturalFloorLiberationEncounter : LiberationEncounte
 
     internal Creature? Hermit => _combatState?.Enemies.FirstOrDefault(static c => c.IsAlive && c.Monster is NaturalFloorGreenStemHermit);
 
-    internal Creature[] LivingPlayers() => _combatState?.PlayerCreatures.Where(static c => c.IsAlive).ToArray() ?? [];
+    internal Creature[] LivingPlayers() => _combatState?.LivingPlayerCreatures().ToArray() ?? [];
 
     internal Creature[] LivingMonsters() => _combatState?.Enemies.Where(static c => c.IsAlive).ToArray() ?? [];
 

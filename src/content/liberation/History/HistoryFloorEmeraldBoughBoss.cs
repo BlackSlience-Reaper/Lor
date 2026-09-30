@@ -423,8 +423,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
             }
         }
 
-        IReadOnlyList<Creature> alivePlayers = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> alivePlayers = CombatState.LivingPlayerCreatures()
             .ToArray();
         foreach (Creature target in alivePlayers)
         {
@@ -444,8 +443,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
         await CreatureCmd.TriggerAnim(Creature, "Parry", 0.5f);
         await CreatureCmd.GainBlock(Creature, ExtendedMaliceBlock, ValueProp.Move, null);
 
-        IReadOnlyList<Creature> alivePlayers = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> alivePlayers = CombatState.LivingPlayerCreatures()
             .ToArray();
         if (alivePlayers.Count > 0)
         {

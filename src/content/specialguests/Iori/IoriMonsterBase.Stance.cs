@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Models;
@@ -237,8 +238,7 @@ public abstract partial class IoriMonsterBase
         }
 
         var contributions = new Dictionary<ulong, int>();
-        foreach (Creature player in Creature.CombatState.PlayerCreatures
-                     .Where(static player => player.IsAlive)
+        foreach (Creature player in Creature.CombatState.LivingPlayerCreatures()
                      .OrderBy(static player => player.CombatId))
         {
             int before = player.GetPower<ChainsOfBindingPower>()?.Amount ?? 0;

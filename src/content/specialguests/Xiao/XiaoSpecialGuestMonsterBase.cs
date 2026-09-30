@@ -224,8 +224,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
             return;
         }
 
-        IReadOnlyList<Creature> livingPlayers = Creature.CombatState.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        IReadOnlyList<Creature> livingPlayers = Creature.CombatState.LivingPlayerCreatures()
             .OrderBy(static creature => creature.CombatId)
             .ToArray();
         if (livingPlayers.Count == 0)
@@ -382,8 +381,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
             return;
         }
 
-        foreach (Creature player in Creature.CombatState.PlayerCreatures
-                     .Where(static player => player.IsAlive)
+        foreach (Creature player in Creature.CombatState.LivingPlayerCreatures()
                      .OrderBy(static player => player.CombatId))
         {
             await PowerCmdCompat.Apply<LibraryBurnPower>(player, amount, Creature, null);

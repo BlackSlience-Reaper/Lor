@@ -212,8 +212,7 @@ public sealed class ArtFloorDustbornPerson : LorMonsterModel, ILiberationPhaseBo
 
     private async Task MindCrackMove(IReadOnlyList<Creature> targets)
     {
-        IReadOnlyList<Creature> players = CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = CombatState.LivingPlayerCreatures()
             .ToArray();
         foreach (Creature player in players)
         {

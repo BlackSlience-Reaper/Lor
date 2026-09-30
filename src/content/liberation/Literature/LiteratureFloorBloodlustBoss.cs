@@ -523,8 +523,7 @@ public sealed class LiteratureFloorBloodlustBoss :
     }
 
     private Creature[] LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .OrderBy(static player => player.Player?.NetId ?? 0UL)
             .ToArray() ?? [];
 

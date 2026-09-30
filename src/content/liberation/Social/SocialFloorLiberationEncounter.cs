@@ -7,6 +7,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Combat;
@@ -1073,8 +1074,7 @@ public sealed class SocialFloorLiberationEncounter :
 
     internal static IReadOnlyList<Creature> LivingPlayers(
         CombatStateLike combatState) =>
-        combatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        combatState.LivingPlayerCreatures()
             .OrderBy(static player => player.CombatId)
             .ToArray();
 

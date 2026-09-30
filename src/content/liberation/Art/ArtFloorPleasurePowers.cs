@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -53,8 +54,7 @@ public sealed class ArtFloorPleasureJoyThornsPower : LibraryOfRuinaPowerModel
             return;
         }
 
-        IReadOnlyList<Creature> players = Owner.CombatState.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        IReadOnlyList<Creature> players = Owner.CombatState.LivingPlayerCreatures()
             .ToArray();
 
         Flash();

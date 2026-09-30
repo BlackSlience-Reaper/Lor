@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -210,16 +211,14 @@ public abstract class NosferatuBloodBatBase : LorMonsterModel
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
         return GroupAttackOutcome.From(
-            Creature.CombatState?.PlayerCreatures
-                .Where(static creature => creature.IsAlive)
+            Creature.CombatState?.LivingPlayerCreatures()
                 .ToArray()
             ?? [],
             AttackCommandCompat.Results(attack).ToArray());
     }
 
     private IEnumerable<Creature> LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static creature => creature.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .ToArray()
         ?? [];
 

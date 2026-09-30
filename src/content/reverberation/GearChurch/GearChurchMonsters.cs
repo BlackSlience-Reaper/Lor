@@ -106,8 +106,7 @@ public abstract class GearChurchMonsterBase : SpecialGuestMonsterBase, ITargeted
     }
 
     internal Creature[] LivingPlayers() =>
-        Creature?.CombatState?.PlayerCreatures
-            .Where(creature => creature.IsAlive)
+        Creature?.CombatState?.LivingPlayerCreatures()
             .OrderBy(creature => creature.CombatId)
             .ToArray() ?? [];
 

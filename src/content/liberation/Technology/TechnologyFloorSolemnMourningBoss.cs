@@ -455,8 +455,7 @@ public sealed class TechnologyFloorSolemnMourningBoss : LiberationPhaseBossMonst
 
         if (Creature.CombatState is { } combatState)
         {
-            IReadOnlyList<Creature> players = combatState.PlayerCreatures
-                .Where(static p => p.IsAlive)
+            IReadOnlyList<Creature> players = combatState.LivingPlayerCreatures()
                 .ToArray();
 
             if (players.Count > 0)

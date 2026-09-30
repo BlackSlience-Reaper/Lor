@@ -582,8 +582,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
             as LiteratureFloorLiberationEncounter;
 
     private IEnumerable<Creature> LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures
-            .Where(static player => player.IsAlive)
+        Creature.CombatState?.LivingPlayerCreatures()
             .ToArray() ?? [];
 
     private IEnumerable<Creature> LivingEnemies() =>

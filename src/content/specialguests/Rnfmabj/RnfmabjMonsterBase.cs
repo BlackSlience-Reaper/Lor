@@ -238,8 +238,7 @@ public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
             return [];
         }
 
-        IReadOnlyList<Creature> attackedPlayers = Creature.CombatState.PlayerCreatures
-            .Where(static target => target.IsAlive)
+        IReadOnlyList<Creature> attackedPlayers = Creature.CombatState.LivingPlayerCreatures()
             .OrderBy(static target => target.CombatId)
             .ToArray();
         if (!string.IsNullOrWhiteSpace(definition.WindupSfx))
@@ -415,8 +414,7 @@ public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
 
         if (this is Rnfmabj)
         {
-            foreach (Creature player in Creature.CombatState.PlayerCreatures
-                         .Where(static player => player.IsAlive)
+            foreach (Creature player in Creature.CombatState.LivingPlayerCreatures()
                          .OrderBy(static player => player.CombatId))
             {
                 await PowerCmdCompat.Ensure<SurroundedPower>(

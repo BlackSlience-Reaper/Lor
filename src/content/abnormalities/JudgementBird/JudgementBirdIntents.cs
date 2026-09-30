@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.Intents;
@@ -12,8 +13,7 @@ namespace LibraryOfRuina.content.abnormalities.JudgementBird;
 internal static class JudgementBirdIntentTargets
 {
     internal static IReadOnlyList<Creature> LivingPlayers(Creature owner) =>
-        owner.CombatState?.PlayerCreatures
-            .Where(static target => target.IsAlive)
+        owner.CombatState?.LivingPlayerCreatures()
             .OrderBy(static target => target.CombatId ?? uint.MaxValue)
             .ToArray()
         ?? [];

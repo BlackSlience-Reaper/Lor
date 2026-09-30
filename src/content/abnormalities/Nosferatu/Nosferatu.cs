@@ -469,7 +469,7 @@ public sealed class Nosferatu : LorMonsterModel
             .WithAttackerAnim(anim, AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
-        return GroupAttackOutcome.From(CombatState.PlayerCreatures.Where(static c => c.IsAlive).ToArray(), AttackCommandCompat.Results(attack).ToArray());
+        return GroupAttackOutcome.From(CombatState.LivingPlayerCreatures().ToArray(), AttackCommandCompat.Results(attack).ToArray());
     }
 
     private async Task<GroupAttackOutcome> ExecuteGroupAttackDetailed(int damage, int hits, string anim)
@@ -501,7 +501,7 @@ public sealed class Nosferatu : LorMonsterModel
     }
 
     private IEnumerable<Creature> LivingPlayers() =>
-        Creature.CombatState?.PlayerCreatures.Where(static creature => creature.IsAlive).ToArray() ?? [];
+        Creature.CombatState?.LivingPlayerCreatures().ToArray() ?? [];
 
     private IEnumerable<Creature> LivingEnemies() =>
         Creature.CombatState?.Enemies.Where(static creature => creature.IsAlive).ToArray() ?? [];

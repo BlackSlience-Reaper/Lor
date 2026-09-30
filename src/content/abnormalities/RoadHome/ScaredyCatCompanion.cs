@@ -223,7 +223,7 @@ public sealed class ScaredyCatCompanion : LorMonsterModel, ITargetedMonsterAttac
     private async Task BlockMove(IReadOnlyList<Creature> targets)
     {
         int dexterityBonus = Math.Max(0, Creature.GetPower<DexterityPower>()?.Amount ?? 0);
-        foreach (var ally in CombatState.PlayerCreatures.Where(c => c.IsAlive))
+        foreach (var ally in CombatState.LivingPlayerCreatures())
         {
             if (ally is { IsDead: false, IsEnemy: false })
             {
