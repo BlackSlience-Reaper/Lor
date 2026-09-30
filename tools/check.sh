@@ -11,6 +11,11 @@ FIXTURE_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP" "$FIXTURE_OUT"' EXIT
 
 python3 "$ROOT/tools/check_canonical_getters.py" "$ROOT/src"
+# 原版把 DebugOnlyGetState 标为仅测试用；src/ 只能经 infra/lifecycle/CurrentState.cs 的 CurrentRun/CurrentCombat 取当前局和战斗。
+if grep -rn --include='*.cs' 'DebugOnlyGetState' "$ROOT/src" | grep -v '/src/infra/lifecycle/CurrentState\.cs:'; then
+  echo "DebugOnlyGetState outside src/infra/lifecycle/CurrentState.cs; use CurrentRun/CurrentCombat or the context's RunState/CombatState" >&2
+  exit 1
+fi
 # The zhs story font is a subset; new zhs text must not use a character outside it.
 python3 "$ROOT/tools/check_zhs_font.py"
 # No reflection by name outside src/interop/ (syntax-based); the self-test covers the forms that must be caught.
