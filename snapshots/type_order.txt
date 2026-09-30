@@ -662,8 +662,8 @@ LibraryOfRuina.infra.helpers.FakeDeathDebuffHelper
 LibraryOfRuina.infra.helpers.GodotTextureSafety
 LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 LibraryOfRuina.infra.helpers.LibraryAssemblyTypes
+LibraryOfRuina.infra.helpers.LorLog
 LibraryOfRuina.infra.helpers.ModOwnership
-LibraryOfRuina.infra.helpers.PatchFailureLog
 LibraryOfRuina.infra.helpers.PlayerIntMapSerializer
 LibraryOfRuina.infra.helpers.ResolvedPowerIcon
 LibraryOfRuina.infra.helpers.PowerIconResolver
