@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -27,7 +28,7 @@ public abstract partial class IoriMonsterBase
                 "StanceChange",
                 definition.Attacks[0].SfxFile);
             await ExecuteAttack(attack, hitCount: 1);
-            if (CanPerformRegularMoves)
+            if (CanContinueMove)
             {
                 await ChangeStance(
                     PlannedNextStance == IoriStance.None
@@ -45,13 +46,18 @@ public abstract partial class IoriMonsterBase
             {
                 foreach (IoriAttackSegment attack in definition.Attacks)
                 {
-                    if (!CanPerformRegularMoves)
+                    if (!CanContinueMove)
                     {
                         break;
                     }
 
                     IReadOnlyList<DamageResult> results =
                         await ExecuteAttack(attack, hitCount: 1);
+                    if (!CanContinueMove)
+                    {
+                        break;
+                    }
+
                     await ApplyBleedAfterHit(
                         results,
                         definition.PrimaryEffect.Resolve());
@@ -76,7 +82,7 @@ public abstract partial class IoriMonsterBase
             {
                 foreach (IoriAttackSegment attack in definition.Attacks)
                 {
-                    if (!CanPerformRegularMoves)
+                    if (!CanContinueMove)
                     {
                         break;
                     }
@@ -93,7 +99,7 @@ public abstract partial class IoriMonsterBase
             }
         }
 
-        if (!CanPerformRegularMoves)
+        if (!CanContinueMove)
         {
             return;
         }
@@ -120,9 +126,7 @@ public abstract partial class IoriMonsterBase
         IoriAttackSegment segment,
         int hitCount)
     {
-        if (Creature.IsDead
-            || Creature.CombatState == null
-            || !CanPerformRegularMoves)
+        if (!CanContinueMove)
         {
             return [];
         }
@@ -138,7 +142,7 @@ public abstract partial class IoriMonsterBase
         try
         {
             for (int hit = 0;
-                 hit < Math.Max(1, hitCount) && CanPerformRegularMoves;
+                 hit < Math.Max(1, hitCount) && CanContinueMove;
                  hit++)
             {
                 LocalOggOneShotPlayer.Play(
@@ -149,7 +153,7 @@ public abstract partial class IoriMonsterBase
                     segment.Animation,
                     0f);
                 await Cmd.Wait(IoriAnimationContract.ActionDurationSeconds);
-                if (!CanPerformRegularMoves)
+                if (!CanContinueMove)
                 {
                     break;
                 }
@@ -307,6 +311,15 @@ public abstract partial class IoriMonsterBase
         await CreatureCmd.TriggerAnim(Creature, "Guard", 0f);
         await Cmd.Wait(IoriAnimationContract.ActionDurationSeconds);
     }
+
+    /// <summary>
+    /// 每段攻击之后、附带效果之前都要复查：荆棘等反伤可能在攻击中杀死伊织，最后一名玩家倒下或最后的敌人死亡时战斗进入结束流程。
+    /// 这些情况下后续的格挡、换姿态、减益与加牌都不应再结算。判定只读同步的战斗状态，两端在同一条命令处得到相同结果。
+    /// </summary>
+    private bool CanContinueMove =>
+        Creature is { IsDead: false, CombatState: not null }
+        && !CombatManager.Instance.IsOverOrEnding
+        && CanPerformRegularMoves;
 
     private Creature[] LivingPlayers() =>
         Creature.CombatState?.PlayerCreatures

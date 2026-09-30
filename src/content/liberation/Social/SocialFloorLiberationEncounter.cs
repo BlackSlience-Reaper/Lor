@@ -279,7 +279,7 @@ public sealed class SocialFloorLiberationEncounter :
 
     public override Dictionary<string, string> SaveCustomState()
     {
-        CaptureRuntimeState();
+        RuntimeStateSnapshot runtime = CaptureRuntimeState();
         return new Dictionary<string, string>
         {
             [StateVersionKey] = EncounterStateBag.FormatInvariant(CurrentStateVersion),
@@ -297,24 +297,24 @@ public sealed class SocialFloorLiberationEncounter :
             [CowardAppliedKey] = CowardApplied.ToString(),
             [OzmaReplacementPendingKey] =
                 OzmaReplacementPending.ToString(),
-            [PowderCostKey] = EncounterStateBag.FormatInvariant(PowderCost),
+            [PowderCostKey] = EncounterStateBag.FormatInvariant(runtime.PowderCost),
             [TransformedKey] = Transformed.ToString(),
             [FinalStrikeTriggeredKey] = FinalStrikeTriggered.ToString(),
             [PlannedMoveKey] = EncounterStateBag.FormatInvariant((int)PlannedMove),
-            [ParticipantCountKey] = EncounterStateBag.FormatInvariant(ParticipantCount),
-            [BossHpKey] = EncounterStateBag.FormatInvariant(SavedBossHp),
-            [BossChaoKey] = EncounterStateBag.FormatInvariant(SavedBossChao),
-            [SummonVitalsKey] = SavedSummonVitals,
-            [WisdomStacksKey] = SavedWisdomStacks,
-            [WisdomCardsKey] = SavedWisdomCards,
-            [LionCardsSubmittedKey] = EncounterStateBag.FormatInvariant(LionCardsSubmitted),
-            [CouragePlayedKey] = CouragePlayed.ToString(),
-            [CouragePowerPresentKey] = CouragePowerPresent.ToString(),
+            [ParticipantCountKey] = EncounterStateBag.FormatInvariant(runtime.ParticipantCount),
+            [BossHpKey] = EncounterStateBag.FormatInvariant(runtime.BossHp),
+            [BossChaoKey] = EncounterStateBag.FormatInvariant(runtime.BossChao),
+            [SummonVitalsKey] = runtime.SummonVitals,
+            [WisdomStacksKey] = runtime.WisdomStacks,
+            [WisdomCardsKey] = runtime.WisdomCards,
+            [LionCardsSubmittedKey] = EncounterStateBag.FormatInvariant(runtime.LionCardsSubmitted),
+            [CouragePlayedKey] = runtime.CouragePlayed.ToString(),
+            [CouragePowerPresentKey] = runtime.CouragePowerPresent.ToString(),
             [CouragePendingActivationsKey] =
-                EncounterStateBag.FormatInvariant(CouragePendingActivations),
-            [CourageEnergyActiveKey] = CourageEnergyActive.ToString(),
+                EncounterStateBag.FormatInvariant(runtime.CouragePendingActivations),
+            [CourageEnergyActiveKey] = runtime.CourageEnergyActive.ToString(),
             [CourageRemoveAtTurnEndKey] =
-                CourageRemoveAtTurnEnd.ToString()
+                runtime.CourageRemoveAtTurnEnd.ToString()
         };
     }
 
@@ -684,36 +684,79 @@ public sealed class SocialFloorLiberationEncounter :
             await SocialFloorPlayerMechanics.ApplyCoward(player);
     }
 
-    private void CaptureRuntimeState()
+    /// <summary>存档时从战斗现场读出的值；现场读不到的项沿用字段里的值。</summary>
+    private readonly record struct RuntimeStateSnapshot(
+        int ParticipantCount,
+        int BossHp,
+        int BossChao,
+        string SummonVitals,
+        string WisdomStacks,
+        string WisdomCards,
+        int LionCardsSubmitted,
+        bool CouragePlayed,
+        bool CouragePowerPresent,
+        int CouragePendingActivations,
+        bool CourageEnergyActive,
+        bool CourageRemoveAtTurnEnd,
+        int PowderCost);
+
+    /// <summary>
+    /// 只读：<see cref="SaveCustomState"/> 用它取现场值写进字典，不回写字段。序列化房间的时机由各端的存档流程决定，
+    /// 不在命令队列里；回写会让某一端的玩法字段在别的时刻被改掉。读档后的恢复只看读进来的字典。
+    /// </summary>
+    private RuntimeStateSnapshot CaptureRuntimeState()
     {
+        var snapshot = new RuntimeStateSnapshot(
+            ParticipantCount,
+            SavedBossHp,
+            SavedBossChao,
+            SavedSummonVitals,
+            SavedWisdomStacks,
+            SavedWisdomCards,
+            LionCardsSubmitted,
+            CouragePlayed,
+            CouragePowerPresent,
+            CouragePendingActivations,
+            CourageEnergyActive,
+            CourageRemoveAtTurnEnd,
+            PowderCost);
         if (FindCombatState() is not { } combatState)
         {
-            return;
+            return snapshot;
         }
 
-        ParticipantCount = Math.Max(1, combatState.Players.Count);
+        snapshot = snapshot with
+        {
+            ParticipantCount = Math.Max(1, combatState.Players.Count)
+        };
         Creature? boss = combatState.Enemies.FirstOrDefault(
             static enemy => enemy.Monster is FalseThrone);
         if (boss != null)
         {
-            SavedBossHp = boss.CurrentHp;
-            SavedBossChao = boss is
-                LibraryCreature libraryBoss
-                    ? libraryBoss.CurrentChaoValue
-                    : -1;
+            snapshot = snapshot with
+            {
+                BossHp = boss.CurrentHp,
+                BossChao = boss is
+                    LibraryCreature libraryBoss
+                        ? libraryBoss.CurrentChaoValue
+                        : -1
+            };
         }
 
-        SavedSummonVitals = SerializeSummonVitals(combatState);
-        SavedWisdomStacks = SerializePlayerValues(
-            combatState.Players.Select(player =>
-                new KeyValuePair<ulong, int>(
-                    player.NetId,
-                    SocialFloorPlayerMechanics.GetWisdomStacks(player))));
-        SavedWisdomCards = SerializePlayerValues(
-            combatState.Players.Select(player =>
-                new KeyValuePair<ulong, int>(
-                    player.NetId,
-                    CountRemainingWisdomCards(player))));
+        snapshot = snapshot with
+        {
+            SummonVitals = SerializeSummonVitals(combatState),
+            WisdomStacks = SerializePlayerValues(
+                combatState.Players.Select(player =>
+                    new KeyValuePair<ulong, int>(
+                        player.NetId,
+                        SocialFloorPlayerMechanics.GetWisdomStacks(player)))),
+            WisdomCards = SerializePlayerValues(
+                combatState.Players.Select(player =>
+                    new KeyValuePair<ulong, int>(
+                        player.NetId,
+                        CountRemainingWisdomCards(player))))
+        };
 
         Player? catHolder = ResolvePlayer(
             combatState,
@@ -721,10 +764,13 @@ public sealed class SocialFloorLiberationEncounter :
         if (catHolder?.Creature.GetPower<SocialFloorScaredyCatPower>()
             is { } catPower)
         {
-            LionCardsSubmitted = Math.Clamp(
-                catPower.CardsSubmittedThisTurn,
-                0,
-                SocialFloorScaredyCatPower.CardLimit);
+            snapshot = snapshot with
+            {
+                LionCardsSubmitted = Math.Clamp(
+                    catPower.CardsSubmittedThisTurn,
+                    0,
+                    SocialFloorScaredyCatPower.CardLimit)
+            };
         }
 
         SocialFloorCouragePower? courage = catHolder?.Creature
@@ -734,24 +780,29 @@ public sealed class SocialFloorLiberationEncounter :
                 card is SocialFloorCourageCard
                 && card.Pile?.Type == PileType.Exhaust) == true)
         {
-            CouragePlayed = true;
+            snapshot = snapshot with { CouragePlayed = true };
         }
-        CouragePowerPresent = courage != null;
-        CouragePendingActivations = Math.Clamp(
-            courage?.PendingTurnStartActivations ?? 0,
-            0,
-            SocialFloorCouragePower.TotalActivations);
-        CourageEnergyActive = courage?.IsEnergyOverrideActive ?? false;
-        CourageRemoveAtTurnEnd =
-            courage?.RemoveAtNextPlayerTurnEnd ?? false;
+        snapshot = snapshot with
+        {
+            CouragePowerPresent = courage != null,
+            CouragePendingActivations = Math.Clamp(
+                courage?.PendingTurnStartActivations ?? 0,
+                0,
+                SocialFloorCouragePower.TotalActivations),
+            CourageEnergyActive = courage?.IsEnergyOverrideActive ?? false,
+            CourageRemoveAtTurnEnd =
+                courage?.RemoveAtNextPlayerTurnEnd ?? false
+        };
 
         Player? ozmaHolder = ResolvePlayer(combatState, OzmaPlayerNetId);
         if (ozmaHolder != null
             && SocialFloorPlayerMechanics.GetMagicalPowderCost(ozmaHolder)
                 is { } currentPowderCost)
         {
-            PowderCost = Math.Max(0, currentPowderCost);
+            snapshot = snapshot with { PowderCost = Math.Max(0, currentPowderCost) };
         }
+
+        return snapshot;
     }
 
     private async Task RestoreRuntimeStateAfterLoad(

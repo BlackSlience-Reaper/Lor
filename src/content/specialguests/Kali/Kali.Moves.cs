@@ -6,6 +6,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.infra.helpers;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -291,6 +292,13 @@ public sealed partial class Kali
             GetDeterministicAttackAnimationSeed(hitCount, anim));
         for (int i = 0; i < hitCount; i++)
         {
+            // 第一段照常出手（与原版打出攻击牌一致）；之后每段都复查，目标或出牌者已死、战斗进入结束流程时停止，
+            // 不再播放空挥的动画与音效，也不再发起没有目标的攻击（原版 AttackCommand 仍会为它触发 BeforeAttack/AfterAttack）。
+            if (i > 0 && !CanContinueCardAttack(card.Owner.Creature, target))
+            {
+                break;
+            }
+
             string segmentAnim = attackAnimations[i];
             string segmentHitVfx = hitCount > 1
                 ? ResolveAttackSegmentVfx(segmentAnim)
@@ -338,7 +346,7 @@ public sealed partial class Kali
                 }
             }
 
-            if (i + 1 < hitCount)
+            if (i + 1 < hitCount && CanContinueCardAttack(card.Owner.Creature, target))
             {
                 await Cmd.CustomScaledWait(0.04f, 0.08f);
             }
@@ -346,6 +354,11 @@ public sealed partial class Kali
 
         return results;
     }
+
+    private static bool CanContinueCardAttack(Creature attacker, Creature target) =>
+        attacker is { IsDead: false, CombatState: not null }
+        && target is { IsAlive: true }
+        && !CombatManager.Instance.IsOverOrEnding;
 
     internal static float ResolveAttackerAnimationDelaySeconds(string anim) => anim switch
     {

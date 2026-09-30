@@ -348,7 +348,7 @@ public abstract partial class IoriMonsterBase :
     {
         _ = targets;
         await Plan.PerformPlan(
-            () => Creature.IsAlive && CanPerformRegularMoves,
+            () => CanContinueMove,
             (_, move) => PerformMove(move));
 
         ClearPlan();
