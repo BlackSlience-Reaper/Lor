@@ -86,59 +86,42 @@ public sealed class LanguageFloorCobaltScar :
     private const string RoarSfx = SfxRoot + "wolf_howl.ogg";
     private const string SpitSfx = SfxRoot + "wolf_eat_out.ogg";
 
-    [SavedProperty]
     public int PlannedMoveOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveTwo { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveThree { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public LanguageFloorCobaltScarForm Form { get; private set; }
 
     internal bool IsHealthBarLockActive =>
         Form != LanguageFloorCobaltScarForm.BigBadWolf
         && Creature.CurrentHp <= TransformHpThreshold(Creature.MaxHp);
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool OpeningResolved { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool SwallowWindowActive { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PlayerTurnsSinceSwallow { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool ForceInstinctNextTurn { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int TurnsUntilInstinct { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int BigWolfEntryHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int AccumulatedDamage { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int ShadowTurnsRemaining { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool ShadowReleasePending { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool ForceRoarNextTurn { get; private set; }
 
-    [SavedProperty]
     public List<SerializableCard> SwallowedCards { get; private set; } = [];
 
-    [SavedProperty]
     public int[] SwallowedOwnerIndexes { get; private set; } = [];
 
-    [SavedProperty]
     public int[] ShadowCardsPlayedByPlayer { get; private set; } = [];
 
     private MoveState? _normalCompositeState;

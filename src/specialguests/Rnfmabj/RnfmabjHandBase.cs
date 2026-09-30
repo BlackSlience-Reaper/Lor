@@ -14,7 +14,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
@@ -25,10 +24,8 @@ public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.helpe
 
     private static readonly int[] NoEmotionThresholds = [];
 
-    [SavedProperty]
     public bool IsFakeDead { get; private set; }
 
-    [SavedProperty]
     public int PhaseThreePatternStep { get; private set; }
 
     protected abstract bool IsLeftHand { get; }

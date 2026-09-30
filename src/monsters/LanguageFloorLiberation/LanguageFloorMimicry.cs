@@ -31,7 +31,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.monsters.LanguageFloorLiberation;
@@ -204,50 +203,35 @@ public sealed class LanguageFloorMimicry :
             ])
             .ToArray();
 
-    [SavedProperty]
     public LanguageFloorMimicryForm Form { get; private set; } =
         LanguageFloorMimicryForm.First;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool Initialized { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormOneMaxHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormTwoMaxHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormThreeMaxHp { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int FormTwoActionsCompleted { get; private set; }
 
-    [SavedProperty]
     public int PreviousMove { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool EvolutionPending { get; private set; }
 
-    [SavedProperty]
     public int PendingForm { get; private set; } = -1;
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int MimicStacks { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int RoundDamageTaken { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool PlannedMoveEnhanced { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public int PlannedTargetCombatId { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool SkipCurrentFormTwoEnemyEnd { get; private set; }
 
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public bool SkipCurrentFormThreeEnemyEndRecovery { get; private set; }
 
     private MoveState? _evolutionState;

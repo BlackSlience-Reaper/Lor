@@ -18,7 +18,7 @@ namespace LibraryOfRuina.encounters;
 /// （<see cref="EndCombatAsLiberationVictory"/>）与延迟胜负复核（<see cref="ScheduleDeferredWinConditionCheck"/>）。</item>
 /// </list>
 /// 阶段、击杀数等状态的字段与存读档仍由各楼层自己声明：各楼层的键集合、写入顺序、缺省值与读旧档的兼容分支都不同，
-/// 解析交给 <see cref="EncounterStateBag"/>。语言层挂在这些属性上的 <c>[SavedProperty]</c> 也不能挪到这里：声明类型会变。
+/// 解析交给 <see cref="EncounterStateBag"/>。
 /// 哲学层只有一个阶段、不按阶段选曲也不走致死结算，不继承本类。
 /// </summary>
 public abstract class LiberationEncounterBase : EncounterModel

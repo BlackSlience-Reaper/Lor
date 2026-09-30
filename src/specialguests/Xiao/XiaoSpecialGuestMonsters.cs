@@ -10,17 +10,14 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.specialguests.Xiao;
 
 public sealed class XiaoStageOne : XiaoSpecialGuestMonsterBase, LibraryOfRuina.helpers.IFinalHpLossClamp
 {
-    [SavedProperty]
     public bool IsFakeDead { get; private set; }
 
-    [SavedProperty]
     public bool ForceTrueDeath { get; private set; }
 
     private bool _completingReception;
@@ -335,10 +332,8 @@ public sealed class Miris : XiaoSpecialGuestMonsterBase
 
 public sealed class XiaoEgo : XiaoSpecialGuestMonsterBase
 {
-    [SavedProperty]
     public bool HadAnyAttackResultThisEnemyTurn { get; private set; }
 
-    [SavedProperty]
     public bool AllAttackResultsFullyBlocked { get; private set; } = true;
 
     public override int MinInitialHp =>

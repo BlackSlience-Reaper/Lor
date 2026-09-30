@@ -16,7 +16,6 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
-using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.specialguests.Rnfmabj;
 
@@ -33,13 +32,10 @@ public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
 
     private PlannedMoveController<RnfmabjMove>? _plan;
 
-    [SavedProperty]
     public int LastPlannedRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlanSerial { get; protected set; }
 
-    [SavedProperty]
     public int[] PlannedDamageValues { get; private set; } =
         Enumerable.Repeat(-1, StoredIntentSlots * DamageValuesPerSlot).ToArray();
 

@@ -975,7 +975,7 @@ internal static class SpecialGuestXiaoContractVerificationPatch
             LibraryResistanceLevel.Endure,
             "stage-two Xiao confusion");
 
-        string[] savedBaseProperties =
+        string[] baseCombatStateProperties =
         [
             nameof(XiaoSpecialGuestMonsterBase.EmotionLevel),
             nameof(XiaoSpecialGuestMonsterBase.EmotionUnits),
@@ -990,19 +990,19 @@ internal static class SpecialGuestXiaoContractVerificationPatch
             nameof(XiaoSpecialGuestMonsterBase.PlannedMoveFour),
             nameof(XiaoSpecialGuestMonsterBase.PlannedMoveFive),
         ];
-        foreach (string propertyName in savedBaseProperties)
+        foreach (string propertyName in baseCombatStateProperties)
         {
-            AssertSavedProperty(typeof(XiaoSpecialGuestMonsterBase), propertyName);
+            AssertCombatStateProperty(typeof(XiaoSpecialGuestMonsterBase), propertyName);
         }
-        AssertSavedProperty(typeof(XiaoStageOne), nameof(XiaoStageOne.IsFakeDead));
-        AssertSavedProperty(typeof(XiaoStageOne), nameof(XiaoStageOne.ForceTrueDeath));
-        AssertSavedProperty(
+        AssertCombatStateProperty(typeof(XiaoStageOne), nameof(XiaoStageOne.IsFakeDead));
+        AssertCombatStateProperty(typeof(XiaoStageOne), nameof(XiaoStageOne.ForceTrueDeath));
+        AssertCombatStateProperty(
             typeof(XiaoEgo),
             nameof(XiaoEgo.HadAnyAttackResultThisEnemyTurn));
-        AssertSavedProperty(
+        AssertCombatStateProperty(
             typeof(XiaoEgo),
             nameof(XiaoEgo.AllAttackResultsFullyBlocked));
-        AssertSavedProperty(
+        AssertCombatStateProperty(
             typeof(XiaoReverseScalePassivePower),
             nameof(XiaoReverseScalePassivePower.CardsPlayedByPlayerNetId));
     }
@@ -1960,14 +1960,15 @@ internal static class SpecialGuestXiaoContractVerificationPatch
             label + " resistance is incorrect.");
     }
 
-    private static void AssertSavedProperty(Type declaringType, string propertyName)
+    // 怪物与能力状态不进存档也不同步；这里守住它们不再带 [SavedProperty]，并且在套件的读档模拟里。
+    private static void AssertCombatStateProperty(Type declaringType, string propertyName)
     {
-        PropertyInfo property = declaringType.GetProperty(
+        _ = declaringType.GetProperty(
                 propertyName,
                 InstanceFlags)
             ?? throw new MissingMemberException(declaringType.FullName, propertyName);
-        Require(property.GetCustomAttribute<SavedPropertyAttribute>() != null,
-            declaringType.Name + "." + propertyName + " is not saved.");
+        Require(CombatStateProperties.IsListed(declaringType, propertyName),
+            declaringType.Name + "." + propertyName + " is a SavedProperty again, or missing from the reload list.");
     }
 
     private static void AssertHpGetterConstants<T>(

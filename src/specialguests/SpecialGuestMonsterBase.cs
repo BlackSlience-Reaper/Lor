@@ -9,18 +9,19 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using LibraryOfRuina.monsters;
 
 namespace LibraryOfRuina.specialguests;
 
 /// <summary>
-/// Reusable saved combat contract for special guests.  It owns the standard
+/// Reusable combat contract for special guests.  It owns the standard
 /// five-level emotion track, shared emotion UI, intent capacity and
 /// deterministic five-slot plan carrier.  Guest-specific classes provide only
 /// their initial capacity and move execution; presentation code is read-only
-/// against this model.
+/// against this model.  This state lives for the current combat only: the game
+/// never saves monster models and multiplayer syncs only HP, block and power
+/// amounts, so none of it is a [SavedProperty].
 /// </summary>
 public abstract class SpecialGuestMonsterBase :
     LorMonsterModel,
@@ -29,43 +30,30 @@ public abstract class SpecialGuestMonsterBase :
     protected const int StoredIntentSlots = 5;
     private static readonly int[] DefaultEmotionThresholds = [3, 3, 5, 7, 9];
 
-    [SavedProperty]
     public int EmotionLevel { get; private set; }
 
-    [SavedProperty]
     public int EmotionUnits { get; private set; }
 
-    [SavedProperty]
     public int IntentCapacity { get; protected set; }
 
-    [SavedProperty]
     public int LevelFiveRoundCounter { get; private set; }
 
-    [SavedProperty]
     public int LastEmotionResolvedRound { get; private set; } = -1;
 
-    [SavedProperty]
     public int UnblockedDamageDealtThisRound { get; private set; }
 
-    [SavedProperty]
     public int PatternIndex { get; protected set; }
 
-    [SavedProperty]
     public bool HasCompletedFirstTurn { get; protected set; }
 
-    [SavedProperty]
     public int PlannedMoveOne { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveTwo { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveThree { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveFour { get; private set; } = -1;
 
-    [SavedProperty]
     public int PlannedMoveFive { get; private set; } = -1;
 
     public int CurrentEmotionThreshold =>

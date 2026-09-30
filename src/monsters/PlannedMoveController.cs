@@ -7,9 +7,9 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 namespace LibraryOfRuina.monsters;
 
 /// <summary>
-/// 多意图计划：怪物把一回合要做的几个招式记在自己的存档槽位里，由一个“复合”行动一次展示、一次执行。
+/// 多意图计划：怪物把一回合要做的几个招式记在自己的槽位属性里，由一个“复合”行动一次展示、一次执行。
 /// 本类只负责槽位与意图之间的机械部分：建复合/隐藏行动、按槽位重建意图、揭示与隐藏、写入与清空槽位、逐槽执行。
-/// 槽位本身（SavedProperty）、什么时候规划、用哪个随机数、规划后要不要立刻揭示，都由怪物自己决定。
+/// 槽位本身（怪物上的属性）、什么时候规划、用哪个随机数、规划后要不要立刻揭示，都由怪物自己决定。
 /// <list type="bullet">
 /// <item>意图数组交给 <see cref="MoveState"/> 后一直是同一个实例：原版 <c>MoveState.Intents</c> 保存的就是这个引用，
 /// <c>NCreature.RefreshIntents</c> 读的也是它。<see cref="RefreshIntents"/> 只能原地改写数组元素，不能换数组。</item>

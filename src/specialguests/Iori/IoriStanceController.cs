@@ -7,7 +7,7 @@ namespace LibraryOfRuina.specialguests.Iori;
 /// <summary>
 /// 伊织姿态的纯规则：可选姿态表、“一轮内不重复”的选择掩码、姿态对应的伤害类型与防御姿态的荆棘层数、
 /// 钝击姿态给每位玩家施加的束缚链贡献的编码。不读写怪物状态；状态（当前姿态、掩码、贡献字符串）
-/// 仍是 <see cref="IoriMonsterBase"/> 上的 SavedProperty，由 <c>IoriMonsterBase.Stance.cs</c> 按这些规则改写。
+/// 仍是 <see cref="IoriMonsterBase"/> 上的战斗内属性，由 <c>IoriMonsterBase.Stance.cs</c> 按这些规则改写。
 /// </summary>
 internal static class IoriStanceController
 {
