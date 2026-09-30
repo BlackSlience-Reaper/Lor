@@ -75,8 +75,6 @@ mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.
 mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackThemeLoadAttempted	System.Boolean
 mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._panelScene	Godot.PackedScene
 mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._panelSceneLoadAttempted	System.Boolean
-mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._reflectionFailureLogged	System.Boolean
-mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._showForLogged	System.Boolean
 mutable	LibraryOfRuina.features.intentgraph.NIntentGraph._arrowTexture	Godot.Texture2D
 mutable	LibraryOfRuina.features.intentgraph.NIntentGraph._groupBorderTexture	Godot.Texture2D
 mutable	LibraryOfRuina.features.intentgraph.NIntentGraph._iconTexture	Godot.Texture2D
@@ -87,7 +85,6 @@ mutable	LibraryOfRuina.features.moontext.MoonTextVisualStyle._cachedPrimaryFont	
 mutable	LibraryOfRuina.features.moontext.MoonTextVisualStyle._loggedFontLoadIssue	System.Boolean
 mutable	LibraryOfRuina.features.moontext.MoonTextVisualStyle._triedLoadPrimaryFont	System.Boolean
 mutable	LibraryOfRuina.features.secondascension.LibrarySecondAscensionState._pendingSingleplayerStandardLevel	System.Nullable`1[System.Int32]
-mutable	LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarNavigationSafetyPatch._suppressedCount	System.Int32
 mutable	LibraryOfRuina.features.temporarymaps.TemporaryMapController._initialized	System.Boolean
 mutable	LibraryOfRuina.features.temporarymaps.TemporaryMapRegistry._defaultsRegistered	System.Boolean
 mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._activeCombatState	MegaCrit.Sts2.Core.Combat.ICombatState
@@ -95,7 +92,6 @@ mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._activeTrac
 mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._hostNode	Godot.Node
 mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._initialized	System.Boolean
 mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._isRunning	System.Boolean
-mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._loggedLoadError	System.Boolean
 mutable	LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._player	Godot.AudioStreamPlayer
 mutable	LibraryOfRuina.framework.audio.BgmCrossfader._activePlayer	Godot.AudioStreamPlayer
 mutable	LibraryOfRuina.framework.audio.BgmCrossfader._fadeTween	Godot.Tween
@@ -116,7 +112,6 @@ mutable	LibraryOfRuina.framework.audio.BgmSession._isTransitioning	System.Boolea
 mutable	LibraryOfRuina.framework.audio.BgmSession._isTurnStartedSubscribed	System.Boolean
 mutable	LibraryOfRuina.framework.audio.BgmSession._suspendedSession	LibraryOfRuina.framework.audio.BgmSession+SuspendedSessionSnapshot
 mutable	LibraryOfRuina.framework.audio.BgmSession._targetTrackIndex	System.Int32
-mutable	LibraryOfRuina.framework.audio.LibrarySfxMixer._busCreationLogged	System.Boolean
 mutable	LibraryOfRuina.framework.audio.LocalOggLoopPlayer._hostNode	Godot.Node
 mutable	LibraryOfRuina.framework.audio.LocalOggLoopPlayer._nextPlayerId	System.Int32
 mutable	LibraryOfRuina.framework.audio.LocalOggOneShotPlayer._hostNode	Godot.Node
@@ -125,7 +120,6 @@ mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._hostNode	Godot.Nod
 mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._initialized	System.Boolean
 mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._isPaused	System.Boolean
 mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._isPlaying	System.Boolean
-mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._loggedLoadError	System.Boolean
 mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._pauseReasons	LibraryOfRuina.framework.audio.MainMenuBgmController+PauseReason
 mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._player	Godot.AudioStreamPlayer
 mutable	LibraryOfRuina.framework.audio.MainMenuBgmController._resumePositionSeconds	System.Single
@@ -139,7 +133,6 @@ mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._initialized	Sy
 mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._isPausedForRoom	System.Boolean
 mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._isPlaying	System.Boolean
 mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._isRestoringRunMusic	System.Boolean
-mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._loggedLoadError	System.Boolean
 mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._player	Godot.AudioStreamPlayer
 mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._resumePositionSeconds	System.Single
 mutable	LibraryOfRuina.framework.audio.NonCombatRunBgmController._suppressRunMusicStopHook	System.Boolean
@@ -156,22 +149,17 @@ mutable	LibraryOfRuina.framework.combat.AllyTurnRegistry._combatEndedByAllyTurn	
 mutable	LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener._listeners	MegaCrit.Sts2.Core.Models.AbstractModel[]
 mutable	LibraryOfRuina.infra.patching.LibraryPatchReportPatch._reported	System.Boolean
 mutable	LibraryOfRuina.patches.BadgedIntentVisualPatch._allyCombinedAttackMaterial	Godot.ShaderMaterial
-mutable	LibraryOfRuina.patches.CardGridInitDisposedResourceSafetyPatch._suppressedCount	System.Int32
-mutable	LibraryOfRuina.patches.CardVisualDisposedResourceSafety._suppressedCount	System.Int32
-mutable	LibraryOfRuina.patches.CombatUiEnableGuardPatch._loggedMissingFields	System.Boolean
 mutable	LibraryOfRuina.patches.CombatUiEnableGuardPatch._loggedSkips	System.Int32
 mutable	LibraryOfRuina.patches.CurrentRunSaveValidationState._lastInvalidReason	System.String
 mutable	LibraryOfRuina.patches.CurrentRunSaveValidationState._pendingPopupBody	System.String
 mutable	LibraryOfRuina.patches.DodgeDiceCombatFeedback._damagePreviewModes	System.Collections.Generic.Stack`1[MegaCrit.Sts2.Core.Entities.Cards.CardPreviewMode]
 mutable	LibraryOfRuina.patches.DodgeDiceCombatFeedback._pendingBlockHitSfxSkips	System.Int32
-mutable	LibraryOfRuina.patches.EnergyCounterCompatibilityPatch._loggedCompatFix	System.Boolean
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._applied	System.Boolean
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._defaultCursor	Godot.Image
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._inspectCursor	Godot.Image
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._tiltedCursor	Godot.Image
 mutable	LibraryOfRuina.patches.NTargetedIntentLines._arrowStartTexture	Godot.Texture2D
 mutable	LibraryOfRuina.patches.NTargetedIntentLines._arrowTexture	Godot.Texture2D
-mutable	LibraryOfRuina.patches.RelicInventoryHolderOnFocusSafetyPatch._suppressedCount	System.Int32
 mutable	LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace._current	LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace
 mutable	LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation._current	LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation
 mutable	LibraryOfRuina.ui.DamagePreview.RolandDicePreviewModifiers._getPreview	System.Func`3[MegaCrit.Sts2.Core.Models.CardModel,LibraryLib.Localization.LibraryDynamicVars.LibraryDice,System.ValueTuple`2[System.Decimal,System.Decimal]]
@@ -1336,8 +1324,6 @@ readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.Keyword	Sys
 readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.NamesByLanguage	System.Collections.Generic.Dictionary`2[System.String,System.Collections.Generic.Dictionary`2[System.String,LibraryOfRuina.core.localization.PowerNameMap+Entry[]]]
 readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReferenceResolutions	System.Collections.Generic.Dictionary`2[System.ValueTuple`2[System.String,System.String],System.Collections.Generic.HashSet`1[System.String]]
 readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReferenceTablePresence	System.Collections.Generic.Dictionary`2[System.String,System.Boolean]
-readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReportedDecorateFailures	System.Collections.Generic.HashSet`1[System.ValueTuple`2[System.String,System.String]]
-readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReportedTypeFailures	System.Collections.Generic.HashSet`1[System.Type]
 readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.SourceTables	System.Collections.Generic.Dictionary`2[System.ValueTuple`2[System.String,System.String],System.Collections.Generic.Dictionary`2[System.String,System.String]]
 readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.SupportedLanguages	System.String[]
 readonly	LibraryOfRuina.core.localization.PowerIconLocalizationPatch.VanillaWeakEntries	System.Collections.Generic.HashSet`1[System.String]
@@ -1485,7 +1471,6 @@ readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName.OnUntick	Godot.St
 readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName.SetFromProperty	Godot.StringName
 readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName._ExitTree	Godot.StringName
 readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName._Ready	Godot.StringName
-readonly	LibraryOfRuina.features.MonsterStateMachineIntentGraphFeature.IntentResolveFailureKeysLogged	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.features.ftue.FtueGuard.AbnormalityEncounterNames	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePatch.AbnormalityCombatFtuePages	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePage[]
 readonly	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePatch.CombatFtuePages20260827	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePage[]
@@ -1581,7 +1566,6 @@ readonly	LibraryOfRuina.features.intentgraph.IntentGraphConfigRepository._locali
 readonly	LibraryOfRuina.features.intentgraph.IntentGraphConfigRepository._lock	System.Object
 readonly	LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository.LockObj	System.Object
 readonly	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.ActivePanels	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Nodes.Combat.NCreature,LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel]
-readonly	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.OverlayDiagnosticKeysLogged	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.features.intentgraph.MonsterIntentGraphRuntimeCache.GeneratedGraphs	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Models.MonsterModel,LibraryOfRuina.features.intentgraph.MonsterIntentGraphRuntimeCache+CachedGraph]
 readonly	LibraryOfRuina.features.intentgraph.NIntentGraph+MethodName.DrawArrows	Godot.StringName
 readonly	LibraryOfRuina.features.intentgraph.NIntentGraph+MethodName.LoadSharedTextures	Godot.StringName
@@ -1607,9 +1591,6 @@ readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel+PropertyNa
 readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel+PropertyName._intentGraph	Godot.StringName
 readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel+PropertyName._monsterName	Godot.StringName
 readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel+PropertyName._timeSinceRefresh	Godot.StringName
-readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel.FallbackIntentResolveFailureKeys	System.Collections.Generic.HashSet`1[System.String]
-readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel.FallbackLoggedMonsterTypes	System.Collections.Generic.HashSet`1[System.String]
-readonly	LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel.TryBuildExceptionLoggedMonsterTypes	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.features.moontext.MoonTextVisualStyle.ShadowColor	Godot.Color
 readonly	LibraryOfRuina.features.moontext.MoonTextVisualStyle.TextColor	Godot.Color
 readonly	LibraryOfRuina.features.moontext.NMoonTextOverlayController+MethodName.BindRoom	Godot.StringName

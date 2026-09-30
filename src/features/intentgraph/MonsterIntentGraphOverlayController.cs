@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using Godot;
-using MegaCrit.Sts2.Core.Logging;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
@@ -25,10 +25,7 @@ internal static class MonsterIntentGraphOverlayController
 
     private static readonly Dictionary<NCreature, NMonsterIntentGraphPanel> ActivePanels =
         new Dictionary<NCreature, NMonsterIntentGraphPanel>();
-    private static readonly HashSet<string> OverlayDiagnosticKeysLogged = new HashSet<string>(StringComparer.Ordinal);
 
-    private static bool _showForLogged;
-    private static bool _reflectionFailureLogged;
     private static bool _panelSceneLoadAttempted;
     private static bool _fallbackThemeLoadAttempted;
     private static PackedScene? _panelScene;
@@ -43,11 +40,7 @@ internal static class MonsterIntentGraphOverlayController
             return;
         }
 
-        if (!_showForLogged)
-        {
-            _showForLogged = true;
-            Log.Info("[LibraryOfRuina.IntentGraph] ShowFor hook triggered.");
-        }
+        LorLog.InfoOnce("IntentGraph.ShowFor", "[LibraryOfRuina.IntentGraph] ShowFor hook triggered.");
 
         if (creature.Entity?.Monster == null)
         {
@@ -467,22 +460,11 @@ internal static class MonsterIntentGraphOverlayController
 
     private static void LogReflectionFailure(string message)
     {
-        if (_reflectionFailureLogged)
-        {
-            return;
-        }
-
-        _reflectionFailureLogged = true;
-        Log.Error($"[LibraryOfRuina.IntentGraph] {message}");
+        LorLog.ErrorOnce("IntentGraph.ReflectionFailure", $"[LibraryOfRuina.IntentGraph] {message}");
     }
 
     private static void LogOverlayDiagnosticOnce(string key, string message)
     {
-        if (!OverlayDiagnosticKeysLogged.Add(key))
-        {
-            return;
-        }
-
-        Log.Warn("[LibraryOfRuina.IntentGraph] " + message);
+        LorLog.WarnOnce("IntentGraph.Overlay:" + key, "[LibraryOfRuina.IntentGraph] " + message);
     }
 }

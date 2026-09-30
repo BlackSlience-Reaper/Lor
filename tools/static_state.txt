@@ -104,8 +104,6 @@ LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ConfusionPowerEntrie
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.NamesByLanguage	harmless	cache	GetNames 按语言缓存
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReferenceResolutions	harmless	cache	GetReferenceResolutions 缓存解析结果
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReferenceTablePresence	harmless	cache	ReferenceTableExists 缓存本地化表是否存在
-LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReportedDecorateFailures	harmless	log	DecorateText 失败时只报告一次
-LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ReportedTypeFailures	harmless	log	TryGetPowerType 失败时只报告一次
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.SourceTables	harmless	cache	LoadSourceTable 缓存源表
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.VanillaWeakEntries	harmless	cache	静态常量集合，之后只读
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.vanillaEntries	harmless	cache	GetNames 里用 ??= LoadVanillaEntries 加载一次
@@ -124,7 +122,6 @@ LibraryOfRuina.core.settings.LibraryOfRuinaSettings._resistanceMode	harmless	set
 LibraryOfRuina.core.settings.LibraryOfRuinaSettings._runtimeSideEffectsEnabled	harmless	once	EnableRuntimeSideEffects 在启动注入时置 true，不复位；表示进程级的内容注入状态
 LibraryOfRuina.core.settings.LibraryRunInjectionGuard._lobbyHostInjected	harmless	net	RecordLobbyHost（BeginRunLocally 补丁）写入；TakeLobbyHost（新局补丁）取走并置空；联机开局交接
 LibraryOfRuina.core.settings.LibraryRunSettings._pendingLobbyCarrier	harmless	net	TakeLobbyCarrier 写入；AttachToNewRun 取走；OnRunCleaningUp（RunLifecycle 第一步）清空；开局载体交接，按种子配对
-LibraryOfRuina.features.MonsterStateMachineIntentGraphFeature.IntentResolveFailureKeysLogged	harmless	log	TryBuild 解析失败的键只记一次
 LibraryOfRuina.features.ftue.FtueGuard.AbnormalityEncounterNames	harmless	cache	静态常量集合，之后只读
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch._targetMethod	harmless	cache	Prepare 反射解析目标方法
 LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch._targetMethod	harmless	cache	Prepare 里由 ResolveTargetMethod 反射解析
@@ -137,21 +134,15 @@ LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._enabled	
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._lastLoggedEnabled	harmless	log	ReloadLocked 里用于避免重复打日志
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._loaded	harmless	cache	ReloadLocked 加载后置 true
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.ActivePanels	harmless	ui	以 NCreature 节点为键的面板表：ShowFor 写入，HideFor 移除；只影响意图图面板
-LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.OverlayDiagnosticKeysLogged	harmless	log	LogOverlayDiagnosticOnce 每个键只记一次
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackHoverTipTexture	harmless	cache	EnsureFallbackThemeAssetsLoaded 里 GD.Load 一次
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackHoverTitleFont	harmless	cache	EnsureFallbackThemeAssetsLoaded 里 GD.Load 一次
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackThemeLoadAttempted	harmless	once	EnsureFallbackThemeAssetsLoaded 尝试加载后置 true
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._panelScene	harmless	cache	GetPanelScene 加载场景资源，失败时置空
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._panelSceneLoadAttempted	harmless	once	GetPanelScene 尝试加载后置 true
-LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._reflectionFailureLogged	harmless	log	LogReflectionFailure 只打一次日志
-LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._showForLogged	harmless	log	ShowFor 首次调用时打日志
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphRuntimeCache.GeneratedGraphs	instance	-	以 MonsterModel 为弱键：Store 写入生成好的意图图；随怪物实例回收，只用于显示
 LibraryOfRuina.features.intentgraph.NIntentGraph._arrowTexture	harmless	cache	LoadSharedTextures 加载一次
 LibraryOfRuina.features.intentgraph.NIntentGraph._groupBorderTexture	harmless	cache	LoadSharedTextures 加载一次
 LibraryOfRuina.features.intentgraph.NIntentGraph._iconTexture	harmless	cache	LoadSharedTextures 加载一次
-LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel.FallbackIntentResolveFailureKeys	harmless	log	TryBuildSingleMoveFallback 失败的键只记一次
-LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel.FallbackLoggedMonsterTypes	harmless	log	TryBuildSingleMoveFallback 每种怪物只记一次
-LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel.TryBuildExceptionLoggedMonsterTypes	harmless	log	RefreshNow 异常每种怪物只记一次
 LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel._isGraphEnabled	harmless	ui	_Process 里按切换键翻转，不复位；只控制意图图显示
 LibraryOfRuina.features.intentgraph.NMonsterIntentGraphPanel._toggleActionRegistered	harmless	once	RegisterToggleActionOnce 注册输入动作后置 true
 LibraryOfRuina.features.moontext.MoonTextService._currentController	harmless	ui	GetExistingController/GetOrCreateController 按 CombatRoom 校验后重新获取；月光文字节点引用
@@ -160,7 +151,6 @@ LibraryOfRuina.features.moontext.MoonTextVisualStyle._loggedFontLoadIssue	harmle
 LibraryOfRuina.features.moontext.MoonTextVisualStyle._triedLoadPrimaryFont	harmless	once	GetPrimaryFont 尝试加载后置 true
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionState.PendingRunModifiers	instance	-	以 StartRunLobby 为弱键：SetPendingRunModifiers 写入联机开局修改器；随大厅对象回收
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionState._pendingSingleplayerStandardLevel	run	-	选角 BeginRun 写入、CreateForNewRun 取走的第二进阶等级；离开本局时不清空，BeginRun 后建局失败会被下一次单人标准局取走
-LibraryOfRuina.features.secondascension.LibrarySecondAscensionTopBarNavigationSafetyPatch._suppressedCount	harmless	log	Finalizer 里 Interlocked 自增，只用来限制日志条数
 LibraryOfRuina.features.temporarymaps.TemporaryMapAction.PendingRequests	harmless	net	QueueWithRetry 添加请求键（含 RunState），RetryUntilAccepted 在 finally 中移除；用于请求去重
 LibraryOfRuina.features.temporarymaps.TemporaryMapController._initialized	harmless	once	Initialize 订阅 RunStarted 等事件后置 true
 LibraryOfRuina.features.temporarymaps.TemporaryMapRegistry.Definitions	harmless	registry	Register/InitializeDefaults 启动时写入，之后只读
@@ -171,7 +161,6 @@ LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._activeTrackPath	ha
 LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._hostNode	harmless	ui	EnsureHost 失效时重建；宿主节点
 LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._initialized	harmless	once	Initialize 订阅事件后置 true
 LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._isRunning	harmless	ui	StartSession 置 true；StopSession（OnRunCleaningUp 等调用）置 false
-LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._loggedLoadError	harmless	log	LoadLoopStream 加载失败时只记一次
 LibraryOfRuina.framework.audio.AbnormalityEliteBgmController._player	harmless	ui	EnsurePlayer 创建；StopSession 停止播放并清空 Stream
 LibraryOfRuina.framework.audio.BgmCrossfader._activePlayer	harmless	ui	EnsureHostAndPlayers/RunFade 写入；StopAndDisposePlayers（由 BgmSession.StopSession 调用）置空
 LibraryOfRuina.framework.audio.BgmCrossfader._fadeTween	harmless	ui	RunFade 创建；Tween 完成时或 KillFadeTween 置空
@@ -194,7 +183,6 @@ LibraryOfRuina.framework.audio.BgmSession._isTransitioning	harmless	ui	StartCros
 LibraryOfRuina.framework.audio.BgmSession._isTurnStartedSubscribed	harmless	ui	EnsureTurnStartedSubscription 置 true；StopSession 退订并置 false
 LibraryOfRuina.framework.audio.BgmSession._suspendedSession	harmless	ui	StopSession(preserveSuspendedSession) 保存曲目与位置，用于读档续播；TryConsumeSuspendedSession 取走；否则 StopSession 置空
 LibraryOfRuina.framework.audio.BgmSession._targetTrackIndex	harmless	ui	Start/OnMonsterDied/OnTurnStarted/RefreshCurrentEncounterTrack 写入；StopSession 归零
-LibraryOfRuina.framework.audio.LibrarySfxMixer._busCreationLogged	harmless	log	EnsureBus 创建音频总线时只记一次
 LibraryOfRuina.framework.audio.LocalOggLoopPlayer._hostNode	harmless	ui	EnsureHost 失效时重建
 LibraryOfRuina.framework.audio.LocalOggLoopPlayer._nextPlayerId	harmless	ui	StartLoop 自增，只用于节点命名
 LibraryOfRuina.framework.audio.LocalOggOneShotPlayer.ExclusivePlayers	harmless	ui	按独占槽位保存播放器：播放时写入；StopExclusive/CleanupExclusivePlayersIfNeeded 移除；宿主节点失效时整表清空
@@ -204,7 +192,6 @@ LibraryOfRuina.framework.audio.MainMenuBgmController._hostNode	harmless	ui	Ensur
 LibraryOfRuina.framework.audio.MainMenuBgmController._initialized	harmless	once	Initialize 订阅事件后置 true
 LibraryOfRuina.framework.audio.MainMenuBgmController._isPaused	harmless	ui	StartOrRefresh/Pause/Stop 写入；主菜单 BGM 状态
 LibraryOfRuina.framework.audio.MainMenuBgmController._isPlaying	harmless	ui	StartOrRefresh/Pause/Stop 写入；主菜单 BGM 状态
-LibraryOfRuina.framework.audio.MainMenuBgmController._loggedLoadError	harmless	log	LoadLoopStream 加载失败时只记一次
 LibraryOfRuina.framework.audio.MainMenuBgmController._pauseReasons	harmless	ui	AddPauseReason/ClearPauseReason 写入；OnRunStarted/Stop 清为 None；OnCombatEnded/ClearRunScopedPauseReasons 去掉对应位
 LibraryOfRuina.framework.audio.MainMenuBgmController._player	harmless	ui	EnsurePlayer 创建；Stop 停止播放
 LibraryOfRuina.framework.audio.MainMenuBgmController._resumePositionSeconds	harmless	ui	Pause 记录播放位置；OnRunStarted/Stop 归零
@@ -219,7 +206,6 @@ LibraryOfRuina.framework.audio.NonCombatRunBgmController._initialized	harmless	o
 LibraryOfRuina.framework.audio.NonCombatRunBgmController._isPausedForRoom	harmless	ui	PauseLoop 写入；OnRunStarted/StartOrRefresh/StopLoop 置 false
 LibraryOfRuina.framework.audio.NonCombatRunBgmController._isPlaying	harmless	ui	StartOrRefresh 置 true；PauseLoop/StopLoop 置 false
 LibraryOfRuina.framework.audio.NonCombatRunBgmController._isRestoringRunMusic	harmless	ui	RestoreRunMusicSafely 在 try/finally 中置 true 后复位（重入保护）
-LibraryOfRuina.framework.audio.NonCombatRunBgmController._loggedLoadError	harmless	log	LoadLoopStream 加载失败时只记一次
 LibraryOfRuina.framework.audio.NonCombatRunBgmController._player	harmless	ui	EnsurePlayer 创建；StopLoop 停止播放
 LibraryOfRuina.framework.audio.NonCombatRunBgmController._resumePositionSeconds	harmless	ui	PauseLoop 记录播放位置；OnRunStarted/StopLoop 归零
 LibraryOfRuina.framework.audio.NonCombatRunBgmController._suppressRunMusicStopHook	harmless	scope	StopBaseRunMusicOnly 内部置 true 后复位，防止自身触发停止钩子
@@ -254,9 +240,6 @@ LibraryOfRuina.infra.patching.LibraryPatchReportPatch._reported	harmless	once	Po
 LibraryOfRuina.interop.VanillaPrivateMember.Registered	harmless	registry	构造函数登记私有成员访问器，用于启动自检
 LibraryOfRuina.patches.BadgedIntentVisualPatch+MonsterHeadTextureCache.Cache	harmless	cache	按 Rid 缓存怪物头像贴图，读取时校验是否仍有效
 LibraryOfRuina.patches.BadgedIntentVisualPatch._allyCombinedAttackMaterial	harmless	cache	GetAllyCombinedAttackMaterial 创建一次
-LibraryOfRuina.patches.CardGridInitDisposedResourceSafetyPatch._suppressedCount	harmless	log	Finalizer 里 Interlocked 自增，只用来限制日志条数
-LibraryOfRuina.patches.CardVisualDisposedResourceSafety._suppressedCount	harmless	log	Finalize 里 Interlocked 自增，只用来限制日志条数
-LibraryOfRuina.patches.CombatUiEnableGuardPatch._loggedMissingFields	harmless	log	WarnOnceIfFieldsMissing 只警告一次
 LibraryOfRuina.patches.CombatUiEnableGuardPatch._loggedSkips	harmless	log	LogSkipped 计数，用来节流日志
 LibraryOfRuina.patches.CombinedIntentDisplayPatch.LibraryReceptionMonsterBaseTypes	harmless	cache	静态常量类型集合
 LibraryOfRuina.patches.CombinedIntentDisplayPatch.LibraryReceptionMonsterTypes	harmless	cache	静态常量类型集合
@@ -271,7 +254,6 @@ LibraryOfRuina.patches.DodgeDiceCombatFeedback._damagePreviewModes	harmless	scop
 LibraryOfRuina.patches.DodgeDiceCombatFeedback._pendingBlockHitSfxSkips	harmless	ui	QueueDodgeAvoidedHit 自增，TryConsumeBlockHitSfx 自减；Reset（SetUpCombat/CombatManager.Reset）清零；只跳过格挡音效
 LibraryOfRuina.patches.DodgeDiceHealthBarReadyPatch.States	instance	-	以 NHealthBar 节点为弱键：Postfix/Apply 写入闪避图标状态
 LibraryOfRuina.patches.EgoCardVisualPatch.TextureCache	harmless	cache	按图片路径缓存贴图
-LibraryOfRuina.patches.EnergyCounterCompatibilityPatch._loggedCompatFix	harmless	log	EnsureParticleAlias 只记一次
 LibraryOfRuina.patches.ExtSettingsSubmenuHost.SubmenuCache	instance	-	以 NMainMenuSubmenuStack 为弱键：GetOrCreateSubmenu 写入设置子菜单
 LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Depths	combat	-	以 ICombatState 为弱键的击杀批次深度：Prefix 自增，TriggerAfter 在 finally 中自减；深度为 0 时才判定“离别之泪”胜利
 LibraryOfRuina.patches.LibraryCursorPatch._applied	harmless	once	Apply 设置鼠标光标后置 true
@@ -281,7 +263,6 @@ LibraryOfRuina.patches.LibraryCursorPatch._tiltedCursor	harmless	cache	Apply 里
 LibraryOfRuina.patches.LibraryEncounterWeighting.PriorityAbnormalityEncounterTypes	harmless	cache	静态常量类型集合，只读
 LibraryOfRuina.patches.NTargetedIntentLines._arrowStartTexture	harmless	cache	Create 里通过 LoadTexture(ref) 加载一次
 LibraryOfRuina.patches.NTargetedIntentLines._arrowTexture	harmless	cache	Create 里通过 LoadTexture(ref) 加载一次
-LibraryOfRuina.patches.RelicInventoryHolderOnFocusSafetyPatch._suppressedCount	harmless	log	SuppressDisposedResource 里 Interlocked 自增，只用来限制日志条数
 LibraryOfRuina.patches.ReverberationEnsembleIconFill.Masks	harmless	cache	GetMask 按路径缓存遮罩贴图
 LibraryOfRuina.patches.RoomIconPathCustomOverride.PropertiesByType	harmless	cache	TryResolve 按类型缓存反射得到的属性
 LibraryOfRuina.patches.visuals.AttackAnimationHitSuppression.ActiveAttackAnimations	combat	-	攻击动画进行中的生物计数，攻击命令完成时释放；只影响受击动画

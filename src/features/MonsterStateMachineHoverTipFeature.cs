@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using Godot;
 using LibraryOfRuina.features.intentgraph;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Localization;
-using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
@@ -25,7 +25,6 @@ internal static class MonsterStateMachineIntentGraphFeature
 
 
 
-    private static readonly HashSet<string> IntentResolveFailureKeysLogged = new(StringComparer.Ordinal);
 
     private readonly record struct RandomBranchOption(
         MoveState Move,
@@ -180,9 +179,9 @@ internal static class MonsterStateMachineIntentGraphFeature
                 }
                 catch (Exception exception)
                 {
-                    if (IntentResolveFailureKeysLogged.Add(resolveKeyPrefix + ":label"))
+                    if (LorLog.FirstTime("IntentGraphFeature.IntentResolve:" + resolveKeyPrefix + ":label"))
                     {
-                        Log.Warn(
+                        LorLog.Warn(
                             "[LibraryOfRuina.IntentGraph] Failed to resolve intent label for "
                             + resolveKeyPrefix + ". " + exception.Message);
                     }
@@ -201,9 +200,9 @@ internal static class MonsterStateMachineIntentGraphFeature
                 }
                 catch (Exception exception)
                 {
-                    if (IntentResolveFailureKeysLogged.Add(resolveKeyPrefix + ":texture"))
+                    if (LorLog.FirstTime("IntentGraphFeature.IntentResolve:" + resolveKeyPrefix + ":texture"))
                     {
-                        Log.Warn(
+                        LorLog.Warn(
                             "[LibraryOfRuina.IntentGraph] Failed to resolve intent texture for "
                             + resolveKeyPrefix + ". " + exception.Message);
                     }

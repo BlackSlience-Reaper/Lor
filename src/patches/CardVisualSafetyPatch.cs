@@ -27,7 +27,6 @@ internal static class CardUpdateVisualsDisposedResourceSafetyPatch
 internal static class CardVisualDisposedResourceSafety
 {
     private const string LogTag = "LibraryOfRuina.CardVisualSafety";
-    private static int _suppressedCount;
 
     public static Exception? Finalize(NCard card, Exception? exception, string surface)
     {
@@ -38,14 +37,13 @@ internal static class CardVisualDisposedResourceSafety
             return exception;
         }
 
-        if (Interlocked.Increment(ref _suppressedCount) <= 8)
-        {
-            Log.Warn(
-                "[" + LogTag + "] suppressed disposed card visual resource"
-                + " surface=" + surface
-                + " card=" + ResolveCardId(card)
-                + " reason=" + DisposedGodotResourceSafety.Describe(exception));
-        }
+        LorLog.WarnFirst(
+            "CardVisualSafety.Disposed",
+            8,
+            "[" + LogTag + "] suppressed disposed card visual resource"
+            + " surface=" + surface
+            + " card=" + ResolveCardId(card)
+            + " reason=" + DisposedGodotResourceSafety.Describe(exception));
 
         return null;
     }

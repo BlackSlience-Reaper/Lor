@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
-using MegaCrit.Sts2.Core.Logging;
+using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.features.intentgraph;
@@ -13,9 +13,6 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
 
     private static bool _toggleActionRegistered;
     private static bool _isGraphEnabled = true;
-    private static readonly HashSet<string> FallbackLoggedMonsterTypes = new(StringComparer.Ordinal);
-    private static readonly HashSet<string> TryBuildExceptionLoggedMonsterTypes = new(StringComparer.Ordinal);
-    private static readonly HashSet<string> FallbackIntentResolveFailureKeys = new(StringComparer.Ordinal);
 
     private Label _monsterName = null!;
     private NIntentGraph _intentGraph = null!;
@@ -116,9 +113,9 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
                 monsterName = string.Empty;
 
                 string monsterTypeName = owner.Monster.GetType().FullName ?? owner.Monster.GetType().Name;
-                if (TryBuildExceptionLoggedMonsterTypes.Add(monsterTypeName))
+                if (LorLog.FirstTime("IntentGraph.TryBuildException:" + monsterTypeName))
                 {
-                    Log.Warn("[LibraryOfRuina.IntentGraph] TryBuild threw for " + monsterTypeName
+                    LorLog.Warn("[LibraryOfRuina.IntentGraph] TryBuild threw for " + monsterTypeName
                              + ", using current-move fallback. " + exception);
                 }
             }
@@ -170,9 +167,9 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
         }
 
         string monsterTypeName = owner.Monster.GetType().FullName ?? owner.Monster.GetType().Name;
-        if (FallbackLoggedMonsterTypes.Add(monsterTypeName))
+        if (LorLog.FirstTime("IntentGraph.Fallback:" + monsterTypeName))
         {
-            Log.Warn("[LibraryOfRuina.IntentGraph] State-machine graph unavailable for " + monsterTypeName
+            LorLog.Warn("[LibraryOfRuina.IntentGraph] State-machine graph unavailable for " + monsterTypeName
                      + ", using current-move fallback.");
         }
 
@@ -190,9 +187,9 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
             }
             catch (Exception exception)
             {
-                if (FallbackIntentResolveFailureKeys.Add(keyPrefix + ":label"))
+                if (LorLog.FirstTime("IntentGraph.FallbackResolve:" + keyPrefix + ":label"))
                 {
-                    Log.Warn("[LibraryOfRuina.IntentGraph] Failed to resolve intent label for " + keyPrefix
+                    LorLog.Warn("[LibraryOfRuina.IntentGraph] Failed to resolve intent label for " + keyPrefix
                              + " in current-move fallback. " + exception.Message);
                 }
             }
@@ -209,9 +206,9 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
             }
             catch (Exception exception)
             {
-                if (FallbackIntentResolveFailureKeys.Add(keyPrefix + ":texture"))
+                if (LorLog.FirstTime("IntentGraph.FallbackResolve:" + keyPrefix + ":texture"))
                 {
-                    Log.Warn("[LibraryOfRuina.IntentGraph] Failed to resolve intent texture for " + keyPrefix
+                    LorLog.Warn("[LibraryOfRuina.IntentGraph] Failed to resolve intent texture for " + keyPrefix
                              + " in current-move fallback. " + exception.Message);
                 }
             }
