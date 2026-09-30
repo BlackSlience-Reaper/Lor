@@ -25,6 +25,9 @@ public sealed class HistoryFloorWorkerBee : LorMonsterModel
     private const string PromoteGrowthMoveId = "PROMOTE_GROWTH";
     internal const string ChooserStateId = "CHOOSER";
 
+    private const int PromoteGrowthHits = 3; // 促进生长：攻击次数，每次攻击后分别结算孢子追加伤害。
+    private const int PromoteGrowthBaseDamage = 2; // 促进生长：低于 DeadlyEnemies 进阶时的单次伤害，取原三段最低值。
+    private const int PromoteGrowthHighAscensionDamage = 3; // 促进生长：达到 DeadlyEnemies 进阶时的单次伤害，取原三段最低值。
     private const int GuardQueenParalysisAmount = 2;
     private const int GuardQueenParalysisTurns = 1;
     private const int CarryLarvaBlock = 12;
@@ -63,11 +66,11 @@ public sealed class HistoryFloorWorkerBee : LorMonsterModel
     private static int NutrientMixDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
 
-    private static int PromoteGrowthDamageA =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
-
-    private static int PromoteGrowthDamageC =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+    private static int PromoteGrowthDamage =>
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            PromoteGrowthHighAscensionDamage,
+            PromoteGrowthBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         HistoryFloorWorkerBeeCreatureVisuals.Profile.AssetPaths
@@ -122,9 +125,7 @@ public sealed class HistoryFloorWorkerBee : LorMonsterModel
         var promoteGrowth = new MoveState(
             PromoteGrowthMoveId,
             PromoteGrowthMove,
-            new BadgedAttackIntent(PromoteGrowthDamageA, "WORKER_BEE_GROWTH_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(downText: "+X")),
-            new BadgedAttackIntent(PromoteGrowthDamageA, "WORKER_BEE_GROWTH_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(downText: "+X")),
-            new BadgedAttackIntent(PromoteGrowthDamageC, "WORKER_BEE_GROWTH_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(downText: "+X")));
+            CreatePromoteGrowthIntent());
 
         var chooser = new ConditionalBranchState(ChooserStateId);
         chooser.AddState(guardQueen, () => _cadenceIndex % 4 == 0);
@@ -182,12 +183,16 @@ public sealed class HistoryFloorWorkerBee : LorMonsterModel
 
     private async Task PromoteGrowthMove(IReadOnlyList<Creature> targets)
     {
-        IReadOnlyList<DamageResult> first = await ExecuteAttackSegment("Attack2", PromoteGrowthDamageA, AttackSlashSfxPath);
-        await ApplyGrowthBonus(first);
-        IReadOnlyList<DamageResult> second = await ExecuteAttackSegment("Attack2", PromoteGrowthDamageA, AttackSlashSfxPath);
-        await ApplyGrowthBonus(second);
-        IReadOnlyList<DamageResult> third = await ExecuteAttackSegment("Attack", PromoteGrowthDamageC, AttackThrustSfxPath);
-        await ApplyGrowthBonus(third);
+        for (int i = 0; i < PromoteGrowthHits; i++)
+        {
+            bool isLastHit = i == PromoteGrowthHits - 1;
+            IReadOnlyList<DamageResult> results = await ExecuteAttackSegment(
+                isLastHit ? "Attack" : "Attack2",
+                PromoteGrowthDamage,
+                isLastHit ? AttackThrustSfxPath : AttackSlashSfxPath);
+            await ApplyGrowthBonus(results);
+        }
+
         AdvanceCadence();
     }
 
@@ -257,9 +262,15 @@ public sealed class HistoryFloorWorkerBee : LorMonsterModel
         yield return new DefendIntent();
         yield return new SingleAttackIntent(NutrientMixDamage);
         yield return new HealIntent();
-        yield return new BadgedAttackIntent(PromoteGrowthDamageA, "WORKER_BEE_GROWTH_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(downText: "+X"));
-        yield return new BadgedAttackIntent(PromoteGrowthDamageC, "WORKER_BEE_GROWTH_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(downText: "+X"));
+        yield return CreatePromoteGrowthIntent();
     }
+
+    private static BadgedAttackIntent CreatePromoteGrowthIntent() =>
+        new(
+            PromoteGrowthDamage,
+            PromoteGrowthHits,
+            "WORKER_BEE_GROWTH_ATTACK.description",
+            IntentBadge.FromPower<HistoryFloorWaspSporePower>(downText: "+X"));
 
     private static BadgedAttackIntent CreateSporeAttackIntent(int damage) =>
         new(damage, "WASP_UNBLOCKED_SPORE_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(1));
