@@ -366,7 +366,7 @@
   "SMILING_BODIES_VOMIT_POWER.smartDescription": "각 적의 턴이 시작될 때마다[gold]{OwnerName}[/gold]얻다[red]{Strength}[/red]가리키다[gold]힘[/gold]。",
   "SMILING_BODIES_VOMIT_POWER.title": "토하다",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.description": "각 턴마다 봉인된 카드를 최대 4장까지 사용할 수 있습니다. 봉인된 카드를 3장 사용할 때마다 엄숙한 애도가 힘을 1 얻습니다.",
-  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.smartDescription": "라운드당 최대 히트 수[blue]{MaxCards}[/blue]장 이불[gold]봉인[/gold]카드. 매번[blue]{Threshold}[/blue]열려 있는,[gold]{OwnerName}[/gold]얻다[red]{StrengthGain}[/red]가리키다[gold]힘[/gold]。",
+  "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.smartDescription": "각 턴마다 [gold]봉인[/gold]된 카드를 최대 [blue]{MaxCards}[/blue]장까지 사용할 수 있습니다. [gold]봉인[/gold]된 카드를 [blue]{Threshold}[/blue]장 사용할 때마다 [gold]{OwnerName}[/gold]이(가) [gold]힘[/gold]을 [red]{StrengthGain}[/red] 얻습니다.",
   "SOLEMN_MOURNING_REDEMPTION_HAND_POWER.title": "구원의 손",
   "SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.description": "적의 첫 번째 X 의도를 무효화합니다.",
   "SOLEMN_MOURNING_SEAL_ON_ENEMY_POWER.smartDescription": "만들다[gold]{OwnerName}[/gold]다음[blue]{Amount}[/blue]의도는 실패했습니다.",
