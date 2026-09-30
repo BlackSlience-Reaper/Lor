@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -21,7 +22,9 @@ public sealed class CosmicFragmentEpiphanyCard : CardModel
 {
     private const int BaseEffectAmount = 1;
 
-    private static readonly Dictionary<CombatStateLike, int> TriggeredCombatRounds = [];
+    // 本场战斗最近一次回合末触发的回合号（全队共用）。读取方 CosmicFragment 的虚弱判定目前被注释掉，只有写入与清除。
+    // 按战斗状态弱键存放：牌被移出战斗、战斗中途退出而没收到 AfterCombatEnd 时，条目不会把整场战斗留在内存里。
+    private static readonly CombatScoped<CombatStateLike, int> TriggeredCombatRounds = new();
 
     [ThreadStatic]
     private static bool _cosmicFragmentUpgradeInProgress;
@@ -70,7 +73,7 @@ public sealed class CosmicFragmentEpiphanyCard : CardModel
         CombatStateLike? combatState = Owner.Creature.CombatState;
         if (combatState != null)
         {
-            TriggeredCombatRounds[combatState] = combatState.RoundNumber;
+            TriggeredCombatRounds.Set(combatState, combatState.RoundNumber);
         }
     }
 

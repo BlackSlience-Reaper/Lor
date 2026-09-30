@@ -1,4 +1,5 @@
 using System;
+using LibraryOfRuina.infra.lifecycle;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
@@ -9,24 +10,29 @@ internal readonly record struct ArtFloorLiberationSettlementData(
 
 internal static class ArtFloorLiberationSettlementStore
 {
-    private static ArtFloorLiberationSettlementData _current = new(2, false, false);
+    // 局级：离开本局时复位，上一局（或另一份存档）的击杀数与待结算标志不会带进这一局的结算。
+    // 读档不靠这里保存：读档后回到终局奖励界面，继续时结算跳转会从读档恢复的遭遇状态重新记录。
+    private static readonly RunScoped<ArtFloorLiberationSettlementData> CurrentState =
+        new(static () => new(2, false, false));
 
-    public static ArtFloorLiberationSettlementData Current => _current;
+    private static readonly RunScoped<bool> PendingState = new(static () => false);
 
-    public static bool PendingSettlement { get; private set; }
+    public static ArtFloorLiberationSettlementData Current => CurrentState.Value;
+
+    public static bool PendingSettlement => PendingState.Value;
 
     public static void Record(ArtFloorLiberationEncounter encounter)
     {
         int kills = Math.Max(0, encounter.KilledBossCount);
-        _current = new ArtFloorLiberationSettlementData(
+        CurrentState.Value = new ArtFloorLiberationSettlementData(
             kills,
             kills >= ArtFloorLiberationEncounter.MaxPhase,
             encounter.EndedByLethalDamage);
-        PendingSettlement = encounter.SettlementTriggered && kills >= 2;
+        PendingState.Value = encounter.SettlementTriggered && kills >= 2;
     }
 
     public static void Consume()
     {
-        PendingSettlement = false;
+        PendingState.Value = false;
     }
 }

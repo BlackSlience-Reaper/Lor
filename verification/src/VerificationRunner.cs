@@ -78,6 +78,7 @@ public static class VerificationRunner
         SpecialGuestPlanTraceVerificationPatch.Start,
         SpecialGuestStoryFontVerificationPatch.Start,
         SpecialGuestXiaoContractVerificationPatch.Start,
+        StaticStateLifecycleVerificationPatch.Start,
         TargetedIntentLineVerificationPatch.Start,
         TechnologyFloorLiberationSettlementVerificationPatch.Start,
         XiaoIntentAnchorVerificationPatch.Start,

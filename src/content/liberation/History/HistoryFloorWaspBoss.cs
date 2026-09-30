@@ -46,6 +46,12 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
     private const string ForTheKingdomMoveId = "FOR_THE_KINGDOM";
     private const string PunishmentStrikeMoveId = "PUNISHMENT_STRIKE";
 
+    private const int GloriousBrandHits = 3; // 光荣烙印：攻击次数，每次攻击分别判定孢子。
+    private const int GloriousBrandBaseDamage = 3; // 光荣烙印：低于 DeadlyEnemies 进阶时，统一采用原三段最低单次伤害。
+    private const int GloriousBrandHighAscensionDamage = 4; // 光荣烙印：达到 DeadlyEnemies 进阶时，统一采用原三段最低单次伤害。
+    private const int ForTheKingdomHits = 2; // 为了王国：攻击次数，每次攻击分别判定孢子。
+    private const int ForTheKingdomBaseDamage = 5; // 为了王国：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int ForTheKingdomHighAscensionDamage = 6; // 为了王国：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int LoyaltyBlock = 8;
     private const int LoyaltyGuard = 1;
     private const int LoyaltyGuardTurns = 2;
@@ -125,14 +131,17 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
     public override int MaxInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 204, 202);
 
-    private static int BrandDamageA =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
-
-    private static int BrandDamageB =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+    private static int GloriousBrandDamage =>
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            GloriousBrandHighAscensionDamage,
+            GloriousBrandBaseDamage);
 
     private static int KingdomDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            ForTheKingdomHighAscensionDamage,
+            ForTheKingdomBaseDamage);
 
     private static int PunishmentStrikeDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, HistoryFloorEgoNumbers.PunishmentStrikeAscensionDamage, HistoryFloorEgoNumbers.PunishmentStrikeBaseDamage);
@@ -230,9 +239,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         var gloriousBrand = new MoveState(
             GloriousBrandMoveId,
             GloriousBrandMove,
-            CreateSporeAttackIntent(BrandDamageA),
-            CreateSporeAttackIntent(BrandDamageB),
-            CreateSporeAttackIntent(BrandDamageA));
+            CreateSporeAttackIntent(GloriousBrandDamage, GloriousBrandHits));
 
         var loyaltyEnhancement = new MoveState(
             LoyaltyEnhancementMoveId,
@@ -250,8 +257,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         var forTheKingdom = new MoveState(
             ForTheKingdomMoveId,
             ForTheKingdomMove,
-            CreateSporeAttackIntent(KingdomDamage),
-            CreateSporeAttackIntent(KingdomDamage));
+            CreateSporeAttackIntent(KingdomDamage, ForTheKingdomHits));
 
         var punishmentStrike = new MoveState(
             PunishmentStrikeMoveId,
@@ -293,9 +299,13 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
 
     private async Task GloriousBrandMove(IReadOnlyList<Creature> targets)
     {
-        await ApplySporeFromResults(await ExecuteAttackSegment("Attack", BrandDamageA));
-        await ApplySporeFromResults(await ExecuteAttackSegment("AttackPierce", BrandDamageB));
-        await ApplySporeFromResults(await ExecuteAttackSegment("Attack", BrandDamageA));
+        for (int i = 0; i < GloriousBrandHits; i++)
+        {
+            IReadOnlyList<DamageResult> results = await ExecuteAttackSegment(
+                i % 2 == 0 ? "Attack" : "AttackPierce",
+                GloriousBrandDamage);
+            await ApplySporeFromResults(results);
+        }
     }
 
     private async Task LoyaltyEnhancementMove(IReadOnlyList<Creature> targets)
@@ -358,8 +368,10 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
 
     private async Task ForTheKingdomMove(IReadOnlyList<Creature> targets)
     {
-        await ApplySporeFromResults(await ExecuteAttackSegment("AttackPierce", KingdomDamage));
-        await ApplySporeFromResults(await ExecuteAttackSegment("AttackPierce", KingdomDamage));
+        for (int i = 0; i < ForTheKingdomHits; i++)
+        {
+            await ApplySporeFromResults(await ExecuteAttackSegment("AttackPierce", KingdomDamage));
+        }
     }
 
     private async Task PunishmentStrikeMove(IReadOnlyList<Creature> targets)
@@ -458,8 +470,8 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
-        yield return CreateSporeAttackIntent(BrandDamageA);
-        yield return CreateSporeAttackIntent(BrandDamageB);
+        yield return CreateSporeAttackIntent(GloriousBrandDamage, GloriousBrandHits);
+        yield return CreateSporeAttackIntent(KingdomDamage, ForTheKingdomHits);
         yield return new DefendIntent();
         yield return new DetailedBuffIntent<LibraryEndurancePower>(LoyaltyGuard, DetailedBuffTargetScope.OtherEnemies);
         yield return new DetailedBuffIntent<StrengthPower>(WarlikeStrength, DetailedBuffTargetScope.OtherEnemies);
@@ -474,6 +486,6 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         yield return new BuffIntent();
     }
 
-    private static BadgedAttackIntent CreateSporeAttackIntent(int damage) =>
-        new(damage, "WASP_UNBLOCKED_SPORE_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(1));
+    private static BadgedAttackIntent CreateSporeAttackIntent(int damage, int hits) =>
+        new(damage, hits, "WASP_UNBLOCKED_SPORE_ATTACK.description", IntentBadge.FromPower<HistoryFloorWaspSporePower>(1));
 }

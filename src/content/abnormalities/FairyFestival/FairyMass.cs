@@ -27,6 +27,9 @@ public sealed class FairyMass : CounterIntentMonsterModel
 
     private const float SegmentDelaySeconds = 1.35f;
     private const int WingbeatHits = 2;
+    private const int GluttonyHits = 2; // 贪食：攻击次数，每次攻击后分别治疗。
+    private const int GluttonyBaseDamage = 2; // 贪食：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int GluttonyHighAscensionDamage = 3; // 贪食：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int GluttonyHealPerHit = 3;
     private const int WingbeatBleed = 1;
 
@@ -62,11 +65,11 @@ public sealed class FairyMass : CounterIntentMonsterModel
     private static int WingbeatDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
 
-    private static int GluttonyFirstDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
-
-    private static int GluttonySecondDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+    private static int GluttonyDamage =>
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            GluttonyHighAscensionDamage,
+            GluttonyBaseDamage);
 
     public override IEnumerable<string> AssetPaths =>
         FairyMassCreatureVisuals.Profile.AssetPaths
@@ -101,8 +104,7 @@ public sealed class FairyMass : CounterIntentMonsterModel
         var gluttony = new MoveState(
             GluttonyMoveId,
             GluttonyMove,
-            new SingleAttackIntent(GluttonyFirstDamage),
-            new SingleAttackIntent(GluttonySecondDamage),
+            new MultiAttackIntent(GluttonyDamage, GluttonyHits),
             new HealIntent());
 
         wingbeat.FollowUpState = gluttony;
@@ -134,14 +136,17 @@ public sealed class FairyMass : CounterIntentMonsterModel
 
     private async Task GluttonyMove(IReadOnlyList<Creature> targets)
     {
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        await ExecuteSegmentAttack(GluttonyFirstDamage);
-        await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, GluttonyHealPerHit));
+        for (int i = 0; i < GluttonyHits; i++)
+        {
+            if (Creature.IsDead)
+            {
+                return;
+            }
 
-        if (Creature.IsDead) return;
-        LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        await ExecuteSegmentAttack(GluttonySecondDamage);
-        await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, GluttonyHealPerHit));
+            LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
+            await ExecuteSegmentAttack(GluttonyDamage);
+            await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, GluttonyHealPerHit));
+        }
     }
 
     private Task<AttackCommand> ExecuteSegmentAttack(int damage)
@@ -160,8 +165,7 @@ public sealed class FairyMass : CounterIntentMonsterModel
             WingbeatHits,
             "FAIRY_FESTIVAL_UNBLOCKED_BLEED_ATTACK.description",
             IntentBadge.Bleed(WingbeatBleed));
-        yield return new SingleAttackIntent(GluttonyFirstDamage);
-        yield return new SingleAttackIntent(GluttonySecondDamage);
+        yield return new MultiAttackIntent(GluttonyDamage, GluttonyHits);
         yield return new HealIntent();
     }
 }

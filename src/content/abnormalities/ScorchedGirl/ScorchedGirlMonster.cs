@@ -59,9 +59,9 @@ public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
     private static readonly Rect2 BackgroundTextSpawnArea = new(150f, 200f, 900f, 450f);
 
     private int FourthMatchFlameDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 17, 13);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 15, 14);
 
-    private const int FourthMatchFlameSelfDamage = 10;
+    private const int FourthMatchFlameSelfDamage = 15;
     private const float AttackAnimDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
 
     private const string GirlAttackSfxPath = "res://audio/sfx/scorched_girl/scorched_girl_explosion.ogg";

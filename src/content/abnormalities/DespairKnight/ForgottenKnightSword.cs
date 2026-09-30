@@ -102,11 +102,11 @@ public sealed class ForgottenKnightSword : LorMonsterModel
     private const int HollowPrideDazed = 2;
     private const int HollowPrideVulnerable = 2;
     private const int HollowPrideVulnerableTurns = 1;
-    private const int SwordOfGriefBlock = 19;
+    private const int SwordOfGriefBlock = 16;
     private const int SwordOfGriefStrength = 2;
-    private const int TearEdgeFrail = 2;
+    private const int TearEdgeFrail = 1;
     private const int PiercingHeartWeak = 2;
-    private const int RendingHeartDazed = 2;
+    private const int RendingHeartDazed = 1;
     private const int RuiningHeartStrength = 2;
     private const int PiercingHeartBossDamage = 20;
     private const int RendingHeartBossDamage = 30;
@@ -149,22 +149,22 @@ public sealed class ForgottenKnightSword : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
 
     private static int SwordOfGriefDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 6);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
 
     private static int PiercingHeartDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 5);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
 
     private static int RendingHeartDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 4);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
 
     private static int RuiningHeartDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 5);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 108, 95);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 100, 95);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 110, 98);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 103, 98);
     
     public override int DefaultChaoResistance => 80;
 
