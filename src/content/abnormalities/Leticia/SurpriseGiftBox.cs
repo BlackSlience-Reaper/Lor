@@ -51,12 +51,12 @@ public sealed class SurpriseGiftBox : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 1);
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 40, 39);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 40, 36);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 42, 40);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 41, 38);
 
-    public override int DefaultChaoResistance => 30;
+    public override int DefaultChaoResistance => 25;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

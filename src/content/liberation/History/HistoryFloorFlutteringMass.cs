@@ -38,6 +38,9 @@ public sealed class HistoryFloorFlutteringMass : LorMonsterModel
     };
 
     private const int GluttonyHealPerHit = 5;
+    private const int GluttonyHits = 2; // 贪食：攻击次数，每次造成未被格挡的伤害后分别治疗。
+    private const int GluttonyBaseDamage = 3; // 贪食：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int GluttonyHighAscensionDamage = 4; // 贪食：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int WingbeatBlock = 4;
     private const int BleedAmount = 1;
 
@@ -56,7 +59,10 @@ public sealed class HistoryFloorFlutteringMass : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 36, 34);
 
     private static int GluttonyDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+        AscensionHelper.GetValueIfAscension(
+            AscensionLevel.DeadlyEnemies,
+            GluttonyHighAscensionDamage,
+            GluttonyBaseDamage);
 
     private static int WingbeatDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
@@ -85,8 +91,7 @@ public sealed class HistoryFloorFlutteringMass : LorMonsterModel
         var gluttony = new MoveState(
             GluttonyMoveId,
             GluttonyMove,
-            new SingleAttackIntent(GluttonyDamage),
-            new SingleAttackIntent(GluttonyDamage),
+            new MultiAttackIntent(GluttonyDamage, GluttonyHits),
             new HealIntent());
 
         var wingbeat = new MoveState(
@@ -104,9 +109,13 @@ public sealed class HistoryFloorFlutteringMass : LorMonsterModel
 
     private async Task GluttonyMove(IReadOnlyList<Creature> targets)
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < GluttonyHits; i++)
         {
-            if (Creature.IsDead) return;
+            if (Creature.IsDead)
+            {
+                return;
+            }
+
             LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
             AttackCommand attack = await ExecuteSegmentAttack(GluttonyDamage);
             bool healed = AttackCommandCompat.Results(attack)
@@ -147,7 +156,7 @@ public sealed class HistoryFloorFlutteringMass : LorMonsterModel
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
-        yield return new SingleAttackIntent(GluttonyDamage);
+        yield return new MultiAttackIntent(GluttonyDamage, GluttonyHits);
         yield return new HealIntent();
         yield return CreateBleedIntent(WingbeatDamage);
         yield return new DefendIntent();
