@@ -664,10 +664,12 @@ LibraryOfRuina.infra.helpers.IFinalHpLossClamp
 LibraryOfRuina.infra.helpers.LibraryAssemblyTypes
 LibraryOfRuina.infra.helpers.ModOwnership
 LibraryOfRuina.infra.helpers.PatchFailureLog
+LibraryOfRuina.infra.helpers.PlayerIntMapSerializer
 LibraryOfRuina.infra.helpers.ResolvedPowerIcon
 LibraryOfRuina.infra.helpers.PowerIconResolver
 LibraryOfRuina.infra.helpers.PresentationGuard
 LibraryOfRuina.infra.helpers.TypeDiscoveryOrder
+LibraryOfRuina.framework.visuals.CombatBackgroundImage
 LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals
 LibraryOfRuina.framework.visuals.INonSpineVisualTriggerHandler
 LibraryOfRuina.framework.visuals.ITargetedAttackLungeVisuals
@@ -874,6 +876,7 @@ LibraryOfRuina.framework.combat.IAllyTurnProvider
 LibraryOfRuina.framework.combat.IAllyTurnProvider`1
 LibraryOfRuina.framework.combat.AllyTurnState
 LibraryOfRuina.framework.combat.AllyTurnRegistry
+LibraryOfRuina.framework.combat.CombatQueries
 LibraryOfRuina.framework.combat.CombatSafetyContext
 LibraryOfRuina.framework.combat.CombatSafetyNet
 LibraryOfRuina.framework.combat.CombatTargets
@@ -929,6 +932,7 @@ LibraryOfRuina.features.secondascension.LibrarySecondAscensionModifier
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionNeowModifierFilter
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionState
 LibraryOfRuina.features.secondascension.LibrarySecondAscensionUi
+LibraryOfRuina.features.moontext.MonsterMoonTextLoop
 LibraryOfRuina.features.moontext.MoonTextBbcodeParser
 LibraryOfRuina.features.moontext.MoonTextSequenceEntry
 LibraryOfRuina.features.moontext.MoonTextService
