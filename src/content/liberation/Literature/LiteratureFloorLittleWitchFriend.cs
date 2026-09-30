@@ -133,8 +133,7 @@ public sealed class LiteratureFloorLittleWitchFriend : LorMonsterModel
     {
         if (!wasRemovalPrevented
             && creature == Creature
-            && creature.CombatState?.Enemies
-                .Where(static enemy => enemy.IsAlive)
+            && creature.CombatState?.LivingEnemies()
                 .Select(static enemy => enemy.Monster)
                 .OfType<LiteratureFloorLaetitiaBoss>()
                 .FirstOrDefault() is { } laetitia)

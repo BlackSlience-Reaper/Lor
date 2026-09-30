@@ -504,7 +504,7 @@ public sealed class Nosferatu : LorMonsterModel
         Creature.CombatState?.LivingPlayerCreatures().ToArray() ?? [];
 
     private IEnumerable<Creature> LivingEnemies() =>
-        Creature.CombatState?.Enemies.Where(static creature => creature.IsAlive).ToArray() ?? [];
+        Creature.CombatState?.LivingEnemies().ToArray() ?? [];
 
     private bool HasLivingBloodBat() =>
         Creature.CombatState?.Enemies.Any(static enemy => enemy.IsAlive && enemy.Monster is BloodBat) ?? false;

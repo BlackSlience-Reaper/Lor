@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.combat;
 
 namespace LibraryOfRuina.content.specialguests.Rnfmabj;
 
@@ -113,8 +114,7 @@ internal sealed partial class RnfmabjDirectiveOverlay : Control
 
     private void Refresh(bool force)
     {
-        Rnfmabj? boss = _combatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        Rnfmabj? boss = _combatState.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<Rnfmabj>()
             .FirstOrDefault();

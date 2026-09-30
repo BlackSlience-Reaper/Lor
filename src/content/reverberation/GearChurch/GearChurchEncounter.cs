@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
@@ -50,8 +51,7 @@ public sealed class GearChurchEncounter : ReverberationEncounterModel
     }
 
     internal static GearChurchFollower[] Followers(CombatStateLike state) =>
-        state.Enemies
-            .Where(creature => creature.IsAlive)
+        state.LivingEnemies()
             .OrderBy(creature => creature.CombatId)
             .Select(creature => creature.Monster)
             .OfType<GearChurchFollower>()

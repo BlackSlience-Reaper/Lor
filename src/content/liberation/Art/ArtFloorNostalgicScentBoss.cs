@@ -326,8 +326,7 @@ public sealed class ArtFloorNostalgicScentBoss : LiberationPhaseBossMonster
     {
         await ExecuteGroupAttack(SpringDamage, "Blunt", "vfx/vfx_attack_blunt", AttackSfxPath);
 
-        IReadOnlyList<Creature> allies = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> allies = CombatState.LivingEnemies()
             .ToArray();
         if (allies.Count > 0)
         {

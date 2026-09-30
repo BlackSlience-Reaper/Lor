@@ -630,8 +630,7 @@ public sealed class LiteratureFloorBlackSwanBoss :
 
     private LiteratureFloorBlackSwanBrotherBase[] GetLivingBrothers(
         CombatStateLike combatState) =>
-        combatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        combatState.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LiteratureFloorBlackSwanBrotherBase>()
             .OrderBy(static brother => brother.BrotherNumber)

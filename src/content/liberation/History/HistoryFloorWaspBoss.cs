@@ -319,8 +319,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         await CreatureCmd.TriggerAnim(Creature, "Defend", 0.45f);
         await CreatureCmd.GainBlock(Creature, LoyaltyBlock, ValueProp.Move, null);
 
-        IReadOnlyList<Creature> allies = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> allies = CombatState.LivingEnemies()
             .Where(enemy => enemy != Creature)
             .ToArray();
         if (allies.Count > 0)
@@ -345,8 +344,7 @@ public sealed class HistoryFloorWaspBoss : LiberationPhaseBossMonster
         await CreatureCmd.TriggerAnim(Creature, "Cast", 0.45f);
         await CreatureCmd.GainBlock(Creature, WarlikeBlock, ValueProp.Move, null);
 
-        IReadOnlyList<Creature> allies = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> allies = CombatState.LivingEnemies()
             .Where(enemy => enemy != Creature)
             .ToArray();
         foreach (Creature ally in allies)

@@ -223,8 +223,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
 
     private bool AreAllSmallSpidersDead()
     {
-        return Creature.CombatState?.Enemies
-            .Where(e => e.IsAlive)
+        return Creature.CombatState?.LivingEnemies()
             .Select(e => e.Monster)
             .OfType<SpiderBudSmallSpider>()
             .Any() != true;

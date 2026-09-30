@@ -554,8 +554,7 @@ public sealed class GearChurchFollower : GearChurchMonsterBase
         {
             return;
         }
-        ReverberationEileen? eileen = state.Enemies
-            .Where(creature => creature.IsAlive)
+        ReverberationEileen? eileen = state.LivingEnemies()
             .Select(creature => creature.Monster)
             .OfType<ReverberationEileen>()
             .FirstOrDefault();

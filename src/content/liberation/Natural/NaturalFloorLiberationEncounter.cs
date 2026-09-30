@@ -431,7 +431,7 @@ public sealed partial class NaturalFloorLiberationEncounter : LiberationEncounte
 
     internal Creature[] LivingPlayers() => _combatState?.LivingPlayerCreatures().ToArray() ?? [];
 
-    internal Creature[] LivingMonsters() => _combatState?.Enemies.Where(static c => c.IsAlive).ToArray() ?? [];
+    internal Creature[] LivingMonsters() => _combatState?.LivingEnemies().ToArray() ?? [];
 
     internal Creature[] Staffs() => LivingMonsters().Where(static c => c.Monster is NaturalFloorHermitStaff)
         .OrderBy(static c => ((NaturalFloorHermitStaff)c.Monster!).SlotNumber).ToArray();

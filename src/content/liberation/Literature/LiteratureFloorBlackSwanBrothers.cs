@@ -281,8 +281,7 @@ public abstract class LiteratureFloorBlackSwanBrotherBase :
     }
 
     private LiteratureFloorBlackSwanBoss? ResolveBlackSwan() =>
-        Creature.CombatState?.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        Creature.CombatState?.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LiteratureFloorBlackSwanBoss>()
             .FirstOrDefault();

@@ -147,8 +147,7 @@ public sealed class LiteratureFloorEnhancedSmallSpider :
         }
 
         _deathReported = true;
-        LiteratureFloorRedEyesBoss? redEyes = Creature.CombatState?.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        LiteratureFloorRedEyesBoss? redEyes = Creature.CombatState?.LivingEnemies()
             .Select(static enemy => enemy.Monster)
             .OfType<LiteratureFloorRedEyesBoss>()
             .FirstOrDefault();

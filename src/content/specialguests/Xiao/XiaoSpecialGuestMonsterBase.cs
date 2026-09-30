@@ -364,8 +364,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
             return;
         }
 
-        foreach (Creature guest in Creature.CombatState.Enemies
-                     .Where(static guest => guest.IsAlive)
+        foreach (Creature guest in Creature.CombatState.LivingEnemies()
                      .OrderBy(static guest => guest.CombatId))
         {
             await LibraryPowerCmd.Apply<LibraryProtectionPower>(guest, 1, 1, Creature, null);

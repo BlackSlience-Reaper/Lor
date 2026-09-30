@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -199,8 +200,7 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
 
         await CreatureCmd.TriggerAnim(Creature, "Cast", 0.6f);
 
-        IReadOnlyList<Creature> others = CombatState.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        IReadOnlyList<Creature> others = CombatState.LivingEnemies()
             .Where(enemy => enemy != Creature)
             .ToArray();
         foreach (Creature enemy in others)

@@ -586,8 +586,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
             .ToArray() ?? [];
 
     private IEnumerable<Creature> LivingEnemies() =>
-        Creature.CombatState?.Enemies
-            .Where(static enemy => enemy.IsAlive)
+        Creature.CombatState?.LivingEnemies()
             .ToArray() ?? [];
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
