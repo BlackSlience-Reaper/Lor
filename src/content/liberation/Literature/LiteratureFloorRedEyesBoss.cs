@@ -8,6 +8,7 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -281,7 +282,7 @@ public sealed class LiteratureFloorRedEyesBoss :
     {
         await base.AfterSideTurnStart(side, participants, combatState);
         // 意图和狩猎窗口一起延后，避免玩家无法操作时提前消耗狩猎次数。
-        if (side == CombatSide.Player && HuntPending)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && HuntPending)
         {
             await StartHuntFromSmallSpiderDeath();
         }

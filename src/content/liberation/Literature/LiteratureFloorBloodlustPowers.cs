@@ -126,7 +126,7 @@ public sealed class LiteratureFloorBloodlustGlitterPassivePower :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || Owner.IsDead
             || Owner.Monster is not LiteratureFloorBloodlustBoss boss)
         {

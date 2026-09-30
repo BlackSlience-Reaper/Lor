@@ -178,7 +178,7 @@ public sealed class LanguageFloorRagePower : LibraryDurationPowerModel
         CombatStateLike combatState)
     {
         await base.AfterSideTurnStart(side, participants, combatState);
-        if (side == CombatSide.Player && Owner.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Owner.IsAlive)
         {
             await LibraryPowerCmd.Apply<LibraryStrongPower>(
                 new ThrowingPlayerChoiceContext(),

@@ -133,7 +133,7 @@ public sealed class NosferatuHydrophobiaPassivePower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player || Owner.IsDead)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead)
         {
             return;
         }

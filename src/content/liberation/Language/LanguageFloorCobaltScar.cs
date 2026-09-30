@@ -2,6 +2,7 @@ using LibraryLib.Models;
 using System;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
@@ -339,7 +340,7 @@ public sealed class LanguageFloorCobaltScar :
         IReadOnlyList<Creature> participants,
         ICombatState combatState)
     {
-        if (side == CombatSide.Player && Creature.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive)
         {
             if (Form == LanguageFloorCobaltScarForm.CobaltScar
                 && Creature.CurrentHp <= TransformHpThreshold(Creature.MaxHp))
@@ -386,7 +387,7 @@ public sealed class LanguageFloorCobaltScar :
         IEnumerable<Creature> participants)
     {
         await base.AfterSideTurnEndInternal(choiceContext, side, participants);
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             if (Creature.IsAlive
                 && Form == LanguageFloorCobaltScarForm.CobaltScar

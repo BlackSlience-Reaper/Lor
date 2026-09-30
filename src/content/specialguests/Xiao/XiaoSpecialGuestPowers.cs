@@ -111,7 +111,7 @@ public sealed class XiaoPulaoBellPassivePower : XiaoGuestPowerBase
         CombatStateLike combatState)
     {
         _ = participants;
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || (combatState.RoundNumber - FirstTriggerRound)
             % RepeatIntervalRounds != 0)
         {

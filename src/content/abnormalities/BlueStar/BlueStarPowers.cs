@@ -127,7 +127,7 @@ public sealed class BlueStarMartyrPower : LibraryOfRuinaPowerModel
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player
+        if (!TurnParticipants.IsRoundPlayerTurn(side)
             || Owner.IsDead
             || !BlueStarEncounterHelper.IsBlueStarEncounter(combatState)
             || BlueStarEncounterHelper.LivingFollowers(combatState).Count

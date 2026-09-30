@@ -481,7 +481,7 @@ public sealed class JudgementBirdUnjustScalePower :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (Owner.IsDead || side != CombatSide.Player)
+        if (Owner.IsDead || !TurnParticipants.IsRoundPlayerTurn(side))
         {
             return;
         }
@@ -555,7 +555,7 @@ public sealed class JudgementBirdJudgementPower :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Player
+        return TurnParticipants.IsRoundPlayerTurn(side)
             && Owner.Monster is JudgementBirdMonster bird
                 ? bird.QueueJudgementIfRequired()
                 : Task.CompletedTask;

@@ -326,7 +326,7 @@ public sealed class HistoryFloorWaspPheromonePower : LibraryOfRuinaPowerModel
         CombatStateLike combatState)
     {
         Data data = GetInternalData<Data>();
-        if (side == CombatSide.Player)
+        if (TurnParticipants.IsRoundPlayerTurn(side))
         {
             data.EnemyTurnCount++;
             data.WarlikeQueuedForNextEnemyTurn = false;

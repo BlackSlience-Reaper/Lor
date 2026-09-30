@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -206,7 +207,7 @@ public sealed class TechnologyFloorMk4LimiterReleasedPower : LibraryOfRuinaPower
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player || Owner.IsDead)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead)
         {
             return;
         }

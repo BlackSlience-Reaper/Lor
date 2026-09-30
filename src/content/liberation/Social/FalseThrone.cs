@@ -215,7 +215,7 @@ public sealed class FalseThrone :
     {
         if (Creature.IsAlive && Encounter is { } encounter)
         {
-            if (side == CombatSide.Player)
+            if (TurnParticipants.IsRoundPlayerTurn(side))
             {
                 await encounter.OnBeforePlayerTurn(this, combatState);
             }

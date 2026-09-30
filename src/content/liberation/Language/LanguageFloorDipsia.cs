@@ -240,7 +240,7 @@ public sealed class LanguageFloorDipsia :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side == CombatSide.Player && Creature.IsAlive)
+        if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive)
         {
             if (!IsTransformed
                 && !TransformPending

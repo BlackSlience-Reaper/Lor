@@ -4,6 +4,7 @@ using Godot;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
@@ -86,7 +87,7 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        if (side != CombatSide.Player || Owner.IsDead)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead)
         {
             return;
         }
