@@ -1,0 +1,28 @@
+# 本模组引用、且存在于原版 PCK（SlayTheSpire2.app/Contents/Resources/Slay the Spire 2.pck）的资源路径。
+# 由 tools/check_res_paths.py --generate <原版.pck> <LibraryOfRuinaLib.pck> 生成，tools/check.sh 核对；
+# 只收 src/ 里完整字面量引用到的路径。游戏或前置库更新后重新生成，diff 里消失的行就是上游删掉或改名的资源。
+res://fonts/jpn/NotoSansCJKjp-Regular.otf
+res://images/atlases/intent_atlas.sprites/intent_death_blow.tres
+res://images/atlases/relic_atlas.sprites/red_skull.tres
+res://images/atlases/ui_atlas.sprites/top_bar/top_bar_heart.tres
+res://images/packed/combat_ui/discard_pile.png
+res://images/packed/combat_ui/draw_pile.png
+res://images/packed/combat_ui/exhaust_pile.png
+res://images/packed/sprite_fonts/card_icon.png
+res://images/ui/combat/block.png
+res://images/ui/hover_tip.png
+res://images/ui/reward_screen/reward_skip_button.png
+res://scenes/cards/card.tscn
+res://scenes/screens/ascension_panel.tscn
+res://scenes/screens/card_library/library_pool_toggle.tscn
+res://scenes/ui/card_hover_tip.tscn
+res://scenes/ui/hover_tip.tscn
+res://shaders/ftue_popup.tres
+res://shaders/hsv.gdshader
+res://themes/fonts/zhs/noto_sans_mono_cjksc_regular_shared.tres
+res://themes/kreon_bold_glyph_space_one.tres
+res://themes/kreon_bold_glyph_space_two.tres
+res://themes/kreon_bold_shared.tres
+res://themes/kreon_regular_glyph_space_one.tres
+res://themes/kreon_regular_shared.tres
+res://themes/settings_screen_line_header.tres

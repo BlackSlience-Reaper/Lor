@@ -18,6 +18,8 @@ if grep -rn --include='*.cs' 'DebugOnlyGetState' "$ROOT/src" | grep -v '/src/inf
 fi
 # The zhs story font is a subset; new zhs text must not use a character outside it.
 python3 "$ROOT/tools/check_zhs_font.py"
+# src/ 里完整的 res:// 字面量必须指向仓库里的文件，或列在原版/前置库/可选路径清单里（大小写敏感）。
+python3 "$ROOT/tools/check_res_paths.py"
 # No reflection by name outside src/interop/ (syntax-based); the self-test covers the forms that must be caught.
 dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release -- --self-test "$ROOT/tools/PrivateAccessCheck/fixtures"
 dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release --no-build -- "$ROOT/src" "$ROOT/tools/private_access_allowlist.txt"
