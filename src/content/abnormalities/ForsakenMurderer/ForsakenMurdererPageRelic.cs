@@ -112,8 +112,7 @@ public sealed class ForsakenMurdererPageRelic : ModalPageRelic<ForsakenMurdererP
             return;
         }
 
-        List<Creature> aliveEnemies = combatState.HittableEnemies
-            .Where(static enemy => enemy.IsAlive)
+        List<Creature> aliveEnemies = combatState.LivingHittableEnemies()
             .ToList();
 
         if (aliveEnemies.Count == 0)

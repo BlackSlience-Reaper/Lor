@@ -158,8 +158,7 @@ public sealed class BigBirdPageRelic : ModalPageRelic<BigBirdPageMode>
         }
 
         Flash();
-        Creature[] enemies = Owner.Creature.CombatState.HittableEnemies
-            .Where(static creature => creature.IsAlive)
+        Creature[] enemies = Owner.Creature.CombatState.LivingHittableEnemies()
             .ToArray();
         foreach (Creature enemy in enemies)
         {
