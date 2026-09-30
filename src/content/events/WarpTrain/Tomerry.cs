@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -12,7 +13,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.events.WarpTrain;
@@ -172,7 +172,7 @@ public sealed class Tomerry : MonsterModel
         _transitionStunTurns = 0;
 
         if (!wasPhaseTwo
-            && NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is TomerryCreatureVisuals visuals)
+            && CombatQueries.CreatureNodeOf(this)?.Visuals is TomerryCreatureVisuals visuals)
         {
             visuals.SetPhaseTwo();
         }
@@ -188,7 +188,7 @@ public sealed class Tomerry : MonsterModel
             SetMoveImmediate(_loveTownWelcomesAllState, forceTransition: true);
         }
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();

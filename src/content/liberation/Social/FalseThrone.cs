@@ -23,7 +23,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -978,7 +977,7 @@ public sealed class FalseThrone :
             : _moves[FalseThroneMove.InitialSequence].Id;
 
     private Task RefreshIntents() =>
-        NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents()
+        CombatQueries.CreatureNodeOf(this)?.RefreshIntents()
         ?? Task.CompletedTask;
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()

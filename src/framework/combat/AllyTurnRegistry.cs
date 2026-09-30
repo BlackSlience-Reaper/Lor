@@ -9,7 +9,6 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.framework.combat;
 
@@ -304,7 +303,7 @@ public static class AllyTurnRegistry
                 ally.PrepareForNextTurn(combatState.Enemies);
             }
 
-            var creatureNode = NCombatRoom.Instance?.GetCreatureNode(ally);
+            var creatureNode = CombatQueries.CreatureNodeOf(ally);
             if (creatureNode != null)
             {
                 await creatureNode.PerformIntent();

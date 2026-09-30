@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using VoidCard = MegaCrit.Sts2.Core.Models.Cards.Void;
 
@@ -763,7 +762,7 @@ public sealed class ArtFloorFinalDaCapoBoss : LiberationPhaseBossMonster
 
     private Task RefreshNodeIntents()
     {
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        return CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
     private void SyncPerformerHiddenIntents()

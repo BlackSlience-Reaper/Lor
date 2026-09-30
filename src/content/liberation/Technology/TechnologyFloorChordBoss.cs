@@ -5,6 +5,7 @@ using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.infra.helpers;
@@ -19,7 +20,6 @@ using MegaCrit.Sts2.Core.MonsterMoves;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -381,7 +381,7 @@ public sealed class TechnologyFloorChordBoss : LiberationPhaseBossMonster
             _egoQueued = true;
             SetMoveImmediate(_egoState, forceTransition: true);
 
-            NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+            NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
             creatureNode?.RefreshIntents();
         }
     }

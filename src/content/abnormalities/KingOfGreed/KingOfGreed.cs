@@ -25,7 +25,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -714,7 +713,7 @@ public sealed class KingOfGreed : LorMonsterModel
 
         PresentationGuard.Run(() =>
         {
-            if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is KingOfGreedCreatureVisuals visuals)
+            if (CombatQueries.CreatureNodeOf(this)?.Visuals is KingOfGreedCreatureVisuals visuals)
             {
                 visuals.SetKingForm(true);
             }

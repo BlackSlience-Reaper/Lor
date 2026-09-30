@@ -5,6 +5,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
@@ -18,7 +19,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -580,7 +580,7 @@ public sealed class LiteratureFloorBlackSwanBoss :
         }
 
         SetMoveImmediate(_swanSongState, forceTransition: true);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }

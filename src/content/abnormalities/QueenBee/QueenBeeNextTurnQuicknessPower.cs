@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;
 
@@ -67,7 +67,7 @@ public sealed class QueenBeeNextTurnQuicknessPower : LibraryOfRuinaPowerModel
             return;
         }
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Owner) is { } creatureNode)
+        if (CombatQueries.CreatureNodeOf(this) is { } creatureNode)
         {
             await creatureNode.RefreshIntents();
         }

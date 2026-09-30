@@ -6,6 +6,7 @@ using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
@@ -23,7 +24,6 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -421,7 +421,7 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
 
         PresentationGuard.Run(() =>
         {
-            if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is QueenOfHatredCreatureVisuals visuals)
+            if (CombatQueries.CreatureNodeOf(this)?.Visuals is QueenOfHatredCreatureVisuals visuals)
             {
                 visuals.SetSnakeForm(true);
             }
@@ -438,7 +438,7 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
 
         await PowerCmd.Remove(Creature.GetPower<LibraryOfRuinaQueenInversionPower>());
 
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(Creature);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
             await creatureNode.RefreshIntents();

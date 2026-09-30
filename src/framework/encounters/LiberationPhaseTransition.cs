@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Godot;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
+using LibraryOfRuina.framework.combat;
 
 namespace LibraryOfRuina.framework.encounters;
 
@@ -35,7 +35,7 @@ internal static class LiberationPhaseTransition
             boss.ForceReviveAndEmpowerState();
         }
 
-        if (NCombatRoom.Instance?.GetCreatureNode(boss.Creature)
+        if (CombatQueries.CreatureNodeOf(boss.Creature)
             is not NCreature node)
         {
             return;

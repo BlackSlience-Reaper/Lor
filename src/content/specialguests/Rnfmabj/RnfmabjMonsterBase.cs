@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.infra.helpers;
@@ -14,7 +15,6 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 
 namespace LibraryOfRuina.content.specialguests.Rnfmabj;
@@ -203,7 +203,7 @@ public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
         RevealPlan();
         await PresentationGuard.RunAsync(async () =>
         {
-            if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+            if (CombatQueries.CreatureNodeOf(this) is { } node)
             {
                 await node.RefreshIntents();
             }

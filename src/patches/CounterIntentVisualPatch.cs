@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Godot;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
 using LibraryOfRuina.infra.helpers;
@@ -10,7 +11,6 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.patches;
 
@@ -40,7 +40,7 @@ internal static class CounterIntentVisualPatch
 
     public static void RefreshCounterIntentDisplay(Creature owner)
     {
-        NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+        NCreature? creatureNode = CombatQueries.CreatureNodeOf(owner);
         if (creatureNode == null)
         {
             return;

@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.specialguests.Kali;
@@ -175,7 +175,7 @@ public sealed partial class Kali
             libraryCreature.HealthBar?.RefreshValues();
         }
 
-        if (NCombatRoom.Instance?.GetCreatureNode(creature) is { } creatureNode)
+        if (CombatQueries.CreatureNodeOf(creature) is { } creatureNode)
         {
             await creatureNode.RefreshIntents();
         }
@@ -232,7 +232,7 @@ public sealed partial class Kali
         await RefreshRedMistStrongEnduranceContributions();
         KaliCreatureVisuals.SetEgoState(Creature, active: true);
         EncounterBgmController.ForceCurrentEncounterTrack(EgoBgmPath, "RedMistEgoBGM");
-        NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents();
+        CombatQueries.CreatureNodeOf(this)?.RefreshIntents();
     }
 
     private async Task DismissEgo()

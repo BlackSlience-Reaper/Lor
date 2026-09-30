@@ -9,6 +9,7 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using MegaCrit.Sts2.Core.Combat;
@@ -19,7 +20,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Literature;
@@ -279,7 +279,7 @@ public sealed class LiteratureFloorLaetitiaBoss :
         }
 
         SetMoveImmediate(_superGiftState, forceTransition: true);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }

@@ -22,7 +22,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -262,7 +261,7 @@ public sealed class Nosferatu : LorMonsterModel
         _cycleIndex = 0;
         LocalOggOneShotPlayer.Play(SfxRoot + "nosferatu_transform.ogg", LocalSfxVolumeDb);
 
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is NosferatuCreatureVisuals visuals)
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals is NosferatuCreatureVisuals visuals)
         {
             visuals.SetBloodfiendForm(true);
         }

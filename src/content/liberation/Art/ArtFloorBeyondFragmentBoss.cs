@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Saves;
 
 namespace LibraryOfRuina.content.liberation.Art;
@@ -140,7 +139,7 @@ public sealed class ArtFloorBeyondFragmentBoss : LiberationPhaseBossMonster
 
         _egoQueued = true;
         SetMoveImmediate(_egoState, forceTransition: true);
-        return NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents() ?? Task.CompletedTask;
+        return CombatQueries.CreatureNodeOf(this)?.RefreshIntents() ?? Task.CompletedTask;
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

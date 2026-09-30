@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -244,7 +245,7 @@ public sealed class RoadHomePageRelic : ModalPageRelic<RoadHomePageMode>
             if (companion.Monster?.NextMove.Id == "UNSET_MOVE")
             {
                 companion.PrepareForNextTurn(combatState.Enemies);
-                if (NCombatRoom.Instance?.GetCreatureNode(companion) is { } creatureNode)
+                if (CombatQueries.CreatureNodeOf(companion) is { } creatureNode)
                 {
                     await creatureNode.RefreshIntents();
                 }
@@ -255,7 +256,7 @@ public sealed class RoadHomePageRelic : ModalPageRelic<RoadHomePageMode>
 
     private void PositionCompanionNode(Creature companion)
     {
-        if (NCombatRoom.Instance?.GetCreatureNode(companion) is not { } node)
+        if (CombatQueries.CreatureNodeOf(companion) is not { } node)
         {
             return;
         }

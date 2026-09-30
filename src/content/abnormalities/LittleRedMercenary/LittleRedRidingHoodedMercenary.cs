@@ -21,7 +21,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -340,7 +339,7 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
         _unrelievedAnger = true;
         await MultiplayerScalingPatchHelper.RescaleMonsterMaxHpAndRestoreDifference(
             Creature);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature)?.Visuals is LittleRedMercenaryCreatureVisuals visuals)
+        if (CombatQueries.CreatureNodeOf(this)?.Visuals is LittleRedMercenaryCreatureVisuals visuals)
         {
             visuals.FacePlayers();
         }
@@ -533,7 +532,7 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
 
     private async Task RefreshIntents()
     {
-        NCombatRoom.Instance?.GetCreatureNode(Creature)?.RefreshIntents();
+        CombatQueries.CreatureNodeOf(this)?.RefreshIntents();
         await Task.CompletedTask;
     }
 

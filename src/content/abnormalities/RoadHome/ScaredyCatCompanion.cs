@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.interop;
@@ -17,7 +18,6 @@ using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -80,7 +80,7 @@ public sealed class ScaredyCatCompanion : LorMonsterModel, ITargetedMonsterAttac
         await ApplyConfiguredPowers();
         await PowerCmdCompat.Apply<ScaredyCatCompanionCowardPower>(Creature, 1, Creature, null, silent: true);
         Creature.PrepareForNextTurn(CombatState.Enemies);
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } creatureNode)
+        if (CombatQueries.CreatureNodeOf(this) is { } creatureNode)
         {
             await creatureNode.RefreshIntents();
         }

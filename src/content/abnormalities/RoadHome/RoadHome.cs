@@ -18,7 +18,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -133,7 +132,7 @@ public sealed class RoadHome : LorMonsterModel
         await RoadHomeEncounterHelper.OnRoadHomeTookDamage(Creature, result.UnblockedDamage);
         _pendingHomeInterruptsThisTurn++;
         ForceRefreshMoveState();
-        if (NCombatRoom.Instance?.GetCreatureNode(Creature) is { } node)
+        if (CombatQueries.CreatureNodeOf(this) is { } node)
         {
             await node.RefreshIntents();
         }

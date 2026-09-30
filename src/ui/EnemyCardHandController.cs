@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Godot;
+using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
 using MegaCrit.Sts2.Core.Assets;
@@ -13,7 +14,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace LibraryOfRuina.ui;
 
@@ -524,7 +524,7 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
     {
         try
         {
-            NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(runtime.Owner.Creature);
+            NCreature? creatureNode = CombatQueries.CreatureNodeOf(runtime.Owner);
             if (creatureNode == null)
             {
                 return null;
@@ -601,7 +601,7 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
 
         if (container == null || !GetContainerVisuals(container).Any(static visual => visual._isHovered))
         {
-            NCombatRoom.Instance?.GetCreatureNode(_owner)?.HideHoverTips();
+            CombatQueries.CreatureNodeOf(_owner)?.HideHoverTips();
         }
     }
 
@@ -620,7 +620,7 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
             hoverTips.AddRange(card.HoverTips);
             hoverTips = IHoverTip.RemoveDupes(hoverTips).ToList();
 
-            NCombatRoom.Instance?.GetCreatureNode(_owner)?.ShowHoverTips(hoverTips);
+            CombatQueries.CreatureNodeOf(_owner)?.ShowHoverTips(hoverTips);
         }
         catch (Exception ex)
         {
