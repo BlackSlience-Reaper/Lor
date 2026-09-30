@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.content.specialguests;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.features.secondascension;
 using LibraryOfRuina.interop;
@@ -25,6 +26,7 @@ using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Saves.Runs;
+using MegaCrit.sts2.Core.Nodes.TopBar;
 using Environment = System.Environment;
 
 namespace LibraryOfRuinaVerification;
@@ -41,7 +43,8 @@ namespace LibraryOfRuinaVerification;
 /// <item><c>mp-new</c>：房主按本地设置追加载体，修改器列表按联机报文往返后，本地设置不同的客户端取出的是房主的值；
 /// 两端各自建两名玩家的局，房间序列相同。</item>
 /// <item><c>mp-load</c>：房主规范化旧存档时补建，报文往返后本地设置不同的客户端读到同一个值。</item>
-/// <item><c>daily-load</c>：联机每日挑战读档界面的修改器格子数量，以及带载体的存档经过该界面初始化后载体仍在。</item>
+/// <item><c>daily-load</c>：联机每日挑战读档界面的修改器格子数量，以及带三种载体（本局设置、特邀嘉宾、第二升华）的存档经过该界面初始化后载体仍在。</item>
+/// <item><c>hidden</c>：三种载体都不创建顶栏图标。</item>
 /// <item><c>wiring</c>：Neow 过滤排除载体；离开本局后抗性回到本地设置。</item>
 /// <item><c>mismatch</c>：两端注入状态不一致的判定与文案（开局报文、读档存档两条路径，房主注入 / 未注入两个方向）。</item>
 /// </list>
@@ -102,6 +105,7 @@ internal static class RunSettingsVerificationPatch
             VerifyMultiplayerNewRun(roomsOn);
             VerifyMultiplayerLoad(json);
             await VerifyDailyLoadScreen();
+            VerifyHiddenModifiers();
             VerifyWiring();
             VerifyInjectionMismatch(json);
             VerifyAttachFailure();
@@ -277,7 +281,22 @@ internal static class RunSettingsVerificationPatch
         RunManager.Instance.SetUpNewSingleplayer(state, shouldSave: false, DateTimeOffset.UtcNow);
         SerializableRun save = RunManager.Instance.ToSave(null);
         CleanupRun();
+        // 特邀嘉宾与第二升华的载体在局中才追加，这里直接补进存档，让三种载体都经过读档界面。
+        foreach (ModifierModel carrier in new ModifierModel[]
+                 {
+                     ModelDb.Modifier<SpecialGuestRunStateModifier>(),
+                     ModelDb.Modifier<LibrarySecondAscensionModifier>(),
+                 })
+        {
+            if (save.Modifiers.All(modifier => modifier.Id != carrier.Id))
+            {
+                save.Modifiers.Add(carrier.ToMutable().ToSerializable());
+            }
+        }
+
         int modifierCount = save.Modifiers.Count;
+        int dailyCount = save.Modifiers.Count(static modifier => !LibraryHiddenModifiers.IsHidden(modifier.Id));
+        Require(dailyCount == daily.Count, "daily-load: a daily modifier is treated as hidden");
 
         NDailyRunLoadScreen screen = NDailyRunLoadScreen.Create()
             ?? throw new InvalidOperationException("daily-load: screen scene unavailable");
@@ -287,7 +306,7 @@ internal static class RunSettingsVerificationPatch
         {
             int slots = screen.GetNode<Control>("%ModifiersContainer").GetChildren().OfType<NDailyRunScreenModifier>().Count();
             Row("daily-load slots=" + slots + " saveModifiers=" + modifierCount);
-            Require(modifierCount > slots, "daily-load: the save does not exceed the slots, the patch is not exercised");
+            Require(modifierCount >= slots + 3, "daily-load: the save does not carry all three carriers beyond the slots");
 
             var lobby = new LoadRunLobby(new NetSingleplayerGameService(), screen, save);
             typeof(NDailyRunLoadScreen)
@@ -298,6 +317,8 @@ internal static class RunSettingsVerificationPatch
                 .Invoke(screen, null);
             Require(lobby.Run.Modifiers.Count == modifierCount, "daily-load: the save lost modifiers after display");
             Require(LibraryRunSettings.Find(lobby.Run) != null, "daily-load: carrier was not restored");
+            Require(lobby.Run.Modifiers.Count(static modifier => LibraryHiddenModifiers.IsHidden(modifier.Id)) == 3,
+                "daily-load: the special guest or second ascension carrier was not restored");
             lobby.CleanUp(disconnectSession: false);
         }
         finally
@@ -306,6 +327,29 @@ internal static class RunSettingsVerificationPatch
         }
 
         Row("daily-load ok");
+    }
+
+    // 三种载体的顶栏图标都不创建。
+    private static void VerifyHiddenModifiers()
+    {
+        ModifierModel[] carriers =
+        [
+            LibraryRunSettingsModifier.CreateFromLocalSettings(),
+            ModelDb.Modifier<SpecialGuestRunStateModifier>().ToMutable(),
+            ModelDb.Modifier<LibrarySecondAscensionModifier>().ToMutable(),
+        ];
+        foreach (ModifierModel carrier in carriers)
+        {
+            NTopBarModifier? icon = NTopBarModifier.Create(carrier);
+            Row("hidden topBarIcon " + carrier.Id.Entry + "=" + (icon == null ? "none" : "created"));
+            Require(icon == null, "hidden: top bar created an icon for " + carrier.Id.Entry);
+            Require(LibraryHiddenModifiers.IsHidden(carrier.Id), "hidden: id not recognized for " + carrier.Id.Entry);
+        }
+
+        ModifierModel dailyModifier = ModifierModel.Pick2Good1Bad(new Rng(7uL), []).First();
+        Require(!LibraryHiddenModifiers.IsHidden(dailyModifier), "hidden: a vanilla modifier is hidden");
+
+        Row("hidden ok");
     }
 
     private static void VerifyWiring()
