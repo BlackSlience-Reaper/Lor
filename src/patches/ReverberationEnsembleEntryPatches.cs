@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.content.reverberation;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Events;
 using MegaCrit.Sts2.Core.Rooms;
@@ -15,7 +16,7 @@ internal static class ReverberationEnsembleEntryRoomPatch
     [HarmonyPrefix]
     private static void Prefix(RunManager __instance, ref AbstractRoom room, bool isRestoringRoomStackBase)
     {
-        RunState? state = __instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.Of(__instance);
 
         // 选幕及地图生成完成后，用序幕事件接替首次地图房间；先古仍是地图起点。
         // 直接使用原版淡入、事件投票与房间生命周期，读档也根据当前幕和已走节点判断。

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models.Events;
@@ -148,7 +149,7 @@ internal static class LibraryOfRuinaNeowFtuePatch
     {
         if (!GodotObject.IsInstanceValid(eventRoom)
             || !ReferenceEquals(NEventRoom.Instance, eventRoom)
-            || RunManager.Instance.DebugOnlyGetState() is not RunState
+            || CurrentRun.State is not RunState
             {
                 CurrentRoom: EventRoom { IsPreFinished: false }
             })

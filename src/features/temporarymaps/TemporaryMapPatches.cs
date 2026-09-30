@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Nodes.Screens.Map;
 using MegaCrit.Sts2.Core.Rooms;
@@ -17,7 +18,7 @@ internal static class TemporaryMapSavePatch
     [HarmonyPostfix]
     private static void Postfix(SerializableRun __result)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state == null || !TemporaryMapSessionManager.TryGetSession(state, out TemporaryMapSession? session))
         {
             TemporaryMapSaveStateStore.Clear();
@@ -55,7 +56,7 @@ internal static class TemporaryMapMapOpenPatch
     [HarmonyPostfix]
     private static void Postfix()
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state?.Map != null)
         {
             TemporaryMapController.TryRestoreSavedSessionForCurrentRun(state.Map);

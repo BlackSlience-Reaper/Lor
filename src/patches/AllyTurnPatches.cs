@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
@@ -124,7 +125,7 @@ internal static class AllyTurnStateResetPatch
     [HarmonyPrefix]
     private static void Prefix(CombatManager __instance)
     {
-        CombatState? combatState = __instance.DebugOnlyGetState();
+        CombatState? combatState = CurrentCombat.Of(__instance);
         if (combatState == null)
         {
             return;

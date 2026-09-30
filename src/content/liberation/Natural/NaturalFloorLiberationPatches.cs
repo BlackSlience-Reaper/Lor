@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
@@ -75,7 +76,7 @@ internal static class NaturalFloorSettlementRedirect
 {
     internal static bool TryRedirect(RunManager __instance, ref Task __result)
     {
-        if (__instance.DebugOnlyGetState()?.CurrentRoom is not CombatRoom
+        if (CurrentRun.Of(__instance)?.CurrentRoom is not CombatRoom
             { Encounter: NaturalFloorLiberationEncounter encounter } || !encounter.SettlementTriggered) return true;
         LiberationSettlementProceedHelper.ClearLingeringCardPreviews();
         NaturalFloorLiberationSettlementStore.Record(encounter);

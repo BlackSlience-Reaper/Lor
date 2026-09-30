@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Logging;
@@ -104,7 +105,7 @@ internal static class IoriSpecialGuestBackgroundAssetsPatch
             return true;
         }
 
-        IRunState? runState = RunManager.Instance?.DebugOnlyGetState();
+        IRunState? runState = CurrentRun.State;
         SpecialGuestRunStateModifier? state =
             SpecialGuestRunStateModifier.TryGet(runState);
         (string stageOne, string stageTwo) = ResolveFloorPair(
@@ -335,7 +336,7 @@ internal static class IoriSpecialGuestBgmCombatEndPatch
         CombatManager __instance,
         out bool __state)
     {
-        __state = __instance.DebugOnlyGetState()?.Encounter
+        __state = CurrentCombat.Of(__instance)?.Encounter
             is IoriSpecialGuestStageTwoEncounter;
         if (IsIoriEncounter(__instance))
         {
@@ -363,7 +364,7 @@ internal static class IoriSpecialGuestBgmCombatEndPatch
     }
 
     internal static bool IsIoriEncounter(CombatManager manager) =>
-        manager.DebugOnlyGetState()?.Encounter
+        CurrentCombat.Of(manager)?.Encounter
             is ISpecialGuestEncounterStage
             {
                 SpecialGuestId: IoriSpecialGuestIds.Guest,

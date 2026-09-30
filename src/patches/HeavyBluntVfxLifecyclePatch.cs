@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
@@ -26,7 +27,7 @@ internal static class HeavyBluntVfxLifecyclePatch
         Godot.Collections.Array<GpuParticles2D> ____anticipationParticles,
         Godot.Collections.Array<GpuParticles2D> ____impactParticles)
     {
-        if (!FtueGuard.IsLibraryOfRuinaEncounter(CombatManager.Instance.DebugOnlyGetState()?.Encounter))
+        if (!FtueGuard.IsLibraryOfRuinaEncounter(CurrentCombat.State?.Encounter))
         {
             return true;
         }

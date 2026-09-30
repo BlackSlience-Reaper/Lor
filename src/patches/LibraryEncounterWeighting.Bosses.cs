@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
@@ -34,7 +35,7 @@ internal static partial class LibraryEncounterWeighting
 
         ReweightGeneratedRoomSet(act, rng);
 
-        int actIndex = IndexInRun(RunManager.Instance.DebugOnlyGetState(), act);
+        int actIndex = IndexInRun(CurrentRun.State, act);
         if (actIndex >= 0)
         {
             ForceHistoryFloorFirstActBoss(act, actIndex);
@@ -54,7 +55,7 @@ internal static partial class LibraryEncounterWeighting
             return;
         }
 
-        int actIndex = IndexInRun(RunManager.Instance.DebugOnlyGetState(), act);
+        int actIndex = IndexInRun(CurrentRun.State, act);
         if (actIndex >= 0)
         {
             ForceHistoryFloorFirstActBoss(act, actIndex);
@@ -248,7 +249,7 @@ internal static partial class LibraryEncounterWeighting
         LorActModel act,
         int actIndex)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         EncounterModel? secondBoss = LiberationFloors.ForAct(act)?.DoubleBossSecondEncounter;
         if (secondBoss == null
             || state == null

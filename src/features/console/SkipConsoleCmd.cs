@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.DevConsole;
@@ -41,7 +42,7 @@ public sealed class SkipConsoleCmd : AbstractConsoleCmd
             return new CmdResult(SkipCombatAsync(), success: true, "Skip requested: resolving combat.");
         }
 
-        if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is EventRoom)
+        if (CurrentRun.State?.CurrentRoom is EventRoom)
         {
             return new CmdResult(SkipEventAsync(), success: true, "Skip requested: resolving event.");
         }
@@ -51,7 +52,7 @@ public sealed class SkipConsoleCmd : AbstractConsoleCmd
 
     private static async Task SkipCombatAsync()
     {
-        CombatStateLike? state = CombatManager.Instance.DebugOnlyGetState();
+        CombatStateLike? state = CurrentCombat.State;
         if (!CombatManager.Instance.IsInProgress || state == null)
         {
             return;
@@ -76,7 +77,7 @@ public sealed class SkipConsoleCmd : AbstractConsoleCmd
 
     private static async Task SkipEventAsync()
     {
-        if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom)
+        if (CurrentRun.State?.CurrentRoom is not EventRoom)
         {
             return;
         }

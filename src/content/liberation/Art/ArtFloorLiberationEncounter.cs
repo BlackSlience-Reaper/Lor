@@ -8,6 +8,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Combat;
@@ -680,7 +681,7 @@ public sealed class ArtFloorLiberationEncounter :
 
     internal ArtFloorFinalDaCapoBoss? GetCurrentArtFloorDaCapo()
     {
-        return CombatManager.Instance.DebugOnlyGetState()?.Enemies
+        return CurrentCombat.State?.Enemies
             .Select(static enemy => enemy.Monster)
             .OfType<ArtFloorFinalDaCapoBoss>()
             .FirstOrDefault();

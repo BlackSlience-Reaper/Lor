@@ -7,6 +7,7 @@ using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.content.liberation.Technology;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
@@ -48,7 +49,7 @@ internal static class LiberationSettlementPatches
     {
         private static bool Prefix(ref Task __result)
         {
-            if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not EventRoom { CanonicalEvent: ILibrarySettlementEvent })
+            if (CurrentRun.State?.CurrentRoom is not EventRoom { CanonicalEvent: ILibrarySettlementEvent })
             {
                 return true;
             }

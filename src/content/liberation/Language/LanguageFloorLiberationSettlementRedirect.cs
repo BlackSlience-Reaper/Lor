@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
@@ -16,7 +17,7 @@ internal static class LanguageFloorLiberationSettlementRedirect
         RunManager __instance,
         ref Task __result)
     {
-        if (__instance.DebugOnlyGetState()?.CurrentRoom
+        if (CurrentRun.Of(__instance)?.CurrentRoom
             is not CombatRoom
             {
                 Encounter: LanguageFloorLiberationEncounter encounter

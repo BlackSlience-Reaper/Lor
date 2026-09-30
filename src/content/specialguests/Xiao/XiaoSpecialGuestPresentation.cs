@@ -7,6 +7,7 @@ using Godot;
 using HarmonyLib;
 using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.ui.scene_transitions;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
@@ -163,7 +164,7 @@ internal static class XiaoSpecialGuestBgmCombatEndPatch
     [HarmonyPrefix]
     private static void Prefix(CombatManager __instance)
     {
-        if (__instance.DebugOnlyGetState()?.Encounter is ISpecialGuestEncounterStage
+        if (CurrentCombat.Of(__instance)?.Encounter is ISpecialGuestEncounterStage
             {
                 SpecialGuestId: XiaoSpecialGuestIds.Guest,
             })
@@ -182,7 +183,7 @@ internal static class XiaoSpecialGuestBgmCombatLossPatch
     [HarmonyPrefix]
     private static void Prefix(CombatManager __instance)
     {
-        if (__instance.DebugOnlyGetState()?.Encounter is ISpecialGuestEncounterStage
+        if (CurrentCombat.Of(__instance)?.Encounter is ISpecialGuestEncounterStage
             {
                 SpecialGuestId: XiaoSpecialGuestIds.Guest,
             })
@@ -203,7 +204,7 @@ internal static class XiaoSpecialGuestBgmCombatResetPatch
     [HarmonyPrefix]
     private static void Prefix(CombatManager __instance)
     {
-        if (__instance.DebugOnlyGetState()?.Encounter is ISpecialGuestEncounterStage
+        if (CurrentCombat.Of(__instance)?.Encounter is ISpecialGuestEncounterStage
             {
                 SpecialGuestId: XiaoSpecialGuestIds.Guest,
             })

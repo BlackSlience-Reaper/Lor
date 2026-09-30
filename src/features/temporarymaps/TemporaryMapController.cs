@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.networking;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Map;
@@ -83,7 +84,7 @@ public static class TemporaryMapController
 
     internal static bool TryCreateRoomForCurrentNode(ref AbstractRoom result)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state == null
             || !state.CurrentMapCoord.HasValue
             || !TemporaryMapSessionManager.TryGetSession(state, out TemporaryMapSession? session)
@@ -135,7 +136,7 @@ public static class TemporaryMapController
         try
         {
             await TemporaryMapSessionManager.AwaitNextProcessFrame();
-            if (!ReferenceEquals(runManager.DebugOnlyGetState(), state))
+            if (!ReferenceEquals(CurrentRun.Of(runManager), state))
             {
                 Log.Warn("[TemporaryMap] Temporary-map entry was cancelled because the active run changed.");
                 return;

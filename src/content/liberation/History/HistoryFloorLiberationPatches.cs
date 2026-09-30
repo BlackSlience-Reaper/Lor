@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
@@ -20,7 +21,7 @@ internal static class HistoryFloorLiberationSettlementRedirect
 {
     internal static bool TryRedirect(RunManager __instance, ref Task __result)
     {
-        if (__instance.DebugOnlyGetState()?.CurrentRoom is not CombatRoom { Encounter: HistoryFloorLiberationEncounter encounter })
+        if (CurrentRun.Of(__instance)?.CurrentRoom is not CombatRoom { Encounter: HistoryFloorLiberationEncounter encounter })
         {
             return true;
         }
@@ -78,7 +79,7 @@ internal static class HistoryFloorLiberationPlayerPositionPatch
 
     private static void Postfix(List<NCreature> creatureNodes)
     {
-        if (RunManager.Instance.DebugOnlyGetState()?.CurrentRoom is not CombatRoom { Encounter: HistoryFloorLiberationEncounter })
+        if (CurrentRun.State?.CurrentRoom is not CombatRoom { Encounter: HistoryFloorLiberationEncounter })
         {
             return;
         }

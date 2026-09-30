@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Logging;
@@ -268,7 +269,7 @@ public static class AllyTurnRegistry
     internal static async Task ExecuteAllyTurn(CombatManager combatManager)
     {
         _combatEndedByAllyTurn = false;
-        var combatState = combatManager.DebugOnlyGetState();
+        var combatState = CurrentCombat.Of(combatManager);
         
         if (combatState == null) return;
         if (!combatManager.IsInProgress) return;

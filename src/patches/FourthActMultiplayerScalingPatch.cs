@@ -1,6 +1,7 @@
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
 using LibraryOfRuina.infra.helpers;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Singleton;
@@ -26,7 +27,7 @@ internal static class FourthActMultiplayerScalingPatch
     private static bool Prefix(EncounterModel? encounter, int actIndex, ref decimal __result)
     {
         if (actIndex != ReverberationEnsembleAct.ActNumber - 1
-            || (RunManager.Instance.DebugOnlyGetState()?.Act is not ReverberationEnsembleAct
+            || (CurrentRun.State?.Act is not ReverberationEnsembleAct
                 && !ModOwnership.IsOwn(encounter)))
         {
             return true;

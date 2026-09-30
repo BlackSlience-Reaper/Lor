@@ -1,5 +1,6 @@
 using HarmonyLib;
 using LibraryOfRuina.content.acts;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 
@@ -11,7 +12,7 @@ internal static class ReverberationEnsembleTreasureRoomPatch
     [HarmonyPrefix]
     private static void Prefix(ref int actIndex)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state?.Act is not ReverberationEnsembleAct act
             || actIndex != state.CurrentActIndex)
         {

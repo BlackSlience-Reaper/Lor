@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Map;
@@ -147,7 +148,7 @@ internal static class TemporaryMapSessionManager
 
     public static bool IsCurrentTemporaryMap(ActMap map)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         return state != null
             && SessionStore.TryGetSession(state, out TemporaryMapSession? session)
             && ReferenceEquals(session.TemporaryMap, map);
@@ -188,7 +189,7 @@ internal static class TemporaryMapSessionManager
 
     public static bool TryRestoreSavedSessionForCurrentRun(ActMap map)
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state == null || !SessionStore.TryGetPendingRestore(state, out TemporaryMapRestoreSnapshot? snapshot))
         {
             return false;
@@ -242,7 +243,7 @@ internal static class TemporaryMapSessionManager
 
     public static bool TryRestoreCompletedCurrentRun()
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state == null || !SessionStore.TryGetSession(state, out TemporaryMapSession? session))
         {
             return false;
@@ -275,7 +276,7 @@ internal static class TemporaryMapSessionManager
 
     public static void OnRoomEntered()
     {
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state?.CurrentRoom is not MapRoom
             || !SessionStore.TryGetSession(state, out TemporaryMapSession? session)
             || SessionStore.IsCompletionSuppressedUntilTerminalProceed(state)

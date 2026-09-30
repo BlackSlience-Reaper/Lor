@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using LibraryOfRuina.addons.mega_text;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -70,7 +71,7 @@ internal static class WrathServantRewardHeaderPatch
     private static void Postfix(NRewardsScreen __instance)
     {
         if (!WrathServantRewardPatch.IsServantDeathRewardScreen(
-                RunManager.Instance.DebugOnlyGetState()?.CurrentRoom))
+                CurrentRun.State?.CurrentRoom))
         {
             return;
         }

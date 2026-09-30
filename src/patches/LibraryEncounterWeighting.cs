@@ -35,6 +35,7 @@ using LibraryOfRuina.content.specialguests.Kali;
 using LibraryOfRuina.core;
 using LibraryOfRuina.core.settings;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.infra.lifecycle;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -252,7 +253,7 @@ internal static partial class LibraryEncounterWeighting
                 && !candidate.SharesTagsWith(next))
             .ToList();
 
-        ulong seed = RunManager.Instance.DebugOnlyGetState()?.Rng.Seed
+        ulong seed = CurrentRun.State?.Rng.Seed
             ?? StringHelper.GetDeterministicHashCode(act.Id.Entry);
         Rng localRng = new(seed, $"library_encounter_runtime_replace_{act.Id.Entry}_{roomType}_{index}_{current.Id.Entry}");
         IReadOnlyList<EncounterModel> selectionPool = preferredCandidates.Count > index
@@ -476,7 +477,7 @@ internal static partial class LibraryEncounterWeighting
             return current;
         }
 
-        RunState? state = RunManager.Instance.DebugOnlyGetState();
+        RunState? state = CurrentRun.State;
         if (state == null
             || state.CurrentActIndex < 0
             || state.CurrentActIndex >= state.Acts.Count
@@ -654,7 +655,7 @@ internal static partial class LibraryEncounterWeighting
 
     private static Rng CreateLocalRng(Rng sourceRng, ActModel act, string label)
     {
-        RunState? runState = RunManager.Instance.DebugOnlyGetState();
+        RunState? runState = CurrentRun.State;
         if (runState != null)
         {
             for (int actIndex = 0; actIndex < runState.Acts.Count; actIndex++)
