@@ -391,6 +391,8 @@ LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlayPatch	Postfix	Postfix	return
 LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()
 LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch	Transpiler	Transpiler	returns=System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction]	target=HarmonyPatch()
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+BeatingRemnantPatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Relics.BeatingRemnant), "ModifyHpLostAfterOsty")
+LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+DearFamilyPreviewPatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch()
+LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+DearFamilyPreviewPatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+HardenedShellPatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Powers.HardenedShellPower), "ModifyHpLostBeforeOstyLate")
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch	Prefix	Prefix	returns=System.Boolean	target=HarmonyPatch()
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()

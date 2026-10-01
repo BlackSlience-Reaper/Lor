@@ -274,7 +274,7 @@ public sealed class BoundaryThornPower : LibraryOfRuinaPowerModel
 
 public sealed class BeyondFragmentIncomprehensiblePower : LibraryOfRuinaPowerModel
 {
-    private const int TriggerTurns = 2;
+    private const int TriggerTurns = 3;
 
     private sealed class Data
     {

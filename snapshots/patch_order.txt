@@ -25,6 +25,7 @@ HarmonyPatch()
   Postfix LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch.Postfix
   Prefix LibraryOfRuina.framework.audio.ReverberationEnsembleNativeMusicPatch.Prefix
   Prefix LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+LimitedTriggerPatch.Prefix
+  Prefix LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewModelPatches+DearFamilyPreviewPatch.Prefix
   Postfix LibraryOfRuina.core.localization.PowerInlineIconSizing+PreserveInlineDimensionsPatch.Postfix
   Transpiler LibraryOfRuina.core.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch.Transpiler
   Postfix LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch.Postfix

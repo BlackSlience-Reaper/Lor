@@ -28,15 +28,15 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     private const string StarvedFlutteringMoveId = "STARVED_FLUTTERING";
 
     private const float SegmentDelaySeconds = 1.35f;
-    private const int QueensDecreeBlock = 9;
-    private const int PredationHeal = 6;
-    private const int PredationBlock = 10;
+    private const int QueensDecreeBlock = 7;
+    private const int PredationHeal = 4;
+    private const int PredationBlock = 9;
     private const int StarvedFlutteringHits = 3; // 饥饿振翅：攻击次数，每次攻击分别判定流血。
-    private const int StarvedFlutteringBaseDamage = 3; // 饥饿振翅：低于 DeadlyEnemies 进阶时的单次伤害。
-    private const int StarvedFlutteringHighAscensionDamage = 4; // 饥饿振翅：达到 DeadlyEnemies 进阶时的单次伤害。
+    private const int StarvedFlutteringBaseDamage = 2; // 饥饿振翅：低于 DeadlyEnemies 进阶时的单次伤害。
+    private const int StarvedFlutteringHighAscensionDamage = 3; // 饥饿振翅：达到 DeadlyEnemies 进阶时的单次伤害。
     private const int StarvedFlutteringBleed = 1;
     // 饥饿狂乱吞噬全部畸块时，女王剩余生命占最大生命的百分比阈值。
-    public const int StarvedFrenzyHpThresholdPercent = 25;
+    public const int StarvedFrenzyHpThresholdPercent = 40;
 
     public const string Root = FairyFestivalAssets.FairyFestivalMonsterRoot;
     public const string IdleTexturePath = Root + "fairy_queen.png";
@@ -94,11 +94,11 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     private FairyQueenBackgroundTextPool _currentBackgroundTextPool;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 110, 88);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 96, 92);
 
     public override int MaxInitialHp => MinInitialHp;
 
-    public override int DefaultChaoResistance => 90;
+    public override int DefaultChaoResistance => 70;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

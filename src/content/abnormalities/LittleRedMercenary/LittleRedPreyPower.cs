@@ -46,8 +46,13 @@ public sealed class LittleRedPreyPower : LibraryOfRuinaPowerModel
         if (target != Owner
             || amount < 1m
             || dealer == null
-            || Applier == null
-            || dealer != Applier)
+            || Applier == null)
+        {
+            return amount;
+        }
+
+        if (dealer != Applier
+            && (Applier.Player == null || dealer.PetOwner != Applier.Player))
         {
             return amount;
         }

@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -28,7 +31,8 @@ public sealed class LittleRedMercenaryPageRelic : ModalPageRelic<LittleRedMercen
     internal const int RevengeHpLossPerTrigger = 4;
     internal const int RevengeStrengthPerTrigger = 3;
     internal const int RevengeMaxTriggersPerCombat = 3;
-    internal const int PreyDamageBonus = 5;
+    // 猎物：施加者及其宠物对已标记目标每次造成未被格挡伤害时的额外伤害。
+    internal const int PreyDamageBonus = 4;
 
     protected override string IconBaseName => Mode switch
     {
@@ -98,6 +102,7 @@ public sealed class LittleRedMercenaryPageRelic : ModalPageRelic<LittleRedMercen
     public int RevengeTriggersRemainingThisCombat { get; private set; }
 
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
+    // 保留已有存档字段名；实际记录本回合是否已施加猎物。
     public bool PreyMarkedTargetThisCombat { get; private set; }
 
     public override async Task BeforeCombatStart()
@@ -112,6 +117,20 @@ public sealed class LittleRedMercenaryPageRelic : ModalPageRelic<LittleRedMercen
                 await ApplyScarStartEffect();
                 break;
         }
+    }
+
+    public override Task BeforeSideTurnStart(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IReadOnlyList<Creature> participants,
+        CombatStateLike combatState)
+    {
+        if (side == Owner.Creature.Side && participants.Contains(Owner.Creature))
+        {
+            PreyMarkedTargetThisCombat = false;
+        }
+
+        return Task.CompletedTask;
     }
 
     public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
@@ -157,8 +176,9 @@ public sealed class LittleRedMercenaryPageRelic : ModalPageRelic<LittleRedMercen
             || target.Side == Owner.Creature.Side
             || AllyTurnRegistry.IsFriendlyAlly(target)
             || result.UnblockedDamage <= 0m
+            || !ValuePropCompat.IsPoweredAttack(props)
             || PreyMarkedTargetThisCombat
-            || !IsOwnerDamageSource(dealer, cardSource, props))
+            || !IsOwnerDamageSource(dealer, cardSource))
         {
             return;
         }
@@ -235,14 +255,14 @@ public sealed class LittleRedMercenaryPageRelic : ModalPageRelic<LittleRedMercen
         InvokeDisplayAmountChanged();
     }
 
-    private bool IsOwnerDamageSource(Creature? dealer, CardModel? cardSource, ValueProp props)
+    private bool IsOwnerDamageSource(Creature? dealer, CardModel? cardSource)
     {
         if (dealer == null)
         {
             return false;
         }
 
-        if (dealer != Owner.Creature && dealer != Owner.Osty)
+        if (dealer != Owner.Creature && dealer.PetOwner != Owner)
         {
             return false;
         }

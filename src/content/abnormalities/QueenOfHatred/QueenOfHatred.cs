@@ -119,12 +119,12 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
     private MoveState? _arcanaBeatsState;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 440, 335);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 313, 305);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 450, 340);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 315, 310);
 
-    public override int DefaultChaoResistance => 130;
+    public override int DefaultChaoResistance => 120;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -174,17 +174,17 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 21, 20);
 
     private int WithLoveDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 10, 9);
 
-    private int WithLoveBlock => 19;
+    private int WithLoveBlock => 15;
 
     private int JusticeDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 12);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
 
     private int JusticeHits => 2;
 
     private int HumanArcanaSlaveDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 26, 25);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 23, 22);
 
     private int LightOfHatredFirstDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 12);
@@ -193,12 +193,12 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 14);
 
     private int LoveAndHateDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 14);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 13);
 
     private int LoveAndHateHits => 2;
 
     private int SnakeArcanaSlaveDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 31, 30);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 29, 28);
 
     private HashSet<Creature> EverMarkedPlayers => _everMarkedPlayers ??= new HashSet<Creature>();
 
@@ -436,7 +436,7 @@ public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterA
         }
 
         await PowerCmd.Remove(Creature.GetPower<LibraryOfRuinaQueenInversionPower>());
-
+        await CreatureCmd.Heal(Creature, Creature.MaxHp, false);
         NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         if (creatureNode != null)
         {
