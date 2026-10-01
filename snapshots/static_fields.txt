@@ -62,6 +62,7 @@ mutable	LibraryOfRuina.core.settings.LibraryOfRuinaSettings._resistanceMode	Syst
 mutable	LibraryOfRuina.core.settings.LibraryOfRuinaSettings._runtimeSideEffectsEnabled	System.Boolean
 mutable	LibraryOfRuina.core.settings.LibraryRunInjectionGuard._lobbyHostInjected	System.Nullable`1[System.Boolean]
 mutable	LibraryOfRuina.core.settings.LibraryRunSettings._pendingLobbyCarrier	LibraryOfRuina.core.settings.LibraryRunSettings+PendingCarrier
+mutable	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow._shader	Godot.Shader
 mutable	LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch._targetMethod	System.Reflection.MethodBase
 mutable	LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch._targetMethod	System.Reflection.MethodBase
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphConfigRepository._configLoaded	System.Boolean
@@ -1470,6 +1471,18 @@ readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName.OnUntick	Godot.St
 readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName.SetFromProperty	Godot.StringName
 readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName._ExitTree	Godot.StringName
 readonly	LibraryOfRuina.core.settings.ui.NExtToggle+MethodName._Ready	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.Attach	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.CachedImage	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.CollectSprites	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.FindBackgroundRect	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.FindTextureRect	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.RefreshColor	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.Sync	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName._Process	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._color	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._sinceRefresh	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._visuals	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow.ImageCache	System.Collections.Generic.Dictionary`2[System.UInt64,Godot.Image]
 readonly	LibraryOfRuina.features.ftue.FtueGuard.AbnormalityEncounterNames	System.Collections.Generic.HashSet`1[System.String]
 readonly	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePatch.AbnormalityCombatFtuePages	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePage[]
 readonly	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePatch.CombatFtuePages20260827	LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePage[]

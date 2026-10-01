@@ -547,6 +547,7 @@ LibraryOfRuina.content.abnormalities.BigBird.BigBirdTargetingPatch+CombatRoomRes
 LibraryOfRuina.core.localization.PowerInlineIconSizing+PreserveInlineDimensionsPatch
 LibraryOfRuina.core.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch
 LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch
 GodotPlugins.Game.Main
 LibraryOfRuina.ui.BlockTransferButton
 LibraryOfRuina.ui.BlockTransferOverlay
@@ -971,6 +972,7 @@ LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtueVisual
 LibraryOfRuina.features.ftue.LibraryOfRuinaCombatFtuePage
 LibraryOfRuina.features.ftue.NLibraryOfRuinaCombatRulesFtue
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow
 LibraryOfRuina.features.console.SkipConsoleCmd
 LibraryOfRuina.core.LibraryOfRuinaInitializer
 LibraryOfRuina.core.settings.ExtAutoModSettings
@@ -2472,6 +2474,9 @@ LibraryOfRuina.features.ftue.NLibraryOfRuinaCombatRulesFtue+SignalName
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup+MethodName
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup+PropertyName
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup+SignalName
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+SignalName
 LibraryOfRuina.core.LibraryOfRuinaInitializer+InitStep
 LibraryOfRuina.core.LibraryOfRuinaInitializer+InitReport
 LibraryOfRuina.core.settings.ExtModSettings+SettingsLogger

@@ -169,6 +169,7 @@ LibraryOfRuina.core.settings.LibraryRunSettingsBeginRunLocallyPatch	Prefix	Prefi
 LibraryOfRuina.core.settings.LibraryRunSettingsHostBeginRunPatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Multiplayer.Game.Lobby.StartRunLobby), "BeginRunForAllPlayers")
 LibraryOfRuina.core.settings.LibraryRunSettingsLoadPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunState), "FromSerializable")
 LibraryOfRuina.core.settings.LibraryRunSettingsNewRunPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Runs.RunState), "CreateForNewRun")
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "_Ready")
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch()
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch	Prepare	Prepare	returns=System.Boolean	target=HarmonyPatch()		HarmonyPrepare()
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch	TargetMethod	TargetMethod	returns=System.Reflection.MethodBase	target=HarmonyPatch()		HarmonyTargetMethod()

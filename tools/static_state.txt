@@ -122,6 +122,8 @@ LibraryOfRuina.core.settings.LibraryOfRuinaSettings._resistanceMode	harmless	set
 LibraryOfRuina.core.settings.LibraryOfRuinaSettings._runtimeSideEffectsEnabled	harmless	once	EnableRuntimeSideEffects 在启动注入时置 true，不复位；表示进程级的内容注入状态
 LibraryOfRuina.core.settings.LibraryRunInjectionGuard._lobbyHostInjected	harmless	net	RecordLobbyHost（BeginRunLocally 补丁）写入；TakeLobbyHost（新局补丁）取走并置空；联机开局交接
 LibraryOfRuina.core.settings.LibraryRunSettings._pendingLobbyCarrier	harmless	net	TakeLobbyCarrier 写入；AttachToNewRun 取走；OnRunCleaningUp（RunLifecycle 第一步）清空；开局载体交接，按种子配对
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow.ImageCache	harmless	cache	按贴图实例 id 缓存解压后的背景图，用来取怪物身后的平均色；最多留两张，只影响发光颜色
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow._shader	harmless	cache	首次挂发光节点时编译的外发光着色器，之后共用
 LibraryOfRuina.features.ftue.FtueGuard.AbnormalityEncounterNames	harmless	cache	静态常量集合，之后只读
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch._targetMethod	harmless	cache	Prepare 反射解析目标方法
 LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch._targetMethod	harmless	cache	Prepare 里由 ResolveTargetMethod 反射解析
