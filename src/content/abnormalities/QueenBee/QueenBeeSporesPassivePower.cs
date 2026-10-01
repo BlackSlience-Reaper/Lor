@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -22,16 +23,22 @@ namespace LibraryOfRuina.content.abnormalities.QueenBee;
 
 public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHealthBarForecastSource
 {
+    // 孢子被动：玩家回合开始时，对上个玩家回合中造成未被格挡攻击伤害的攻击者施加的孢子层数。
     internal const int SporeAmount = 3;
+
+    // 孢子被动：每位玩家每回合第一次对蜂后造成未被格挡攻击伤害时返还的能量。
+    internal const int FirstAttackEnergyRefund = 1;
+
     internal const string SporeSfxPath = QueenBeeAssets.QueenSporeSfx;
 
-    private bool _tookAttackDamageLastPlayerTurn;
-    private HashSet<ulong> _playersGrantedEnergy = [];
+    private List<Creature> _sporeTargets = [];
+    private HashSet<ulong> _playersGrantedEnergyThisTurn = [];
 
     protected override void DeepCloneFields()
     {
         base.DeepCloneFields();
-        _playersGrantedEnergy = [.. _playersGrantedEnergy];
+        _sporeTargets = [.. _sporeTargets];
+        _playersGrantedEnergyThisTurn = [.. _playersGrantedEnergyThisTurn];
     }
 
     protected override string LegacyPowerId => "QUEEN_BEE_SPORES_PASSIVE_POWER";
@@ -43,7 +50,7 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("SporeAmount", SporeAmount),
-        new EnergyVar(1)
+        new EnergyVar(FirstAttackEnergyRefund)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -68,17 +75,27 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
             return;
         }
 
-        _tookAttackDamageLastPlayerTurn = true;
-        if (dealer.IsPlayer
-            && _playersGrantedEnergy.Add(dealer.Player!.NetId))
+        if (!_sporeTargets.Contains(dealer))
         {
-            await PlayerCmd.GainEnergy(1, dealer.Player);
+            _sporeTargets.Add(dealer);
+        }
+
+        Player? attacker = dealer.Player ?? dealer.PetOwner;
+        if (attacker == null)
+        {
+            return;
+        }
+
+        if (_playersGrantedEnergyThisTurn.Add(attacker.NetId))
+        {
+            await PlayerCmd.GainEnergy(FirstAttackEnergyRefund, attacker);
         }
     }
 
     public override Task AfterCombatEnd(CombatRoom room)
     {
-        _playersGrantedEnergy.Clear();
+        _sporeTargets.Clear();
+        _playersGrantedEnergyThisTurn.Clear();
         return Task.CompletedTask;
     }
 
@@ -92,23 +109,19 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
             return;
         }
 
-        bool shouldApply = _tookAttackDamageLastPlayerTurn;
-        _tookAttackDamageLastPlayerTurn = false;
-        if (!shouldApply)
-        {
-            return;
-        }
-
-        IReadOnlyList<Creature> players = combatState.LivingPlayerCreatures()
+        _playersGrantedEnergyThisTurn.Clear();
+        IReadOnlyList<Creature> attackers = _sporeTargets
+            .Where(creature => !creature.IsDead)
             .ToArray();
-        if (players.Count == 0)
+        _sporeTargets = [];
+        if (attackers.Count == 0)
         {
             return;
         }
 
         LocalOggOneShotPlayer.Play(SporeSfxPath, -2f);
         await PowerCmdCompat.Apply<HistoryFloorWaspSporePower>(
-            players,
+            attackers,
             SporeAmount,
             Owner,
             null);

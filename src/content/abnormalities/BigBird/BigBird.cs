@@ -533,10 +533,10 @@ public sealed class EyeballBird : LorMonsterModel
     }
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 196, 190);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 226, 190);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 200, 194);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 230, 194);
 
     public override int DefaultChaoResistance => 110;
 

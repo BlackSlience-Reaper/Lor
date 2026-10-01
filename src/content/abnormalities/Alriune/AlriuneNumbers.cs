@@ -8,7 +8,7 @@ internal static class AlriuneNumbers
     public const int MaxHp = 385; // 爱娜温：普通进阶生命上限。
     public const int HighMinHp = 386; // 爱娜温：ToughEnemies 进阶生命下限。
     public const int HighMaxHp = 390; // 爱娜温：ToughEnemies 进阶生命上限。
-    public const int MaxChao = 95; // 爱娜温：混乱抗性上限。
+    public const int MaxChao = 75; // 爱娜温：混乱抗性上限。
     public const int WinterDamage = 15; // 冬日的开端：普通进阶单次伤害。
     public const int WinterHighDamage = 16; // 冬日的开端：DeadlyEnemies 进阶单次伤害。
     public const int BlossomStrength = 1; // 花绽于身：普通进阶力量层数。
