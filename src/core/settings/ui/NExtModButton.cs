@@ -1,5 +1,6 @@
 using Godot;
 using LibraryOfRuina.framework.assets;
+using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.ControllerInput;
 using MegaCrit.Sts2.Core.Helpers;
@@ -10,7 +11,10 @@ namespace LibraryOfRuina.core.settings.ui;
 
 internal partial class NExtModButton : NButton
 {
-    private Label _label;
+    // 悬停、按下时的文字颜色补间直接改标签的主题覆盖 font_color。
+    private const string FontColorOverrideProperty = "theme_override_colors/font_color";
+
+    private MegaLabel _label;
     private Panel _backgroundPanel;
     private StyleBoxFlat _styleBox;
     private Tween? _stateTween;
@@ -56,21 +60,27 @@ internal partial class NExtModButton : NButton
         _backgroundPanel.AddThemeStyleboxOverride("panel", _styleBox);
         AddChild(_backgroundPanel);
 
-        _label = new Label
+        // 用 MegaLabel 加主题覆盖，不用裸 Label 和 LabelSettings：原版按语言换字体只改主题覆盖 font，且只在 MegaLabel._Ready 里做；
+        // LabelSettings.Font 会盖住主题覆盖，中文模组名会落到没有中文字形的 Kreon 上。
+        // 下面的覆盖逐项对应原来的 LabelSettings（含它的默认值），项目主题里 Label 的描边、阴影不会混进来。
+        _label = new MegaLabel
         {
             Text = modName,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
             TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis,
-            LabelSettings = new LabelSettings
-            {
-                FontSize = 24,
-                Font = PreloadManager.Cache.GetAsset<Font>(SharedAssets.KreonRegularGlyphSpaceOneResource),
-                FontColor = _textNormal,
-                ShadowSize = 2,
-                ShadowColor = new Color(0f, 0f, 0f, 0.8f)
-            }
+            AutoSizeEnabled = false
         };
+        _label.AddThemeFontOverride(ThemeConstants.Label.Font,
+            PreloadManager.Cache.GetAsset<Font>(SharedAssets.KreonRegularGlyphSpaceOneResource));
+        _label.AddThemeFontSizeOverride(ThemeConstants.Label.FontSize, 24);
+        _label.AddThemeColorOverride(ThemeConstants.Label.FontColor, _textNormal);
+        _label.AddThemeConstantOverride(ThemeConstants.Label.OutlineSize, 0);
+        _label.AddThemeColorOverride(ThemeConstants.Label.FontShadowColor, new Color(0f, 0f, 0f, 0.8f));
+        _label.AddThemeConstantOverride("shadow_outline_size", 2);
+        _label.AddThemeConstantOverride("shadow_offset_x", 1);
+        _label.AddThemeConstantOverride("shadow_offset_y", 1);
+        _label.AddThemeConstantOverride(ThemeConstants.Label.LineSpacing, 3);
         _label.SetAnchorsPreset(LayoutPreset.FullRect);
         _label.OffsetLeft = 24f;
         _label.OffsetRight = -16f;
@@ -169,14 +179,14 @@ internal partial class NExtModButton : NButton
         {
             _styleBox.BgColor = targetBg;
             _styleBox.BorderWidthLeft = targetBorderWidth;
-            _label.LabelSettings.FontColor = targetText;
+            _label.AddThemeColorOverride(ThemeConstants.Label.FontColor, targetText);
             return;
         }
 
         _stateTween?.Kill();
         _stateTween = CreateTween().SetParallel().SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
         _stateTween.TweenProperty(_styleBox, "bg_color", targetBg, 0.1f);
-        _stateTween.TweenProperty(_label.LabelSettings, "font_color", targetText, 0.15f);
+        _stateTween.TweenProperty(_label, FontColorOverrideProperty, targetText, 0.15f);
         _stateTween.TweenProperty(_styleBox, "border_width_left", targetBorderWidth, 0.2f);
     }
 

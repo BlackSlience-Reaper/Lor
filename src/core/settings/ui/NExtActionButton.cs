@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using LibraryOfRuina.framework.assets;
+using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -35,20 +36,27 @@ internal partial class NExtActionButton : NSettingsButton
         image.SetAnchorsPreset(LayoutPreset.FullRect);
         AddChild(image);
 
-        var label = new Label
+        // 用 MegaLabel 加主题覆盖，不用裸 Label 和 LabelSettings：原版按语言换字体只改主题覆盖 font，且只在 MegaLabel._Ready 里做；
+        // LabelSettings.Font 会盖住主题覆盖，中文按钮文字会落到没有中文字形的 Kreon 上。
+        // 下面的覆盖逐项对应原来的 LabelSettings（含它的默认值：透明阴影、偏移 1、行距 3）。
+        var label = new MegaLabel
         {
             Name = "Label",
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
-            LabelSettings = new LabelSettings
-            {
-                Font = PreloadManager.Cache.GetAsset<FontVariation>(SharedAssets.KreonBoldGlyphSpaceTwoResource),
-                FontSize = 28,
-                FontColor = new Color(0.91f, 0.86f, 0.74f),
-                OutlineSize = 12,
-                OutlineColor = new Color(0.29f, 0.14f, 0.14f)
-            }
+            AutoSizeEnabled = false
         };
+        label.AddThemeFontOverride(ThemeConstants.Label.Font,
+            PreloadManager.Cache.GetAsset<FontVariation>(SharedAssets.KreonBoldGlyphSpaceTwoResource));
+        label.AddThemeFontSizeOverride(ThemeConstants.Label.FontSize, 28);
+        label.AddThemeColorOverride(ThemeConstants.Label.FontColor, new Color(0.91f, 0.86f, 0.74f));
+        label.AddThemeConstantOverride(ThemeConstants.Label.OutlineSize, 12);
+        label.AddThemeColorOverride(ThemeConstants.Label.FontOutlineColor, new Color(0.29f, 0.14f, 0.14f));
+        label.AddThemeColorOverride(ThemeConstants.Label.FontShadowColor, new Color(0f, 0f, 0f, 0f));
+        label.AddThemeConstantOverride("shadow_outline_size", 1);
+        label.AddThemeConstantOverride("shadow_offset_x", 1);
+        label.AddThemeConstantOverride("shadow_offset_y", 1);
+        label.AddThemeConstantOverride(ThemeConstants.Label.LineSpacing, 3);
         label.SetAnchorsPreset(LayoutPreset.FullRect);
         AddChild(label);
 

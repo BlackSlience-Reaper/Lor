@@ -7,11 +7,11 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.intents.rendering;
 using LibraryOfRuina.infra.helpers;
+using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Localization.Fonts;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
@@ -1017,26 +1017,28 @@ internal static class BadgedIntentVisualPatch
             return null;
         }
 
-        var label = new Label
+        // 不用 LabelSettings：Godot 优先用 LabelSettings.Font，按语言替换的主题覆盖 font 会被盖住、不生效。
+        // 改用主题覆盖，由 MegaLabel._Ready 按当前语言替换 font；下面逐项对应原来的 LabelSettings（含阴影偏移 1、行距 3 这两个默认值）。
+        // 自动字号关掉，字号固定为调用处给的值。
+        var label = new MegaLabel
         {
             Text = text,
             HorizontalAlignment = alignment,
             VerticalAlignment = VerticalAlignment.Center,
             TextOverrunBehavior = TextServer.OverrunBehavior.TrimEllipsis,
             MouseFilter = Control.MouseFilterEnum.Ignore,
-            LabelSettings = new LabelSettings
-            {
-                Font = GetLabelFont(),
-                FontSize = fontSize,
-                FontColor = new Color(1f, 0.96f, 0.86f),
-                OutlineSize = 8,
-                OutlineColor = new Color(0f, 0f, 0f, 0.78f),
-                ShadowSize = 2,
-                ShadowColor = new Color(0f, 0f, 0f, 0.65f)
-            }
+            AutoSizeEnabled = false
         };
-
-        label.ApplyLocaleFontSubstitution(FontType.Regular, new StringName("font"));
+        label.AddThemeFontOverride(ThemeConstants.Label.Font, GetLabelFont() ?? label.GetThemeDefaultFont());
+        label.AddThemeFontSizeOverride(ThemeConstants.Label.FontSize, fontSize);
+        label.AddThemeColorOverride(ThemeConstants.Label.FontColor, new Color(1f, 0.96f, 0.86f));
+        label.AddThemeConstantOverride(ThemeConstants.Label.OutlineSize, 8);
+        label.AddThemeColorOverride(ThemeConstants.Label.FontOutlineColor, new Color(0f, 0f, 0f, 0.78f));
+        label.AddThemeColorOverride(ThemeConstants.Label.FontShadowColor, new Color(0f, 0f, 0f, 0.65f));
+        label.AddThemeConstantOverride("shadow_outline_size", 2);
+        label.AddThemeConstantOverride("shadow_offset_x", 1);
+        label.AddThemeConstantOverride("shadow_offset_y", 1);
+        label.AddThemeConstantOverride(ThemeConstants.Label.LineSpacing, 3);
         return label;
     }
 
