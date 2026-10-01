@@ -25,8 +25,9 @@ internal static class PowerIconLocalizationPatch
     private static readonly string[] SupportedLanguages = ["zhs", "eng", "jpn", "kor"];
 
     // 紫色按本地化规范用于附魔名称，不视为 Power 名称。
+    // 冒号前的名称是书页效果等标题，即使与 Power 同名也不追加图标；四语及 zhs 参考解析共用此规则。
     private static readonly Regex Keyword = new(
-        @"\[(?<color>gold|red|green|blue)\](?<name>[^\[\]{}]+)\[/\k<color>\](?!\[img)",
+        @"\[(?<color>gold|red|green|blue)\](?<name>[^\[\]{}]+)\[/\k<color>\](?!\[img|\s*[:：])",
         RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     // 每种语言的正式名称 -> 候选 Power；同名候选由 Resolve 按条目归属区分。

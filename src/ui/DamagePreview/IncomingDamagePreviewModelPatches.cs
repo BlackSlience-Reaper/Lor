@@ -4,6 +4,7 @@ using System.Reflection;
 using HarmonyLib;
 using LibraryOfRuina.content.abnormalities.QueenOfHatred;
 using LibraryOfRuina.content.liberation.History;
+using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.infra.patching;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -22,11 +23,12 @@ internal static class IncomingDamagePreviewModelPatches
 {
     /// <summary>
     /// 有触发次数的修正在模拟中剩余的次数；返回 null 表示不限次数。
-    /// 缓冲每层抵消一次；火柴印记的足迹模式只触发一次；憎恶之页按本回合剩余次数。
+    /// 缓冲每层抵消一次；滑溜按受伤事件消耗；火柴印记的足迹模式只触发一次；憎恶之页按本回合剩余次数。
     /// </summary>
     private static int? GetTriggerBudget(AbstractModel model) => model switch
     {
         BufferPower buffer => buffer.Amount,
+        SlipperyPower slippery => slippery.Amount,
         MatchMarkRelic { Mode: MatchMarkMode.Footsteps } => 1,
         QueenOfHatredPageRelic { Mode: QueenOfHatredPageMode.Hatred } queen => queen.HatredTriggersRemainingThisTurn,
         _ => null
@@ -47,6 +49,7 @@ internal static class IncomingDamagePreviewModelPatches
         private static IEnumerable<MethodBase> TargetMethods()
         {
             yield return AccessTools.DeclaredMethod(typeof(BufferPower), nameof(BufferPower.ModifyHpLostAfterOstyLate));
+            yield return AccessTools.DeclaredMethod(typeof(SlipperyPower), nameof(SlipperyPower.ModifyHpLostAfterOsty));
             yield return AccessTools.DeclaredMethod(typeof(MatchMarkRelic), nameof(MatchMarkRelic.ModifyHpLostAfterOstyLate));
             yield return AccessTools.DeclaredMethod(typeof(QueenOfHatredPageRelic), nameof(QueenOfHatredPageRelic.ModifyHpLostAfterOstyLate));
         }
@@ -59,6 +62,38 @@ internal static class IncomingDamagePreviewModelPatches
                 return true;
             }
 
+            __result = amount;
+            return false;
+        }
+    }
+
+    /// <summary>亲爱的家人的两个数值 Hook 会写入正式受伤标记，预览的消耗由模拟上下文单独结算。</summary>
+    [HarmonyPatch]
+    [LibraryPatch(Reason = "亲爱的家人通过数值 Hook 记录滑溜消耗条件；同步受伤预览直接透传数值，避免改写实际战斗标记。")]
+    private static class DearFamilyPreviewPatch
+    {
+        private static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.DeclaredMethod(typeof(BlackSwanDreamPageRelic), nameof(BlackSwanDreamPageRelic.ModifyHpLostBeforeOsty));
+            yield return AccessTools.DeclaredMethod(typeof(BlackSwanDreamPageRelic), nameof(BlackSwanDreamPageRelic.ModifyHpLostAfterOsty));
+        }
+
+        private static bool Prefix(
+            BlackSwanDreamPageRelic __instance,
+            MethodBase __originalMethod,
+            Creature target,
+            decimal amount,
+            ref decimal __result)
+        {
+            IncomingDamageSimulation? simulation = IncomingDamageSimulation.Current;
+            if (simulation == null)
+            {
+                return true;
+            }
+
+            simulation.RecordDearFamilySlipperyCandidate(
+                __instance, target, amount,
+                __originalMethod.Name == nameof(BlackSwanDreamPageRelic.ModifyHpLostAfterOsty));
             __result = amount;
             return false;
         }

@@ -98,14 +98,17 @@ public sealed class FairyFestivalPageRelic : ModalPageRelic<FairyFestivalPageMod
         else if (Mode == FairyFestivalPageMode.Predation)
         {
             Flash();
-            foreach (Creature creature in combatState.LivingCreatures().ToList())
+            // 猎食排除 Osty 等召唤物，生命流失仅在其余存活对象自身结算。
+            foreach (Creature creature in combatState.LivingCreatures()
+                         .Where(static creature => !creature.IsPet)
+                         .ToList())
             {
                 await CreatureCmdCompat.Damage(
-                    new BlockingPlayerChoiceContext(),
+                    new ThrowingPlayerChoiceContext(),
                     creature,
                     PredationHpLoss,
                     ValueProp.Unblockable | ValueProp.Unpowered,
-                    ownerCreature,
+                    null,
                     null);
             }
 

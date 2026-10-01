@@ -94,12 +94,12 @@ public sealed class GreenStemHermit : CounterIntentMonsterModel, ITargetedMonste
     private bool _inPhase2;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 406, 381);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 386, 371);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 410, 385);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 390, 375);
 
-    public override int DefaultChaoResistance => 180;
+    public override int DefaultChaoResistance => 160;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -120,10 +120,10 @@ public sealed class GreenStemHermit : CounterIntentMonsterModel, ITargetedMonste
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies,20, 19);
 
     private int StayPutDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 14);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 12);
 
     private int MyFriendDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 17, 16);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 14);
 
     private int YouWillCrumbleDamage =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 25, 24);

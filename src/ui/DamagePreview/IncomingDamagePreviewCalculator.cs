@@ -5,6 +5,7 @@ using Godot;
 using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Hooks;
+using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
@@ -384,6 +385,8 @@ internal sealed class IncomingDamageSimulation
     private readonly Dictionary<Creature, IncomingDamageTargetState> _states = [];
     private readonly Dictionary<AbstractModel, int> _triggerCounts = [];
     private readonly Dictionary<Creature, int> _redirectHp = [];
+    private readonly HashSet<BlackSwanDreamPageRelic> _dearFamilySlipperyCandidates = [];
+    private readonly HashSet<BlackSwanDreamPageRelic> _dearFamilySlipperyConsumptions = [];
 
     internal IncomingDamageSimulation(CombatState combat, IReadOnlyList<Creature> targets)
     {
@@ -546,7 +549,9 @@ internal sealed class IncomingDamageSimulation
         hp = ModifyHpLost(hpTarget, hp, props, dealer, cardSource, type, libraryPipeline, afterRedirect: true);
         if (hpTarget == target)
         {
-            return Math.Min(ToDamage(hp), Math.Max(0, state.Hp));
+            int hpLoss = Math.Min(ToDamage(hp), Math.Max(0, state.Hp));
+            ConsumeSlipperyAfterHit(target, hpLoss);
+            return hpLoss;
         }
 
         int redirected = ToDamage(hp);
@@ -556,11 +561,60 @@ internal sealed class IncomingDamageSimulation
         trace.Set(overkill, "");
         if (overkill <= 0)
         {
+            ConsumeSlipperyAfterHit(target, Math.Min(redirected, redirectHp));
             return 0;
         }
 
         decimal toTarget = ModifyHpLost(target, overkill, props, dealer, cardSource, type, libraryPipeline, afterRedirect: true);
+        // 原版 AfterDamageReceived 的 target 仍为原目标，result 则来自承担伤害者；溢出伤害修正后才通知受伤。
+        ConsumeSlipperyAfterHit(target, Math.Min(redirected, redirectHp));
         return Math.Min(ToDamage(toTarget), Math.Max(0, state.Hp));
+    }
+
+    /// <summary>按遗物实际收到的 Hook 输入记录候选条件，标记仅保存在当前模拟中。</summary>
+    internal void RecordDearFamilySlipperyCandidate(
+        BlackSwanDreamPageRelic relic, Creature target, decimal amount, bool afterRedirect)
+    {
+        if (afterRedirect)
+        {
+            if (_dearFamilySlipperyCandidates.Remove(relic) && target == relic.Owner.Creature)
+            {
+                _dearFamilySlipperyConsumptions.Add(relic);
+            }
+
+            return;
+        }
+
+        if (target == relic.Owner.Creature)
+        {
+            _dearFamilySlipperyConsumptions.Remove(relic);
+        }
+
+        _dearFamilySlipperyCandidates.Remove(relic);
+        if (relic.Mode == BlackSwanDreamPageMode.DearFamily
+            && target == relic.Owner.Creature
+            && amount >= 1m
+            && target.GetPower<SlipperyPower>() is { } slippery
+            && GetTriggerCount(slippery) < slippery.Amount)
+        {
+            _dearFamilySlipperyCandidates.Add(relic);
+        }
+    }
+
+    /// <summary>滑溜由受伤事件消耗，即使把 1 点伤害保持为 1 也会扣层，不能按修正器是否改变数值计数。</summary>
+    private void ConsumeSlipperyAfterHit(Creature target, int unblockedDamage)
+    {
+        bool dearFamilyConsumes = _dearFamilySlipperyConsumptions.RemoveWhere(relic => relic.Owner.Creature == target) > 0;
+        if (target.GetPower<SlipperyPower>() is not { } slippery
+            || GetTriggerCount(slippery) >= slippery.Amount)
+        {
+            return;
+        }
+
+        if (unblockedDamage >= 1 || dearFamilyConsumes)
+        {
+            _triggerCounts[slippery] = GetTriggerCount(slippery) + 1;
+        }
     }
 
     private decimal ModifyHpLost(
@@ -587,9 +641,14 @@ internal sealed class IncomingDamageSimulation
                 afterRedirect ? HpLossHookPhase.AfterOsty : HpLossHookPhase.BeforeOsty, out modifiers);
         }
 
-        // 实际结算只对改变了数值的模型调用后置回调并消耗次数，预览同样只统计这些模型。
+        // 数值修正后置回调只通知改变了数值的模型；滑溜另由受伤事件消耗，避免重复扣层。
         foreach (AbstractModel modifier in modifiers)
         {
+            if (modifier is SlipperyPower)
+            {
+                continue;
+            }
+
             _triggerCounts[modifier] = GetTriggerCount(modifier) + 1;
         }
 

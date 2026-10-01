@@ -39,7 +39,7 @@
   "LETICIA_PAGE_RELIC.flavor": "礼物、伙伴与恶作剧，都写在这一页上。",
   "LETICIA_PAGE_RELIC.selectionScreenPrompt": "选择{Cards}张技能牌进行附魔",
   "LETICIA_PAGE_RELIC.title": "蕾蒂希娅之页",
-  "LITTLE_RED_MERCENARY_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]伤疤[/gold]：每场战斗开始时，若你的生命值低于[blue]{ScarHpHigh}%[/blue]/[blue]{ScarHpMid}%[/blue]/[blue]{ScarHpLow}%[/blue]，获得[blue]{ScarStrengthHigh}[/blue]/[blue]{ScarStrengthMid}[/blue]/[blue]{ScarStrengthLow}[/blue]点[gold]力量[/gold]。|[gold]复仇[/gold]：每场战斗开始后，你每失去[blue]{HpLoss}[/blue]点生命，获得[blue]{Strength}[/blue]点[gold]力量[/gold]（每场战斗最多[blue]{MaxTriggers}[/blue]次）。|[gold]猎物[/gold]：每场战斗中，你首次对目标造成[gold]未被格挡伤害[/gold]时，对其施加[gold]猎物[/gold]。你对被标记的敌人额外造成[blue]{Damage}[/blue]点伤害。|拾起时选择一种效果。}",
+  "LITTLE_RED_MERCENARY_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]伤疤[/gold]：每场战斗开始时，若你的生命值低于[blue]{ScarHpHigh}%[/blue]/[blue]{ScarHpMid}%[/blue]/[blue]{ScarHpLow}%[/blue]，获得[blue]{ScarStrengthHigh}[/blue]/[blue]{ScarStrengthMid}[/blue]/[blue]{ScarStrengthLow}[/blue]点[gold]力量[/gold]。|[gold]复仇[/gold]：每场战斗开始后，你每失去[blue]{HpLoss}[/blue]点生命，获得[blue]{Strength}[/blue]点[gold]力量[/gold]（每场战斗最多[blue]{MaxTriggers}[/blue]次）。|[gold]猎物[/gold]：每回合，你或你的宠物首次对目标造成[gold]未被格挡[/gold]的攻击伤害时，对其施加[gold]猎物[/gold]。你和你的宠物对被标记的敌人额外造成[blue]{Damage}[/blue]点伤害。|拾起时选择一种效果。}",
   "LITTLE_RED_MERCENARY_PAGE_RELIC.flavor": "伤痕、执念与狩猎本能，都被牢牢钉在这页纸上。",
   "LITTLE_RED_MERCENARY_PAGE_RELIC.selectionScreenPrompt": "选择一种书页效果",
   "LITTLE_RED_MERCENARY_PAGE_RELIC.title": "小红帽雇佣兵书页",

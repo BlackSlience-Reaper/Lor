@@ -12,8 +12,8 @@ public static class ArtFloorEgoNumbers
     public const int BeyondFragmentDamage = 8;
     public const int BeyondFragmentUpgradedDamage = 9;
     public const int BeyondFragmentHitCount = 4;
-    public const int BeyondFragmentStrengthLoss = 3;
-    public const int BeyondFragmentDexterityLoss = 3;
+    public const int BeyondFragmentStrengthLoss = 2;
+    public const int BeyondFragmentDexterityLoss = 2;
 
     // 欢愉：ArtFloorPleasureBoss 与 PleasureEgoCard。最终一击不随进阶变化。
     public const int PleasureDamage = 6;

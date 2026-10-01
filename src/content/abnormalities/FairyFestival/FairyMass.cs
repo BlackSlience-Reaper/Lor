@@ -42,11 +42,11 @@ public sealed class FairyMass : CounterIntentMonsterModel
 
     private FairyMassVariant _variant = FairyMassVariant.Left;
 
-    public override int MinInitialHp => _variant == FairyMassVariant.Left ? 33 : 36;
+    public override int MinInitialHp => _variant == FairyMassVariant.Left ? 30 : 33;
 
-    public override int MaxInitialHp => _variant == FairyMassVariant.Left ? 37 : 40;
+    public override int MaxInitialHp => _variant == FairyMassVariant.Left ? 34 : 35;
 
-    public override int DefaultChaoResistance => 30;
+    public override int DefaultChaoResistance => 20;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -63,7 +63,7 @@ public sealed class FairyMass : CounterIntentMonsterModel
     };
 
     private static int WingbeatDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
 
     private static int GluttonyDamage =>
         AscensionHelper.GetValueIfAscension(

@@ -76,7 +76,7 @@
   "LETICIA_PAGE_SURPRISE_GIFT_CHOICE_CARD.title": "Surprise Gift",
   "LIMITER_RELEASE_EGO_CARD.description": "Deal {Damage:diff()} damage {Hits} times.\nOn hit, apply [red]{Bleed}[/red] [gold]Bleed[/gold].",
   "LIMITER_RELEASE_EGO_CARD.title": "Limiter Release",
-  "LITTLE_RED_PREY_CHOICE_CARD.description": "In each combat, the first target you deal unblocked damage to becomes [gold]Prey[/gold]. You deal [blue]{Damage}[/blue] extra damage to the marked enemy.",
+  "LITTLE_RED_PREY_CHOICE_CARD.description": "Each turn, the first target you or your pets deal unblocked attack damage to becomes [gold]Prey[/gold]. You and your pets deal [blue]{Damage}[/blue] extra damage to marked enemies.",
   "LITTLE_RED_PREY_CHOICE_CARD.title": "Prey",
   "LITTLE_RED_REVENGE_CHOICE_CARD.description": "After combat starts, whenever you lose [blue]{HpLoss}[/blue] HP, gain [blue]{Strength}[/blue] [gold]Strength[/gold] (up to [blue]{MaxTriggers}[/blue] times each combat).",
   "LITTLE_RED_REVENGE_CHOICE_CARD.title": "Revenge",

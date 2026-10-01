@@ -97,19 +97,19 @@ public sealed class GalaxyFriend : LorMonsterModel
     private MoveState _fakeDeathHiddenState = null!;
 
     private int StarlightDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 4);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
 
     public bool IsFakeDead => _isFakeDead;
 
     public override bool ShouldDisappearFromDoom => false;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 160, 139);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 130, 129);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 170, 144);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 140, 131);
 
-    public override int DefaultChaoResistance => 120;
+    public override int DefaultChaoResistance => 100;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

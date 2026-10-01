@@ -76,7 +76,7 @@
   "LETICIA_PAGE_SURPRISE_GIFT_CHOICE_CARD.title": "サプライズギフト",
   "LIMITER_RELEASE_EGO_CARD.description": "{Damage:diff()}ダメージを{Hits}回与える。\n命中時、[red]{Bleed}[/red]層の[gold]出血[/gold]を与える。",
   "LIMITER_RELEASE_EGO_CARD.title": "リミッターは解除されました",
-  "LITTLE_RED_PREY_CHOICE_CARD.description": "各バトルでは、ブロックされていない対象に初めてダメージを与えます[gold]獲物[/gold]。 マークされた敵に追加ダメージを与えます[blue]{Damage}[/blue]ダメージポイント。",
+  "LITTLE_RED_PREY_CHOICE_CARD.description": "毎ターン、あなたかあなたのペットが最初に[gold]ブロックされていない[/gold]攻撃ダメージを与えた対象に[gold]獲物[/gold]を付与する。あなたとあなたのペットは、マークされた敵に[blue]{Damage}[/blue]の追加ダメージを与える。",
   "LITTLE_RED_PREY_CHOICE_CARD.title": "獲物",
   "LITTLE_RED_REVENGE_CHOICE_CARD.description": "戦いが始まるたびに、負けるたびに、[blue]{HpLoss}[/blue]HPの獲得[blue]{Strength}[/blue]ポイント[gold]筋力[/gold](1回の戦闘数[blue]{MaxTriggers}[/blue]時間)を。",
   "LITTLE_RED_REVENGE_CHOICE_CARD.title": "復讐",

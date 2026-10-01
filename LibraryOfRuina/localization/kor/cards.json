@@ -76,7 +76,7 @@
   "LETICIA_PAGE_SURPRISE_GIFT_CHOICE_CARD.title": "깜짝 선물",
   "LIMITER_RELEASE_EGO_CARD.description": "{Damage:diff()} 피해를 {Hits}회 준다.\n명중 시 [red]{Bleed}[/red]층의 [gold]출혈[/gold]을 부여한다.",
   "LIMITER_RELEASE_EGO_CARD.title": "리미터 릴리스",
-  "LITTLE_RED_PREY_CHOICE_CARD.description": "각 전투에서 처음으로 차단되지 않은 대상에게 피해를 입힙니다.[gold]먹이[/gold]. 당신은 추가 거래[blue]{Damage}[/blue]손상 지점.",
+  "LITTLE_RED_PREY_CHOICE_CARD.description": "매 턴, 당신이나 당신의 소환수가 처음으로 [gold]방어도로 막히지 않은[/gold] 공격 피해를 준 대상에게 [gold]먹이[/gold]를 부여합니다. 당신과 당신의 소환수는 표시된 적에게 [blue]{Damage}[/blue]의 추가 피해를 줍니다.",
   "LITTLE_RED_PREY_CHOICE_CARD.title": "먹이",
   "LITTLE_RED_REVENGE_CHOICE_CARD.description": "전투가 시작된 후, 패배할 때마다[blue]{HpLoss}[/blue]포인트 라이프, get[blue]{Strength}[/blue]가리키다[gold]힘[/gold](전투당 최대[blue]{MaxTriggers}[/blue]이류).",
   "LITTLE_RED_REVENGE_CHOICE_CARD.title": "복수",

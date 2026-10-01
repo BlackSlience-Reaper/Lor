@@ -20,9 +20,9 @@ public sealed class LibraryOfRuinaQueenInversionPower : LibraryOfRuinaPowerModel
 
     private const int DisplayOffset = 1;
     private const int MaxHysteria = 100;
-    private const int EndOfTurnGain = 6;
-    private const int FullyBlockedGain = 17;
-    private const int AnyHpLossGain = 6;
+    private const int EndOfTurnGain = 3;
+    private const int FullyBlockedGain = 12;
+    private const int AnyHpLossGain = 3;
     private const int BlockBreakLoss = 12;
     private const int MarkedVictimLoss = 10;
 

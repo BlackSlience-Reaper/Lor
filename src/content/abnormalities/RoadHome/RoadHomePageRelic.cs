@@ -261,7 +261,7 @@ public sealed class RoadHomePageRelic : ModalPageRelic<RoadHomePageMode>
             return;
         }
 
-        var playerNode = NCombatRoom.Instance.GetCreatureNode(Owner.Creature);
+        var playerNode = CombatQueries.CreatureNodeOf(Owner.Creature);
         if (playerNode == null)
         {
             return;

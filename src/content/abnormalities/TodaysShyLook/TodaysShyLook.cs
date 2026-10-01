@@ -87,13 +87,13 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
     }
 
     private int TodaysExpression1Damage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 18, 17);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 17, 16);
 
     private int TodaysExpression2Damage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 13);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 12);
 
     private int TodaysExpression3Damage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
 
     public int CurrentExpression => _currentExpression;
 
@@ -103,7 +103,7 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
     public override int MaxInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 113, 101);
 
-    public override int DefaultChaoResistance => 80;
+    public override int DefaultChaoResistance => 70;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

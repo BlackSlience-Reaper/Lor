@@ -34,7 +34,7 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
     public const string ParryTexturePath = RedShoesAssets.LeftShoeParryTexture;
 
     private int BloodThirstDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 10);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 10, 8);
 
     private const int DesireBlock = 10;
     private const int DesireRightShoeStrength = 2;
@@ -209,10 +209,10 @@ public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterA
     private string? _cachedTargetMoveId;
 
     private int DesireBurstDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
 
     private int ObsessionBaseDamage =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 5);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
 
     public const int DesireBurstHits = 3;
     public const int BleedBonusDamage = 4;
@@ -221,12 +221,12 @@ public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterA
     public const int ObsessionStrengthGain = 2;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 54, 50);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 64, 60);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 57, 53);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 67, 63);
 
-    public override int DefaultChaoResistance => 40;
+    public override int DefaultChaoResistance => 50;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

@@ -51,9 +51,12 @@ public sealed class SmilingBodiesDissolvingCorpsesPower : LibraryOfRuinaPowerMod
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
-        return side == CombatSide.Enemy && Owner.Monster is SmilingBodies boss
-            ? boss.ResolvePendingCorpseSpawn(choiceContext, combatState)
-            : Task.CompletedTask;
+        if (side == CombatSide.Player && Owner.Monster is SmilingBodies boss)
+        {
+            return boss.ResolvePendingCorpseSpawn(choiceContext, combatState);
+        }
+
+        return Task.CompletedTask;
     }
 }
 
