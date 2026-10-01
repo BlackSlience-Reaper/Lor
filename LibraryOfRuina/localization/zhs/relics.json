@@ -13,7 +13,7 @@
   "DESPAIR_KNIGHT_PAGE_RELIC.flavor": "泪水化作加护，也化作刺穿绝望的剑。",
   "DESPAIR_KNIGHT_PAGE_RELIC.selectionScreenPrompt": "选择一种书页效果",
   "DESPAIR_KNIGHT_PAGE_RELIC.title": "绝望骑士之页",
-  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]精灵的呵护[/gold]：每场战斗开始时，恢复[blue]{Heal}[/blue]点生命并获得[blue]{PermanentVulnerable}[/blue]层永久[gold]易损[/gold]。|[gold]贪食[/gold]：每场战斗中，你第一次造成[gold]未被格挡的伤害[/gold]时，获得[blue]{Regen}[/blue]层[gold]再生[/gold]。|[gold]猎食[/gold]：每场战斗开始时，所有对象失去[blue]{HpLoss}[/blue]点生命，然后你获得[blue]{StrengthPower}[/blue]点[gold]力量[/gold]和[blue]{DexterityPower}[/blue]点[gold]敏捷[/gold]。|拾起时选择一种效果。}",
+  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]精灵的呵护[/gold]：每场战斗开始时，恢复[blue]{Heal}[/blue]点生命并获得[blue]{PermanentVulnerable}[/blue]层永久[gold]易损[/gold]。|[gold]贪食[/gold]：每场战斗中，你第一次造成[gold]未被格挡的伤害[/gold]时，获得[blue]{Regen}[/blue]层[gold]再生[/gold]。|[gold]猎食[/gold]：每场战斗开始时，所有对象（宠物除外）失去[blue]{HpLoss}[/blue]点生命，然后你获得[blue]{StrengthPower}[/blue]点[gold]力量[/gold]和[blue]{DexterityPower}[/blue]点[gold]敏捷[/gold]。|拾起时选择一种效果。}",
   "FAIRY_FESTIVAL_PAGE_RELIC.flavor": "一张被永不散席的盛宴浸染的书页。",
   "FAIRY_FESTIVAL_PAGE_RELIC.selectionScreenPrompt": "选择一种书页效果",
   "FAIRY_FESTIVAL_PAGE_RELIC.title": "精灵盛宴之页",

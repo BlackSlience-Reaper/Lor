@@ -28,7 +28,7 @@
   "FAIRY_CARE_CHOICE_CARD.title": "妖精の加護",
   "FAIRY_GLUTTONY_CHOICE_CARD.description": "各戦闘で初めてブロックされていないダメージを与えた時、[blue]{Regen}[/blue]の[gold]再生[/gold]を得る。",
   "FAIRY_GLUTTONY_CHOICE_CARD.title": "暴食",
-  "FAIRY_PREDATION_CHOICE_CARD.description": "各戦闘開始時、すべてのキャラクターがHPを[blue]{HpLoss}[/blue]失う。その後、自分は[blue]{StrengthPower}[/blue]の[gold]筋力[/gold]と[blue]{DexterityPower}[/blue]の[gold]敏捷性[/gold]を得る。",
+  "FAIRY_PREDATION_CHOICE_CARD.description": "各戦闘開始時、ペットを除くすべてのキャラクターがHPを[blue]{HpLoss}[/blue]失う。その後、自分は[blue]{StrengthPower}[/blue]の[gold]筋力[/gold]と[blue]{DexterityPower}[/blue]の[gold]敏捷性[/gold]を得る。",
   "FAIRY_PREDATION_CHOICE_CARD.title": "捕食",
   "FLUTTERING_HUNGER_FRENZY_EGO_CARD.description": "[rainbow]与える[/rainbow]{Damage:diff()}[rainbow]ダメージポイント[/rainbow]{Hits}[rainbow]時間\n回復[/rainbow]{Heal}[rainbow]HPポイント。\n追加のダメージ[/rainbow]{FinalDamage:diff()}[rainbow]ダメージポイント、付与[/rainbow]{Bleed}[rainbow][gold]出血[/gold]。[/rainbow]",
   "FLUTTERING_HUNGER_FRENZY_EGO_CARD.title": "飢えと狂気",

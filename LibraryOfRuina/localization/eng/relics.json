@@ -13,7 +13,7 @@
   "DESPAIR_KNIGHT_PAGE_RELIC.flavor": "A page condensed from tears, protection, and despair.",
   "DESPAIR_KNIGHT_PAGE_RELIC.selectionScreenPrompt": "Choose a page effect",
   "DESPAIR_KNIGHT_PAGE_RELIC.title": "Despair Knight Page",
-  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]Fairy Care[/gold]: At combat start, heal [blue]{Heal}[/blue] HP and gain [blue]{PermanentVulnerable}[/blue] permanent [gold]Vulnerable[/gold].|[gold]Gluttony[/gold]: The first time each combat you deal unblocked damage, gain [blue]{Regen}[/blue] [gold]Regen[/gold].|[gold]Predation[/gold]: At combat start, all creatures lose [blue]{HpLoss}[/blue] HP, then you gain [blue]{StrengthPower}[/blue] [gold]Strength[/gold] and [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold].|Choose one mode when obtained.}",
+  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]Fairy Care[/gold]: At combat start, heal [blue]{Heal}[/blue] HP and gain [blue]{PermanentVulnerable}[/blue] permanent [gold]Vulnerable[/gold].|[gold]Gluttony[/gold]: The first time each combat you deal unblocked damage, gain [blue]{Regen}[/blue] [gold]Regen[/gold].|[gold]Predation[/gold]: At combat start, all creatures except pets lose [blue]{HpLoss}[/blue] HP, then you gain [blue]{StrengthPower}[/blue] [gold]Strength[/gold] and [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold].|Choose one mode when obtained.}",
   "FAIRY_FESTIVAL_PAGE_RELIC.flavor": "A page stained by a feast that never ends.",
   "FAIRY_FESTIVAL_PAGE_RELIC.selectionScreenPrompt": "Choose a page effect",
   "FAIRY_FESTIVAL_PAGE_RELIC.title": "Fairy Festival Page",

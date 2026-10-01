@@ -28,7 +28,7 @@
   "FAIRY_CARE_CHOICE_CARD.title": "요정의 보살핌",
   "FAIRY_GLUTTONY_CHOICE_CARD.description": "각 전투에서 처음으로 막히지 않은 피해를 주면 [blue]{Regen}[/blue] [gold]재생[/gold]을 얻습니다.",
   "FAIRY_GLUTTONY_CHOICE_CARD.title": "대식",
-  "FAIRY_PREDATION_CHOICE_CARD.description": "각 전투 시작 시 모든 캐릭터가 체력을 [blue]{HpLoss}[/blue] 잃습니다. 그 후 자신은 [blue]{StrengthPower}[/blue] [gold]힘[/gold]과 [blue]{DexterityPower}[/blue] [gold]민첩[/gold]을 얻습니다.",
+  "FAIRY_PREDATION_CHOICE_CARD.description": "각 전투 시작 시 펫을 제외한 모든 캐릭터가 체력을 [blue]{HpLoss}[/blue] 잃습니다. 그 후 자신은 [blue]{StrengthPower}[/blue] [gold]힘[/gold]과 [blue]{DexterityPower}[/blue] [gold]민첩[/gold]을 얻습니다.",
   "FAIRY_PREDATION_CHOICE_CARD.title": "포식",
   "FLUTTERING_HUNGER_FRENZY_EGO_CARD.description": "[rainbow]원인[/rainbow]{Damage:diff()}[rainbow]손상[/rainbow]{Hits}[rainbow]배\n복원[/rainbow]{Heal}[rainbow]인생의 포인트.\n추가로 발생[/rainbow]{FinalDamage:diff()}[rainbow]피해를 입히다, 가하다[/rainbow]{Bleed}[rainbow]층[gold]출혈[/gold]。[/rainbow]",
   "FLUTTERING_HUNGER_FRENZY_EGO_CARD.title": "배고픔의 분노",

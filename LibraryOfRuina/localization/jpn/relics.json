@@ -13,7 +13,7 @@
   "DESPAIR_KNIGHT_PAGE_RELIC.flavor": "涙は守りとなり、同時に絶望を貫く剣にもなります。",
   "DESPAIR_KNIGHT_PAGE_RELIC.selectionScreenPrompt": "ページ効果を選択",
   "DESPAIR_KNIGHT_PAGE_RELIC.title": "絶望の騎士ページ",
-  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]妖精の加護[/gold]：各戦闘開始時、HPを[blue]{Heal}[/blue]回復し、[blue]{PermanentVulnerable}[/blue]の永続[gold]脆弱[/gold]を得る。|[gold]暴食[/gold]：各戦闘で初めてブロックされていないダメージを与えた時、[blue]{Regen}[/blue]の[gold]再生[/gold]を得る。|[gold]捕食[/gold]：各戦闘開始時、すべてのキャラクターがHPを[blue]{HpLoss}[/blue]失う。その後、自分は[blue]{StrengthPower}[/blue]の[gold]筋力[/gold]と[blue]{DexterityPower}[/blue]の[gold]敏捷性[/gold]を得る。|獲得時に効果を1つ選択する。}",
+  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]妖精の加護[/gold]：各戦闘開始時、HPを[blue]{Heal}[/blue]回復し、[blue]{PermanentVulnerable}[/blue]の永続[gold]脆弱[/gold]を得る。|[gold]暴食[/gold]：各戦闘で初めてブロックされていないダメージを与えた時、[blue]{Regen}[/blue]の[gold]再生[/gold]を得る。|[gold]捕食[/gold]：各戦闘開始時、ペットを除くすべてのキャラクターがHPを[blue]{HpLoss}[/blue]失う。その後、自分は[blue]{StrengthPower}[/blue]の[gold]筋力[/gold]と[blue]{DexterityPower}[/blue]の[gold]敏捷性[/gold]を得る。|獲得時に効果を1つ選択する。}",
   "FAIRY_FESTIVAL_PAGE_RELIC.flavor": "果てしない饗宴に染まったページ。",
   "FAIRY_FESTIVAL_PAGE_RELIC.selectionScreenPrompt": "ページ効果を選択",
   "FAIRY_FESTIVAL_PAGE_RELIC.title": "エルフの祭りページ",

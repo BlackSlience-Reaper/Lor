@@ -13,7 +13,7 @@
   "DESPAIR_KNIGHT_PAGE_RELIC.flavor": "눈물은 보호가 되고, 절망을 꿰뚫는 검이 됩니다.",
   "DESPAIR_KNIGHT_PAGE_RELIC.selectionScreenPrompt": "책 페이지 효과 선택",
   "DESPAIR_KNIGHT_PAGE_RELIC.title": "절망의 기사 도서 페이지",
-  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]요정의 보살핌[/gold]: 각 전투 시작 시 체력을 [blue]{Heal}[/blue] 회복하고 [blue]{PermanentVulnerable}[/blue] 영구 [gold]취약[/gold]을 얻습니다.|[gold]폭식[/gold]: 각 전투에서 처음으로 막히지 않은 피해를 주면 [blue]{Regen}[/blue] [gold]재생[/gold]을 얻습니다.|[gold]포식[/gold]: 각 전투 시작 시 모든 캐릭터가 체력을 [blue]{HpLoss}[/blue] 잃습니다. 그 후 자신은 [blue]{StrengthPower}[/blue] [gold]힘[/gold]과 [blue]{DexterityPower}[/blue] [gold]민첩[/gold]을 얻습니다.|획득 시 효과 하나를 선택합니다.}",
+  "FAIRY_FESTIVAL_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]요정의 보살핌[/gold]: 각 전투 시작 시 체력을 [blue]{Heal}[/blue] 회복하고 [blue]{PermanentVulnerable}[/blue] 영구 [gold]취약[/gold]을 얻습니다.|[gold]폭식[/gold]: 각 전투에서 처음으로 막히지 않은 피해를 주면 [blue]{Regen}[/blue] [gold]재생[/gold]을 얻습니다.|[gold]포식[/gold]: 각 전투 시작 시 펫을 제외한 모든 캐릭터가 체력을 [blue]{HpLoss}[/blue] 잃습니다. 그 후 자신은 [blue]{StrengthPower}[/blue] [gold]힘[/gold]과 [blue]{DexterityPower}[/blue] [gold]민첩[/gold]을 얻습니다.|획득 시 효과 하나를 선택합니다.}",
   "FAIRY_FESTIVAL_PAGE_RELIC.flavor": "끝나지 않는 잔치에 흠뻑 젖은 페이지.",
   "FAIRY_FESTIVAL_PAGE_RELIC.selectionScreenPrompt": "책 페이지 효과 선택",
   "FAIRY_FESTIVAL_PAGE_RELIC.title": "엘프 축제 페이지",

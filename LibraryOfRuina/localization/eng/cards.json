@@ -28,7 +28,7 @@
   "FAIRY_CARE_CHOICE_CARD.title": "Fairy Care",
   "FAIRY_GLUTTONY_CHOICE_CARD.description": "The first time each combat you deal unblocked damage, gain [blue]{Regen}[/blue] [gold]Regen[/gold].",
   "FAIRY_GLUTTONY_CHOICE_CARD.title": "Gluttony",
-  "FAIRY_PREDATION_CHOICE_CARD.description": "At combat start, all creatures lose [blue]{HpLoss}[/blue] HP, then you gain [blue]{StrengthPower}[/blue] [gold]Strength[/gold] and [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold].",
+  "FAIRY_PREDATION_CHOICE_CARD.description": "At combat start, all creatures except pets lose [blue]{HpLoss}[/blue] HP, then you gain [blue]{StrengthPower}[/blue] [gold]Strength[/gold] and [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold].",
   "FAIRY_PREDATION_CHOICE_CARD.title": "Predation",
   "FLUTTERING_HUNGER_FRENZY_EGO_CARD.description": "[rainbow]Deal {Damage:diff()} damage {Hits} times.[/rainbow]\n[rainbow]Heal {Heal} HP.[/rainbow]\n[rainbow]Deal {FinalDamage:diff()} additional damage and apply {Bleed} [gold]Bleed[/gold].[/rainbow]",
   "FLUTTERING_HUNGER_FRENZY_EGO_CARD.title": "Hunger Frenzy",
