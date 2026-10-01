@@ -559,16 +559,23 @@ internal sealed class IncomingDamageSimulation
         _redirectHp[hpTarget] = Math.Max(0, redirectHp - redirected);
         int overkill = Math.Max(0, redirected - redirectHp);
         trace.Set(overkill, "");
+        // 原版 CreatureCmd.Damage 先为承担者、再为原目标各生成一个 DamageResult（宠物吸收全部时原目标那份失血为 0），
+        // 之后按结果逐个回调 AfterDamageReceived，回调的 target 是该结果的 Receiver。滑溜只在 target 是持有者且
+        // 该结果失血 ≥ 1 时扣层，所以承担者与原目标各按自己那份失血消耗自己的滑溜；溢出部分已先经原目标的
+        // AfterOsty 修正（滑溜在扣层前生效），扣层在本次命中的修正之后发生。
+        int redirectLoss = Math.Min(redirected, redirectHp);
         if (overkill <= 0)
         {
-            ConsumeSlipperyAfterHit(target, Math.Min(redirected, redirectHp));
+            ConsumeSlipperyAfterHit(hpTarget, redirectLoss);
+            ConsumeSlipperyAfterHit(target, 0);
             return 0;
         }
 
         decimal toTarget = ModifyHpLost(target, overkill, props, dealer, cardSource, type, libraryPipeline, afterRedirect: true);
-        // 原版 AfterDamageReceived 的 target 仍为原目标，result 则来自承担伤害者；溢出伤害修正后才通知受伤。
-        ConsumeSlipperyAfterHit(target, Math.Min(redirected, redirectHp));
-        return Math.Min(ToDamage(toTarget), Math.Max(0, state.Hp));
+        int targetLoss = Math.Min(ToDamage(toTarget), Math.Max(0, state.Hp));
+        ConsumeSlipperyAfterHit(hpTarget, redirectLoss);
+        ConsumeSlipperyAfterHit(target, targetLoss);
+        return targetLoss;
     }
 
     /// <summary>按遗物实际收到的 Hook 输入记录候选条件，标记仅保存在当前模拟中。</summary>
