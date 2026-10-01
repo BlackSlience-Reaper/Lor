@@ -424,7 +424,7 @@ internal sealed class IntentGraphLayouter
 
         x -= 0.5f;
         _nextX = x + 0.25f;
-        _graph.WidthUnits = x;
+        _graph.WidthUnits = Math.Max(_graph.WidthUnits, x);
         _graph.HeightUnits = Math.Max(bottomY + 1f, _graph.HeightUnits);
         if (!singleBelow)
         {
@@ -780,7 +780,7 @@ internal sealed class IntentGraphLayouter
                     {
                         if (aHorizontal != bHorizontal)
                         {
-                            break;
+                            continue;
                         }
 
                         if (aHorizontal && Math.Abs(aStart.Y - bStart.Y) < 0.2f)
