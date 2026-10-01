@@ -547,3 +547,4 @@ patch	LibraryOfRuina.content.abnormalities.BigBird.BigBirdTargetingPatch+CombatR
 patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+PreserveInlineDimensionsPatch
 patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch
 patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch
+patch	LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch

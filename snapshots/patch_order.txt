@@ -195,6 +195,7 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "UpdateIntent")
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "_Ready")
   Postfix LibraryOfRuina.content.liberation.Social.FalseThroneTrialHoverTipReadyPatch.Postfix
   Finalizer LibraryOfRuina.patches.visuals.MonsterNodeReadyDebugPatch.Finalizer
+  Postfix LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreatureStateDisplay), "SetCreature")
   Postfix LibraryOfRuina.content.guests.MusiciansOfBremen.BremenEncounterLayoutPatch.Postfix
   Postfix LibraryOfRuina.content.liberation.History.HistoryFloorForgottenStateDisplayPatch.Postfix
