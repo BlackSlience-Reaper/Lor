@@ -2,221 +2,64 @@ using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
 
 public sealed class WarmHeartPower : LibraryOfRuinaPowerModel
 {
-    private sealed class SyncedBuffData
-    {
-        public int StrongContribution;
-
-        public int EnduranceContribution;
-
-        public bool IsSyncing;
-    }
-
     protected override string LegacyPowerId => "WARM_HEART_POWER";
 
     public override PowerType Type => PowerType.None;
 
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    public override bool AllowNegative => true;
+    // 规范模型不依赖持有者，显示值为 0；挂上后按当前层数同步。
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new EnergyVar(0)
+    ];
 
-    protected override object InitInternalData()
+    private int EnergyToRestore =>
+        Math.Max(0, Amount) * WarmheartedWoodsman.WarmHeartEnergyPerStack;
+
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        return new SyncedBuffData();
+        SyncEnergyVar();
+        return Task.CompletedTask;
     }
 
-    public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
-    {
-        await SyncPermanentBuffs(new ThrowingPlayerChoiceContext(), applier, cardSource);
-    }
-
-    public override async Task AfterPowerAmountChanged(
+    public override Task AfterPowerAmountChanged(
         PlayerChoiceContext choiceContext,
         PowerModel power,
         decimal amount,
         Creature? applier,
         CardModel? cardSource)
     {
-        if (!ReferenceEquals(power, this) && !IsTrackedPermanentBuff(power))
+        if (ReferenceEquals(power, this))
         {
-            return;
+            SyncEnergyVar();
         }
 
-        await SyncPermanentBuffs(choiceContext, applier, cardSource);
+        return Task.CompletedTask;
     }
-
-    public override async Task AfterRemoved(Creature oldOwner)
-    {
-        SyncedBuffData data = GetInternalData<SyncedBuffData>();
-        await RemovePermanentBuffContribution<LibraryStrongPower>(oldOwner, data.StrongContribution);
-        await RemovePermanentBuffContribution<LibraryEndurancePower>(oldOwner, data.EnduranceContribution);
-        data.StrongContribution = 0;
-        data.EnduranceContribution = 0;
-    }
-
-    private async Task SyncPermanentBuffs(
-        PlayerChoiceContext choiceContext,
-        Creature? applier,
-        CardModel? cardSource)
-    {
-        if (Owner.IsDead)
-        {
-            return;
-        }
-
-        SyncedBuffData data = GetInternalData<SyncedBuffData>();
-        if (data.IsSyncing)
-        {
-            return;
-        }
-
-        data.IsSyncing = true;
-        try
-        {
-            int targetContribution = Math.Max(0, Amount);
-            data.StrongContribution = await SyncPermanentBuffContribution<LibraryStrongPower>(
-                choiceContext,
-                Owner,
-                data.StrongContribution,
-                targetContribution,
-                applier ?? Owner,
-                cardSource);
-            data.EnduranceContribution = await SyncPermanentBuffContribution<LibraryEndurancePower>(
-                choiceContext,
-                Owner,
-                data.EnduranceContribution,
-                targetContribution,
-                applier ?? Owner,
-                cardSource);
-        }
-        finally
-        {
-            data.IsSyncing = false;
-        }
-    }
-
-    private static async Task<int> SyncPermanentBuffContribution<TPower>(
-        PlayerChoiceContext choiceContext,
-        Creature owner,
-        int currentContribution,
-        int targetContribution,
-        Creature? applier,
-        CardModel? cardSource)
-        where TPower : LibraryTurnsPowerModel
-    {
-        TPower? existing = FindPermanentBuff<TPower>(owner);
-        if (currentContribution == targetContribution
-            && (targetContribution <= 0 || existing is { Amount: var amount } && amount >= currentContribution))
-        {
-            return currentContribution;
-        }
-
-        if (existing == null)
-        {
-            if (targetContribution > 0)
-            {
-                await LibraryPowerCmd.Apply<TPower>(
-                    new ThrowingPlayerChoiceContext(),
-                    owner,
-                    targetContribution,
-                    0,
-                    true,
-                    applier,
-                    cardSource);
-            }
-
-            return targetContribution;
-        }
-
-        int delta = targetContribution - currentContribution;
-        if (delta == 0 && existing.Amount < currentContribution)
-        {
-            delta = currentContribution - existing.Amount;
-        }
-
-        if (delta < 0)
-        {
-            delta = -Math.Min(-delta, existing.Amount);
-        }
-
-        if (delta != 0)
-        {
-            await PowerCmdCompat.ModifyAmount(choiceContext, existing, delta, applier, cardSource);
-        }
-
-        return targetContribution;
-    }
-
-    private static async Task RemovePermanentBuffContribution<TPower>(Creature owner, int contribution)
-        where TPower : LibraryTurnsPowerModel
-    {
-        if (contribution <= 0)
-        {
-            return;
-        }
-
-        TPower? existing = FindPermanentBuff<TPower>(owner);
-        if (existing == null)
-        {
-            return;
-        }
-
-        int amountToRemove = Math.Min(contribution, existing.Amount);
-        if (amountToRemove > 0)
-        {
-            await PowerCmdCompat.ModifyAmount(existing, -amountToRemove, owner, null);
-        }
-    }
-
-    private static TPower? FindPermanentBuff<TPower>(Creature owner)
-        where TPower : LibraryTurnsPowerModel =>
-        owner.GetPower<TPower>();
-
-    private bool IsTrackedPermanentBuff(PowerModel power)
-    {
-        if (power.Owner != Owner)
-        {
-            return false;
-        }
-
-        return power switch
-        {
-            LibraryStrongPower strong => strong.TurnsRemaining <= 0,
-            LibraryEndurancePower endurance => endurance.TurnsRemaining <= 0,
-            _ => false
-        };
-    }
-}
-
-public sealed class WarmheartedWoodsmanVerdantForestPassivePower : LibraryOfRuinaPowerModel
-{
-    protected override string LegacyPowerId => "WARMHEARTED_WOODSMAN_VERDANT_FOREST_PASSIVE_POWER";
-
-    public override PowerType Type => PowerType.None;
-
-    public override PowerStackType StackType => PowerStackType.Single;
-
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        new EnergyVar(WarmheartedWoodsman.VerdantForestEnergy)
-    ];
 
     public override async Task AfterEnergyReset(Player player)
     {
+        int energy = EnergyToRestore;
         if (Owner.IsDead
-            || Owner.GetPowerAmount<WarmHeartPower>() <= 0
+            || energy <= 0
             || player.Creature?.IsAlive != true
             || player.Creature.CombatState != Owner.CombatState)
         {
@@ -224,25 +67,20 @@ public sealed class WarmheartedWoodsmanVerdantForestPassivePower : LibraryOfRuin
         }
 
         Flash();
-        await PlayerCmd.GainEnergy(WarmheartedWoodsman.VerdantForestEnergy, player);
+        await PlayerCmd.GainEnergy(energy, player);
     }
-}
 
-public sealed class WarmheartedWoodsmanWantAHeartPassivePower : LibraryOfRuinaPowerModel
-{
-    protected override string LegacyPowerId => "WARMHEARTED_WOODSMAN_WANT_A_HEART_PASSIVE_POWER";
+    /// <summary>直接设定层数且不触发增减结算；用于开局挂上 0 层作为机制提示。</summary>
+    internal void SetStacksSilently(int stacks)
+    {
+        SetAmount(Math.Max(0, stacks), silent: true);
+        SyncEnergyVar();
+    }
 
-    public override PowerType Type => PowerType.None;
-
-    public override PowerStackType StackType => PowerStackType.Single;
-
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        new DynamicVar("Strong", WarmheartedWoodsman.WantAHeartBuffPerEnergy),
-        new DynamicVar("Endurance", WarmheartedWoodsman.WantAHeartBuffPerEnergy),
-        new DynamicVar("Turns", WarmheartedWoodsman.OneTurnBuffDuration),
-        new EnergyVar("Energy", 1)
-    ];
+    private void SyncEnergyVar()
+    {
+        DynamicVars[EnergyVar.defaultName].BaseValue = EnergyToRestore;
+    }
 }
 
 public sealed class WarmheartedWoodsmanViolentHeartPassivePower : LibraryOfRuinaPowerModel
@@ -255,18 +93,54 @@ public sealed class WarmheartedWoodsmanViolentHeartPassivePower : LibraryOfRuina
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
+        new DynamicVar("TreeDamageMultiplier", WarmheartedWoodsman.ViolentHeartTreeDamageMultiplier),
         new DynamicVar("HealPercent", WarmheartedWoodsman.ViolentHeartHealPercent),
-        new DynamicVar("Strength", WarmheartedWoodsman.ViolentHeartStrong)
+        new DynamicVar("Strength", WarmheartedWoodsman.ViolentHeartStrength),
+        new DynamicVar("WarmHeart", WarmheartedWoodsman.ViolentHeartWarmHeartGain)
     ];
-}
 
-public sealed class WarmheartedWoodsmanEmptyHeartPassivePower : LibraryOfRuinaPowerModel
-{
-    protected override string LegacyPowerId => "WARMHEARTED_WOODSMAN_EMPTY_HEART_PASSIVE_POWER";
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    [
+        HoverTipFactory.FromPower<StrengthPower>(),
+        HoverTipFactory.FromPower<WarmHeartPower>()
+    ];
 
-    public override PowerType Type => PowerType.None;
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource, CardPlay? cardPlay)
+    {
+        if (dealer != Owner
+            || target?.Monster is not WoodsmanTree
+            || !ValuePropCompat.IsPoweredAttack(props))
+        {
+            return 1m;
+        }
 
-    public override PowerStackType StackType => PowerStackType.Single;
+        return WarmheartedWoodsman.ViolentHeartTreeDamageMultiplier;
+    }
+
+    public override async Task AfterDamageGiven(
+        PlayerChoiceContext choiceContext,
+        Creature? dealer,
+        DamageResult result,
+        ValueProp props,
+        Creature target,
+        CardModel? cardSource)
+    {
+        if (dealer != Owner
+            || !result.WasTargetKilled
+            || target.Monster is not WoodsmanTree
+            || Owner.Monster is not WarmheartedWoodsman woodsman)
+        {
+            return;
+        }
+
+        Flash();
+        await woodsman.ApplyViolentHeartTreeKillRewards(choiceContext);
+    }
 }
 
 public sealed class WoodsmanTreeHeartPassivePower : LibraryOfRuinaPowerModel
@@ -298,7 +172,8 @@ public sealed class WoodsmanTreeHeartPassivePower : LibraryOfRuinaPowerModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new RevivesVar()
+        new RevivesVar(),
+        new DynamicVar("ChargeCost", WarmheartedWoodsman.TreeRespawnChargeCost)
     ];
 
     public void SetRevives(int revives)

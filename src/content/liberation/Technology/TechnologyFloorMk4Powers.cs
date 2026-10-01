@@ -19,7 +19,7 @@ namespace LibraryOfRuina.content.liberation.Technology;
 
 public sealed class TechnologyFloorMk4MaxChargePower : LibraryOfRuinaPowerModel
 {
-    public const int ChargeThreshold = 3;
+    public const int ChargeThreshold = 4;
 
     private sealed class Data
     {

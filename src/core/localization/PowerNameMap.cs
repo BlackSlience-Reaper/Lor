@@ -309,6 +309,10 @@ internal static class PowerNameMap
         new("ART_FLOOR_ATONEMENT_CROWN_POWER.title",
             static () => ModelDb.Power<global::LibraryOfRuina.content.liberation.Art.ArtFloorAtonementCrownPower>(),
             Zhs: "赎罪之冠", Eng: "Crown of Atonement", Jpn: "贖罪の冠", Kor: "속죄의 왕관"),
+        // Buff：独立遭遇中的可消耗版本，按条目归属与艺术层区分。
+        new("ALRIUNE_ATONEMENT_CROWN_POWER.title",
+            static () => ModelDb.Power<global::LibraryOfRuina.content.abnormalities.Alriune.AlriuneAtonementCrownPower>(),
+            Zhs: "赎罪之冠", Eng: "Crown of Atonement", Jpn: "贖罪の冠", Kor: "속죄의 왕관"),
         // Buff
         new("LIBRARY_QUICKNESS_POWER.title",
             static () => ModelDb.Power<global::LibraryLib.Powers.LibraryQuicknessPower>(),

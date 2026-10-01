@@ -1302,5 +1302,15 @@
   "REVERBERATION_EILEEN.banter.opening": "我们将遵照他的指挥行动。",
   "REVERBERATION_EILEEN.banter.death": "我们随时都可以再度转动。",
   "REVERBERATION_EILEEN.banter.kill": "齿轮的话是正确的……",
-  "REVERBERATION_EILEEN.banter.victory": "果然跟随他才是正确的选择。"
+  "REVERBERATION_EILEEN.banter.victory": "果然跟随他才是正确的选择。",
+  "ALRIUNE.name": "爱娜温",
+  "ALRIUNE_DUSTBORN.name": "生于尘土之人",
+  "ALRIUNE.moves.WINTER.title": "冬日的开端",
+  "ALRIUNE.moves.BLOSSOM.title": "花绽于身",
+  "ALRIUNE.moves.AUTUMN.title": "秋日的消逝",
+  "ALRIUNE.moves.SPRING.title": "春日的起源",
+  "ALRIUNE_DUSTBORN.moves.FLOWER_BUSH.title": "花丛",
+  "ALRIUNE_DUSTBORN.moves.MIND_CRACK.title": "心灵的裂痕",
+  "ALRIUNE_DUSTBORN.moves.SPREADING_DESPAIR.title": "攀延的绝望",
+  "ALRIUNE_DUSTBORN.moves.REVIVAL_REST.title": "复苏"
 }

@@ -91,8 +91,6 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     ];
 
     private int _baseCadenceIndex;
-    private int _attackGroupSerial;
-    private int _currentFreshMeatAttackGroupId;
     private bool _hungerFrenzyQueued;
     private bool _backgroundMoonTextLoopStarted;
     private MoveState? _hungerFrenzyState;
@@ -102,8 +100,6 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     protected override bool ReviveTriggerPlaysHitAnimation => true;
 
     protected override string? ReviveAndEmpowerAnimation => "Cast";
-
-    internal int CurrentFreshMeatAttackGroupId => _currentFreshMeatAttackGroupId;
 
     public override bool ShouldDisappearFromDoom => false;
 
@@ -142,8 +138,6 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     {
         await base.AfterAddedToRoom();
         _baseCadenceIndex = 0;
-        _attackGroupSerial = 0;
-        _currentFreshMeatAttackGroupId = 0;
         _hungerFrenzyQueued = false;
         _backgroundMoonTextLoopStarted = false;
         SaveManager.Instance.MarkCardAsSeen(ModelDb.Card<FlutteringHungerFrenzyEgoCard>());
@@ -156,7 +150,7 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
 
         HistoryFloorLiberationBackgroundController.SetPhaseBackground(Phase);
         EncounterBgmController.RegisterMonster(Creature);
-        await PowerCmdCompat.Apply<FlutteringHungerPower>(Creature, 40m, Creature, null, silent: true);
+        await PowerCmdCompat.Apply<FlutteringHungerPower>(Creature, FlutteringHungerPower.Threshold, Creature, null, silent: true);
         await PowerCmdCompat.Apply<HistoryFloorCorrosionPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<FlutteringMomentarySatietyPower>(Creature, 1m, Creature, null, silent: true);
         await PowerCmdCompat.Apply<FlutteringHungerFrenzyPower>(Creature, 1m, Creature, null, silent: true);
@@ -320,18 +314,14 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
 
     private async Task HungerFrenzyMove(IReadOnlyList<Creature> targets)
     {
-        BeginFreshMeatAttackGroup();
-        try
+        for (int i = 0; i < HistoryFloorEgoNumbers.HungerFrenzyHitCount; i++)
         {
-            for (int i = 0; i < HistoryFloorEgoNumbers.HungerFrenzyHitCount; i++)
+            if (Creature.IsDead)
             {
-                if (Creature.IsDead) return;
-                await ExecuteAttackSegment("HungerFrenzy", HungerFrenzyDamage);
+                return;
             }
-        }
-        finally
-        {
-            EndFreshMeatAttackGroup();
+
+            await ExecuteAttackSegment("HungerFrenzy", HungerFrenzyDamage);
         }
 
         await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, HistoryFloorEgoNumbers.HungerFrenzyHeal));
@@ -353,29 +343,12 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
             return Array.Empty<DamageResult>();
         }
 
-        bool ownsAttackGroup = _currentFreshMeatAttackGroupId <= 0;
-        if (ownsAttackGroup)
-        {
-            BeginFreshMeatAttackGroup();
-        }
-
-        AttackCommand attack;
-        try
-        {
-            LocalOggOneShotPlayer.Play(BossAttackSfxPath, -2f);
-            attack = await DamageCmd.Attack(damage)
-                .FromMonster(this)
-                .WithAttackerAnim(animation, SegmentDelaySeconds)
-                .WithHitFx("vfx/vfx_attack_slash")
-                .Execute(null);
-        }
-        finally
-        {
-            if (ownsAttackGroup)
-            {
-                EndFreshMeatAttackGroup();
-            }
-        }
+        LocalOggOneShotPlayer.Play(BossAttackSfxPath, -2f);
+        AttackCommand attack = await DamageCmd.Attack(damage)
+            .FromMonster(this)
+            .WithAttackerAnim(animation, SegmentDelaySeconds)
+            .WithHitFx("vfx/vfx_attack_slash")
+            .Execute(null);
 
         return AttackCommandCompat.Results(attack);
     }
@@ -431,15 +404,5 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
             () => HistoryFloorEgoNumbers.HungerFrenzyHitCount, () => HungerFrenzyFinalDamage);
         yield return CreateBleedIntent(HungerFrenzyFinalDamage, HistoryFloorEgoNumbers.HungerFrenzyBleed);
         yield return new BuffIntent();
-    }
-
-    private void BeginFreshMeatAttackGroup()
-    {
-        _currentFreshMeatAttackGroupId = ++_attackGroupSerial;
-    }
-
-    private void EndFreshMeatAttackGroup()
-    {
-        _currentFreshMeatAttackGroupId = 0;
     }
 }

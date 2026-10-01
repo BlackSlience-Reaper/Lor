@@ -1302,5 +1302,15 @@
   "REVERBERATION_EILEEN.banter.opening": "We will move under the baton of our savior.",
   "REVERBERATION_EILEEN.banter.death": "We can cycle again anytime.",
   "REVERBERATION_EILEEN.banter.kill": "The gears were right…",
-  "REVERBERATION_EILEEN.banter.victory": "It was the right choice to follow him."
+  "REVERBERATION_EILEEN.banter.victory": "It was the right choice to follow him.",
+  "ALRIUNE.name": "Alriune",
+  "ALRIUNE_DUSTBORN.name": "One Born of Dust",
+  "ALRIUNE.moves.WINTER.title": "The Beginning of Winter",
+  "ALRIUNE.moves.BLOSSOM.title": "Flowers Bloom on the Body",
+  "ALRIUNE.moves.AUTUMN.title": "The Fading of Autumn",
+  "ALRIUNE.moves.SPRING.title": "The Origin of Spring",
+  "ALRIUNE_DUSTBORN.moves.FLOWER_BUSH.title": "Flower Bush",
+  "ALRIUNE_DUSTBORN.moves.MIND_CRACK.title": "Cracks in the Mind",
+  "ALRIUNE_DUSTBORN.moves.SPREADING_DESPAIR.title": "Spreading Despair",
+  "ALRIUNE_DUSTBORN.moves.REVIVAL_REST.title": "Revival"
 }

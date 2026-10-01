@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmhdr3mqdvcpy"
-path="res://.godot/imported/warmhearted_woodsman_empty_heart_passive_power.png-1758becb92719f281e84c1c110c05eae.ctex"
+uid="uid://biss3m06p8iau"
+path="res://.godot/imported/background.png-0f63cef6671b8b41174e464c38118945.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/powers/warmhearted_woodsman_empty_heart_passive_power.png"
-dest_files=["res://.godot/imported/warmhearted_woodsman_empty_heart_passive_power.png-1758becb92719f281e84c1c110c05eae.ctex"]
+source_file="res://images/backgrounds/alriune_strong/background.png"
+dest_files=["res://.godot/imported/background.png-0f63cef6671b8b41174e464c38118945.ctex"]
 
 [params]
 

@@ -98,6 +98,7 @@ internal static class LibraryActEncounterPools
 
     private static void AppendSecondFamily(ICollection<EncounterModel> encounters)
     {
+        LibraryEncounterWeighting.AddWeightedCopies<LibraryOfRuina.content.abnormalities.Alriune.AlriuneStrong>(encounters);
         LibraryEncounterWeighting.AddWeightedCopies<QueenOfHatredStrong>(encounters);
         LibraryEncounterWeighting.AddWeightedCopies<KingOfGreedElite>(encounters);
         LibraryEncounterWeighting.AddWeightedCopies<LittleRedMercenaryElite>(encounters);
