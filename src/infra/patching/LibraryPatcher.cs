@@ -20,7 +20,7 @@ namespace LibraryOfRuina.infra.patching;
 /// </summary>
 internal static class LibraryPatcher
 {
-    public const string HarmonyId = "FYY.LibraryOfRuina";
+    public const string HarmonyId = "RPR.LibraryOfRuina";
     private const string LogPrefix = "[LibraryOfRuina.Patching] ";
     private const string DumpEnvironmentVariable = "LOR_DUMP_PATCHES";
 
