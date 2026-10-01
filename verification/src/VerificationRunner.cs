@@ -36,6 +36,7 @@ public static class VerificationRunner
         EnemyCardIntentVerificationPatch.Start,
         ExtraTurnParticipantsVerificationPatch.Start,
         FairyMassCareVerificationPatch.Start,
+        FontScreenshotVerificationPatch.Start,
         GalaxyDoomVerificationPatch.Start,
         IntentRenderVerificationPatch.Start,
         JudgementBirdVerificationPatch.Start,

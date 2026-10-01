@@ -23,6 +23,7 @@ internal sealed class IntentGraphMoveNode
 {
     public required string MoveId { get; set; }
 
+    /// <summary>第一个意图图标格子的左上角（格）；之后的图标每个右移 <see cref="IntentGraphLayouter.IconStep"/> 格。</summary>
     public required Vector2 PositionUnits { get; set; }
 
     public required IReadOnlyList<IntentGraphIntentIcon> Intents { get; set; }
@@ -32,16 +33,17 @@ internal sealed class IntentGraphMoveNode
 
 internal readonly record struct IntentGraphIntentIcon(Texture2D? Texture, string? ValueText, IntentType IntentType);
 
+/// <summary>横竖交替的折线，折点是格子坐标；最后一点是箭头尖。</summary>
 internal sealed class IntentGraphArrowPath
 {
     public required IReadOnlyList<Vector2> PointsUnits { get; init; }
 }
 
-internal readonly record struct IntentGraphLabelNode(Vector2 PositionUnits, string Text);
+/// <param name="PositionUnits">文字基线上的对齐点（格）。</param>
+/// <param name="Align">0 左对齐、0.5 居中、1 右对齐。</param>
+internal readonly record struct IntentGraphLabelNode(Vector2 PositionUnits, string Text, int FontSize = 18, float Align = 0f);
 
 internal readonly record struct IntentGraphGroupNode(Rect2 RectUnits);
-
-internal readonly record struct IntentGraphTransition(string FromMoveId, string ToMoveId, string? LabelText);
 
 internal sealed class IntentGraphMonsterConfig
 {

@@ -219,12 +219,12 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
         renderModel.Moves.Add(new IntentGraphMoveNode
         {
             MoveId = owner.Monster.NextMove.Id,
-            PositionUnits = new Vector2(0.5f, 0.5f),
+            PositionUnits = Vector2.Zero,
             Intents = icons,
             IsCurrentMove = true
         });
-        renderModel.WidthUnits = 2f;
-        renderModel.HeightUnits = 2f;
+        renderModel.WidthUnits = IntentGraphLayouter.MoveWidth(icons.Count);
+        renderModel.HeightUnits = 1f;
         monsterName = owner.Monster.Title.GetFormattedText();
         return true;
     }

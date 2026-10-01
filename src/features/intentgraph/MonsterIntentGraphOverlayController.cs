@@ -5,6 +5,7 @@ using System.Reflection;
 using Godot;
 using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.infra.helpers;
+using MegaCrit.Sts2.Core.Localization.Fonts;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
@@ -275,6 +276,8 @@ internal static class MonsterIntentGraphOverlayController
             MouseFilter = Control.MouseFilterEnum.Ignore,
         };
 
+        // 标题是 Kreon 粗体。裸 Label 拿不到原版的按语言换字体，中文会落到没有中文字形的 Kreon 上；
+        // 这里与 Intent Graph 的面板标题一样，设好 font 覆盖后按当前语言换成粗体字体（MegaLabel 只会换成常规体）。
         var monsterName = new Label
         {
             Name = "MonsterName",
@@ -283,14 +286,12 @@ internal static class MonsterIntentGraphOverlayController
             MouseFilter = Control.MouseFilterEnum.Ignore,
             UniqueNameInOwner = true,
         };
+        monsterName.AddThemeFontOverride("font", _fallbackHoverTitleFont ?? monsterName.GetThemeDefaultFont());
+        monsterName.ApplyLocaleFontSubstitution(FontType.Bold, "font");
         monsterName.AddThemeFontSizeOverride("font_size", 22);
         monsterName.AddThemeColorOverride("font_shadow_color", new Color(0f, 0f, 0f, 0.25098f));
         monsterName.AddThemeConstantOverride("shadow_offset_x", 3);
         monsterName.AddThemeConstantOverride("shadow_offset_y", 2);
-        if (_fallbackHoverTitleFont != null)
-        {
-            monsterName.AddThemeFontOverride("font", _fallbackHoverTitleFont);
-        }
 
         var graphMargin = new MarginContainer
         {
@@ -322,7 +323,11 @@ internal static class MonsterIntentGraphOverlayController
 
     private static void EnsureFallbackThemeAssetsLoaded()
     {
-        if (_fallbackThemeLoadAttempted)
+        // 缓存的是资源对象本身；游戏在局与局之间会释放没有其他引用的缓存资源，之后这里拿到的是已释放的对象，
+        // 再用来设主题覆盖会抛 ObjectDisposedException、面板建不起来。失效时重新加载。
+        bool cachedValid = (_fallbackHoverTipTexture == null || GodotObject.IsInstanceValid(_fallbackHoverTipTexture))
+                           && (_fallbackHoverTitleFont == null || GodotObject.IsInstanceValid(_fallbackHoverTitleFont));
+        if (_fallbackThemeLoadAttempted && cachedValid)
         {
             return;
         }
