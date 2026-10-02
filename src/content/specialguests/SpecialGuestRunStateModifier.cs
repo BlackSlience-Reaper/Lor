@@ -11,7 +11,6 @@ using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Rooms;
-using MegaCrit.Sts2.Core.Rewards;
 using LibraryOfRuina.interop;
 
 namespace LibraryOfRuina.content.specialguests;
@@ -21,7 +20,7 @@ namespace LibraryOfRuina.content.specialguests;
 /// framework in one modifier means unlocks and replacement rolls are saved by
 /// the native run serializer and stay identical on all peers.
 /// </summary>
-public sealed class SpecialGuestRunStateModifier : ModifierModel
+public sealed partial class SpecialGuestRunStateModifier : ModifierModel
 {
     [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
     public string LibraryOfRuina_SpecialGuestUnlockedIds { get; set; } = string.Empty;
@@ -90,13 +89,6 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
 
     public override Task AfterCombatVictory(CombatRoom room) =>
         SpecialGuestStageFlow.AfterCombatVictoryAsync(room.CombatState.RunState, room);
-
-#if STS2_0_111_0
-    public override Task BeforeCombatRewardOffered(RewardsSet rewards, CombatRoom room) =>
-#else
-    public Task BeforeCombatRewardOffered(RewardsSet rewards, CombatRoom room) =>
-#endif
-        SpecialGuestStageFlow.AugmentRewardsAsync(rewards.Player.RunState, room, rewards);
 
     public bool IsUnlocked(string guestId) => ParseSet(LibraryOfRuina_SpecialGuestUnlockedIds).Contains(guestId);
 
