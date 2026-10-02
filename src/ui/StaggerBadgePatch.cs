@@ -21,7 +21,7 @@ internal enum StaggerBarStyle
 /// 前置库在原版体力条正上方另画一条与体力条等宽的混乱值条，数字居中，和体力数字上下压在一起。
 /// 这里把它改成贴在体力条上沿的一道细条，数字收进体力条右端的徽章。徽章照原版格挡徽章
 /// （health_bar.tscn 的 BlockContainer：60×60、kreon 24 号字、描边 14）镜像放在右端，
-/// 图标是同画风的金色横向六边形（tools/make_stagger_badge_icon.py 生成）；右侧两列抗性图标相应往右让出徽章的位置。体力条与能力图标的位置都不动。
+/// 图标是同画风的金色横向六边形（tools/make_stagger_badge_icon.py 生成）；物理、混乱两组抗性图标从血条右侧挪到徽章正上方竖排。体力条与能力图标的位置都不动。
 /// 只在设置“混乱抗性条样式”选了徽章时生效，默认保持前置库原样。
 /// 前置库每次刷新都会重设混乱条与抗性图标的位置、重写数字，所以挂在它的刷新入口后面跟着重排。
 /// </summary>
@@ -31,8 +31,8 @@ internal static class StaggerBadge
     private const string StaggerLabelName = "StaggerValueLabel";
     private const string BadgeName = "LorStaggerBadge";
     private const string IconPath = "res://images/ui/combat/stagger_badge.png";
-    private static readonly string[] ResistColumnNames =
-        ["LibraryOfRuinaPhysicalResistIcons", "LibraryOfRuinaChaosResistIcons"];
+    private const string PhysicalColumnName = "LibraryOfRuinaPhysicalResistIcons";
+    private const string ChaosColumnName = "LibraryOfRuinaChaosResistIcons";
 
     // 前置库混乱条的原始高度是 14，压成一半贴在体力条上沿，与体力条边框重叠 1 像素。
     private const float StripScale = 0.5f;
@@ -44,8 +44,13 @@ internal static class StaggerBadge
     private const int FontSize = 24;
     private const int OutlineSize = 14;
     private static readonly Color OutlineColor = new(0.42f, 0.27f, 0.0f, 1f);
-    // 前置库抗性图标列原本贴在体力条右端外 1 像素；有徽章时让到徽章右沿之外。
-    private const float ResistColumnGap = 2f;
+    // 前置库的抗性图标每组 3 个、28 像素见方、间距 1，竖排成一列；默认物理组在上、混乱组紧接在下，整体贴在体力条右端外侧。
+    // 有徽章时整列居中挪到徽章正上方，底端离六边形上沿（贴图 128 像素里第 26 行）留一点空。
+    private const float ResistIconSize = 28f;
+    private const float ResistColumnHeight = 3 * 29f - 1f;
+    private const float ResistGroupGap = 1f;
+    private const float BadgeShapeTop = BadgeSize * 26f / 128f;
+    private const float ResistAboveBadgeGap = 3f;
 
     internal static void Apply(NHealthBar healthBar)
     {
@@ -107,8 +112,9 @@ internal static class StaggerBadge
     }
 
     /// <summary>
-    /// 徽章显示时把两列抗性图标让到徽章外侧。前置库只在抗性图标各自的 Refresh 里重设它们的位置
-    /// （血条刷新、瞄准预览等都会走到），那里也挂了补丁调用这里，所以哪条路径最后执行都能让位。
+    /// 徽章显示时把两组抗性图标挪到徽章正上方：混乱组贴着徽章，物理组叠在它上面；混乱组隐藏时物理组直接贴着徽章。
+    /// 前置库只在抗性图标各自的 Refresh 里重设它们的位置（血条刷新、瞄准预览等都会走到），
+    /// 那里也挂了补丁调用这里，所以哪条路径最后执行都能重新摆好。
     /// </summary>
     internal static void MoveResistColumns(NHealthBar healthBar)
     {
@@ -118,13 +124,17 @@ internal static class StaggerBadge
             return;
         }
 
-        float x = badge.Position.X + BadgeSize * 0.95f + ResistColumnGap;
-        foreach (string name in ResistColumnNames)
+        float x = badge.Position.X + (BadgeSize - ResistIconSize) * 0.5f;
+        float bottom = badge.Position.Y + BadgeShapeTop - ResistAboveBadgeGap;
+        if (parent.GetNodeOrNull<Control>(ChaosColumnName) is { Visible: true } chaos)
         {
-            if (parent.GetNodeOrNull<Control>(name) is { } column)
-            {
-                column.Position = new Vector2(x, column.Position.Y);
-            }
+            chaos.Position = new Vector2(x, bottom - ResistColumnHeight);
+            bottom -= ResistColumnHeight + ResistGroupGap;
+        }
+
+        if (parent.GetNodeOrNull<Control>(PhysicalColumnName) is { } physical)
+        {
+            physical.Position = new Vector2(x, bottom - ResistColumnHeight);
         }
     }
 
