@@ -6,6 +6,7 @@ using Godot;
 using LibraryOfRuina.features.ftue;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.interop;
+using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
@@ -313,6 +314,10 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     [SettingsHideInUI]
     [SettingsSection("IntentGraph")]
     public static bool IntentGraphEnabled { get; set; } = false;
+
+    // 只影响本机血条的画法（ui/StaggerBadgePatch.cs），不进局内设置、不参与联机比对，局内也可随时切换。
+    [SettingsSection("CombatUi")]
+    public static StaggerBarStyle StaggerBarStyle { get; set; } = StaggerBarStyle.Default;
 
     [SettingsIgnore]
     public static bool MultiplayerScalingEnabled
