@@ -72,8 +72,14 @@ public sealed class CryingNuovoFabricPower : CryingPassivePower
 
     public override bool ShouldClearBlock(Creature creature) => creature != Owner;
 
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props,
-        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay) =>
+        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props,
+        Creature? dealer, CardModel? cardSource)
+#endif
+    =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -Reduction : 0m;
 
     public override decimal ModifyChaoDamageAdditive(Creature? target, decimal amount, ValueProp props,

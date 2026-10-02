@@ -256,12 +256,21 @@ public sealed class BoundaryThornPower : LibraryOfRuinaPowerModel
         return true;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (dealer != Owner || amount <= 0 || !ValuePropCompat.IsPoweredAttack(props))
         {

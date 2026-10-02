@@ -13,7 +13,7 @@ namespace LibraryOfRuina.content.specialguests.Iori;
 /// Purple Tear's event enchantment. Whenever the card is drawn, it receives a
 /// synced 0-3 combat cost, auto-plays for free, then returns to its owner's hand.
 /// </summary>
-public sealed class IoriUnpredictableEnchantment : EnchantmentModel
+public sealed partial class IoriUnpredictableEnchantment : EnchantmentModel
 {
     public override bool HasExtraCardText => true;
 
@@ -68,21 +68,4 @@ public sealed class IoriUnpredictableEnchantment : EnchantmentModel
         }
     }
 
-    public override CardLocation ModifyCardPlayResultLocation(
-        CardModel card,
-        bool isAutoPlay,
-        ResourceInfo resources,
-        CardLocation location)
-    {
-        _ = resources;
-        if (card != Card || !isAutoPlay)
-        {
-            return location;
-        }
-
-        location.player = Card.Owner;
-        location.pileType = PileType.Hand;
-        location.position = CardPilePosition.Top;
-        return location;
-    }
 }

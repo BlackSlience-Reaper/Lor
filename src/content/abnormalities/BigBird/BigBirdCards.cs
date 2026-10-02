@@ -134,7 +134,7 @@ public sealed class BirdLullabyCard() : CardModel(2, CardType.Skill, CardRarity.
         {
             if (target.Block > 0m)
             {
-                await CreatureCmd.LoseBlock(choiceContext, target, target.Block, Owner.Creature);
+                await GameApi.LoseBlock(choiceContext, target, target.Block, Owner.Creature);
             }
 
             await PowerCmdCompat.SetAmount<BigBirdSleepPower>(choiceContext, target, BigBird.SleepTurns, Owner.Creature, this);

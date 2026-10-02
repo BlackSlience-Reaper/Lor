@@ -73,7 +73,7 @@ public sealed class PleasureEgoCard()
             foreach (Creature target in targets.Where(static target => target.IsAlive))
             {
                 AttackCommand attack = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this, cardPlay)
+                    .FromCardCompat(this, cardPlay)
                     .Targeting(target)
                     .WithHitFx("vfx/vfx_attack_slash")
                     .Execute(choiceContext);
@@ -97,7 +97,7 @@ public sealed class PleasureEgoCard()
         foreach (Creature target in targets.Where(static target => target.IsAlive))
         {
             await DamageCmd.Attack(DynamicVars["FinalDamage"].BaseValue)
-                .FromCard(this, cardPlay)
+                .FromCardCompat(this, cardPlay)
                 .Targeting(target)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);

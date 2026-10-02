@@ -24,6 +24,7 @@ public sealed class NihilBadGuyPower : LibraryOfRuinaPowerModel
         new DynamicVar("DamageIncrease", QueenOfHatredEnhancedPageRelic.JusticeDamagePercent)
     ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -31,6 +32,14 @@ public sealed class NihilBadGuyPower : LibraryOfRuinaPowerModel
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         return target == Owner && amount > 0m
             ? 1m + QueenOfHatredEnhancedPageRelic.JusticeDamagePercent / 100m

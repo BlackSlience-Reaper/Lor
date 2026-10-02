@@ -62,7 +62,7 @@ public sealed class RegretEgoCard : EgoCardBase
         {
             LocalOggOneShotPlayer.Play(TechnologyFloorRegretBoss.AttackSfxPath, -2f);
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this, cardPlay)
+                .FromCardCompat(this, cardPlay)
                 .Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
@@ -70,7 +70,7 @@ public sealed class RegretEgoCard : EgoCardBase
 
         LocalOggOneShotPlayer.Play(TechnologyFloorRegretBoss.AttackSfxPath, -2f);
         await DamageCmd.Attack(DynamicVars["FinalDamage"].BaseValue)
-            .FromCard(this, cardPlay)
+            .FromCardCompat(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

@@ -286,13 +286,13 @@ internal sealed partial class SpecialGuestStoryOverlay : Control
                 canLongPressSkip = true;
                 return true;
             case InputEventKey { Echo: false } key
-                when key.IsAction(MegaInput.confirm):
+                when key.IsAction(GameApi.Confirm):
                 pressed = key.Pressed;
                 released = !key.Pressed;
                 canLongPressSkip = true;
                 return true;
             case InputEventJoypadButton joypad
-                when joypad.IsAction(MegaInput.confirm):
+                when joypad.IsAction(GameApi.Confirm):
                 pressed = joypad.Pressed;
                 released = !joypad.Pressed;
                 canLongPressSkip = true;

@@ -55,7 +55,7 @@ public sealed class PunishmentStrikeEgoCard : EgoCardBase
         LocalOggOneShotPlayer.Play(HistoryFloorWaspBoss.AttackBuffSfxPath, -2f);
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
+            .FromCardCompat(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

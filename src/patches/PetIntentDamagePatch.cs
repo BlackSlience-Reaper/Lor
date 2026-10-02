@@ -31,7 +31,7 @@ public static class PetIntentDamagePatch
         var damageCalc = __instance.DamageCalc;
         if (damageCalc == null) return;
 
-        decimal dmg = Hook.ModifyDamage(
+        decimal dmg = GameApi.ModifyDamage(
             me.RunState, CombatState, enemy, owner,
             damageCalc(), ValueProp.Move, null, null, ModifyDamageHookType.All, CardPreviewMode.None, out _);
 

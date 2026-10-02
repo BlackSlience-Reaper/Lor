@@ -113,6 +113,7 @@ public sealed class OzmaPageRelic : ModalPageRelic<OzmaPageMode>
         return true;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -120,6 +121,14 @@ public sealed class OzmaPageRelic : ModalPageRelic<OzmaPageMode>
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         return IsOldPowerAttackSource(props, dealer, cardSource)
             ? DamageMultiplier

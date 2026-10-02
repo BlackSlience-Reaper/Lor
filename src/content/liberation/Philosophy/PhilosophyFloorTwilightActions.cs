@@ -490,7 +490,7 @@ public sealed partial class PhilosophyFloorTwilight
             using (PhilosophyFloorTwilightJudgmentPowerBypassContext
                    .EnterJudgmentDamage(Creature))
             {
-                targetResults = await CreatureCmd.Damage(
+                targetResults = await CreatureCmdCompat.Damage(
                     choiceContext,
                     target,
                     damage,

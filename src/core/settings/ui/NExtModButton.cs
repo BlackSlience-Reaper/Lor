@@ -124,7 +124,7 @@ internal partial class NExtModButton : NButton
     {
         if (_controllerIconRect == null) return;
         bool isController =
-            NControllerManager.Instance?.IsUsingDirectionalNavigation ?? false;
+            GameApi.IsDirectionalNavigation(NControllerManager.Instance);
         _controllerIconRect.Visible = _isHotkeyIconVisible && isController;
         if (_controllerIconRect.Visible)
             _controllerIconRect.Texture = NInputManager.Instance?.GetHotkeyIcon(MegaInput.cancel);
@@ -199,4 +199,3 @@ internal partial class NExtModButton : NButton
         NControllerManager.Instance.Disconnect(NControllerManager.SignalName.ControllerTypeChanged, Callable.From(RefreshIconVisibility));
     }
 }
-

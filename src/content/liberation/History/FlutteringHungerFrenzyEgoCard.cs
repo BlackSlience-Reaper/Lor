@@ -64,7 +64,7 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
         {
             LocalOggOneShotPlayer.Play(HistoryFloorFlutteringBoss.BossAttackSfxPath, -2f);
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this, cardPlay)
+                .FromCardCompat(this, cardPlay)
                 .Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
@@ -74,7 +74,7 @@ public sealed class FlutteringHungerFrenzyEgoCard : EgoCardBase
 
         LocalOggOneShotPlayer.Play(HistoryFloorFlutteringBoss.BossAttackSfxPath, -2f);
         AttackCommand finalAttack = await DamageCmd.Attack(DynamicVars["FinalDamage"].BaseValue)
-            .FromCard(this, cardPlay)
+            .FromCardCompat(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

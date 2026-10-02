@@ -156,7 +156,7 @@ internal static class IncomingDamagePreviewCalculator
         foreach (Player owner in simulation.Combat.Players)
         {
             // 冬眠使该玩家的冰霜球被动同时为其他玩家提供格挡。
-            if (owner != player && !owner.Creature.HasPower<HibernatePower>())
+            if (owner != player && !GameApi.HasHibernate(owner.Creature))
             {
                 continue;
             }
@@ -481,7 +481,7 @@ internal sealed class IncomingDamageSimulation
                 damage = libraryPipeline
                     ? LibraryHooks.ModifyDamage(Run, Combat, target, dealer, amount, props, cardSource, null,
                         ModifyDamageHookType.All, CardPreviewMode.None, out _, pipelineType)
-                    : Hook.ModifyDamage(Run, Combat, target, dealer, amount, props, cardSource, null,
+                    : GameApi.ModifyDamage(Run, Combat, target, dealer, amount, props, cardSource, null,
                         ModifyDamageHookType.All, CardPreviewMode.None, out _);
                 trace.Set(damage, "");
             }

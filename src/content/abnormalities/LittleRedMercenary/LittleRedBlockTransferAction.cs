@@ -87,7 +87,7 @@ public sealed class BlockTransferAction(Player player, int combatRound, uint? pa
         int playerCount = Math.Max(1, combatState.Players.Count);
         int transfer = playerCount == 1 ? spent : (int)Math.Ceiling((decimal)spent / playerCount);
 
-        await CreatureCmd.LoseBlock(
+        await GameApi.LoseBlock(
             choiceContext,
             source,
             spent,

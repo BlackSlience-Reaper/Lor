@@ -110,7 +110,7 @@ internal static partial class LibraryEncounterWeighting
                 continue;
             }
 
-            Rng localRng = new(state.Rng.Seed, $"library_encounter_weight_boss_{actIndex}_{act.Id.Entry}");
+            Rng localRng = GameApi.CreateRng(state.Rng.Seed, $"library_encounter_weight_boss_{actIndex}_{act.Id.Entry}");
 
             if (IsLiberationBossTarget(act, actIndex))
             {
@@ -184,7 +184,7 @@ internal static partial class LibraryEncounterWeighting
             return Array.Empty<EncounterModel>();
         }
 
-        Rng selectionRng = new(seed, label);
+        Rng selectionRng = GameApi.CreateRng(seed, label);
         selectionRng.Shuffle(candidates);
         return candidates.Take(2).ToArray();
     }

@@ -35,7 +35,11 @@ internal static class DetachedAfflictionHookListenerPatch
     }
 }
 
+#if STS2_0_111_0
 [HarmonyPatch(typeof(Hook), nameof(Hook.BeforeSideTurnEnd))]
+#else
+[HarmonyPatch(typeof(Hook), nameof(Hook.BeforeTurnEnd))]
+#endif
 [LibraryPatch(Reason = "BeforeSideTurnEnd 的监听者可能暂停后继续，原版在 WhenAll 与 DoTurnEnd 之间没有扩展点；锁链是原版 sealed 能力，施加它的本模组怪物死亡后不再是监听者。只在本模组遭遇、participant 带锁链时，于全部回合结束任务完成后补一次清理。")]
 internal static class ChainsOfBindingTurnEndSyncPatch
 {

@@ -42,6 +42,7 @@ public sealed class MagicBulletCommissionTargetPower :
         return Task.CompletedTask;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -49,8 +50,15 @@ public sealed class MagicBulletCommissionTargetPower :
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
-        _ = cardPlay;
         // Library 伤害链同时调用普通与带类型接口；委托仅在普通接口乘算一次。
         return IsPlayerAttackOnOwner(target, amount, props, dealer, cardSource)
             ? 1m + MagicBulletShooterPageRelic.CommissionDamagePercent / 100m

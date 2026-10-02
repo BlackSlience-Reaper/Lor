@@ -201,7 +201,7 @@ public sealed class LanguageFloorMeltingCorpseRotPower
             }
 
             Flash();
-            await CreatureCmd.Damage(
+            await CreatureCmdCompat.Damage(
                 choiceContext,
                 dealer,
                 RetaliationDamage,

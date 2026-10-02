@@ -58,7 +58,7 @@ public sealed class OurLittleGalaxyEgoPreviewCard()
             foreach (Creature target in targets.Where(static target => target.IsAlive))
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this, cardPlay)
+                    .FromCardCompat(this, cardPlay)
                     .Targeting(target)
                     .WithHitFx("vfx/vfx_attack_slash")
                     .Execute(choiceContext);

@@ -83,6 +83,7 @@ public sealed class LanguageFloorMimicryHardenPower
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         [new DynamicVar("Threshold", LanguageFloorMimicry.HardenThreshold)];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -90,6 +91,14 @@ public sealed class LanguageFloorMimicryHardenPower
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         return target == Owner
             && Owner.Monster is LanguageFloorMimicry

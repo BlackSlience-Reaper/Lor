@@ -320,7 +320,7 @@ internal static class DamagePreviewCalculator
         ValueProp props = CorrosionFollowUpRules.DamageProps;
         using IDisposable source = corrosion.EnterDamageSourceScope();
         using var trace = new DamagePreviewTrace(corrosion.Amount, DamagePreviewTrace.Name(corrosion));
-        decimal modified = Math.Max(0m, Hook.ModifyDamage(run, combat, target, dealer, corrosion.Amount, props,
+        decimal modified = Math.Max(0m, GameApi.ModifyDamage(run, combat, target, dealer, corrosion.Amount, props,
             null, null, ModifyDamageHookType.All, CardPreviewMode.None, out _));
         trace.Set(modified, Text("Rule"));
         decimal blocked = Math.Min(block, modified);

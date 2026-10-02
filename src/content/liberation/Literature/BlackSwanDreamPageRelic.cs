@@ -367,6 +367,7 @@ public sealed class BlackSwanDreamPageRelic : ModalPageRelic<BlackSwanDreamPageM
         return Task.CompletedTask;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -374,10 +375,17 @@ public sealed class BlackSwanDreamPageRelic : ModalPageRelic<BlackSwanDreamPageM
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         _ = amount;
         _ = cardSource;
-        _ = cardPlay;
         return Mode == BlackSwanDreamPageMode.BrokenUmbrella
             && BrokenUmbrellaTriggerTurn
             && target == Owner.Creature

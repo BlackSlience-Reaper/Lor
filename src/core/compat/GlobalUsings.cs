@@ -9,3 +9,5 @@ global using LibraryLib.Utils.RelicRightClick;
 global using LibraryLib.Utils.Resistance;
 global using MegaCrit.Sts2.Core.Entities.Creatures;
 global using CombatStateLike = MegaCrit.Sts2.Core.Combat.ICombatState;
+
+global using LibraryOfRuina.core.compat;

@@ -67,13 +67,23 @@ public sealed class NaturalFloorBadGuyPower : LibraryOfRuinaPowerModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("DamageIncrease", 50)];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource,
-        CardPlay? cardPlay) =>
+        CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
+    =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? 1.5m : 1m;
 }
 

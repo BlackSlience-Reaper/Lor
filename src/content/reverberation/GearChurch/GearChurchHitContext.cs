@@ -150,9 +150,15 @@ internal static class GearChurchHitContext
 }
 
 // 原版攻击会被基础库转发到 LibraryCreatureCmd；内层记录实际命中，外层未提交的快照不会覆盖结果。
+#if STS2_0_111_0
 [HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage),
     new[] { typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp),
         typeof(Creature), typeof(CardModel), typeof(CardPlay) })]
+#else
+[HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage),
+    new[] { typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp),
+        typeof(Creature), typeof(CardModel) })]
+#endif
 internal static class GearChurchVanillaHitPatch
 {
     [HarmonyPriority(Priority.First)]

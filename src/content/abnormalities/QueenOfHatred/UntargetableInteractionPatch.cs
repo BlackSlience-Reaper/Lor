@@ -126,9 +126,11 @@ internal static class UntargetableAttackTargetsPatch
     }
 }
 
-[HarmonyPatch(
-    typeof(CreatureCmd),
-    nameof(CreatureCmd.Damage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay))]
+#if STS2_0_111_0
+[HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay))]
+#else
+[HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel))]
+#endif
 internal static class UntargetableDamageTargetsPatch
 {
     // 其他模组会在同一重载的普通优先级 Prefix 中改写 targets，因此最终友方过滤

@@ -104,7 +104,7 @@ internal partial class NExtSettingsSubmenu : NSubmenu
         AddChild(_extBackButton);
 
         _isUsingController =
-            NControllerManager.Instance?.IsUsingDirectionalNavigation ?? false;
+            GameApi.IsDirectionalNavigation(NControllerManager.Instance);
 
         ConnectSignals();
         GetViewport().Connect(Viewport.SignalName.SizeChanged, Callable.From(RefreshSize));
@@ -205,7 +205,7 @@ internal partial class NExtSettingsSubmenu : NSubmenu
     private void InputTypeChanged()
     {
         _isUsingController =
-            NControllerManager.Instance?.IsUsingDirectionalNavigation ?? false;
+            GameApi.IsDirectionalNavigation(NControllerManager.Instance);
         _lastFocusOnRight = false;
         FocusModList();
     }
@@ -471,4 +471,3 @@ internal partial class NExtSettingsSubmenu : NSubmenu
         base._ExitTree();
     }
 }
-

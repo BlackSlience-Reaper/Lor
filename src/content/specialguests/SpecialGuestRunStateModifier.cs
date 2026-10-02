@@ -91,7 +91,11 @@ public sealed class SpecialGuestRunStateModifier : ModifierModel
     public override Task AfterCombatVictory(CombatRoom room) =>
         SpecialGuestStageFlow.AfterCombatVictoryAsync(room.CombatState.RunState, room);
 
+#if STS2_0_111_0
     public override Task BeforeCombatRewardOffered(RewardsSet rewards, CombatRoom room) =>
+#else
+    public Task BeforeCombatRewardOffered(RewardsSet rewards, CombatRoom room) =>
+#endif
         SpecialGuestStageFlow.AugmentRewardsAsync(rewards.Player.RunState, room, rewards);
 
     public bool IsUnlocked(string guestId) => ParseSet(LibraryOfRuina_SpecialGuestUnlockedIds).Contains(guestId);

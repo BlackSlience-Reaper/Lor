@@ -113,16 +113,11 @@ internal sealed record PowerDamageHealthLockTargetState(
     Creature Target,
     bool WasLocked);
 
-[HarmonyPatch(
-    typeof(CreatureCmd),
-    nameof(CreatureCmd.Damage),
-    typeof(PlayerChoiceContext),
-    typeof(IEnumerable<Creature>),
-    typeof(decimal),
-    typeof(ValueProp),
-    typeof(Creature),
-    typeof(CardModel),
-    typeof(CardPlay))]
+#if STS2_0_111_0
+[HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay))]
+#else
+[HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage), typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal), typeof(ValueProp), typeof(Creature), typeof(CardModel))]
+#endif
 internal static class VanillaPowerDamageHealthLockChaosPatch
 {
     [HarmonyPrefix]

@@ -200,7 +200,7 @@ public sealed class RnfmabjWillOfThePrescriptCard() : CardModel(
 
     public override Task BeforeCardPlayed(CardPlay cardPlay)
     {
-        if (FreeCardsRemaining > 0 && cardPlay.Player == Owner)
+        if (FreeCardsRemaining > 0 && cardPlay.PlayerCompat() == Owner)
         {
             FreeCardsRemaining--;
         }
@@ -212,7 +212,7 @@ public sealed class RnfmabjWillOfThePrescriptCard() : CardModel(
         PlayerChoiceContext context,
         CardPlay cardPlay)
     {
-        if (!TaskActive || TaskCompleted || cardPlay.Player != Owner)
+        if (!TaskActive || TaskCompleted || cardPlay.PlayerCompat() != Owner)
         {
             return;
         }

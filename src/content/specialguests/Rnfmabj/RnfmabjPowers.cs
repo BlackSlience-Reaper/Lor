@@ -146,6 +146,7 @@ public sealed class RnfmabjMechanicsPower : LibraryOfRuinaPowerModel
         new DynamicVar("DamageReduction", PreUnionDamageReductionPercent),
     ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -153,11 +154,18 @@ public sealed class RnfmabjMechanicsPower : LibraryOfRuinaPowerModel
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         _ = props;
         _ = dealer;
         _ = cardSource;
-        _ = cardPlay;
 
         return target == Owner
             && amount > 0m

@@ -206,7 +206,7 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
     public override Task BeforeCardPlayed(CardPlay cardPlay)
     {
         if (Mode != MagicBulletShooterPageMode.SeventhBullet
-            || cardPlay.Player != Owner
+            || cardPlay.PlayerCompat() != Owner
             || cardPlay.Card.Type != CardType.Attack)
         {
             return Task.CompletedTask;
@@ -329,6 +329,7 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
         InvokeDisplayAmountChanged();
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -336,9 +337,16 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         _ = cardSource;
-        _ = cardPlay;
         if (Mode == MagicBulletShooterPageMode.SeventhBullet
             && dealer == Owner.Creature
             && target is { IsPlayer: true })
@@ -365,7 +373,6 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
         LibraryDamageType type)
     {
         _ = cardSource;
-        _ = cardPlay;
         _ = type;
         return ShouldIncreaseBlackFlameDamageTaken(
             target,

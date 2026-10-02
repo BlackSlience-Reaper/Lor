@@ -107,7 +107,7 @@ public partial class NLibraryOfRuinaCombatRulesFtue : NFtue
             return;
         }
 
-        if (inputEvent.IsActionPressed(MegaInput.right) || inputEvent.IsActionPressed(MegaInput.confirm))
+        if (inputEvent.IsActionPressed(MegaInput.right) || inputEvent.IsActionPressed(GameApi.Confirm))
         {
             AdvanceOrClose();
             GetViewport().SetInputAsHandled();

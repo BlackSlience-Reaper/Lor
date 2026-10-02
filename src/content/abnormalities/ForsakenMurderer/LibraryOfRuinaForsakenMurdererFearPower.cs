@@ -34,10 +34,14 @@ public sealed class LibraryOfRuinaForsakenMurdererFearPower : LibraryOfRuinaPowe
         HoverTipFactory.FromPower<LibraryWeakPower>()
     ];
 
+#if STS2_0_111_0
     public override async Task AfterBlockBroken(
         PlayerChoiceContext choiceContext,
         Creature target,
         Creature? breaker)
+#else
+    public override async Task AfterBlockBroken(Creature target)
+#endif
     {
         if (target != Owner)
         {
