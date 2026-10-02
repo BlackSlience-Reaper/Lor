@@ -1029,7 +1029,6 @@ LibraryOfRuina.core.compat.LocalContextCompat
 LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat
 LibraryOfRuina.core.compat.NCreatureCompat
 LibraryOfRuina.core.compat.PowerCmdCompat
-LibraryOfRuina.core.compat.RewardSyncCompat
 LibraryOfRuina.core.compat.RunLobbyEventsCompat
 LibraryOfRuina.core.compat.RunManagerCompat
 LibraryOfRuina.core.compat.SavedPropertiesTypeCacheCompat
