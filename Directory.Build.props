@@ -28,6 +28,9 @@
     <BaseIntermediateOutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina' or '$(MSBuildProjectName)' == 'LibraryOfRuinaVerification'">$(MSBuildThisFileDirectory)build/obj/$(MSBuildProjectName)/$(CompatibilityTarget)/</BaseIntermediateOutputPath>
     <IntermediateOutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina' or '$(MSBuildProjectName)' == 'LibraryOfRuinaVerification'">$(BaseIntermediateOutputPath)$(Configuration)/</IntermediateOutputPath>
     <OutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina' or '$(MSBuildProjectName)' == 'LibraryOfRuinaVerification'">$(MSBuildThisFileDirectory)build/bin/$(MSBuildProjectName)/$(CompatibilityTarget)/$(Configuration)/</OutputPath>
+    <!-- 加载器只编一份；中间产物放到 build/，避免 Godot 导出时把 obj/bin 里的 json 收进 PCK。 -->
+    <BaseIntermediateOutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina.Loader'">$(MSBuildThisFileDirectory)build/obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina.Loader'">$(MSBuildThisFileDirectory)build/bin/$(MSBuildProjectName)/$(Configuration)/</OutputPath>
     <DefineConstants Condition="'$(CompatibilityTarget)' == '0.107.1'">$(DefineConstants);STS2_0_107_1</DefineConstants>
     <DefineConstants Condition="'$(CompatibilityTarget)' == '0.111.0'">$(DefineConstants);STS2_0_111_0</DefineConstants>
   </PropertyGroup>
