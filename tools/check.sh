@@ -5,6 +5,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export CompatibilityTarget="${CompatibilityTarget:-0.111.0}"
+BASELINE="$ROOT/snapshots/$CompatibilityTarget"
 PROJECT="$ROOT/LibraryOfRuina.csproj"
 TMP="$(mktemp -d)"
 FIXTURE_OUT="$(mktemp -d)"
@@ -25,11 +27,15 @@ dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" 
 dotnet run --project "$ROOT/tools/PrivateAccessCheck/PrivateAccessCheck.csproj" -c Release --no-build -- "$ROOT/src" "$ROOT/tools/private_access_allowlist.txt"
 # Players run the library author's release, not our source build: compile once against the published DLL too, so
 # the mod cannot depend on library APIs that are not released yet. The normal build below then restores the output.
-PUBLISHED_LIB="$(dotnet msbuild "$PROJECT" -nologo -getProperty:SteamRoot)/steamapps/workshop/content/2868840/3747541096/LibraryOfRuinaLib.dll"
+PUBLISHED_ROOT="$(dotnet msbuild "$PROJECT" -nologo -getProperty:SteamRoot)/steamapps/workshop/content/2868840/3747541096"
+PUBLISHED_LIB="$PUBLISHED_ROOT/lib/$CompatibilityTarget/LibraryOfRuinaLib.dll"
+if [[ ! -f "$PUBLISHED_LIB" && "$CompatibilityTarget" == "0.111.0" ]]; then
+  PUBLISHED_LIB="$PUBLISHED_ROOT/LibraryOfRuinaLib.dll"
+fi
 if [[ -f "$PUBLISHED_LIB" ]]; then
   dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly -p:LibraryOfRuinaLibDll="$PUBLISHED_LIB"
 else
-  echo "published LibraryOfRuinaLib not found at $PUBLISHED_LIB; skipping the release-library build" >&2
+  echo "当前目标无已发布兼容库：使用本地双版本 LibraryOfRuinaLib 进行检查" >&2
 fi
 dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly
 # The verification suites reach into internals; build them too so they do not silently rot.
@@ -37,6 +43,21 @@ dotnet build "$ROOT/verification/LibraryOfRuinaVerification.csproj" -c Release -
 # 玩家网络 ID → 整数映射的字符串是存档格式：PlayerIntMapSerializer 必须与合并前的四份实现逐字节一致。
 dotnet run --project "$ROOT/tools/PlayerIntMapCheck/PlayerIntMapCheck.csproj" -c Release
 "$ROOT/tools/snapshot.sh" "$TMP" Debug >/dev/null
+if grep -q '[^[:space:]]' "$TMP/unresolved.txt"; then
+  echo "元数据快照存在未解析类型：" >&2
+  cat "$TMP/unresolved.txt" >&2
+  exit 1
+fi
+
+# 与运行时共用 IL 指纹算法；按目标读程序集，不能靠接受快照掩盖方法体漂移。
+DATA_DIR="$(dotnet msbuild "$PROJECT" -nologo -getProperty:Sts2DataDir)"
+LIB_DLL="$(dotnet msbuild "$PROJECT" -nologo -getProperty:LibraryOfRuinaLibDll)"
+RITSU_ROOT="$(dotnet msbuild "$PROJECT" -nologo -getProperty:RitsuLibRoot)"
+GUARD="$ROOT/src/infra/patching/vanilla_copy_guard.$CompatibilityTarget.txt"
+dotnet run --project "$ROOT/tools/GuardSnapshot/GuardSnapshot.csproj" -c Release -- \
+  "$GUARD" "$FIXTURE_OUT/guard.txt" "$DATA_DIR" "$(dirname "$LIB_DLL")" \
+  "$RITSU_ROOT/compat/$CompatibilityTarget" "$RITSU_ROOT/shared"
+diff -u <(grep -v '^#' "$GUARD") <(grep -v '^#' "$FIXTURE_OUT/guard.txt")
 
 # The skip-prefix scan must see every patch class form Harmony installs: the fixture program compares the
 # shared PatchClassRules with Harmony itself, then the scan of the fixtures must match the expected list.
@@ -67,11 +88,13 @@ if grep -qE $'(\tunlisted$|^stale\t)' "$TMP/discovery_order.txt"; then
 fi
 
 # 有状态的静态字段必须在 tools/static_state.txt 登记为局级、战斗级、按实例或无害；在 --accept 之前检查，接受快照也盖不住。
-python3 "$ROOT/tools/check_static_state.py" "$TMP/static_fields.txt" "$ROOT/tools/static_state.txt"
+cat "$ROOT/tools/static_state.txt" "$ROOT/tools/static_state.$CompatibilityTarget.txt" > "$FIXTURE_OUT/static_state.registry"
+python3 "$ROOT/tools/check_static_state.py" "$TMP/static_fields.txt" "$FIXTURE_OUT/static_state.registry"
 
 if [[ "${1:-}" == "--accept" ]]; then
-  cp "$TMP"/*.txt "$ROOT/snapshots/"
+  mkdir -p "$BASELINE"
+  cp "$TMP"/*.txt "$BASELINE/"
   echo "snapshots updated"
 else
-  diff -ru -x .gdignore -x .DS_Store -x headless "$ROOT/snapshots" "$TMP" && echo "snapshots unchanged"
+  diff -ru -x .gdignore -x .DS_Store -x headless "$BASELINE" "$TMP" && echo "snapshots unchanged ($CompatibilityTarget)"
 fi

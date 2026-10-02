@@ -295,6 +295,19 @@ internal static class LibraryPatcher
         try
         {
             Directory.CreateDirectory(directory);
+            // 双版本发行核验还要覆盖两个前置库独占的目标；此表只在显式开启诊断时写出。
+            var allModPatches = new List<string>();
+            foreach (MethodBase original in Harmony.GetAllPatchedMethods().OrderBy(GuardKey, StringComparer.Ordinal))
+            {
+                Patches? info = Harmony.GetPatchInfo(original);
+                if (info == null) continue;
+                allModPatches.Add(GuardKey(original));
+                AppendPatches(allModPatches, original, "Prefix", info.Prefixes);
+                AppendPatches(allModPatches, original, "Postfix", info.Postfixes);
+                AppendPatches(allModPatches, original, "Transpiler", info.Transpilers);
+                AppendPatches(allModPatches, original, "Finalizer", info.Finalizers);
+            }
+            File.WriteAllLines(Path.Combine(directory, "all_mod_patch_methods.txt"), allModPatches);
             File.WriteAllText(Path.Combine(directory, "patch_table.txt"), header + string.Join("\n", dump) + "\n", new UTF8Encoding(false));
             File.WriteAllText(
                 Path.Combine(directory, "vanilla_copy_guard.txt"),

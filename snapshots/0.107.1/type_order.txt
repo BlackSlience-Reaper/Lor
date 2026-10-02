@@ -1022,6 +1022,7 @@ LibraryOfRuina.core.compat.AttackCommandCompat
 LibraryOfRuina.core.compat.CardPileCmdCompat
 LibraryOfRuina.core.compat.CombatManagerTurnMethodCompat
 LibraryOfRuina.core.compat.CreatureCmdCompat
+LibraryOfRuina.core.compat.GameApi
 LibraryOfRuina.core.compat.IncompatibleModBlacklist
 LibraryOfRuina.core.compat.IncompatibleModGuard
 LibraryOfRuina.core.compat.LocalContextCompat

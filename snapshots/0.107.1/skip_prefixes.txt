@@ -19,7 +19,7 @@ LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjHandStunImmunityPatch	原版
 LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjSpecialGuestBackgroundAssetsPatch	原版背景标题只能是遭遇 id，本模组背景资源目录另有命名；只作用于 Rnfmabj 特殊来宾遭遇。
 LibraryOfRuina.content.specialguests.Rnfmabj.RnfmabjSpecialGuestCreateVisualsPatch	原版 CreateVisuals 非虚，外观需要额外初始化合体状态与手部偏移；只作用于 Rnfmabj 本体与双手。
 LibraryOfRuina.content.specialguests.SpecialGuestEventConsoleProcessPatch	原版 event 命令只在 ModelDb 事件表里查找，特邀嘉宾事件不在其中；只在参数是特邀嘉宾事件 ID 时接管，属于开发者控制台命令。
-LibraryOfRuina.content.specialguests.SpecialGuestRewardResumePatch	替代体与 0.111 原版 OfferRoomEndRewards 等价，Priority.First 是为了压住某个改写奖励流程的模组；该模组尚未确认，属于 §3 的例外，待实测后决定删除或保留。
+LibraryOfRuina.content.specialguests.SpecialGuestRewardResumePatch	0.107.1 没有奖励前置 Hook，嘉宾战按原版先生成全部奖励、再展示的顺序追加奖励；0.111.0 保留既有事件嘉宾房间恢复分支及 Priority.First，对手模组尚未确认，仍属于设计哲学 §3 的例外。
 LibraryOfRuina.content.specialguests.SpecialGuestSuppressIntermediateParentFadeInPatch	RunManager.FadeIn 公开非虚且无 Hook；仅在本模组特邀嘉宾阶段衔接、当前房间为嘉宾父事件时抑制中间淡入，避免父事件闪现。
 LibraryOfRuina.content.specialguests.SpecialGuestTerminalRewardsProceedPatch	ProceedFromTerminalRewardsScreen 无 Hook；仅在本模组特邀嘉宾阶段衔接中吞掉重复/过期的继续调用，其余放行原版以复用其出栈与父事件恢复。
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBackgroundAssetsPatch	原版背景标题只能是遭遇 id，晓两阶段需要共用按种子抽取的接待层；只作用于晓特殊来宾遭遇。
