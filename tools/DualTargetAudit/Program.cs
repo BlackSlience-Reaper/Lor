@@ -56,7 +56,9 @@ string SavedAttribute(PropertyDefinition p)
     return string.Join(",", a.ConstructorArguments.Select(AttributeValue)) + ";" + string.Join(",",a.Fields.Select(f => f.Name + "=" + AttributeValue(f.Argument)).Concat(a.Properties.Select(f => f.Name + "=" + AttributeValue(f.Argument))));
 }
 Write("saved_property_order", types.Where(t => !t.FullName.Contains('<')).SelectMany(t => t.Properties.Where(p => p.CustomAttributes.Any(a => a.AttributeType.Name == "SavedPropertyAttribute")).Select((p, index) => $"{t.FullName}\t{index}\t{p.Name}\t{p.PropertyType.FullName}\t{SavedAttribute(p)}" )).Order(StringComparer.Ordinal));
-Write("constant_fields", types.Where(t => !t.FullName.Contains('<')).SelectMany(t => t.Fields.Where(f => f.HasConstant).Select(f => $"{t.FullName}.{f.Name}\t{f.FieldType}\t{Value(f.Constant)}")).Order(StringComparer.Ordinal));
+// 转义字符串和字符，确保换行、制表符等常量不破坏一字段一行的清单边界。
+string ConstantValue(object? value) => value is string or char ? System.Text.Json.JsonSerializer.Serialize(Value(value)) : Value(value);
+Write("constant_fields", types.Where(t => !t.FullName.Contains('<')).SelectMany(t => t.Fields.Where(f => f.HasConstant).Select(f => $"{t.FullName}.{f.Name}\t{f.FieldType}\t{ConstantValue(f.Constant)}")).Order(StringComparer.Ordinal));
 var patches = types.Where(t => t.CustomAttributes.Any(a => a.AttributeType.FullName == "HarmonyLib.HarmonyPatch") || t.Methods.Any(m => m.CustomAttributes.Any(a => a.AttributeType.FullName.StartsWith("HarmonyLib.Harmony") && a.AttributeType.Name is "HarmonyPrefix" or "HarmonyPostfix" or "HarmonyTranspiler" or "HarmonyFinalizer"))).ToArray();
 Write("patch_ids", patches.Select(t => t.FullName).Order(StringComparer.Ordinal));
 var targets = new List<string>();
