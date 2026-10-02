@@ -1,0 +1,122 @@
+{
+  "host": "0.111.0",
+  "game_copy": "APFS cp -cR",
+  "isolated_home": true,
+  "steam_argument": "--force-steam=off",
+  "headless": true,
+  "process_exit": 0,
+  "log": "build/dual-version-preflight/isolated-6.log",
+  "log_sha256": "cb98fea21803ccc002d33c0127e6f3f0367f62999b0901e9266875c264059e23",
+  "selected_log_lines": [
+    "[INFO] [ActLikeIt2.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+    "[INFO] [ActLikeIt2.Loader] Official assembly association; no reflection bridge.",
+    "[INFO] [ActLikeIt2.Loader] Invoked implementation initializer ActLikeIt2.ActLikeIt2Mod.Initialize.",
+    "[INFO] [LibraryOfRuinaLib.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+    "[INFO] [LibraryOfRuinaLib.Loader] Official assembly association; no reflection bridge.",
+    "[INFO] [LibraryOfRuinaLib.Loader] Invoked implementation initializer LibraryLib.Entry.Init.",
+    "[INFO] [LibraryOfRuina.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+    "[INFO] [LibraryOfRuina.Loader] Official assembly association; no reflection bridge.",
+    "[INFO] LibraryOfRuina loaded successfully (23 initialization steps).",
+    "[INFO] [LibraryOfRuina.Loader] Invoked implementation initializer LibraryOfRuina.core.LibraryOfRuinaInitializer.Initialize.",
+    "[INFO]  --- RUNNING MODDED! --- Loaded 4 mods (4 total)",
+    "[INFO] [LibraryOfRuina.VanillaCopyGuard] 82 guarded method(s) match the table."
+  ],
+  "patches": {
+    "LibraryOfRuina": {
+      "expected_classes": 342,
+      "installed_classes": 342,
+      "method_records": 395,
+      "missing": [],
+      "extra": []
+    },
+    "ActLikeIt2": {
+      "expected_classes": 20,
+      "installed_classes": 20,
+      "method_records": 25,
+      "missing": [],
+      "extra": []
+    },
+    "LibraryOfRuinaLib": {
+      "expected_classes": 91,
+      "installed_classes": 91,
+      "method_records": 100,
+      "missing": [],
+      "extra": []
+    }
+  },
+  "bundles": {
+    "LibraryOfRuina": {
+      "sourceCommit": "6bc48a34d3e2975d41632c6dc19d33430115ab5d",
+      "sourceDirty": false,
+      "files": {
+        "LibraryOfRuina.dll": "783e76d8cf5d13b1b00818773633ad01cbb5dfee4a1c74e45eefcc0c1c44dc6b",
+        "LibraryOfRuina.json": "eef5f14036e8872b7897cbd28f91eacf1ba0cc039113b53074e10677178f4fd1",
+        "LibraryOfRuina.pck": "3ce9c864695cb9a33d1ea051f5b48d9079365b10c520a25c0358975e466aea33",
+        "lib/0.107.1/LibraryOfRuina.dll": "9d38dfef6d48bcfe07d9317c6d448d2f0d93f0e341121d2223450646f630c0bd",
+        "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
+        "lib/0.111.0/LibraryOfRuina.dll": "eac149cfc17525f18b4e92e8f9d66f0c027555445c49b8c40116dc196a32d78f",
+        "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1",
+        "libraryofruina-variants.manifest": "346970a60db8bae409461c6fafb73379bbcc2d6461a0b94daf8e4343071ff9d7"
+      }
+    },
+    "ActLikeIt2": {
+      "sourceCommit": "99551e204041733104174cf8e4196e7744611151",
+      "sourceDirty": false,
+      "files": {
+        "ActLikeIt2.dll": "4a01381dc2dc8e8fb3eb469e8ef46aba2abffa7e279b31109f771a9ea28c0050",
+        "ActLikeIt2.json": "27ba5bec33386b892ba73aee64fc1bfe1a7d3103c2d78d5077d7308d03d54e7f",
+        "ActLikeIt2.pck": "87a53274e97616cbf06e1217498557424898d64b7368638df03655a35fc71163",
+        "actlikeit2-variants.manifest": "9df090f0746591427218a6e95f7ffbdb8053199183e55744588c05ae99e48031",
+        "lib/0.107.1/ActLikeIt2.dll": "ce36c1a99bb08be9dd9e489b88c6a9df8296a02dc7ca9d4479cf4c6b1423e8da",
+        "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
+        "lib/0.111.0/ActLikeIt2.dll": "fa2231994e75294ac355ee4451627b61bbb35c64ed5e6455fbd7f9d1ad978710",
+        "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1"
+      }
+    },
+    "LibraryOfRuinaLib": {
+      "sourceCommit": "18ecffe9cf75dfa4e5d82bf13df3c860379439bc",
+      "sourceDirty": false,
+      "files": {
+        "LibraryOfRuinaLib.dll": "61b645533fe07c1aaa88ce331ee7580e4f94d53ba3b1fa702dd2541851bf5d36",
+        "LibraryOfRuinaLib.json": "d71170d780931e7e1815dee226dc591cdaf717756b898031c99dae5b71e61d3d",
+        "LibraryOfRuinaLib.pck": "abbacf6503af10503d9f30317ca30ab5a3a53dd0941c67d9a254afe781a94df2",
+        "lib/0.107.1/LibraryOfRuinaLib.dll": "a5d30a86436055c515a9a4662520eebe1aa4b9e1f0da8c881c8ec3102c4dbcc4",
+        "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
+        "lib/0.111.0/LibraryOfRuinaLib.dll": "98e3bab6abbff317de79a43858aa3cfc4cb7d91427d7b5cd1065b1b305b831a6",
+        "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1",
+        "libraryofruinalib-variants.manifest": "a09e2cb49901478e126ce5d9dfe036b74cc4bb002dd6e8373f1935c572359564"
+      }
+    }
+  },
+  "checks": {
+    "0.107.1": {
+      "log": "build/dual-version-preflight/check-full-old.log",
+      "sha256": "bcde0b457fc9a1908d067d12cc77deace12a546cd391de39252dd6de9ba63c92",
+      "tail": [
+        "Time Elapsed 00:00:01.44",
+        "PlayerIntMapCheck: 1833 checks, 0 failures",
+        "已记录 82 个方法体。",
+        "patch class rule: 19 fixture types, 0 mismatch(es) with Harmony",
+        "il fingerprint: 4 cases, 0 failure(s)",
+        "snapshots unchanged (0.107.1)"
+      ]
+    },
+    "0.111.0": {
+      "log": "build/dual-version-preflight/check-full-new.log",
+      "sha256": "5274c20ee2531bf45cc55672f88e2c905e7237b9b33a152f5edbc6acdf9a0c4d",
+      "tail": [
+        "Time Elapsed 00:00:01.29",
+        "PlayerIntMapCheck: 1833 checks, 0 failures",
+        "已记录 82 个方法体。",
+        "patch class rule: 19 fixture types, 0 mismatch(es) with Harmony",
+        "il fingerprint: 4 cases, 0 failure(s)",
+        "snapshots unchanged (0.111.0)"
+      ]
+    }
+  },
+  "limitations": [
+    "0.107.1 未做运行时加载验证",
+    "未验证战斗、存档读写、重连或双客户端联机",
+    "日志仍含依赖翻译、dummy 渲染器及退出资源回收提示，详见双版本适配.md"
+  ]
+}

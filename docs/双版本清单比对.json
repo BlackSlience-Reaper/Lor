@@ -1,0 +1,131 @@
+{
+  "targets": [
+    "0.107.1",
+    "0.111.0"
+  ],
+  "mods": {
+    "LibraryOfRuina": {
+      "models": {
+        "equal": true,
+        "rows": 910,
+        "sha256": "e2f674a5a077fc5e7f2bc222963cc2096ed398cf2afc7e74191a6f31234b7182"
+      },
+      "saved_property_order": {
+        "equal": true,
+        "rows": 235,
+        "sha256": "26d998b739cc9acb64d3ea4873c62470fa13706bea683cd6f498cb8830814a6a"
+      },
+      "patch_ids": {
+        "equal": true,
+        "rows": 342,
+        "sha256": "0e245a639a7245816dc761f14687564edecd173e262d5f96f5d4a19a697aef42"
+      },
+      "constant_fields": {
+        "equal": true,
+        "rows": 6555,
+        "sha256": "75d298aa943b38f6312c0f04d1bc173b31c1904da27f469d899b67a7fe780307"
+      },
+      "source_numbers": {
+        "members_0.107.1": 16238,
+        "members_0.111.0": 16239,
+        "gameplay_equal": true,
+        "adapter_differences": {
+          "src/core/compat/GameApi.cs|GameApi.CreateDetachedRng": {
+            "0.107.1": null,
+            "0.111.0": "1099511628211UL,1099511628211UL,1099511628211UL,1099511628211UL"
+          }
+        }
+      },
+      "static_patch_targets_resolved": true,
+      "dynamic_patch_target_classes": 29,
+      "binary_source_commit": "6bc48a34d3e2975d41632c6dc19d33430115ab5d",
+      "binary_source_dirty": false,
+      "implementation_sha256": {
+        "0.107.1": "9d38dfef6d48bcfe07d9317c6d448d2f0d93f0e341121d2223450646f630c0bd",
+        "0.111.0": "eac149cfc17525f18b4e92e8f9d66f0c027555445c49b8c40116dc196a32d78f"
+      },
+      "inspected_source_commit": "6bc48a34d3e2975d41632c6dc19d33430115ab5d",
+      "inspected_tracked_source_dirty": false
+    },
+    "ActLikeIt2": {
+      "models": {
+        "equal": true,
+        "rows": 1,
+        "sha256": "da8453ccc5dfc08d13b38b2f89fd4cc63ab1249cf691a3b0de3baa5b5c2ff3c6"
+      },
+      "saved_property_order": {
+        "equal": true,
+        "rows": 0,
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      },
+      "patch_ids": {
+        "equal": true,
+        "rows": 20,
+        "sha256": "b14629a7002e09c6aa9c5342a7d50b97cb8c692f0ca49a54f4f1df95d841b149"
+      },
+      "constant_fields": {
+        "equal": true,
+        "rows": 23,
+        "sha256": "db756d643dac6208775b108f0a3562019732467006f457447621a1b47d86206c"
+      },
+      "source_numbers": {
+        "members_0.107.1": 42,
+        "members_0.111.0": 42,
+        "gameplay_equal": true,
+        "adapter_differences": {}
+      },
+      "static_patch_targets_resolved": true,
+      "dynamic_patch_target_classes": 1,
+      "binary_source_commit": "99551e204041733104174cf8e4196e7744611151",
+      "binary_source_dirty": false,
+      "implementation_sha256": {
+        "0.107.1": "ce36c1a99bb08be9dd9e489b88c6a9df8296a02dc7ca9d4479cf4c6b1423e8da",
+        "0.111.0": "fa2231994e75294ac355ee4451627b61bbb35c64ed5e6455fbd7f9d1ad978710"
+      },
+      "inspected_source_commit": "99551e204041733104174cf8e4196e7744611151",
+      "inspected_tracked_source_dirty": false
+    },
+    "LibraryOfRuinaLib": {
+      "models": {
+        "equal": true,
+        "rows": 21,
+        "sha256": "94534571052e8317a5a06b6fc41ba9be6c48733f62e95ca26406eb9501129d0b"
+      },
+      "saved_property_order": {
+        "equal": true,
+        "rows": 0,
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      },
+      "patch_ids": {
+        "equal": true,
+        "rows": 91,
+        "sha256": "635deffa6df7a8a31c47ce6c74d90ce82ea567117607b61f456d11c9fad057eb"
+      },
+      "constant_fields": {
+        "equal": true,
+        "rows": 188,
+        "sha256": "5f88e176ec881fac7181f499c7fe888386647164cdb2016d105236c27a7f26da"
+      },
+      "source_numbers": {
+        "members_0.107.1": 680,
+        "members_0.111.0": 680,
+        "gameplay_equal": true,
+        "adapter_differences": {}
+      },
+      "static_patch_targets_resolved": true,
+      "dynamic_patch_target_classes": 3,
+      "binary_source_commit": "18ecffe9cf75dfa4e5d82bf13df3c860379439bc",
+      "binary_source_dirty": false,
+      "implementation_sha256": {
+        "0.107.1": "a5d30a86436055c515a9a4662520eebe1aa4b9e1f0da8c881c8ec3102c4dbcc4",
+        "0.111.0": "98e3bab6abbff317de79a43858aa3cfc4cb7d91427d7b5cd1065b1b305b831a6"
+      },
+      "inspected_source_commit": "18ecffe9cf75dfa4e5d82bf13df3c860379439bc",
+      "inspected_tracked_source_dirty": false
+    }
+  },
+  "limitations": [
+    "这是离线元数据与源码数值比对，不是存档读写或双机联机验证。",
+    "0.107.1 未做运行时加载验证。"
+  ]
+}
