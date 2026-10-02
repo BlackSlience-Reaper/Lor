@@ -1,0 +1,8 @@
+PatchTargetFixtures.AmbiguousPatch.Prefix	MISSING PatchTargetFixtures.Target.Over(未给参数表) MethodType=0：未给参数表而有 2 个重载，Harmony 会抛 AmbiguousMatchException
+PatchTargetFixtures.BadInjectionPatch.Prefix	INJECTION 原方法没有参数 y in System.Void PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadInjectionPatch.Prefix	INJECTION 参数 x 类型 System.String 不兼容原方法第 0 个参数 System.Int32 in System.Void PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadInjectionPatch.Prefix	INJECTION 字段不存在 ___nothere in System.Void PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadInjectionPatch.Prefix	INJECTION 无效的参数序号 __7 in System.Void PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadResultPatch.Postfix	INJECTION __instance 类型 System.String 不兼容 PatchTargetFixtures.Target in System.Void PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadResultPatch.Postfix	INJECTION __result 用在无返回值的原方法上 in System.Void PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.InheritedPatch.Prefix	MISSING PatchTargetFixtures.Target.Inherited(未给参数表) MethodType=0：找不到

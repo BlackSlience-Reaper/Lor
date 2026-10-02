@@ -1,0 +1,3 @@
+# PatchTargetCheck 的显式例外：<目标或 *>\t<补丁类全名>\t<原因>
+# 只登记离线无法判定的类（例如 Prepare/TargetMethod 必然调用 Godot 引擎），或某目标上有意不安装的类。
+# 登记的类如果实际通过了检查，PatchTargetCheck 会报“例外表条目已不再失败”，需要删掉对应行。

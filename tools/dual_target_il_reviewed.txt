@@ -1,0 +1,3 @@
+# tools/compare_dual.py：源码两目标相同、编译产物的 IL 数值却不同的方法（键已归一编译器生成名的序号）。
+# 格式：<模组 id>\t<类型::方法>\t<审查结论>。只登记查过原版两个版本、确认按目标编译的取值正确的条目。
+LibraryOfRuinaLib	LibraryLib.Patches.LibraryManagedRequestEnqueueTransportPatch::Prefix	原版 ActionSynchronizerCombatState 在 0.111.0 于 NotInCombat 后插入 PreCombatSetup，NotPlayPhase 从 3 变为 4；源码按名比较，按目标编进的常量正确

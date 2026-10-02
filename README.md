@@ -92,7 +92,7 @@ dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 
 补丁由 `src/infra/patching/LibraryPatcher` 统一安装。主菜单第一次就绪时，它会在日志里报告与其他模组共享的目标，并点名排在本模组跳过型前缀之后的第三方前缀。
 
-`src/infra/patching/vanilla_copy_guard.<目标>.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的游戏与前置库方法的 IL 哈希（async 方法连同状态机）。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，核对差异后把导出的 `vanilla_copy_guard.txt` 保存到对应目标表。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。补丁表只能由游戏实际加载生成；指纹表可用 `tools/GuardSnapshot` 离线读取同一目标的方法体。`check.sh` 会核对指纹，不会自动接受新值。另有 `all_mod_patch_methods.txt` 记录前置库独占目标的实际补丁。
+`src/infra/patching/vanilla_copy_guard.<目标>.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的游戏与前置库方法的 IL 哈希（async 方法连同状态机）。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，核对差异后把导出的 `vanilla_copy_guard.txt` 保存到对应目标表。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。补丁表只能由游戏实际加载生成；指纹表可用 `tools/GuardSnapshot` 离线生成：它按补丁类实际解析出的目标取方法体，目标找不到或有歧义直接报错，并列出表里有但本目标不会安装的条目。`check.sh` 对两个目标都核对指纹，不会自动接受新值；同时用 `tools/PatchTargetCheck` 在隔离的加载上下文里解析全部补丁类（含 `TargetMethod` 动态目标），只解析、不安装，任一失败即不通过，例外须登记在 `tools/PatchTargetCheck/exceptions.txt`。另有 `all_mod_patch_methods.txt` 记录前置库独占目标的实际补丁。
 
 ## 目录 / Layout
 

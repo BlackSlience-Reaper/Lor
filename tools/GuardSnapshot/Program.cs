@@ -1,46 +1,53 @@
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Loader;
 using LibraryOfRuina.infra.patching;
+using LibraryOfRuina.Tools;
 
-// 离线读取指定目标的方法体；不调用游戏或模组初始化，不安装补丁。
-if (args.Length < 3) throw new ArgumentException("GuardSnapshot <基准表> <输出表> <引用目录>...");
-var files = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-foreach (string directory in args.Skip(2))
-    foreach (string file in Directory.EnumerateFiles(directory, "*.dll")) files.TryAdd(Path.GetFileNameWithoutExtension(file), Path.GetFullPath(file));
-AssemblyLoadContext.Default.Resolving += (_, name) => files.TryGetValue(name.Name!, out string? file) ? AssemblyLoadContext.Default.LoadFromAssemblyPath(file) : null;
-const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-string Key(MethodBase method) => method.DeclaringType!.Assembly.GetName().Name + "|" + method.DeclaringType.FullName + "::" + method.Name + (method.IsGenericMethodDefinition ? "`" + method.GetGenericArguments().Length : "") + "(" + string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName ?? p.ParameterType.Name)) + ")";
-var lines = new SortedDictionary<string, string>(StringComparer.Ordinal);
-foreach (string line in File.ReadLines(args[0]).Where(l => l.Length > 0 && !l.StartsWith('#')))
+// 按目标离线生成原版拷贝守卫表。守卫范围取自补丁类实际解析出的原方法（PatchResolver 用该目标的 Harmony 执行
+// Prepare/TargetMethod(s) 与静态特性解析），与运行时 LibraryPatcher 的取法相同；不再从基准表的键反查方法，
+// 所以不会把本目标装不上的目标记进表里，也没有按方法名的回退。不安装补丁，不运行模组初始化或 Godot。
+if (args.Length < 4)
 {
-    string key = line.Split('\t')[0];
-    string assemblyName = key[..key.IndexOf('|')];
-    Assembly assembly = Assembly.Load(assemblyName);
-    string typeName = key[(key.IndexOf('|') + 1)..key.IndexOf("::", StringComparison.Ordinal)];
-    string methodName = key[(key.IndexOf("::", StringComparison.Ordinal) + 2)..key.IndexOf('(')];
-    methodName = methodName.Split('`')[0];
-    Type? type = assembly.GetType(typeName);
-    MethodBase? found = type?.GetMethods(Flags).FirstOrDefault(m => Key(m) == key);
-    if (found == null && typeName.Contains("+<", StringComparison.Ordinal) && methodName == "MoveNext")
-    {
-        string parentName = typeName[..typeName.LastIndexOf("+<", StringComparison.Ordinal)];
-        string ownerName = typeName[(parentName.Length + 2)..typeName.LastIndexOf('>')];
-        var owners = assembly.GetType(parentName)!.GetMethods(Flags).Where(m => m.Name == ownerName).ToArray();
-        if (owners.Length != 1) throw new InvalidOperationException("状态机所属方法不唯一：" + key);
-        Type? state = owners[0].GetCustomAttribute<AsyncStateMachineAttribute>()?.StateMachineType ?? owners[0].GetCustomAttribute<IteratorStateMachineAttribute>()?.StateMachineType;
-        found = state?.GetMethod("MoveNext", Flags);
-    }
-    if (found == null && type != null)
-    {
-        var candidates = type.GetMethods(Flags).Where(m => m.Name == methodName).ToArray();
-        if (candidates.Length == 1) found = candidates[0];
-    }
-    if (found == null) throw new MissingMethodException("需要人工核对版本映射：" + key);
-    string actual = Key(found);
-    if (actual != key) Console.WriteLine("目标变化：" + key + "\n  -> " + actual);
-    lines.Add(actual, IlFingerprint.Hash(found));
+    Console.Error.WriteLine("用法：GuardSnapshot <模组 dll> <基准表> <输出表> <引用目录>...");
+    return 2;
 }
-Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[1]))!);
-File.WriteAllText(args[1], "# 按目标程序集离线计算的 IL 指纹；仅方法体证据，不代表运行验证。\n" + string.Join("\n", lines.Select(p => p.Key + "\t" + p.Value)) + "\n");
+
+var resolver = new PatchResolver(args[0], args.Skip(3));
+var results = resolver.InstalledPatchClasses().Select(resolver.Resolve).ToArray();
+var errors = resolver.LoadErrors.Select(static e => "类型加载失败：" + e).ToList();
+// 有跳过型前缀或 Transpiler 的类解析失败时，守卫范围本身不可知，不能给出“完整”的表。
+errors.AddRange(results.Where(static r => r.HasGuardKinds && (r.Error != null || r.Declined || r.DeclinedOriginals.Count > 0))
+    .Select(static r => "守卫相关补丁类未能解析，守卫范围不完整：" + r.Type.FullName + (r.Error != null ? "：" + r.Error : "（Prepare 拒绝）")));
+
+var lines = new SortedDictionary<string, string>(StringComparer.Ordinal);
+foreach (var method in resolver.GuardedBodies(results))
+{
+    string key = PatchResolver.GuardKey(method);
+    string hash = IlFingerprint.Hash(method);
+    if (lines.TryGetValue(key, out string? existing) && existing != hash)
+    {
+        errors.Add("两个守卫方法共用同一个键：" + key);
+    }
+
+    lines[key] = hash;
+}
+
+Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[2]))!);
+File.WriteAllText(args[2], "# 按目标程序集离线计算的 IL 指纹；仅方法体证据，不代表运行验证。\n" + string.Join("\n", lines.Select(p => p.Key + "\t" + p.Value)) + "\n");
+
+var baseline = File.ReadLines(args[1]).Where(static l => l.Length > 0 && !l.StartsWith('#')).Select(static l => l.Split('\t')[0]).ToHashSet(StringComparer.Ordinal);
+foreach (string key in baseline.Where(k => !lines.ContainsKey(k)).Order(StringComparer.Ordinal))
+{
+    Console.WriteLine("守卫表有、本目标补丁类不会安装：" + key);
+}
+
+foreach (string key in lines.Keys.Where(k => !baseline.Contains(k)))
+{
+    Console.WriteLine("本目标会安装、守卫表没有：" + key);
+}
+
 Console.WriteLine($"已记录 {lines.Count} 个方法体。");
+foreach (string error in errors)
+{
+    Console.Error.WriteLine("FAILED " + error);
+}
+
+return errors.Count == 0 ? 0 : 1;

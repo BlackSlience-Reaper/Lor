@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- tools/check.sh 的回归用例：每种目标解析与参数注入错误各写一个补丁类，PatchTargetCheck 与 DualTargetAudit
+       都要报出 expected_*.txt 里的结果。这里的类从不安装。 -->
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony" HintPath="$(Sts2DataDir)/0Harmony.dll" />
+  </ItemGroup>
+</Project>

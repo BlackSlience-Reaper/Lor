@@ -49,15 +49,49 @@ if grep -q '[^[:space:]]' "$TMP/unresolved.txt"; then
   exit 1
 fi
 
-# 与运行时共用 IL 指纹算法；按目标读程序集，不能靠接受快照掩盖方法体漂移。
-DATA_DIR="$(dotnet msbuild "$PROJECT" -nologo -getProperty:Sts2DataDir)"
-LIB_DLL="$(dotnet msbuild "$PROJECT" -nologo -getProperty:LibraryOfRuinaLibDll)"
-RITSU_ROOT="$(dotnet msbuild "$PROJECT" -nologo -getProperty:RitsuLibRoot)"
-GUARD="$ROOT/src/infra/patching/vanilla_copy_guard.$CompatibilityTarget.txt"
-dotnet run --project "$ROOT/tools/GuardSnapshot/GuardSnapshot.csproj" -c Release -- \
-  "$GUARD" "$FIXTURE_OUT/guard.txt" "$DATA_DIR" "$(dirname "$LIB_DLL")" \
-  "$RITSU_ROOT/compat/$CompatibilityTarget" "$RITSU_ROOT/shared"
-diff -u <(grep -v '^#' "$GUARD") <(grep -v '^#' "$FIXTURE_OUT/guard.txt")
+# 补丁目标：两个目标都用各自的 Release 产物和引用检查（当前目标之外的那个在这里补编一次），不能只看本次编译的目标。
+# - PatchTargetCheck：在独立 AssemblyLoadContext 里执行全部补丁类的 Prepare/TargetMethod(s)，由该目标的 Harmony 解析
+#   静态特性，再对确定的原方法核对参数注入；异常、解析为空、Prepare 拒绝都算失败，例外只能登记在 exceptions.txt。
+# - DualTargetAudit：只读元数据，按 Harmony 2.4.2 规则（合并方法级特性、只看声明类型、无参数表遇重载即歧义）解析静态目标。
+# - GuardSnapshot：守卫范围取自实际解析出的目标，与运行时共用 IL 指纹算法；接受快照盖不住守卫表的差异。
+# 先跑回归用例，确认每类错误仍会被报出。
+PTC_FIXTURES="$ROOT/tools/PatchTargetCheck/Fixtures"
+dotnet build "$PTC_FIXTURES/PatchTargetFixtures.csproj" -c Release -nologo -v q -clp:ErrorsOnly
+for tool in PatchTargetCheck GuardSnapshot DualTargetAudit; do
+  dotnet build "$ROOT/tools/$tool/$tool.csproj" -c Release -nologo -v q -clp:ErrorsOnly
+done
+PTC="$ROOT/tools/PatchTargetCheck/bin/Release/net9.0/PatchTargetCheck.dll"
+GUARD_TOOL="$ROOT/tools/GuardSnapshot/bin/Release/net9.0/GuardSnapshot.dll"
+AUDIT="$ROOT/tools/DualTargetAudit/bin/Release/net9.0/DualTargetAudit.dll"
+FX_BIN="$PTC_FIXTURES/bin/Release/net9.0"
+printf '# 回归用例不登记例外\n' > "$FIXTURE_OUT/no_exceptions.txt"
+dotnet "$PTC" fixture "$FX_BIN/PatchTargetFixtures.dll" "$FIXTURE_OUT/no_exceptions.txt" "$FIXTURE_OUT/ptc_fixture.txt" "$FX_BIN" >/dev/null 2>&1 || true
+diff -u "$PTC_FIXTURES/expected_dynamic.txt" <(grep -v '^#' "$FIXTURE_OUT/ptc_fixture.txt")
+dotnet "$AUDIT" "$FX_BIN/PatchTargetFixtures.dll" "$FIXTURE_OUT/audit_fixture" "$FX_BIN" >/dev/null 2>&1 || true
+diff -u "$PTC_FIXTURES/expected_static.txt" "$FIXTURE_OUT/audit_fixture/missing_patch_targets.txt"
+
+patch_status=0
+for target in 0.107.1 0.111.0; do
+  if [[ "$target" != "$CompatibilityTarget" ]]; then
+    dotnet build "$PROJECT" -c Release -nologo -v q -clp:ErrorsOnly -p:CompatibilityTarget="$target"
+  fi
+  props="$(dotnet msbuild "$PROJECT" -nologo -p:CompatibilityTarget="$target" -p:Configuration=Release \
+    -getProperty:TargetPath -getProperty:Sts2DataDir -getProperty:LibraryOfRuinaLibDll -getProperty:ActLikeIt2Dll -getProperty:RitsuLibRoot)"
+  prop() { python3 -c 'import json,sys; print(json.loads(sys.argv[1])["Properties"][sys.argv[2]])' "$props" "$1"; }
+  MOD_DLL="$(prop TargetPath)"
+  RITSU_ROOT="$(prop RitsuLibRoot)"
+  refs=("$(prop Sts2DataDir)" "$RITSU_ROOT/compat/$target" "$RITSU_ROOT/shared" "$(dirname "$(prop LibraryOfRuinaLibDll)")" "$(dirname "$(prop ActLikeIt2Dll)")")
+  dotnet "$PTC" "$target" "$MOD_DLL" "$ROOT/tools/PatchTargetCheck/exceptions.txt" "$FIXTURE_OUT/patch_targets.$target.txt" "${refs[@]}" || patch_status=1
+  dotnet "$AUDIT" "$MOD_DLL" "$FIXTURE_OUT/audit.$target" "${refs[@]}" >/dev/null || patch_status=1
+  GUARD="$ROOT/src/infra/patching/vanilla_copy_guard.$target.txt"
+  dotnet "$GUARD_TOOL" "$MOD_DLL" "$GUARD" "$FIXTURE_OUT/guard.$target.txt" "${refs[@]}" || patch_status=1
+  diff -u --label "vanilla_copy_guard.$target.txt" --label "按 $target 实际补丁目标重算" \
+    <(grep -v '^#' "$GUARD") <(grep -v '^#' "$FIXTURE_OUT/guard.$target.txt") || patch_status=1
+done
+if [[ "$patch_status" != 0 ]]; then
+  echo "补丁目标检查失败：见上方 FAILED 行与守卫表差异" >&2
+  exit 1
+fi
 
 # The skip-prefix scan must see every patch class form Harmony installs: the fixture program compares the
 # shared PatchClassRules with Harmony itself, then the scan of the fixtures must match the expected list.

@@ -57,7 +57,17 @@ internal static class VanillaCopyGuard
                      + string.Join("\n  ", unlisted));
         }
 
-        if (drifted.Count == 0 && unlisted.Count == 0)
+        // 表里有、这次却没装上的条目：补丁类抛异常、Prepare 拒绝或目标在本版本不存在，对应的跳过/改写逻辑整段缺席，
+        // 只比对已安装的方法会让它静默通过。离线的 tools/GuardSnapshot 用同样的范围生成表，check.sh 的 diff 会报出来。
+        string[] notInstalled = expected.Keys.Where(key => !guarded.ContainsKey(key)).Order(StringComparer.Ordinal).ToArray();
+        if (notInstalled.Length > 0)
+        {
+            Log.Warn(LogPrefix + "NOT INSTALLED: " + notInstalled.Length + " table entr" + (notInstalled.Length == 1 ? "y was" : "ies were")
+                     + " not patched this session; the patch class failed, declined, or its target is missing:\n  "
+                     + string.Join("\n  ", notInstalled));
+        }
+
+        if (drifted.Count == 0 && unlisted.Count == 0 && notInstalled.Length == 0)
         {
             Log.Info(LogPrefix + guarded.Count + " guarded method(s) match the table.");
         }
