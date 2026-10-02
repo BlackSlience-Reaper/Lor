@@ -38,6 +38,9 @@ internal static partial class GameApi
         synchronizer.BeforeExitingRoom();
         synchronizer.GenerateInternalCombatStateIfNecessary(synchronizer.GetLocalEvent());
     }
+    // 新版参数是 canonicalEncounter，交给 EventCombatSynchronizer.ReadyToEnterCombat：它按引用比对各玩家的遭遇，
+    // 全员就绪后才 ToMutable 建战斗；泛型重载传的也是 ModelDb.Encounter<T>() 本身。
+    internal static EncounterModel EventCombatEncounter(EncounterModel canonicalEncounter) => canonicalEncounter;
     internal static CardModel CreateDupe(CardModel card, Player owner) => card.CreateDupe(owner);
     internal static Rng CreateDetachedRng(Rng source, string label)
     {

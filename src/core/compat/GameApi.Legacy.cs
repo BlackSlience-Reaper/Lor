@@ -34,11 +34,21 @@ internal static partial class GameApi
     internal static StringName Confirm => MegaInput.accept;
     internal static void ActivateEvoke(DarkOrb orb, Creature target) { } // 旧版激发没有此通知。
     internal static void ResetEventCombat(EventSynchronizer synchronizer) { } // 旧版没有事件战斗同步器。
+    // 旧版 EventModel.EnterCombatWithoutExitingEvent 的参数是 mutableEncounter，直接 new CombatState，
+    // 后者对遭遇调用 AssertMutable；泛型重载自己传 ModelDb.Encounter<T>().ToMutable()。
+    internal static EncounterModel EventCombatEncounter(EncounterModel canonicalEncounter) => canonicalEncounter.ToMutable();
+    // 旧版 CreateDupe 经 CreateClone → CombatState.CloneCard（MemberwiseClone）保留原主人，原版 HistoryCourse
+    // 直接打出该复制品；Owner 的 setter 在已有主人时抛 "already has an owner"，旧版也没有转交主人的入口。
+    // 因此主人不一致时在造牌前明确失败，不改写复制品的主人。
     internal static CardModel CreateDupe(CardModel card, Player owner)
     {
-        CardModel copy = card.CreateDupe();
-        copy.Owner = owner;
-        return copy;
+        if (!ReferenceEquals(card.Owner, owner))
+        {
+            throw new InvalidOperationException(
+                $"Cannot duplicate card {card.Id.Entry} for another player on 0.107.1; the duplicate keeps its original owner.");
+        }
+
+        return card.CreateDupe();
     }
     internal static Rng CreateDetachedRng(Rng source, string label) =>
         new Rng(unchecked(source.Seed + (uint)source.Counter), label);

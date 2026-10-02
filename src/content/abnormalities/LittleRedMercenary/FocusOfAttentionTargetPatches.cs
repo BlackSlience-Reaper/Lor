@@ -97,7 +97,11 @@ internal static class FocusOfAttentionLightningOrbPatch
         return FocusOfAttentionPatchTargets.GetAsyncMoveNext(
             typeof(LightningOrb),
             "ApplyLightningDamage",
+#if STS2_0_111_0
             [typeof(decimal), typeof(Creature), typeof(PlayerChoiceContext), typeof(bool)]);
+#else
+            [typeof(decimal), typeof(Creature), typeof(PlayerChoiceContext)]);
+#endif
     }
 
     [HarmonyTranspiler]

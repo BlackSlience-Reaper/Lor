@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Events;
@@ -251,7 +252,7 @@ public abstract class SpecialGuestEventBase : EventModel
         }
 
         EnterCombatWithoutExitingEvent(
-            Definition.GetStage(0).EncounterFactory(),
+            GameApi.EventCombatEncounter(Definition.GetStage(0).EncounterFactory()),
             Array.Empty<Reward>(),
             shouldResumeAfterCombat: true);
         return Task.CompletedTask;
@@ -264,7 +265,7 @@ public abstract class SpecialGuestEventBase : EventModel
     internal void BeginPendingStage(int stageIndex)
     {
         EnterCombatWithoutExitingEvent(
-            Definition.GetStage(stageIndex).EncounterFactory(),
+            GameApi.EventCombatEncounter(Definition.GetStage(stageIndex).EncounterFactory()),
             Array.Empty<Reward>(),
             shouldResumeAfterCombat: true);
     }

@@ -317,7 +317,22 @@ public static class IoriSpecialGuestBgmController
 [HarmonyPatch]
 internal static class IoriSpecialGuestBgmCombatEndPatch
 {
+    // Patch exactly the overload that performs teardown. The postfix wraps the
+    // returned Task, so patching a forwarding overload too would restore music
+    // twice. 0.111.0's internal parameterless overload only forwards the live
+    // turn state, and CheckWinCondition calls the CombatTurnState overload
+    // directly; 0.107.1 has only the public parameterless teardown.
     [HarmonyTargetMethod]
+#if STS2_0_107_1
+    private static MethodBase TargetMethod() =>
+        AccessTools.DeclaredMethod(
+            typeof(CombatManager),
+            nameof(CombatManager.EndCombatInternal),
+            Type.EmptyTypes)
+        ?? throw new MissingMethodException(
+            typeof(CombatManager).FullName,
+            nameof(CombatManager.EndCombatInternal));
+#else
     private static MethodBase TargetMethod() =>
         typeof(CombatManager).GetMethods(
                 BindingFlags.Instance
@@ -330,6 +345,7 @@ internal static class IoriSpecialGuestBgmCombatEndPatch
                     method.GetParameters()[0].ParameterType.FullName,
                     "MegaCrit.Sts2.Core.Combat.CombatTurnState",
                     StringComparison.Ordinal));
+#endif
 
     [HarmonyPrefix]
     private static void Prefix(
