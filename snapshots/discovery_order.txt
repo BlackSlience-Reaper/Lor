@@ -548,3 +548,5 @@ patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSi
 patch	LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch
 patch	LibraryOfRuina.content.abnormalities.Alriune.AlriuneCrownCardPatch
 patch	LibraryOfRuina.content.abnormalities.Alriune.AlriuneDustbornDeathVisualPatch
+patch	LibraryOfRuina.ui.StaggerBadgeRefreshPatch
+patch	LibraryOfRuina.ui.StaggerBadgeResistIconsPatch

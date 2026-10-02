@@ -557,3 +557,5 @@ PowerInlineIconSizing+MatchRenderedFontSizePatch
 CreatureOutlineGlowPatch
 AlriuneCrownCardPatch
 AlriuneDustbornDeathVisualPatch
+StaggerBadgeRefreshPatch
+StaggerBadgeResistIconsPatch

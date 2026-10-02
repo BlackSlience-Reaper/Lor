@@ -2041,6 +2041,9 @@ readonly	LibraryOfRuina.ui.LibraryHealthBarForecastColors.RnfmabjCorrosion	Godot
 readonly	LibraryOfRuina.ui.LibraryHealthBarForecastColors.Spore	Godot.Color
 readonly	LibraryOfRuina.ui.LibraryHealthBarLockForegroundPatch.ForecastContainerNames	System.String[]
 readonly	LibraryOfRuina.ui.LibraryHealthBarLockForegroundPatch.VisibilitySnapshots	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Nodes.Combat.NHealthBar,LibraryOfRuina.ui.LibraryHealthBarLockForegroundPatch+ForecastVisibilitySnapshot]
+readonly	LibraryOfRuina.ui.StaggerBadge.OutlineColor	Godot.Color
+readonly	LibraryOfRuina.ui.StaggerBadge.ResistColumnNames	System.String[]
+readonly	LibraryOfRuina.ui.StaggerBadgeResistIconsPatch.LibIconTypes	System.String[]
 readonly	LibraryOfRuina.ui.scene_transitions.LorexSceneRevealOverlay+MethodName.Create	Godot.StringName
 readonly	LibraryOfRuina.ui.scene_transitions.LorexSceneRevealOverlay+MethodName.CreatePrimed	Godot.StringName
 readonly	LibraryOfRuina.ui.scene_transitions.LorexSceneRevealOverlay+MethodName.CreateScanTailTexture	Godot.StringName
