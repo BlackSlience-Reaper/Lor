@@ -1,16 +1,16 @@
 {
   "id": "LibraryOfRuina",
   "name": "Library Of Ruina",
-  "author": "Natsuki, Reaper",
+  "author": "Natsuki",
   "description": "Library Of Ruina is a Slay the Spire 2 content expansion mod. It adds Library of Ruina-inspired monsters, encounters, bosses, events, page relics, E.G.O. cards, powers, detailed intents, and multiplayer-aware balance support to make runs more varied and replayable.",
-  "version": "v0.22.6",
-  "min_game_version": "0.111.0",
+  "version": "v0.22.7",
+  "min_game_version": "0.107.1",
   "has_pck": true,
   "has_dll": true,
   "dependencies": [
-    { "id": "ActLikeIt2", "min_version": "0.2.2" },
+    { "id": "ActLikeIt2", "min_version": "0.2.3" },
     { "id": "STS2-RitsuLib", "min_version": "0.6.2" },
-    { "id": "LibraryOfRuinaLib", "min_version": "1.3.0" }
+    { "id": "LibraryOfRuinaLib", "min_version": "1.3.2" }
   ],
   "affects_gameplay": true
 }
