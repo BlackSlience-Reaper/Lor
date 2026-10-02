@@ -4,23 +4,65 @@
   "isolated_home": true,
   "steam_argument": "--force-steam=off",
   "headless": true,
-  "process_exit": 0,
-  "log": "build/dual-version-preflight/isolated-7.log",
-  "log_sha256": "3ddaa434a276f21d94d77f9a0ce8d9040008d0e6bd0091cdbe5549d3c6873a8a",
-  "selected_log_lines": [
-    "[INFO] [ActLikeIt2.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
-    "[INFO] [ActLikeIt2.Loader] Official assembly association; no reflection bridge.",
-    "[INFO] [ActLikeIt2.Loader] Invoked implementation initializer ActLikeIt2.ActLikeIt2Mod.Initialize.",
-    "[INFO] [LibraryOfRuinaLib.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
-    "[INFO] [LibraryOfRuinaLib.Loader] Official assembly association; no reflection bridge.",
-    "[INFO] [LibraryOfRuinaLib.Loader] Invoked implementation initializer LibraryLib.Entry.Init.",
-    "[INFO] [LibraryOfRuina.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
-    "[INFO] [LibraryOfRuina.Loader] Official assembly association; no reflection bridge.",
-    "[INFO] LibraryOfRuina loaded successfully (23 initialization steps).",
-    "[INFO] [LibraryOfRuina.Loader] Invoked implementation initializer LibraryOfRuina.core.LibraryOfRuinaInitializer.Initialize.",
-    "[INFO]  --- RUNNING MODDED! --- Loaded 4 mods (4 total)",
-    "[INFO] [LibraryOfRuina.VanillaCopyGuard] 82 guarded method(s) match the table."
+  "mods": [
+    "STS2-RitsuLib 0.6.2 (build/deps)",
+    "LibraryOfRuinaLib 1.3.3",
+    "ActLikeIt2 0.2.3",
+    "LibraryOfRuina 0.22.7",
+    "LibraryOfRuinaVerification（--lor-verify-dual-target）"
   ],
+  "runs": {
+    "final": {
+      "log": "build/dual-version-preflight/isolated-final.log",
+      "log_sha256": "847843afcafdbe31ae679fa5bbfeaba6effc6e4ab30e9b1f99a436ebc9e748e3",
+      "environment": "LOR_DUMP_PATCHES=<临时目录>",
+      "selected_log_lines": [
+        "[INFO] [ActLikeIt2.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+        "[INFO] [ActLikeIt2.Loader] Official assembly association; no reflection bridge.",
+        "[INFO] [ActLikeIt2.Loader] Invoked implementation initializer ActLikeIt2.ActLikeIt2Mod.Initialize.",
+        "[INFO] [RitsuLib.Loader] Host=v0.111.0; runtime=0.111.0.",
+        "[INFO] [LibraryOfRuinaLib.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+        "[INFO] [LibraryOfRuinaLib.Loader] Official assembly association; no reflection bridge.",
+        "[INFO] [LibraryOfRuinaLib.Loader] Invoked implementation initializer LibraryLib.Entry.Init.",
+        "[INFO] [LibraryOfRuina.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+        "[INFO] [LibraryOfRuina.Loader] Official assembly association; no reflection bridge.",
+        "[INFO] LibraryOfRuina loaded successfully (23 initialization steps).",
+        "[INFO] [LibraryOfRuina.Loader] Invoked implementation initializer LibraryOfRuina.core.LibraryOfRuinaInitializer.Initialize.",
+        "[INFO]  --- RUNNING MODDED! --- Loaded 5 mods (5 total)",
+        "[INFO] [LibraryOfRuina.VanillaCopyGuard] 82 guarded method(s) match the table.",
+        "[INFO] [LibraryOfRuina.DualTarget.Verify] LibraryLib.SpeedDice.LibrarySpeedDiceTargetDashLine: engine enabled _Process.",
+        "[INFO] [LibraryOfRuina.DualTarget.Verify] DUAL_TARGET_OK implementations=3 callbackNodeTypes=62"
+      ],
+      "error_lines": [
+        "ERROR: 1 RID allocations of type 'N26RendererEnvironmentStorage11EnvironmentE' were leaked at exit.",
+        "ERROR: 13 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.",
+        "ERROR: 258 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.",
+        "ERROR: 30 RID allocations of type 'N13RendererDummy9DummyMeshE' were leaked at exit.",
+        "ERROR: 307 resources still in use at exit (run with --verbose for details).",
+        "ERROR: 366 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.",
+        "ERROR: 6 RID allocations of type 'N13RendererDummy15MaterialStorage11DummyShaderE' were leaked at exit.",
+        "ERROR: 9 RID allocations of type 'PN18TextServerAdvanced27FontAdvancedLinkedVariationE' were leaked at exit.",
+        "ERROR: 97 RID allocations of type 'N13RendererDummy15MaterialStorage13DummyMaterialE' were leaked at exit.",
+        "[ERROR] [com.ritsukage.sts2-RitsuLib] [RitsuLib-ModSettings] Could not load translation asset 'localization/settings/zh_hans_jp.json': Resource not found: local"
+      ]
+    },
+    "library_missing_lib_dir": {
+      "description": "删掉基础库发行包的 lib/，验证加载器失败时依赖方得到缺少依赖、其余模组照常加载",
+      "log": "build/dual-version-preflight/isolated-brokenlib.log",
+      "log_sha256": "4d6c894a9222594f80d3520aeff03e16e36ed0bed982c67773d2d6a57ae80a9b",
+      "selected_log_lines": [
+        "[INFO] [ActLikeIt2.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
+        "[INFO] [ActLikeIt2.Loader] Official assembly association; no reflection bridge.",
+        "[INFO] [ActLikeIt2.Loader] Invoked implementation initializer ActLikeIt2.ActLikeIt2Mod.Initialize.",
+        "[INFO] [RitsuLib.Loader] Host=v0.111.0; runtime=0.111.0.",
+        "[ERROR] [LibraryOfRuinaLib.Loader] Failed to load implementation: System.IO.DirectoryNotFoundException: Missing lib directory: /private/tmp/claude-501/-Users-iniad-sts2-mods/f8e59778-daf1-4b03-9107-7aeba6784978/scratchpad/dualfix/run/game_brokenlib/SlayTheSpire2.app/Contents/MacOS/mods/LibraryOfRuin",
+        "[ERROR] [LibraryOfRuinaLib.Loader] Marked mod as failed so dependent mods are not loaded.",
+        "[ERROR] Tried to load mod LibraryOfRuina, but it depends on mods which have not been loaded: LibraryOfRuinaLib!",
+        "[INFO]  --- RUNNING MODDED! --- Loaded 2 mods (4 total)",
+        "[INFO] [Startup] Time to main menu: 6,415ms"
+      ]
+    }
+  },
   "patches": {
     "LibraryOfRuina": {
       "expected_classes": 342,
@@ -46,55 +88,71 @@
   },
   "bundles": {
     "LibraryOfRuina": {
-      "sourceCommit": "1ea4a170250e90b8351ba4a003e04382fb1929c2",
+      "sourceCommit": "3526c0b831f16f74543ab1a575f031ed6f68c31d",
       "sourceDirty": false,
+      "dirtyFiles": [],
+      "dependencySources": {
+        "LibraryOfRuinaLib": {
+          "commit": "9c500095ec958692b8b61f28a1e14c42ed856999",
+          "dirty": []
+        },
+        "ActLikeIt2-src": {
+          "commit": "2cad4df26244739b68fb352c711cf9f8b419d4f4",
+          "dirty": []
+        }
+      },
       "files": {
-        "LibraryOfRuina.dll": "8414d47d70d9ed1c148faabf11dd46536d64346e15a4ed7f41c2efcf1544c9f9",
-        "LibraryOfRuina.json": "591cf3da1f55e797f91e075425bb8f555becb4e3fe932d9ea9072219e0a13ff2",
-        "LibraryOfRuina.pck": "3ce9c864695cb9a33d1ea051f5b48d9079365b10c520a25c0358975e466aea33",
-        "lib/0.107.1/LibraryOfRuina.dll": "ac5a6ac578e2dc94f8c506b69236fa61e2394020c1c5b8ef234a0822f9c4dfc4",
+        "LibraryOfRuina.dll": "62805d94317b8b7b6283e24581f543206e18a78338f2f05a99417a0ce63db9e5",
+        "LibraryOfRuina.json": "1afc1ad6eab7e53da9b1553d1504fafe99403e844263d41bd768cbf2275d8c14",
+        "LibraryOfRuina.pck": "266e85bfec8f2bb4407084874c3b4a1518f213495f36065e872884a18fbeb598",
+        "lib/0.107.1/LibraryOfRuina.dll": "3ead1d67d5d193d2a9f4246a04591cfe6ba3a74598d521ca8ae3782923c1caa5",
         "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
-        "lib/0.111.0/LibraryOfRuina.dll": "75ffc11d3e0721c802e57aacb4e19c51bca3a28d26df0da39be5c90b1767fe91",
+        "lib/0.111.0/LibraryOfRuina.dll": "56e9bc5d9a2f97c46be11d52f2d3437e9ae08854cbb8c8cc80a7a8eea484a3c0",
         "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1",
-        "libraryofruina-variants.manifest": "ae52660a1408b9250acee17cd45f90cfdd8b134c8befd7f6c2fa31d33847f01e"
+        "libraryofruina-variants.manifest": "68cd7e5124fd7727bc43fe09472f0541b21f0a7e6884e5a5b309f19e7824070c"
       }
     },
     "ActLikeIt2": {
-      "sourceCommit": "99551e204041733104174cf8e4196e7744611151",
+      "sourceCommit": "2cad4df26244739b68fb352c711cf9f8b419d4f4",
       "sourceDirty": false,
+      "dirtyFiles": [],
       "files": {
-        "ActLikeIt2.dll": "4a01381dc2dc8e8fb3eb469e8ef46aba2abffa7e279b31109f771a9ea28c0050",
-        "ActLikeIt2.json": "27ba5bec33386b892ba73aee64fc1bfe1a7d3103c2d78d5077d7308d03d54e7f",
+        "ActLikeIt2.dll": "8fe071512f92bae2f4bdc0d5506ccb24790f2acc639caf0d446130e174ce94c2",
+        "ActLikeIt2.json": "2db315c5353952a8f5848c0f9a37c31b39d946d8389cb799b0e661cb972ff34f",
         "ActLikeIt2.pck": "87a53274e97616cbf06e1217498557424898d64b7368638df03655a35fc71163",
-        "actlikeit2-variants.manifest": "9df090f0746591427218a6e95f7ffbdb8053199183e55744588c05ae99e48031",
-        "lib/0.107.1/ActLikeIt2.dll": "ce36c1a99bb08be9dd9e489b88c6a9df8296a02dc7ca9d4479cf4c6b1423e8da",
+        "actlikeit2-variants.manifest": "44bbd6d6fe22c9047c7a66ee1ef31e512d9b1e7dd70232c8103b8a2b3d1c5235",
+        "lib/0.107.1/ActLikeIt2.dll": "80153d6ca2e30d33eb12b11227baad86980d2f75fee71d96a7889c16c46c532b",
         "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
-        "lib/0.111.0/ActLikeIt2.dll": "fa2231994e75294ac355ee4451627b61bbb35c64ed5e6455fbd7f9d1ad978710",
+        "lib/0.111.0/ActLikeIt2.dll": "c84edfb1b4f3da1f4967f3a9c8855e3bc154a8edf391b16fb40558638b409516",
         "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1"
       }
     },
     "LibraryOfRuinaLib": {
-      "sourceCommit": "919569ad67cdbf059cc6f03c0e7d714033322da9",
+      "sourceCommit": "9c500095ec958692b8b61f28a1e14c42ed856999",
       "sourceDirty": false,
+      "dirtyFiles": [],
       "files": {
-        "LibraryOfRuinaLib.dll": "4b60ae6a1446fbcb8460298896be80dd6ef83d635771abdeea5f2a39570650c7",
-        "LibraryOfRuinaLib.json": "cffd9b8aff0c357178abf399234e05764b3bfddddb130aca00f586cc4697f12e",
+        "LibraryOfRuinaLib.dll": "507de7c5df04235d4aeb68185191d6928d026220249e12f586a3c5ae96915924",
+        "LibraryOfRuinaLib.json": "3fba77340d1945c633dabae7efec439043d7e2d5482f036b588ffef7f90b1f43",
         "LibraryOfRuinaLib.pck": "abbacf6503af10503d9f30317ca30ab5a3a53dd0941c67d9a254afe781a94df2",
-        "lib/0.107.1/LibraryOfRuinaLib.dll": "2670f15a61830a419c2ee86aa485384d8db15ea78d845267a9bad7b3f5a6d04d",
+        "lib/0.107.1/LibraryOfRuinaLib.dll": "17fe665647174628d6fdf47ccecb03559d95198721c0d4ce8e0b2a4e83eb29fc",
         "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
-        "lib/0.111.0/LibraryOfRuinaLib.dll": "903f724ca8827bc06cf538bc81687fd1e30e24a85dd428dcd3c9e6e1d1ce34a7",
+        "lib/0.111.0/LibraryOfRuinaLib.dll": "6c8f05ac65c4557ecdd79d3494e90352151f0a01d305e4bc8b4a3f1c59954a1c",
         "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1",
-        "libraryofruinalib-variants.manifest": "7f97f6f3040200e95cfc661beded687bc9c6326ac2915a247efb62cb71ff3044"
+        "libraryofruinalib-variants.manifest": "107a0e272110c6326d7f509c67fa8b40cf0fc1f1258ed22cc261bd90f771f33a"
       }
     }
   },
   "checks": {
     "0.107.1": {
-      "log": "build/dual-version-preflight/check-full-old.log",
-      "sha256": "bcde0b457fc9a1908d067d12cc77deace12a546cd391de39252dd6de9ba63c92",
+      "log": "build/dual-version-preflight/check-final-0.107.1.log",
+      "sha256": "28a712d34e2b3f145176b100781dd5d08276dcdd913974d030ede549c454a4a7",
+      "patch_target_check": [
+        "LibraryOfRuina 0.107.1：29 个动态补丁类、313 个静态补丁类，0 项失败，0 项登记例外。",
+        "LibraryOfRuina 0.111.0：29 个动态补丁类、313 个静态补丁类，0 项失败，0 项登记例外。"
+      ],
       "tail": [
-        "Time Elapsed 00:00:01.44",
-        "PlayerIntMapCheck: 1833 checks, 0 failures",
+        "SentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.",
         "已记录 82 个方法体。",
         "patch class rule: 19 fixture types, 0 mismatch(es) with Harmony",
         "il fingerprint: 4 cases, 0 failure(s)",
@@ -102,11 +160,14 @@
       ]
     },
     "0.111.0": {
-      "log": "build/dual-version-preflight/check-full-new.log",
-      "sha256": "5274c20ee2531bf45cc55672f88e2c905e7237b9b33a152f5edbc6acdf9a0c4d",
+      "log": "build/dual-version-preflight/check-final-0.111.0.log",
+      "sha256": "bc3cf1d3b933c4529a6b3696e57076a14cf0a2eaa4da4eeb667b0919d7a9a53f",
+      "patch_target_check": [
+        "LibraryOfRuina 0.107.1：29 个动态补丁类、313 个静态补丁类，0 项失败，0 项登记例外。",
+        "LibraryOfRuina 0.111.0：29 个动态补丁类、313 个静态补丁类，0 项失败，0 项登记例外。"
+      ],
       "tail": [
-        "Time Elapsed 00:00:01.29",
-        "PlayerIntMapCheck: 1833 checks, 0 failures",
+        "SentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.",
         "已记录 82 个方法体。",
         "patch class rule: 19 fixture types, 0 mismatch(es) with Harmony",
         "il fingerprint: 4 cases, 0 failure(s)",
@@ -115,8 +176,9 @@
     }
   },
   "limitations": [
-    "0.107.1 未做运行时加载验证",
-    "未验证战斗、存档读写、重连或双客户端联机",
-    "日志仍含依赖翻译、dummy 渲染器及退出资源回收提示，详见双版本适配.md"
+    "0.107.1 未做运行时加载验证；0.107.1 变体只有编译、护栏、补丁目标离线解析与清单比对",
+    "未验证战斗、存档读写、重连或双客户端联机，也未验证跨游戏版本互联与存档互换",
+    "运行期检查实例化了一个基础库节点并确认引擎开启 _Process，未进入战斗查看速度骰、伤害数字等实际画面",
+    "日志剩余报错为 RitsuLib 0.6.2 缺 zh_hans_jp 设置翻译、headless 退出时的资源回收提示"
   ]
 }
