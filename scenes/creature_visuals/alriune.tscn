@@ -333,10 +333,10 @@ autoplay = "default/Idle"
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-offset_left = -83.950
-offset_top = -285.775
-offset_right = 115.575
-offset_bottom = -0.943008395
+offset_left = -91.0
+offset_top = -279.0
+offset_right = 206.0
+offset_bottom = -3.0
 mouse_filter = 2
 
 [node name="CenterPos" type="Marker2D" parent="."]

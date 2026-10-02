@@ -95,8 +95,8 @@ unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
 offset_left = -270.0
-offset_top = -308.0
-offset_right = 226.0
+offset_top = -306.0
+offset_right = 283.0
 offset_bottom = 1.0
 mouse_filter = 2
 
