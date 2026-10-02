@@ -5,8 +5,8 @@
   "steam_argument": "--force-steam=off",
   "headless": true,
   "process_exit": 0,
-  "log": "build/dual-version-preflight/isolated-6.log",
-  "log_sha256": "cb98fea21803ccc002d33c0127e6f3f0367f62999b0901e9266875c264059e23",
+  "log": "build/dual-version-preflight/isolated-7.log",
+  "log_sha256": "3ddaa434a276f21d94d77f9a0ce8d9040008d0e6bd0091cdbe5549d3c6873a8a",
   "selected_log_lines": [
     "[INFO] [ActLikeIt2.Loader] Host version label=v0.111.0 numeric=0.111.0; picked variant 0.111.0.",
     "[INFO] [ActLikeIt2.Loader] Official assembly association; no reflection bridge.",
@@ -46,17 +46,17 @@
   },
   "bundles": {
     "LibraryOfRuina": {
-      "sourceCommit": "6bc48a34d3e2975d41632c6dc19d33430115ab5d",
+      "sourceCommit": "1ea4a170250e90b8351ba4a003e04382fb1929c2",
       "sourceDirty": false,
       "files": {
-        "LibraryOfRuina.dll": "783e76d8cf5d13b1b00818773633ad01cbb5dfee4a1c74e45eefcc0c1c44dc6b",
-        "LibraryOfRuina.json": "eef5f14036e8872b7897cbd28f91eacf1ba0cc039113b53074e10677178f4fd1",
+        "LibraryOfRuina.dll": "8414d47d70d9ed1c148faabf11dd46536d64346e15a4ed7f41c2efcf1544c9f9",
+        "LibraryOfRuina.json": "591cf3da1f55e797f91e075425bb8f555becb4e3fe932d9ea9072219e0a13ff2",
         "LibraryOfRuina.pck": "3ce9c864695cb9a33d1ea051f5b48d9079365b10c520a25c0358975e466aea33",
-        "lib/0.107.1/LibraryOfRuina.dll": "9d38dfef6d48bcfe07d9317c6d448d2f0d93f0e341121d2223450646f630c0bd",
+        "lib/0.107.1/LibraryOfRuina.dll": "ac5a6ac578e2dc94f8c506b69236fa61e2394020c1c5b8ef234a0822f9c4dfc4",
         "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
-        "lib/0.111.0/LibraryOfRuina.dll": "eac149cfc17525f18b4e92e8f9d66f0c027555445c49b8c40116dc196a32d78f",
+        "lib/0.111.0/LibraryOfRuina.dll": "75ffc11d3e0721c802e57aacb4e19c51bca3a28d26df0da39be5c90b1767fe91",
         "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1",
-        "libraryofruina-variants.manifest": "346970a60db8bae409461c6fafb73379bbcc2d6461a0b94daf8e4343071ff9d7"
+        "libraryofruina-variants.manifest": "ae52660a1408b9250acee17cd45f90cfdd8b134c8befd7f6c2fa31d33847f01e"
       }
     },
     "ActLikeIt2": {
@@ -74,17 +74,17 @@
       }
     },
     "LibraryOfRuinaLib": {
-      "sourceCommit": "18ecffe9cf75dfa4e5d82bf13df3c860379439bc",
+      "sourceCommit": "919569ad67cdbf059cc6f03c0e7d714033322da9",
       "sourceDirty": false,
       "files": {
-        "LibraryOfRuinaLib.dll": "61b645533fe07c1aaa88ce331ee7580e4f94d53ba3b1fa702dd2541851bf5d36",
-        "LibraryOfRuinaLib.json": "d71170d780931e7e1815dee226dc591cdaf717756b898031c99dae5b71e61d3d",
+        "LibraryOfRuinaLib.dll": "4b60ae6a1446fbcb8460298896be80dd6ef83d635771abdeea5f2a39570650c7",
+        "LibraryOfRuinaLib.json": "cffd9b8aff0c357178abf399234e05764b3bfddddb130aca00f586cc4697f12e",
         "LibraryOfRuinaLib.pck": "abbacf6503af10503d9f30317ca30ab5a3a53dd0941c67d9a254afe781a94df2",
-        "lib/0.107.1/LibraryOfRuinaLib.dll": "a5d30a86436055c515a9a4662520eebe1aa4b9e1f0da8c881c8ec3102c4dbcc4",
+        "lib/0.107.1/LibraryOfRuinaLib.dll": "2670f15a61830a419c2ee86aa485384d8db15ea78d845267a9bad7b3f5a6d04d",
         "lib/0.107.1/compat-target.txt": "6f2af232b64ebf802d90bba45ea4a089a6663f100c713c34bc16de0236e9583a",
-        "lib/0.111.0/LibraryOfRuinaLib.dll": "98e3bab6abbff317de79a43858aa3cfc4cb7d91427d7b5cd1065b1b305b831a6",
+        "lib/0.111.0/LibraryOfRuinaLib.dll": "903f724ca8827bc06cf538bc81687fd1e30e24a85dd428dcd3c9e6e1d1ce34a7",
         "lib/0.111.0/compat-target.txt": "4f1b6e009ecb91528ecd3be4edbeaa9d05ef1eb663c3151b47a61601ec8167d1",
-        "libraryofruinalib-variants.manifest": "a09e2cb49901478e126ce5d9dfe036b74cc4bb002dd6e8373f1935c572359564"
+        "libraryofruinalib-variants.manifest": "7f97f6f3040200e95cfc661beded687bc9c6326ac2915a247efb62cb71ff3044"
       }
     }
   },
