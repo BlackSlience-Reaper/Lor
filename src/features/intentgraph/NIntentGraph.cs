@@ -44,6 +44,7 @@ public partial class NIntentGraph : Control
     private static Texture2D? _arrowTexture;
 
     private IntentGraphRenderModel _render = new IntentGraphRenderModel();
+    private Vector2 _graphScale = Vector2.One;
     private Font? _labelFont;
     private Font? _valueFont;
     private GradientTexture2D? _glowTexture;
@@ -54,10 +55,33 @@ public partial class NIntentGraph : Control
         LoadSharedTextures();
     }
 
+    /// <summary>整体缩放；放进 Intent Graph 的面板时取它配置的缩放，占位尺寸与绘制一起缩放。</summary>
+    internal Vector2 GraphScale
+    {
+        get => _graphScale;
+        set
+        {
+            if (_graphScale == value)
+            {
+                return;
+            }
+
+            _graphScale = value;
+            ApplyGraphSize();
+        }
+    }
+
     internal void SetRenderModel(IntentGraphRenderModel render)
     {
         _render = render;
-        Vector2 size = new Vector2(Math.Max(1f, render.WidthUnits), Math.Max(1f, render.HeightUnits)) * GridSize;
+        ApplyGraphSize();
+    }
+
+    private void ApplyGraphSize()
+    {
+        Vector2 size = new Vector2(Math.Max(1f, _render.WidthUnits), Math.Max(1f, _render.HeightUnits))
+            * GridSize
+            * _graphScale;
         CustomMinimumSize = size;
         Size = size;
         QueueRedraw();
@@ -67,6 +91,7 @@ public partial class NIntentGraph : Control
     {
         _labelFont ??= IntentGraphFonts.CreateLabelFont();
         _valueFont ??= IntentGraphFonts.CreateValueFont();
+        DrawSetTransform(Vector2.Zero, 0f, _graphScale);
 
         foreach (IntentGraphMoveNode move in _render.Moves.Where(static m => m.IsCurrentMove))
         {

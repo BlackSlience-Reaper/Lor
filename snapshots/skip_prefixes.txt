@@ -1,3 +1,4 @@
+LibraryOfRuina.content.abnormalities.Alriune.AlriuneDustbornDeathVisualPatch	原版 StartDeathAnim 非虚，会禁用交互、冻结意图并播放死亡淡出，没有跳过的扩展点；只作用于阿尔卢尼存活时不移除的尘土所生。
 LibraryOfRuina.content.abnormalities.LittleRedMercenary.FocusOfAttentionDarkOrbEvokePatch	DarkOrb 是原版类，无法覆写，原版没有激发目标重定向 Hook；只在存在带本模组集火能力的可命中敌人时改为对它造成伤害。
 LibraryOfRuina.content.abnormalities.LittleRedMercenary.LittleRedMercenaryBlockClearPatch	生物已被移出战斗时原版 Hook.ShouldClearBlock 会因 CombatState 为空抛异常，没有监听者可用；只把该异常路径改成与原版结束战斗分支相同的清格挡结果。
 LibraryOfRuina.content.abnormalities.QueenOfHatred.UntargetableCreatureStunPatch	原版 CreatureCmd.Stun 没有否决 Hook；对不可命中的生物跳过眩晕。判断用 IsHittable，也会作用于第三方“存活但不可命中”的生物，收窄见重构指导附录 A。

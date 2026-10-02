@@ -68,6 +68,7 @@ internal static partial class LibraryEncounterWeighting
 
     private static readonly HashSet<Type> PriorityAbnormalityEncounterTypes = new()
     {
+        typeof(LibraryOfRuina.content.abnormalities.Alriune.AlriuneStrong),
         typeof(ScorchedGirl),
         typeof(LeticiaElite),
         typeof(HappyTeddyWeak),

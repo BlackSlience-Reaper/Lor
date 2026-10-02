@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using Godot;
 using HarmonyLib;
 using LibraryLib.Multiplayer;
 using LibraryOfRuina.content.specialguests;
@@ -90,6 +91,8 @@ public static class LibraryOfRuinaInitializer
         [
             new("VanillaPrivate", false, VanillaPrivate.Report),
             new("IntentGraphDisplayConfig", false, IntentGraphDisplayConfigRepository.Initialize),
+            // Intent Graph 的程序集在它自己的初始化里加载，等所有模组初始化完再挂钩子。
+            new("IntentGraphWorkshopBridge", false, static () => Callable.From(IntentGraphWorkshopModBridge.EnsurePatched).CallDeferred()),
             new("TemporaryMaps", true, TemporaryMapController.Initialize),
             new("MainMenuBgm", false, MainMenuBgmController.Initialize),
             new("NonCombatRunBgm", false, NonCombatRunBgmController.Initialize),

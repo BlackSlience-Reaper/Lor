@@ -14,7 +14,8 @@ public static class MonsterStateMachineHoverTipsPatch
     {
         try
         {
-            MonsterIntentGraphOverlayController.ShowFor(__instance);
+            // 意图图改为替换 Intent Graph 面板里的图，不再单独弹出本模组面板。
+            IntentGraphWorkshopModBridge.OnCreatureHovered(__instance);
         }
         catch (Exception e)
         {

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjr5gyl4kfc7w"
-path="res://.godot/imported/warmhearted_woodsman_want_a_heart_passive_power.png-3742413a33351609f7a2795b1eac3737.ctex"
+uid="uid://cs3tujl1uani2"
+path="res://.godot/imported/idle.png-14a8d86f6827a1c8f832bc7ddc9fd30b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/powers/warmhearted_woodsman_want_a_heart_passive_power.png"
-dest_files=["res://.godot/imported/warmhearted_woodsman_want_a_heart_passive_power.png-3742413a33351609f7a2795b1eac3737.ctex"]
+source_file="res://images/monsters/alriune_dustborn/idle.png"
+dest_files=["res://.godot/imported/idle.png-14a8d86f6827a1c8f832bc7ddc9fd30b.ctex"]
 
 [params]
 

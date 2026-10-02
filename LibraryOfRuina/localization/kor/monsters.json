@@ -1302,5 +1302,15 @@
   "REVERBERATION_EILEEN.banter.opening": "저희는 그분의 지휘에 맞춰 움직일 거예요.",
   "REVERBERATION_EILEEN.banter.death": "저희는 언제든 다시 굴러갈 수 있어요.",
   "REVERBERATION_EILEEN.banter.kill": "톱니의 말이 옳았어요…",
-  "REVERBERATION_EILEEN.banter.victory": "역시 그분을 따르는 길이 올바른 선택이었군요."
+  "REVERBERATION_EILEEN.banter.victory": "역시 그분을 따르는 길이 올바른 선택이었군요.",
+  "ALRIUNE.name": "알리우네",
+  "ALRIUNE_DUSTBORN.name": "흙에서 태어난 자",
+  "ALRIUNE.moves.WINTER.title": "겨울의 시작",
+  "ALRIUNE.moves.BLOSSOM.title": "몸에 피어나는 꽃",
+  "ALRIUNE.moves.AUTUMN.title": "가을의 소멸",
+  "ALRIUNE.moves.SPRING.title": "봄의 기원",
+  "ALRIUNE_DUSTBORN.moves.FLOWER_BUSH.title": "꽃밭",
+  "ALRIUNE_DUSTBORN.moves.MIND_CRACK.title": "마음의 균열",
+  "ALRIUNE_DUSTBORN.moves.SPREADING_DESPAIR.title": "뻗어가는 절망",
+  "ALRIUNE_DUSTBORN.moves.REVIVAL_REST.title": "부활"
 }

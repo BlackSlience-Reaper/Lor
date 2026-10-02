@@ -95,7 +95,36 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
             return;
         }
 
-        bool graphBuilt = MonsterIntentGraphRuntimeCache.TryGet(owner, out IntentGraphRenderModel renderModel, out string monsterName);
+        if (!TryBuildRenderModel(owner, out IntentGraphRenderModel renderModel, out string monsterName, out string failureReason))
+        {
+            HideGraph(failureReason);
+            return;
+        }
+
+        LastHiddenReason = "none";
+        _monsterName.Text = string.IsNullOrWhiteSpace(monsterName) ? "Monster" : monsterName;
+        _intentGraph.SetRenderModel(renderModel);
+        HasRenderableGraph = true;
+        Visible = true;
+    }
+
+    /// <summary>为怪物生成意图图的绘制数据：先查缓存，再按状态机生成，失败时退回只画当前招式。</summary>
+    internal static bool TryBuildRenderModel(
+        Creature owner,
+        out IntentGraphRenderModel renderModel,
+        out string monsterName,
+        out string failureReason)
+    {
+        renderModel = new IntentGraphRenderModel();
+        monsterName = string.Empty;
+        failureReason = string.Empty;
+        if (owner.Monster == null || owner.CombatState == null)
+        {
+            failureReason = owner.Monster == null ? "no-bound-monster" : "no-combat-state";
+            return false;
+        }
+
+        bool graphBuilt = MonsterIntentGraphRuntimeCache.TryGet(owner, out renderModel, out monsterName);
         if (!graphBuilt)
         {
             try
@@ -127,15 +156,11 @@ public partial class NMonsterIntentGraphPanel : MarginContainer
             string reason = string.IsNullOrWhiteSpace(fallbackFailureReason)
                 ? "state-machine-trybuild-failed-and-current-move-fallback-failed"
                 : "state-machine-trybuild-failed-and-current-move-fallback-failed:" + fallbackFailureReason;
-            HideGraph(reason);
-            return;
+            failureReason = reason;
+            return false;
         }
 
-        LastHiddenReason = "none";
-        _monsterName.Text = string.IsNullOrWhiteSpace(monsterName) ? "Monster" : monsterName;
-        _intentGraph.SetRenderModel(renderModel);
-        HasRenderableGraph = true;
-        Visible = true;
+        return true;
     }
 
     private static bool TryBuildSingleMoveFallback(

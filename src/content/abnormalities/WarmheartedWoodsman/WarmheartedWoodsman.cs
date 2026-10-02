@@ -7,13 +7,13 @@ using LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
@@ -36,32 +36,43 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
     internal const string LoggingMoveId = "LOGGING";
     private const string RouterStateId = "WARMHEARTED_WOODSMAN_ROUTER";
 
-    public const int VerdantForestEnergy = 1;
-    public const int WantAHeartBuffPerEnergy = 1;
-    public const int ViolentHeartHealPercent = 10;
-    public const int ViolentHeartStrong = 4;
-    public const int OneTurnBuffDuration = 1;
-    public const int InitialTreeReviveCharges = 2;
+    private const int BaseMinHp = 560; // 热心的樵夫：低于 ToughEnemies 进阶时的最低初始生命。
+    private const int BaseMaxHp = 565; // 热心的樵夫：低于 ToughEnemies 进阶时的最高初始生命。
+    private const int HighAscensionMinHp = 667; // 热心的樵夫：达到 ToughEnemies 进阶时的最低初始生命。
+    private const int HighAscensionMaxHp = 670; // 热心的樵夫：达到 ToughEnemies 进阶时的最高初始生命。
+    private const int ChaoResistance = 230; // 热心的樵夫：混乱抗性上限。
 
-    internal const int EmptyHeartBlock = 99;
-    internal const int EmptyHeartTemporaryThorns = 20;
-    internal const int GiantAxeSlashMinDamage = 16;
-    internal const int GiantAxeSlashMaxDamage = 18;
-    internal const int GiantAxeSlashHits = 2;
-    internal const int DoNotTakeMyHeartMinDamage = 27;
-    internal const int DoNotTakeMyHeartMaxDamage = 33;
-    internal const int DoNotTakeMyHeartBlock = 40;
-    internal const int WarmHeartbeatMinDamage = 23;
-    internal const int WarmHeartbeatMaxDamage = 24;
-    internal const int FierceRumbleMinDamage = 24;
-    internal const int FierceRumbleMaxDamage = 29;
-    internal const int FierceRumbleBlock = 43;
-    internal const int LoggingSetupMinDamage = 8;
-    internal const int LoggingSetupMaxDamage = 12;
-    internal const int LoggingSetupHits = 3;
-    internal const int LoggingFinalMinDamage = 29;
-    internal const int LoggingFinalMaxDamage = 34;
-    internal const int LoggingFinalDamageLossPerFullBlock = 20;
+    public const int WarmHeartEnergyPerStack = 1; // 温暖的心：每层在玩家回合开始时为每名玩家恢复的能量。
+    private const int WarmHeartPlaceholderStacks = 1; // 温暖的心：0 层无法施加，开局先以此层数挂上再静默归零。
+    public const decimal ViolentHeartTreeDamageMultiplier = 2m; // 暴跳之心：攻击树木时的伤害倍率。
+    public const int ViolentHeartHealPercent = 10; // 暴跳之心：击杀树木时恢复的最大生命百分比。
+    public const int ViolentHeartStrength = 4; // 暴跳之心：击杀树木时获得的力量层数。
+    public const int ViolentHeartWarmHeartGain = 2; // 暴跳之心：击杀树木时获得的温暖的心层数。
+    public const int InitialTreeReviveCharges = 2; // 心脏：开局时树木可重新生成的次数。
+    public const int TreeRespawnChargeCost = 1; // 心脏：每次重新生成树木消耗的层数。
+
+    internal const int EmptyHeartCycleTurns = 6; // 空洞之心：第 1 回合固定使用，此后每隔该回合数固定使用一次。
+    internal const int EmptyHeartBlock = 99; // 空洞之心：获得的格挡。
+    internal const int EmptyHeartTemporaryThorns = 20; // 空洞之心：获得的荆棘层数，下回合开始时移除。
+    internal const int GiantAxeSlashBaseDamage = 16; // 巨斧劈砍：低于 DeadlyEnemies 进阶时的单次伤害。
+    internal const int GiantAxeSlashHighAscensionDamage = 18; // 巨斧劈砍：达到 DeadlyEnemies 进阶时的单次伤害。
+    internal const int GiantAxeSlashHits = 2; // 巨斧劈砍：攻击次数。
+    internal const int DoNotTakeMyHeartBaseDamage = 27; // 不要夺走我的心……：低于 DeadlyEnemies 进阶时的单次伤害。
+    internal const int DoNotTakeMyHeartHighAscensionDamage = 33; // 不要夺走我的心……：达到 DeadlyEnemies 进阶时的单次伤害。
+    internal const int DoNotTakeMyHeartBlock = 40; // 不要夺走我的心……：攻击后获得的格挡。
+    internal const int WarmHeartbeatBaseDamage = 23; // 温暖的心跳：低于 DeadlyEnemies 进阶时的单次伤害。
+    internal const int WarmHeartbeatHighAscensionDamage = 24; // 温暖的心跳：达到 DeadlyEnemies 进阶时的单次伤害。
+    internal const int WarmHeartbeatEndurance = 2; // 温暖的心跳：攻击后获得的忍耐层数。
+    internal const int WarmHeartbeatEnduranceTurns = 3; // 温暖的心跳：忍耐的持续回合数。
+    internal const int FierceRumbleBaseDamage = 24; // 猛烈的轰鸣：低于 DeadlyEnemies 进阶时的单次伤害。
+    internal const int FierceRumbleHighAscensionDamage = 29; // 猛烈的轰鸣：达到 DeadlyEnemies 进阶时的单次伤害。
+    internal const int FierceRumbleBlock = 43; // 猛烈的轰鸣：攻击后获得的格挡。
+    internal const int LoggingBaseDamage = 8; // 伐木：低于 DeadlyEnemies 进阶时的单次伤害。
+    internal const int LoggingHighAscensionDamage = 12; // 伐木：达到 DeadlyEnemies 进阶时的单次伤害。
+    internal const int LoggingHits = 3; // 伐木：攻击次数。
+    internal const int LoggingChancePercentWithTree = 60; // 伐木：有存活树木时的选用概率（百分比），其余从招式 2–5 中随机。
+    internal const int LoggingChancePercentWithoutTree = 20; // 伐木：没有存活树木时的选用概率（百分比），其余从招式 2–5 中随机。
+    private const int ChancePercentRange = 100; // 伐木：概率掷骰的取值范围 [0, 100)。
 
     internal const string TextureRoot = "res://images/monsters/warmhearted_woodsman/";
     internal const string EmptyIdleTexturePath = TextureRoot + "idle_empty.png";
@@ -82,15 +93,14 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         KillSfxPath,
         WarmAmbientSfxPath,
         "res://images/powers/warm_heart_power.png",
-        "res://images/powers/warmhearted_woodsman_verdant_forest_passive_power.png",
-        "res://images/powers/warmhearted_woodsman_want_a_heart_passive_power.png",
         "res://images/powers/warmhearted_woodsman_violent_heart_passive_power.png",
-        "res://images/powers/warmhearted_woodsman_empty_heart_passive_power.png",
         "res://images/powers/warmhearted_woodsman_temporary_thorns_power.png"
     ];
 
     private static readonly string PageRelicTitleLocKey = $"{ModelDb.GetId<WarmheartedWoodsmanPageRelic>().Entry}.title";
-    private static readonly string[] RandomAttackMoveIds =
+
+    // 招式 2–5：伐木之外的随机候选，不能连续两回合选中同一招。
+    private static readonly string[] RandomMoveIds =
     [
         GiantAxeSlashMoveId,
         DoNotTakeMyHeartMoveId,
@@ -99,14 +109,9 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
     ];
 
     private Dictionary<string, MoveState> _statesById = [];
-    private int _attackFormMoveCount;
-    private string? _lastRandomAttackMoveId;
+    private string? _lastMoveId;
     private int _treeReviveCharges = InitialTreeReviveCharges;
     private bool _treeRespawnPending;
-    private bool _targetTreeAsAttackTarget;
-    private bool _treeTargetAttackInProgress;
-    private bool _emptyHeartCanTrigger;
-    private bool _emptyHeartChaoStunPending;
     private LocalOggLoopPlayer.LoopHandle? _warmAmbientLoop;
 
     protected override void DeepCloneFields()
@@ -118,17 +123,15 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
 
     public bool HasWarmHeart => Creature?.GetPowerAmount<WarmHeartPower>() > 0;
 
-    public int WarmHeartStacks => Creature?.GetPowerAmount<WarmHeartPower>() ?? 0;
-
     public int TreeReviveCharges => _treeReviveCharges;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 667, 560);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, HighAscensionMinHp, BaseMinHp);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 670, 565);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, HighAscensionMaxHp, BaseMaxHp);
 
-    public override int DefaultChaoResistance => 230;
+    public override int DefaultChaoResistance => ChaoResistance;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -153,21 +156,14 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
     public override async Task AfterAddedToRoom()
     {
         await base.AfterAddedToRoom();
-        _attackFormMoveCount = 0;
-        _lastRandomAttackMoveId = null;
+        _lastMoveId = null;
         _treeReviveCharges = InitialTreeReviveCharges;
         _treeRespawnPending = false;
-        _targetTreeAsAttackTarget = false;
-        _treeTargetAttackInProgress = false;
-        _emptyHeartCanTrigger = false;
-        _emptyHeartChaoStunPending = false;
         EncounterBgmController.RegisterMonster(Creature);
-        await PowerCmdCompat.Apply<WarmheartedWoodsmanVerdantForestPassivePower>(Creature, 1, Creature, null, silent: true);
-        await PowerCmdCompat.Apply<WarmheartedWoodsmanWantAHeartPassivePower>(Creature, 1, Creature, null, silent: true);
         await PowerCmdCompat.Apply<WarmheartedWoodsmanViolentHeartPassivePower>(Creature, 1, Creature, null, silent: true);
-        await PowerCmdCompat.Apply<WarmheartedWoodsmanEmptyHeartPassivePower>(Creature, 1, Creature, null, silent: true);
+        await ApplyInitialWarmHeart();
         await PowerCmdCompat.Apply<LibraryOfRuinaFocusOfAttentionPower>(Creature, 1, Creature, null, silent: true);
-        ForceRefreshMoveState();
+        SetOpeningMove();
     }
 
     public override void BeforeRemovedFromRoom()
@@ -176,6 +172,7 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         base.BeforeRemovedFromRoom();
     }
 
+    // 树木在玩家回合开始时重新生成，早于本回合抽取招式，所以招式按树木已复活来选择。
     public override async Task BeforeSideTurnStart(
         PlayerChoiceContext choiceContext,
         CombatSide side,
@@ -184,9 +181,7 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
     {
         if (TurnParticipants.IsRoundPlayerTurn(side))
         {
-            await ResolvePendingEmptyHeartChaoStun();
-            await RespawnTreeIfPending(choiceContext);
-            RefreshTreeAttackTargeting();
+            await RespawnTreeIfPending();
         }
 
         await base.BeforeSideTurnStart(choiceContext, side, participants, combatState);
@@ -213,7 +208,7 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         MoveState giantAxeSlash = Register(new MoveState(
             GiantAxeSlashMoveId,
             GiantAxeSlashMove,
-            new TargetedMonsterAttackIntent(
+            new WarmheartedWoodsmanAttackIntent(
                 () => GetGiantAxeSlashDamage(),
                 () => GiantAxeSlashHits,
                 "WARMHEARTED_WOODSMAN_GIANT_AXE_SLASH.description")));
@@ -221,48 +216,41 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         MoveState doNotTakeMyHeart = Register(new MoveState(
             DoNotTakeMyHeartMoveId,
             DoNotTakeMyHeartMove,
-            new CombinedTargetedAttackDefendIntent(
+            new CombinedAttackDefendIntent(
                 () => GetDoNotTakeMyHeartDamage(),
                 null,
                 "WARMHEARTED_WOODSMAN_DO_NOT_TAKE_MY_HEART.description",
-                null,
-                false,
-                DoNotTakeMyHeartBlock,
-                IntentBadge.FromPower<WarmHeartPower>(() => 1))));
+                DoNotTakeMyHeartBlock)));
 
         MoveState warmHeartbeat = Register(new MoveState(
             WarmHeartbeatMoveId,
             WarmHeartbeatMove,
-            new CombinedTargetedAttackBuffIntent(
+            new CombinedAttackBuffIntent(
                 () => GetWarmHeartbeatDamage(),
                 null,
                 "WARMHEARTED_WOODSMAN_WARM_HEARTBEAT.description",
-                null,
-                false,
-                IntentBadge.FromPower<WarmHeartPower>(() => -1))));
+                IntentBadge.FromPower<LibraryEndurancePower>(
+                    WarmHeartbeatEndurance,
+                    WarmHeartbeatEnduranceTurns.ToString(),
+                    WarmHeartbeatEndurance.ToString()))));
 
         MoveState fierceRumble = Register(new MoveState(
             FierceRumbleMoveId,
             FierceRumbleMove,
-            new CombinedTargetedAttackDefendIntent(
+            new CombinedAttackDefendIntent(
                 () => GetFierceRumbleDamage(),
                 null,
                 "WARMHEARTED_WOODSMAN_FIERCE_RUMBLE.description",
-                null,
-                false,
-                FierceRumbleBlock,
-                IntentBadge.FromPower<WarmHeartPower>(() => 1))));
+                FierceRumbleBlock)));
 
         MoveState logging = Register(new MoveState(
             LoggingMoveId,
             LoggingMove,
-            new DynamicAttackIntent(
-                () => GetLoggingSetupDamage(),
-                () => LoggingSetupHits),
-            new WarmheartedWoodsmanLoggingFinalIntent(
-                () => GetLoggingSetupDamage(),
-                () => GetLoggingFinalDamage(),
-                "WARMHEARTED_WOODSMAN_LOGGING_FINAL.description")));
+            new WarmheartedWoodsmanAttackIntent(
+                () => GetLoggingDamage(),
+                () => LoggingHits,
+                "WARMHEARTED_WOODSMAN_LOGGING.description",
+                "WARMHEARTED_WOODSMAN_LOGGING_TREE.description")));
 
         var router = new DelegatingMonsterRouterState(
             RouterStateId,
@@ -279,89 +267,47 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
             router);
     }
 
+    // 原版在每个玩家回合开始时抽取本回合的招式，此时 RoundNumber 就是该招式执行的回合。
     internal string ResolvePlannedMoveId(Rng rng)
     {
-        if (!HasWarmHeart)
+        if (IsEmptyHeartTurn(GetPlannedTurnNumber()))
         {
-            EnsureEmptyHeartRolls();
             return EmptyHeartMoveId;
         }
 
-        int nextAttackFormMove = _attackFormMoveCount + 1;
-        if (nextAttackFormMove % 3 == 0)
+        if (rng.NextInt(ChancePercentRange) < GetLoggingChancePercent())
         {
             return LoggingMoveId;
         }
 
-        string[] filtered = RandomAttackMoveIds
-            .Where(moveId => moveId != _lastRandomAttackMoveId)
+        string[] candidates = RandomMoveIds
+            .Where(moveId => moveId != _lastMoveId)
             .ToArray();
-        string selected = rng.NextItem(filtered.Length > 0 ? filtered : RandomAttackMoveIds) ?? GiantAxeSlashMoveId;
-        return selected;
+        return candidates[rng.NextInt(candidates.Length)];
     }
 
-    internal async Task AddWarmHeart(PlayerChoiceContext choiceContext, int amount)
+    internal async Task ApplyViolentHeartTreeKillRewards(PlayerChoiceContext choiceContext)
     {
-        if (amount <= 0 || Creature.IsDead)
+        if (Creature.IsDead)
         {
             return;
         }
 
-        int before = WarmHeartStacks;
-        await PowerCmdCompat.Apply<WarmHeartPower>(choiceContext, Creature, amount, Creature, null, silent: false);
-        if (WarmHeartStacks > 0)
-        {
-            _emptyHeartCanTrigger = true;
-            if (before <= 0)
-            {
-                await CreatureCmd.TriggerAnim(Creature, "WarmIdle", 0f);
-            }
-        }
-
-        RefreshWarmHeartPresentation();
-        ForceRefreshMoveState();
-    }
-
-    internal async Task RemoveWarmHeart(PlayerChoiceContext choiceContext, int amount)
-    {
-        if (amount <= 0)
-        {
-            return;
-        }
-
-        WarmHeartPower? power = Creature.GetPower<WarmHeartPower>();
-        if (power == null)
-        {
-            return;
-        }
-
-        int before = WarmHeartStacks;
-        int delta = -Math.Min(amount, power.Amount);
-        int remaining = await PowerCmdCompat.ModifyAmount(choiceContext, power, delta, Creature, null, silent: false);
-        if (remaining <= 0) // 层数为0不移除。
-        {
-            _attackFormMoveCount = 0;
-            _lastRandomAttackMoveId = null;
-            await CreatureCmd.TriggerAnim(Creature, "EmptyIdle", 0f);
-            if (before > 0)
-            {
-                QueueEmptyHeartChaoStun();
-            }
-        }
-
-        RefreshWarmHeartPresentation();
-        ForceRefreshMoveState();
+        LocalOggOneShotPlayer.Play(KillSfxPath, -1f);
+        decimal heal = Math.Ceiling(Creature.MaxHp * ViolentHeartHealPercent / 100m);
+        await CreatureCmd.Heal(Creature, heal);
+        await PowerCmdCompat.Apply<StrengthPower>(
+            choiceContext,
+            Creature,
+            ViolentHeartStrength,
+            Creature,
+            null);
+        await AddWarmHeart(choiceContext, ViolentHeartWarmHeartGain);
     }
 
     internal void NotifyTreeDied()
     {
-        if (Creature?.IsAlive != true)
-        {
-            return;
-        }
-
-        _targetTreeAsAttackTarget = false;
-        if (_treeReviveCharges <= 0)
+        if (Creature?.IsAlive != true || _treeReviveCharges <= 0)
         {
             return;
         }
@@ -369,76 +315,37 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         _treeRespawnPending = true;
     }
 
-    internal static Task ApplyWantAHeartFromEnergyGain(Player player, int energyGained)
+    private async Task ApplyInitialWarmHeart()
     {
-        if (energyGained <= 0
-            || player?.Creature?.CombatState is not CombatState combatState
-            || !CombatManager.Instance.IsInProgress)
-        {
-            return Task.CompletedTask;
-        }
-
-        return ApplyWantAHeartFromEnergyGainInternal(combatState, energyGained);
-    }
-
-    private static async Task ApplyWantAHeartFromEnergyGainInternal(CombatState combatState, int energyGained)
-    {
-        foreach (WarmheartedWoodsman woodsman in combatState.LivingEnemies()
-            .Select(static enemy => enemy.Monster)
-            .OfType<WarmheartedWoodsman>())
-        {
-            if (!woodsman.Creature.HasPower<WarmheartedWoodsmanWantAHeartPassivePower>())
-            {
-                continue;
-            }
-
-            await ApplyOneTurnStackingBuff<LibraryStrongPower>(
-                woodsman.Creature,
-                energyGained * WantAHeartBuffPerEnergy);
-            await ApplyOneTurnStackingBuff<LibraryEndurancePower>(
-                woodsman.Creature,
-                energyGained * WantAHeartBuffPerEnergy);
-        }
-    }
-
-    private static async Task ApplyOneTurnStackingBuff<TPower>(Creature target, int amount)
-        where TPower : LibraryTurnsPowerModel
-    {
-        if (amount <= 0)
-        {
-            return;
-        }
-
-        TPower? existing = target.GetPowerInstances<TPower>()
-            .FirstOrDefault(static power => power.TurnsRemaining > 0);
-        if (existing == null)
-        {
-            await LibraryPowerCmd.Apply<TPower>(
-                new ThrowingPlayerChoiceContext(),
-                target,
-                amount,
-                0,
-                IsPermanent: false,
-                target,
-                null);
-            return;
-        }
-
-        await LibraryPowerCmd.ModifyAmount(
-            new ThrowingPlayerChoiceContext(),
-            existing,
-            amount,
-            0,
-            IsPermanent: false,
-            target,
+        WarmHeartPower? warmHeart = await PowerCmdCompat.Apply<WarmHeartPower>(
+            Creature,
+            WarmHeartPlaceholderStacks,
+            Creature,
             null,
-            silent: false);
+            silent: true);
+        warmHeart?.SetStacksSilently(0);
+    }
+
+    private async Task AddWarmHeart(PlayerChoiceContext choiceContext, int amount)
+    {
+        if (amount <= 0 || Creature.IsDead)
+        {
+            return;
+        }
+
+        bool hadWarmHeart = HasWarmHeart;
+        await PowerCmdCompat.Apply<WarmHeartPower>(choiceContext, Creature, amount, Creature, null, silent: false);
+        if (!hadWarmHeart && HasWarmHeart)
+        {
+            await CreatureCmd.TriggerAnim(Creature, "WarmIdle", 0f);
+        }
+
+        RefreshWarmHeartPresentation();
     }
 
     private async Task EmptyHeartMove(IReadOnlyList<Creature> targets)
     {
-        _attackFormMoveCount = 0;
-        _lastRandomAttackMoveId = null;
+        _lastMoveId = EmptyHeartMoveId;
         await CreatureCmd.TriggerAnim(Creature, "Guard", 0.25f);
         await CreatureCmd.GainBlock(Creature, EmptyHeartBlock, ValueProp.Move, null);
         await PowerCmdCompat.Apply<ThornsPower>(Creature, EmptyHeartTemporaryThorns, Creature, null);
@@ -448,192 +355,114 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
             Creature,
             null,
             silent: true);
-        await AddWarmHeart(new ThrowingPlayerChoiceContext(), 2);
-        ForceRefreshMoveState();
     }
 
     private async Task GiantAxeSlashMove(IReadOnlyList<Creature> targets)
     {
-        _attackFormMoveCount++;
-        _lastRandomAttackMoveId = GiantAxeSlashMoveId;
+        _lastMoveId = GiantAxeSlashMoveId;
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        using (BeginTreeTargetAttackScope())
-        {
-            await DamageCmd.Attack(GetGiantAxeSlashDamage())
-                .FromMonster(this)
-                .WithHitCount(GiantAxeSlashHits)
-                .WithAttackerAnim("AttackSlash", 0.36f)
-                .WithHitFx("vfx/vfx_attack_slash")
-                .Execute(null);
-        }
+        await DamageCmd.Attack(GetGiantAxeSlashDamage())
+            .FromMonster(this)
+            .WithHitCount(GiantAxeSlashHits)
+            .WithAttackerAnim("AttackSlash", 0.36f)
+            .WithHitFx("vfx/vfx_attack_slash")
+            .Execute(null);
     }
 
     private async Task DoNotTakeMyHeartMove(IReadOnlyList<Creature> targets)
     {
-        _attackFormMoveCount++;
-        _lastRandomAttackMoveId = DoNotTakeMyHeartMoveId;
+        _lastMoveId = DoNotTakeMyHeartMoveId;
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        using (BeginTreeTargetAttackScope())
-        {
-            await DamageCmd.Attack(GetDoNotTakeMyHeartDamage())
-                .FromMonster(this)
-                .WithAttackerAnim("AttackSlash", 0.36f)
-                .WithHitFx("vfx/vfx_attack_slash")
-                .Execute(null);
-        }
+        await DamageCmd.Attack(GetDoNotTakeMyHeartDamage())
+            .FromMonster(this)
+            .WithAttackerAnim("AttackSlash", 0.36f)
+            .WithHitFx("vfx/vfx_attack_slash")
+            .Execute(null);
 
         await CreatureCmd.TriggerAnim(Creature, "Guard", 0.15f);
         await CreatureCmd.GainBlock(Creature, DoNotTakeMyHeartBlock, ValueProp.Move, null);
-        await AddWarmHeart(new ThrowingPlayerChoiceContext(), 1);
     }
 
     private async Task WarmHeartbeatMove(IReadOnlyList<Creature> targets)
     {
-        _attackFormMoveCount++;
-        _lastRandomAttackMoveId = WarmHeartbeatMoveId;
+        _lastMoveId = WarmHeartbeatMoveId;
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        IReadOnlyList<DamageResult> results;
-        using (BeginTreeTargetAttackScope())
-        {
-            results = AttackCommandCompat.Results(await DamageCmd.Attack(GetWarmHeartbeatDamage())
-                .FromMonster(this)
-                .WithAttackerAnim("AttackBlunt", 0.36f)
-                .WithHitFx("vfx/vfx_attack_blunt")
-                .Execute(null));
-        }
+        await DamageCmd.Attack(GetWarmHeartbeatDamage())
+            .FromMonster(this)
+            .WithAttackerAnim("AttackBlunt", 0.36f)
+            .WithHitFx("vfx/vfx_attack_blunt")
+            .Execute(null);
 
-        if (results.Any(static result => result.UnblockedDamage > 0))
-        {
-            await RemoveWarmHeart(new ThrowingPlayerChoiceContext(), 1);
-        }
+        await LibraryPowerCmd.Apply<LibraryEndurancePower>(
+            Creature,
+            WarmHeartbeatEndurance,
+            WarmHeartbeatEnduranceTurns,
+            Creature,
+            null);
     }
 
     private async Task FierceRumbleMove(IReadOnlyList<Creature> targets)
     {
-        _attackFormMoveCount++;
-        _lastRandomAttackMoveId = FierceRumbleMoveId;
+        _lastMoveId = FierceRumbleMoveId;
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        IReadOnlyList<DamageResult> results;
-        using (BeginTreeTargetAttackScope())
-        {
-            results = AttackCommandCompat.Results(await DamageCmd.Attack(GetFierceRumbleDamage())
-                .FromMonster(this)
-                .WithAttackerAnim("AttackBlunt", 0.36f)
-                .WithHitFx("vfx/vfx_attack_blunt")
-                .Execute(null));
-        }
+        await DamageCmd.Attack(GetFierceRumbleDamage())
+            .FromMonster(this)
+            .WithAttackerAnim("AttackBlunt", 0.36f)
+            .WithHitFx("vfx/vfx_attack_blunt")
+            .Execute(null);
 
         await CreatureCmd.TriggerAnim(Creature, "Guard", 0.15f);
         await CreatureCmd.GainBlock(Creature, FierceRumbleBlock, ValueProp.Move, null);
-        await AddWarmHeart(new ThrowingPlayerChoiceContext(), 1);
     }
 
+    // 树木存活时伐木只砍树木；树木在中途倒下后剩余段数落空，不转向玩家。
     private async Task LoggingMove(IReadOnlyList<Creature> targets)
     {
-        _attackFormMoveCount++;
+        _lastMoveId = LoggingMoveId;
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-        IReadOnlyList<DamageResult> setupResults = AttackCommandCompat.Results(
-            await DamageCmd.Attack(GetLoggingSetupDamage())
-                .FromMonster(this)
-                .WithHitCount(LoggingSetupHits)
-                .WithAttackerAnim("AttackSlash", 0.28f)
-                .WithHitFx("vfx/vfx_attack_slash")
-                .Execute(null));
-
-        int fullyBlocked = setupResults.Count(static result => result.WasFullyBlocked);
-        int finalDamage = Math.Max(
-            0,
-            GetLoggingFinalDamage() - fullyBlocked * LoggingFinalDamageLossPerFullBlock);
-
-        if (finalDamage > 0 && !Creature.IsDead)
+        using (BeginLoggingTreeTargetScope())
         {
-            LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-            await DamageCmd.Attack(finalDamage)
+            await DamageCmd.Attack(GetLoggingDamage())
                 .FromMonster(this)
-                .WithAttackerAnim("LoggingFinal", 0.44f)
+                .WithHitCount(LoggingHits)
+                .WithAttackerAnim("AttackSlash", 0.28f)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(null);
         }
-
-        if (!Creature.IsDead)
-        {
-            await RemoveWarmHeart(new ThrowingPlayerChoiceContext(), WarmHeartStacks);
-        }
     }
 
-    private async Task<bool> RespawnTreeIfPending(PlayerChoiceContext choiceContext)
+    private async Task RespawnTreeIfPending()
     {
-        if (!_treeRespawnPending || _treeReviveCharges <= 0 || Creature.IsDead || Creature.CombatState == null)
+        if (!_treeRespawnPending)
         {
-            _treeRespawnPending = false;
-            return false;
+            return;
         }
 
         _treeRespawnPending = false;
-        _treeReviveCharges--;
+        if (_treeReviveCharges <= 0 || Creature.IsDead || Creature.CombatState == null)
+        {
+            return;
+        }
+
+        _treeReviveCharges = Math.Max(0, _treeReviveCharges - TreeRespawnChargeCost);
         await CreatureCmd.Add<WoodsmanTree>(Creature.CombatState, WarmheartedWoodsmanStrong.TreeSlot);
-        return true;
     }
 
-    private void RefreshTreeAttackTargeting()
+    private int GetPlannedTurnNumber()
     {
-        Creature? tree = WarmheartedWoodsmanEncounterHelper.FindTree(Creature.CombatState);
-        if (tree == null)
-        {
-            _targetTreeAsAttackTarget = false;
-            return;
-        }
-
-        _targetTreeAsAttackTarget = HasWarmHeart;
+        return Math.Max(1, Creature.CombatState?.RoundNumber ?? 1);
     }
 
-    private void QueueEmptyHeartChaoStun()
+    private static bool IsEmptyHeartTurn(int turnNumber)
     {
-        if (!_emptyHeartCanTrigger)
-        {
-            return;
-        }
-
-        _emptyHeartCanTrigger = false;
-        _emptyHeartChaoStunPending = true;
+        return (turnNumber - 1) % EmptyHeartCycleTurns == 0;
     }
 
-    private async Task ResolvePendingEmptyHeartChaoStun()
+    private int GetLoggingChancePercent()
     {
-        if (!_emptyHeartChaoStunPending)
-        {
-            return;
-        }
-
-        _emptyHeartChaoStunPending = false;
-        if (Creature.IsDead || Creature is not LibraryCreature libraryCreature)
-        {
-            return;
-        }
-
-        ICombatState? combatState = libraryCreature.CombatState;
-        if (combatState == null)
-        {
-            return;
-        }
-
-        decimal previousChaoValue = libraryCreature.CurrentChaoValue;
-        libraryCreature.SetCurrentChaoValueInternal(0m);
-        decimal changedAmount = libraryCreature.CurrentChaoValue - previousChaoValue;
-        if (changedAmount != 0m)
-        {
-            await LibraryHooks.AfterCurrentChaoValueChanged(
-                libraryCreature.Player?.RunState ?? combatState.RunState,
-                combatState,
-                libraryCreature,
-                changedAmount,
-                LibraryDamageType.None);
-        }
-
-        if (libraryCreature.CurrentChaoValue == 0 && !libraryCreature.IsChaoed && libraryCreature.MaxChaoValue != 0)
-        {
-            await LibraryCreatureCmd.Stun(libraryCreature, EmptyHeartMoveId);
-        }
+        return GetLoggingTreeTarget() != null
+            ? LoggingChancePercentWithTree
+            : LoggingChancePercentWithoutTree;
     }
 
     private void RefreshWarmHeartPresentation()
@@ -655,15 +484,14 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         _warmAmbientLoop = null;
     }
 
-    private void ForceRefreshMoveState()
+    private void SetOpeningMove()
     {
         if (!IsMutable || MoveStateMachine == null || _statesById.Count == 0)
         {
             return;
         }
 
-        string moveId = ResolvePlannedMoveId(RunRng.MonsterAi);
-        if (_statesById.TryGetValue(moveId, out MoveState? state))
+        if (_statesById.TryGetValue(EmptyHeartMoveId, out MoveState? state))
         {
             SetMoveImmediate(state, forceTransition: true);
         }
@@ -672,45 +500,35 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
     public bool UsesTargetedAttackContract(Creature owner)
     {
         return owner == Creature
-            && IsAttackMoveId(NextMove.Id)
-            && (_treeTargetAttackInProgress || GetCurrentAttackTarget() != null);
+            && NextMove.Id == LoggingMoveId
+            && GetLoggingTreeTarget() != null;
     }
 
     public IReadOnlyList<Creature> GetTargetedAttackTargets(Creature owner)
     {
-        Creature? target = GetCurrentAttackTarget();
-        return target == null ? [] : [target];
+        Creature? tree = GetLoggingTreeTarget();
+        return tree == null ? [] : [tree];
     }
 
     public string GetTargetedAttackTargetName(Creature owner)
     {
-        return GetCurrentAttackTarget()?.Name ?? string.Empty;
+        return GetLoggingTreeTarget()?.Name ?? string.Empty;
     }
 
-    private Creature? GetCurrentAttackTarget()
+    private Creature? GetLoggingTreeTarget()
     {
-        return NextMove.Id == LoggingMoveId
+        return Creature.CombatState == null
             ? null
-            : GetTreeAttackTarget();
+            : WarmheartedWoodsmanEncounterHelper.FindTree(Creature.CombatState);
     }
 
-    private Creature? GetTreeAttackTarget()
+    // 树木与樵夫同属敌方阵营：FromMonster 会把目标重置为玩家，需在作用域内强制改打树木。
+    private IDisposable? BeginLoggingTreeTargetScope()
     {
-        if (!_targetTreeAsAttackTarget || Creature.CombatState == null)
-        {
-            return null;
-        }
-
-        return WarmheartedWoodsmanEncounterHelper.FindTree(Creature.CombatState);
-    }
-
-    private static bool IsAttackMoveId(string moveId)
-    {
-        return moveId is GiantAxeSlashMoveId
-            or DoNotTakeMyHeartMoveId
-            or WarmHeartbeatMoveId
-            or FierceRumbleMoveId
-            or LoggingMoveId;
+        Creature? tree = GetLoggingTreeTarget();
+        return tree == null
+            ? null
+            : TargetedMonsterAttackHelper.ForceTargets(Creature, [tree]);
     }
 
     private MoveState Register(MoveState state)
@@ -719,44 +537,26 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
         return state;
     }
 
-    private void EnsureEmptyHeartRolls()
-    {
-    }
-
     private int GetGiantAxeSlashDamage() =>
-        GetAscensionDamage(GiantAxeSlashMinDamage, GiantAxeSlashMaxDamage);
+        GetAscensionDamage(GiantAxeSlashBaseDamage, GiantAxeSlashHighAscensionDamage);
 
     private int GetDoNotTakeMyHeartDamage() =>
-        GetAscensionDamage(DoNotTakeMyHeartMinDamage, DoNotTakeMyHeartMaxDamage);
+        GetAscensionDamage(DoNotTakeMyHeartBaseDamage, DoNotTakeMyHeartHighAscensionDamage);
 
     private int GetWarmHeartbeatDamage() =>
-        GetAscensionDamage(WarmHeartbeatMinDamage, WarmHeartbeatMaxDamage);
+        GetAscensionDamage(WarmHeartbeatBaseDamage, WarmHeartbeatHighAscensionDamage);
 
     private int GetFierceRumbleDamage() =>
-        GetAscensionDamage(FierceRumbleMinDamage, FierceRumbleMaxDamage);
+        GetAscensionDamage(FierceRumbleBaseDamage, FierceRumbleHighAscensionDamage);
 
-    private int GetLoggingSetupDamage() =>
-        GetAscensionDamage(LoggingSetupMinDamage, LoggingSetupMaxDamage);
+    private int GetLoggingDamage() =>
+        GetAscensionDamage(LoggingBaseDamage, LoggingHighAscensionDamage);
 
-    private int GetLoggingFinalDamage() =>
-        GetAscensionDamage(LoggingFinalMinDamage, LoggingFinalMaxDamage);
-
-    private static int GetAscensionDamage(int lowAscensionDamage, int highAscensionDamage) =>
+    private static int GetAscensionDamage(int baseDamage, int highAscensionDamage) =>
         AscensionHelper.GetValueIfAscension(
             AscensionLevel.DeadlyEnemies,
             highAscensionDamage,
-            lowAscensionDamage);
-
-    private IDisposable? BeginTreeTargetAttackScope()
-    {
-        if (!_targetTreeAsAttackTarget || NextMove.Id == LoggingMoveId)
-        {
-            return null;
-        }
-
-        _treeTargetAttackInProgress = true;
-        return new TreeTargetAttackScope(this);
-    }
+            baseDamage);
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
@@ -803,44 +603,27 @@ public sealed class WarmheartedWoodsman : LorMonsterModel, ITargetedMonsterAttac
 
         return Task.CompletedTask;
     }
-
-    private sealed class TreeTargetAttackScope : IDisposable
-    {
-        private readonly WarmheartedWoodsman _owner;
-        private bool _disposed;
-
-        public TreeTargetAttackScope(WarmheartedWoodsman owner)
-        {
-            _owner = owner;
-        }
-
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            _disposed = true;
-            _owner._treeTargetAttackInProgress = false;
-        }
-    }
-
 }
 
 public sealed class WoodsmanTree : LorMonsterModel
 {
     internal const string HelpMeMoveId = "HELP_ME";
-    internal const int HelpMeBlock = 6;
     internal const string IdleTexturePath = WarmheartedWoodsman.TextureRoot + "tree.png";
 
+    private const int BaseMinHp = 52; // 树木：低于 ToughEnemies 进阶时的最低初始生命。
+    private const int BaseMaxHp = 56; // 树木：低于 ToughEnemies 进阶时的最高初始生命。
+    private const int HighAscensionMinHp = 57; // 树木：达到 ToughEnemies 进阶时的最低初始生命。
+    private const int HighAscensionMaxHp = 60; // 树木：达到 ToughEnemies 进阶时的最高初始生命。
+    private const int ChaoResistance = 100; // 树木：混乱抗性上限。
+    private const int HeartPlaceholderStacks = 1; // 心脏：0 层无法施加，先以此层数挂上再设为剩余次数。
+
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 57, 52);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, HighAscensionMinHp, BaseMinHp);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 60, 56);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, HighAscensionMaxHp, BaseMaxHp);
 
-    public override int DefaultChaoResistance => 100;
+    public override int DefaultChaoResistance => ChaoResistance;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -869,13 +652,13 @@ public sealed class WoodsmanTree : LorMonsterModel
     public override async Task AfterAddedToRoom()
     {
         await base.AfterAddedToRoom();
-        
+
         int revives = WarmheartedWoodsmanEncounterHelper.FindWoodsman(Creature.CombatState)?.Monster is WarmheartedWoodsman woodsman
             ? woodsman.TreeReviveCharges
             : WarmheartedWoodsman.InitialTreeReviveCharges;
         WoodsmanTreeHeartPassivePower? passive = await PowerCmdCompat.Apply<WoodsmanTreeHeartPassivePower>(
             Creature,
-            Math.Max(1, revives),
+            Math.Max(HeartPlaceholderStacks, revives),
             Creature,
             null,
             silent: true);
@@ -893,19 +676,18 @@ public sealed class WoodsmanTree : LorMonsterModel
         return new MonsterMoveStateMachine([helpMe], helpMe);
     }
 
-    private async Task HelpMeMove(IReadOnlyList<Creature> targets)
+    private Task HelpMeMove(IReadOnlyList<Creature> targets)
     {
-        //await CreatureCmd.TriggerAnim(Creature, "Guard", 0.2f);
-        //await CreatureCmd.GainBlock(Creature, HelpMeBlock, ValueProp.Move, null);
+        return Task.CompletedTask;
     }
 
     private IEnumerable<AbstractIntent> EnumerateIntentAssets()
     {
         yield return new DefendIntent();
     }
-    
 
-    public override async Task AfterDeath(
+    // 死亡来源不限，只登记重新生成；暴跳之心的击杀奖励由樵夫的能力在造成伤害后判定。
+    public override Task AfterDeath(
         PlayerChoiceContext choiceContext,
         Creature creature,
         bool wasRemovalPrevented,
@@ -916,25 +698,10 @@ public sealed class WoodsmanTree : LorMonsterModel
             WarmheartedWoodsman? woodsman = Creature.CombatState?.Enemies
                 .Select(static enemy => enemy.Monster)
                 .OfType<WarmheartedWoodsman>()
-                .FirstOrDefault(static w => w.Creature.IsAlive);
-
-            if (woodsman != null)
-            {
-                woodsman.NotifyTreeDied();
-
-                if (!woodsman.Creature.IsDead)
-                {
-                    LocalOggOneShotPlayer.Play(WarmheartedWoodsman.KillSfxPath, -1f);
-                    decimal heal = Math.Ceiling(woodsman.Creature.MaxHp * WarmheartedWoodsman.ViolentHeartHealPercent / 100m);
-                    await CreatureCmd.Heal(woodsman.Creature, heal);
-                    await PowerCmdCompat.Apply<StrengthPower>(
-                        choiceContext,
-                        woodsman.Creature,
-                        WarmheartedWoodsman.ViolentHeartStrong,
-                        woodsman.Creature,
-                        null);
-                }
-            }
+                .FirstOrDefault(static living => living.Creature.IsAlive);
+            woodsman?.NotifyTreeDied();
         }
+
+        return Task.CompletedTask;
     }
 }
