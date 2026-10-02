@@ -32,27 +32,20 @@ A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monster
 
 ### 1. 配置路径
 
-`Directory.Build.props` 按 Steam 默认安装位置推断游戏、RitsuLib（创意工坊 3747602295）以及 `mods/` 目录下的 ActLikeIt2、LibraryOfRuinaLib。路径不同时复制 `local.props.example` 为 `local.props` 并改写对应属性：
+`CompatibilityTarget` 统一选择 0.107.1 或 0.111.0 的游戏、RitsuLib 和两个前置实现引用。完整准备步骤、三个 PR 的依赖关系及验证边界见 [双版本适配](docs/双版本适配.md)。路径不同时复制 `local.props.example`，配置 `GameRefsRoot`、`RitsuLibRoot` 等根目录。
 
-| 属性 | 含义 |
-| --- | --- |
-| `Sts2Dir` / `Sts2DataDir` | 游戏目录 / 含 `sts2.dll`、`0Harmony.dll` 的数据目录 |
-| `RitsuLibRoot` | 含 `RitsuLib.References.props` 的 RitsuLib 安装目录 |
-| `RitsuLibReferenceTarget` | RitsuLib `compat/` 下的游戏 API 版本，默认 `0.111.0` |
-| `ActLikeIt2Dll` | `ActLikeIt2.dll` 路径 |
-| `LibraryOfRuinaLibDll` | `LibraryOfRuinaLib.dll` 路径 |
-
-基础库按 GitHub 源码编译：`tools/build_lib.sh` 把 https://github.com/Xuyuha/LibraryOfRuinaLib 检出到 `build/LibraryOfRuinaLib` 并编译（上游仓库不提交工程文件，脚本用 `tools/LibraryOfRuinaLib.csproj.template`），之后 `Directory.Build.props` 自动引用它的输出。默认检出脚本里的 `RELEASE_REF`，即 `LibraryOfRuina.json` 要求的已发布版本（现在是 1.3.0）对应的提交，提高最低版本时两处一起改；`tools/build_lib.sh origin/main` 可以试基础库的最新源码。没有运行脚本时回退到 `mods/` 下安装的基础库。玩家装的是基础库作者发布的版本，所以 `check.sh` 找到工坊里已发布的基础库时，还会用它再编译一次本模组。
+两个前置的双版本源码分别放在 `build/ActLikeIt2-src`、`build/LibraryOfRuinaLib`。`tools/build_lib.sh <目标>` 只构建当前基础库检出，不会自动切换分支或覆盖工程文件。引用的是对应目标的实现 DLL，不能引用发行根目录的加载器。`check.sh` 在已发布基础库有兼容实现时还会用它额外编译一次。
 
 ### 2. 编译 DLL
 
 ```bash
-dotnet build LibraryOfRuina.csproj -c Release
+dotnet build LibraryOfRuina.csproj -c Release -p:CompatibilityTarget=0.107.1
+dotnet build LibraryOfRuina.csproj -c Release -p:CompatibilityTarget=0.111.0
 ```
 
-输出位于 `.godot/mono/temp/bin/Release/LibraryOfRuina.dll`。
+输出位于 `build/bin/LibraryOfRuina/<目标>/Release/LibraryOfRuina.dll`。两个目标必须分别构建，默认目标为 0.111.0。
 
-工程默认定义 `STS2_BETA`，对应 v0.21.2 发布版所用的游戏 0.111 API。旧 API（`SavedPropertiesTypeCache`）用 `-p:Sts2Beta=false` 编译。
+`Sts2Beta` / `STS2_BETA` 已移除；仅接受按版本命名的目标属性，其他目标值直接失败。
 
 ### 3. 导出 PCK
 
@@ -62,17 +55,23 @@ dotnet build LibraryOfRuina.csproj -c Release
 godot --headless --path . --export-pack LibraryOfRuina build/LibraryOfRuina.pck
 ```
 
-导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。PCK 里的 `.cs` 只保留空占位（场景按路径引用脚本），不附带源码；`docs/`、`tools/`、`snapshots/`、`verification/` 带有 `.gdignore`，不会进包。
+导出时 Godot 会编译 C# 工程，所以也需要先配置好第 1 步的路径。PCK 里的 `.cs` 只保留空占位（场景按路径引用脚本），不附带源码；`docs/`、`tools/`、`snapshots/`、`verification/`、`loader/` 带有 `.gdignore`，不会进包。
 
 纹理用最高等级的无损 WebP 压缩（`project.godot` 的 `rendering/textures/webp_compression`）。修改这两项不会触发重新导入：已有的导入缓存要先删掉 `.godot/imported/` 再导入，否则导出的仍是旧的纹理。
 
-### 4. 安装
+### 4. 打包与安装
+
+用 `python3 tools/build_dual.py --pck build/LibraryOfRuina.pck` 生成 `build/dual-release/LibraryOfRuina`。复制整个发行目录，不能只复制根 DLL。脚本不会自动部署。
 
 ```
 mods/LibraryOfRuina/
-├── LibraryOfRuina.dll
+├── LibraryOfRuina.dll           # 稳定加载器
 ├── LibraryOfRuina.json
-└── LibraryOfRuina.pck
+├── LibraryOfRuina.pck           # 共用资源
+├── libraryofruina-variants.manifest
+└── lib/
+    ├── 0.107.1/LibraryOfRuina.dll
+    └── 0.111.0/LibraryOfRuina.dll
 ```
 
 ### 5. 验证套件（开发用，可选）
@@ -89,11 +88,11 @@ dotnet build verification/LibraryOfRuinaVerification.csproj -c Release
 
 ### 6. 重构护栏
 
-`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/` 比对。输出为空表示没有身份变化；有意变更时用 `tools/check.sh --accept` 更新基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。挂在原版 `Hook.*` 上的补丁同样要写理由，说明为什么不能由已有模型覆写对应的钩子方法。哪些类算补丁类由 `src/infra/patching/PatchClassRules.cs` 判定，安装器和快照工具共用；`tools/PatchRuleFixtures` 是它的测试，也由 `check.sh` 运行。运行期访问原版非公开成员只能经 `src/interop/VanillaPrivate.cs` 的访问器，`tools/PrivateAccessCheck`（按语法树）检查其余地方不按名字反射，不论成员名是字面量、常量还是变量（例外按“文件、所属成员、API”写在 `tools/private_access_allowlist.txt`，要写理由；`fixtures/` 是它的回归测试）；启动时初始化汇总会列出游戏更新后找不到的成员。
+`tools/check.sh` 会检查规范模型 getter，编译主工程和验证工程，再把模型 ID、SavedProperty、补丁清单、静态字段的快照与 `snapshots/<目标>/` 比对。输出为空表示没有身份变化；有意变更时用 `CompatibilityTarget=<目标> tools/check.sh --accept` 更新对应基线。会跳过原方法的前缀（返回 bool）必须在类上写 `[LibraryPatch(Reason = "…")]`，说明原版为什么没有可用的 Hook 或虚方法、以及只作用于哪些内容；缺理由时 `check.sh` 直接失败。挂在原版 `Hook.*` 上的补丁同样要写理由，说明为什么不能由已有模型覆写对应的钩子方法。哪些类算补丁类由 `src/infra/patching/PatchClassRules.cs` 判定，安装器和快照工具共用；`tools/PatchRuleFixtures` 是它的测试，也由 `check.sh` 运行。运行期访问原版非公开成员只能经 `src/interop/VanillaPrivate.cs` 的访问器，`tools/PrivateAccessCheck`（按语法树）检查其余地方不按名字反射，不论成员名是字面量、常量还是变量（例外按“文件、所属成员、API”写在 `tools/private_access_allowlist.txt`，要写理由；`fixtures/` 是它的回归测试）；启动时初始化汇总会列出游戏更新后找不到的成员。
 
 补丁由 `src/infra/patching/LibraryPatcher` 统一安装。主菜单第一次就绪时，它会在日志里报告与其他模组共享的目标，并点名排在本模组跳过型前缀之后的第三方前缀。
 
-`src/infra/patching/vanilla_copy_guard.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的游戏与前置库方法的 IL 哈希（async 方法连同状态机）。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，再把导出的 `vanilla_copy_guard.txt` 复制过来。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。这两份都只能在装好本模组和前置的游戏里生成，`check.sh` 不会重新生成它们。
+`src/infra/patching/vanilla_copy_guard.<目标>.txt` 冻结了本模组用跳过型前缀或 Transpiler 修补的游戏与前置库方法的 IL 哈希（async 方法连同状态机）。游戏更新后，如果这些方法变了，日志会出现 `[LibraryOfRuina.VanillaCopyGuard] DRIFT`，需要逐个复查对应补丁。重新生成守卫表的方法：用环境变量 `LOR_DUMP_PATCHES=<目录>` 启动游戏，进到主菜单后退出，核对差异后把导出的 `vanilla_copy_guard.txt` 保存到对应目标表。同一目录下的 `patch_table.txt` 是实际安装的完整补丁表，包含同目标的执行顺序和其他模组的补丁，基线存放在 `snapshots/headless/`，重构补丁层时拿来前后比对。补丁表只能由游戏实际加载生成；指纹表可用 `tools/GuardSnapshot` 离线读取同一目标的方法体。`check.sh` 会核对指纹，不会自动接受新值。另有 `all_mod_patch_methods.txt` 记录前置库独占目标的实际补丁。
 
 ## 目录 / Layout
 
