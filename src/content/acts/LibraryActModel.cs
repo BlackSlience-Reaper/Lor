@@ -73,7 +73,7 @@ public abstract class LibraryOfRuinaActModel : TemplateActModel
 
     internal static bool IsSecondFamily(ActModel? act) => act is NetZech or Gebura or Tiphereth;
 
-    internal static bool IsThirdFamily(ActModel? act) => act is Chesed or Binah;
+    internal static bool IsThirdFamily(ActModel? act) => act is Chesed or Binah or Hokma;
 
     internal static bool IsFirstFamily(IRunState? runState) =>
         runState != null && IsFirstFamily(runState.Act);

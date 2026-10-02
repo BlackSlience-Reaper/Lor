@@ -54,6 +54,7 @@ internal static class LibraryBossMapColorPatch
                 LiberationFloorIds.Natural => ModelDb.Act<Tiphereth>(),
                 LiberationFloorIds.Social => ModelDb.Act<Chesed>(),
                 LiberationFloorIds.Philosophy => ModelDb.Act<Binah>(),
+                LiberationFloorIds.Religion => ModelDb.Act<Hokma>(),
                 _ => null
             };
     }

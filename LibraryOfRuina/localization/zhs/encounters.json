@@ -114,7 +114,7 @@
   "LANGUAGE_FLOOR_LIBERATION_ENCOUNTER.loss": "猩红创痕与失去一切的狼吞没了最后的反抗……",
   "PHILOSOPHY_FLOOR_LIBERATION_ENCOUNTER.loss": "{character}倒在了笼罩黑森林的薄暝与[gold]{encounter}[/gold]之中。",
   "PHILOSOPHY_FLOOR_LIBERATION_ENCOUNTER.floorName": "哲学层",
-  "PHILOSOPHY_FLOOR_LIBERATION_ENCOUNTER.title": "哲学层解放战",
+  "PHILOSOPHY_FLOOR_LIBERATION_ENCOUNTER.title": "哲学层解放战（薄暝）",
   "PHILOSOPHY_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description": "在这个阶段的末尾，你将[gold]解放[/gold][color=#C9A227]哲学层[/color]。",
   "PHILOSOPHY_FLOOR_LIBERATION_ENCOUNTER.topBarHover.title": "哲学层解放战",
   "PHILOSOPHY_FLOOR_LIBERATION_CG_INTRO.text": "在嘈杂的哭喊中，在惊恐的尖叫中，有人大声喊道：\n“那儿有怪兽！黑森林里住着一头可怕的大怪兽！”",
@@ -122,7 +122,7 @@
   "PHILOSOPHY_FLOOR_LIBERATION_CG_SMALL_BEAK_BREAK.text": "小鸟那能够吞噬一切动物的巨口。\n再也张不开了……",
   "PHILOSOPHY_FLOOR_LIBERATION_CG_LONG_ARMS_BREAK.text": "高鸟那一直凝望星空的头颅。\n再也抬不起来了……",
   "PHILOSOPHY_FLOOR_LIBERATION_CG_VICTORY.text": "鸟儿在森林中徘徊，四处张望着寻找那头怪兽，可那儿已经什么都没有了。\n没有动物，没有日月，也没有怪兽。只剩下那只鸟，还有一片黑暗的森林。",
-  "SOCIAL_FLOOR_LIBERATION_ENCOUNTER.title": "社会层解放战",
+  "SOCIAL_FLOOR_LIBERATION_ENCOUNTER.title": "社会层解放战（虚伪王座）",
   "SOCIAL_FLOOR_LIBERATION_ENCOUNTER.floorName": "社会层",
   "SOCIAL_FLOOR_LIBERATION_ENCOUNTER.loss": "{character}倒在了[gold]{encounter}[/gold]的巫术之下。",
   "SOCIAL_FLOOR_LIBERATION_ENCOUNTER.topBarHover.title": "社会层解放战",
@@ -134,8 +134,8 @@
   "XIAO_SPECIAL_GUEST_STAGE_TWO_ENCOUNTER.title": "邵接待·第二舞台",
   "XIAO_SPECIAL_GUEST_STAGE_TWO_ENCOUNTER.loss": "{character}未能承受邵的E.G.O。",
   "RNFMABJ_SPECIAL_GUEST_ENCOUNTER.title": "rnfmabj接待",
-  "RNFMABJ_SPECIAL_GUEST_ENCOUNTER.loss": "{character}未能完成对rnfmabj的接待。"
-  ,"IORI_SPECIAL_GUEST_STAGE_ONE_ENCOUNTER.title": "堇紫泪滴接待·第一舞台",
+  "RNFMABJ_SPECIAL_GUEST_ENCOUNTER.loss": "{character}未能完成对rnfmabj的接待。",
+  "IORI_SPECIAL_GUEST_STAGE_ONE_ENCOUNTER.title": "堇紫泪滴接待·第一舞台",
   "IORI_SPECIAL_GUEST_STAGE_ONE_ENCOUNTER.loss": "{character}未能阻止伊織跨越维度。",
   "IORI_SPECIAL_GUEST_STAGE_TWO_ENCOUNTER.title": "堇紫泪滴接待·第二舞台",
   "IORI_SPECIAL_GUEST_STAGE_TWO_ENCOUNTER.loss": "{character}倒在了伊織的幻影乱舞之中。",
@@ -155,5 +155,10 @@
   "NATURAL_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description": "在这个阶段的末尾，你将[gold]解放[/gold][color=yellow]自然层[/color]。",
   "GEAR_CHURCH_ENCOUNTER.title": "齿轮教团",
   "GEAR_CHURCH_ENCOUNTER.floorName": "科技层不速之客",
-  "GEAR_CHURCH_ENCOUNTER.loss": "{character}倒在了齿轮教团的接待中。"
+  "GEAR_CHURCH_ENCOUNTER.loss": "{character}倒在了齿轮教团的接待中。",
+  "RELIGION_FLOOR_LIBERATION_ENCOUNTER.title": "宗教层解放战（失乐园）",
+  "RELIGION_FLOOR_LIBERATION_ENCOUNTER.floorName": "宗教层",
+  "RELIGION_FLOOR_LIBERATION_ENCOUNTER.loss": "{character}倒在了[gold]{encounter}[/gold]的光芒之中。",
+  "RELIGION_FLOOR_LIBERATION_ENCOUNTER.topBarHover.title": "宗教层解放战",
+  "RELIGION_FLOOR_LIBERATION_ENCOUNTER.topBarHover.description": "在这个阶段的末尾，你将[gold]解放[/gold][grey]宗教层[/grey]。"
 }

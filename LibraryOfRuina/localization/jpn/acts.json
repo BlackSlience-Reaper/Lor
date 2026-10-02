@@ -6,7 +6,7 @@
   "LIBRARY_OF_RUINA_ACT_1_GROUP.description": "上層のコア抑制",
   "LIBRARY_OF_RUINA_ACT_2_GROUP.title": "NetZech / Gebura / Tiphereth",
   "LIBRARY_OF_RUINA_ACT_2_GROUP.description": "中層のコア抑制",
-  "LIBRARY_OF_RUINA_ACT_3_GROUP.title": "Chesed / Binah",
+  "LIBRARY_OF_RUINA_ACT_3_GROUP.title": "Chesed / Binah / Hokma",
   "LIBRARY_OF_RUINA_ACT_3_GROUP.description": "下層のコア抑制",
   "MALKUTH.title": "Malkuth",
   "HOD.title": "Hod",
@@ -24,5 +24,6 @@
   "REVERBERATION_ENSEMBLE_ACT.node.PHILOSOPHY": "哲学の階の招かれざる客",
   "REVERBERATION_ENSEMBLE_ACT.node.RELIGION": "宗教の階の招かれざる客",
   "REVERBERATION_ENSEMBLE_ACT.node.SOCIAL": "社会科学の階の招かれざる客",
-  "REVERBERATION_ENSEMBLE_ACT.node.BOSS": "青い残響"
+  "REVERBERATION_ENSEMBLE_ACT.node.BOSS": "青い残響",
+  "HOKMA.title": "Hokma"
 }

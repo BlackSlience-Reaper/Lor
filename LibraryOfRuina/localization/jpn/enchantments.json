@@ -1,7 +1,7 @@
 {
   "MATCH_FLAME_ENCHANTMENT.title": "炎",
-  "MATCH_FLAME_ENCHANTMENT.description": "このカードをプレイするたび、ダメージ+[blue]{Damage}[/blue]。対象に[blue]{Burn}[/blue]スタックの[gold]火傷[/gold]を付与する。この戦闘中、同じカードを[blue]{Threshold}[/blue]回目以降にプレイしたとき、自分に[blue]{SelfBurn}[/blue]スタックの[gold]火傷[/gold]を付与する。",
-  "MATCH_FLAME_ENCHANTMENT.extraCardText": "このカードをプレイするたび、ダメージ+[blue]{Damage}[/blue]。対象に[blue]{Burn}[/blue]スタックの[gold]火傷[/gold]を付与する。この戦闘中、同じカードを[blue]{Threshold}[/blue]回目以降にプレイしたとき、自分に[blue]{SelfBurn}[/blue]スタックの[gold]火傷[/gold]を付与する。",
+  "MATCH_FLAME_ENCHANTMENT.description": "このカードをプレイするたび、ダメージ+[blue]{Damage}[/blue]。対象に[blue]{Burn}[/blue]層の[gold]火傷[/gold]を付与する。\nこの戦闘でこのカードを[blue]{Threshold}[/blue]回目以降にプレイしたとき、自分に[blue]{SelfBurn}[/blue]層の[gold]火傷[/gold]を付与する。",
+  "MATCH_FLAME_ENCHANTMENT.extraCardText": "このカードをプレイするたび、ダメージ+[blue]{Damage}[/blue]。対象に[blue]{Burn}[/blue]層の[gold]火傷[/gold]を付与する。\nこの戦闘でこのカードを[blue]{Threshold}[/blue]回目以降にプレイしたとき、自分に[blue]{SelfBurn}[/blue]層の[gold]火傷[/gold]を付与する。",
   "LETICIA_PARTNER_MARK_ENCHANTMENT.title": "パートナーマーク",
   "STRANGLING_VINE_ENCHANTMENT.title": "絞殺の蔓",
   "STRANGLING_VINE_ENCHANTMENT.description": "このカードの攻撃属性は[img]res://LibraryOfRuinaLib/images/dice/pierce.png[/img]として扱われる。命中するたび、対象に[blue]{Turns}[/blue]ターンの[gold]束縛[/gold]を[blue]{Binding}[/blue]付与する。",
@@ -9,12 +9,12 @@
   "LETICIA_PARTNER_MARK_ENCHANTMENT.description": "各ターン、このカードを使用するたび、この戦闘中のコストが[blue]-{CostReduction}[/blue]。ターン終了時にこのカードが手札に残っている場合、この戦闘中のコストが[blue]+{CostIncrease}[/blue]。",
   "LETICIA_PARTNER_MARK_ENCHANTMENT.extraCardText": "各ターン、このカードを使用するたび、この戦闘中のコストが[blue]-{CostReduction}[/blue]。ターン終了時にこのカードが手札に残っている場合、この戦闘中のコストが[blue]+{CostIncrease}[/blue]。",
   "CHAIN_ENCHANTMENT.title": "連鎖",
-  "CHAIN_ENCHANTMENT.description": "プレイ後、他の敵にブロックされなかったダメージの[blue]{DamagePercent}%[/blue]を[blue]{Repeat}[/blue]回追加で与える。",
-  "CHAIN_ENCHANTMENT.extraCardText": "プレイ後、他の敵にブロックされなかったダメージの[blue]{DamagePercent}%[/blue]を[blue]{Repeat}[/blue]回追加で与える。",
+  "CHAIN_ENCHANTMENT.description": "プレイ後、他の敵に[gold]ブロックされなかったダメージ[/gold]の[blue]{DamagePercent}%[/blue]を[blue]{Repeat}[/blue]回追加で与える。",
+  "CHAIN_ENCHANTMENT.extraCardText": "プレイ後、他の敵に[gold]ブロックされなかったダメージ[/gold]の[blue]{DamagePercent}%[/blue]を[blue]{Repeat}[/blue]回追加で与える。",
   "PEBBLE_MARK_ENCHANTMENT.title": "小石の印",
   "PEBBLE_MARK_ENCHANTMENT.description": "このカードは[gold]廃棄[/gold]を得る。プレイ後、HPを[blue]{Heal}[/blue]回復する。",
-  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "プレイ後、HPを[blue]{Heal}[/blue]回復する。[gold]廃棄[/gold]を得る。"
-  ,"IORI_UNPREDICTABLE_ENCHANTMENT.title": "変幻自在",
+  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "プレイ後、HPを[blue]{Heal}[/blue]回復する。[gold]廃棄[/gold]を得る。",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.title": "変幻自在",
   "IORI_UNPREDICTABLE_ENCHANTMENT.description": "このカードのコストを[blue]0～3[/blue]にランダム化する。このカードを引くたびに自動で使用し、その後[gold]手札[/gold]に戻す。",
   "IORI_UNPREDICTABLE_ENCHANTMENT.extraCardText": "このカードのコストを[blue]0～3[/blue]にランダム化する。このカードを引くたびに自動で使用し、その後[gold]手札[/gold]に戻す。"
 }

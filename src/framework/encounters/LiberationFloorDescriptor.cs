@@ -11,6 +11,7 @@ using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.content.liberation.Philosophy;
+using LibraryOfRuina.content.liberation.Religion;
 using LibraryOfRuina.content.liberation.Social;
 using LibraryOfRuina.content.liberation.Technology;
 using MegaCrit.Sts2.Core.Models;
@@ -98,7 +99,7 @@ internal sealed class LiberationFloorDescriptor
 }
 
 /// <summary>
-/// 八个楼层解放的描述对象登记表。
+/// 九个楼层解放的描述对象登记表。
 /// </summary>
 internal static class LiberationFloors
 {
@@ -157,22 +158,27 @@ internal static class LiberationFloors
             (typeof(WrathServantStrong), NaturalFloorWrathServantWeightMultiplier)
         ]);
 
-    // 第三幕两层互为对方的双 Boss 第二场：社会层幕（Chesed）先打社会层再打哲学层，哲学层幕（Binah）相反。
+    // 第三幕首战固定本层；第二战由章节路由按种子从其余已登记楼层抽取。
     public static readonly LiberationFloorDescriptor Social = new(
         "Social",
         typeof(Chesed),
         typeof(SocialFloorLiberationEncounter),
         static () => ModelDb.Encounter<SocialFloorLiberationEncounter>(),
-        bossActIndex: 2,
-        doubleBossSecondEncounter: static () => ModelDb.Encounter<PhilosophyFloorLiberationEncounter>());
+        bossActIndex: 2);
 
     public static readonly LiberationFloorDescriptor Philosophy = new(
         "Philosophy",
         typeof(Binah),
         typeof(PhilosophyFloorLiberationEncounter),
         static () => ModelDb.Encounter<PhilosophyFloorLiberationEncounter>(),
-        bossActIndex: 2,
-        doubleBossSecondEncounter: static () => ModelDb.Encounter<SocialFloorLiberationEncounter>());
+        bossActIndex: 2);
+
+    public static readonly LiberationFloorDescriptor Religion = new(
+        "Religion",
+        typeof(Hokma),
+        typeof(ReligionFloorLiberationEncounter),
+        static () => ModelDb.Encounter<ReligionFloorLiberationEncounter>(),
+        bossActIndex: 2);
 
     public static readonly LiberationFloorDescriptor[] All =
     [
@@ -183,7 +189,8 @@ internal static class LiberationFloors
         Language,
         Natural,
         Social,
-        Philosophy
+        Philosophy,
+        Religion
     ];
 
     /// <summary>
@@ -192,7 +199,8 @@ internal static class LiberationFloors
     public static readonly LiberationFloorDescriptor[] ThirdActDoubleBossCandidates =
     [
         Philosophy,
-        Social
+        Social,
+        Religion
     ];
 
     public static LiberationFloorDescriptor? ForAct(ActModel? act) =>

@@ -31,6 +31,7 @@ internal static class LibraryActRegistrationPatch
         RegisterGrouped(ModelDb.Act<Tiphereth>(), 2, "LibraryOfRuina.SecondPair");
         RegisterGrouped(ModelDb.Act<Chesed>(), 3, "LibraryOfRuina.ThirdPair");
         RegisterGrouped(ModelDb.Act<Binah>(), 3, "LibraryOfRuina.ThirdPair");
+        RegisterGrouped(ModelDb.Act<Hokma>(), 3, "LibraryOfRuina.ThirdPair");
         ActRegistry.Register(new ActRegistration
         {
             CanonicalAct = ModelDb.Act<ReverberationEnsembleAct>(),
@@ -42,7 +43,7 @@ internal static class LibraryActRegistrationPatch
 
         Log.Info(
             "[LibraryActs] Registered Malkuth, Yesod, Hod, NetZech, Gebura, Tiphereth, "
-            + "Chesed, Binah and ReverberationEnsembleAct with ActLikeIt2.");
+            + "Chesed, Binah, Hokma and ReverberationEnsembleAct with ActLikeIt2.");
     }
 
     private static void RegisterGrouped(
@@ -79,7 +80,8 @@ internal static class LibraryActCatalog
         typeof(Gebura),
         typeof(Tiphereth),
         typeof(Chesed),
-        typeof(Binah)
+        typeof(Binah),
+        typeof(Hokma)
     ];
 
     /// <summary>
@@ -119,7 +121,8 @@ internal static class LibraryActBestiaryDiscoveryPatch
             ModelDb.Act<Hod>().Id);
         changed |= SynchronizeGroup(progress, ModelDb.Act<NetZech>().Id,
             ModelDb.Act<Gebura>().Id, ModelDb.Act<Tiphereth>().Id);
-        changed |= SynchronizePair<Chesed, Binah>(progress);
+        changed |= SynchronizeGroup(progress, ModelDb.Act<Chesed>().Id,
+            ModelDb.Act<Binah>().Id, ModelDb.Act<Hokma>().Id);
         if (!changed)
         {
             return;

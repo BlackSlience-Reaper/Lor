@@ -166,7 +166,7 @@ internal static partial class LibraryEncounterWeighting
 
     /// <summary>
     /// 从已登记的第三幕解放遭遇里按种子洗牌选出双 Boss；不足两个时返回空。运行期路由不用它
-    /// （第三幕的两场由 <see cref="LiberationFloorDescriptor.DoubleBossSecondEncounter"/> 固定），
+    /// （首战固定楼层，第二战由 ResolveLibraryActSecondBoss 按种子从其余楼层抽取），
     /// 只有验证套件调用。
     /// </summary>
     internal static IReadOnlyList<EncounterModel>
@@ -250,9 +250,7 @@ internal static partial class LibraryEncounterWeighting
         int actIndex)
     {
         RunState? state = CurrentRun.State;
-        EncounterModel? secondBoss = LiberationFloors.ForAct(act)?.DoubleBossSecondEncounter;
-        if (secondBoss == null
-            || state == null
+        if (state == null
             || !ShouldApplyThirdActDoubleBossRule(
                 actIndex,
                 state.AscensionLevel))
@@ -260,7 +258,19 @@ internal static partial class LibraryEncounterWeighting
             return null;
         }
 
-        return secondBoss;
+        // 每个章节使用独立的种子标签，重复路由与读档不会推进战斗随机流。
+        // SetSecondBossEncounter 的结果由原版 Act 存档保存。
+        EncounterModel[] candidates = LiberationFloors.ThirdActDoubleBossCandidates
+            .Where(descriptor => descriptor.Registered && descriptor.Encounter.Id != act.ExpectedBoss.Id)
+            .Select(static descriptor => descriptor.Encounter)
+            .ToArray();
+        if (candidates.Length == 0)
+        {
+            return null;
+        }
+
+        var selection = new Rng(state.Rng.Seed, $"library_third_second_boss_{act.Id.Entry}");
+        return candidates[selection.NextInt(candidates.Length)];
     }
 
     private static EncounterModel? PickModFirstIfModEncountersExist(

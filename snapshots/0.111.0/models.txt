@@ -409,6 +409,7 @@ LibraryOfRuina.content.acts.Binah
 LibraryOfRuina.content.acts.Chesed
 LibraryOfRuina.content.acts.Gebura
 LibraryOfRuina.content.acts.Hod
+LibraryOfRuina.content.acts.Hokma
 LibraryOfRuina.content.acts.Malkuth
 LibraryOfRuina.content.acts.NetZech
 LibraryOfRuina.content.acts.ReverberationEnsembleAct
@@ -733,6 +734,18 @@ LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightPeace75Power
 LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightSinPower
 LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightSmallBeakControllerPower
 LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightThreeBirdsPower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorAwePower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorCrownPower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorFalseDeathPower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorImmortalityPower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorImmunityPower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorLiberationEncounter
+LibraryOfRuina.content.liberation.Religion.ReligionFloorLostParadise
+LibraryOfRuina.content.liberation.Religion.ReligionFloorRipeTimePower
+LibraryOfRuina.content.liberation.Religion.ReligionFloorScytheApostle
+LibraryOfRuina.content.liberation.Religion.ReligionFloorSpearApostle
+LibraryOfRuina.content.liberation.Religion.ReligionFloorStaffApostle
+LibraryOfRuina.content.liberation.Religion.ReligionFloorTrialPower
 LibraryOfRuina.content.liberation.Social.EmeraldCrystal
 LibraryOfRuina.content.liberation.Social.FalseThrone
 LibraryOfRuina.content.liberation.Social.FalseThroneEmptyChestPower

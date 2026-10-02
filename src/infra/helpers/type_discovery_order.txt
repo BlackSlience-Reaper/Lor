@@ -559,3 +559,4 @@ AlriuneCrownCardPatch
 AlriuneDustbornDeathVisualPatch
 StaggerBadgeRefreshPatch
 StaggerBadgeResistIconsPatch
+ReligionFloorSacrificePlayPatch
