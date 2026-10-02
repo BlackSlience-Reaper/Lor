@@ -14,7 +14,7 @@ public sealed partial class FalseThroneCreatureVisuals
 {
     [MonsterVisual(typeof(FalseThrone))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -8f), new(0.504f, 0.504f), -190f, -620f, 190f, 10f, new(0f, -285f), new(20f, -600f))
+        new(0f, -8f), new(0.504f, 0.504f), -190f, -545f, 190f, 10f, new(0f, -285f), new(20f, -600f))
     {
         TalkPos = new Vector2(0f, -500f),
         StateDisplayLiftY = 20f,

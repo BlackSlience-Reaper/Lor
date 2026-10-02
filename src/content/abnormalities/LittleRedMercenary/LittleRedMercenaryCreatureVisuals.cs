@@ -9,7 +9,7 @@ public partial class LittleRedMercenaryCreatureVisuals
 {
     [MonsterVisual(typeof(LittleRedRidingHoodedMercenary))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -138f), new(-0.71f, 0.71f), -101f, -356f, 101f, 8f, new(0f, -146f), new(13f, -349f))
+        new(0f, -138f), new(-0.71f, 0.71f), -101f, -281f, 101f, 8f, new(0f, -146f), new(13f, -349f))
     {
         TalkPos = new Vector2(18f, -310f),
     };

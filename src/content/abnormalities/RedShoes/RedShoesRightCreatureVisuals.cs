@@ -8,7 +8,7 @@ public partial class RedShoesRightCreatureVisuals : SpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(RedShoesRight))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -98f), new(0.52f, 0.52f), -150f, -255f, 150f, 35f, new(0f, -98f), new(0f, -310f))
+        new(0f, -98f), new(0.52f, 0.52f), -136f, -254f, 150f, 35f, new(0f, -98f), new(0f, -310f))
     {
         TalkPos = new Vector2(0f, -230f),
     };

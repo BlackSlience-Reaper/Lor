@@ -8,7 +8,7 @@ public partial class HappyTeddyCreatureVisuals : SpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(HappyTeddyMonster))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(6f, -120f), new(0.58f, 0.58f), -145f, -320f, 145f, 10f, new(6f, -120f), new(-4f, -340f))
+        new(6f, -120f), new(0.58f, 0.58f), -120f, -272f, 122f, 11f, new(6f, -120f), new(-4f, -340f))
     {
         TalkPos = new Vector2(-8f, -272f),
     };

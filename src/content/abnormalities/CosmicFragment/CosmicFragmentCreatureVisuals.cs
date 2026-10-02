@@ -7,7 +7,7 @@ public sealed partial class CosmicFragmentCreatureVisuals : SpriteAttackCreature
 {
     [MonsterVisual(typeof(CosmicFragment))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -120f), new(0.55f, 0.55f), -130f, -300f, 130f, 10f, new(0f, -120f), new(0f, -340f));
+        new(0f, -120f), new(0.55f, 0.55f), -130f, -259f, 129f, 10f, new(0f, -120f), new(0f, -340f));
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 

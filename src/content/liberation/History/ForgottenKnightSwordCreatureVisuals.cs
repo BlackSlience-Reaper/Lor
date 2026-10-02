@@ -11,7 +11,7 @@ public sealed partial class ForgottenKnightSwordCreatureVisuals
 {
     [MonsterVisual(typeof(ForgottenKnightSword))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, 6f), new(0.54f, 0.54f), -120f, -265f, 120f, 14f, new(0f, -120f), new(0f, -292f))
+        new(0f, 6f), new(0.54f, 0.54f), -74f, -242f, 78f, 14f, new(0f, -120f), new(0f, -292f))
     {
         TalkPos = new Vector2(0f, -230f),
     };

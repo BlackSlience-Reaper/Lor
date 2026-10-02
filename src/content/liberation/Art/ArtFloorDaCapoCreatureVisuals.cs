@@ -8,7 +8,7 @@ public sealed partial class ArtFloorDaCapoCreatureVisuals : SpriteAttackCreature
 {
     [MonsterVisual(typeof(ArtFloorDaCapoBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -188f), new(0.58f, 0.58f), -215f, -472f, 215f, 36f, new(0f, -205f), new(0f, -452f))
+        new(0f, -188f), new(0.58f, 0.58f), -185f, -428f, 182f, -15f, new(0f, -205f), new(0f, -452f))
     {
         TalkPos = new Vector2(0f, -392f),
     };
@@ -48,7 +48,7 @@ public sealed partial class ArtFloorFirstPerformerCreatureVisuals : SpriteAttack
 {
     [MonsterVisual(typeof(ArtFloorFirstPerformer))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -188f), new(0.64f, 0.64f), -88f, -345f, 88f, -10f, new(0f, -185f), new(0f, -382f))
+        new(0f, -188f), new(0.64f, 0.64f), -88f, -354f, 88f, -10f, new(0f, -185f), new(0f, -382f))
     {
         TalkPos = new Vector2(0f, -300f),
     };

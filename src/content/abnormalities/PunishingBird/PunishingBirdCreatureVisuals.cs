@@ -10,7 +10,7 @@ public sealed partial class PunishingBirdCreatureVisuals : SpriteAttackCreatureV
 {
     [MonsterVisual(typeof(PunishingBird))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -12f), new(2.2f, 2.2f), -190f, -420f, 190f, 16f, new(0f, -190f), new(-90f, -435f))
+        new(0f, -12f), new(2.2f, 2.2f), -246f, -388f, 241f, 16f, new(0f, -190f), new(-90f, -435f))
     {
         StateDisplayLiftY = 32f,
     };
@@ -355,7 +355,7 @@ public sealed partial class ForestKeeperBirdCreatureVisuals : SpriteAttackCreatu
     [MonsterVisual(typeof(ForestKeeperBirdLeft))]
     [MonsterVisual(typeof(ForestKeeperBirdRight))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -8f), new(0.44f, 0.44f), -150f, -320f, 150f, 12f, new(0f, -148f), new(0f, -350f))
+        new(0f, -8f), new(0.44f, 0.44f), -150f, -281f, 178f, 12f, new(0f, -148f), new(0f, -350f))
     {
         StateDisplayLiftY = 20f,
     };

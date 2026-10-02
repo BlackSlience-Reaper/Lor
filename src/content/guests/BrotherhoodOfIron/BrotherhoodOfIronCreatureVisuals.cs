@@ -50,7 +50,7 @@ public partial class MoCreatureVisuals : BrotherhoodOfIronCreatureVisuals
 {
     [MonsterVisual(typeof(Mo))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -145.2f), new(0.48f, 0.48f), -120f, -299.7f, 120f, 5f, new(0f, -139.8f), new(0f, -333.7f))
+        new(0f, -145.2f), new(0.48f, 0.48f), -120f, -293f, 120f, -1f, new(0f, -139.8f), new(0f, -333.7f))
     {
         TalkPos = new Vector2(0f, -264f),
     };
@@ -65,7 +65,7 @@ public partial class ConstaCreatureVisuals : BrotherhoodOfIronCreatureVisuals
 {
     [MonsterVisual(typeof(Consta))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -145.2f), new(0.48f, 0.48f), -120f, -299.7f, 120f, 5f, new(0f, -139.8f), new(0f, -333.7f))
+        new(0f, -145.2f), new(0.48f, 0.48f), -120f, -299.7f, 120f, -2f, new(0f, -139.8f), new(0f, -333.7f))
     {
         TalkPos = new Vector2(0f, -264f),
     };
@@ -80,7 +80,7 @@ public partial class ArnoldCreatureVisuals : BrotherhoodOfIronCreatureVisuals
 {
     [MonsterVisual(typeof(Arnold))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -145.2f), new(0.48f, 0.48f), -120f, -299.7f, 120f, 5f, new(0f, -139.8f), new(0f, -333.7f))
+        new(0f, -145.2f), new(0.48f, 0.48f), -120f, -299.7f, 120f, -4f, new(0f, -139.8f), new(0f, -333.7f))
     {
         TalkPos = new Vector2(0f, -264f),
     };

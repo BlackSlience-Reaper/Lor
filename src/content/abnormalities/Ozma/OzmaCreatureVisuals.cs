@@ -49,7 +49,7 @@ public sealed partial class OzmaJackCreatureVisuals
 {
     [MonsterVisual(typeof(OzmaJack))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -8f), new(0.48f, 0.48f), -98f, -228f, 98f, 12f, new(0f, -108f), new(0f, -264f))
+        new(0f, -8f), new(0.48f, 0.48f), -98f, -125f, 98f, 12f, new(0f, -108f), new(0f, -264f))
     {
         StateDisplayLiftY = 12f,
     };

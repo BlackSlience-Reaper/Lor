@@ -8,7 +8,7 @@ public partial class SalvadorCreatureVisuals : DawnOfficeTripleAttackCreatureVis
 {
     [MonsterVisual(typeof(Salvador))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(-10f, -145.2f), new(0.50f, 0.50f), -122f, -299.7f, 122f, 5f, new(-10f, -139.8f), new(-10f, -333.7f))
+        new(-10f, -145.2f), new(0.50f, 0.50f), -122f, -299.7f, 112f, 5f, new(-10f, -139.8f), new(-10f, -333.7f))
     {
         TalkPos = new Vector2(-18f, -270f),
     };

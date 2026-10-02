@@ -9,7 +9,7 @@ public sealed partial class PriceOfSilenceCreatureVisuals
 {
     [MonsterVisual(typeof(PriceOfSilence))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -10f), new(0.56f, 0.56f), -168f, -360f, 168f, 16f, new(0f, -166f), new(70f, -470f))
+        new(0f, -10f), new(0.56f, 0.56f), -168f, -449f, 197f, 16f, new(0f, -166f), new(70f, -470f))
     {
         TalkPos = new Vector2(0f, -300f),
         StateDisplayLiftY = 26f,

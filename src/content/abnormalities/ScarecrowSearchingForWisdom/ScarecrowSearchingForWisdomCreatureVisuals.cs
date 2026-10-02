@@ -8,7 +8,7 @@ public sealed partial class ScarecrowSearchingForWisdomCreatureVisuals : SpriteA
 {
     [MonsterVisual(typeof(ScarecrowSearchingForWisdom))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -28f), new(0.50f, 0.50f), -120f, -330f, 120f, 8f, new(0f, -130f), new(0f, -390f))
+        new(0f, -28f), new(0.50f, 0.50f), -136f, -336f, 120f, 8f, new(0f, -130f), new(0f, -390f))
     {
         TalkPos = new Vector2(0f, -280f),
         StateDisplayLiftY = 20f,

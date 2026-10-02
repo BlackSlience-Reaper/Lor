@@ -10,7 +10,7 @@ public sealed partial class AddictedEmployeeCreatureVisuals : SpriteAttackCreatu
     [MonsterVisual(typeof(AddictedEmployee))]
     [MonsterVisual(typeof(TechnologyFloorChordStaff))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -122f), new(0.58f, 0.58f), -118f, -330f, 118f, 12f, new(0f, -122f), new(20f, -290f))
+        new(0f, -122f), new(0.58f, 0.58f), -96f, -230f, 99f, -20f, new(0f, -122f), new(20f, -290f))
     {
         TalkPos = new Vector2(0f, -286f),
     };

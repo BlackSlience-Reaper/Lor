@@ -9,7 +9,7 @@ public sealed partial class BigBirdCreatureVisuals
 {
     [MonsterVisual(typeof(BigBird))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -12f), new(0.60f, 0.60f), -190f, -420f, 190f, 16f, new(0f, -204f), new(44f, -372f))
+        new(0f, -12f), new(0.60f, 0.60f), -151f, -326f, 190f, -3f, new(0f, -204f), new(44f, -372f))
     {
         TalkPos = new Vector2(0f, -356f),
         StateDisplayLiftY = 36f,
@@ -75,7 +75,7 @@ public sealed partial class EyeballBirdCreatureVisuals
 {
     [MonsterVisual(typeof(EyeballBird))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, 13f), new(0.56f, 0.56f), -104f, -222f, 104f, 10f, new(0f, -96f), new(0f, -238f))
+        new(0f, 13f), new(0.56f, 0.56f), -74f, -209f, 118f, 11f, new(0f, -96f), new(0f, -238f))
     {
         TalkPos = new Vector2(0f, -202f),
     };

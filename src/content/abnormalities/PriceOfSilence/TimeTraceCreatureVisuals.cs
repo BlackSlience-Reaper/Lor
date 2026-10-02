@@ -8,7 +8,7 @@ public sealed partial class TimeTraceCreatureVisuals
 {
     [MonsterVisual(typeof(TimeTrace))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(10f, 20f), new(1.24f, 1.24f), -158f, -340f, 158f, 12f, new(0f, -174f), new(-95f, -360f))
+        new(10f, 20f), new(1.24f, 1.24f), -195f, -346f, 158f, 12f, new(0f, -174f), new(-95f, -360f))
     {
         StateDisplayLiftY = 5f,
     };

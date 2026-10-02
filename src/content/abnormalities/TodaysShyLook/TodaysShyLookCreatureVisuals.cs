@@ -9,7 +9,7 @@ public partial class TodaysShyLookCreatureVisuals : SpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(TodaysShyLook))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -142f), new(0.58f, 0.58f), -118f, -330f, 118f, 12f, new(0f, -142f), new(0f, -366f))
+        new(0f, -142f), new(0.58f, 0.58f), -126f, -330f, 118f, 12f, new(0f, -142f), new(0f, -366f))
     {
         TalkPos = new Vector2(0f, -286f),
     };

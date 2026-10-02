@@ -7,7 +7,7 @@ public partial class SpiderBudCreatureVisuals : SpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(SpiderBud))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -152f), new(0.72f, 0.72f), -140f, -305f, 140f, 8f, new(0f, -145f), new(0f, -330f));
+        new(0f, -152f), new(0.72f, 0.72f), -130f, -305f, 126f, 8f, new(0f, -145f), new(0f, -330f));
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 

@@ -8,7 +8,7 @@ public partial class FairyQueenCreatureVisuals : SpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(FairyQueen))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -114f), new(0.58f, 0.58f), -152f, -284f, 152f, 8f, new(0f, -118f), new(0f, -318f))
+        new(0f, -114f), new(0.58f, 0.58f), -167f, -284f, 148f, 8f, new(0f, -118f), new(0f, -318f))
     {
         TalkPos = new Vector2(0f, -258f),
     };

@@ -8,7 +8,7 @@ public partial class LeticiaCreatureVisuals : SpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(Leticia))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -124f), new(0.63f, 0.63f), -92f, -305f, 92f, 8f, new(0f, -126f), new(0f, -330f))
+        new(0f, -124f), new(0.63f, 0.63f), -92f, -287f, 92f, 8f, new(0f, -126f), new(0f, -330f))
     {
         TalkPos = new Vector2(0f, -260f),
     };

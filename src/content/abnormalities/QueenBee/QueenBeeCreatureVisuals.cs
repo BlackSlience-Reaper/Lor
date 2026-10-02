@@ -10,7 +10,7 @@ public sealed partial class QueenBeeCreatureVisuals
 {
     [MonsterVisual(typeof(QueenBee))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -200f), new(0.46f, 0.46f), -170f, -315f, 170f, 24f, new(0f, -126f), new(0f, -412f))
+        new(0f, -200f), new(0.46f, 0.46f), -170f, -374f, 188f, 24f, new(0f, -126f), new(0f, -412f))
     {
         TalkPos = new Vector2(0f, -268f),
     };

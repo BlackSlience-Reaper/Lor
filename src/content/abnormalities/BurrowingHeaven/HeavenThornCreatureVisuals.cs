@@ -10,7 +10,7 @@ public sealed partial class HeavenThornCreatureVisuals
 {
     [MonsterVisual(typeof(HeavenThorn))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -8f), new(0.48f, 0.48f), -98f, -275f, 98f, 12f, new(0f, -118f), new(0f, -315f))
+        new(0f, -8f), new(0.48f, 0.48f), -95f, -291f, 104f, -4f, new(0f, -118f), new(0f, -315f))
     {
         StateDisplayLiftY = 14f,
     };

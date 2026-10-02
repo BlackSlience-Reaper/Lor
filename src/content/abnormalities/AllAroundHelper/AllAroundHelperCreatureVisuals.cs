@@ -7,7 +7,7 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
 {
     [MonsterVisual(typeof(AllAroundHelper))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -108f), new(0.58f, 0.58f), -108f, -244f, 108f, 12f, new(0f, -108f), new(0f, -292f));
+        new(0f, -108f), new(0.58f, 0.58f), -101f, -198f, 96f, -17f, new(0f, -108f), new(0f, -292f));
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
