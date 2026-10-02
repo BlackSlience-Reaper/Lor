@@ -71,7 +71,7 @@ public partial class ScaredyCatCreatureVisuals
 {
     [MonsterVisual(typeof(ScaredyCat))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -12f), new(0.88f, 0.88f), -132f, -270f, 132f, 12f, new(0f, -126f), new(0f, -332f))
+        new(0f, -12f), new(0.88f, 0.88f), -211f, -304f, 213f, 12f, new(0f, -126f), new(0f, -332f))
     {
         TalkPos = new Vector2(0f, -238f),
         StateDisplayLiftY = 14f,
@@ -165,7 +165,7 @@ public sealed partial class RoadHomeHouseCreatureVisuals
 {
     [MonsterVisual(typeof(RoadHomeHouse))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -18f), new(0.62f, 0.62f), -170f, -260f, 170f, 14f, new(0f, -124f), new(0f, -292f))
+        new(0f, -18f), new(0.62f, 0.62f), -226f, -259f, 220f, 14f, new(0f, -124f), new(0f, -292f))
     {
         TalkPos = new Vector2(0f, -230f),
         StateDisplayLiftY = 18f,

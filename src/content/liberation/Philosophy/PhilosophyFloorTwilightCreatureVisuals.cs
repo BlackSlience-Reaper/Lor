@@ -58,7 +58,7 @@ public sealed partial class PhilosophyFloorTwilightCreatureVisuals
 
     [MonsterVisual(typeof(PhilosophyFloorTwilight))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -216f), new(0.45f, 0.45f), -315f, -624f, 315f, 12f, new(0f, -202f), new(36f, -508f))
+        new(0f, -216f), new(0.45f, 0.45f), -327f, -476f, 323f, 12f, new(0f, -202f), new(36f, -508f))
     {
         TalkPos = new Vector2(0f, -540f),
         StateDisplayLiftY = 52f,

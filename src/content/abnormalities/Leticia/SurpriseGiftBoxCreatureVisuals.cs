@@ -7,7 +7,7 @@ public partial class SurpriseGiftBoxCreatureVisuals : SpriteAttackCreatureVisual
 {
     [MonsterVisual(typeof(SurpriseGiftBox))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -98.8f), new(0.806f, 0.806f), -72.8f, -260f, 72.8f, 10.4f, new(0f, -106.6f), new(0f, -306.8f));
+        new(0f, -98.8f), new(0.806f, 0.806f), -72.8f, -235f, 72.8f, 10.4f, new(0f, -106.6f), new(0f, -306.8f));
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 

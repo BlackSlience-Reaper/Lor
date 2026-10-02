@@ -9,7 +9,7 @@ public sealed partial class LanguageFloorScarletScarCreatureVisuals
 {
     [MonsterVisual(typeof(LanguageFloorScarletScar))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, 42f), new(-0.50f, 0.50f), -158f, -388f, 158f, 12f, new(0f, -76f), new(0f, -330f))
+        new(0f, 42f), new(-0.50f, 0.50f), -158f, -294f, 158f, 12f, new(0f, -76f), new(0f, -330f))
     {
         TalkPos = new Vector2(0f, -248f),
         StateDisplayLiftY = 18f,
@@ -64,7 +64,7 @@ public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals
 {
     [MonsterVisual(typeof(LanguageFloorLostEverythingWolf))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, 20f), new(0.62f, 0.62f), -235f, -400f, 235f, 12f, new(-20f, -86f), new(-70f, -300f))
+        new(0f, 20f), new(0.62f, 0.62f), -235f, -317f, 235f, 12f, new(-20f, -86f), new(-70f, -300f))
     {
         TalkPos = new Vector2(-155f, -193f),
         StateDisplayLiftY = 12f,

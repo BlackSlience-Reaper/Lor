@@ -8,7 +8,7 @@ public partial class HistoryFloorLastMatchCreatureVisuals
 {
     [MonsterVisual(typeof(HistoryFloorLastMatch))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, 0f), new(0.38f, 0.38f), -78f, -120f, 78f, 8f, new(0f, -56f), new(0f, -150f));
+        new(0f, 0f), new(0.38f, 0.38f), -78f, -120f, 107f, 8f, new(0f, -56f), new(0f, -150f));
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 

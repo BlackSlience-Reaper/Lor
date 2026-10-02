@@ -8,7 +8,7 @@ public partial class QueenOfHatredCreatureVisuals
 {
     [MonsterVisual(typeof(QueenOfHatred))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -118f), new(0.84f, 0.84f), -150f, -280f, 150f, 8f, new(0f, -120f), new(0f, -315f));
+        new(0f, -118f), new(0.84f, 0.84f), -155f, -265f, 120f, 8f, new(0f, -120f), new(0f, -315f));
 
     private const string HumanVariant = "human";
     private const string SnakeVariant = "snake";

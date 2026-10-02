@@ -10,7 +10,7 @@ public partial class NosferatuCreatureVisuals
 {
     [MonsterVisual(typeof(Nosferatu))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -128f), new(0.72f, 0.72f), -160f, -360f, 160f, 12f, new(0f, -150f), new(0f, -395f))
+        new(0f, -128f), new(0.72f, 0.72f), -160f, -360f, 157f, 12f, new(0f, -150f), new(0f, -395f))
     {
         TalkPos = new Vector2(0f, -305f),
         StateDisplayLiftY = 18f,
@@ -147,7 +147,7 @@ public partial class BloodBatCreatureVisuals
     [MonsterVisual(typeof(BloodBat))]
     [MonsterVisual(typeof(LanguageFloorBloodBat))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -70f), new(0.78f, 0.78f), -92f, -190f, 92f, 12f, new(0f, -82f), new(0f, -230f))
+        new(0f, -70f), new(0.78f, 0.78f), -153f, -190f, 116f, 12f, new(0f, -82f), new(0f, -230f))
     {
         TalkPos = new Vector2(0f, -170f),
     };

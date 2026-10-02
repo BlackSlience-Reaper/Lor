@@ -112,7 +112,7 @@ public sealed partial class WoodsmanTreeCreatureVisuals
 {
     [MonsterVisual(typeof(WoodsmanTree))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -10f), new(0.36f, 0.36f), -190f, -420f, 190f, 12f, new(0f, -200f), new(0f, -455f))
+        new(0f, -10f), new(0.36f, 0.36f), -190f, -419f, 185f, 13f, new(0f, -200f), new(0f, -455f))
     {
         StateDisplayLiftY = 18f,
     };

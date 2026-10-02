@@ -11,7 +11,7 @@ public sealed partial class BurrowingHeavenCreatureVisuals
 {
     [MonsterVisual(typeof(BurrowingHeaven))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -18f), new(0.58f, 0.58f), -165f, -390f, 165f, 12f, new(0f, -170f), new(0f, -430f))
+        new(0f, -18f), new(0.58f, 0.58f), -196f, -390f, 207f, 12f, new(0f, -170f), new(0f, -430f))
     {
         TalkPos = new Vector2(0f, -330f),
         StateDisplayLiftY = 34f,

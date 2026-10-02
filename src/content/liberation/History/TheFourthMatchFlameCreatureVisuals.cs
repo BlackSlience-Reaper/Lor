@@ -9,7 +9,7 @@ public partial class TheFourthMatchFlameCreatureVisuals
 {
     [MonsterVisual(typeof(TheFourthMatchFlame))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -54f), new(0.38f, 0.38f), -96f, -152f, 96f, 8f, new(0f, -56f), new(0f, -182f));
+        new(0f, -54f), new(0.38f, 0.38f), -117f, -121f, 96f, 8f, new(0f, -56f), new(0f, -182f));
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 

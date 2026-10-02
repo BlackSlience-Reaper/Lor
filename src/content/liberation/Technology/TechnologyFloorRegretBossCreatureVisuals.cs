@@ -8,7 +8,7 @@ public partial class TechnologyFloorRegretBossCreatureVisuals : SpriteAttackCrea
 {
     [MonsterVisual(typeof(TechnologyFloorRegretBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
-        new(0f, -155f), new(0.576f, 0.576f), -170f, -315f, 170f, 12f, new(0f, -155f), new(-20f, -340f))
+        new(0f, -155f), new(0.576f, 0.576f), -170f, -277f, 170f, 12f, new(0f, -155f), new(-20f, -340f))
     {
         TalkPos = new Vector2(-20f, -280f),
     };
