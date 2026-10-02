@@ -188,6 +188,7 @@ public sealed class LiteratureFloorBlackSwanFourthBrotherPassivePower :
             LiteratureFloorBlackSwanBoss.FourthBrotherDamageIncreasePercent)
     ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -195,6 +196,14 @@ public sealed class LiteratureFloorBlackSwanFourthBrotherPassivePower :
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (Owner.IsDead
             || dealer?.Monster is not LiteratureFloorBlackSwanBoss

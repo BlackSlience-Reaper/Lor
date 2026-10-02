@@ -6,7 +6,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="${1:-$ROOT/snapshots}"
+export CompatibilityTarget="${CompatibilityTarget:-0.111.0}"
+OUT="${1:-$ROOT/snapshots/$CompatibilityTarget}"
 CONFIG="${2:-Debug}"
 PROJECT="$ROOT/LibraryOfRuina.csproj"
 
@@ -15,7 +16,7 @@ prop() {
 }
 
 dotnet build "$PROJECT" -c "$CONFIG" -nologo -v q -clp:ErrorsOnly
-DLL="$ROOT/.godot/mono/temp/bin/$CONFIG/LibraryOfRuina.dll"
+DLL="$(prop TargetPath)"
 
 DATA_DIR="$(prop Sts2DataDir)"
 RITSU_ROOT="$(prop RitsuLibRoot)"

@@ -68,7 +68,7 @@ public sealed class SolemnMourningEgoCard : EgoCardBase
             foreach (Creature enemy in enemies)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this, cardPlay)
+                    .FromCardCompat(this, cardPlay)
                     .Targeting(enemy)
                     .WithHitFx("vfx/vfx_attack_slash")
                     .Execute(choiceContext);

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net9.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/infra/patching/IlFingerprint.cs" Link="IlFingerprint.cs" />
+    <Compile Include="../../src/infra/patching/PatchClassRules.cs" Link="PatchClassRules.cs" />
+    <Compile Include="../PatchTargetCheck/PatchResolver.cs" Link="PatchResolver.cs" />
+  </ItemGroup>
+</Project>

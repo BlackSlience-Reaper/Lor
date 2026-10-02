@@ -64,7 +64,7 @@ internal static class IndiscriminateAttackBlockBreaker
                     continue;
                 }
 
-                await CreatureCmd.LoseBlock(
+                await GameApi.LoseBlock(
                     new ThrowingPlayerChoiceContext(),
                     target,
                     lostBlock,
@@ -109,7 +109,7 @@ internal static class IndiscriminateAttackBlockBreaker
 
     private static decimal GetPreviewModifiedDamage(Creature target, Creature dealer, decimal damage, ValueProp props)
     {
-        return Hook.ModifyDamage(
+        return GameApi.ModifyDamage(
             IRunState.GetFrom([target, dealer]),
             target.CombatState,
             target,

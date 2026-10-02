@@ -650,7 +650,7 @@ internal static class EncounterBgmDeclarationVerificationPatch
 
     private static void SetBackgroundLayers(EncounterModel encounter, string[] layers)
     {
-        var assets = new BackgroundAssets(GuestReceptionPoolRegistry.SharedBackgroundTitle, new Rng(7uL));
+        var assets = new BackgroundAssets(GuestReceptionPoolRegistry.SharedBackgroundTitle, GameApi.CreateRng(7uL, "verification"));
         assets.BgLayers.Clear();
         assets.BgLayers.AddRange(layers);
         FieldInfo field = typeof(EncounterModel).GetField("_backgroundAssets", AnyInstance)

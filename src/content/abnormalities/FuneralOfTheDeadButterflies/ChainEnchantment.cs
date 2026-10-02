@@ -77,7 +77,7 @@ public sealed class ChainEnchantment : EnchantmentModel
                 ValueProp.Unblockable | ValueProp.Unpowered,
                 Card.Owner.Creature,
                 Card,
-                command.CardPlay);
+                command.CardPlayCompat());
         }
         finally
         {

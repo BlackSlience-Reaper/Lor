@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.settings;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -16,7 +17,7 @@ namespace LibraryOfRuina.features.ftue;
 /// StartCombatInternal alive for the whole combat, so a postfix on that method
 /// cannot own combat-start FTUE timing.
 /// </summary>
-public static class LibraryOfRuinaCombatFtuePatch
+public static partial class LibraryOfRuinaCombatFtuePatch
 {
     internal static void QueueForCombat(
         CombatManager combatManager,
@@ -50,32 +51,12 @@ public static class LibraryOfRuinaCombatFtuePatch
             config = ResolveFtueConfig(encounter);
         }
 
-        CombatId? combatId = combatManager.CurrentCombatId;
-
-        if (SaveManager.Instance.SeenFtue("combat_rules_ftue"))
-        {
-            _ = TaskHelper.RunSafely(ShowCombatFtue(combatManager, combatId, config));
-            return;
-        }
-
-        Action<CombatState>? onCombatBegan = null;
-        onCombatBegan = beganState =>
-        {
-            combatManager.CombatBegan -= onCombatBegan;
-            if (!ReferenceEquals(beganState, combatState)
-                || !IsCurrentCombat(combatManager, combatId))
-            {
-                return;
-            }
-
-            _ = TaskHelper.RunSafely(ShowCombatFtue(combatManager, combatId, config));
-        };
-        combatManager.CombatBegan += onCombatBegan;
+        ScheduleCombatFtue(combatManager, combatState, config);
     }
 
     private static async Task ShowCombatFtue(
         CombatManager combatManager,
-        CombatId? combatId,
+        CombatState combatId,
         FtueConfig config)
     {
         NModalContainer? modalContainer = NModalContainer.Instance;
@@ -109,10 +90,9 @@ public static class LibraryOfRuinaCombatFtuePatch
         Log.Info($"LibraryOfRuina: Showing FTUE {config.FtueId}");
     }
 
-    private static bool IsCurrentCombat(CombatManager combatManager, CombatId? combatId)
+    private static bool IsCurrentCombat(CombatManager combatManager, CombatState combatId)
     {
-        return combatId.HasValue
-            && Nullable.Equals(combatManager.CurrentCombatId, combatId)
+        return ReferenceEquals(CurrentCombat.Of(combatManager), combatId)
             && (combatManager.IsStarting || combatManager.IsInProgress);
     }
 

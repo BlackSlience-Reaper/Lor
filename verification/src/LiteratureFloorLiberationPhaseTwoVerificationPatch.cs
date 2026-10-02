@@ -360,7 +360,7 @@ internal static class LiteratureFloorLiberationPhaseTwoVerificationPatch
             "Red Eyes was targetable before a spider died.");
 
         int lockedHp = fight.RedEyesCreature.CurrentHp;
-        await CreatureCmd.Damage(
+        await CreatureCmdCompat.Damage(
             new ThrowingPlayerChoiceContext(),
             [fight.RedEyesCreature],
             5m,
@@ -496,21 +496,21 @@ internal static class LiteratureFloorLiberationPhaseTwoVerificationPatch
         await cocoon.AfterCardPlayed(context, cardPlay);
         Require(cocoon.DisplayAmount == 2
                 && cocoon.CurrentDamageIncreasePercent == 100
-                && cocoon.ModifyDamageMultiplicative(
+                && cocoon.ModifyDamageMultiplicativeCompat(
                     fight.Player,
                     10m,
                     ValueProp.Move,
                     fight.RedEyesCreature,
                     null,
                     null) == 2m
-                && cocoon.ModifyDamageMultiplicative(
+                && cocoon.ModifyDamageMultiplicativeCompat(
                     fight.Player,
                     10m,
                     ValueProp.Unpowered,
                     fight.RedEyesCreature,
                     null,
                     null) == 1m
-                && cocoon.ModifyDamageMultiplicative(
+                && cocoon.ModifyDamageMultiplicativeCompat(
                     fight.Player,
                     10m,
                     ValueProp.Move,
@@ -677,23 +677,7 @@ internal static class LiteratureFloorLiberationPhaseTwoVerificationPatch
 
     private static CardPlay CreateCardPlay(CardModel card)
     {
-        return new CardPlay
-        {
-            Card = card,
-            Player = card.Owner,
-            Target = null,
-            ResultPile = PileType.Discard,
-            Resources = new ResourceInfo
-            {
-                EnergySpent = 0,
-                EnergyValue = 0,
-                StarsSpent = 0,
-                StarValue = 0
-            },
-            IsAutoPlay = false,
-            PlayIndex = 0,
-            PlayCount = 1
-        };
+        return VerificationApi.CreateCardPlay(card, card.Owner);
     }
 
     private static Creature[] LivingSpiders(PhaseTwoContext fight) =>

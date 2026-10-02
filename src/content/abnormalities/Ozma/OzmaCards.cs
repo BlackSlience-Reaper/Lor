@@ -163,7 +163,7 @@ public sealed class OzmaReturnItToMeCard : CardModel
         }
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
+            .FromCardCompat(this, cardPlay)
             .Targeting(target)
             .WithHitCount(DynamicVars["Hits"].IntValue)
             .WithHitFx("vfx/vfx_attack_slash")

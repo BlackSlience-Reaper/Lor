@@ -89,11 +89,11 @@ public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive
         PlaySeries? series = null;
         if (!cardPlay.IsFirstInSeries)
         {
-            series = _series.LastOrDefault(entry => ReferenceEquals(entry.Card, cardPlay.Card) && entry.Player == cardPlay.Player);
+            series = _series.LastOrDefault(entry => ReferenceEquals(entry.Card, cardPlay.Card) && entry.Player == cardPlay.PlayerCompat());
         }
         if (series == null)
         {
-            series = new PlaySeries(cardPlay.Card, cardPlay.Player);
+            series = new PlaySeries(cardPlay.Card, cardPlay.PlayerCompat());
             _series.Add(series);
         }
         _active.Add((cardPlay, series));
@@ -171,8 +171,14 @@ public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive
         decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, LibraryDamageType type) =>
         Authorize(choiceContext, target, cardSource);
 
+#if STS2_0_111_0
     public override decimal ModifyDamageCap(Creature? target, ValueProp props, Creature? dealer,
-        CardModel? cardSource, CardPlay? cardPlay) =>
+        CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageCap(Creature? target, ValueProp props, Creature? dealer,
+        CardModel? cardSource)
+#endif
+    =>
         MayDamage(target, cardSource) ? decimal.MaxValue : 0m;
 
     public override decimal ModifyChaoDamageCap(Creature? target, ValueProp props, Creature? dealer,

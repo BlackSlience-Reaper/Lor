@@ -73,14 +73,14 @@ public sealed class SocialFloorCourageCard() : CardModel(0,
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay)
     {
-        if (cardPlay.Player.Creature.CombatState?.Encounter is
+        if (cardPlay.PlayerCompat().Creature.CombatState?.Encounter is
             SocialFloorLiberationEncounter encounter)
         {
-            encounter.MarkCouragePlayed(cardPlay.Player.NetId);
+            encounter.MarkCouragePlayed(cardPlay.PlayerCompat().NetId);
         }
         SocialFloorCouragePower? power =
             await SocialFloorPlayerMechanics.ApplyCourage(
-                cardPlay.Player,
+                cardPlay.PlayerCompat(),
                 this);
         if (power != null)
         {
@@ -202,7 +202,7 @@ public sealed class SocialFloorMagicalPowderCard() : CardModel(DefaultInternalCo
         CardPlay cardPlay)
     {
         if (!IsPowderReady
-            || cardPlay.Player.NetId != HolderNetId
+            || cardPlay.PlayerCompat().NetId != HolderNetId
             || cardPlay.Target?.Monster is not ISocialFloorMagicalPowderTarget target)
         {
             return;

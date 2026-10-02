@@ -12,8 +12,6 @@
     <RootNamespace>LibraryOfRuinaVerification</RootNamespace>
     <AssemblyName>LibraryOfRuinaVerification</AssemblyName>
     <NoWarn>$(NoWarn);CS0436;CS1998</NoWarn>
-    <Sts2Beta Condition="'$(Sts2Beta)' == ''">true</Sts2Beta>
-    <DefineConstants Condition="'$(Sts2Beta)' == 'true'">$(DefineConstants);STS2_BETA</DefineConstants>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
@@ -34,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="obj/**;bin/**;build/**;.godot/**" />
     <!-- Same global usings as the main mod, so the suites moved out of src/debug compile unchanged. -->
     <Compile Include="../src/core/compat/GlobalUsings.cs" Link="GlobalUsings.cs" />
     <None Include="LibraryOfRuinaVerification.json" CopyToOutputDirectory="PreserveNewest" />

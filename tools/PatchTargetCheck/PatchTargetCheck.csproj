@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 离线执行补丁类的 Prepare/TargetMethod(s) 并用该目标的 Harmony 解析全部补丁目标；见 Program.cs。
+       不引用 Harmony 或游戏程序集：它们只在运行时从给定目录加载进独立的 AssemblyLoadContext。 -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/infra/patching/PatchClassRules.cs" Link="PatchClassRules.cs" />
+    <Compile Remove="Fixtures/**" />
+  </ItemGroup>
+</Project>

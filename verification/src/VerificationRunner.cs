@@ -31,6 +31,7 @@ public static class VerificationRunner
         BlueStarStrongVerificationPatch.Start,
         CodeHealthVerificationPatch.Start,
         CombatStatePropertiesVerificationPatch.Start,
+        DualTargetRuntimeVerificationPatch.Start,
         EgoCardPreviewVerificationPatch.Start,
         EncounterBgmDeclarationVerificationPatch.Start,
         EnemyCardIntentVerificationPatch.Start,

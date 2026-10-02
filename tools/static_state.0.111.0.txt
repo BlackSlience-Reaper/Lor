@@ -1,0 +1,1 @@
+LibraryOfRuina.core.compat.RunLobbyEventsCompat._rejoinedAdapter	harmless	net	Register 写入适配委托并订阅；Unregister 退订并置空

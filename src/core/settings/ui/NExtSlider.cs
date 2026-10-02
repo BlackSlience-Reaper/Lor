@@ -194,7 +194,7 @@ internal partial class NExtSlider : Control
 
     private void OnFocus()
     {
-        if (NControllerManager.Instance?.IsUsingDirectionalNavigation != true) return;
+        if (!GameApi.IsDirectionalNavigation(NControllerManager.Instance)) return;
         _selectionReticle.OnSelect();
     }
 
@@ -253,4 +253,3 @@ internal partial class NExtSlider : Control
         else _slider.Value += _slider.Step;
     }
 }
-

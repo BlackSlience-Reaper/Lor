@@ -320,7 +320,7 @@ public sealed partial class Kali
             }
 
             AttackCommand attack = DamageCmd.Attack(damage)
-                .FromCard(card, null)
+                .FromCardCompat(card, null)
                 .Targeting(target)
                 .WithHitCount(1)
                 .WithHitFx(segmentHitVfx);

@@ -112,7 +112,7 @@ public sealed class EileenNuovoFabricPower : GearChurchPassivePower
         if (!protectedHit && _plays.LastOrDefault() is { } active)
         {
             protectedHit = active.Play.Card.Type == CardType.Attack
-                && active.Play.Player.Creature == applier && active.ProtectedHit;
+                && active.Play.PlayerCompat().Creature == applier && active.ProtectedHit;
         }
         if (!protectedHit)
         {
@@ -128,16 +128,28 @@ public sealed class EileenNuovoFabricPower : GearChurchPassivePower
         target == Owner && ValuePropCompat.IsPoweredAttack(props)
         && (GearChurchHitContext.Find(Owner)?.Protected ?? HitsReceived < FabricProtectedHits);
 
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props,
-        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay) =>
+        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props,
+        Creature? dealer, CardModel? cardSource)
+#endif
+    =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -FabricReduction : 0m;
 
     public override decimal ModifyChaoDamageAdditive(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -FabricReduction : 0m;
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
-        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay) =>
+        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+        Creature? dealer, CardModel? cardSource)
+#endif
+    =>
         IsProtected(target, props) ? 0m : 1m;
 
     public override decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
@@ -199,8 +211,14 @@ public sealed class GearChurchSoberSmokePower : GearChurchPassivePower
         return hasSmoke ? 1m - SoberReductionPercent / 100m : 1m;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
-        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay) => Multiplier(target, props);
+        Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+        Creature? dealer, CardModel? cardSource)
+#endif
+    => Multiplier(target, props);
 
     public override decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) => Multiplier(target, props);
@@ -257,8 +275,13 @@ public sealed class GearChurchSmokePower : LibraryOfRuinaPowerModel
     // 连续命中的预览使用模拟层数；其余预览和实战读取本次命中快照或实时层数。
     private int CalculationStacks => GearChurchHitContext.Find(Owner)?.SmokeStacks ?? Amount;
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+        Creature? dealer, CardModel? cardSource)
+#endif
     {
         if (!ValuePropCompat.IsPoweredAttack(props))
         {

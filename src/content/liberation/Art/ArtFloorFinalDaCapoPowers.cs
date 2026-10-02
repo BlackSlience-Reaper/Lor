@@ -63,10 +63,14 @@ public sealed class ArtFloorAdagioCantabilePower : LibraryOfRuinaPowerModel
         new DynamicVar("Heal", HealAmount)
     ];
 
+#if STS2_0_111_0
     public override async Task AfterBlockBroken(
         PlayerChoiceContext choiceContext,
         Creature target,
         Creature? breaker)
+#else
+    public override async Task AfterBlockBroken(Creature target)
+#endif
     {
         if (target != Owner)
         {

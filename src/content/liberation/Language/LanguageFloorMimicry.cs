@@ -1035,7 +1035,7 @@ public sealed class LanguageFloorMimicry :
         await FakeDeathDebuffHelper.ClearDebuffs(Creature);
         if (Creature.Block > 0)
         {
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 new ThrowingPlayerChoiceContext(),
                 Creature,
                 Creature.Block,

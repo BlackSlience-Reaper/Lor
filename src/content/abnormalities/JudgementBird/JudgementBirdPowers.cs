@@ -520,6 +520,7 @@ public sealed class JudgementBirdWeightOfSinPower :
         new DynamicVar("PercentPerSin", 1)
     ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -527,6 +528,14 @@ public sealed class JudgementBirdWeightOfSinPower :
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (dealer != Owner
             || target == null

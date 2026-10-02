@@ -355,9 +355,7 @@ internal static class SpecialGuestTerminalRewardsProceedPatch
                 // so the initial options page never flashes for one frame.
                 parentEventNode.Visible = false;
             }
-            manager.EventSynchronizer.BeforeExitingRoom();
-            EventModel localEvent = manager.EventSynchronizer.GetLocalEvent();
-            manager.EventSynchronizer.GenerateInternalCombatStateIfNecessary(localEvent);
+            GameApi.ResetEventCombat(manager.EventSynchronizer);
             foreach (SpecialGuestEventBase specialEvent in manager.EventSynchronizer.Events
                          .OfType<SpecialGuestEventBase>())
             {

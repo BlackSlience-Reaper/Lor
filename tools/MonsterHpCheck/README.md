@@ -2,7 +2,7 @@
 
 `.github/workflows/monster-hp.yml` 在所有分支的 `push`、`pull_request` 和手动 `workflow_dispatch` 时运行，权限为 `contents: read`，限时 10 分钟。
 
-检查器使用独立的 .NET 10 控制台项目及 SDK 自带的 Roslyn，读取 `src/**/*.cs`，按主项目排除 `src/debug` 与 `src/encounters/debug`。无需游戏、Godot、相邻基础库或 secrets。分别解析 Beta（定义 `STS2_BETA`）和 Public，自动识别怪物及继承链，逐个校验：
+检查器使用独立的 .NET 10 控制台项目及 SDK 自带的 Roslyn，读取 `src/**/*.cs`，按主项目排除 `src/debug` 与 `src/encounters/debug`。无需游戏、Godot、相邻基础库或 secrets。按 `Directory.Build.props` 的两个兼容目标分别解析（定义 `STS2_0_107_1` 或 `STS2_0_111_0`，与 `-p:CompatibilityTarget` 编译时相同），自动识别怪物及继承链，逐个校验：
 
 - `ascensionValue` 对应的 `MinInitialHp <= MaxInitialHp`。
 - `fallbackValue` 对应的 `MinInitialHp <= MaxInitialHp`。

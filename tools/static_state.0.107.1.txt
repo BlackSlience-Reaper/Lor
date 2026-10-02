@@ -1,0 +1,1 @@
+LibraryOfRuina.core.compat.SavedPropertiesTypeCacheCompat._refreshFailureLogged	harmless	log	旧版 SavedProperty 类型位宽刷新失败时只记录一次日志，不携带战斗状态

@@ -254,9 +254,9 @@ internal static partial class LibraryEncounterWeighting
                 && !candidate.SharesTagsWith(next))
             .ToList();
 
-        ulong seed = CurrentRun.State?.Rng.Seed
-            ?? StringHelper.GetDeterministicHashCode(act.Id.Entry);
-        Rng localRng = new(seed, $"library_encounter_runtime_replace_{act.Id.Entry}_{roomType}_{index}_{current.Id.Entry}");
+        ulong seed = CurrentRun.State is { } run ? run.Rng.Seed
+            : GameApi.FallbackSeed(act.Id.Entry);
+        Rng localRng = GameApi.CreateRng(seed, $"library_encounter_runtime_replace_{act.Id.Entry}_{roomType}_{index}_{current.Id.Entry}");
         IReadOnlyList<EncounterModel> selectionPool = preferredCandidates.Count > index
             ? preferredCandidates
             : candidates;
@@ -665,7 +665,7 @@ internal static partial class LibraryEncounterWeighting
                 {
                     // 房间序列只由共享的本局种子和章节身份决定，避免生成入口、
                     // 调用次数及其他流程对 UpFront 的消耗改变同一章节的遭遇。
-                    return new Rng(
+                    return GameApi.CreateRng(
                         runState.Rng.Seed,
                         $"library_encounter_weight_{label}_{actIndex}_{act.Id.Entry}");
                 }
@@ -673,13 +673,7 @@ internal static partial class LibraryEncounterWeighting
         }
 
         // 独立生成且未挂入本局的章节保留调用方提供的确定性随机源。
-        var state = sourceRng.ToSerializable();
-        ulong baseSeed = state.state0;
-        baseSeed = unchecked((baseSeed * 1099511628211UL) ^ state.state1);
-        baseSeed = unchecked((baseSeed * 1099511628211UL) ^ state.state2);
-        baseSeed = unchecked((baseSeed * 1099511628211UL) ^ state.state3);
-        baseSeed = unchecked((baseSeed * 1099511628211UL) ^ (uint)state.counter);
-        return new Rng(baseSeed, $"library_encounter_weight_{label}_{act.Id.Entry}");
+        return GameApi.CreateDetachedRng(sourceRng, $"library_encounter_weight_{label}_{act.Id.Entry}");
     }
 
     private static void AppendModFirstSequence(

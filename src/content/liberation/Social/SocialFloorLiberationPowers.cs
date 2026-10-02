@@ -346,16 +346,16 @@ public sealed class SocialFloorScaredyCatPower : SocialFloorPowerModel
     {
         if (IsHolderActive
             && cardPlay.IsFirstInSeries
-            && cardPlay.Player.NetId == HolderNetId)
+            && cardPlay.PlayerCompat().NetId == HolderNetId)
         {
             CardsSubmittedThisTurn = Math.Min(
                 CardLimit,
                 CardsSubmittedThisTurn + 1);
-            if (cardPlay.Player.Creature.CombatState?.Encounter is
+            if (cardPlay.PlayerCompat().Creature.CombatState?.Encounter is
                 SocialFloorLiberationEncounter encounter)
             {
                 encounter.MarkLionCardsSubmitted(
-                    cardPlay.Player.NetId,
+                    cardPlay.PlayerCompat().NetId,
                     CardsSubmittedThisTurn);
             }
         }
@@ -533,7 +533,7 @@ public sealed class SocialFloorOzmaPower : SocialFloorPowerModel
     {
         if (!IsHolderActive
             || !cardPlay.IsFirstInSeries
-            || cardPlay.Player.NetId != HolderNetId
+            || cardPlay.PlayerCompat().NetId != HolderNetId
             || cardPlay.Card is SocialFloorMagicalPowderCard)
         {
             return Task.CompletedTask;
@@ -548,11 +548,11 @@ public sealed class SocialFloorOzmaPower : SocialFloorPowerModel
         };
         if (adjustment != 0
             && SocialFloorPlayerMechanics.TryGetActivePowder(
-                cardPlay.Player,
+                cardPlay.PlayerCompat(),
                 out SocialFloorMagicalPowderCard? powder))
         {
             powder!.AdjustInternalCost(adjustment);
-            if (cardPlay.Player.Creature.CombatState?.Encounter is
+            if (cardPlay.PlayerCompat().Creature.CombatState?.Encounter is
                 SocialFloorLiberationEncounter encounter)
             {
                 encounter.MarkPowderCost(powder.InternalCost);

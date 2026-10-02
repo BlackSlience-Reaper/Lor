@@ -269,6 +269,10 @@ internal static class IntentGraphDisplayConfigRepository
                 return null;
             }
 
+            // 变体共享根目录配置，切换游戏版本不应另建一份配置。
+            if (Directory.GetParent(modDir)?.Name == "lib")
+                modDir = Directory.GetParent(modDir)!.Parent!.FullName;
+
             string relative = relativeConfigPath
                 .Replace('/', Path.DirectorySeparatorChar)
                 .Replace('\\', Path.DirectorySeparatorChar);

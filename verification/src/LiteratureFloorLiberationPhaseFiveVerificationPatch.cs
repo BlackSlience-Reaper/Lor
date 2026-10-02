@@ -384,7 +384,7 @@ internal static class LiteratureFloorLiberationPhaseFiveVerificationPatch
             ?? throw new InvalidOperationException(
                 "Fourth Brother power could not be resolved.");
         Require(
-            fourthPower.ModifyDamageMultiplicative(
+            fourthPower.ModifyDamageMultiplicativeCompat(
                 fight.Player,
                 1m,
                 ValueProp.Move,
@@ -723,7 +723,7 @@ internal static class LiteratureFloorLiberationPhaseFiveVerificationPatch
 
     private static Task ClearBlock(Creature creature) =>
         creature.Block > 0
-            ? CreatureCmd.LoseBlock(
+            ? GameApi.LoseBlock(
                 new ThrowingPlayerChoiceContext(),
                 creature,
                 creature.Block,

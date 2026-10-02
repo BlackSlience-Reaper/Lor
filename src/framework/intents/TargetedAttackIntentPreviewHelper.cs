@@ -17,7 +17,7 @@ internal static class TargetedAttackIntentPreviewHelper
         decimal damage = baseDamage;
         if (target?.CombatState != null)
         {
-            damage = Hook.ModifyDamage(
+            damage = GameApi.ModifyDamage(
                 target.CombatState.RunState,
                 target.CombatState,
                 target,

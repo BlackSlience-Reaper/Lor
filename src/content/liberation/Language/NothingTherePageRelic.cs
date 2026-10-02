@@ -113,7 +113,7 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
     {
         if (Mode == NothingTherePageMode.Hello
             && !HelloUsedThisTurn
-            && cardPlay.Player == Owner
+            && cardPlay.PlayerCompat() == Owner
             && cardPlay.Card.Type == CardType.Attack
             && cardPlay.IsFirstInSeries)
         {
@@ -173,7 +173,7 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
         CardModel? lastAttack = CombatManager.Instance.History
             .CardPlaysFinished
             .LastOrDefault(entry =>
-                entry.CardPlay.Player == Owner
+                entry.CardPlay.PlayerCompat() == Owner
                 && entry.CardPlay.Card.Type == CardType.Attack
                 && entry.CardPlay.IsLastInSeries
                 && !entry.CardPlay.Card.IsDupe
@@ -185,7 +185,7 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
             return;
         }
 
-        CardModel copy = lastAttack.CreateDupe(Owner);
+        CardModel copy = GameApi.CreateDupe(lastAttack, Owner);
         _goodbyeActiveCard = copy;
         Flash();
         try
@@ -204,6 +204,7 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
         }
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -211,10 +212,17 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         _ = target;
         _ = amount;
-        _ = cardPlay;
         return ShouldDoubleGoodbyeDamage(props, dealer, cardSource)
             ? GoodbyeDamageMultiplier
             : 1m;
@@ -231,7 +239,6 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
     {
         _ = target;
         _ = amount;
-        _ = cardPlay;
         _ = type;
         return ShouldDoubleGoodbyeDamage(props, dealer, cardSource)
             ? GoodbyeDamageMultiplier
@@ -368,7 +375,7 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
         }
 
         return CombatManager.Instance.History.CardPlaysFinished.Any(entry =>
-            entry.CardPlay.Player == Owner
+            entry.CardPlay.PlayerCompat() == Owner
             && entry.CardPlay.Card.Type == CardType.Attack
             && !entry.CardPlay.Card.IsDupe
             && entry.HappenedThisTurn(combatState));

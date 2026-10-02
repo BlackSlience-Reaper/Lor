@@ -1082,7 +1082,7 @@ internal static class SpecialGuestXiaoContractVerificationPatch
         MethodInfo planMethod = GetMethod(
             typeof(XiaoSpecialGuestMonsterBase),
             "PlanNextTurn");
-        var rng = new Rng(0x5849414fUL);
+        var rng = GameApi.CreateRng(0x5849414fUL, "verification");
         foreach (IReadOnlyList<XiaoGuestMove> expected in expectedPlans)
         {
             planMethod.Invoke(monster, [rng]);
@@ -1804,13 +1804,13 @@ internal static class SpecialGuestXiaoContractVerificationPatch
             typeof(SpecialGuestStoryOverlay),
             "IsConfirmInput");
         FieldInfo confirmInput = typeof(MegaInput).GetField(
-                nameof(MegaInput.confirm),
+                nameof(GameApi.Confirm),
                 BindingFlags.Public | BindingFlags.Static)
-            ?? throw new MissingFieldException(typeof(MegaInput).FullName, nameof(MegaInput.confirm));
+            ?? throw new MissingFieldException(typeof(MegaInput).FullName, nameof(GameApi.Confirm));
         Require(GetReferencedFields(isConfirmInput).Count(field =>
                     field.Module == confirmInput.Module
                     && field.MetadataToken == confirmInput.MetadataToken) == 2,
-            "Keyboard/controller story confirm no longer uses MegaInput.confirm.");
+            "Keyboard/controller story confirm no longer uses GameApi.Confirm.");
         Require(!GetStringConstants(isConfirmInput).Contains("proceed", StringComparer.Ordinal),
             "Story confirm still queries the nonexistent proceed InputMap action.");
         object?[] leftMouseArgs =

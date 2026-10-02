@@ -97,7 +97,11 @@ internal static class FocusOfAttentionLightningOrbPatch
         return FocusOfAttentionPatchTargets.GetAsyncMoveNext(
             typeof(LightningOrb),
             "ApplyLightningDamage",
+#if STS2_0_111_0
             [typeof(decimal), typeof(Creature), typeof(PlayerChoiceContext), typeof(bool)]);
+#else
+            [typeof(decimal), typeof(Creature), typeof(PlayerChoiceContext)]);
+#endif
     }
 
     [HarmonyTranspiler]
@@ -223,7 +227,7 @@ internal static class FocusOfAttentionDarkOrbEvokePatch
     {
         VanillaPrivate.OrbModelPlayEvokeSfx.Invoke(orb, null);
         // 与原版 DarkOrb.Evoke 相同：触发激发事件，充能球特效据此指向目标。
-        orb.ActivateEvoke([focusedTarget]);
+        GameApi.ActivateEvoke(orb, focusedTarget);
         await CreatureCmdCompat.Damage(
             playerChoiceContext,
             focusedTarget,

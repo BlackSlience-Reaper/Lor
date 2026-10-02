@@ -1,0 +1,18 @@
+PatchTargetFixtures.AmbiguousPatch	static	FAILED 异常 AmbiguousMatchException: Ambiguous match found for 'PatchTargetFixtures.Target Void Over(Int32)'.
+PatchTargetFixtures.BadInjectionPatch	static	PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadInjectionPatch	static	FAILED 注入 Prefix -> PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String): 原方法没有参数 y
+PatchTargetFixtures.BadInjectionPatch	static	FAILED 注入 Prefix -> PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String): 参数 x 类型 System.String 不兼容原方法第 0 个参数 System.Int32
+PatchTargetFixtures.BadInjectionPatch	static	FAILED 注入 Prefix -> PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String): 无效的参数序号 __7
+PatchTargetFixtures.BadInjectionPatch	static	FAILED 注入 Prefix -> PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String): 字段不存在 ___nothere
+PatchTargetFixtures.BadResultPatch	static	PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.BadResultPatch	static	FAILED 注入 Postfix -> PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String): __result 用在无返回值的原方法上
+PatchTargetFixtures.BadResultPatch	static	FAILED 注入 Postfix -> PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String): __instance 类型 System.String 不兼容 PatchTargetFixtures.Target
+PatchTargetFixtures.DeclinePatch	static	FAILED Prepare 返回 false，整个类不安装
+PatchTargetFixtures.GoodPatch	static	PatchTargetFixtures|PatchTargetFixtures.Target::M(System.Int32,System.String)
+PatchTargetFixtures.InheritedPatch	static	FAILED 异常 ArgumentException: 补丁方法没有可解析的目标：Prefix
+PatchTargetFixtures.MethodLevelPatch	static	PatchTargetFixtures|PatchTargetFixtures.Target::Over(System.String)
+PatchTargetFixtures.MethodLevelPatch	static	PatchTargetFixtures|PatchTargetFixtures.Target::Value()
+PatchTargetFixtures.MixedTargetPatch	dynamic	FAILED 异常 ArgumentException: TargetMethod(s) 与目标特性混用：Prefix
+PatchTargetFixtures.NullElementPatch	dynamic	FAILED 异常 Exception: Method static System.Collections.Generic.IEnumerable`1<System.Reflection.MethodBase> PatchTargetFixtures.NullElementPatch::TargetMethods() returned an unexpected result: some element was null
+PatchTargetFixtures.NullTargetPatch	dynamic	FAILED 异常 Exception: Method static System.Reflection.MethodBase PatchTargetFixtures.NullTargetPatch::TargetMethod() returned an unexpected result: null
+PatchTargetFixtures.ThrowingTargetPatch	dynamic	FAILED 异常 MissingMethodException: Method 'Target.Missing' not found.

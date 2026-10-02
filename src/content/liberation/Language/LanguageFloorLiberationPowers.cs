@@ -42,6 +42,7 @@ public sealed class LanguageFloorHuntMarkPower : LibraryDurationPowerModel
         return applicationSide == decaySide;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -49,6 +50,14 @@ public sealed class LanguageFloorHuntMarkPower : LibraryDurationPowerModel
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (target != Owner
             || Applier == null
@@ -93,6 +102,7 @@ public sealed class LanguageFloorScarPower : LibraryOfRuinaPowerModel
             new DynamicVar("BurstRemainingPercent", BurstRemainingPercent)
         ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
@@ -100,6 +110,14 @@ public sealed class LanguageFloorScarPower : LibraryOfRuinaPowerModel
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (target != Owner
             || dealer == null

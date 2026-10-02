@@ -109,12 +109,21 @@ public sealed class LibraryOfRuinaParalysisPower : LibraryOfRuinaPowerModel, ISe
 
     public int TurnsRemainingForText => TurnsRemaining;
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (dealer != Owner || Amount <= 0 || !ValuePropCompat.IsPoweredAttack(props))
         {

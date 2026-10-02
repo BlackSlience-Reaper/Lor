@@ -24,6 +24,7 @@ public sealed class ScarecrowWisdomPower : PowerModel
         ..HoverTipFactory.FromCardWithCardHoverTips<ScarecrowWisdomStatusCard>()
     ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
@@ -31,6 +32,14 @@ public sealed class ScarecrowWisdomPower : PowerModel
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (target != Owner
             || Amount <= 0

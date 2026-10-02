@@ -94,12 +94,21 @@ public sealed class ScarecrowPageRelic : ModalPageRelic<ScarecrowPageMode>
         return Task.CompletedTask;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (!IsHarvestBonusActive(target, props, dealer))
         {

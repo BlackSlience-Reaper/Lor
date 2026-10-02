@@ -1,5 +1,5 @@
 <Project>
-  <!-- Machine-specific paths. Override any of these in local.props (see local.props.example). -->
+  <!-- local.props 只配置根目录；具体目标引用由 CompatibilityTarget 统一决定。 -->
   <Import Project="local.props" Condition="Exists('local.props')" />
 
   <PropertyGroup>
@@ -8,20 +8,33 @@
     <SteamRoot Condition="'$(SteamRoot)' == ''">$(HOME)/.local/share/Steam</SteamRoot>
 
     <Sts2Dir Condition="'$(Sts2Dir)' == ''">$(SteamRoot)/steamapps/common/Slay the Spire 2</Sts2Dir>
-    <Sts2DataDir Condition="'$(Sts2DataDir)' == '' and '$(OS)' == 'Windows_NT'">$(Sts2Dir)/data_sts2_windows_x86_64</Sts2DataDir>
-    <Sts2DataDir Condition="'$(Sts2DataDir)' == '' and $([MSBuild]::IsOSPlatform('OSX'))">$(Sts2Dir)/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir>
-    <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Dir)/data_sts2_linuxbsd_x86_64</Sts2DataDir>
     <Sts2ModsDir Condition="'$(Sts2ModsDir)' == '' and $([MSBuild]::IsOSPlatform('OSX'))">$(Sts2Dir)/SlayTheSpire2.app/Contents/MacOS/mods</Sts2ModsDir>
     <Sts2ModsDir Condition="'$(Sts2ModsDir)' == ''">$(Sts2Dir)/mods</Sts2ModsDir>
 
     <!-- STS2-RitsuLib Workshop item 3747602295; compat/<version> must match the game API. -->
+    <RitsuLibRoot Condition="'$(RitsuLibRoot)' == '' and Exists('$(MSBuildThisFileDirectory)build/deps/STS2-RitsuLib-0.6.2/RitsuLib.References.props')">$(MSBuildThisFileDirectory)build/deps/STS2-RitsuLib-0.6.2</RitsuLibRoot>
     <RitsuLibRoot Condition="'$(RitsuLibRoot)' == ''">$(SteamRoot)/steamapps/workshop/content/2868840/3747602295</RitsuLibRoot>
-    <RitsuLibReferenceTarget Condition="'$(RitsuLibReferenceTarget)' == ''">0.111.0</RitsuLibReferenceTarget>
     <RitsuLibReferencesProps>$(RitsuLibRoot)/RitsuLib.References.props</RitsuLibReferencesProps>
 
-    <ActLikeIt2Dll Condition="'$(ActLikeIt2Dll)' == ''">$(Sts2ModsDir)/ActLikeIt2/ActLikeIt2.dll</ActLikeIt2Dll>
-    <!-- Compile against the library's GitHub source when tools/build_lib.sh has built it; otherwise the installed copy. -->
-    <LibraryOfRuinaLibDll Condition="'$(LibraryOfRuinaLibDll)' == '' and Exists('$(MSBuildThisFileDirectory)build/LibraryOfRuinaLib/bin/out/LibraryOfRuinaLib.dll')">$(MSBuildThisFileDirectory)build/LibraryOfRuinaLib/bin/out/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll>
-    <LibraryOfRuinaLibDll Condition="'$(LibraryOfRuinaLibDll)' == ''">$(Sts2ModsDir)/LibraryOfRuinaLib/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll>
   </PropertyGroup>
+  <PropertyGroup>
+    <CompatibilityTarget Condition="'$(CompatibilityTarget)' == ''">0.111.0</CompatibilityTarget>
+    <GameRefsRoot Condition="'$(GameRefsRoot)' == ''">$(HOME)/sts2-mods/HextechRunes/versioned-dll-backups</GameRefsRoot>
+    <Sts2DataDir>$(GameRefsRoot)/$(CompatibilityTarget)/game-refs</Sts2DataDir>
+    <RitsuLibReferenceTarget>$(CompatibilityTarget)</RitsuLibReferenceTarget>
+    <ActLikeIt2Dll>$(MSBuildThisFileDirectory)build/ActLikeIt2-src/build/variants/$(CompatibilityTarget)/ActLikeIt2.dll</ActLikeIt2Dll>
+    <LibraryOfRuinaLibDll>$(MSBuildThisFileDirectory)build/LibraryOfRuinaLib/build/bin/LibraryLib/$(CompatibilityTarget)/Release/net9.0/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll>
+    <AssemblySearchPath_UseCandidateAssemblyFiles>false</AssemblySearchPath_UseCandidateAssemblyFiles>
+    <BaseIntermediateOutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina' or '$(MSBuildProjectName)' == 'LibraryOfRuinaVerification'">$(MSBuildThisFileDirectory)build/obj/$(MSBuildProjectName)/$(CompatibilityTarget)/</BaseIntermediateOutputPath>
+    <IntermediateOutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina' or '$(MSBuildProjectName)' == 'LibraryOfRuinaVerification'">$(BaseIntermediateOutputPath)$(Configuration)/</IntermediateOutputPath>
+    <OutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina' or '$(MSBuildProjectName)' == 'LibraryOfRuinaVerification'">$(MSBuildThisFileDirectory)build/bin/$(MSBuildProjectName)/$(CompatibilityTarget)/$(Configuration)/</OutputPath>
+    <!-- 加载器只编一份；中间产物放到 build/，避免 Godot 导出时把 obj/bin 里的 json 收进 PCK。 -->
+    <BaseIntermediateOutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina.Loader'">$(MSBuildThisFileDirectory)build/obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(MSBuildProjectName)' == 'LibraryOfRuina.Loader'">$(MSBuildThisFileDirectory)build/bin/$(MSBuildProjectName)/$(Configuration)/</OutputPath>
+    <DefineConstants Condition="'$(CompatibilityTarget)' == '0.107.1'">$(DefineConstants);STS2_0_107_1</DefineConstants>
+    <DefineConstants Condition="'$(CompatibilityTarget)' == '0.111.0'">$(DefineConstants);STS2_0_111_0</DefineConstants>
+  </PropertyGroup>
+  <Target Name="ValidateCompatibilityTarget" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(CompatibilityTarget)' != '0.107.1' and '$(CompatibilityTarget)' != '0.111.0'" Text="仅支持 CompatibilityTarget=0.107.1 或 0.111.0。" />
+  </Target>
 </Project>

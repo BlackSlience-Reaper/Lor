@@ -1,10 +1,9 @@
 <Project>
-  <!-- Copy to local.props and adjust. local.props is git-ignored. -->
+  <!-- 复制为 local.props 并调整。只配置根目录，目标文件由 CompatibilityTarget 选择。 -->
   <PropertyGroup>
     <!-- <SteamRoot>D:/SteamLibrary</SteamRoot> -->
-    <!-- <Sts2Dir>D:/SteamLibrary/steamapps/common/Slay the Spire 2</Sts2Dir> -->
+    <!-- <GameRefsRoot>D:/sts2-versioned-dll-backups</GameRefsRoot> -->
     <!-- <RitsuLibRoot>D:/SteamLibrary/steamapps/workshop/content/2868840/3747602295</RitsuLibRoot> -->
-    <!-- <ActLikeIt2Dll>D:/path/to/ActLikeIt2.dll</ActLikeIt2Dll> -->
-    <!-- <LibraryOfRuinaLibDll>D:/SteamLibrary/steamapps/workshop/content/2868840/3747541096/LibraryOfRuinaLib.dll</LibraryOfRuinaLibDll> -->
+    <!-- 两个前置源码目录及按目标输出的位置见 docs/双版本适配.md。 -->
   </PropertyGroup>
 </Project>

@@ -33,12 +33,21 @@ public sealed class LibraryOfRuinaCostReductionAffliction : AfflictionModel
         return true;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         if (cardSource != Card)
         {

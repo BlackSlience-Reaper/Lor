@@ -26,7 +26,7 @@ public sealed partial class Rnfmabj
         }
 
         IReadOnlyList<ulong> requiredPlayers = ParseLivingRequiredPlayerNetIds();
-        ulong playerNetId = cardPlay.Player.NetId;
+        ulong playerNetId = cardPlay.PlayerCompat().NetId;
         if (!requiredPlayers.Contains(playerNetId))
         {
             return;

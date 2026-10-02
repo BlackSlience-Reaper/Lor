@@ -615,23 +615,7 @@ internal static class SpecialGuestPlanTraceVerificationPatch
         await Hook.AfterCardPlayed(
             state,
             new ThrowingPlayerChoiceContext(),
-            new CardPlay
-            {
-                Card = card,
-                Player = player,
-                Target = null,
-                ResultPile = PileType.Discard,
-                Resources = new ResourceInfo
-                {
-                    EnergySpent = 0,
-                    EnergyValue = 0,
-                    StarsSpent = 0,
-                    StarValue = 0,
-                },
-                IsAutoPlay = false,
-                PlayIndex = 0,
-                PlayCount = 1,
-            });
+            VerificationApi.CreateCardPlay(card, player));
         await WaitFrames(4);
         Trace(label, "r" + state.RoundNumber + " " + PlayerLabel(player.NetId) + " plays " + type
             + (correct ? string.Empty : " (wrong)"), state);

@@ -46,9 +46,16 @@ public sealed class NaturalFloorNihilImmunityPower : NaturalFloorGreenPassivePow
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
         [HoverTipFactory.FromPower<DoomPower>()];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageCap(
         Creature? target, ValueProp props, Creature? dealer,
-        CardModel? cardSource, CardPlay? cardPlay) =>
+        CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageCap(
+        Creature? target, ValueProp props, Creature? dealer,
+        CardModel? cardSource)
+#endif
+    =>
         IsNonMagicalGirlDamage(target, dealer) ? NonMagicalGirlDamageCap : decimal.MaxValue;
 
     public override decimal ModifyHpLostAfterOstyLate(
@@ -130,8 +137,13 @@ public abstract class NaturalFloorNihilFormPower : NaturalFloorGreenPassivePower
         new DynamicVar("HitPlayers", NaturalFloorNihilMoves.TyrantPlayerHitThreshold)
     ];
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount,
         ValueProp props, Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount,
+        ValueProp props, Creature? dealer, CardModel? cardSource)
+#endif
     {
         return GetIncomingDamageMultiplier(target, dealer);
     }

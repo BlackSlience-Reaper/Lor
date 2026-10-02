@@ -1739,7 +1739,7 @@ internal static class PhilosophyFloorLiberationVerificationPatch
             case PhilosophyFloorTwilightAction.Prowl:
                 if (fight.BossCreature.Block > 0)
                 {
-                    await CreatureCmd.LoseBlock(
+                    await GameApi.LoseBlock(
                         new BlockingPlayerChoiceContext(),
                         fight.BossCreature,
                         decimal.MaxValue,
@@ -1921,23 +1921,7 @@ internal static class PhilosophyFloorLiberationVerificationPatch
                 PileType.Draw,
                 PileType.Discard)
             .First();
-        var cardPlay = new CardPlay
-        {
-            Card = card,
-            Player = player,
-            Target = null,
-            ResultPile = PileType.Discard,
-            Resources = new ResourceInfo
-            {
-                EnergySpent = 0,
-                EnergyValue = 0,
-                StarsSpent = 0,
-                StarValue = 0
-            },
-            IsAutoPlay = false,
-            PlayIndex = 0,
-            PlayCount = 1
-        };
+        var cardPlay = VerificationApi.CreateCardPlay(card, player);
         var context = new BlockingPlayerChoiceContext();
         int hpBefore = fight.Player.CurrentHp;
 
@@ -2101,7 +2085,7 @@ internal static class PhilosophyFloorLiberationVerificationPatch
             "Judgment Power-bypass regression setup failed.");
 
         var choiceContext = new ThrowingPlayerChoiceContext();
-        await CreatureCmd.LoseBlock(
+        await GameApi.LoseBlock(
             choiceContext,
             fight.Player,
             decimal.MaxValue,
@@ -2134,13 +2118,13 @@ internal static class PhilosophyFloorLiberationVerificationPatch
             "Judgment did not consume normal block before fixed HP loss.");
 
         await CreatureCmd.SetCurrentHp(fight.Player, fight.Player.MaxHp);
-        await CreatureCmd.LoseBlock(
+        await GameApi.LoseBlock(
             choiceContext,
             fight.Player,
             decimal.MaxValue,
             fight.BossCreature);
         int ordinaryHpBefore = fight.Player.CurrentHp;
-        await CreatureCmd.Damage(
+        await CreatureCmdCompat.Damage(
             choiceContext,
             fight.Player,
             50m,
@@ -2217,7 +2201,7 @@ internal static class PhilosophyFloorLiberationVerificationPatch
         foreach (Creature player in players)
         {
             await CreatureCmd.SetCurrentHp(player, player.MaxHp);
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 choiceContext,
                 player,
                 decimal.MaxValue,
@@ -2250,7 +2234,7 @@ internal static class PhilosophyFloorLiberationVerificationPatch
         foreach (Creature player in players)
         {
             await CreatureCmd.SetCurrentHp(player, player.MaxHp);
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 choiceContext,
                 player,
                 decimal.MaxValue,

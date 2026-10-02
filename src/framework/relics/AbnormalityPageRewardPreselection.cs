@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Godot;
 using HarmonyLib;
-using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.infra.patching;
@@ -335,7 +334,6 @@ internal static class AbnormalityPageRelicRewardSelectPatch
         Log.Info($"Obtained {relic.Id} from relic reward");
         RelicModel claimedRelic = await RelicCmd.Obtain(relic, reward.Player);
         VanillaPrivate.RelicRewardClaimedRelic.Set(reward, claimedRelic);
-        RewardSyncCompat.SyncObtainedRelicForReward(relic);
         VanillaPrivate.RelicRewardWasTaken.Set(reward, true);
         return true;
     }

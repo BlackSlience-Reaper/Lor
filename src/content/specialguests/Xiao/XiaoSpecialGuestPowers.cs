@@ -188,12 +188,12 @@ public sealed class XiaoReverseScalePassivePower : XiaoGuestPowerBase
         PlayerChoiceContext context,
         CardPlay cardPlay)
     {
-        ulong playerNetId = cardPlay.Player.NetId;
+        ulong playerNetId = cardPlay.PlayerCompat().NetId;
         int count = Math.Min(CardLimit, GetCount(playerNetId) + 1);
         SetCount(playerNetId, count);
         if (count == CardLimit)
         {
-            PlayerCmd.EndTurn(cardPlay.Player, canBackOut: false);
+            PlayerCmd.EndTurn(cardPlay.PlayerCompat(), canBackOut: false);
         }
     }
 

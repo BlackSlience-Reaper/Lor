@@ -96,7 +96,6 @@ LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat._releasedCardsField	har
 LibraryOfRuina.core.compat.RunLobbyEventsCompat._disconnected	harmless	net	Register（由 StoryReadySynchronizer.EnsureRegistered 调用）写入并订阅；Unregister 退订并置空
 LibraryOfRuina.core.compat.RunLobbyEventsCompat._localDisconnected	harmless	net	Register 写入并订阅；Unregister 退订并置空
 LibraryOfRuina.core.compat.RunLobbyEventsCompat._rejoined	harmless	net	Register 写入并订阅；Unregister 退订并置空
-LibraryOfRuina.core.compat.RunLobbyEventsCompat._rejoinedAdapter	harmless	net	Register 写入适配委托并订阅；Unregister 退订并置空
 LibraryOfRuina.core.compat.SavedPropertiesTypeCacheCompat._cachedAutoDiscoveredTypes	harmless	cache	AutoDiscoverSavedPropertyTypes 首次计算；ClearAutoDiscoveryCache 置空
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.Cache	harmless	cache	Postfix 缓存加过图标的文本
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch.ConfusionPowerEntries	harmless	cache	静态常量集合，之后只读

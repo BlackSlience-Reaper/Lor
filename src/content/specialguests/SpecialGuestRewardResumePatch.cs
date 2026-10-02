@@ -19,18 +19,13 @@ namespace LibraryOfRuina.content.specialguests;
 /// </summary>
 [HarmonyPatch(typeof(CombatRoom), nameof(CombatRoom.OfferRoomEndRewards))]
 [HarmonyPriority(Priority.First)]
-[LibraryPatch(Reason = "替代体与 0.111 原版 OfferRoomEndRewards 等价，Priority.First 是为了压住某个改写奖励流程的模组；该模组尚未确认，属于 §3 的例外，待实测后决定删除或保留。")]
-internal static class SpecialGuestRewardResumePatch
+[LibraryPatch(Reason = "0.107.1 没有奖励前置 Hook，嘉宾战按原版先生成全部奖励、再展示的顺序追加奖励；0.111.0 保留既有事件嘉宾房间恢复分支及 Priority.First，对手模组尚未确认，仍属于设计哲学 §3 的例外。")]
+internal static partial class SpecialGuestRewardResumePatch
 {
     [HarmonyPrefix]
     private static bool Prefix(CombatRoom __instance, ref Task __result)
     {
-        if (__instance is not
-            {
-                IsPreFinished: true,
-                ParentEventId: not null,
-                Encounter: ISpecialGuestEncounterStage,
-            })
+        if (!ShouldReplaceOffer(__instance))
         {
             return true;
         }
@@ -49,7 +44,7 @@ internal static class SpecialGuestRewardResumePatch
 
         foreach (RewardsSet reward in rewards)
         {
-            await Hook.BeforeCombatRewardOffered(reward, room.CombatState.RunState, room);
+            await BeforeRewards(reward, room);
             _ = TaskHelper.RunSafely(reward.Offer());
         }
 

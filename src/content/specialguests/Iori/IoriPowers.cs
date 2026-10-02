@@ -122,6 +122,7 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
         return true;
     }
 
+#if STS2_0_111_0
     public override decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
@@ -129,10 +130,17 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         _ = amount;
         _ = cardSource;
-        _ = cardPlay;
         return dealer == Owner
                && target is { IsPlayer: true }
                && Owner.Monster is IoriMonsterBase
@@ -148,6 +156,7 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
     /// Supplies Iori's exact type-power point through the vanilla hook, which
     /// is also the path used by intent preview.
     /// </summary>
+#if STS2_0_111_0
     public override decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
@@ -155,11 +164,18 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
+#else
+    public override decimal ModifyDamageAdditive(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
+#endif
     {
         _ = target;
         _ = amount;
         _ = cardSource;
-        _ = cardPlay;
         if (dealer != Owner
             || Owner.Monster is not IoriMonsterBase iori
             || !ValuePropCompat.IsPoweredAttack(props))
@@ -192,7 +208,6 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
         _ = target;
         _ = amount;
         _ = cardSource;
-        _ = cardPlay;
         if (dealer != Owner
             || Owner.Monster is not IoriMonsterBase iori
             || !ValuePropCompat.IsPoweredAttack(props))
@@ -241,7 +256,6 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
         CardPlay? cardPlay)
     {
         _ = block;
-        _ = cardPlay;
         return target == Owner
                && Owner.Monster is IoriMonsterBase
                {

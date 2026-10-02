@@ -9,10 +9,6 @@
     <RootNamespace>LibraryOfRuina</RootNamespace>
     <AssemblyName>LibraryOfRuina</AssemblyName>
     <NoWarn>$(NoWarn);CS0436</NoWarn>
-    <!-- STS2_BETA selects the game 0.111 API branch that the v0.21.2 release was built against.
-         Build with -p:Sts2Beta=false only for the older SavedPropertiesTypeCache API. -->
-    <Sts2Beta Condition="'$(Sts2Beta)' == ''">true</Sts2Beta>
-    <DefineConstants Condition="'$(Sts2Beta)' == 'true'">$(DefineConstants);STS2_BETA</DefineConstants>
   </PropertyGroup>
 
   <!-- RitsuLib ships a props file that adds the Runtime/Ui/Shared/Settings reference set
@@ -36,6 +32,10 @@
     <Compile Remove="dist/**" />
     <Compile Remove="tools/**" />
     <Compile Remove="verification/**" />
+    <Compile Remove="loader/**" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="LibraryOfRuinaCompatibilityTarget" Value="$(CompatibilityTarget)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,15 +45,17 @@
 
   <ItemGroup>
     <!-- IL hashes of vanilla methods behind skip prefixes and transpilers; see VanillaCopyGuard. -->
-    <EmbeddedResource Include="src/infra/patching/vanilla_copy_guard.txt" LogicalName="LibraryOfRuina.vanilla_copy_guard.txt" />
+    <EmbeddedResource Include="src/infra/patching/vanilla_copy_guard.$(CompatibilityTarget).txt" LogicalName="LibraryOfRuina.vanilla_copy_guard.txt" />
     <!-- Fixed order of auto-discovered patch classes, pool cards, relics and ally providers; see TypeDiscoveryOrder. -->
     <EmbeddedResource Include="src/infra/helpers/type_discovery_order.txt" LogicalName="LibraryOfRuina.type_discovery_order.txt" />
   </ItemGroup>
 
   <Target Name="ValidateModReferences" BeforeTargets="ResolveAssemblyReferences">
-    <Error Condition="!Exists('$(Sts2DataDir)/sts2.dll')" Text="sts2.dll not found in $(Sts2DataDir). Set Sts2Dir / Sts2DataDir in local.props." />
-    <Error Condition="!Exists('$(RitsuLibReferencesProps)')" Text="RitsuLib.References.props not found at $(RitsuLibReferencesProps). Set RitsuLibRoot in local.props." />
-    <Error Condition="!Exists('$(ActLikeIt2Dll)')" Text="ActLikeIt2.dll not found at $(ActLikeIt2Dll). Set ActLikeIt2Dll in local.props." />
-    <Error Condition="!Exists('$(LibraryOfRuinaLibDll)')" Text="LibraryOfRuinaLib.dll not found at $(LibraryOfRuinaLibDll). Set LibraryOfRuinaLibDll in local.props." />
+    <Error Condition="!Exists('$(Sts2DataDir)/sts2.dll')" Text="sts2.dll not found in $(Sts2DataDir). Set GameRefsRoot to the directory holding &lt;version&gt;/game-refs." />
+    <Error Condition="!Exists('$(RitsuLibReferencesProps)')" Text="RitsuLib.References.props not found at $(RitsuLibReferencesProps). Unpack RitsuLib 0.6.2 into build/deps/STS2-RitsuLib-0.6.2 or set RitsuLibRoot." />
+    <Error Condition="!Exists('$(ActLikeIt2Dll)')" Text="ActLikeIt2.dll not found at $(ActLikeIt2Dll). Build build/ActLikeIt2-src with -p:CompatibilityTarget=$(CompatibilityTarget) first." />
+    <Error Condition="!Exists('$(LibraryOfRuinaLibDll)')" Text="LibraryOfRuinaLib.dll not found at $(LibraryOfRuinaLibDll). Run tools/build_lib.sh $(CompatibilityTarget) first." />
+    <!-- 清单声明的最低 RitsuLib 是 0.6.2；用更高版本编译可能编进 0.6.2 没有的 API。 -->
+    <Warning Condition="Exists('$(RitsuLibRoot)/mod_manifest.json') and !$([System.IO.File]::ReadAllText('$(RitsuLibRoot)/mod_manifest.json').Contains('&quot;version&quot;: &quot;0.6.2&quot;'))" Text="Compiling against RitsuLib at $(RitsuLibRoot), which is not the pinned minimum 0.6.2." />
   </Target>
 </Project>

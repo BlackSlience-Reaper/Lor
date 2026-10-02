@@ -585,7 +585,7 @@ internal static class LanguageFloorLiberationVerificationPatch
                 fight.ScarletCreature,
                 null)
             ?? throw new InvalidOperationException("Hunt Mark was not applied.");
-        decimal multiplier = mark.ModifyDamageMultiplicative(
+        decimal multiplier = mark.ModifyDamageMultiplicativeCompat(
             fight.WolfCreature,
             10,
             ValueProp.Move,
@@ -594,7 +594,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             null);
         Require(multiplier == 1.5m, "Hunt Mark multiplier was not 1.5.");
         Require(
-            mark.ModifyDamageMultiplicative(
+            mark.ModifyDamageMultiplicativeCompat(
                 fight.WolfCreature,
                 10,
                 ValueProp.Move,
@@ -603,7 +603,7 @@ internal static class LanguageFloorLiberationVerificationPatch
                 null) == 1m,
             "Hunt Mark increased the marked wolf's own damage.");
         Require(
-            mark.ModifyDamageMultiplicative(
+            mark.ModifyDamageMultiplicativeCompat(
                 fight.ScarletCreature,
                 10,
                 ValueProp.Move,
@@ -613,7 +613,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             "Hunt Mark increased wolf damage dealt to Scarlet Scar.");
         Creature previewPlayer = fight.CombatState.PlayerCreatures.Single();
         Require(
-            mark.ModifyDamageMultiplicative(
+            mark.ModifyDamageMultiplicativeCompat(
                 fight.WolfCreature,
                 10,
                 ValueProp.Move,
@@ -661,7 +661,7 @@ internal static class LanguageFloorLiberationVerificationPatch
                 null)
             ?? throw new InvalidOperationException("Scar power was not set to 3.");
         Require(
-            scar.ModifyDamageAdditive(
+            scar.ModifyDamageAdditiveCompat(
                 fight.ScarletCreature,
                 10,
                 ValueProp.Move,
@@ -676,7 +676,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             null)
             ?? throw new InvalidOperationException("Scar power was not set to 4.");
         Require(
-            scar.ModifyDamageAdditive(
+            scar.ModifyDamageAdditiveCompat(
                 fight.ScarletCreature,
                 10,
                 ValueProp.Move,
@@ -1520,7 +1520,7 @@ internal static class LanguageFloorLiberationVerificationPatch
                 fight.CobaltCreature,
                 null)
             ?? throw new InvalidOperationException("Scar was not set to three.");
-        Require(scar.ModifyDamageAdditive(
+        Require(scar.ModifyDamageAdditiveCompat(
                 player,
                 10,
                 ValueProp.Move,
@@ -1534,7 +1534,7 @@ internal static class LanguageFloorLiberationVerificationPatch
             fight.CobaltCreature,
             null)
             ?? throw new InvalidOperationException("Scar was not set to four.");
-        Require(scar.ModifyDamageAdditive(
+        Require(scar.ModifyDamageAdditiveCompat(
                 player,
                 10,
                 ValueProp.Move,
@@ -1724,23 +1724,7 @@ internal static class LanguageFloorLiberationVerificationPatch
                     "Shadow Ambush blocked a card before reaching its limit.");
                 await Hook.BeforeCardPlayed(
                     fight.CombatState,
-                    new CardPlay
-                    {
-                        Card = testCard,
-                        Player = playerModel,
-                        Target = null,
-                        ResultPile = PileType.Discard,
-                        Resources = new ResourceInfo
-                        {
-                            EnergySpent = 0,
-                            EnergyValue = 0,
-                            StarsSpent = 0,
-                            StarValue = 0
-                        },
-                        IsAutoPlay = false,
-                        PlayIndex = 0,
-                        PlayCount = 1
-                    });
+                    VerificationApi.CreateCardPlay(testCard, playerModel));
             }
 
             Require(!Hook.ShouldPlay(

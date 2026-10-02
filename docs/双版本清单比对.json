@@ -1,0 +1,324 @@
+{
+  "targets": [
+    "0.107.1",
+    "0.111.0"
+  ],
+  "mods": {
+    "LibraryOfRuina": {
+      "models": {
+        "equal": true,
+        "rows": 910,
+        "sha256": "e2f674a5a077fc5e7f2bc222963cc2096ed398cf2afc7e74191a6f31234b7182"
+      },
+      "saved_property_order": {
+        "equal": true,
+        "rows": 235,
+        "sha256": "26d998b739cc9acb64d3ea4873c62470fa13706bea683cd6f498cb8830814a6a"
+      },
+      "patch_ids": {
+        "equal": true,
+        "rows": 342,
+        "sha256": "0e245a639a7245816dc761f14687564edecd173e262d5f96f5d4a19a697aef42"
+      },
+      "constant_fields": {
+        "equal": true,
+        "rows": 6511,
+        "sha256": "6a4db355ce09d4988b1c1469cd39a4c89e8fb6deb4073dce06c949fbfde28ed1"
+      },
+      "source_numbers": {
+        "members_0.107.1": 8163,
+        "members_0.111.0": 8165,
+        "differences": {
+          "src/content/specialguests/Iori/IoriSpecialGuestEncounters.cs|IoriSpecialGuestBgmCombatEndPatch.TargetMethod": {
+            "0.107.1": null,
+            "0.111.0": "1,0"
+          },
+          "src/core/compat/GameApi.cs|GameApi.CreateDetachedRng": {
+            "0.107.1": null,
+            "0.111.0": "1099511628211UL,1099511628211UL,1099511628211UL,1099511628211UL"
+          }
+        }
+      },
+      "source_tokens": {
+        "members_0.107.1": 27713,
+        "members_0.111.0": 27712,
+        "target_specific_members": [
+          "src/content/abnormalities/Alriune/AlriunePowers.cs|AlriuneSuffocatingAtonementPower.ModifyDamageCap",
+          "src/content/abnormalities/BurrowingHeaven/BurrowingHeavenPageRelic.cs|BurrowingHeavenPageRelic.ModifyDamageMultiplicative",
+          "src/content/abnormalities/ForsakenMurderer/LibraryOfRuinaForsakenMurdererFearPower.cs|LibraryOfRuinaForsakenMurdererFearPower.AfterBlockBroken",
+          "src/content/abnormalities/JudgementBird/JudgementBirdPowers.cs|JudgementBirdWeightOfSinPower.ModifyDamageMultiplicative",
+          "src/content/abnormalities/LittleRedMercenary/FocusOfAttentionTargetPatches.cs|FocusOfAttentionLightningOrbPatch.TargetMethod",
+          "src/content/abnormalities/Nosferatu/NosferatuPageRelic.cs|NosferatuPageRelic.ModifyDamageAdditive",
+          "src/content/abnormalities/Ozma/OzmaPageRelic.cs|OzmaPageRelic.ModifyDamageMultiplicative",
+          "src/content/abnormalities/PriceOfSilence/PriceOfSilencePowers.cs|TickingAttackPower.ModifyDamageAdditive",
+          "src/content/abnormalities/QueenOfHatred/LibraryOfRuinaQueenBadGuyPower.cs|LibraryOfRuinaQueenBadGuyPower.ModifyDamageMultiplicative",
+          "src/content/abnormalities/QueenOfHatred/LibraryOfRuinaQueenInTheNameOfHatredPower.cs|LibraryOfRuinaQueenInTheNameOfHatredPower.ModifyDamageMultiplicative",
+          "src/content/abnormalities/QueenOfHatred/UntargetableInteractionPatch.cs|.FileScopedNamespaceDeclaration",
+          "src/content/abnormalities/RedShoes/RedShoesPageRelic.cs|RedShoesPageRelic.ModifyDamageMultiplicative",
+          "src/content/abnormalities/ScarecrowSearchingForWisdom/ScarecrowPageRelic.cs|ScarecrowPageRelic.ModifyDamageAdditive",
+          "src/content/abnormalities/ScarecrowSearchingForWisdom/ScarecrowWisdomPower.cs|ScarecrowWisdomPower.ModifyDamageAdditive",
+          "src/content/abnormalities/WarmheartedWoodsman/WarmheartedWoodsmanPowers.cs|WarmheartedWoodsmanViolentHeartPassivePower.ModifyDamageMultiplicative",
+          "src/content/afflictions/CostReductionAffliction.cs|LibraryOfRuinaCostReductionAffliction.ModifyDamageAdditive",
+          "src/content/liberation/Art/ArtFloorFinalDaCapoPowers.cs|ArtFloorAdagioCantabilePower.AfterBlockBroken",
+          "src/content/liberation/Art/ArtFloorLiberationPowers.cs|BoundaryThornPower.ModifyDamageMultiplicative",
+          "src/content/liberation/History/HistoryFloorFlutteringPowers.cs|FlutteringFreshMeatPower.ModifyDamageMultiplicative",
+          "src/content/liberation/History/HistoryFloorWaspPowers.cs|HistoryFloorWaspParalysisPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Language/LanguageFloorLiberationPowers.cs|LanguageFloorHuntMarkPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Language/LanguageFloorLiberationPowers.cs|LanguageFloorScarPower.ModifyDamageAdditive",
+          "src/content/liberation/Language/LanguageFloorMimicryPowers.cs|LanguageFloorMimicryHardenPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Language/NothingTherePageRelic.cs|NothingTherePageRelic.ModifyDamageMultiplicative",
+          "src/content/liberation/Literature/BlackSwanDreamPageRelic.cs|BlackSwanDreamPageRelic.ModifyDamageMultiplicative",
+          "src/content/liberation/Literature/LiteratureFloorBlackSwanPowers.cs|LiteratureFloorBlackSwanFourthBrotherPassivePower.ModifyDamageMultiplicative",
+          "src/content/liberation/Literature/LiteratureFloorLiberationPowers.cs|LiteratureFloorLittleWitchFriendHandItOverPassivePower.ModifyDamageAdditive",
+          "src/content/liberation/Literature/LiteratureFloorRedEyesPowers.cs|LiteratureFloorCocoonBindPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Natural/NaturalFloorLiberationPowers.cs|NaturalFloorBadGuyPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Natural/NaturalFloorNihilPowers.cs|NaturalFloorNihilFormPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Natural/NaturalFloorNihilPowers.cs|NaturalFloorNihilImmunityPower.ModifyDamageCap",
+          "src/content/liberation/Natural/NihilBadGuyPower.cs|NihilBadGuyPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Technology/MagicBulletCommissionTargetPower.cs|MagicBulletCommissionTargetPower.ModifyDamageMultiplicative",
+          "src/content/liberation/Technology/MagicBulletShooterPageRelic.cs|MagicBulletShooterPageRelic.ModifyDamageMultiplicative",
+          "src/content/reverberation/CryingChildren/CryingChildrenPowers.cs|CryingNuovoFabricPower.ModifyDamageAdditive",
+          "src/content/reverberation/GearChurch/GearChurchHitContext.cs|.FileScopedNamespaceDeclaration",
+          "src/content/reverberation/GearChurch/GearChurchPowers.cs|EileenNuovoFabricPower.ModifyDamageAdditive",
+          "src/content/reverberation/GearChurch/GearChurchPowers.cs|EileenNuovoFabricPower.ModifyDamageMultiplicative",
+          "src/content/reverberation/GearChurch/GearChurchPowers.cs|GearChurchSmokePower.ModifyDamageMultiplicative",
+          "src/content/reverberation/GearChurch/GearChurchPowers.cs|GearChurchSoberSmokePower.ModifyDamageMultiplicative",
+          "src/content/specialguests/Iori/IoriPowers.cs|IoriStanceShiftPassivePower.ModifyDamageAdditive",
+          "src/content/specialguests/Iori/IoriPowers.cs|IoriStanceShiftPassivePower.ModifyDamageMultiplicative",
+          "src/content/specialguests/Iori/IoriSpecialGuestEncounters.cs|IoriSpecialGuestBgmCombatEndPatch.TargetMethod",
+          "src/content/specialguests/Iori/IoriUnpredictableEnchantment.cs|.<file>",
+          "src/content/specialguests/Iori/IoriUnpredictableEnchantment.cs|IoriUnpredictableEnchantment.ModifyCardPlayResultLocation",
+          "src/content/specialguests/Iori/IoriUnpredictableEnchantment.cs|IoriUnpredictableEnchantment.ModifyCardPlayResultPileTypeAndPosition",
+          "src/content/specialguests/Rnfmabj/RnfmabjPowers.cs|RnfmabjMechanicsPower.ModifyDamageMultiplicative",
+          "src/content/specialguests/SpecialGuestRewardResumePatch.cs|.<file>",
+          "src/content/specialguests/SpecialGuestRewardResumePatch.cs|SpecialGuestRewardResumePatch.BeforeRewards",
+          "src/content/specialguests/SpecialGuestRewardResumePatch.cs|SpecialGuestRewardResumePatch.ShouldReplaceOffer",
+          "src/content/specialguests/SpecialGuestRunStateModifier.cs|.<file>",
+          "src/content/specialguests/SpecialGuestRunStateModifier.cs|.FileScopedNamespaceDeclaration",
+          "src/content/specialguests/SpecialGuestRunStateModifier.cs|SpecialGuestRunStateModifier.BeforeCombatRewardOffered",
+          "src/core/compat/CreatureCmdCompat.cs|.<file>",
+          "src/core/compat/CreatureCmdCompat.cs|CreatureCmdCompat.Damage",
+          "src/core/compat/GameApi.cs|.<file>",
+          "src/core/compat/GameApi.cs|GameApi.ActivateEvoke",
+          "src/core/compat/GameApi.cs|GameApi.CardPlayCompat",
+          "src/core/compat/GameApi.cs|GameApi.Confirm",
+          "src/core/compat/GameApi.cs|GameApi.CreateDetachedRng",
+          "src/core/compat/GameApi.cs|GameApi.CreateDupe",
+          "src/core/compat/GameApi.cs|GameApi.CreateRng",
+          "src/core/compat/GameApi.cs|GameApi.EventCombatEncounter",
+          "src/core/compat/GameApi.cs|GameApi.FallbackSeed",
+          "src/core/compat/GameApi.cs|GameApi.FromCardCompat",
+          "src/core/compat/GameApi.cs|GameApi.HasHibernate",
+          "src/core/compat/GameApi.cs|GameApi.IsDirectionalNavigation",
+          "src/core/compat/GameApi.cs|GameApi.LoseBlock",
+          "src/core/compat/GameApi.cs|GameApi.ModifyDamage",
+          "src/core/compat/GameApi.cs|GameApi.PlayerCompat",
+          "src/core/compat/GameApi.cs|GameApi.ResetEventCombat",
+          "src/core/compat/RunLobbyEventsCompat.cs|.<file>",
+          "src/core/compat/RunLobbyEventsCompat.cs|RunLobbyEventsCompat.GetConnectedPlayerIds",
+          "src/core/compat/RunLobbyEventsCompat.cs|RunLobbyEventsCompat.Register",
+          "src/core/compat/RunLobbyEventsCompat.cs|RunLobbyEventsCompat.Unregister",
+          "src/core/compat/RunLobbyEventsCompat.cs|RunLobbyEventsCompat._rejoinedAdapter",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|.<file>",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|SavedPropertiesTypeCacheCompat.InjectModSavedPropertyTypes",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|SavedPropertiesTypeCacheCompat.LogRefreshFailure",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|SavedPropertiesTypeCacheCompat.NetIdBitSizeSetter",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|SavedPropertiesTypeCacheCompat.NetIdToPropertyNameMapField",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|SavedPropertiesTypeCacheCompat.RefreshNetIdBitSize",
+          "src/core/compat/SavedPropertiesTypeCacheCompat.cs|SavedPropertiesTypeCacheCompat._refreshFailureLogged",
+          "src/features/ftue/LibraryOfRuinaCombatFtuePatch.cs|.<file>",
+          "src/features/ftue/LibraryOfRuinaCombatFtuePatch.cs|LibraryOfRuinaCombatFtuePatch.ScheduleCombatFtue",
+          "src/framework/powers/LibraryOfRuinaBlindNavigationPower.cs|LibraryOfRuinaBlindNavigationPower.ModifyDamageMultiplicative",
+          "src/framework/powers/LibraryOfRuinaDodgeDicePower.cs|LibraryOfRuinaDodgeDicePower.ModifyDamageAdditive",
+          "src/framework/powers/LibraryOfRuinaParalysisPower.cs|LibraryOfRuinaParalysisPower.ModifyDamageMultiplicative",
+          "src/patches/ChainsOfBindingTurnEndSyncPatch.cs|.FileScopedNamespaceDeclaration",
+          "src/patches/PowerDamageHealthLockChaosPatch.cs|.FileScopedNamespaceDeclaration"
+        ]
+      },
+      "il_numbers": {
+        "differing_methods": 13,
+        "explained_by_source": 13,
+        "reviewed": {}
+      },
+      "static_patch_targets_resolved": {
+        "0.107.1": true,
+        "0.111.0": true
+      },
+      "patch_target_check_passed": {
+        "0.107.1": true,
+        "0.111.0": true
+      },
+      "dynamic_patch_target_classes": 29,
+      "binary_source_commit": "3526c0b831f16f74543ab1a575f031ed6f68c31d",
+      "binary_source_dirty": false,
+      "implementation_sha256": {
+        "0.107.1": "3ead1d67d5d193d2a9f4246a04591cfe6ba3a74598d521ca8ae3782923c1caa5",
+        "0.111.0": "56e9bc5d9a2f97c46be11d52f2d3437e9ae08854cbb8c8cc80a7a8eea484a3c0"
+      },
+      "inspected_source_commit": "3526c0b831f16f74543ab1a575f031ed6f68c31d",
+      "inspected_tracked_source_dirty": false
+    },
+    "ActLikeIt2": {
+      "models": {
+        "equal": true,
+        "rows": 1,
+        "sha256": "da8453ccc5dfc08d13b38b2f89fd4cc63ab1249cf691a3b0de3baa5b5c2ff3c6"
+      },
+      "saved_property_order": {
+        "equal": true,
+        "rows": 0,
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      },
+      "patch_ids": {
+        "equal": true,
+        "rows": 20,
+        "sha256": "b14629a7002e09c6aa9c5342a7d50b97cb8c692f0ca49a54f4f1df95d841b149"
+      },
+      "constant_fields": {
+        "equal": true,
+        "rows": 23,
+        "sha256": "640d3deb0163e4601c1e10de4e007bdf0d915ef4d84c478b47f1e8e77b0980fd"
+      },
+      "source_numbers": {
+        "members_0.107.1": 42,
+        "members_0.111.0": 42,
+        "differences": {}
+      },
+      "source_tokens": {
+        "members_0.107.1": 253,
+        "members_0.111.0": 253,
+        "target_specific_members": [
+          "src/Patches/BestiaryPatches.cs|.FileScopedNamespaceDeclaration",
+          "src/Patches/BestiaryPatches.cs|BestiaryAddRegisteredActsPatch.AddRegisteredActs",
+          "src/Patches/EnterActForkPatch.cs|.<file>",
+          "src/Patches/EnterActForkPatch.cs|EnterActForkPatch.FadeOut"
+        ]
+      },
+      "il_numbers": {
+        "differing_methods": 0,
+        "explained_by_source": 0,
+        "reviewed": {}
+      },
+      "static_patch_targets_resolved": {
+        "0.107.1": true,
+        "0.111.0": true
+      },
+      "patch_target_check_passed": {
+        "0.107.1": true,
+        "0.111.0": true
+      },
+      "dynamic_patch_target_classes": 1,
+      "binary_source_commit": "2cad4df26244739b68fb352c711cf9f8b419d4f4",
+      "binary_source_dirty": false,
+      "implementation_sha256": {
+        "0.107.1": "80153d6ca2e30d33eb12b11227baad86980d2f75fee71d96a7889c16c46c532b",
+        "0.111.0": "c84edfb1b4f3da1f4967f3a9c8855e3bc154a8edf391b16fb40558638b409516"
+      },
+      "inspected_source_commit": "2cad4df26244739b68fb352c711cf9f8b419d4f4",
+      "inspected_tracked_source_dirty": false
+    },
+    "LibraryOfRuinaLib": {
+      "models": {
+        "equal": true,
+        "rows": 21,
+        "sha256": "94534571052e8317a5a06b6fc41ba9be6c48733f62e95ca26406eb9501129d0b"
+      },
+      "saved_property_order": {
+        "equal": true,
+        "rows": 0,
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      },
+      "patch_ids": {
+        "equal": true,
+        "rows": 91,
+        "sha256": "635deffa6df7a8a31c47ce6c74d90ce82ea567117607b61f456d11c9fad057eb"
+      },
+      "constant_fields": {
+        "equal": true,
+        "rows": 188,
+        "sha256": "3e2623d3b752eb652402d64074d199418d37922832f7931a006b696520a08de3"
+      },
+      "source_numbers": {
+        "members_0.107.1": 680,
+        "members_0.111.0": 680,
+        "differences": {}
+      },
+      "source_tokens": {
+        "members_0.107.1": 4132,
+        "members_0.111.0": 4132,
+        "target_specific_members": [
+          "Compat/GameApi.cs|.<file>",
+          "Compat/GameApi.cs|GameApi.AfterBlockBroken",
+          "Compat/GameApi.cs|GameApi.Assemblies",
+          "Compat/GameApi.cs|GameApi.CreateContext",
+          "Compat/GameApi.cs|GameApi.Damage",
+          "Compat/GameApi.cs|GameApi.FromCard",
+          "Compat/GameApi.cs|GameApi.FromOsty",
+          "Compat/GameApi.cs|GameApi.ModifyDamage",
+          "Compat/GameApi.cs|GameApi.ModifyDamageAdditive",
+          "Compat/GameApi.cs|GameApi.ModifyDamageCap",
+          "Compat/GameApi.cs|GameApi.ModifyDamageMultiplicative",
+          "Models/LibraryMultipleModePower.cs|.<file>",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.AfterBlockBroken",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.AfterModifyingCardPlayResultLocation",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.AfterModifyingCardPlayResultPileOrPosition",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.ModifyCardPlayResultLocation",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.ModifyCardPlayResultPileTypeAndPosition",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.ModifyDamageAdditive",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.ModifyDamageCap",
+          "Models/LibraryMultipleModePower.cs|LibraryMultipleModePowerModel.ModifyDamageMultiplicative",
+          "Patches/DamagePatch.cs|DamageTargetPatch.Prefix",
+          "Patches/LibraryAttackChaoDamagePatch.cs|.<file>",
+          "Patches/LibraryAttackChaoDamagePatch.cs|.FileScopedNamespaceDeclaration",
+          "Patches/LibraryAttackChaoDamagePatch.cs|LibraryAttackChaoDamagePatch.Postfix",
+          "Patches/LibraryAttackChaoDamagePatch.cs|LibraryAttackChaoDamagePatch.Prefix",
+          "Patches/LibraryCombatValueResolutionPatch.cs|.<file>",
+          "Patches/LibraryCombatValueResolutionPatch.cs|LibraryVanillaDamageResolutionPatch.Prefix",
+          "Patches/LibraryTurnsPowerLifecyclePatch.cs|.FileScopedNamespaceDeclaration",
+          "Powers/LibraryDisarmPower.cs|LibraryDisarmPower.ModifyDamageAdditive",
+          "Powers/LibraryEndurancePower.cs|LibraryEndurancePower.ModifyDamageAdditive",
+          "Powers/LibraryPowerMode/LibraryPowerMode.cs|.<file>",
+          "Powers/LibraryPowerMode/LibraryPowerMode.cs|LibraryPowerMode.AfterBlockBroken",
+          "Powers/LibraryPowerMode/LibraryPowerMode.cs|LibraryPowerMode.AfterModifyingCardPlayResultLocation",
+          "Powers/LibraryPowerMode/LibraryPowerMode.cs|LibraryPowerMode.AfterModifyingCardPlayResultPileOrPosition",
+          "Powers/LibraryPowerMode/LibraryPowerMode.cs|LibraryPowerMode.ModifyCardPlayResultLocation",
+          "Powers/LibraryPowerMode/LibraryPowerMode.cs|LibraryPowerMode.ModifyCardPlayResultPileTypeAndPosition",
+          "Powers/LibraryStrongPower.cs|LibraryStrongPower.ModifyDamageAdditive",
+          "Powers/LibraryWeakPower.cs|LibraryWeakPower.ModifyDamageAdditive",
+          "Powers/SmokePower.cs|LibrarySmokePower.ModifyDamageMultiplicative"
+        ]
+      },
+      "il_numbers": {
+        "differing_methods": 6,
+        "explained_by_source": 5,
+        "reviewed": {
+          "LibraryLib.Patches.LibraryManagedRequestEnqueueTransportPatch::Prefix": "原版 ActionSynchronizerCombatState 在 0.111.0 于 NotInCombat 后插入 PreCombatSetup，NotPlayPhase 从 3 变为 4；源码按名比较，按目标编进的常量正确"
+        }
+      },
+      "static_patch_targets_resolved": {
+        "0.107.1": true,
+        "0.111.0": true
+      },
+      "patch_target_check_passed": {
+        "0.107.1": true,
+        "0.111.0": true
+      },
+      "dynamic_patch_target_classes": 3,
+      "binary_source_commit": "9c500095ec958692b8b61f28a1e14c42ed856999",
+      "binary_source_dirty": false,
+      "implementation_sha256": {
+        "0.107.1": "17fe665647174628d6fdf47ccecb03559d95198721c0d4ce8e0b2a4e83eb29fc",
+        "0.111.0": "6c8f05ac65c4557ecdd79d3494e90352151f0a01d305e4bc8b4a3f1c59954a1c"
+      },
+      "inspected_source_commit": "9c500095ec958692b8b61f28a1e14c42ed856999",
+      "inspected_tracked_source_dirty": false
+    }
+  },
+  "limitations": [
+    "这是离线元数据、源码与补丁目标解析比对，不是存档读写或双机联机验证。",
+    "补丁目标检查执行了 Prepare/TargetMethod(s)，但没有实际安装补丁。",
+    "0.107.1 未做运行时加载验证。"
+  ],
+  "passed": true,
+  "failures": []
+}

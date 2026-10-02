@@ -31,9 +31,10 @@ var paths = Directory.EnumerateFiles(sourceRoot, "*.cs", SearchOption.AllDirecto
     .Order(StringComparer.Ordinal)
     .ToArray();
 var results = new List<CheckResult>();
-foreach (string flavor in new[] { "Beta", "Public" })
+// Same symbols as Directory.Build.props: each CompatibilityTarget compiles its own #if branches, so both are checked.
+foreach (string flavor in new[] { "0.107.1", "0.111.0" })
 {
-    var options = new CSharpParseOptions(preprocessorSymbols: flavor == "Beta" ? ["STS2_BETA"] : []);
+    var options = new CSharpParseOptions(preprocessorSymbols: ["STS2_" + flavor.Replace('.', '_')]);
     var trees = paths.Select(path => CSharpSyntaxTree.ParseText(File.ReadAllText(path), options,
         Path.GetRelativePath(root, path).Replace('\\', '/'))).ToArray();
     var result = new HpChecker(trees).Check();
