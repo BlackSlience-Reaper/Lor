@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using HarmonyLib;
 using LibraryOfRuina.core.settings;
@@ -101,18 +103,22 @@ internal static class StaggerBadge
         value.AddThemeColorOverride("font_outline_color", stunned ? libOutline : OutlineColor);
         badge.GetNode<CanvasItem>("Icon").SelfModulate = stunned ? new Color(1f, 0.45f, 0.4f) : Colors.White;
 
-        // 抗性图标列由前置库在同一轮刷新的其他补丁里定位，先后不定，留到这一帧末尾再让位。
-        float columnX = badge.Position.X + BadgeSize * 0.95f + ResistColumnGap;
-        Callable.From(() => MoveResistColumns(parent, columnX)).CallDeferred();
+        MoveResistColumns(healthBar);
     }
 
-    private static void MoveResistColumns(Node parent, float x)
+    /// <summary>
+    /// 徽章显示时把两列抗性图标让到徽章外侧。前置库只在抗性图标各自的 Refresh 里重设它们的位置
+    /// （血条刷新、瞄准预览等都会走到），那里也挂了补丁调用这里，所以哪条路径最后执行都能让位。
+    /// </summary>
+    internal static void MoveResistColumns(NHealthBar healthBar)
     {
-        if (!GodotObject.IsInstanceValid(parent))
+        if (healthBar.HpBarContainer?.GetParent() is not { } parent
+            || parent.GetNodeOrNull<Control>(BadgeName) is not { Visible: true } badge)
         {
             return;
         }
 
+        float x = badge.Position.X + BadgeSize * 0.95f + ResistColumnGap;
         foreach (string name in ResistColumnNames)
         {
             if (parent.GetNodeOrNull<Control>(name) is { } column)
@@ -195,6 +201,39 @@ internal static class StaggerBadgeRefreshPatch
         if (healthBar != null)
         {
             StaggerBadge.Apply(healthBar);
+        }
+    }
+}
+
+/// <summary>
+/// 挂在前置库两列抗性图标各自的刷新入口后面：瞄准预览等路径只刷新抗性图标、不刷新混乱条，
+/// 会把图标列的横坐标复位，这里跟着重新让位。两个类型在前置库里都是 internal，只能按名字解析。
+/// </summary>
+[HarmonyPatch]
+internal static class StaggerBadgeResistIconsPatch
+{
+    private static readonly string[] LibIconTypes =
+    [
+        "LibraryLib.Patches.LibraryPhysicalResistanceIconsUi",
+        "LibraryLib.Patches.LibraryChaosResistanceIconsUi",
+    ];
+
+    private static bool Prepare() => TargetMethods().Any();
+
+    private static IEnumerable<System.Reflection.MethodBase> TargetMethods() =>
+        LibIconTypes
+            .Select(static name => AccessTools.TypeByName(name))
+            .Where(static type => type != null)
+            .Select(static type => (System.Reflection.MethodBase?)AccessTools.Method(type, "Refresh", [typeof(NHealthBar)]))
+            .Where(static method => method != null)
+            .Select(static method => method!);
+
+    [HarmonyPostfix]
+    private static void Postfix(NHealthBar? healthBar)
+    {
+        if (healthBar != null)
+        {
+            StaggerBadge.MoveResistColumns(healthBar);
         }
     }
 }
