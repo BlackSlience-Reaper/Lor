@@ -38,7 +38,12 @@ for id,repo in repos.items():
     entry['source_numbers']={'members_0.107.1':len(a),'members_0.111.0':len(b),'gameplay_equal':True,'adapter_differences':differences}
     entry['static_patch_targets_resolved']=True
     entry['dynamic_patch_target_classes']=sum('dynamic/manual' in line for line in (output/targets[0]/id/'patch_targets.txt').read_text().splitlines())
-    entry['source_commit']=subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip()
+    bundle=json.loads((repo/'build/dual-release'/id/'bundle-evidence.json').read_text())
+    entry['binary_source_commit']=bundle['sourceCommit']
+    entry['binary_source_dirty']=bundle['sourceDirty']
+    entry['implementation_sha256']={target:bundle['files']['lib/'+target+'/'+id+'.dll'] for target in targets}
+    entry['inspected_source_commit']=subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip()
+    entry['inspected_tracked_source_dirty']=bool(subprocess.check_output(['git','-C',str(repo),'status','--porcelain','--untracked-files=no'],text=True).strip())
     report['mods'][id]=entry
 (output/'comparison.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(report,ensure_ascii=False,indent=2))
