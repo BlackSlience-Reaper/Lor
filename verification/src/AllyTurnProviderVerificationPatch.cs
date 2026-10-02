@@ -206,7 +206,7 @@ internal static class AllyTurnProviderVerificationPatch
             "AnyEnemy potion target validation retained a Friendly creature.");
 
         AttackCommand attack = DamageCmd.Attack(1m)
-            .FromCard(card, null)
+            .FromCardCompat(card, null)
             .TargetingAllOpponents(combatState);
         RequireOnlyHostileTargets(
             GetPossibleTargets(attack),
@@ -215,7 +215,7 @@ internal static class AllyTurnProviderVerificationPatch
             "AttackCommand");
 
         LibraryAttackCommand libraryAttack = new LibraryAttackCommand(1m)
-            .FromCard(card)
+            .FromCardCompat(card)
             .TargetingAllOpponents(combatState);
         RequireOnlyHostileTargets(
             GetPossibleTargets(libraryAttack),
@@ -224,12 +224,12 @@ internal static class AllyTurnProviderVerificationPatch
             "LibraryAttackCommand");
 
         // Single targets skip GetOpponentsOf, so only the final target filters can drop a Friendly ally.
-        Require(GetPossibleTargets(DamageCmd.Attack(1m).FromCard(card, null).Targeting(friendly)).Count == 0
-                && GetPossibleTargets(DamageCmd.Attack(1m).FromCard(card, null).Targeting(hostileCandidate))
+        Require(GetPossibleTargets(DamageCmd.Attack(1m).FromCardCompat(card, null).Targeting(friendly)).Count == 0
+                && GetPossibleTargets(DamageCmd.Attack(1m).FromCardCompat(card, null).Targeting(hostileCandidate))
                     .Contains(hostileCandidate),
             "Single-target AttackCommand retained a Friendly target or removed a hostile target.");
-        Require(GetPossibleTargets(new LibraryAttackCommand(1m).FromCard(card).Targeting(friendly)).Count == 0
-                && GetPossibleTargets(new LibraryAttackCommand(1m).FromCard(card).Targeting(hostileCandidate))
+        Require(GetPossibleTargets(new LibraryAttackCommand(1m).FromCardCompat(card).Targeting(friendly)).Count == 0
+                && GetPossibleTargets(new LibraryAttackCommand(1m).FromCardCompat(card).Targeting(hostileCandidate))
                     .Contains(hostileCandidate),
             "Single-target LibraryAttackCommand retained a Friendly target or removed a hostile target.");
 

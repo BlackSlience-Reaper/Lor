@@ -1,28 +1,13 @@
 #!/bin/bash
-# Build LibraryOfRuinaLib from its GitHub source. The checkout lives in build/LibraryOfRuinaLib (git-ignored);
-# Directory.Build.props picks up the DLL from build/LibraryOfRuinaLib/bin/out/ when local.props does not set
-# LibraryOfRuinaLibDll.
-# usage: tools/build_lib.sh [git-ref]
-#   default: RELEASE_REF, the commit of the release LibraryOfRuina.json requires. Raise both together.
-#   tools/build_lib.sh origin/main   — try the library's latest source (may use APIs not yet published).
+# 构建当前 LibraryOfRuinaLib 源码；不 fetch、checkout 或覆盖第三方工程文件。
+# 使用前按 docs/双版本适配.md 准备双版本分支。
 set -euo pipefail
-
-RELEASE_REF="859415e"   # LibraryOfRuinaLib 1.3.0
-
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SRC="$ROOT/build/LibraryOfRuinaLib"
-REPO="https://github.com/Xuyuha/LibraryOfRuinaLib.git"
-REF="${1:-$RELEASE_REF}"
-
-if [[ ! -d "$SRC/.git" ]]; then
-  git clone -q "$REPO" "$SRC"
+SRC="${LibraryOfRuinaLibSource:-$ROOT/build/LibraryOfRuinaLib}"
+TARGET="${1:-${CompatibilityTarget:-0.111.0}}"
+case "$TARGET" in 0.107.1|0.111.0) ;; *) echo "不支持的目标：$TARGET" >&2; exit 2;; esac
+if [[ ! -f "$SRC/Directory.Build.props" ]] || ! grep -q 'CompatibilityTarget' "$SRC/Directory.Build.props"; then
+  echo "请先把 LibraryOfRuinaLib 双版本源码放到 $SRC；不会自动改动已有检出。" >&2
+  exit 2
 fi
-git -C "$SRC" fetch -q origin
-git -C "$SRC" checkout -q --detach "$REF"
-cp "$ROOT/tools/LibraryOfRuinaLib.csproj.template" "$SRC/LibraryLib.csproj"
-
-DATA_DIR="$(dotnet msbuild "$ROOT/LibraryOfRuina.csproj" -nologo -getProperty:Sts2DataDir)"
-dotnet build "$SRC/LibraryLib.csproj" -c Release -nologo -v q -clp:ErrorsOnly \
-  -p:Sts2DataDir="$DATA_DIR" -o "$SRC/bin/out" >&2
-
-echo "LibraryOfRuinaLib $(git -C "$SRC" describe --always --tags) ($(git -C "$SRC" log -1 --format=%s)) -> $SRC/bin/out/LibraryOfRuinaLib.dll"
+dotnet build "$SRC/LibraryLib.csproj" -c Release -nologo -p:CompatibilityTarget="$TARGET"

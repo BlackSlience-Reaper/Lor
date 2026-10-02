@@ -296,8 +296,8 @@ internal static class LanguageFloorLiberationPhaseFiveVerificationPatch
             .ToMutable();
         first.DebugSetMovePlanState(form);
         second.DebugSetMovePlanState(form);
-        var firstRng = new Rng(0x51A1C5UL);
-        var secondRng = new Rng(0x51A1C5UL);
+        var firstRng = GameApi.CreateRng(0x51A1C5UL, "verification");
+        var secondRng = GameApi.CreateRng(0x51A1C5UL, "verification");
         string[] firstSequence = new string[120];
         string[] secondSequence = new string[120];
         for (int index = 0; index < firstSequence.Length; index++)
@@ -1368,7 +1368,7 @@ internal static class LanguageFloorLiberationPhaseFiveVerificationPatch
     {
         if (creature.Block > 0)
         {
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 new BlockingPlayerChoiceContext(),
                 creature,
                 creature.Block,

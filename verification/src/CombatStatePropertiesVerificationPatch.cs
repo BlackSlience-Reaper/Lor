@@ -54,7 +54,7 @@ internal static class CombatStatePropertiesVerificationPatch
         try
         {
             HashSet<Type> declaring = CombatStateProperties.All.Select(static entry => entry.DeclaringType).ToHashSet();
-            AbstractModel[] models = ModelDb.All
+            AbstractModel[] models = VerificationApi.AllModels
                 .Where(model => Hierarchy(model.GetType()).Any(declaring.Contains))
                 .OrderBy(static model => model.GetType().FullName, StringComparer.Ordinal)
                 .ToArray();

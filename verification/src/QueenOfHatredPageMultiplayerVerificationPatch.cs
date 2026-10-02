@@ -188,7 +188,6 @@ internal static class QueenOfHatredPageMultiplayerVerificationPatch
         bool preview,
         out IEnumerable<AbstractModel> modifiers)
     {
-#if STS2_BETA
         return Hook.ModifyHpLost(
             runState,
             combatState,
@@ -199,17 +198,7 @@ internal static class QueenOfHatredPageMultiplayerVerificationPatch
             cardSource: null,
             preview ? HpLossHookPhase.All : HpLossHookPhase.AfterOsty,
             out modifiers);
-#else
-        return Hook.ModifyHpLostAfterOsty(
-            runState,
-            combatState,
-            target,
-            amount,
-            ValueProp.Unpowered,
-            dealer,
-            cardSource: null,
-            out modifiers);
-#endif
+
     }
 
     private static decimal NextTurnStrengthAmount(Player owner) =>

@@ -751,7 +751,7 @@ internal static class JudgementBirdVerificationPatch
             .GetPower<JudgementBirdWeightOfSinPower>()
             ?? throw new InvalidOperationException(
                 "Judgement Bird weight power is missing.");
-        decimal multiplier = power.ModifyDamageMultiplicative(
+        decimal multiplier = power.ModifyDamageMultiplicativeCompat(
             target,
             JudgementBird.GazeTwoLowDamage,
             ValueProp.Move,
@@ -777,7 +777,7 @@ internal static class JudgementBirdVerificationPatch
 
         SetMode(relic, JudgementBirdPageMode.WeightOfSin);
         await CreatureCmd.SetCurrentHp(owner.Creature, owner.Creature.MaxHp);
-        await CreatureCmd.LoseBlock(
+        await GameApi.LoseBlock(
             context,
             owner.Creature,
             decimal.MaxValue,
@@ -785,7 +785,7 @@ internal static class JudgementBirdVerificationPatch
         CardModel attackCard = owner.RunState.CreateCard<StrikeIronclad>(
             owner);
         AttackCommand emptyAttack = DamageCmd.Attack(1)
-            .FromCard(attackCard, null)
+            .FromCardCompat(attackCard, null)
             .Targeting(fight.BossCreature);
         int hpBefore = owner.Creature.CurrentHp;
         await relic.AfterAttack(context, emptyAttack);

@@ -557,7 +557,7 @@ internal static class LanguageFloorLiberationPhaseFourVerificationPatch
                 && !fight.Boss.DebugEligibleMoveIds()
                     .Contains(LanguageFloorDipsia.GracefulRestMoveId),
             "Noble Repose was eligible while a Blood Bat was alive.");
-        var rng = new Rng(0xD1A51AUL);
+        var rng = GameApi.CreateRng(0xD1A51AUL, "verification");
         string? previous = null;
         for (int i = 0; i < 40; i++)
         {
@@ -745,7 +745,7 @@ internal static class LanguageFloorLiberationPhaseFourVerificationPatch
         await LibraryCreatureCmd.SetCurrentChaoValue(
             RequireLibraryCreature(fight.BossCreature, "Dipsia"),
             37m);
-        await CreatureCmd.Damage(
+        await CreatureCmdCompat.Damage(
             new ThrowingPlayerChoiceContext(),
             fight.CombatState.Enemies
                 .Where(static enemy => enemy.IsAlive)
@@ -769,7 +769,7 @@ internal static class LanguageFloorLiberationPhaseFourVerificationPatch
         await LibraryCreatureCmd.SetCurrentChaoValue(
             RequireLibraryCreature(fight.BossCreature, "Dipsia"),
             37m);
-        await CreatureCmd.Damage(
+        await CreatureCmdCompat.Damage(
             new ThrowingPlayerChoiceContext(),
             fight.CombatState.Enemies
                 .Where(static enemy => enemy.IsAlive)
@@ -1236,7 +1236,7 @@ internal static class LanguageFloorLiberationPhaseFourVerificationPatch
     {
         if (creature.Block > 0)
         {
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 new ThrowingPlayerChoiceContext(),
                 creature,
                 creature.Block,

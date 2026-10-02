@@ -226,7 +226,7 @@ internal static class LanguageFloorPlanTraceVerificationPatch
                     return "cobalt to transform threshold";
                 case 5:
                     // 大灰狼形态的抗性会削减伤害，给足余量让累计伤害在本回合结束时越过影子阈值。
-                    await CreatureCmd.Damage(
+                    await CreatureCmdCompat.Damage(
                         new ThrowingPlayerChoiceContext(),
                         cobalt.Creature,
                         cobalt.GetShadowDamageThreshold() * 4,
@@ -598,7 +598,7 @@ internal static class LanguageFloorPlanTraceVerificationPatch
     {
         try
         {
-            return monster.RunRng.MonsterAi.ToSerializable().counter.ToString(CultureInfo.InvariantCulture);
+            return monster.RunRng.MonsterAi.CounterCompat().ToString(CultureInfo.InvariantCulture);
         }
         catch (Exception ex)
         {

@@ -188,12 +188,12 @@ internal static class LiberationFloorRoutingVerificationPatch
         }
 
         string rngs = string.Join(";", CapturedRngs.Select(static captured =>
-            captured.Label + "#" + captured.Rng.ToSerializable().counter));
+            captured.Label + "#" + captured.Rng.CounterCompat()));
         CapturedRngs.Clear();
         return "rngs=[" + rngs + "]" + error;
     }
 
-    private static int Counter(Rng rng) => rng.ToSerializable().counter;
+    private static int Counter(Rng rng) => rng.CounterCompat();
 
     private static string Id(EncounterModel? encounter) => encounter?.Id.Entry ?? "none";
 

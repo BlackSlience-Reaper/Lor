@@ -354,7 +354,7 @@ internal static class SocialTrialTraceVerificationPatch
         Log.Info(LogPrefix + line);
     }
 
-    private static int Counter(Rng rng) => rng.ToSerializable().counter;
+    private static int Counter(Rng rng) => rng.CounterCompat();
 
     private static string FormatDictionary(IReadOnlyDictionary<string, string> state) =>
         string.Join(",", state.Select(static pair => pair.Key + "=" + pair.Value));

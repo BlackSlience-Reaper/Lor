@@ -575,7 +575,7 @@ internal static class LanguageFloorLiberationPhaseThreeVerificationPatch
         await CreatureCmd.SetCurrentHp(player, player.MaxHp);
         if (player.Block > 0)
         {
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 new ThrowingPlayerChoiceContext(),
                 player,
                 player.Block,
@@ -814,7 +814,7 @@ internal static class LanguageFloorLiberationPhaseThreeVerificationPatch
         await CreatureCmd.SetCurrentHp(player, player.MaxHp);
         if (player.Block > 0)
         {
-            await CreatureCmd.LoseBlock(
+            await GameApi.LoseBlock(
                 new ThrowingPlayerChoiceContext(),
                 player,
                 player.Block,

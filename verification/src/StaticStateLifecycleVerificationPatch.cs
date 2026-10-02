@@ -453,23 +453,7 @@ internal static class StaticStateLifecycleVerificationPatch
         + " nat=" + NaturalFloorLiberationSettlementStore.KilledBossCount
         + "/" + NaturalFloorLiberationSettlementStore.PendingSettlement;
 
-    private static CardPlay CreateCardPlay(CardModel card) => new()
-    {
-        Card = card,
-        Player = card.Owner,
-        Target = null,
-        ResultPile = PileType.Discard,
-        Resources = new ResourceInfo
-        {
-            EnergySpent = 0,
-            EnergyValue = 0,
-            StarsSpent = 0,
-            StarValue = 0
-        },
-        IsAutoPlay = false,
-        PlayIndex = 0,
-        PlayCount = 1
-    };
+    private static CardPlay CreateCardPlay(CardModel card) => VerificationApi.CreateCardPlay(card, card.Owner);
 
     private static async Task<RunState> StartSingleplayerRun(string seed)
     {

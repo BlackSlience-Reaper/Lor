@@ -126,7 +126,7 @@ internal static class MonsterVisualLayoutVerificationPatch
         RecordLookups(MissingId);
 
         var monsterIds = new HashSet<string>(StringComparer.Ordinal);
-        foreach (MonsterModel monster in ModelDb.All.OfType<MonsterModel>()
+        foreach (MonsterModel monster in VerificationApi.AllModels.OfType<MonsterModel>()
                      .OrderBy(static m => m.Id.Entry, StringComparer.Ordinal)
                      .ThenBy(static m => m.GetType().FullName, StringComparer.Ordinal))
         {

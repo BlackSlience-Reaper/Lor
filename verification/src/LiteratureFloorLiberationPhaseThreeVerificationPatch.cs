@@ -173,7 +173,7 @@ internal static class LiteratureFloorLiberationPhaseThreeVerificationPatch
                 1m,
                 CardPreviewStyle.None);
 
-            await Hook.BeforeSideTurnEnd(
+            await VerificationApi.BeforeSideTurnEnd(
                 fight.State,
                 CombatSide.Player,
                 [fight.Player]);
@@ -886,7 +886,7 @@ internal static class LiteratureFloorLiberationPhaseThreeVerificationPatch
 
     private static Task ClearBlock(Creature creature) =>
         creature.Block > 0
-            ? CreatureCmd.LoseBlock(
+            ? GameApi.LoseBlock(
                 new ThrowingPlayerChoiceContext(),
                 creature,
                 creature.Block,
@@ -900,23 +900,7 @@ internal static class LiteratureFloorLiberationPhaseThreeVerificationPatch
             : Task.CompletedTask;
 
     private static CardPlay CreateCardPlay(CardModel card) =>
-        new()
-        {
-            Card = card,
-            Player = card.Owner,
-            Target = null,
-            ResultPile = PileType.Discard,
-            Resources = new ResourceInfo
-            {
-                EnergySpent = 0,
-                EnergyValue = 0,
-                StarsSpent = 0,
-                StarValue = 0
-            },
-            IsAutoPlay = false,
-            PlayIndex = 0,
-            PlayCount = 1
-        };
+        VerificationApi.CreateCardPlay(card, card.Owner);
 
     private static MonsterMoveStateMachine GenerateStateMachine(
         MonsterModel monster)

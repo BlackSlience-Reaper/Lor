@@ -287,7 +287,7 @@ internal static class ExtraTurnParticipantsVerificationPatch
 
     private static (int Rng, decimal Buffer) SampleKali(string step, CombatState state, Kali kali)
     {
-        int rng = state.RunState.Rng.MonsterAi.ToSerializable().counter;
+        int rng = state.RunState.Rng.MonsterAi.CounterCompat();
         decimal buffer = kali.Creature.GetPower<BufferPower>()?.Amount ?? 0m;
         Trace(step, Summary(state) + " | kaliMonsterAi=" + rng + " kaliBuffer=" + buffer
             + " capacity=" + kali.IntentCapacity);

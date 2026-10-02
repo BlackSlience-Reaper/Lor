@@ -276,7 +276,7 @@ internal static class RunSettingsVerificationPatch
     private static async Task VerifyDailyLoadScreen()
     {
         SetLocal(A);
-        List<ModifierModel> daily = ModifierModel.Pick2Good1Bad(new Rng(7uL), []).ToList();
+        List<ModifierModel> daily = VerificationApi.DailyModifiers().ToList();
         RunState state = CreateRun(Seed, 1, daily, GameMode.Daily);
         RunManager.Instance.SetUpNewSingleplayer(state, shouldSave: false, DateTimeOffset.UtcNow);
         SerializableRun save = RunManager.Instance.ToSave(null);
@@ -347,7 +347,7 @@ internal static class RunSettingsVerificationPatch
             Require(LibraryHiddenModifiers.IsHidden(carrier.Id), "hidden: id not recognized for " + carrier.Id.Entry);
         }
 
-        ModifierModel dailyModifier = ModifierModel.Pick2Good1Bad(new Rng(7uL), []).First();
+        ModifierModel dailyModifier = VerificationApi.DailyModifiers().First();
         Require(!LibraryHiddenModifiers.IsHidden(dailyModifier), "hidden: a vanilla modifier is hidden");
 
         Type[] required =

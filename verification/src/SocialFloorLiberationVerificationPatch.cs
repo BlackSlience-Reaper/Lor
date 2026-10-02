@@ -1193,7 +1193,7 @@ internal static class SocialFloorLiberationVerificationPatch
 
         HashSet<FalseThroneMove> rolled = Enumerable.Range(0, 4096)
             .Select(static seed => FalseThrone.RollHomeMove(
-                new Rng((ulong)seed)))
+                GameApi.CreateRng((ulong)seed, "verification")))
             .ToHashSet();
         Require(rolled.SetEquals(plans.Select(static plan => plan.Sequence)),
             "False Throne Home trial RNG cannot reach every two-intent plan.");
