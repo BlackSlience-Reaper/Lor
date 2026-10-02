@@ -104,12 +104,25 @@ public sealed class QueenBeeSporesPassivePower : LibraryOfRuinaPowerModel, IHeal
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
+        if (side == CombatSide.Player)
+        {
+            // 返能额度按玩家自己的回合计：正常回合开始时 participants 是玩家一侧全体，
+            // 额外回合（大鸟书页等）只有取得额外回合的玩家，只重置这些玩家的额度。
+            foreach (Creature participant in participants)
+            {
+                if (participant.Player is { } player)
+                {
+                    _playersGrantedEnergyThisTurn.Remove(player.NetId);
+                }
+            }
+        }
+
+        // 孢子按轮结算，额外回合不结算。
         if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead)
         {
             return;
         }
 
-        _playersGrantedEnergyThisTurn.Clear();
         IReadOnlyList<Creature> attackers = _sporeTargets
             .Where(creature => !creature.IsDead)
             .ToArray();
