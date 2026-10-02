@@ -34,7 +34,7 @@ internal static class DualTargetRuntimeVerificationPatch
         }
 
         _started = true;
-        Callable.From(() => _ = RunAsync()).CallDeferred();
+        Callable.From(() => { _ = RunAsync(); }).CallDeferred();
     }
 
     private static bool HasVerifyArg() =>
@@ -48,6 +48,9 @@ internal static class DualTargetRuntimeVerificationPatch
     {
         try
         {
+            // 主菜单就绪后原版还在后台预加载场景；立即退出会打断这些加载并留下与本检查无关的解析报错。
+            SceneTree tree = NGame.Instance?.GetTree() ?? throw new InvalidOperationException("Scene tree is not available.");
+            await tree.ToSignal(tree.CreateTimer(15.0), SceneTreeTimer.SignalName.Timeout);
             List<Assembly> implementations = VerifyLoadedImplementations();
             int nodeTypes = implementations.Sum(VerifyGeneratedGodotGlue);
             await VerifyProcessingEnabled(implementations.Single(a => a.GetName().Name == "LibraryOfRuinaLib"));
