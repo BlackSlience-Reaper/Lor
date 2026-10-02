@@ -32,8 +32,21 @@ try
     void Reject(Action action)
     {
         try { action(); }
-        catch (TargetInvocationException ex) when (ex.InnerException is InvalidDataException or InvalidOperationException) { checks++; return; }
+        catch (TargetInvocationException ex) when (ex.InnerException is InvalidDataException or InvalidOperationException
+            or BadImageFormatException or FileNotFoundException or System.Text.Json.JsonException) { checks++; return; }
         throw new Exception("损坏或未知配置未被拒绝");
+    }
+    MethodInfo validate = type.GetMethod("ValidateVariantFile", BindingFlags.Static | BindingFlags.NonPublic)!;
+    object? Candidate(Version host) => pick.Invoke(null, [temp, Path.Combine(temp, "lib"), host]);
+    string Sha(string path) => Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(path)));
+    void ReplaceVariantDll(string target, string sourceDll, string manifestPath, string originalManifest)
+    {
+        string dll = Path.Combine(temp, "lib", target, id + ".dll");
+        File.Copy(sourceDll, dll, overwrite: true);
+        JsonNode parsed = JsonNode.Parse(originalManifest)!;
+        foreach (JsonNode? variant in parsed["variants"]!.AsArray())
+            if ((string?)variant!["compatTarget"] == target) variant["sha256"] = Sha(dll);
+        File.WriteAllText(manifestPath, parsed.ToJsonString());
     }
     Expect(new Version(0,106,0), null);
     Expect(new Version(0,107,1), "0.107.1");
@@ -49,6 +62,31 @@ try
         File.WriteAllText(manifest, parsed.ToJsonString()); Reject(() => Pick(new Version(0,111,0)));
     }
     File.WriteAllText(manifest,original);
+    // 两个真实变体都要通过加载前的元数据校验。
+    foreach (Version host in new[] { new Version(0,107,1), new Version(0,111,0) })
+    {
+        validate.Invoke(null, [Candidate(host)]); checks++;
+    }
+    // 哈希与清单一致但程序集打错：目标元数据不符、身份不符都必须在加载前拒绝。
+    string backup107 = Path.Combine(temp, "variant-0.107.1.bak");
+    File.Copy(Path.Combine(temp, "lib", "0.107.1", id + ".dll"), backup107);
+    ReplaceVariantDll("0.107.1", Path.Combine(bundle, "lib", "0.111.0", id + ".dll"), manifest, original);
+    Reject(() => validate.Invoke(null, [Candidate(new Version(0,107,1))]));
+    ReplaceVariantDll("0.107.1", Path.Combine(bundle, id + ".dll"), manifest, original);
+    Reject(() => validate.Invoke(null, [Candidate(new Version(0,107,1))]));
+    File.Copy(backup107, Path.Combine(temp, "lib", "0.107.1", id + ".dll"), overwrite: true);
+    File.WriteAllText(manifest, original);
+    // 清单缺失、为空或损坏都必须失败，不能退回猜测。
+    File.WriteAllText(manifest, "{\"variants\":[]}");
+    Reject(() => Pick(new Version(0,111,0)));
+    File.WriteAllText(manifest, "{ not json");
+    Reject(() => Pick(new Version(0,111,0)));
+    File.Delete(manifest);
+    Reject(() => Pick(new Version(0,111,0)));
+    File.WriteAllText(manifest, original);
+    File.Delete(Path.Combine(temp, "lib", "0.111.0", id + ".dll"));
+    Reject(() => Pick(new Version(0,111,0)));
+    File.Copy(Path.Combine(bundle, "lib", "0.111.0", id + ".dll"), Path.Combine(temp, "lib", "0.111.0", id + ".dll"));
     File.WriteAllText(Path.Combine(temp,"lib","0.107.1","compat-target.txt"),"0.111.0");
     Reject(() => Pick(new Version(0,111,0)));
     Console.WriteLine($"{id}: {checks} 个选择/损坏拒绝检查通过（未运行初始化）。");
