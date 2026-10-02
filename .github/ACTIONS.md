@@ -9,7 +9,7 @@
 - `localization.yml`：读取 `LibraryOfRuina/localization/` 的 zhs/eng/jpn/kor JSON（含 settings_ui），检查 UTF-8、JSON 语法、重复键和字符串值；不检查译文、跨语言键集合或动态占位符语义。
 - `manifest.yml`：检查 manifest 的 ID 与 `AssemblyName` 一致、版本格式、DLL/PCK 标志、依赖 ID/版本格式和已跟踪 csproj XML。本项目通过 `RitsuLibReferencesProps` 引用已安装的 RitsuLib；检查对应 Import 存在。安装版本与游戏 DLL 仍由本机构建核对。
 - `powershell.yml`：用 PowerShell Parser 解析已跟踪的脚本，排除第三方 node_modules，不执行部署、下载或素材复制。
-- `monster-hp.yml`：用独立 .NET 10 / Roslyn 工具分别解析 Beta 和 Public 分支，检查具体怪物的 `MinInitialHp <= MaxInitialHp`；先运行工具自带回归用例，再扫描源码。工具说明见 `tools/MonsterHpCheck/README.md`。
+- `monster-hp.yml`：用独立 .NET 10 / Roslyn 工具分别按 0.107.1 和 0.111.0 两个目标解析，检查具体怪物的 `MinInitialHp <= MaxInitialHp`；先运行工具自带回归用例，再扫描源码。工具说明见 `tools/MonsterHpCheck/README.md`。
 
 `_copy_assets.ps1` 保留旧项目一个源素材复制到多个目标的修复。源目录改为必填 `-SourceDirectory`，目标目录默认当前仓库，避免使用旧项目的机器路径。CI 只检查该脚本语法。
 
