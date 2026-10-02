@@ -117,6 +117,7 @@ internal static class PowerIconLocalizationPatch
     // 下列正文实际施加原版 WeakPower，不能套用基础库同名“虚弱”的图标。
     private static readonly HashSet<string> VanillaWeakEntries = new(StringComparer.Ordinal)
     {
+        "ALRIUNE_MIND_CRACK",
         "LETICIA_PAGE_MISCHIEF_CHOICE_CARD",
         "LETICIA_PAGE_RELIC",
         "MAGIC_BULLET_SILENCE_EGO_CARD",
@@ -312,6 +313,13 @@ internal static class PowerIconLocalizationPatch
     private static string? Resolve(string key, string ownerKey, string[] candidates)
     {
         bool Has(string title) => Array.IndexOf(candidates, title) >= 0;
+
+        if (Has("ALRIUNE_ATONEMENT_CROWN_POWER.title") || Has("ART_FLOOR_ATONEMENT_CROWN_POWER.title"))
+        {
+            return ownerKey.StartsWith("ALRIUNE_", StringComparison.Ordinal)
+                ? "ALRIUNE_ATONEMENT_CROWN_POWER.title"
+                : "ART_FLOOR_ATONEMENT_CROWN_POWER.title";
+        }
 
         if (VanillaWeakEntries.Contains(ownerKey) && (Has("WEAK_POWER.title") || Has("LIBRARY_WEAK_POWER.title")))
         {

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xwlc3ntvw0e"
-path="res://.godot/imported/warmhearted_woodsman_verdant_forest_passive_power.png-eeed7441a26cd0ad9dbb26e7bd15c07a.ctex"
+uid="uid://b7cxstxuqf5bv"
+path="res://.godot/imported/guard.png-92cbb4a87afee2e8fab564b13269abe7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/powers/warmhearted_woodsman_verdant_forest_passive_power.png"
-dest_files=["res://.godot/imported/warmhearted_woodsman_verdant_forest_passive_power.png-eeed7441a26cd0ad9dbb26e7bd15c07a.ctex"]
+source_file="res://images/monsters/alriune/guard.png"
+dest_files=["res://.godot/imported/guard.png-92cbb4a87afee2e8fab564b13269abe7.ctex"]
 
 [params]
 

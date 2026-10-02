@@ -7,7 +7,7 @@ internal sealed class WoodsmanTreeAllyTurnProvider : IAllyTurnProvider<WoodsmanT
 {
     public string AllyId => "WoodsmanTree";
 
-    public AllyType AllyType => AllyType.Neutral;
+    public AllyType AllyType => AllyType.Friendly;
 
     public AllyPersistence AllyPersistence => AllyPersistence.Encounter;
 

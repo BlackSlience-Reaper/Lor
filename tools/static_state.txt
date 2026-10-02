@@ -24,7 +24,6 @@ LibraryOfRuina.content.abnormalities.Ozma.OzmaTrueJackFlashOverlay._activeOverla
 LibraryOfRuina.content.abnormalities.Ozma.OzmaTrueJackFlashOverlay._activeTween	harmless	ui	Play 写入；CleanupActiveOverlay 执行 Kill 并置空；只影响闪光动画
 LibraryOfRuina.content.abnormalities.QueenOfHatred.QueenOfHatredInversionVideoController._activePlayback	harmless	ui	PlayAsync 写入，用来串行化视频，播完后按 ReferenceEquals 置空；只影响视频播放
 LibraryOfRuina.content.abnormalities.SpiderBud.SpiderBud.BackgroundTextRng	harmless	ui	不设种子的 System.Random，只用来挑选背景文字台词，不参与玩法随机
-LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.EnergyResetDepth	harmless	scope	以 Player 为弱键的调用深度：BeginEnergyResetHook 自增，令牌 Dispose 自减，归零时移除；弱表保证卡住的任务随旧 Player 回收
 LibraryOfRuina.content.abnormalities.WrathServant.WrathServantDamageSourceContext.SourceDepth	harmless	scope	AsyncLocal 调用深度：Enter 自增，Dispose 自减
 LibraryOfRuina.content.abnormalities.WrathServant.WrathServantDeathContext.DealersByDeadCreature	combat	-	按死亡生物记录致死者：伤害结算写入，AfterDeath 取走；绿茎隐士进场时清空
 LibraryOfRuina.content.acts.LibraryActRegistrationPatch._registered	harmless	once	Postfix 首次注册幕后置 true，之后不复位
@@ -135,6 +134,8 @@ LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._editable
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._enabled	harmless	settings	ReloadLocked 从显示配置文件读取；只控制意图图是否显示
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._lastLoggedEnabled	harmless	log	ReloadLocked 里用于避免重复打日志
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._loaded	harmless	cache	ReloadLocked 加载后置 true
+LibraryOfRuina.features.intentgraph.IntentGraphWorkshopModBridge._panelsField	harmless	cache	EnsurePatched 解析第三方 Intent Graph 的面板表字段后写入，只读不改；只影响意图图面板
+LibraryOfRuina.features.intentgraph.IntentGraphWorkshopModBridge._patchAttempted	harmless	once	EnsurePatched 找到 IntentGraphHost 后置 true，保证只挂一次钩子
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.ActivePanels	harmless	ui	以 NCreature 节点为键的面板表：ShowFor 写入，HideFor 移除；只影响意图图面板
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackHoverTipTexture	harmless	cache	EnsureFallbackThemeAssetsLoaded 里 GD.Load 一次
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackHoverTitleFont	harmless	cache	EnsureFallbackThemeAssetsLoaded 里 GD.Load 一次

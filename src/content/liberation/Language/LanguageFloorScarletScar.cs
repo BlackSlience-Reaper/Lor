@@ -65,7 +65,7 @@ public sealed class LanguageFloorScarletScar :
     public override int MaxInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 200, 194);
 
-    public override int DefaultChaoResistance => 400;
+    public override int DefaultChaoResistance => 300;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
@@ -231,11 +231,6 @@ public sealed class LanguageFloorScarletScar :
         await LanguageFloorRagePower.ApplyWithDuration(Creature, Creature);
         await MultiplayerScalingPatchHelper.RescaleMonsterMaxHpAndRestoreDifference(
             Creature);
-        if (CombatQueries.CreatureNodeOf(this)?.Visuals
-            is LanguageFloorScarletScarCreatureVisuals visuals)
-        {
-            visuals.FacePlayers();
-        }
         ForceSpecialFirstSlot();
         LanguageFloorLiberationBackgroundController.SetRageBackground(true);
         await RefreshIntents();
@@ -246,11 +241,6 @@ public sealed class LanguageFloorScarletScar :
         if (!UnrelievedAnger)
         {
             LanguageFloorLiberationBackgroundController.SetRageBackground(false);
-            if (CombatQueries.CreatureNodeOf(this)?.Visuals
-                is LanguageFloorScarletScarCreatureVisuals visuals)
-            {
-                visuals.FacePartner();
-            }
         }
 
         Creature.GetPower<LanguageFloorAngerGaugePower>()?.ResetAnger();

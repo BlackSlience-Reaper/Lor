@@ -1302,5 +1302,15 @@
   "REVERBERATION_EILEEN.banter.opening": "私たちはあの方の指揮に合わせて動きます。",
   "REVERBERATION_EILEEN.banter.death": "私たちはいつでもまた回っていくことができます。",
   "REVERBERATION_EILEEN.banter.kill": "歯車の言葉が正しかったのです……。",
-  "REVERBERATION_EILEEN.banter.victory": "やはりあの方に従うことが正しい選択でしたね。"
+  "REVERBERATION_EILEEN.banter.victory": "やはりあの方に従うことが正しい選択でしたね。",
+  "ALRIUNE.name": "アルリウネ",
+  "ALRIUNE_DUSTBORN.name": "塵から生まれし者",
+  "ALRIUNE.moves.WINTER.title": "冬の始まり",
+  "ALRIUNE.moves.BLOSSOM.title": "身に咲く花",
+  "ALRIUNE.moves.AUTUMN.title": "秋の消失",
+  "ALRIUNE.moves.SPRING.title": "春の起源",
+  "ALRIUNE_DUSTBORN.moves.FLOWER_BUSH.title": "花叢",
+  "ALRIUNE_DUSTBORN.moves.MIND_CRACK.title": "心の亀裂",
+  "ALRIUNE_DUSTBORN.moves.SPREADING_DESPAIR.title": "蔓延する絶望",
+  "ALRIUNE_DUSTBORN.moves.REVIVAL_REST.title": "蘇生"
 }

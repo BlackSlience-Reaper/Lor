@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.content.guests.DawnOffice;
@@ -8,10 +7,12 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -24,9 +25,9 @@ namespace LibraryOfRuina.content.liberation.History;
 
 public sealed class FlutteringMomentarySatietyPower : LibraryOfRuinaPowerModel
 {
-    private const int DevourHpThreshold = 20;
-    private const int HealAmount = 20;
-    private const int VigorAmount = 2;
+    private const int DevourHpThreshold = 20; // 片刻的饕足：可被吞噬的友方精灵畸块体力上限（含）。
+    private const int HealPercent = 10; // 片刻的饕足：吞噬后恢复翅振最大体力的百分比。
+    private const int VigorAmount = 4; // 片刻的饕足：吞噬后获得的活力层数。
 
     protected override string LegacyPowerId => "FLUTTERING_MOMENTARY_SATIETY_POWER";
 
@@ -36,7 +37,7 @@ public sealed class FlutteringMomentarySatietyPower : LibraryOfRuinaPowerModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new ScaledMonsterHealVar(HealAmount),
+        new DynamicVar("HealPercent", HealPercent),
         new PowerVar<VigorPower>(VigorAmount),
         new DynamicVar("Threshold", DevourHpThreshold)
     ];
@@ -46,9 +47,13 @@ public sealed class FlutteringMomentarySatietyPower : LibraryOfRuinaPowerModel
         HoverTipFactory.FromPower<VigorPower>()
     ];
 
-    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
+    public override async Task BeforeSideTurnStart(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IReadOnlyList<Creature> participants,
+        CombatStateLike combatState)
     {
-        if (side != CombatSide.Enemy || Owner.IsDead || Owner.Monster is not HistoryFloorFlutteringBoss boss)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead || Owner.Monster is not HistoryFloorFlutteringBoss boss)
         {
             return;
         }
@@ -65,17 +70,17 @@ public sealed class FlutteringMomentarySatietyPower : LibraryOfRuinaPowerModel
 
         Flash();
         await boss.Devour(food);
-        await CreatureCmd.Heal(Owner, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Owner, HealAmount));
+        await CreatureCmd.Heal(Owner, FlutteringCombatHelper.PercentOfMaxHp(Owner, HealPercent));
         await PowerCmdCompat.Apply<VigorPower>(Owner, VigorAmount, Owner, null);
     }
 }
 
 public sealed class FlutteringHungerPower : LibraryOfRuinaPowerModel
 {
-    private const int Threshold = 40;
-    private const int HealAmount = 40;
-    private const int StrengthAmount = 2;
-    private const int MinimumQueuedStacks = 0;
+    internal const int Threshold = 40; // 饥饿：每累计承受该数值伤害，下一回合开始时吞噬一次友方；也是初始计数。
+    private const int HealPercent = 20; // 饥饿：吞噬后恢复翅振最大体力的百分比。
+    private const int StrengthAmount = 3; // 饥饿：吞噬后永久获得的力量层数。
+    private const int MinimumQueuedStacks = 0; // 饥饿：计数降至该值时排入下一回合的吞噬。
 
     private sealed class Data
     {
@@ -95,7 +100,7 @@ public sealed class FlutteringHungerPower : LibraryOfRuinaPowerModel
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new ScaledMonsterHealVar(HealAmount),
+        new DynamicVar("HealPercent", HealPercent),
         new PowerVar<StrengthPower>(StrengthAmount),
         new DynamicVar("Threshold", Threshold),
         new DynamicVar("MinimumStacks", MinimumQueuedStacks)
@@ -140,9 +145,13 @@ public sealed class FlutteringHungerPower : LibraryOfRuinaPowerModel
         }
     }
 
-    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
+    public override async Task BeforeSideTurnStart(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IReadOnlyList<Creature> participants,
+        CombatStateLike combatState)
     {
-        if (side != CombatSide.Enemy || Owner.IsDead || Owner.Monster is not HistoryFloorFlutteringBoss boss)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead || Owner.Monster is not HistoryFloorFlutteringBoss boss)
         {
             return;
         }
@@ -163,7 +172,7 @@ public sealed class FlutteringHungerPower : LibraryOfRuinaPowerModel
         {
             Flash();
             await boss.Devour(food);
-            await CreatureCmd.Heal(Owner, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Owner, HealAmount));
+            await CreatureCmd.Heal(Owner, FlutteringCombatHelper.PercentOfMaxHp(Owner, HealPercent));
             await PowerCmdCompat.Apply<StrengthPower>(Owner, StrengthAmount, Owner, null);
         }
 
@@ -173,7 +182,7 @@ public sealed class FlutteringHungerPower : LibraryOfRuinaPowerModel
 
 public sealed class FlutteringHungerFrenzyPower : LibraryOfRuinaPowerModel
 {
-    private const int HpThresholdPercent = 25;
+    private const int HpThresholdPercent = 25; // 饥饿狂暴：回合开始时触发所需的体力百分比上限（含），仅触发一次。
 
     private sealed class Data
     {
@@ -196,25 +205,13 @@ public sealed class FlutteringHungerFrenzyPower : LibraryOfRuinaPowerModel
         new DynamicVar("Threshold", HpThresholdPercent)
     ];
 
-    public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
+    public override async Task BeforeSideTurnStart(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IReadOnlyList<Creature> participants,
+        CombatStateLike combatState)
     {
-        if (creature == Owner && delta < 0)
-        {
-            await TryQueueHungerFrenzy();
-        }
-    }
-
-    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, CombatStateLike combatState)
-    {
-        if (side == CombatSide.Enemy)
-        {
-            await TryQueueHungerFrenzy();
-        }
-    }
-
-    private async Task TryQueueHungerFrenzy()
-    {
-        if (Owner.IsDead || Owner.Monster is not HistoryFloorFlutteringBoss boss)
+        if (!TurnParticipants.IsRoundPlayerTurn(side) || Owner.IsDead || Owner.Monster is not HistoryFloorFlutteringBoss boss)
         {
             return;
         }
@@ -300,16 +297,8 @@ public sealed class FlutteringFreshMeatPassivePower : LibraryOfRuinaPowerModel
 
 public sealed class FlutteringFreshMeatPower : LibraryOfRuinaPowerModel
 {
-    private const int HealPerHit = 10;
-    private const int NextTurnStrength = 1;
-
-    private sealed class Data
-    {
-        public AttackCommand? CurrentAttack;
-        public Creature? CurrentBoss;
-        public int CurrentAttackGroupId;
-        public int LastStrengthAttackGroupId;
-    }
+    private const int DamageTakenIncreasePercent = 25; // 鲜肉：受到翅振攻击时承受伤害提高的百分比。
+    private const int LifestealPercent = 100; // 鲜肉：翅振对鲜肉目标造成未被格挡攻击伤害时，按该百分比恢复体力。
 
     protected override string LegacyPowerId => "FLUTTERING_FRESH_MEAT_POWER";
 
@@ -317,84 +306,56 @@ public sealed class FlutteringFreshMeatPower : LibraryOfRuinaPowerModel
 
     public override PowerStackType StackType => PowerStackType.Single;
 
-    protected override object InitInternalData()
-    {
-        return new Data();
-    }
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new ScaledMonsterHealVar(HealPerHit),
-        new PowerVar<LibraryOfRuinaNextTurnStrength>(NextTurnStrength)
+        new DynamicVar("DamageIncrease", DamageTakenIncreasePercent)
     ];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
-    [
-        HoverTipFactory.FromPower<LibraryOfRuinaNextTurnStrength>()
-    ];
-
-    public override Task BeforeAttack(AttackCommand command)
+    public override decimal ModifyDamageMultiplicative(
+        Creature? target,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource, CardPlay? cardPlay)
     {
-        Data data = GetInternalData<Data>();
-        data.CurrentAttack = null;
-        data.CurrentBoss = null;
-
-        if (command.Attacker is { Monster: HistoryFloorFlutteringBoss boss } attacker)
+        if (!IsFlutteringAttackOnOwner(target, props, dealer))
         {
-            data.CurrentAttack = command;
-            data.CurrentBoss = attacker;
-            data.CurrentAttackGroupId = boss.CurrentFreshMeatAttackGroupId > 0
-                ? boss.CurrentFreshMeatAttackGroupId
-                : RuntimeHelpers.GetHashCode(command);
+            return 1m;
         }
 
-        return Task.CompletedTask;
+        return 1m + DamageTakenIncreasePercent / 100m;
     }
 
-    public override async Task AfterAttack(
+    public override async Task AfterDamageReceived(
         PlayerChoiceContext choiceContext,
-        AttackCommand command)
+        Creature target,
+        DamageResult result,
+        ValueProp props,
+        Creature? dealer,
+        CardModel? cardSource)
     {
-        Data data = GetInternalData<Data>();
-        if (data.CurrentAttack != command || data.CurrentBoss == null || data.CurrentBoss.IsDead)
+        if (!IsFlutteringAttackOnOwner(target, props, dealer)
+            || dealer == null
+            || dealer.IsDead
+            || result.UnblockedDamage <= 0)
         {
             return;
         }
 
-        try
+        int healAmount = result.UnblockedDamage * LifestealPercent / 100;
+        if (healAmount <= 0)
         {
-            DamageResult[] ownerResults = AttackCommandCompat.Results(command)
-                .Where(result => result.Receiver == Owner)
-                .ToArray();
-            if (ownerResults.Length == 0)
-            {
-                return;
-            }
-
-            int unblockedHits = ownerResults.Count(static result => result.UnblockedDamage > 0);
-            Flash();
-            if (data.LastStrengthAttackGroupId != data.CurrentAttackGroupId)
-            {
-                data.LastStrengthAttackGroupId = data.CurrentAttackGroupId;
-                await PowerCmdCompat.Apply<LibraryOfRuinaNextTurnStrength>(
-                    data.CurrentBoss,
-                    NextTurnStrength,
-                    data.CurrentBoss,
-                    null);
-            }
-
-            for (int i = 0; i < unblockedHits; i++)
-            {
-                await CreatureCmd.Heal(data.CurrentBoss, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(data.CurrentBoss, HealPerHit));
-            }
+            return;
         }
-        finally
-        {
-            data.CurrentAttack = null;
-            data.CurrentBoss = null;
-            data.CurrentAttackGroupId = 0;
-        }
+
+        Flash();
+        await CreatureCmd.Heal(dealer, healAmount);
     }
+
+    private bool IsFlutteringAttackOnOwner(Creature? target, ValueProp props, Creature? dealer) =>
+        target == Owner
+        && dealer is { Monster: HistoryFloorFlutteringBoss }
+        && ValuePropCompat.IsPoweredAttack(props);
 }
 
 public sealed class FlutteringMassCarePower : LibraryOfRuinaPowerModel
@@ -436,4 +397,7 @@ internal static class FlutteringCombatHelper
         return boss.CombatState.Enemies.Where(static creature =>
             creature.IsAlive && creature.Monster is HistoryFloorFlutteringMass);
     }
+
+    public static int PercentOfMaxHp(Creature creature, int percent) =>
+        Math.Max(1, (int)Math.Ceiling(creature.MaxHp * percent / 100m));
 }

@@ -85,6 +85,12 @@ internal static class GuestReceptionBackgroundPoolPatch
             return false;
         }
 
+        if (encounterType == typeof(LibraryOfRuina.content.abnormalities.Alriune.AlriuneStrong))
+        {
+            __result = new BackgroundAssets("alriune_strong", rng);
+            return false;
+        }
+
         if (encounterType == typeof(QueenOfHatredStrong))
         {
             __result = new BackgroundAssets(QueenOfHatredBackgroundTitle, rng);

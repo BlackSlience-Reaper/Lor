@@ -30,3 +30,9 @@ patches/RoomIconPathCustomOverridePatch.cs	IconProperties.Create	.GetProperty	Ba
 ui/DamagePreview/RolandDicePreviewModifiers.cs	RolandDicePreviewModifiers.BindPreview	AccessTools.TypeByName	第三方模组 RolandMod 的类型
 ui/DamagePreview/RolandDicePreviewModifiers.cs	RolandDicePreviewModifiers.BindPreview	AccessTools.Method	第三方模组 RolandMod 的方法
 ui/DamagePreview/RolandDicePreviewModifiers.cs	RolandDicePreviewModifiers.BindPreview	Expression.Property	第三方模组 RolandMod 骰子对象上的属性
+
+# Third-party workshop mod Intent Graph (intentgraph2): not vanilla, so it has no VanillaPrivate accessor; the bridge logs and leaves its graph unchanged when the shape differs.
+features/intentgraph/IntentGraphWorkshopModBridge.cs	IntentGraphWorkshopModBridge.FindHostType	.GetType	按名字找第三方模组 Intent Graph 的 IntentGraphHost 类型，它的程序集在自己初始化时才加载
+features/intentgraph/IntentGraphWorkshopModBridge.cs	IntentGraphWorkshopModBridge.EnsurePatched	.GetMethod	第三方模组 Intent Graph 的公开 IntentGraphHost.Create，作为补丁目标
+features/intentgraph/IntentGraphWorkshopModBridge.cs	IntentGraphWorkshopModBridge.EnsurePatched	.GetField	第三方模组 Intent Graph 的面板表 availableIntentGraphs
+features/intentgraph/IntentGraphWorkshopModBridge.cs	IntentGraphWorkshopModBridge.FindWorkshopPanel	.GetProperty	第三方模组 Intent Graph 面板项的 IntentGraphPanel 属性

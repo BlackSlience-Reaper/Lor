@@ -30,6 +30,7 @@ HarmonyPatch()
   Transpiler LibraryOfRuina.core.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch.Transpiler
   Postfix LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch.Postfix
   Postfix LibraryOfRuina.ui.StaggerBadgeRefreshPatch.Postfix
+  Postfix LibraryOfRuina.ui.StaggerBadgeResistIconsPatch.Postfix
 HarmonyPatch(typeof(LibraryLib.Commands.LibraryCreatureCmd), "Damage", [typeof(MegaCrit.Sts2.Core.GameActions.Multiplayer.PlayerChoiceContext), typeof(System.Collections.Generic.IEnumerable`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]]), typeof(System.Decimal), typeof(MegaCrit.Sts2.Core.ValueProps.ValueProp), typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), typeof(MegaCrit.Sts2.Core.Models.CardModel), typeof(LibraryLib.Utils.Resistance.LibraryDamageType), typeof(MegaCrit.Sts2.Core.Entities.Cards.CardPlay), typeof(System.Func`1[[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]])])
   Prefix LibraryOfRuina.patches.FriendlyAllyLibraryDamageTargetsPatch.Prefix
   Postfix LibraryOfRuina.patches.LibraryPowerDamageHealthLockChaosPatch.Postfix
@@ -85,9 +86,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Kill", [typeof(Sy
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CreatureCmd), "Stun", [typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), typeof(System.Func`2[[System.Collections.Generic.IReadOnlyList`1[[MegaCrit.Sts2.Core.Entities.Creatures.Creature, sts2, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Threading.Tasks.Task, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]), typeof(System.String)])
   Prefix LibraryOfRuina.content.abnormalities.QueenOfHatred.UntargetableCreatureStunPatch.Prefix
   Prefix LibraryOfRuina.content.liberation.Natural.NaturalFloorNihilExternalStunPatch.Prefix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.PlayerCmd), "GainEnergy", [typeof(System.Decimal), typeof(MegaCrit.Sts2.Core.Entities.Players.Player)])
-  Postfix LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Postfix
-  Prefix LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanEnergyGainPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.RelicCmd), "Obtain", [typeof(MegaCrit.Sts2.Core.Models.RelicModel), typeof(MegaCrit.Sts2.Core.Entities.Players.Player), typeof(System.Int32)])
   Postfix LibraryOfRuina.framework.relics.AbnormalityPageRelicObtainPatch.Postfix
   Prefix LibraryOfRuina.framework.relics.AbnormalityPageRelicObtainPatch.Prefix
@@ -100,10 +98,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "PrepareFor
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "ScaleMonsterHpForMultiplayer")
   Prefix LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch.Prefix
   Postfix LibraryOfRuina.content.liberation.Social.SocialFloorLiberationExactVitalsPatch.Postfix
-HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "AfterEnergyReset")
-  Finalizer LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Finalizer
-  Postfix LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Postfix
-  Prefix LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanEnergyResetHookPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Hooks.Hook), "ModifyDamage")
   Finalizer LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightJudgmentModifyDamagePatch.Finalizer
   Prefix LibraryOfRuina.content.liberation.Philosophy.PhilosophyFloorTwilightJudgmentModifyDamagePatch.Prefix
@@ -181,6 +175,9 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Audio.NRunMusicController), "Update
   Postfix LibraryOfRuina.framework.audio.MainMenuBgmRunMusicTrackPatch.Postfix
   Postfix LibraryOfRuina.framework.audio.NonCombatRunBgmUpdateTrackPatch.Postfix
   Postfix LibraryOfRuina.framework.audio.ReverberationEnsembleTrackPatch.Postfix
+HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Cards.NCard), "Reload")
+  Postfix LibraryOfRuina.patches.EgoCardVisualPatch.Postfix
+  Postfix LibraryOfRuina.content.abnormalities.Alriune.AlriuneCrownCardPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCardPlay), "ShowMultiCreatureTargetingVisuals")
   Postfix LibraryOfRuina.content.abnormalities.WrathServant.WrathServantPageTargetPatch+CardPlayShowMultiCreatureTargetingVisualsPatch.Postfix
   Postfix LibraryOfRuina.content.guests.WedgeOffice.FanaticWorshipTargetPatch+CardPlayShowMultiCreatureTargetingVisualsPatch.Postfix
@@ -190,6 +187,7 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "ShowHoverTips")
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "StartDeathAnim")
   Prefix LibraryOfRuina.content.liberation.Natural.NaturalFloorSwordFalseDeathVisualPatch.Prefix
   Prefix LibraryOfRuina.patches.visuals.LiteratureFloorBlackSwanBrotherDeathVisualPatch.Prefix
+  Prefix LibraryOfRuina.content.abnormalities.Alriune.AlriuneDustbornDeathVisualPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "UpdateIntent")
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntentFirst.Postfix
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntent.Postfix

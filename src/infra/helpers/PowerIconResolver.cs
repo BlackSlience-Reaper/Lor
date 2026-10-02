@@ -113,7 +113,9 @@ internal static class PowerIconResolver
 
     private static bool UsesGreenPassiveIcon(PowerModel power)
     {
-        return power is LanguageFloorMimicryFormOneEvolutionPower
+        return power is LibraryOfRuina.content.abnormalities.Alriune.AlriuneGreenPassive
+            or LibraryOfRuina.content.abnormalities.Alriune.AlriuneDustToDustPower
+            or LanguageFloorMimicryFormOneEvolutionPower
             or LanguageFloorMimicryFormTwoEvolutionPower
             or LanguageFloorMimicryFormTwoRegenerationPower
             or LanguageFloorMimicryHardenPower

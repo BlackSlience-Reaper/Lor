@@ -35,23 +35,8 @@ internal static class IntentGraphDisplayConfigRepository
 
     private static bool _enabled;
 
-    public static bool IsEnabled
-    {
-        get
-        {
-            bool settingVal = LibraryOfRuinaSettings.IntentGraphEnabled;
-            if (!settingVal)
-            {
-                return false;
-            }
-
-            lock (LockObj)
-            {
-                EnsureLoadedLocked();
-                return _enabled;
-            }
-        }
-    }
+    // 意图图在 Intent Graph（Chaofan）已加载时自动启用；用户目录里 jsonc 的 enabled 只作旧版兼容保留，不再参与判断。
+    public static bool IsEnabled => IntentGraphWorkshopModBridge.IsWorkshopModLoaded;
 
     public static void Initialize()
     {
