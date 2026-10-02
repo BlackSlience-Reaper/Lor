@@ -548,6 +548,7 @@ LibraryOfRuina.core.localization.PowerInlineIconSizing+PreserveInlineDimensionsP
 LibraryOfRuina.core.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch
 LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch
 LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch
+LibraryOfRuina.ui.StaggerBadgeRefreshPatch
 GodotPlugins.Game.Main
 LibraryOfRuina.ui.BlockTransferButton
 LibraryOfRuina.ui.BlockTransferOverlay
@@ -556,6 +557,8 @@ LibraryOfRuina.ui.EnemyCardIntentRuntimePatch
 LibraryOfRuina.ui.EnemyCardIntentVisualNode
 LibraryOfRuina.ui.LibraryHealthBarForecastColors
 LibraryOfRuina.ui.LibraryHealthBarForecastFeature
+LibraryOfRuina.ui.StaggerBarStyle
+LibraryOfRuina.ui.StaggerBadge
 LibraryOfRuina.ui.scene_transitions.LorexSceneRevealOverlay
 LibraryOfRuina.ui.scene_transitions.LorexSceneTransitionAssetPaths
 LibraryOfRuina.ui.scene_transitions.LorexSceneTransitionController

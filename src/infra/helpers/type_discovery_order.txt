@@ -557,3 +557,4 @@ PowerInlineIconSizing+PreserveInlineDimensionsPatch
 PowerInlineIconSizing+MeasureInlineDimensionsPatch
 PowerInlineIconSizing+MatchRenderedFontSizePatch
 CreatureOutlineGlowPatch
+StaggerBadgeRefreshPatch

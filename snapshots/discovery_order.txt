@@ -548,3 +548,4 @@ patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+PreserveInlineDimen
 patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+MeasureInlineDimensionsPatch
 patch	LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch
 patch	LibraryOfRuina.features.creatureglow.CreatureOutlineGlowPatch
+patch	LibraryOfRuina.ui.StaggerBadgeRefreshPatch
