@@ -27,12 +27,12 @@ public sealed class QueenBee : LorMonsterModel
     private const string WarlikeEnhancementMoveId = "QUEEN_BEE_WARLIKE_ENHANCEMENT_MOVE";
     private const string LoyaltyEnhancementMoveId = "QUEEN_BEE_LOYALTY_ENHANCEMENT_MOVE";
 
-    private const int VigilanceBlock = 9;
-    private const int BuffMoveBlock = 11;
+    private const int VigilanceBlock = 6;
+    private const int BuffMoveBlock = 8;
     private const int SporeDebuffAmount = 3;
     private const int AllyBuffAmount = 3;
     private const int AllyBuffTurns = 1;
-    private const int MaxWorkerCount = 2;
+    //private const int MaxWorkerCount = 2;
     internal const decimal DeathEmbraceHpThresholdPercent = 0.25m;
 
     public const string Root = QueenBeeAssets.QueenBeeMonsterRoot;

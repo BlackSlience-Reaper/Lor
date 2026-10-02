@@ -46,15 +46,26 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
     private const int StruggleMinDamage = 9;
     private const int StruggleMaxDamage = 12;
     private const int StruggleHits = 2;
+    // 收割智慧：最低单次伤害。
     private const int HarvestMinDamage = 6;
+
+    // 收割智慧：最高单次伤害。
     private const int HarvestMaxDamage = 10;
+
+    // 收割智慧：攻击次数。
     private const int HarvestHits = 4;
-    private const int HarvestCardsToSteal = 4;
+
+    // 收割智慧：被动触发间隔回合数，每隔该回合数由一只稻草人使用。
+    internal const int HarvestIntervalTurns = 2;
+
+    // 收割智慧：命中后从目标抽牌堆消耗的最大张数。
+    internal const int HarvestCardsToSteal = 4;
+
+    // 收割智慧：使用后对自身施加的束缚层数。
     private const int HarvestBindSelf = 12;
-    private const int HarvestBonusDamageNoCard = 7;
-    private const int HarvestHealPercent = 12;
-    private const int EmptyHeadDamage = 8;
-    private const int WisdomChaoBacklash = 30;
+
+    // 收割智慧：全部攻击结算后，若命中过玩家，恢复一次的最大体力百分比。
+    internal const int HarvestHealPercent = 10;
 
     internal const string IdleTexturePath = "res://images/monsters/scarecrow_searching_for_wisdom/idle.png";
     internal const string HitTexturePath = "res://images/monsters/scarecrow_searching_for_wisdom/hit.png";
@@ -133,8 +144,6 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         _hasPlayedBattleStartLine = false;
         EncounterBgmController.RegisterMonster(Creature);
         await PowerCmdCompat.Apply<ScarecrowHarvestWisdomPassivePower>(Creature, 1, Creature, null, silent: true);
-        await PowerCmdCompat.Apply<ScarecrowPeaceOfObtainedWisdomPassivePower>(Creature, 1, Creature, null, silent: true);
-        await PowerCmdCompat.Apply<ScarecrowEmptyHeadPassivePower>(Creature, 1, Creature, null, silent: true);
     }
 
     public override async Task BeforeCombatStart()
@@ -150,31 +159,6 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
 
             await AddOpeningWisdomToEachPlayer();
         }
-    }
-
-    public override async Task BeforeHandDraw(
-        Player player,
-        PlayerChoiceContext choiceContext,
-        CombatStateLike combatState)
-    {
-        await base.BeforeHandDraw(player, choiceContext, combatState);
-        if (Creature.IsDead || _formationIndex != 2 || player.Creature.IsDead)
-        {
-            return;
-        }
-
-        if (PileType.Draw.GetPile(player).Cards.Count > 0)
-        {
-            return;
-        }
-
-        await CreatureCmdCompat.Damage(
-            choiceContext,
-            player.Creature,
-            EmptyHeadDamage,
-            ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
-            Creature,
-            null);
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -223,23 +207,12 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
     private bool ShouldUseHarvestWisdom()
     {
         int round = Creature?.CombatState?.RoundNumber ?? 0;
-        if (round <= 0 || round % 3 != 0)
+        if (round <= 0 || round % HarvestIntervalTurns != 0)
         {
             return false;
         }
 
-        int expectedFormationIndex = round switch
-        {
-            3 => 2,
-            6 => 1,
-            9 => 3,
-            _ => ((round / 3 - 1) % 3) switch
-            {
-                0 => 2,
-                1 => 1,
-                _ => 3
-            }
-        };
+        int expectedFormationIndex = GetHarvestFormationIndex(round / HarvestIntervalTurns - 1);
 
         // Fall-forward: if expected formation is dead, pick next alive in sequence (wrap around)
         List<int> aliveIndices = Creature?.CombatState?.Enemies
@@ -265,6 +238,20 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
 
         EnsureHarvestDamageRoll();
         return true;
+    }
+
+    private static int GetHarvestFormationIndex(int harvestIndex)
+    {
+        // 收割顺序固定为中、左、右站位轮流。
+        switch (harvestIndex % 3)
+        {
+            case 0:
+                return 2;
+            case 1:
+                return 1;
+            default:
+                return 3;
+        }
     }
 
     internal bool IsHarvestWisdomMoveQueued()
@@ -386,9 +373,15 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(null));
 
-            foreach (Creature target in HitPlayers(results).Distinct())
+            List<Creature> hitPlayers = HitPlayers(results).Distinct().ToList();
+            foreach (Creature target in hitPlayers)
             {
                 await ResolveHarvestWisdomHit(new ThrowingPlayerChoiceContext(), target);
+            }
+
+            if (hitPlayers.Count > 0)
+            {
+                await HealAfterHarvest();
             }
         }
 
@@ -401,7 +394,6 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         ScarecrowWisdomPower? wisdomPower = target.GetPower<ScarecrowWisdomPower>();
         if (wisdomPower is { Amount: > 0 })
         {
-            await DamageChaoSelfFromWisdom(choiceContext);
             await PowerCmd.Remove(wisdomPower);
         }
 
@@ -410,32 +402,11 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
             return;
         }
 
-        CardPile drawPile = PileType.Draw.GetPile(target.Player);
-        if (drawPile.Cards.Count == 0)
-        {
-            await CreatureCmdCompat.Damage(
-                choiceContext,
-                target,
-                HarvestBonusDamageNoCard,
-                ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
-                Creature,
-                null);
-            return;
-        }
+        await StealCardsFromDrawPile(choiceContext, target.Player);
+    }
 
-        LocalOggOneShotPlayer.Play(HarvestDrainSfxPath, -2f);
-        for (int i = 0; i < HarvestCardsToSteal && drawPile.Cards.Count > 0; i++)
-        {
-            CardModel? stolen = drawPile.Cards.OfType<ScarecrowWisdomStatusCard>().FirstOrDefault()
-                                ?? target.Player.RunState.Rng.CombatCardSelection.NextItem(drawPile.Cards);
-            if (stolen == null)
-            {
-                break;
-            }
-
-            await CardCmd.Exhaust(choiceContext, stolen);
-        }
-
+    private async Task HealAfterHarvest()
+    {
         decimal missingHp = Creature.MaxHp - Creature.CurrentHp;
         if (missingHp > 0m)
         {
@@ -445,22 +416,26 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         }
     }
 
-    private async Task DamageChaoSelfFromWisdom(PlayerChoiceContext choiceContext)
+    private static async Task StealCardsFromDrawPile(PlayerChoiceContext choiceContext, Player player)
     {
-        if (Creature is not LibraryCreature libraryCreature)
+        CardPile drawPile = PileType.Draw.GetPile(player);
+        if (drawPile.Cards.Count == 0)
         {
             return;
         }
 
-        await LibraryCreatureCmd.ChaoDamage(
-            choiceContext,
-            [libraryCreature],
-            WisdomChaoBacklash,
-            ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
-            Creature,
-            null,
-            null,
-            LibraryDamageType.Blunt);
+        LocalOggOneShotPlayer.Play(HarvestDrainSfxPath, -2f);
+        for (int i = 0; i < HarvestCardsToSteal && drawPile.Cards.Count > 0; i++)
+        {
+            CardModel? stolen = drawPile.Cards.OfType<ScarecrowWisdomStatusCard>().FirstOrDefault()
+                                ?? player.RunState.Rng.CombatCardSelection.NextItem(drawPile.Cards);
+            if (stolen == null)
+            {
+                break;
+            }
+
+            await CardCmd.Exhaust(choiceContext, stolen);
+        }
     }
 
     private int GetHarvestIntentDamageRoll()
