@@ -315,6 +315,22 @@ internal static class PowerIconLocalizationPatch
     {
         bool Has(string title) => Array.IndexOf(candidates, title) >= 0;
 
+        // 黑焰正文中的“脆弱／致命”是抗性等级，四语同名的 Power 均保持纯文字。
+        if ((ownerKey is "MAGIC_BULLET_SHOOTER_PAGE_RELIC" or "MAGIC_BULLET_BLACK_FLAME_CHOICE_CARD")
+            && (Has("FRAIL_POWER.title")
+                || Has("VULNERABLE_POWER.title")
+                || Has("LIBRARY_VULNERABLE_POWER.title")))
+        {
+            return null;
+        }
+
+        // 虚无书页条件中的“憎恶”指已持有的异想体书页效果。
+        if ((ownerKey is "NIHIL_PAGE_RELIC" or "NIHIL_NIHILITY_CHOICE_CARD")
+            && Has("NATURAL_FLOOR_NIHIL_HATRED_STATUS.title"))
+        {
+            return null;
+        }
+
         if (Has("ALRIUNE_ATONEMENT_CROWN_POWER.title") || Has("ART_FLOOR_ATONEMENT_CROWN_POWER.title"))
         {
             return ownerKey.StartsWith("ALRIUNE_", StringComparison.Ordinal)
