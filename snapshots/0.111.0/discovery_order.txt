@@ -551,3 +551,4 @@ patch	LibraryOfRuina.content.abnormalities.Alriune.AlriuneDustbornDeathVisualPat
 patch	LibraryOfRuina.ui.StaggerBadgeRefreshPatch
 patch	LibraryOfRuina.ui.StaggerBadgeResistIconsPatch
 patch	LibraryOfRuina.content.liberation.Religion.ReligionFloorSacrificePlayPatch
+patch	LibraryOfRuina.patches.VanillaIntentTargetFlashPatch

@@ -560,3 +560,4 @@ AlriuneDustbornDeathVisualPatch
 StaggerBadgeRefreshPatch
 StaggerBadgeResistIconsPatch
 ReligionFloorSacrificePlayPatch
+VanillaIntentTargetFlashPatch

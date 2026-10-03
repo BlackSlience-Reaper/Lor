@@ -5,6 +5,7 @@ using System.Reflection;
 using Godot;
 using LibraryOfRuina.features.ftue;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.intents.rendering;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;
@@ -318,6 +319,15 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     // 只影响本机血条的画法（ui/StaggerBadgePatch.cs），不进局内设置、不参与联机比对，局内也可随时切换。
     [SettingsSection("CombatUi")]
     public static StaggerBarStyle StaggerBarStyle { get; set; } = StaggerBarStyle.Badge;
+
+    // 只改本机意图的画法（framework/intents/rendering），不改意图对象与招式，不参与联机比对，局内也可随时切换。
+    // 值存在 IntentDisplayStyleState：设置框架没有逐项变更回调，由它的 setter 在战斗中切换时立即重画意图。
+    [SettingsSection("CombatUi")]
+    public static IntentDisplayStyle IntentDisplayStyle
+    {
+        get => IntentDisplayStyleState.Current;
+        set => IntentDisplayStyleState.Set(value);
+    }
 
     [SettingsIgnore]
     public static bool MultiplayerScalingEnabled

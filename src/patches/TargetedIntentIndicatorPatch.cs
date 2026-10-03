@@ -15,6 +15,7 @@ namespace LibraryOfRuina.patches;
 internal static class TargetedIntentIndicatorPatch
 {
     private const string OverlayNodeName = "LibraryOfRuinaTargetedIntentLines";
+    private const string FlashNodePrefix = "LibraryOfRuinaTargetedIntentFlash";
 
     internal static IntentDecoratorOutcome OnUpdateIntent(NCreature __instance)
     {
@@ -29,11 +30,13 @@ internal static class TargetedIntentIndicatorPatch
         Creature owner)
     {
         NCreature? ownerNode = CombatQueries.CreatureNodeOf(owner);
-        if (ownerNode == null
-            || (intent is not AttackIntent
-                && intent is not IIntentTargetLineProvider)
-            // 按怪物模型的定义程序集限定来源，本模组的敌方和友方怪物均保留指示线。
-            || owner.Monster?.GetType().Assembly != typeof(TargetedIntentIndicatorPatch).Assembly)
+        if (ownerNode != null)
+        {
+            // 悬停时收起回合开始的闪现，免得同一条线叠两层。
+            RemoveFlash(ownerNode);
+        }
+
+        if (ownerNode == null || !DrawsLine(intent, owner))
         {
             if (ownerNode != null)
             {
@@ -56,6 +59,64 @@ internal static class TargetedIntentIndicatorPatch
             targets,
             AllyTurnRegistry.IsAllyCreature(owner));
     }
+
+    /// <summary>
+    /// 把悬停才有的指示线亮一下：每个会画线的意图一份，与 <see cref="Show"/> 同一套过滤和目标解析，停留后淡出并自行释放。
+    /// 原版风格画法在回合开始时调用（VanillaIntentTargetFlashPatch）；再次调用先收起上一次的。
+    /// 攻击方的对侧只有一个能指向的单位时不亮：目标只可能是它，亮线没有信息量。
+    /// </summary>
+    internal static void Flash(NCreature ownerNode, IReadOnlyList<(NIntent Node, AbstractIntent Intent, IEnumerable<Creature> Targets)> intents)
+    {
+        RemoveFlash(ownerNode);
+        Creature owner = ownerNode.Entity;
+        bool isAlly = AllyTurnRegistry.IsAllyCreature(owner);
+        if (CountOpposingTargets(owner, isAlly) <= 1)
+        {
+            return;
+        }
+
+        int index = 0;
+        foreach ((NIntent node, AbstractIntent intent, IEnumerable<Creature> ordinaryTargets) in intents)
+        {
+            if (!DrawsLine(intent, owner))
+            {
+                continue;
+            }
+
+            IReadOnlyList<Creature> targets = ResolveTargets(intent, owner, ordinaryTargets);
+            if (targets.Count == 0)
+            {
+                continue;
+            }
+
+            var overlay = new NTargetedIntentLines
+            {
+                Name = FlashNodePrefix + index++
+            };
+            ownerNode.AddChildSafely(overlay);
+            overlay.Configure(ownerNode, node, targets, isAlly);
+            overlay.StartFlash();
+        }
+    }
+
+    // 对侧：敌方怪物的对侧是玩家与友方单位（友方单位在敌方一侧为玩家作战），友方单位的对侧是其余敌方怪物。
+    private static int CountOpposingTargets(Creature owner, bool isAlly)
+    {
+        if (owner.CombatState is not { } state)
+        {
+            return 0;
+        }
+
+        IEnumerable<Creature> opposing = isAlly
+            ? state.Enemies.Where(static creature => !AllyTurnRegistry.IsAllyCreature(creature))
+            : state.PlayerCreatures.Concat(state.Enemies.Where(static creature => AllyTurnRegistry.IsAllyCreature(creature)));
+        return opposing.Count(target => target is { IsAlive: true } && target != owner && CanPointAtTarget(target, owner));
+    }
+
+    // 按怪物模型的定义程序集限定来源，本模组的敌方和友方怪物均保留指示线。
+    private static bool DrawsLine(AbstractIntent intent, Creature owner) =>
+        intent is AttackIntent or IIntentTargetLineProvider
+        && owner.Monster?.GetType().Assembly == typeof(TargetedIntentIndicatorPatch).Assembly;
 
     internal static void Hide(Creature owner)
     {
@@ -138,6 +199,18 @@ internal static class TargetedIntentIndicatorPatch
         creatureNode.RemoveChildSafely(overlay);
         overlay.QueueFreeSafely();
     }
+
+    private static void RemoveFlash(NCreature creatureNode)
+    {
+        foreach (Node child in creatureNode.GetChildren().ToArray())
+        {
+            if (child is NTargetedIntentLines && child.Name.ToString().StartsWith(FlashNodePrefix, StringComparison.Ordinal))
+            {
+                creatureNode.RemoveChildSafely(child);
+                child.QueueFreeSafely();
+            }
+        }
+    }
 }
 
 /// <summary><c>NIntent.OnHovered</c> 后缀的处理函数，入口在 IntentVisualDispatch。</summary>
@@ -200,6 +273,12 @@ internal partial class NTargetedIntentLines : Node2D
     private IReadOnlyList<Creature> _targets = Array.Empty<Creature>();
     private bool _isAlly;
 
+    // 闪现：意图可见后计时，停留 FlashHoldSeconds 再用 FlashFadeSeconds 淡出并释放。意图容器隐藏时不计时，
+    // 回合开始意图要先淡入（原版 RevealIntents 约 1 秒），停留时间从能看见时算起。负数表示常驻（悬停用）。
+    private const float FlashHoldSeconds = 2.0f;
+    private const float FlashFadeSeconds = 0.6f;
+    private float _flashElapsed = -1f;
+
     public NTargetedIntentLines()
     {
         TopLevel = true;
@@ -221,12 +300,36 @@ internal partial class NTargetedIntentLines : Node2D
         Visible = true;
     }
 
+    public void StartFlash()
+    {
+        _flashElapsed = 0f;
+    }
+
     public override void _Process(double delta)
     {
         if (!TryGetSourceCenter(out Vector2 from, out float alpha))
         {
             Visible = false;
+            if (_flashElapsed >= 0f && (_source == null || !IsInstanceValid(_source)))
+            {
+                this.QueueFreeSafely();
+            }
+
             return;
+        }
+
+        if (_flashElapsed >= 0f)
+        {
+            _flashElapsed += (float)delta;
+            float remaining = FlashHoldSeconds + FlashFadeSeconds - _flashElapsed;
+            if (remaining <= 0f)
+            {
+                Visible = false;
+                this.QueueFreeSafely();
+                return;
+            }
+
+            alpha *= Mathf.Clamp(remaining / FlashFadeSeconds, 0f, 1f);
         }
 
         float pulse = (Mathf.Sin(Time.GetTicksMsec() * 0.001f * Mathf.Tau) + 1f) * 0.5f;

@@ -21,6 +21,8 @@ internal static class IntentVisualDispatch
         [HarmonyPriority(Priority.First)]
         private static void Postfix(NCreature __instance, IEnumerable<Creature> targets)
         {
+            // 两种画法都先记下意图容器的原生布局（只读），任何装饰器改布局之前；局内切到原版风格画法时据此还原。
+            VanillaIntentDisplayPatch.RememberNativeLayout(__instance);
             var context = new IntentRenderContext { CreatureNode = __instance, Targets = targets };
             IntentRenderPipeline.Run(IntentRenderStage.CreatureLayout, ref context);
         }
