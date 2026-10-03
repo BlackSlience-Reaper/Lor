@@ -57,7 +57,7 @@ namespace LibraryOfRuinaVerification;
 /// 与时间有关的量不记录：意图的上下浮动、自动推进的动画帧、容器淡入；视觉哈希元数据是按进程随机化的 HashCode，只记键名。
 /// </para>
 /// </summary>
-internal static class IntentRenderVerificationPatch
+internal static partial class IntentRenderVerificationPatch
 {
     private const string VerifyArg = "lor-verify-intent-render";
     private const string LogPrefix = "[LibraryOfRuina.IntentRender.Verify] ";
@@ -128,6 +128,12 @@ internal static class IntentRenderVerificationPatch
             if (Failures.Count > 0)
             {
                 throw new InvalidOperationException(Failures.Count + " fight(s) failed: " + string.Join("; ", Failures));
+            }
+
+            // 原版风格画法另起一组 VROW/VCHECK 行，在默认画法的摘要打印之后运行，不进摘要。
+            if (HasVanillaArg())
+            {
+                await RunVanillaAsync();
             }
 
             Log.Info(LogPrefix + "INTENT_RENDER_OK");
