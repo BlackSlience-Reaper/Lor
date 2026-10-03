@@ -20,6 +20,7 @@ public static class LiberationFloorIds
     public const string Philosophy = "PHILOSOPHY";
     public const string Social = "SOCIAL";
     public const string Natural = "NATURAL";
+    public const string Religion = "RELIGION";
 
     public static IReadOnlyList<string> FirstAct { get; } =
         [History, Technology, Literature];

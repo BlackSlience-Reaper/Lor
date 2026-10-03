@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Texture2D" path="res://images/vfx/religion_floor_clock/ClockFrame.png" id="1"]
+[ext_resource type="Texture2D" path="res://images/vfx/religion_floor_clock/ClockCenter.png" id="2"]
+[ext_resource type="Texture2D" path="res://images/vfx/religion_floor_clock/ClockArrow.png" id="3"]
+[ext_resource type="Texture2D" path="res://images/vfx/religion_floor_clock/ClockShader.png" id="4"]
+[ext_resource type="Texture2D" path="res://images/vfx/religion_floor_clock/GlobalShader.png" id="5"]
+
+[sub_resource type="AtlasTexture" id="Center"]
+atlas = ExtResource("2")
+region = Rect2(381.6997, 126, 258, 257)
+filter_clip = true
+
+[sub_resource type="Animation" id="Step"]
+resource_name = "Step"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visuals:modulate")
+tracks/0/interp = 2
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.33333334, 2, 2.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Visuals/Clock/HandStart/HandStep:rotation")
+tracks/1/keys = {
+"times": PackedFloat32Array(0.00000000, 0.01666667, 0.03333333, 0.05000000, 0.06666667, 0.08333333, 0.10000000, 0.11666667, 0.13333333, 0.15000000, 0.16666667, 0.18333333, 0.20000000, 0.21666667, 0.23333333, 0.25000000, 0.26666667, 0.28333333, 0.30000000, 0.31666667, 0.33333333, 0.35000000, 0.36666667, 0.38333333, 0.40000000, 0.41666667, 0.43333333, 0.45000000, 0.46666667, 0.48333333, 0.50000000, 0.51666667, 0.53333333, 0.55000000, 0.56666667, 0.58333333, 0.60000000, 0.61666667, 0.63333333, 0.65000000, 0.66666667, 0.68333333, 0.70000000, 0.71666667, 0.73333333, 0.75000000, 0.76666667, 0.78333333, 0.80000000, 0.81666667, 0.83333333, 0.85000000, 0.86666667, 0.88333333, 0.90000000, 0.91666667, 0.93333333, 0.95000000, 0.96666667, 0.98333333, 1.00000000),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.00000000, 0.00023240, 0.00046481, 0.00069721, 0.00092961, 0.00116202, 0.00139442, 0.00162682, 0.00185923, 0.00209163, 0.00232403, 0.00255644, 0.00278884, 0.00302124, 0.00325365, 0.00348605, 0.00371845, 0.00395086, 0.00418326, 0.00441566, 0.00464807, 0.00488047, 0.00511287, 0.00534528, 0.00557768, 0.00581008, 0.00604249, 0.00627489, 0.00650729, 0.00673970, 0.00697210, 0.00720450, 0.00743691, 0.00766931, 0.00790171, 0.00813412, 0.00836652, 0.00859892, 0.00883133, 0.00906373, 0.00929613, 0.00952854, 0.00976094, 0.00999334, 0.01022575, 0.01045815, 0.01069056, 0.01092296, 0.01115536, 0.01138777, 0.01162017, 0.01185257, 0.01208498, 0.01231738, 0.03657815, 0.10806837, 0.20817347, 0.31833625, 0.41999953, 0.49460610, 0.52359878]
+}
+
+[sub_resource type="AnimationLibrary" id="Library"]
+_data = {&"Step": SubResource("Step")}
+
+[node name="ReligionApostleClock" type="CanvasLayer"]
+layer = 80
+
+[node name="Visuals" type="Node2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="Background" type="TextureRect" parent="Visuals"]
+offset_left = -960.341
+offset_top = -528.0
+offset_right = 960.341
+offset_bottom = 528.0
+mouse_filter = 2
+texture = ExtResource("4")
+expand_mode = 1
+
+[node name="Clock" type="Node2D" parent="Visuals"]
+position = Vector2(0, -55)
+
+[node name="Frame" type="TextureRect" parent="Visuals/Clock"]
+offset_left = -455.166
+offset_top = -458.75
+offset_right = 455.166
+offset_bottom = 458.75
+mouse_filter = 2
+texture = ExtResource("1")
+expand_mode = 1
+
+[node name="Center" type="TextureRect" parent="Visuals/Clock"]
+offset_left = -229.445
+offset_top = -229.158
+offset_right = 229.445
+offset_bottom = 229.158
+mouse_filter = 2
+texture = SubResource("Center")
+expand_mode = 1
+
+[node name="HandStart" type="Node2D" parent="Visuals/Clock"]
+
+[node name="HandStep" type="Node2D" parent="Visuals/Clock/HandStart"]
+
+[node name="Arrow" type="TextureRect" parent="Visuals/Clock/HandStart/HandStep"]
+offset_left = -28.08
+offset_top = -233.415
+offset_right = 30.42
+offset_bottom = 23.085
+mouse_filter = 2
+texture = ExtResource("3")
+expand_mode = 1
+
+[node name="Overlay" type="TextureRect" parent="Visuals"]
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+mouse_filter = 2
+texture = ExtResource("5")
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {&"": SubResource("Library")}

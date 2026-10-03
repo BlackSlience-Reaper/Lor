@@ -1,7 +1,7 @@
 {
   "MATCH_FLAME_ENCHANTMENT.title": "Match Flame",
-  "MATCH_FLAME_ENCHANTMENT.description": "Whenever this card is played, it gains +[blue]{Damage}[/blue] damage. Apply [blue]{Burn}[/blue] stacks of [gold]Burn[/gold] to the target. Starting with the [blue]{Threshold}[/blue]th time the same card is played this combat, apply [blue]{SelfBurn}[/blue] stacks of [gold]Burn[/gold] to yourself.",
-  "MATCH_FLAME_ENCHANTMENT.extraCardText": "Whenever this card is played, it gains +[blue]{Damage}[/blue] damage. Apply [blue]{Burn}[/blue] stacks of [gold]Burn[/gold] to the target. Starting with the [blue]{Threshold}[/blue]th time the same card is played this combat, apply [blue]{SelfBurn}[/blue] stacks of [gold]Burn[/gold] to yourself.",
+  "MATCH_FLAME_ENCHANTMENT.description": "Whenever this card is played, it gains +[blue]{Damage}[/blue] damage. Apply [blue]{Burn}[/blue] [gold]Burn[/gold] to the target.\nFrom the [blue]{Threshold}[/blue]th time this card is played this combat onward, apply [blue]{SelfBurn}[/blue] [gold]Burn[/gold] to yourself.",
+  "MATCH_FLAME_ENCHANTMENT.extraCardText": "Whenever this card is played, it gains +[blue]{Damage}[/blue] damage. Apply [blue]{Burn}[/blue] [gold]Burn[/gold] to the target.\nFrom the [blue]{Threshold}[/blue]th time this card is played this combat onward, apply [blue]{SelfBurn}[/blue] [gold]Burn[/gold] to yourself.",
   "LETICIA_PARTNER_MARK_ENCHANTMENT.title": "Partner Mark",
   "STRANGLING_VINE_ENCHANTMENT.title": "Strangling Vine",
   "STRANGLING_VINE_ENCHANTMENT.description": "This card's attack type is treated as [img]res://LibraryOfRuinaLib/images/dice/pierce.png[/img]. Each hit additionally applies [blue]{Binding}[/blue] [gold]Binding[/gold] for [blue]{Turns}[/blue] turn.",
@@ -9,12 +9,12 @@
   "LETICIA_PARTNER_MARK_ENCHANTMENT.description": "Each time this card is played during a turn, its cost changes by [blue]-{CostReduction}[/blue] for this combat. If it is still in your hand at the end of the turn, its cost changes by [blue]+{CostIncrease}[/blue] for this combat.",
   "LETICIA_PARTNER_MARK_ENCHANTMENT.extraCardText": "Each time this card is played during a turn, its cost changes by [blue]-{CostReduction}[/blue] for this combat. If it is still in your hand at the end of the turn, its cost changes by [blue]+{CostIncrease}[/blue] for this combat.",
   "CHAIN_ENCHANTMENT.title": "Chain",
-  "CHAIN_ENCHANTMENT.description": "After this card is played, deal [blue]{DamagePercent}%[/blue] of its unblocked damage to other enemies [blue]{Repeat}[/blue] additional times.",
-  "CHAIN_ENCHANTMENT.extraCardText": "After this card is played, deal [blue]{DamagePercent}%[/blue] of its unblocked damage to other enemies [blue]{Repeat}[/blue] additional times.",
+  "CHAIN_ENCHANTMENT.description": "After this card is played, deal [blue]{DamagePercent}%[/blue] of its [gold]unblocked damage[/gold] to other enemies [blue]{Repeat}[/blue] additional times.",
+  "CHAIN_ENCHANTMENT.extraCardText": "After this card is played, deal [blue]{DamagePercent}%[/blue] of its [gold]unblocked damage[/gold] to other enemies [blue]{Repeat}[/blue] additional times.",
   "PEBBLE_MARK_ENCHANTMENT.title": "Pebble Mark",
   "PEBBLE_MARK_ENCHANTMENT.description": "This card gains [gold]Exhaust[/gold]. After being played, heal [blue]{Heal}[/blue] HP.",
-  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "After being played, heal [blue]{Heal}[/blue] HP. Gain [gold]Exhaust[/gold]."
-  ,"IORI_UNPREDICTABLE_ENCHANTMENT.title": "Unpredictable",
+  "PEBBLE_MARK_ENCHANTMENT.extraCardText": "After being played, heal [blue]{Heal}[/blue] HP. Gain [gold]Exhaust[/gold].",
+  "IORI_UNPREDICTABLE_ENCHANTMENT.title": "Unpredictable",
   "IORI_UNPREDICTABLE_ENCHANTMENT.description": "This card's cost is randomized to [blue]0–3[/blue]. Whenever you draw this card, play it automatically, then return it to your [gold]hand[/gold].",
   "IORI_UNPREDICTABLE_ENCHANTMENT.extraCardText": "This card's cost is randomized to [blue]0–3[/blue]. Whenever you draw this card, play it automatically, then return it to your [gold]hand[/gold]."
 }
