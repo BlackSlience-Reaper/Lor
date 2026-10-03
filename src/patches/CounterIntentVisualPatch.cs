@@ -104,23 +104,18 @@ internal static class CounterIntentAppendPatch
     {
         try
         {
-            if (__instance.Entity is not { IsEnemy: true, Monster: ICounterIntentQueueOwner owner })
+            if (!TryCollectVisibleIntents(
+                    __instance,
+                    targets,
+                    out IReadOnlyList<AbstractIntent> displayIntents,
+                    out IReadOnlyList<Creature> targetList,
+                    out Creature? viewer))
             {
                 return IntentDecoratorOutcome.Skipped;
             }
 
             Control container = __instance.IntentContainer;
             Creature creature = __instance.Entity;
-            if (creature.Monster is CounterIntentMonsterModel counterMonster)
-            {
-                counterMonster.SyncCounterIntentsWithCurrentMove(refresh: false);
-            }
-
-            IReadOnlyList<Creature> targetList = targets as IReadOnlyList<Creature> ?? targets.ToArray();
-            Creature? viewer = ResolveCounterViewer(creature, targetList);
-            IReadOnlyList<AbstractIntent> displayIntents = creature.Monster.NextMove.Intents
-                .Where(intent => intent is not ICounterIntent counterIntent || owner.CounterIntentQueue.ShouldDisplay(counterIntent, viewer))
-                .ToArray();
             displayIntents = CombinedIntentDisplayPatch.SimplifyForDisplay(displayIntents);
             int requiredCount = displayIntents.Count;
             float startOffset = __instance.GetHashCode() / 100f;
@@ -155,6 +150,41 @@ internal static class CounterIntentAppendPatch
         }
     }
 
+    /// <summary>
+    /// 反击队列拥有者本次要显示的意图：先同步反击队列，再按本地玩家（观察者）过滤反击意图。两种画法共用，
+    /// 原版风格画法也必须经过这里：<see cref="CounterIntentMonsterModel.SyncCounterIntentsWithCurrentMove"/>
+    /// 会在 NextMove 变化时清空并重填队列（含按玩家的消耗计数），是从显示路径改模型状态，调用时机不能随画法改变。
+    /// </summary>
+    internal static bool TryCollectVisibleIntents(
+        NCreature creatureNode,
+        IEnumerable<Creature> targets,
+        out IReadOnlyList<AbstractIntent> visibleIntents,
+        out IReadOnlyList<Creature> targetList,
+        out Creature? viewer)
+    {
+        if (creatureNode.Entity is not { IsEnemy: true, Monster: ICounterIntentQueueOwner owner })
+        {
+            visibleIntents = Array.Empty<AbstractIntent>();
+            targetList = Array.Empty<Creature>();
+            viewer = null;
+            return false;
+        }
+
+        Creature creature = creatureNode.Entity;
+        if (creature.Monster is CounterIntentMonsterModel counterMonster)
+        {
+            counterMonster.SyncCounterIntentsWithCurrentMove(refresh: false);
+        }
+
+        targetList = targets as IReadOnlyList<Creature> ?? targets.ToArray();
+        Creature? localViewer = ResolveCounterViewer(creature, targetList);
+        visibleIntents = creature.Monster.NextMove.Intents
+            .Where(intent => intent is not ICounterIntent counterIntent || owner.CounterIntentQueue.ShouldDisplay(counterIntent, localViewer))
+            .ToArray();
+        viewer = localViewer;
+        return true;
+    }
+
     private static Creature? ResolveCounterViewer(Creature owner, IReadOnlyList<Creature> fallbackTargets)
     {
         if (LocalContext.NetId.HasValue && owner.CombatState != null)
@@ -171,7 +201,7 @@ internal static class CounterIntentAppendPatch
         return fallbackTargets.FirstOrDefault(static target => target.IsPlayer);
     }
 
-    private static IEnumerable<Creature> ResolveIntentTargets(
+    internal static IEnumerable<Creature> ResolveIntentTargets(
         AbstractIntent intent,
         IReadOnlyList<Creature> fallbackTargets,
         Creature? viewer)

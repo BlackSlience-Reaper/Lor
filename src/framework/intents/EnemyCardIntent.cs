@@ -113,6 +113,15 @@ public sealed class EnemyCardIntent : AbstractIntent, IEnemyCardIntent
 
         return Math.Max(0, (int)_damageCalc());
     }
+
+    // 原版风格的攻击代理（rendering/VanillaIntentProxies）读取：本类继承 AbstractIntent，原版 NIntent 不显示它的标签，
+    // 代理要拿到与本类标签同一个数（不经伤害 Hook，与默认画法的卡面数字一致）。
+    internal bool HasDamage => _damageCalc != null;
+
+    internal Func<decimal>? DisplayDamageCalc => _damageCalc;
+
+    internal int GetDisplaySingleDamage(IEnumerable<Creature> targets, Creature owner) =>
+        GetSingleDamage(targets, owner);
 }
 
 public sealed class EnemyCardAttackIntent(

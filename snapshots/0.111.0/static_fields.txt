@@ -148,6 +148,7 @@ mutable	LibraryOfRuina.framework.audio.ReverberationEnsembleBgmController._synci
 mutable	LibraryOfRuina.framework.audio.ReverberationEnsembleBgmController._track	System.String
 mutable	LibraryOfRuina.framework.audio.ReverberationEnsembleBgmController._wonRow	System.Int32
 mutable	LibraryOfRuina.framework.combat.AllyTurnRegistry._combatEndedByAllyTurn	System.Boolean
+mutable	LibraryOfRuina.framework.intents.rendering.IntentDisplayStyleState._current	LibraryOfRuina.framework.intents.rendering.IntentDisplayStyle
 mutable	LibraryOfRuina.infra.hooks.LibraryOfRuinaHookListener._listeners	MegaCrit.Sts2.Core.Models.AbstractModel[]
 mutable	LibraryOfRuina.infra.patching.LibraryPatchReportPatch._reported	System.Boolean
 mutable	LibraryOfRuina.patches.BadgedIntentVisualPatch._allyCombinedAttackMaterial	Godot.ShaderMaterial
@@ -1735,6 +1736,9 @@ readonly	LibraryOfRuina.framework.intents.TargetedMonsterAttackHelper+EmptyTarge
 readonly	LibraryOfRuina.framework.intents.TargetedMonsterAttackHelper.ForcedTargetStacks	System.Collections.Generic.Dictionary`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Collections.Generic.Stack`1[System.Collections.Generic.IReadOnlyList`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]]]
 readonly	LibraryOfRuina.framework.intents.TargetedSegmentedAttackPreview.EmptyVariables	System.Collections.Generic.IReadOnlyDictionary`2[System.String,System.Object]
 readonly	LibraryOfRuina.framework.intents.rendering.IntentRenderPipeline.Order	LibraryOfRuina.framework.intents.rendering.IIntentDecorator[][]
+readonly	LibraryOfRuina.framework.intents.rendering.IntentRenderPipeline.VanillaOrder	LibraryOfRuina.framework.intents.rendering.IIntentDecorator[][]
+readonly	LibraryOfRuina.framework.intents.rendering.VanillaIntentMapper.CombinedKinds	System.String[]
+readonly	LibraryOfRuina.framework.intents.rendering.VanillaIntentProxies.Sources	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.MonsterMoves.Intents.AbstractIntent,LibraryOfRuina.framework.intents.rendering.VanillaIntentProxySource]
 readonly	LibraryOfRuina.framework.powers.LibraryOfRuinaBlindNavigationPower.DamageMultiplier	System.Decimal
 readonly	LibraryOfRuina.framework.powers.LibraryOfRuinaCostReductionPower.AfflictionAmountPerCard	System.Decimal
 readonly	LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.PageRelicsById	System.Lazy`1[System.Collections.Generic.IReadOnlyDictionary`2[MegaCrit.Sts2.Core.Models.ModelId,LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection+PageRelicRegistration]]
@@ -1869,6 +1873,8 @@ readonly	LibraryOfRuina.interop.VanillaPrivate.HealthBarCreature	LibraryOfRuina.
 readonly	LibraryOfRuina.interop.VanillaPrivate.HoverTipSetActiveHoverTips	LibraryOfRuina.interop.VanillaPrivateStaticField`2[MegaCrit.Sts2.Core.Nodes.HoverTips.NHoverTipSet,System.Collections.IDictionary]
 readonly	LibraryOfRuina.interop.VanillaPrivate.HoverTipSetOwner	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.HoverTips.NHoverTipSet,Godot.Control]
 readonly	LibraryOfRuina.interop.VanillaPrivate.HoverTipSetTextHoverTipContainer	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.HoverTips.NHoverTipSet,Godot.Control]
+readonly	LibraryOfRuina.interop.VanillaPrivate.IntentNodeIntent	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Combat.NIntent,MegaCrit.Sts2.Core.MonsterMoves.Intents.AbstractIntent]
+readonly	LibraryOfRuina.interop.VanillaPrivate.IntentNodeTargets	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Combat.NIntent,System.Collections.Generic.IEnumerable`1[MegaCrit.Sts2.Core.Entities.Creatures.Creature]]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MapScreenBossPointNode	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen,Godot.CanvasItem]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MapScreenPaths	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen,System.Collections.IDictionary]
 readonly	LibraryOfRuina.interop.VanillaPrivate.MapScreenStartingPointNode	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen,Godot.CanvasItem]
@@ -1945,7 +1951,9 @@ readonly	LibraryOfRuina.patches.NTargetArrowDashLine+PropertyName._lineColor	God
 readonly	LibraryOfRuina.patches.NTargetArrowDashLine+PropertyName._phase	Godot.StringName
 readonly	LibraryOfRuina.patches.NTargetedIntentLines+MethodName.EnsureLineCount	Godot.StringName
 readonly	LibraryOfRuina.patches.NTargetedIntentLines+MethodName.LerpColor	Godot.StringName
+readonly	LibraryOfRuina.patches.NTargetedIntentLines+MethodName.StartFlash	Godot.StringName
 readonly	LibraryOfRuina.patches.NTargetedIntentLines+MethodName._Process	Godot.StringName
+readonly	LibraryOfRuina.patches.NTargetedIntentLines+PropertyName._flashElapsed	Godot.StringName
 readonly	LibraryOfRuina.patches.NTargetedIntentLines+PropertyName._isAlly	Godot.StringName
 readonly	LibraryOfRuina.patches.NTargetedIntentLines+PropertyName._owner	Godot.StringName
 readonly	LibraryOfRuina.patches.NTargetedIntentLines+PropertyName._source	Godot.StringName
@@ -1956,6 +1964,7 @@ readonly	LibraryOfRuina.patches.NTargetedIntentLines.EnemyStrongColor	Godot.Colo
 readonly	LibraryOfRuina.patches.PowerDamageHealthLockChaos.ChaosDamageRatio	System.Decimal
 readonly	LibraryOfRuina.patches.ReverberationEnsembleIconFill.Masks	System.Collections.Generic.Dictionary`2[System.String,Godot.Texture2D]
 readonly	LibraryOfRuina.patches.RoomIconPathCustomOverride.PropertiesByType	System.Collections.Concurrent.ConcurrentDictionary`2[System.Type,LibraryOfRuina.patches.RoomIconPathCustomOverride+IconProperties]
+readonly	LibraryOfRuina.patches.VanillaIntentDisplayPatch.NativeLayouts	System.Runtime.CompilerServices.ConditionalWeakTable`2[Godot.Control,LibraryOfRuina.patches.VanillaIntentDisplayPatch+NativeContainerLayout]
 readonly	LibraryOfRuina.patches.visuals.AttackAnimationHitSuppression.ActiveAttackAnimations	LibraryOfRuina.infra.lifecycle.CombatScoped`2[MegaCrit.Sts2.Core.Entities.Creatures.Creature,System.Int32]
 readonly	LibraryOfRuina.patches.visuals.AttackAnimationHitSuppression.Gate	System.Object
 readonly	LibraryOfRuina.patches.visuals.CreatureStateDisplayOffset+MethodName.ApplyOffset	Godot.StringName

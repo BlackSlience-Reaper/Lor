@@ -51,6 +51,8 @@ NHealthBar._creature	ok
 NHoverTipSet._activeHoverTips	ok
 NHoverTipSet._owner	ok
 NHoverTipSet._textHoverTipContainer	ok
+NIntent._intent	ok
+NIntent._targets	ok
 NMapScreen._bossPointNode	ok
 NMapScreen._paths	ok
 NMapScreen._startingPointNode	ok

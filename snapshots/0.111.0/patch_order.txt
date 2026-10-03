@@ -95,6 +95,7 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.SfxCmd), "Play", [typeof(System.
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "PrepareForNextTurn")
   Postfix LibraryOfRuina.content.abnormalities.QueenBee.QueenBeeWorkerForcedPromoteGrowthPatch.Postfix
   Postfix LibraryOfRuina.content.liberation.Language.LanguageFloorCobaltScarPostRollPatch.Postfix
+  Postfix LibraryOfRuina.patches.VanillaIntentTargetFlashPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Entities.Creatures.Creature), "ScaleMonsterHpForMultiplayer")
   Prefix LibraryOfRuina.patches.AllyMultiplayerHpScalingPatch.Prefix
   Postfix LibraryOfRuina.content.liberation.Social.SocialFloorLiberationExactVitalsPatch.Postfix

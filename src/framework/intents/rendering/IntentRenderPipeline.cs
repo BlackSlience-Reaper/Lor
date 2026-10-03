@@ -104,12 +104,34 @@ internal readonly record struct IntentRenderTraceEntry(
 /// <item>每个意图刷新时，封印先重置并应用当前封印颜色，和弦再追加未解锁段的变暗。</item>
 /// </list>
 /// 装饰器抛出的异常照常向外传播，与原来同一个补丁方法里依次调用时相同：后面的装饰器不再执行。
+/// <para>
+/// 设置为原版风格（<see cref="IntentDisplayStyle.Vanilla"/>）时，本模组的怪物与友方单位改用第二张顺序表
+/// （<see cref="IntentDisplayStyleState.Covers"/>）；其余怪物、以及设置为默认时，一律用上面这张表，行为与没有这个设置时相同。
+/// 原版风格表的约定：
+/// <list type="bullet">
+/// <item>布局换成映射器：复合、徽记、详细意图、敌方卡牌都映射成原版意图（<see cref="VanillaIntentMapper"/>），
+/// 徽记与详细意图的效果行、复合的帧、狐狸数字因此都不再出现，敌方卡牌仍照默认画法挂在意图上方；
+/// 反击队列的同步与按观察者过滤照旧在布局这一步。</item>
+/// <item>逐节点着色先清掉默认画法留在复用节点上的叠加节点；复合装饰器保留在表里，只为清掉节点上残留的复合动画状态
+/// （显示意图不实现复合接口），反击装饰器照旧给金色反击图标换帧。</item>
+/// <item>悬停时显示代理先接手（描述取源意图、附加提示），其余意图照旧交给默认装饰器。</item>
+/// </list>
+/// 每帧入口与悬停提示列表入口拿不到怪物，两张表在这两处相同，直接用默认表。
+/// </para>
 /// </summary>
 internal static class IntentRenderPipeline
 {
-    private static readonly IIntentDecorator[][] Order = BuildOrder();
+    private static readonly IIntentDecorator[][] Order;
 
-    private static IIntentDecorator[][] BuildOrder()
+    private static readonly IIntentDecorator[][] VanillaOrder;
+
+    static IntentRenderPipeline()
+    {
+        // 装饰器本身无状态（节点状态在各处理类的弱表里），两张表直接共用默认装饰器的实例。
+        Order = BuildOrder(out VanillaOrder);
+    }
+
+    private static IIntentDecorator[][] BuildOrder(out IIntentDecorator[][] vanillaOrder)
     {
         var badgeDetail = new BadgeDetailIntentDecorator();
         var combined = new CombinedIntentDecorator();
@@ -131,7 +153,44 @@ internal static class IntentRenderPipeline
         order[(int)IntentRenderStage.IntentUnhovered] = [targetIndicator];
         order[(int)IntentRenderStage.HoverTip] = [combined, badgeDetail];
         order[(int)IntentRenderStage.CreatureHoverTips] = [counter];
+
+        var vanillaHover = new VanillaHoverIntentDecorator();
+        var vanilla = new IIntentDecorator[order.Length][];
+        vanilla[(int)IntentRenderStage.CreatureLayout] = [new VanillaLayoutIntentDecorator()];
+        vanilla[(int)IntentRenderStage.CreatureDecorate] = [new VanillaEnemyCardIntentDecorator(), targetIndicator];
+        vanilla[(int)IntentRenderStage.IntentVisuals] =
+        [
+            new VanillaTintIntentDecorator(),
+            combined,
+            counter,
+            new VanillaSolemnMourningSealIntentDecorator(),
+            new VanillaChordEgoDimIntentDecorator()
+        ];
+        vanilla[(int)IntentRenderStage.IntentFrame] = order[(int)IntentRenderStage.IntentFrame];
+        vanilla[(int)IntentRenderStage.IntentHovered] = [vanillaHover, badgeDetail];
+        vanilla[(int)IntentRenderStage.IntentHoveredAfter] = [new VanillaTargetIndicatorIntentDecorator()];
+        vanilla[(int)IntentRenderStage.IntentUnhovered] = [targetIndicator];
+        vanilla[(int)IntentRenderStage.HoverTip] = [vanillaHover, combined, badgeDetail];
+        vanilla[(int)IntentRenderStage.CreatureHoverTips] = order[(int)IntentRenderStage.CreatureHoverTips];
+        vanillaOrder = vanilla;
         return order;
+    }
+
+    /// <summary>本次调用用哪张顺序表：只有设置为原版风格、且这次刷新的是适用对象时才用原版风格表。</summary>
+    private static IIntentDecorator[] OrderFor(IntentRenderStage stage, in IntentRenderContext context)
+    {
+        if (IntentDisplayStyleState.Current != IntentDisplayStyle.Vanilla)
+        {
+            return Order[(int)stage];
+        }
+
+        Creature? owner = stage switch
+        {
+            IntentRenderStage.CreatureLayout or IntentRenderStage.CreatureDecorate => context.CreatureNode?.Entity,
+            IntentRenderStage.IntentFrame or IntentRenderStage.CreatureHoverTips => null,
+            _ => context.Owner
+        };
+        return IntentDisplayStyleState.Covers(owner) ? VanillaOrder[(int)stage] : Order[(int)stage];
     }
 
     /// <summary>
@@ -143,7 +202,7 @@ internal static class IntentRenderPipeline
         ref IntentRenderContext context,
         List<IntentRenderTraceEntry>? trace = null)
     {
-        IIntentDecorator[] decorators = Order[(int)stage];
+        IIntentDecorator[] decorators = OrderFor(stage, in context);
         for (int i = 0; i < decorators.Length; i++)
         {
             IntentDecoratorOutcome outcome = decorators[i].Render(stage, ref context);
@@ -158,9 +217,13 @@ internal static class IntentRenderPipeline
     }
 
     /// <summary>该入口依次调用的装饰器名，供诊断与验证。</summary>
-    internal static IReadOnlyList<string> DecoratorNames(IntentRenderStage stage)
+    internal static IReadOnlyList<string> DecoratorNames(IntentRenderStage stage) =>
+        DecoratorNames(stage, IntentDisplayStyle.Default);
+
+    /// <summary>指定画法的顺序表里该入口依次调用的装饰器名。</summary>
+    internal static IReadOnlyList<string> DecoratorNames(IntentRenderStage stage, IntentDisplayStyle style)
     {
-        IIntentDecorator[] decorators = Order[(int)stage];
+        IIntentDecorator[] decorators = (style == IntentDisplayStyle.Vanilla ? VanillaOrder : Order)[(int)stage];
         var names = new string[decorators.Length];
         for (int i = 0; i < decorators.Length; i++)
         {

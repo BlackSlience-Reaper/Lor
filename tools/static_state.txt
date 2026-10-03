@@ -231,6 +231,8 @@ LibraryOfRuina.framework.intents.CombinedIntentAnimData.SingleFrameKinds	harmles
 LibraryOfRuina.framework.intents.CombinedIntentAnimData.StaticIconKinds	harmless	cache	静态初始化的常量集合
 LibraryOfRuina.framework.intents.CounterIntentAnimData.Data	harmless	cache	静态初始化的动画数据表
 LibraryOfRuina.framework.intents.TargetedMonsterAttackHelper.ForcedTargetStacks	combat	-	以生物为键的强制目标栈，using 作用域释放时出栈；任务永不完成时残留（强引用）
+LibraryOfRuina.framework.intents.rendering.IntentDisplayStyleState._current	harmless	settings	LibraryOfRuinaSettings.IntentDisplayStyle 的 setter（下拉框、读配置、恢复默认）经 Set 写入；只决定本机意图节点用哪张顺序表，不进模型层、不参与联机比对
+LibraryOfRuina.framework.intents.rendering.VanillaIntentProxies.Sources	instance	-	以原版风格画法生成的显示意图为弱键：VanillaIntentMapper 映射时写入源意图与源下标；显示意图只挂在本地 NIntent 节点上，节点换意图后随之回收
 LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.PreselectDepths	instance	-	正在奖励界面预选模式的书页遗物实例；TryPreselectPageChoice 进出时增减
 LibraryOfRuina.framework.relics.AbnormalityPageRewardResumePatch.RestoredRooms	combat	-	以 CombatRoom 为弱键：MarkRestored（读档恢复时）写入；OfferRoomEndRewards 的 Postfix 消费后移除
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals.VisibleBottomByTexturePath	harmless	cache	按贴图路径缓存可见底边位置
@@ -267,6 +269,7 @@ LibraryOfRuina.patches.NTargetedIntentLines._arrowStartTexture	harmless	cache	Cr
 LibraryOfRuina.patches.NTargetedIntentLines._arrowTexture	harmless	cache	Create 里通过 LoadTexture(ref) 加载一次
 LibraryOfRuina.patches.ReverberationEnsembleIconFill.Masks	harmless	cache	GetMask 按路径缓存遮罩贴图
 LibraryOfRuina.patches.RoomIconPathCustomOverride.PropertiesByType	harmless	cache	TryResolve 按类型缓存反射得到的属性
+LibraryOfRuina.patches.VanillaIntentDisplayPatch.NativeLayouts	instance	-	以意图容器节点为弱键：首次刷新意图时（CreatureLayout 入口最前）记下原生布局，只读；原版风格画法据此还原默认画法运行时出牌改过的容器间距与尺寸
 LibraryOfRuina.patches.visuals.AttackAnimationHitSuppression.ActiveAttackAnimations	combat	-	攻击动画进行中的生物计数，攻击命令完成时释放；只影响受击动画
 LibraryOfRuina.patches.visuals.MonsterVisualCatalog.ValidatedModelAssetPathIds	harmless	cache	ValidateModelAssetPaths 记录已校验过的 ID
 LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace._current	harmless	scope	构造函数压入当前 trace，Dispose 还原为 _previous；伤害预览说明

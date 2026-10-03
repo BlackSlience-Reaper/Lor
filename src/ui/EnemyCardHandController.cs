@@ -71,13 +71,8 @@ internal static class EnemyCardIntentRuntimePatch
             return;
         }
 
-        int firstVisiblePlanIndex = runtime.CurrentPlanIndex + (runtime.CardInUse == null ? 0 : 1);
-        IReadOnlyList<EnemyCardSpec> displayCards = runtime.CurrentPlan.Count > 0
-            ? runtime.CurrentPlan.Skip(firstVisiblePlanIndex).ToArray()
-            : [];
-        IReadOnlyList<AbstractIntent> displayIntents = runtime.CurrentPlan.Count > 0
-            ? displayCards.SelectMany(owner.CreateIntentSequenceForCard).ToArray()
-            : moveIntents.Where(static intent => intent is IEnemyCardIntent).ToArray();
+        (int firstVisiblePlanIndex, IReadOnlyList<EnemyCardSpec> displayCards, IReadOnlyList<AbstractIntent> displayIntents) =
+            CollectRuntimeDisplay(owner, runtime, moveIntents);
         if (displayIntents.Count == 0)
         {
             EnemyCardIntentVisualNode.ClearContainer(creatureNode.IntentContainer);
@@ -112,6 +107,26 @@ internal static class EnemyCardIntentRuntimePatch
                      + " handLayer=hidden"
                      + BuildLayoutLogSuffix(creatureNode.IntentContainer));
         }
+    }
+
+    /// <summary>
+    /// 运行时出牌计划里还没打出的牌，按出牌顺序展开成意图。两种画法共用：原版风格画法把这些意图再映射成原版意图，
+    /// 同样把卡牌挂在意图上方。计划为空时退回招式里的敌方卡牌意图。
+    /// </summary>
+    internal static (int FirstVisiblePlanIndex, IReadOnlyList<EnemyCardSpec> Cards, IReadOnlyList<AbstractIntent> Intents)
+        CollectRuntimeDisplay(
+            IEnemyCardRuntimeOwner owner,
+            EnemyCardRuntime runtime,
+            IReadOnlyList<AbstractIntent> moveIntents)
+    {
+        int firstVisiblePlanIndex = runtime.CurrentPlanIndex + (runtime.CardInUse == null ? 0 : 1);
+        IReadOnlyList<EnemyCardSpec> displayCards = runtime.CurrentPlan.Count > 0
+            ? runtime.CurrentPlan.Skip(firstVisiblePlanIndex).ToArray()
+            : [];
+        IReadOnlyList<AbstractIntent> displayIntents = runtime.CurrentPlan.Count > 0
+            ? displayCards.SelectMany(owner.CreateIntentSequenceForCard).ToArray()
+            : moveIntents.Where(static intent => intent is IEnemyCardIntent).ToArray();
+        return (firstVisiblePlanIndex, displayCards, displayIntents);
     }
 
     private static void RenderMoveIntents(

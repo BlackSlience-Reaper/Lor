@@ -104,7 +104,8 @@ internal static class CombinedIntentDisplayPatch
             && owner.Monster is not ICounterIntentQueueOwner;
     }
 
-    private static bool IsLibraryOfRuinaModMonster(MonsterModel monster)
+    // 原版风格画法（rendering/VanillaIntentDisplay）沿用同一个判定，只改本模组的怪物与友方单位。
+    internal static bool IsLibraryOfRuinaModMonster(MonsterModel monster)
     {
         if (monster is LibraryMonsterModel
             or ILiberationPrimaryPhaseBoss)
@@ -160,7 +161,8 @@ internal static class CombinedIntentDisplayPatch
         return ReplaceBadgedAttackIntents(layoutIntents);
     }
 
-    private static IReadOnlyList<AbstractIntent> RemoveHiddenLayoutPlaceholders(
+    // 招式里的 HiddenIntent 只是布局占位；原版风格画法用同一规则去掉。
+    internal static IReadOnlyList<AbstractIntent> RemoveHiddenLayoutPlaceholders(
         IReadOnlyList<AbstractIntent> source)
     {
         if (source.Count <= 1 || source.All(static intent => intent is not HiddenIntent))

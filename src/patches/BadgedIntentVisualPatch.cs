@@ -75,9 +75,7 @@ internal static class BadgedIntentVisualPatch
         }
 
         Control holder = __instance.GetNode<Control>("%IntentHolder");
-        Color intentColor = holder.Modulate;
-        holder.Modulate = new Color(1f, 1f, 1f, intentColor.A);
-        ApplyAllyAttackColor(__instance, ____intent, ____owner);
+        ResetIntentTint(__instance, holder, ____intent, ____owner);
 
         DetailedIntentVisualState visualState = GetVisualState(____intent, ____targets, ____owner);
         string newHash = ComputeVisualHash(____intent, visualState, ____owner);
@@ -147,6 +145,30 @@ internal static class BadgedIntentVisualPatch
         }
 
         return IntentDecoratorOutcome.Applied;
+    }
+
+    /// <summary>
+    /// 恢复意图图标的颜色，再给友方单位的攻击着绿色（友方在敌方一侧为玩家作战，原版没有这种单位）。
+    /// 两种画法都调用：默认画法在徽记与详细意图之前，原版风格画法在 <c>VanillaIntentTint</c> 装饰器里。
+    /// </summary>
+    internal static void ResetIntentTint(NIntent intentNode, Control holder, AbstractIntent intent, Creature owner)
+    {
+        Color intentColor = holder.Modulate;
+        holder.Modulate = new Color(1f, 1f, 1f, intentColor.A);
+        ApplyAllyAttackColor(intentNode, intent, owner);
+    }
+
+    /// <summary>
+    /// 原版风格画法清掉默认画法留在节点上的效果行、角标、目标标记与视觉哈希。
+    /// 意图节点会被复用，局内切换画法后旧节点上的叠加节点不会自己消失；去掉哈希让切回默认画法时重新绘制。
+    /// </summary>
+    internal static void RemoveOverlays(Control holder)
+    {
+        RemoveDetailNodes(holder);
+        if (holder.HasMeta(VisualHashMetaKey))
+        {
+            holder.RemoveMeta(VisualHashMetaKey);
+        }
     }
 
     private static void ApplyAllyAttackColor(NIntent intentNode, AbstractIntent intent, Creature owner)

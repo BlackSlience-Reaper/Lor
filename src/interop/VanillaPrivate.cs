@@ -94,6 +94,8 @@ internal static class VanillaPrivate
     internal static readonly VanillaPrivateField<NHealthBar, Control> HealthBarBlockContainer = new("_blockContainer");
     internal static readonly VanillaPrivateField<NHealthBar, Control> HealthBarBlockLabel = new("_blockLabel");
     internal static readonly VanillaPrivateField<NHealthBar, Creature> HealthBarCreature = new("_creature");
+    internal static readonly VanillaPrivateField<NIntent, MegaCrit.Sts2.Core.MonsterMoves.Intents.AbstractIntent> IntentNodeIntent = new("_intent");
+    internal static readonly VanillaPrivateField<NIntent, IEnumerable<Creature>> IntentNodeTargets = new("_targets");
     internal static readonly VanillaPrivateField<NPower, PowerModel> PowerNodeModel = new("_model");
     internal static readonly VanillaPrivateProperty<NTargetManager, Node> TargetManagerHoveredNode = new("HoveredNode");
     internal static readonly VanillaPrivateFieldRef<NPlayerHand, NCardPlay?> PlayerHandCurrentCardPlay = new("_currentCardPlay");
