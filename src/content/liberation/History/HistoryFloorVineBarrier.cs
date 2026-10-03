@@ -18,7 +18,7 @@ public sealed class HistoryFloorVineBarrier : LorMonsterModel
 {
     private const string PoisonStingBarrierMoveId = "POISON_STING_BARRIER";
 
-    private const int BlockAmount = 20;
+    private const int BlockAmount = 12;
     private const int ThornsAmount = 2;
 
     public override int DefaultChaoResistance => 70;
