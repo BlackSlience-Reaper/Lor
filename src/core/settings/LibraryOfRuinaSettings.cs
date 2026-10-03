@@ -317,7 +317,7 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
 
     // 只影响本机血条的画法（ui/StaggerBadgePatch.cs），不进局内设置、不参与联机比对，局内也可随时切换。
     [SettingsSection("CombatUi")]
-    public static StaggerBarStyle StaggerBarStyle { get; set; } = StaggerBarStyle.Default;
+    public static StaggerBarStyle StaggerBarStyle { get; set; } = StaggerBarStyle.Badge;
 
     [SettingsIgnore]
     public static bool MultiplayerScalingEnabled
