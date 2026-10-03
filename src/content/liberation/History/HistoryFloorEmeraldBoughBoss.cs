@@ -50,8 +50,8 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
     private const string ExtendedMaliceMoveId = "EXTENDED_MALICE";
     private const string ShatteredLifeMoveId = "SHATTERED_LIFE";
 
-    private const int EmeraldBoughRapidWearAmount = 9;
-    private const int EmeraldBoughRapidWearTurns = 3;
+    private const int EmeraldBoughRapidWearAmount = 6;
+    private const int EmeraldBoughRapidWearTurns = 2;
     private const int DelusionalVineHits = 3; // 妄执之藤：攻击次数，仅最后一击判定束缚。
     private const int DelusionalVineBaseDamage = 7; // 妄执之藤：低于 DeadlyEnemies 进阶时的单次伤害。
     private const int DelusionalVineHighAscensionDamage = 9; // 妄执之藤：达到 DeadlyEnemies 进阶时的单次伤害。
@@ -59,7 +59,7 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
     private const int GrudgeVineHits = 2; // 怨恨之藤：攻击次数，完成全部攻击后添加伤口。
     private const int GrudgeVineBaseDamage = 10; // 怨恨之藤：低于 DeadlyEnemies 进阶时的单次伤害。
     private const int GrudgeVineHighAscensionDamage = 12; // 怨恨之藤：达到 DeadlyEnemies 进阶时的单次伤害。
-    private const int GrudgeVineWoundCount = 2;
+    private const int GrudgeVineWoundCount = 1;
     private const int ExtendedMaliceBlock = 17;
     private const int ExtendedMaliceWeak = 3;
     private const float SegmentDelaySeconds = 0.95f;

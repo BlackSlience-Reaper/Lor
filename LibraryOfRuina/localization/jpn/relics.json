@@ -6,7 +6,7 @@
   "COSMIC_FRAGMENT_PAGE_RELIC.flavor": "理解しがたい星明かりが一枚のページに凝縮されていた。",
   "COSMIC_FRAGMENT_PAGE_RELIC.selectionScreenPrompt": "ページ効果を選択",
   "COSMIC_FRAGMENT_PAGE_RELIC.title": "宇宙の断片のページ",
-  "DEAD_BUTTERFLIES_BOOK_RELIC.description": "{InFuneralCombat:彼らは待つしかありません。 結局のところ、世界は終焉を運命づけられているのです。|登場[gold]亡くなった蝶の葬儀の儀式[/gold]戦闘中に各ターン獲得{Energy:energyIcons()}および追加課税[blue]{Cards}[/blue]枚。}",
+  "DEAD_BUTTERFLIES_BOOK_RELIC.description": "{InFuneralCombat:彼らは待つしかありません。 結局のところ、世界は終焉を運命づけられているのです。|登場[gold]死んだ蝶の葬儀[/gold]戦闘中に各ターン獲得{Energy:energyIcons()}および追加課税[blue]{Cards}[/blue]枚。}",
   "DEAD_BUTTERFLIES_BOOK_RELIC.flavor": "蝶の羽がページの間に挟まれ、まだ終わっていない葬儀のようだ。",
   "DEAD_BUTTERFLIES_BOOK_RELIC.title": "失われた蝶の書",
   "DESPAIR_KNIGHT_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]加護[/gold]：各戦闘で初めてブロックされなかった攻撃ダメージを受けた時、次のターン、[blue]{Turns}[/blue]ターン持続する[gold]忍耐[/gold][blue]{Guard}[/blue]を得る。|[gold]絶望[/gold]：各戦闘で初めて敵が死亡した時、永続的な[gold]威力増加[/gold][blue]{Strength}[/blue]と永続的な[gold]守護[/gold][blue]{PermanentGuard}[/blue]を得る。|[gold]涙の剣[/gold]：取得時、[gold]デッキ[/gold]にある[red]アタック[/red]を[blue]{Cards}[/blue]枚選び、[purple]鋭利[/purple][blue]{SharpAmount}[/blue]を[gold]エンチャント[/gold]する。[purple]鋭利[/purple]が付いたアタックがブロックされなかったダメージを与えた時、対象の最大HPの[blue]{MaxHpPercent}%[/blue]に等しい追加ダメージを与える。|取得時、絶望の騎士のページ効果を1つ選ぶ。}",
