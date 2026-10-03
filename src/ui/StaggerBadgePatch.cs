@@ -34,8 +34,8 @@ internal static class StaggerBadge
     private const string PhysicalColumnName = "LibraryOfRuinaPhysicalResistIcons";
     private const string ChaosColumnName = "LibraryOfRuinaChaosResistIcons";
 
-    // 前置库混乱条的原始高度是 14，压成一半贴在体力条上沿，与体力条边框重叠 1 像素。
-    private const float StripScale = 0.5f;
+    // 前置库混乱条高度为 14；徽章样式由原来的 7 增厚 50% 至 10.5，底边继续贴合体力条。
+    private const float StripScale = 0.75f;
     private const float StripOverlap = 1f;
     // 以下取自原版格挡徽章：容器 60×60，中心落在体力条端点往里 12 像素、条顶往下 4 像素处。
     private const float BadgeSize = 60f;
@@ -88,7 +88,9 @@ internal static class StaggerBadge
 
         float stripHeight = strip.Size.Y * StripScale;
         strip.Scale = new Vector2(1f, StripScale);
-        strip.Position = new Vector2(strip.Position.X, hpBar.Position.Y - stripHeight + StripOverlap);
+        strip.Position = new Vector2(
+            hpBar.Position.X,
+            hpBar.Position.Y - stripHeight + StripOverlap);
         libLabel.Visible = false;
 
         badge ??= CreateBadge(parent, healthBar);

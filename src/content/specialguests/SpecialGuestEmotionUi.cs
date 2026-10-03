@@ -48,9 +48,10 @@ internal static class SpecialGuestEmotionBarUi
     private const string ContainerName = "LibraryEmotionBarContainer";
     private const string HoverAreaName = "SpecialGuestEmotionHoverArea";
     private const float EmotionBarHeight = 14f;
-    private const float ForegroundInset = 5f;
-    private const float ForegroundInsetVertical = 2f;
-    private const float ForegroundContainerInset = 10f;
+    // 情感条填充只保留一像素边框，满值时覆盖两端的内部区域。
+    private const float ForegroundInset = 1f;
+    private const float ForegroundInsetVertical = 1f;
+    private const float ForegroundContainerInset = ForegroundInset * 2f;
     private const float MinFillWidth = 12f;
 
     public static void Refresh(
@@ -81,12 +82,8 @@ internal static class SpecialGuestEmotionBarUi
             bar.Reparent(parent, keepGlobalTransform: false);
         }
 
-        SpecialGuestCombatBarLayout.Apply(
-            bar,
-            hpBar,
-            row: 2,
-            barHeight: EmotionBarHeight);
-        NormalizeTrackNodes(bar);
+        SpecialGuestCombatBarLayout.ApplyEmotionBar(bar, hpBar, EmotionBarHeight);
+        NormalizeTrackNodes(bar, hpBar);
         UpdateValues(bar, guest);
         HideEmotionLevelBadge(bar);
 
@@ -160,7 +157,7 @@ internal static class SpecialGuestEmotionBarUi
         EmotionProgress progress = GetEmotionProgress(guest);
         NinePatchRect? fill =
             bar.GetNodeOrNull<NinePatchRect>(
-                "EmotionForegroundContainer/EmotionFill");
+                "EmotionForegroundContainer/Mask/EmotionFill");
         if (fill != null)
         {
             fill.Visible = progress.Current > 0;
@@ -187,7 +184,7 @@ internal static class SpecialGuestEmotionBarUi
         }
     }
 
-    private static void NormalizeTrackNodes(Control bar)
+    private static void NormalizeTrackNodes(Control bar, Control hpBar)
     {
         NinePatchRect? background =
             bar.GetNodeOrNull<NinePatchRect>("EmotionBackground");
@@ -209,6 +206,7 @@ internal static class SpecialGuestEmotionBarUi
             bar.GetNodeOrNull<Control>("EmotionForegroundContainer");
         if (foreground != null)
         {
+            foreground.ClipChildren = CanvasItem.ClipChildrenMode.Disabled;
             foreground.AnchorLeft = 0f;
             foreground.AnchorTop = 0f;
             foreground.AnchorRight = 1f;
@@ -217,49 +215,92 @@ internal static class SpecialGuestEmotionBarUi
             foreground.OffsetTop = ForegroundInsetVertical;
             foreground.OffsetRight = -ForegroundInset;
             foreground.OffsetBottom = -ForegroundInsetVertical;
+
+            NinePatchRect? mask = foreground.GetNodeOrNull<NinePatchRect>("Mask");
+            if (mask == null
+                && hpBar.GetNodeOrNull<NinePatchRect>("HpForegroundContainer/Mask") is { } hpMask)
+            {
+                // 沿用血条的端部形状裁切填充，避免矩形填充在两端留下空隙。
+                mask = new NinePatchRect
+                {
+                    Name = "Mask",
+                    Texture = hpMask.Texture,
+                    PatchMarginLeft = hpMask.PatchMarginLeft,
+                    PatchMarginRight = hpMask.PatchMarginRight,
+                    PatchMarginTop = hpMask.PatchMarginTop,
+                    PatchMarginBottom = hpMask.PatchMarginBottom,
+                    ClipChildren = CanvasItem.ClipChildrenMode.Only,
+                    MouseFilter = Control.MouseFilterEnum.Ignore,
+                    AnchorRight = 1f,
+                    AnchorBottom = 1f,
+                };
+                foreground.AddChild(mask);
+            }
+
+            if (mask != null
+                && foreground.GetNodeOrNull<NinePatchRect>("EmotionFill") is { } originalFill)
+            {
+                originalFill.Reparent(mask, keepGlobalTransform: false);
+            }
         }
 
         NinePatchRect? fill =
             bar.GetNodeOrNull<NinePatchRect>(
-                "EmotionForegroundContainer/EmotionFill");
+                "EmotionForegroundContainer/Mask/EmotionFill");
         if (fill != null)
         {
             fill.AxisStretchVertical =
                 NinePatchRect.AxisStretchMode.Stretch;
-            fill.OffsetTop = 0f;
-            fill.OffsetBottom = 0f;
+            // 血条填充贴图上下带透明像素，沿用原版扩展量后由 Mask 裁切。
+            fill.OffsetTop = -4f;
+            fill.OffsetBottom = 4f;
         }
     }
 }
 
 internal static class SpecialGuestCombatBarLayout
 {
-    public const float BarHeight = 8f;
-    public const float BarGap = 12f;
+    // 情感条与当前混乱条之间保留四像素间距。
+    private const float EmotionBarGap = 4f;
+    // 情感条整体右移三像素，对齐血条与混乱条的可见左端。
+    private const float EmotionBarHorizontalOffset = 3f;
+    // 右移前预留四像素，平移后与竖排抗性图标仍保留一像素间距。
+    private const float ResistanceIconGap = 4f;
+    // 混乱条尚未创建时，使用前置库默认的高度与血条间距。
+    private const float DefaultStaggerOffset = 16f;
 
-    public static float GetBarY(Control hpBar, int row)
-    {
-        return hpBar.Position.Y - row * (BarHeight + BarGap);
-    }
-
-    public static void Apply(
+    public static void ApplyEmotionBar(
         Control bar,
         Control hpBar,
-        int row,
-        float barHeight = BarHeight)
+        float barHeight)
     {
-        float barWidth = hpBar.Size.X;
+        Node parent = hpBar.GetParent();
+        Control? staggerBar = parent.GetNodeOrNull<Control>("LibraryOfRuinaStaggerBarContainer");
+        float staggerY = staggerBar is { Visible: true }
+            ? staggerBar.Position.Y
+            : hpBar.Position.Y - DefaultStaggerOffset;
+        float right = hpBar.Position.X + hpBar.Size.X;
+        ReserveResistanceColumn("LibraryOfRuinaPhysicalResistIcons");
+        ReserveResistanceColumn("LibraryOfRuinaChaosResistIcons");
+
         bar.AnchorLeft = 0f;
         bar.AnchorTop = 0f;
         bar.AnchorRight = 0f;
         bar.AnchorBottom = 0f;
         bar.Position = new Vector2(
-            hpBar.Position.X + (hpBar.Size.X - barWidth) * 0.5f,
-            GetBarY(hpBar, row)
-                - (barHeight - BarHeight) * 0.5f);
-        bar.Size = new Vector2(barWidth, barHeight);
+            hpBar.Position.X + EmotionBarHorizontalOffset,
+            staggerY - EmotionBarGap - barHeight);
+        bar.Size = new Vector2(Math.Max(0f, right - hpBar.Position.X), barHeight);
         bar.ZIndex = hpBar.ZIndex;
         bar.ZAsRelative = hpBar.ZAsRelative;
+
+        void ReserveResistanceColumn(string name)
+        {
+            if (parent.GetNodeOrNull<Control>(name) is { Visible: true } column)
+            {
+                right = Math.Min(right, column.Position.X - ResistanceIconGap);
+            }
+        }
     }
 }
 
