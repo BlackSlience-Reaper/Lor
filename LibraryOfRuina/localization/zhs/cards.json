@@ -232,7 +232,7 @@
   "BURROWING_HEAVEN_ATTENTION_AND_FOCUS_CHOICE_CARD.title": "关注与集中",
   "BURROWING_HEAVEN_ATTENTION_AND_FOCUS_CHOICE_CARD.description": "你承受的[red]伤害[/red]增加[blue]{DamageTakenPercent}%[/blue]，造成的[gold]伤害[/gold]与[gold]混乱伤害[/gold]增加[blue]{DamageDealtPercent}%[/blue]。",
   "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.title": "脉动",
-  "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description": "战斗开始时，获得[blue]{Strong}[/blue]层永久[gold]强壮[/gold]。若本回合未造成[gold]未被格挡伤害[/gold]，回合结束时失去[red]{HpLoss}[/red]点生命。",
+  "HEART_OF_ASPIRATION_PULSE_CHOICE_CARD.description": "获得[blue]{Strong}[/blue]层永久[gold]强壮[/gold]。若本回合未造成[gold]未被格挡伤害[/gold]，回合结束时失去[red]{HpLoss}[/red]点生命。",
   "HEART_OF_ASPIRATION_ASPIRATION_CHOICE_CARD.title": "渴望",
   "HEART_OF_ASPIRATION_ASPIRATION_CHOICE_CARD.description": "获得时，增加[blue]{MaxHpPercent}%[/blue]的最大生命。",
   "HEART_OF_ASPIRATION_VIOLENT_PULSE_CHOICE_CARD.title": "剧烈脉动",
