@@ -2,12 +2,12 @@
   "LITTLE_RED_BLOCK_TRANSFER.title": "Defensive Support",
   "LITTLE_RED_BLOCK_TRANSFER.description": "Spend up to [blue]10[/blue] of your [gold]Block[/gold] and transfer it to [gold]{PartnerName}[/gold]. The transferred amount is reduced by player count.",
   "WRATH_SERVANT_FAILED_REWARD_HEADER": "Failed!",
-  "LIBRARY_SECOND_ASCENSION_MODIFIER.title": "Library of Ruina Ascension Level",
-  "LIBRARY_SECOND_ASCENSION_MODIFIER.description": "The Ascension level used for this reception.",
+  "LIBRARY_SECOND_ASCENSION_MODIFIER.title": "LOR Ascension Level",
+  "LIBRARY_SECOND_ASCENSION_MODIFIER.description": "The LOR Ascension level for this run.",
   "SECOND_ASCENSION.PORTRAIT_TITLE": "Ascension Level",
-  "SECOND_ASCENSION.PORTRAIT_DESCRIPTION_PREFIX": "Library of Ruina Ascension Level",
+  "SECOND_ASCENSION.PORTRAIT_DESCRIPTION_PREFIX": "LOR Ascension Level",
   "SECOND_ASCENSION.LEVEL_00.title": "No Effect",
-  "SECOND_ASCENSION.LEVEL_00.description": "No effect",
+  "SECOND_ASCENSION.LEVEL_00.description": "No effect.",
   "SECOND_ASCENSION.LEVEL_01.title": "Canard",
   "SECOND_ASCENSION.LEVEL_01.description": "Enemies have increased maximum Stagger Resistance.",
   "SECOND_ASCENSION.LEVEL_02.title": "Urban Myth",
@@ -27,8 +27,8 @@
   "SECOND_ASCENSION.LEVEL_09.title": "Distorted Reverberation Ensemble",
   "SECOND_ASCENSION.LEVEL_09.description": "Page relic effects are weakened.",
   "SECOND_ASCENSION.LEVEL_10.title": "Final Reception",
-  "SECOND_ASCENSION.LEVEL_10.description": "TBD",
+  "SECOND_ASCENSION.LEVEL_10.description": "TBD.",
   "SPECIAL_GUEST_STORY.skip_hint": "Hold the left mouse button for 2 seconds to skip.",
   "SPECIAL_GUEST_EMOTION_HOVER.title": "Emotion Level",
-  "SPECIAL_GUEST_EMOTION_HOVER.description": "Current Emotion Level: {Level}\nEmotion: {Current}/{Required}"
+  "SPECIAL_GUEST_EMOTION_HOVER.description": "Emotion Level: {Level}\nEmotion: {Current}/{Required}"
 }

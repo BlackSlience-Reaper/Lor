@@ -110,7 +110,7 @@
   "BURROWING_HEAVEN_PAGE_RELIC.flavor": "視線と翼、認知を貫く光が、この眠るページに刻み込まれている。",
   "BURROWING_HEAVEN_PAGE_RELIC.selectionScreenPrompt": "穿刺楽園のページを選択",
   "HEART_OF_ASPIRATION_PAGE_RELIC.title": "渇望の心臓のページ",
-  "HEART_OF_ASPIRATION_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]鼓動[/gold]：戦闘開始時、[blue]{Strong}[/blue]層の永続[gold]威力増加[/gold]を得る。このターンに未ブロックダメージを与えていなければ、ターン終了時に[red]{HpLoss}[/red]HPを失う。|[gold]渇望[/gold]：獲得時、現在の最大HPの[blue]{MaxHpPercent}%[/blue]分、最大HPを得る。|[gold]激しい鼓動[/gold]：戦闘ごとに1回、右クリックで[blue]{RightClickBuffs}[/blue]層の[gold]威力増加[/gold]、[gold]忍耐[/gold]、[gold]守護[/gold]、[gold]迅速[/gold]を得る。[blue]{DeathTurns}[/blue]ターン後、死亡する。|獲得時にページ効果を1つ選ぶ。}",
+  "HEART_OF_ASPIRATION_PAGE_RELIC.description": "{Mode:choose(1|2|3):[gold]鼓動[/gold]：永続する[blue]{Strong}[/blue]層の[gold]威力増加[/gold]を得る。このターンに[gold]未ブロックダメージ[/gold]を与えていなければ、ターン終了時に[red]{HpLoss}[/red]HPを失う。|[gold]渇望[/gold]：獲得時、最大HPを[blue]{MaxHpPercent}%[/blue]増加させる。|[gold]激しい鼓動[/gold]：[[gold]右クリック[/gold]]\n永続する[blue]{RightClickBuffs}[/blue]層の[gold]威力増加[/gold]、[gold]忍耐[/gold]、[gold]守護[/gold]、[gold]迅速[/gold]を得る。[blue]{DeathTurns}[/blue]ターン後、死亡する。|獲得時にページ効果を1つ選ぶ。}",
   "HEART_OF_ASPIRATION_PAGE_RELIC.flavor": "器に収まりきらない渇望が鼓動するページ。",
   "HEART_OF_ASPIRATION_PAGE_RELIC.selectionScreenPrompt": "ページ効果を選択",
   "WARMHEARTED_WOODSMAN_PAGE_RELIC.title": "熱心な木こりのページ",
