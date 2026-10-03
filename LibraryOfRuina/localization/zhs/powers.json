@@ -1069,7 +1069,7 @@
   "BLUE_STAR_NOVA_VOICE_POWER.smartDescription": "每[blue]{Turns}[/blue]回合使用一次群体攻击，对所有玩家施加[blue]{Confusion}[/blue]层[gold]混乱[/gold]，并恢复所有[gold]信徒[/gold][blue]{ChaoHealPercent}%[/blue]的混乱抗性。",
   "BLUE_STAR_RETURN_TO_STARS_POWER.title": "回归星之怀抱",
   "BLUE_STAR_RETURN_TO_STARS_POWER.description": "若信徒陷入混乱或死亡，则回合结束时将其击杀并损失自身最大体力的一部分。",
-  "BLUE_STAR_RETURN_TO_STARS_POWER.smartDescription": "若信徒陷入[gold]混乱[/gold]或死亡，则回合结束时直接将其击杀并承受“自身体力上限x[red]{HpLossPercent}%[/red]”的伤害",
+  "BLUE_STAR_RETURN_TO_STARS_POWER.smartDescription": "若信徒陷入[gold]混乱[/gold]或死亡，则回合结束时直接将其[gold]击杀[/gold]并承受自身体力上限[red]{HpLossPercent}%[/red]的伤害。",
   "BLUE_STAR_MARTYR_POWER.title": "殉教者",
   "BLUE_STAR_MARTYR_POWER.description": "每回合开始时补充缺失的信徒。",
   "BLUE_STAR_MARTYR_POWER.smartDescription": "每回合开始时，若存活信徒不足[blue]{Followers}[/blue]名，则召唤[blue]1[/blue]名信徒。",
