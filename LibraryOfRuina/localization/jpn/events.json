@@ -49,7 +49,7 @@
   "SINGING_MACHINE_EVENT.pages.INITIAL.options.OBSERVE.description": "回復[green]{Heal}[/green]HPポイント。",
   "SINGING_MACHINE_EVENT.pages.APPROACH_FOLLOWUP.description": "「[sine]ぼ、ぼ、ぼくは……わかってる……こ、これが……狂ってるって、\nで、で、でも！でも……へへ、ぼ、ぼくはも、もう一度……あの……せ、旋律を聴かなきゃ！\nぼくの、の、脳みそは……ぜ、ぜ、全部……あれで、いっぱいなんだ！！！\nへへへ、あの旋律を……聴くために、ぼ、ぼくは、たくさん、たくさん……たくさんの……試みを……したんだ！[/sine]」",
   "SINGING_MACHINE_EVENT.pages.OBSERVE_FOLLOWUP.description": "「████は身を乗り出してその機械を見つめていたが、私はさっさと観察報告書を書き上げて、あの[red][sine]薄気味悪い場所[/sine][/red]から離れたかった。どうやら意見は合わなかったようだ。\n彼は、それらにはそれぞれ特殊な能力があると言ったが、私はそんなことはどうでもよかった。私はもうあの機械に近づくなと彼に[jitter][red]警告[/red][/jitter]したが、████はさらに一歩踏み出した……」",
-  "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.title": "亡くなった蝶の葬儀の儀式",
+  "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.title": "死んだ蝶の葬儀",
   "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.loss": "{character}彼は倒れた[gold]{event}[/gold]その前に。",
   "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.description": "重荷を背負った弔問者は、衆生を救うためにこの地へやって来た。\n\nだが今では、他の者たちと同じくここに囚われ、挫けて望みを失ったままさまよい、[sine]空虚な信仰だけが残っている。[/sine]\n\n行き場のない人々のために棺を運んでいるが、その棺では無実の生贄たちを安置するにはまるで足りない。",
   "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.options.REMOVE.title": "死を忘れないで",

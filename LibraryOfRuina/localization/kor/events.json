@@ -49,7 +49,7 @@
   "SINGING_MACHINE_EVENT.pages.INITIAL.options.OBSERVE.description": "다시 덮다[green]{Heal}[/green]인생의 포인트.",
   "SINGING_MACHINE_EVENT.pages.APPROACH_FOLLOWUP.description": "\"[sine]나, 나, 나는... 알아... 이, 이게... 미친 소리로 들린다는 걸,\n하, 하, 하지만! 하지만... 히히, 나, 나는 다, 다시... 그... 서, 선율을 들어야 해!\n내 머, 머리... 머릿속이... 온, 온통... 그, 그것들로 가득해!!!\n헤헤헤, 그 선율을... 듣기 위해, 나, 나는 수많은, 수많은... 수많은... 시도를 했어![/sine]\"",
   "SINGING_MACHINE_EVENT.pages.OBSERVE_FOLLOWUP.description": "\"████는 다가와 그 기계를 뚫어지게 바라봤지만, 나는 어서 관찰 보고서를 써서 그 [red][sine]으스스한 곳[/sine][/red]을 떠나고 싶을 뿐이었다. 우리의 생각은 맞지 않았던 모양이다.\n그는 그것들 모두 저마다의 특수한 능력이 있다고 했지만, 나는 그런 건 상관없었다. 나는 그에게 더는 그 기계에 다가가지 말라고 [jitter][red]경고[/red][/jitter]했지만, ████는 또다시 한 걸음 내디뎠다...\"",
-  "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.title": "죽은 나비 장례식",
+  "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.title": "죽은 나비의 장례식",
   "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.loss": "{character}넘어졌다[gold]{event}[/gold]앞으로.",
   "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.description": "무거운 짐을 짊어진 조문객은 중생을 구원하기 위해 이곳에 왔다.\n\n그러나 지금은 다른 이들처럼 이곳에 갇혀, 꺾이고 절망한 채 방황하며 [sine]공허한 믿음만이 남았다.[/sine]\n\n갈 곳 없는 이들을 위해 관을 나르지만, 그 관으로는 무고한 희생양들을 안치하기에 턱없이 부족하다.",
   "FUNERAL_OF_THE_DEAD_BUTTERFLIES_EVENT.pages.INITIAL.options.REMOVE.title": "죽음을 기억하다",
