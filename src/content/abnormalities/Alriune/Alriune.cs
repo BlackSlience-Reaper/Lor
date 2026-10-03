@@ -106,9 +106,8 @@ public sealed class Alriune : LorMonsterModel
     [
         new CombinedAttackDebuffIntent(() => WinterDamage, null, "ALRIUNE_WINTER.description",
             IntentBadge.FromPower<AlriuneAtonementCrownPower>(() => PreviewCrownTotal)),
-        new BadgedBuffIntent(IntentBadge.FromPower<StrengthPower>(() => BlossomStrength), descriptionKey: "ALRIUNE_BLOSSOM.description"),
-        new CombinedDefendBuffIntent(AlriuneNumbers.AutumnBlock, "ALRIUNE_AUTUMN.description",
-            IntentBadge.Heal(() => AutumnHealAmount)),
+        new DetailedBuffIntent<StrengthPower>(() => BlossomStrength, DetailedBuffTargetScope.AllEnemies, descriptionKey: "ALRIUNE_BLOSSOM.description"),
+        new CombinedDefendBuffIntent(AlriuneNumbers.AutumnBlock, "ALRIUNE_AUTUMN.description"),
         new AlriuneMultiAttackIntent(SpringDamage, AlriuneNumbers.SpringHits, "ALRIUNE_SPRING.description")
     ];
 

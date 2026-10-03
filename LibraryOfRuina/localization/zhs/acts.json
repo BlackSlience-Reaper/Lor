@@ -6,7 +6,7 @@
   "LIBRARY_OF_RUINA_ACT_1_GROUP.description": "上层核心抑制",
   "LIBRARY_OF_RUINA_ACT_2_GROUP.title": "NetZech / Gebura / Tiphereth",
   "LIBRARY_OF_RUINA_ACT_2_GROUP.description": "中层核心抑制",
-  "LIBRARY_OF_RUINA_ACT_3_GROUP.title": "Chesed / Binah",
+  "LIBRARY_OF_RUINA_ACT_3_GROUP.title": "Chesed / Binah / Hokma",
   "LIBRARY_OF_RUINA_ACT_3_GROUP.description": "下层核心抑制",
   "MALKUTH.title": "Malkuth",
   "HOD.title": "Hod",
@@ -24,5 +24,6 @@
   "REVERBERATION_ENSEMBLE_ACT.node.PHILOSOPHY": "哲学层不速之客",
   "REVERBERATION_ENSEMBLE_ACT.node.RELIGION": "宗教层不速之客",
   "REVERBERATION_ENSEMBLE_ACT.node.SOCIAL": "社会层不速之客",
-  "REVERBERATION_ENSEMBLE_ACT.node.BOSS": "苍蓝残响"
+  "REVERBERATION_ENSEMBLE_ACT.node.BOSS": "苍蓝残响",
+  "HOKMA.title": "Hokma"
 }

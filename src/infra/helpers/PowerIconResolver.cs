@@ -80,7 +80,8 @@ internal static class PowerIconResolver
 
     private static string ResolveIconId(PowerModel power)
     {
-        if (power is JudgementBirdPassivePower)
+        if (power is JudgementBirdPassivePower
+            or LibraryOfRuina.content.liberation.Religion.ReligionFloorGreenPassivePower)
         {
             return "library_passive_green";
         }

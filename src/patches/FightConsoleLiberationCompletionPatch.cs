@@ -7,6 +7,7 @@ using LibraryOfRuina.content.liberation.Language;
 using LibraryOfRuina.content.liberation.Literature;
 using LibraryOfRuina.content.liberation.Natural;
 using LibraryOfRuina.content.liberation.Philosophy;
+using LibraryOfRuina.content.liberation.Religion;
 using LibraryOfRuina.content.liberation.Social;
 using LibraryOfRuina.content.liberation.Technology;
 using MegaCrit.Sts2.Core.DevConsole;
@@ -36,7 +37,8 @@ public static class FightConsoleLiberationCompletionPatch
             ModelDb.Encounter<LanguageFloorLiberationEncounter>().Id.Entry,
             ModelDb.Encounter<NaturalFloorLiberationEncounter>().Id.Entry,
             ModelDb.Encounter<PhilosophyFloorLiberationEncounter>().Id.Entry,
-            ModelDb.Encounter<SocialFloorLiberationEncounter>().Id.Entry
+            ModelDb.Encounter<SocialFloorLiberationEncounter>().Id.Entry,
+            ModelDb.Encounter<ReligionFloorLiberationEncounter>().Id.Entry
         ];
 
         List<string> candidates = __result.Candidates

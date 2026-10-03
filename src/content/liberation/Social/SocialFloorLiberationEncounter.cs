@@ -123,6 +123,8 @@ public sealed class SocialFloorLiberationEncounter :
     internal const int ToughWisdomRequirement = 2;
     internal const int ScarecrowPenaltyHpLossPercent = 60;
     internal const int InitialPowderCost = 10;
+    // 开战恢复：每名存活玩家恢复的最大生命百分比。
+    internal const int CombatStartHealPercent = 25;
 
     private const float EncounterCameraScaling = 0.82f;
     private static readonly Vector2 EncounterCameraOffset =
@@ -415,7 +417,7 @@ public sealed class SocialFloorLiberationEncounter :
             PlayersHealed = true;
             foreach (Creature player in LivingPlayers(combatState))
             {
-                await CreatureCmd.Heal(player, player.MaxHp);
+                await CreatureCmd.Heal(player, Math.Ceiling(player.MaxHp * CombatStartHealPercent / 100m));
             }
         }
 

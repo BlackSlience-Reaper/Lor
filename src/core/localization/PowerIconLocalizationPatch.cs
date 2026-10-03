@@ -135,6 +135,7 @@ internal static class PowerIconLocalizationPatch
     private static readonly HashSet<string> ConfusionPowerEntries = new(StringComparer.Ordinal)
     {
         "LIBRARY_OF_RUINA_CONFUSION_POWER",
+        "RELIGION_SPEAR_CONFUSION",
         "FORGOTTEN_LONGING_EMBRACE_EGO_CARD",
         "PUNISHMENT_STRIKE_EGO_CARD",
         "REGRET_EGO_CARD",
