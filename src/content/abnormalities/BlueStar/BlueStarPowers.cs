@@ -70,6 +70,14 @@ public sealed class BlueStarNovaVoicePower : LibraryOfRuinaPowerModel
 
 public sealed class BlueStarReturnToStarsPower : LibraryOfRuinaPowerModel
 {
+    private List<Creature> _pendingFollowers = [];
+
+    protected override void DeepCloneFields()
+    {
+        base.DeepCloneFields();
+        _pendingFollowers = new List<Creature>(_pendingFollowers);
+    }
+
     protected override string LegacyPowerId =>
         "BLUE_STAR_RETURN_TO_STARS_POWER";
 
@@ -82,29 +90,67 @@ public sealed class BlueStarReturnToStarsPower : LibraryOfRuinaPowerModel
         new DynamicVar("HpLossPercent", BlueStarAltar.ReturnHpLossPercent)
     ];
 
-    public override async Task AfterStun(Creature creature)
+    public override Task AfterStun(Creature creature)
+    {
+        QueueFollower(creature);
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterDeath(
+        PlayerChoiceContext choiceContext,
+        Creature creature,
+        bool wasRemovalPrevented,
+        float deathAnimLength)
+    {
+        if (!wasRemovalPrevented)
+        {
+            QueueFollower(creature);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private void QueueFollower(Creature creature)
     {
         if (Owner.IsDead
-            || creature.IsDead
             || creature.Monster is not BlueStarFollower
-            || !BlueStarEncounterHelper.IsBlueStarEncounter(Owner.CombatState))
+            || !BlueStarEncounterHelper.IsBlueStarEncounter(Owner.CombatState)
+            || _pendingFollowers.Contains(creature))
         {
             return;
         }
 
-        Flash();
-        await CreatureCmd.Kill(creature);
+        _pendingFollowers.Add(creature);
+    }
 
-        if (Owner.IsDead)
+    public override async Task AfterSideTurnEnd(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        IEnumerable<Creature> participants)
+    {
+        if (!TurnParticipants.IsOwnTurn(Owner, side, participants)
+            || Owner.IsDead)
         {
             return;
         }
 
-        decimal hpLoss = Math.Ceiling(
-            Owner.MaxHp * BlueStarAltar.ReturnHpLossPercent / 100m);
-        await CreatureCmd.SetCurrentHp(
-            Owner,
-            Math.Max(0m, Owner.CurrentHp - hpLoss));
+        while (_pendingFollowers.Count > 0 && !Owner.IsDead)
+        {
+            Creature follower = _pendingFollowers[0];
+            Flash();
+            if (!follower.IsDead)
+            {
+                // 保留待结算记录至击杀完成，避免 AfterDeath 再次计入同一信徒。
+                await CreatureCmd.Kill(follower);
+            }
+
+            _pendingFollowers.RemoveAt(0);
+            decimal hpLoss = Math.Ceiling(
+                Owner.MaxHp * BlueStarAltar.ReturnHpLossPercent / 100m);
+            await CreatureCmd.SetCurrentHp(
+                Owner,
+                Math.Max(0m, Owner.CurrentHp - hpLoss));
+        }
     }
 }
 

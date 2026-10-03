@@ -24,8 +24,8 @@ namespace LibraryOfRuina.content.abnormalities.BlueStar;
 public sealed class BlueStarFollower : LorMonsterModel
 {
     public const int RequiredFollowerCount = 3;
-    public const int MaxHp = 500;
-    public const int MaxChao = 120;
+    public const int MaxHp = 200;
+    public const int MaxChao = 100;
     public const int SelfDestructThresholdPercent = 10;
     public const int BasicAttackLowAscensionDamage = 10;
     public const int BasicAttackHighAscensionDamage = 12;

@@ -32,6 +32,7 @@ public sealed class BlueStarAltar : LorMonsterModel
     public const int NovaHighAscensionDamage = 15;
     public const int NovaConfusion = 1;
     public const int NovaFollowerChaoHealPercent = 10;
+    // 回归星之怀抱：每名混乱或死亡的信徒在回合结束时造成的自身最大体力损失百分比。
     public const int ReturnHpLossPercent = 20;
 
     public const string SilentMoveId = "BLUE_STAR_SILENT";
