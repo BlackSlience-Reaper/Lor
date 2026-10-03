@@ -80,7 +80,6 @@ public sealed class BlueStarFollower : LorMonsterModel
     ];
 
     private Dictionary<string, MoveState> _statesById = [];
-    private bool _startDialoguePlayed;
     private LibraryCreature? _chaoValueSource;
 
     protected override void DeepCloneFields()
@@ -121,7 +120,6 @@ public sealed class BlueStarFollower : LorMonsterModel
     public override async Task AfterAddedToRoom()
     {
         await base.AfterAddedToRoom();
-        _startDialoguePlayed = false;
         SubscribeToChaoValueChanges();
         EncounterBgmController.RegisterMonster(Creature);
         await ApplyRoleResistance();
@@ -147,13 +145,6 @@ public sealed class BlueStarFollower : LorMonsterModel
         if (side == CombatSide.Player)
         {
             ForceRefreshMoveState();
-        }
-        else if (side == CombatSide.Enemy
-                 && combatState.RoundNumber == 1
-                 && !_startDialoguePlayed)
-        {
-            _startDialoguePlayed = true;
-            PlayDialogue("START");
         }
 
         await base.BeforeSideTurnStart(
@@ -383,11 +374,6 @@ public sealed class BlueStarFollower : LorMonsterModel
 
     private async Task HearVoiceMove(IReadOnlyList<Creature> targets)
     {
-        if (BlueStarEncounterHelper.IsNovaRound(Creature.CombatState))
-        {
-            PlayDialogue("NORMAL");
-        }
-
         LocalOggOneShotPlayer.Play(BlueStarAltar.SubAttackSfxPath, -3f);
         await DamageCmd.Attack(VoiceAttackDamage)
             .FromMonster(this)
@@ -401,7 +387,6 @@ public sealed class BlueStarFollower : LorMonsterModel
 
     private async Task SelfDestructMove(IReadOnlyList<Creature> targets)
     {
-        PlayDialogue("NORMAL");
         LocalOggOneShotPlayer.Play(BlueStarAltar.SuicideSfxPath, -1f);
         await CreatureCmd.TriggerAnim(
             Creature,
@@ -450,18 +435,6 @@ public sealed class BlueStarFollower : LorMonsterModel
             Creature,
             fatalType,
             LibraryResistanceLevel.Fatal);
-    }
-
-    private void PlayDialogue(string phase)
-    {
-        int index = (int)Role + 1;
-        TalkCmd.Play(
-            new LocString(
-                "monsters",
-                $"BLUE_STAR_FOLLOWER.banter.{phase}_{index}"),
-            Creature,
-            VfxColor.Cyan,
-            VfxDuration.Standard);
     }
 
     private static int AscensionDamage(
