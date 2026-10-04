@@ -1753,6 +1753,7 @@ readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.CurrentAni
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.HideGhosts	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.HoldHurt	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.NewSprite	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.OffsetLoop	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.Play	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayAttack	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayLoop	Godot.StringName

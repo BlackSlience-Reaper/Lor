@@ -1,8 +1,6 @@
 using System;
 using Godot;
 using LibraryOfRuina.infra.helpers;
-using MegaCrit.Sts2.Core.Saves;
-using MegaCrit.Sts2.Core.Settings;
 
 namespace LibraryOfRuina.framework.visuals;
 
@@ -27,8 +25,6 @@ internal sealed partial class RuntimeSpineBody : Node2D
         string HurtAnimation,
         string DeathAnimation,
         float DefaultMix,
-        // 快速模式下攻击动画的倍速，让命中时刻对上原版缩短后的等待
-        float FastModeAttackTimeScale,
         // 混乱时定格的受击时间点（秒）
         float HurtHoldSeconds,
         GhostSpec? Ghosts);
@@ -202,7 +198,24 @@ internal sealed partial class RuntimeSpineBody : Node2D
     private void PlayLoop(string animation)
     {
         _holdingHurt = false;
-        State(_main).Call("set_animation", animation, true, 0);
+        OffsetLoop(State(_main).Call("set_animation", animation, true, 0).AsGodotObject());
+    }
+
+    // 照原版 CreatureAnimator.OffsetLoopingAnimation：循环动画随机 0.9–1.1 倍速、从随机时间点开始，同屏几只不同步。
+    // 只是本机表现，用非同步的随机数。
+    private static void OffsetLoop(GodotObject? entry)
+    {
+        if (entry == null)
+        {
+            return;
+        }
+
+        entry.Call("set_time_scale", 0.9f + 0.2f * Random.Shared.NextSingle());
+        float end = entry.Call("get_animation_end").AsSingle();
+        if (end > 0f)
+        {
+            entry.Call("set_track_time", end * Random.Shared.NextSingle());
+        }
     }
 
     private void PlayOnce(string animation, bool thenIdle)
@@ -212,7 +225,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
         state.Call("set_animation", animation, false, 0);
         if (thenIdle)
         {
-            state.Call("add_animation", _spec.IdleAnimation, 0f, true, 0);
+            OffsetLoop(state.Call("add_animation", _spec.IdleAnimation, 0f, true, 0).AsGodotObject());
         }
     }
 
@@ -239,13 +252,11 @@ internal sealed partial class RuntimeSpineBody : Node2D
             return;
         }
 
+        // 快速模式不改动画速度：原版也只缩短命令间的等待（Cmd.CustomScaledWait），命中帧靠前的动画因此照常对得上。
         _holdingHurt = false;
-        float timeScale = SaveManager.Instance?.PrefsSave?.FastMode == FastModeType.Fast ? _spec.FastModeAttackTimeScale : 1f;
-
         GodotObject state = State(_main);
-        GodotObject entry = state.Call("set_animation", _spec.AttackAnimation, false, 0).AsGodotObject();
-        entry.Call("set_time_scale", timeScale);
-        state.Call("add_animation", _spec.IdleAnimation, 0f, true, 0);
+        state.Call("set_animation", _spec.AttackAnimation, false, 0);
+        OffsetLoop(state.Call("add_animation", _spec.IdleAnimation, 0f, true, 0).AsGodotObject());
 
         for (int i = 0; i < _ghosts.Length; i++)
         {
