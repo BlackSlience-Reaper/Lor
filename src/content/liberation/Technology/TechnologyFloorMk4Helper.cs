@@ -168,7 +168,7 @@ public sealed class TechnologyFloorMk4Helper : LorMonsterModel
             .FromMonster(this)
             .WithAttackerAnim(
                 "Attack",
-                AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)
+                AllAroundHelperCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .SpawningHitVfxOnEachCreature()
             .Execute(null);

@@ -29,7 +29,7 @@ public partial class AllAroundHelperCreatureVisuals : SpineSpriteAttackCreatureV
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
-    private static readonly RuntimeSpineBody.Spec Spine = new(
+    internal static readonly RuntimeSpineBody.Spec Spine = new(
         AllAroundHelperAssets.AllAroundHelperSpineAtlas,
         AllAroundHelperAssets.AllAroundHelperSpineSkeleton,
         IdleAnimation: "idle",
