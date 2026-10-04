@@ -27,6 +27,9 @@ public partial class AllAroundHelperCreatureVisuals : SpineSpriteAttackCreatureV
     /// </summary>
     internal const float FollowUpHitSeconds = 0.25f;
 
+    /// <summary>死亡动画时长，秒；原版等它播完再做溶解消失。</summary>
+    internal const float DeathSeconds = 1.6f;
+
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
     internal static readonly RuntimeSpineBody.Spec Spine = new(

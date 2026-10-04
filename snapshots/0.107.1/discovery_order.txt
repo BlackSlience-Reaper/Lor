@@ -552,3 +552,4 @@ patch	LibraryOfRuina.ui.StaggerBadgeRefreshPatch
 patch	LibraryOfRuina.ui.StaggerBadgeResistIconsPatch
 patch	LibraryOfRuina.content.liberation.Religion.ReligionFloorSacrificePlayPatch
 patch	LibraryOfRuina.patches.VanillaIntentTargetFlashPatch
+patch	LibraryOfRuina.patches.visuals.SpineSpriteDeathAnimPatch

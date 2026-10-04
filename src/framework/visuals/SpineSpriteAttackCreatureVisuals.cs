@@ -38,6 +38,12 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
         _spine?.SyncHoldHurt(MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
     }
 
+    /// <summary>
+    /// 原版 <c>NCreature.StartDeathAnim</c> 只给原版 Spine 怪物发 "Dead" 触发，贴图外观收不到，由死亡补丁转到这里。
+    /// 怪物要同时把 <c>DeathAnimLengthOverride</c> 设成死亡动画时长，原版才会等动画播完再做溶解消失。
+    /// </summary>
+    internal void PlayDeath() => _spine?.Play("Dead", holdHurtPose: false);
+
     private void HideSprites()
     {
         if (_spine == null)

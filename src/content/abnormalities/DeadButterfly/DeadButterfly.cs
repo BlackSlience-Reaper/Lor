@@ -29,6 +29,9 @@ internal enum DeadButterflyInitialMove
 
 public sealed class DeadButterfly : LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => DeadButterflyCreatureVisuals.DeathSeconds;
+
     public override int DefaultChaoResistance => 10;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()

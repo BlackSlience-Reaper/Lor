@@ -552,6 +552,7 @@ LibraryOfRuina.ui.StaggerBadgeRefreshPatch
 LibraryOfRuina.ui.StaggerBadgeResistIconsPatch
 LibraryOfRuina.content.liberation.Religion.ReligionFloorSacrificePlayPatch
 LibraryOfRuina.patches.VanillaIntentTargetFlashPatch
+LibraryOfRuina.patches.visuals.SpineSpriteDeathAnimPatch
 GodotPlugins.Game.Main
 LibraryOfRuina.ui.BlockTransferButton
 LibraryOfRuina.ui.BlockTransferOverlay

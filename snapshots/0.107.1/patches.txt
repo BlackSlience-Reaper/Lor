@@ -386,6 +386,7 @@ LibraryOfRuina.patches.visuals.LiteratureFloorBlackSwanBrotherDeathVisualPatch	P
 LibraryOfRuina.patches.visuals.MonsterNodeReadyDebugPatch	Finalizer	Finalizer	returns=System.Exception	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "_Ready")
 LibraryOfRuina.patches.visuals.MonsterVisualsReadyDebugPatch	Finalizer	Finalizer	returns=System.Exception	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreatureVisuals), "_Ready")
 LibraryOfRuina.patches.visuals.NonSpineAnimationTriggerBridgePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "SetAnimationTrigger")
+LibraryOfRuina.patches.visuals.SpineSpriteDeathAnimPatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "StartDeathAnim")
 LibraryOfRuina.ui.BlockTransferOverlayPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "OnCombatSetUp")
 LibraryOfRuina.ui.DamagePreview.DamagePreviewOverlayPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Rooms.NCombatRoom), "OnCombatSetUp")
 LibraryOfRuina.ui.DamagePreview.DamagePreviewTracePatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()

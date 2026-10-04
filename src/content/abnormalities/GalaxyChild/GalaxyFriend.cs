@@ -37,6 +37,9 @@ internal enum GalaxyFriendInitialMove
 
 public sealed class GalaxyFriend : LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GalaxyFriendCreatureVisuals.DeathSeconds;
+
     public const string IdleTexturePath = GalaxyChildAssets.GalaxyFriendIdleTexture;
     public const string AttackTexturePath = GalaxyChildAssets.GalaxyFriendAttackTexture;
     public const string HitTexturePath = GalaxyChildAssets.GalaxyFriendHitTexture;
@@ -382,7 +385,10 @@ public sealed class GalaxyFriend : LorMonsterModel
                 this,
                 StarlightDamage,
                 animId: "Attack",
-                delaySeconds: SegmentDelaySeconds);
+                // 星光坠落只换一次图，第一段等到换图后的命中，后续各段落在人物鼓起的时刻（见 GalaxyFriendCreatureVisuals）
+                delaySeconds: i == 0
+                    ? GalaxyFriendCreatureVisuals.AttackImpactSeconds
+                    : GalaxyFriendCreatureVisuals.FollowUpHitSeconds);
         }
     }
 

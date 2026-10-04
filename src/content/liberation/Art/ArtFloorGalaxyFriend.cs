@@ -32,6 +32,9 @@ internal enum ArtFloorGalaxyFriendInitialMove
 
 public sealed class ArtFloorGalaxyFriend : LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GalaxyFriendCreatureVisuals.DeathSeconds;
+
     private const string WaitMoveId = "WAIT";
     private const string StarlightFallMoveId = "STARLIGHT_FALL";
     private const string TwinkleMoveId = "TWINKLE";
@@ -347,7 +350,10 @@ public sealed class ArtFloorGalaxyFriend : LorMonsterModel
                 this,
                 StarlightDamage,
                 animId: "Attack",
-                delaySeconds: SegmentDelaySeconds);
+                // 星光坠落只换一次图，第一段等到换图后的命中，后续各段落在人物鼓起的时刻（见 GalaxyFriendCreatureVisuals）
+                delaySeconds: i == 0
+                    ? GalaxyFriendCreatureVisuals.AttackImpactSeconds
+                    : GalaxyFriendCreatureVisuals.FollowUpHitSeconds);
         }
     }
 
@@ -358,7 +364,7 @@ public sealed class ArtFloorGalaxyFriend : LorMonsterModel
             this,
             TwinkleDamage,
             animId: "Attack",
-            delaySeconds: SegmentDelaySeconds);
+            delaySeconds: GalaxyFriendCreatureVisuals.AttackImpactSeconds);
         await CreatureCmd.GainBlock(Creature, TwinkleBlock, ValueProp.Move, null);
     }
 
