@@ -262,7 +262,6 @@ LibraryOfRuina.patches.ExtSettingsSubmenuHost.SubmenuCache	instance	-	以 NMainM
 LibraryOfRuina.patches.GalaxyChildPartingTearsKillBatchPatch.Depths	combat	-	以 ICombatState 为弱键的击杀批次深度：Prefix 自增，TriggerAfter 在 finally 中自减；深度为 0 时才判定“离别之泪”胜利
 LibraryOfRuina.patches.LibraryCursorPatch._applied	harmless	once	Apply 设置鼠标光标后置 true
 LibraryOfRuina.patches.LibraryCursorPatch._defaultCursor	harmless	cache	Apply 里用 ??= LoadImage 加载
-LibraryOfRuina.patches.LibraryCursorPatch._inspectCursor	harmless	cache	Apply 里用 ??= LoadImage 加载
 LibraryOfRuina.patches.LibraryCursorPatch._tiltedCursor	harmless	cache	Apply 里用 ??= LoadImage 加载
 LibraryOfRuina.patches.LibraryEncounterWeighting.PriorityAbnormalityEncounterTypes	harmless	cache	静态常量类型集合，只读
 LibraryOfRuina.patches.NTargetedIntentLines._arrowStartTexture	harmless	cache	Create 里通过 LoadTexture(ref) 加载一次

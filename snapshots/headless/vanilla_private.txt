@@ -37,7 +37,6 @@ NCreature._spineAnimator	ok
 NCreature._stateDisplay	ok
 NCreatureStateDisplay._healthBar	ok
 NCreatureStateDisplay._originalPosition	ok
-NCursorManager._cursorInspect	ok
 NCursorManager._cursorNotTilted	ok
 NCursorManager._cursorTilted	ok
 NDropdownPositioner._dropdownNode	ok

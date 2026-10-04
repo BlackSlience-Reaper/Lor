@@ -148,7 +148,6 @@ internal static class VanillaPrivate
     internal static readonly VanillaPrivateField<NSettingsDropdown, Control> SettingsDropdownDropdownContainer = new("_dropdownContainer");
     internal static readonly VanillaPrivateField<NCursorManager, Image> CursorManagerCursorTilted = new("_cursorTilted");
     internal static readonly VanillaPrivateField<NCursorManager, Image> CursorManagerCursorNotTilted = new("_cursorNotTilted");
-    internal static readonly VanillaPrivateField<NCursorManager, Image> CursorManagerCursorInspect = new("_cursorInspect");
 
     // 音乐
     internal static readonly VanillaPrivateField<NRunMusicController, Node> RunMusicControllerProxy = new("_proxy");
