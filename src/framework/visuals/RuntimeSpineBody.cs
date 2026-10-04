@@ -27,7 +27,9 @@ internal sealed partial class RuntimeSpineBody : Node2D
         float DefaultMix,
         // 混乱时定格的受击时间点（秒）
         float HurtHoldSeconds,
-        GhostSpec? Ghosts);
+        GhostSpec? Ghosts,
+        // 其他触发（例如 "Guard"、"Cast"）对应的动画：播一次再回待机；没列出的触发返回 false
+        IReadOnlyDictionary<string, string>? ExtraTriggers = null);
 
     internal sealed record GhostSpec(float LagSeconds, float[] Alpha, float FadeInStart, float FadeInEnd, float FadeOutStart, float FadeOutEnd);
 
@@ -178,7 +180,22 @@ internal sealed partial class RuntimeSpineBody : Node2D
                 HideGhosts();
                 return true;
             default:
-                return false;
+                if (_spec.ExtraTriggers?.TryGetValue(trigger, out string? animation) != true)
+                {
+                    return false;
+                }
+
+                if (holdHurtPose)
+                {
+                    HoldHurt();
+                }
+                else
+                {
+                    PlayOnce(animation!, thenIdle: true);
+                    HideGhosts();
+                }
+
+                return true;
         }
     }
 

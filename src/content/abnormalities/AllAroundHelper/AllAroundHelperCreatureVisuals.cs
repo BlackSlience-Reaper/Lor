@@ -1,16 +1,13 @@
-using Godot;
 using LibraryOfRuina.framework.visuals;
-using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.AllAroundHelper;
 
 /// <summary>
-/// 全能助手的外观：贴图外观照旧建好（布局、碰撞框、目标头像都读它），再在上面换上 Spine 身体
-/// （tools/spine_from_sprite/all_around_helper.json 生成），由 Spine 播待机、攻击、受击、死亡。
-/// Spine 加载失败时什么都不换，退回原来的贴图与换图动作。
+/// 全能助手的外观：Spine 身体（tools/spine_from_sprite/all_around_helper.json 生成）播待机、攻击、受击、死亡，
+/// 接入方式见 <see cref="SpineSpriteAttackCreatureVisuals"/>。
 /// </summary>
-public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisuals, INonSpineVisualTriggerHandler
+public partial class AllAroundHelperCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(AllAroundHelper))]
     internal static readonly CreatureVisualLayout Layout = new(
@@ -30,7 +27,9 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
     /// </summary>
     internal const float FollowUpHitSeconds = 0.25f;
 
-    private static readonly RuntimeSpineBody.Spec SpineSpec = new(
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine = new(
         AllAroundHelperAssets.AllAroundHelperSpineAtlas,
         AllAroundHelperAssets.AllAroundHelperSpineSkeleton,
         IdleAnimation: "idle",
@@ -48,8 +47,6 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
             FadeOutStart: 0.74f,
             FadeOutEnd: 0.9f));
 
-    private RuntimeSpineBody? _spine;
-
     internal override SpriteVisualProfile SpriteProfile => Profile;
 
     private static SpriteVisualProfile BuildProfile()
@@ -63,44 +60,5 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
         profile.Swap("attack", 0.18f, "Attack");
         profile.Swap("hit", 0.12f, "Hit");
         return profile;
-    }
-
-    public override void _Ready()
-    {
-        base._Ready();
-        if (GetNodeOrNull<Sprite2D>("%Visuals") is { } idle)
-        {
-            _spine = RuntimeSpineBody.TryCreate(idle, SpineSpec);
-        }
-
-        HideSprites();
-    }
-
-    // 触发桥按接口调用；这里重新实现接口，有 Spine 身体时由它处理，否则走基类的换图动作。
-    bool INonSpineVisualTriggerHandler.TryPlayTrigger(string triggerName) =>
-        _spine?.Play(triggerName, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this)) ?? TryPlayTrigger(triggerName);
-
-    // 基类在混乱状态切换、动作结束时回到这里重设两张贴图；有 Spine 身体时贴图一直藏着，由 Spine 定格或解除受击姿势。
-    protected override void RestoreIdleState()
-    {
-        base.RestoreIdleState();
-        HideSprites();
-        _spine?.SyncHoldHurt(MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
-    }
-
-    private void HideSprites()
-    {
-        if (_spine == null)
-        {
-            return;
-        }
-
-        foreach (string name in new[] { "%Visuals", "%AttackVisuals" })
-        {
-            if (GetNodeOrNull<Sprite2D>(name) is { } sprite)
-            {
-                sprite.Visible = false;
-            }
-        }
     }
 }
