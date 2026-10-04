@@ -245,7 +245,9 @@ class Rig:
             images[layer["name"]] = img
             taken = np.maximum(taken, m)
         base = src.copy()
-        base[..., 3] = (base[..., 3] * (1 - taken)).astype(np.uint8)
+        # keep：两层交界的描边线两边都留。上层盖着时看不出重复，上层挪开后底层边缘仍有描边
+        keep = shape_mask(layers[0].get("keep", {})).astype(np.float32) / 255
+        base[..., 3] = (base[..., 3] * (1 - taken * (1 - keep))).astype(np.uint8)
         fill = shape_mask({"polygons": layers[0].get("inpaint", []), "ellipses": layers[0].get("inpaint_ellipses", [])})
         if fill.any():
             # 只用剩下的躯干像素推算补洞颜色：被别的层拿走的像素、透明像素（RGB 可能是白的）都当作未知，
