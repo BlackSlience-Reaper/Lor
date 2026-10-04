@@ -15,11 +15,11 @@
   "animations": {
     "idle": {"type": "idle", "duration": 2.4, "bob": 3.5, "breath": 0.015,
              "arm_sway": [3.0, 5.0, 7.0], "arm_lag": [0.6, 1.2, 1.8], "leg_tip_sway": 2.5},
-    "attack": {"type": "spin_dash", "duration": 1.2, "spins": 2, "dash": -150.0, "lift": 34.0,
+    "attack": {"type": "spin_dash", "duration": 1.1, "spins": 2, "dash": -150.0, "lift": 34.0,
                "radial": {"armL": 135.0, "armR": 45.0, "legL": -135.0, "legR": -45.0},
                "fx": {"source": "../../images/monsters/all_around_helper_attack.webp", "page": "all_around_helper_spine_fx.png",
                       "pivot": [411, 291], "inner_radius": 140.0, "key_low": 25.0, "key_span": 70.0,
-                      "on": 0.34, "off": 1.0, "extra_spin": 400.0, "scale_from": 0.82, "scale_to": 1.02}},
+                      "extra_spin": 400.0, "scale_from": 0.82, "scale_to": 1.02}},
     "hurt": {"type": "hurt", "duration": 0.6, "knockback": 30.0, "tilt": -20.0,
              "flail": [24.0, 34.0, 42.0], "flash": 0.45},
     "die": {"type": "die", "duration": 1.6, "rest_height": 52.0, "body_rotate": -14.0, "body_x": 22.0,

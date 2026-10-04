@@ -270,25 +270,38 @@ class Animator:
         return offs
 
     # 旋转冲刺：蓄力下蹲后仰 → 四肢拉直成放射状 → 离地转 spins 圈并冲出 dash → 转回落地；旋转期间松开腿 IK
+    # 默认时间轴照原版怪物攻击的节奏：命中（冲刺最远）在 dash_out 结束时，约 0.3 秒，对上原版攻击默认等待 0.3 秒
+    # （快速模式 0.15 秒）；命中后再转圈、收回。原版快速模式不改动画速度，只缩短等待，所以命中帧要靠前。
+    SPIN_DASH_TIMING = {
+        "wind": [0.0, 0.1], "extend": [0.08, 0.2], "retract": [0.8, 0.98],
+        "spin": [0.12, 0.87], "dash_out": [0.12, 0.3], "dash_back": [0.55, 0.85],
+        "lift_up": [0.1, 0.22], "lift_down": [0.82, 0.98], "land": [0.95, 1.1],
+        "ik_off": [0.08, 0.14], "ik_on": [0.85, 0.98],
+    }
+
+    # 旋转冲刺：蓄力下蹲后仰 → 四肢拉直指向 radial → 离地转 spins 圈并冲出 dash → 转回落地；旋转期间松开腿 IK。
+    # 各段起止时间见 SPIN_DASH_TIMING，可在配置的 timing 里逐项覆盖。
     def spin_dash(self, p):
-        T = p.get("duration", 1.2)
+        T = p.get("duration", 1.1)
+        tm = dict(self.SPIN_DASH_TIMING, **p.get("timing", {}))
         radial = p.get("radial", {"armL": 135.0, "armR": 45.0, "legL": -135.0, "legR": -45.0})
         straight = {limb: self.straight_offsets(limb, radial[limb]) for limb in self.limbs if limb in radial}
         spins, dash_x, lift_y = p.get("spins", 2), p.get("dash", -150.0), p.get("lift", 34.0)
 
         def fn(t):
             ch = {}
-            wind = seg(t, 0.0, 0.22)
-            extend = seg(t, 0.22, 0.38) * (1 - seg(t, 0.92, 1.12))
-            spin = 360.0 * spins * smooth((t - 0.34) / 0.6)
-            dash = seg(t, 0.38, 0.6) * (1 - seg(t, 0.72, 1.0))
-            lift = seg(t, 0.25, 0.4) * (1 - seg(t, 0.95, 1.12))
-            land = math.sin(math.pi * clamp01((t - 1.0) / 0.2))
+            # 蓄力姿势只在蓄力段：到四肢拉直时完全退掉，收尾不再回到下蹲
+            wind = seg(t, *tm["wind"]) * (1 - seg(t, *tm["extend"]))
+            extend = seg(t, *tm["extend"]) * (1 - seg(t, *tm["retract"]))
+            spin = 360.0 * spins * smooth((t - tm["spin"][0]) / (tm["spin"][1] - tm["spin"][0]))
+            dash = seg(t, *tm["dash_out"]) * (1 - seg(t, *tm["dash_back"]))
+            lift = seg(t, *tm["lift_up"]) * (1 - seg(t, *tm["lift_down"]))
+            land = math.sin(math.pi * clamp01((t - tm["land"][0]) / (tm["land"][1] - tm["land"][0])))
             ch["body"] = {
-                "rotate": -8 * wind * (1 - extend) + spin,
-                "x": 10 * wind * (1 - extend) + dash_x * dash,
-                "y": -8 * wind * (1 - extend) + lift_y * lift - 5 * land,
-                "sx": 1 + 0.05 * wind * (1 - extend), "sy": 1 - 0.06 * wind * (1 - extend) - 0.04 * land,
+                "rotate": -8 * wind + spin,
+                "x": 10 * wind + dash_x * dash,
+                "y": -8 * wind + lift_y * lift - 5 * land,
+                "sx": 1 + 0.05 * wind, "sy": 1 - 0.06 * wind - 0.04 * land,
             }
             for limb, offs in straight.items():
                 sign = side_sign(limb)
@@ -296,16 +309,17 @@ class Animator:
                 for i, name in enumerate(names):
                     v = offs[i] * extend
                     if is_arm(limb) and i == 0:
-                        v += 12 * sign * wind * (1 - extend)
+                        v += 12 * sign * wind
                     if is_arm(limb) and i == 1:
-                        v += -10 * sign * wind * (1 - extend)
+                        v += -10 * sign * wind
                     ch[name] = {"rotate": v}
-            ik = 1 - seg(t, 0.22, 0.3) * (1 - seg(t, 0.95, 1.1))
+            ik = 1 - seg(t, *tm["ik_off"]) * (1 - seg(t, *tm["ik_on"]))
             return ch, {n: ik for n in self.ik_names}
 
         anim = self.build(fn, T)
         if "fx" in p:
-            self.add_spin_fx(anim, p["fx"], T)
+            fx = dict({"on": tm["spin"][0], "off": tm["spin"][1] + 0.03}, **p["fx"])
+            self.add_spin_fx(anim, fx, T)
         return anim
 
     def add_spin_fx(self, anim, fx, T):
@@ -316,7 +330,7 @@ class Animator:
         rot, scale, rgba = [], [], []
         for i in range(steps + 1):
             t = T * i / steps
-            a = seg(t, on, on + 0.12) * (1 - seg(t, off - 0.16, off))
+            a = seg(t, on, on + 0.1) * (1 - seg(t, off - 0.16, off))
             rot.append({"time": round(t, 4), "value": round(extra * smooth((t - on) / (off - on)), 3)})
             s = fx.get("scale_from", 0.82) + (fx.get("scale_to", 1.02) - fx.get("scale_from", 0.82)) * seg(t, on, on + 0.16)
             scale.append({"time": round(t, 4), "x": round(s, 4), "y": round(s, 4)})
