@@ -229,7 +229,11 @@ public sealed class AllAroundHelper : CounterIntentMonsterModel
             if (Creature.IsDead) return;
             LocalOggOneShotPlayer.Play(AllAroundHelperAssets.AllAroundHelperAttackSfx, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(
-                this, CleanDamage, delaySeconds: AllAroundHelperCreatureVisuals.AttackImpactSeconds);
+                this,
+                CleanDamage,
+                delaySeconds: i == 0
+                    ? AllAroundHelperCreatureVisuals.AttackImpactSeconds
+                    : AllAroundHelperCreatureVisuals.FollowUpHitSeconds);
         }
     }
 

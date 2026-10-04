@@ -13,7 +13,7 @@ namespace LibraryOfRuina.framework.visuals;
 /// <item>游戏的 Spine 是引擎内置模块，C# 侧没有生成的类，按 Godot 方法名调用。</item>
 /// <item>骨架原点是源贴图底边中点、单位是贴图像素，所以按待机 Sprite2D 的位置、缩放和翻转对齐，与原贴图完全重合。</item>
 /// <item>攻击动画的残影（动态模糊）：主体后面叠几份共用骨骼数据的 SpineSprite，手动推进，比主体晚固定时长、逐个变淡；
-/// 只在开始攻击（或连击接续）时各设一次动画，之后每帧按时间差推进。每帧清轨道再定位会把运行库卡死。</item>
+/// 只在开始攻击时各设一次动画，之后每帧按时间差推进。每帧清轨道再定位会把运行库卡死。</item>
 /// </list>
 /// 加载失败时返回 null，外观保持原来的贴图。只是本机表现，不参与同步。
 /// </summary>
@@ -27,8 +27,6 @@ internal sealed partial class RuntimeSpineBody : Node2D
         string HurtAnimation,
         string DeathAnimation,
         float DefaultMix,
-        // 连击时接续的攻击时间点（秒）：攻击进行中再收到攻击触发，从这里接着播，不回到蓄力
-        float AttackChainResumeSeconds,
         // 快速模式下攻击动画的倍速，让命中时刻对上原版缩短后的等待
         float FastModeAttackTimeScale,
         // 混乱时定格的受击时间点（秒）
@@ -232,28 +230,28 @@ internal sealed partial class RuntimeSpineBody : Node2D
         HideGhosts();
     }
 
+    // 一个多段攻击招式只播一次攻击动画：每段伤害都会发 "Attack" 触发，动画还在播时后面的触发直接忽略，
+    // 各段伤害的等待由怪物按动画里的命中时刻安排。
     private void PlayAttack()
     {
+        if (!_holdingHurt && CurrentAnimation(_main) == _spec.AttackAnimation)
+        {
+            return;
+        }
+
         _holdingHurt = false;
-        GodotObject? current = Current(_main);
-        bool chained = current != null
-                       && CurrentAnimation(_main) == _spec.AttackAnimation
-                       && current.Call("get_track_time").AsSingle() > _spec.AttackChainResumeSeconds;
-        float start = chained ? _spec.AttackChainResumeSeconds : 0f;
         float timeScale = SaveManager.Instance?.PrefsSave?.FastMode == FastModeType.Fast ? _spec.FastModeAttackTimeScale : 1f;
 
         GodotObject state = State(_main);
         GodotObject entry = state.Call("set_animation", _spec.AttackAnimation, false, 0).AsGodotObject();
-        entry.Call("set_track_time", start);
         entry.Call("set_time_scale", timeScale);
         state.Call("add_animation", _spec.IdleAnimation, 0f, true, 0);
 
         for (int i = 0; i < _ghosts.Length; i++)
         {
-            GodotObject ghostEntry = State(_ghosts[i]).Call("set_animation", _spec.AttackAnimation, false, 0).AsGodotObject();
-            ghostEntry.Call("set_track_time", start);
+            State(_ghosts[i]).Call("set_animation", _spec.AttackAnimation, false, 0);
             _ghosts[i].Call("update_skeleton", 0f);
-            _ghostTimes[i] = start;
+            _ghostTimes[i] = 0f;
         }
     }
 

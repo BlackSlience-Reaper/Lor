@@ -18,8 +18,14 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
-    /// <summary>攻击动画里冲到最远（命中）的时刻，秒；全能助手的攻击按它等待后结算伤害。</summary>
+    /// <summary>攻击动画里冲到最远（命中）的时刻，秒；多段攻击的第一段按它等待后结算伤害。</summary>
     internal const float AttackImpactSeconds = 0.6f;
+
+    /// <summary>
+    /// 多段攻击后续各段的等待，秒。整个招式只播一次攻击动画（后续段的触发被忽略），
+    /// 第二段在第一段结算后约 0.25 秒落下，仍在动画的旋转阶段（约 0.95 秒前）。
+    /// </summary>
+    internal const float FollowUpHitSeconds = 0.25f;
 
     private static readonly RuntimeSpineBody.Spec SpineSpec = new(
         AllAroundHelperAssets.AllAroundHelperSpineAtlas,
@@ -29,7 +35,6 @@ public partial class AllAroundHelperCreatureVisuals : SpriteAttackCreatureVisual
         HurtAnimation: "hurt",
         DeathAnimation: "die",
         DefaultMix: 0.12f,
-        AttackChainResumeSeconds: 0.3f,
         // 快速模式下原版把攻击等待缩到 0.25 秒，攻击动画按比例加速，命中仍落在冲刺最远处
         FastModeAttackTimeScale: AttackImpactSeconds / 0.25f,
         HurtHoldSeconds: 0.08f,
