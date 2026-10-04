@@ -72,6 +72,9 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
     internal const string StrikeTexturePath = "res://images/monsters/scarecrow_searching_for_wisdom/attack_strike.png";
     internal const string ThrustTexturePath = "res://images/monsters/scarecrow_searching_for_wisdom/attack_thrust.png";
     internal const string SpecialTexturePath = "res://images/monsters/scarecrow_searching_for_wisdom/special.png";
+    // Spine 身体（tools/spine_from_sprite 生成）：骨骼与图集以原始文件打进 PCK，运行时按路径加载
+    internal const string SpineAtlasPath = "res://images/monsters/scarecrow_searching_for_wisdom/scarecrow.atlas";
+    internal const string SpineSkeletonPath = "res://images/monsters/scarecrow_searching_for_wisdom/scarecrow.spine-json";
     private const string AttackOneSfxPath = "res://audio/sfx/scarecrow_searching_for_wisdom/attack_1.ogg";
     private const string AttackTwoSfxPath = "res://audio/sfx/scarecrow_searching_for_wisdom/attack_2.ogg";
     private const string HarvestDrainSfxPath = "res://audio/sfx/scarecrow_searching_for_wisdom/harvest_drain.ogg";
@@ -276,7 +279,7 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         int damage = GetCultivateDamageRoll();
         IReadOnlyList<DamageResult> results = AttackCommandCompat.Results(await DamageCmd.Attack(damage)
             .FromMonster(this)
-            .WithAttackerAnim("AttackStrike", 0.45f)
+            .WithAttackerAnim("AttackStrike", ScarecrowSearchingForWisdomCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(null));
         _cultivateDamageRoll = null;
@@ -312,7 +315,7 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         int damage = GetRakeDamageRoll();
         IReadOnlyList<DamageResult> results = AttackCommandCompat.Results(await DamageCmd.Attack(damage)
             .FromMonster(this)
-            .WithAttackerAnim("AttackThrust", 0.45f)
+            .WithAttackerAnim("AttackThrust", ScarecrowSearchingForWisdomCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null));
         _rakeDamageRoll = null;
@@ -337,7 +340,7 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
         IReadOnlyList<DamageResult> results = AttackCommandCompat.Results(await DamageCmd.Attack(damage)
             .FromMonster(this)
             .WithHitCount(StruggleHits)
-            .WithAttackerAnim("AttackStrike", 0.45f)
+            .WithAttackerAnim("AttackStrike", ScarecrowSearchingForWisdomCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(null));
         _struggleDamageRoll = null;
@@ -369,7 +372,7 @@ public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
             IReadOnlyList<DamageResult> results = AttackCommandCompat.Results(await DamageCmd.Attack(GetHarvestDamageRoll())
                 .FromMonster(this)
                 .WithHitCount(HarvestHits)
-                .WithAttackerAnim("Special", 0.32f)
+                .WithAttackerAnim("Special", ScarecrowSearchingForWisdomCreatureVisuals.HarvestHitSeconds)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(null));
 

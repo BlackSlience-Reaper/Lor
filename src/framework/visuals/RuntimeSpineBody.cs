@@ -189,8 +189,9 @@ internal sealed partial class RuntimeSpineBody : Node2D
                 {
                     HoldHurt();
                 }
-                else
+                else if (_holdingHurt || CurrentAnimation(_main) != animation)
                 {
+                    // 多段招式每段都会发同一个触发，和 Attack 一样只播一次
                     PlayOnce(animation!, thenIdle: true);
                     HideGhosts();
                 }
