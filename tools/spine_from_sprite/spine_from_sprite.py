@@ -481,6 +481,37 @@ class Animator:
             acc += off
         return offs
 
+    # 冲刺（配合换图的通用攻击）：身体后仰压低蓄力 wind_lean → 冲出 dash、前倾 lean（命中在 dash_out 结束，默认 0.3 秒）→
+    # 在 jabs 列出的各段伤害时刻往前一顶（jab 像素）→ dash_back 退回。head 部件跟着点头；arm_raise 给各条手臂第一节一个抬起角，
+    # 蓄力时就能看出要动手。具体姿势通常交给 swap 换成原攻击图。
+    def lunge(self, p):
+        T = p.get("duration", 1.1)
+        tm = dict({"wind": [0.0, 0.15], "dash_out": [0.15, 0.3], "dash_back": [0.8, 1.05]}, **p.get("timing", {}))
+        dash, lean, wind_lean = p.get("dash", -40.0), p.get("lean", 6.0), p.get("wind_lean", -5.0)
+        jabs, jab = p.get("jabs", []), p.get("jab", -10.0)
+        head, arm_raise = p.get("head"), p.get("arm_raise", 0.0)
+
+        def fn(t):
+            w, o, b = seg(t, *tm["wind"]), seg(t, *tm["dash_out"]), seg(t, *tm["dash_back"])
+            windup, out = w * (1 - o), o * (1 - b)
+            kick = sum(math.exp(-((t - j) / 0.05) ** 2) for j in jabs)
+            ch = {"body": {"rotate": wind_lean * windup + lean * out, "x": 8 * windup + dash * out + jab * kick,
+                           "y": -4 * windup, "sx": 1 + 0.04 * windup - 0.02 * out, "sy": 1 - 0.04 * windup + 0.02 * out}}
+            if head:
+                ch[head] = {"rotate": -4 * windup + 5 * out}
+            if arm_raise:
+                for limb in self.limbs:
+                    if is_arm(limb):
+                        ch[self.segs(limb)[0]] = {"rotate": side_sign(limb) * arm_raise * (windup + out)}
+            return ch, {}
+
+        anim = self.build(fn, T)
+        if "fx" in p:
+            fx = dict({"on": tm["dash_out"][0], "off": tm["dash_back"][0], "extra_spin": 0.0, "scale_from": 0.9,
+                       "scale_to": 1.0, "fade_in": 0.05, "fade_out": 0.2, "scale_time": 0.12}, **p["fx"])
+            self.add_spin_fx(anim, fx, T)
+        return anim
+
     # 关节挥击：arm 链各节 抬到 raise → 劈到 strike（命中在 strike 结束，默认 0.3 秒）→ 收回；每往外一节晚 lag 秒，形成甩鞭的跟随。
     # 身体先后仰蓄力，劈下时前冲 lunge、前倾 lean；head 部件跟着点头。
     def joint_swing(self, p):
@@ -730,6 +761,17 @@ class Animator:
             slots.setdefault(name, {})["rgba"] = layer_keys
         slots[slot] = {"attachment": [{"time": round(on, 4), "name": slot}, {"time": round(off, 4), "name": None}],
                        "rgba": pose_keys}
+        # pulse：在每段伤害时刻（times）让换图人物鼓一下（放大 amp，decay 秒内回落），多段招式只换一次图也能看出段数
+        if pose.get("pulse"):
+            pulse = pose["pulse"]
+            amp, decay = pulse.get("amp", 0.05), pulse.get("decay", 0.12)
+            keys = []
+            for i in range(steps + 1):
+                t = T * i / steps
+                k = sum(clamp01((t - h + 0.03) / 0.03) * math.exp(-max(0.0, t - h) / decay) for h in pulse["times"])
+                s = 1 + amp * k
+                keys.append({"time": round(t, 4), "x": round(s, 4), "y": round(s, 4)})
+            anim.setdefault("bones", {})[slot] = {"scale": keys}
 
     # 受击：向后（+x）击退、后仰、压扁，四肢带衰减乱甩，脚踩地；可选闪红
     def hurt(self, p):
@@ -957,7 +999,12 @@ def main():
         (pw, ph), (ox, oy) = extract_fx(spec, out_dir, page)
         data["bones"].append({"name": slot, "parent": "body"})
         data["slots"].append({"name": slot, "bone": slot})
-        data["skins"][0]["attachments"][slot] = {slot: {"x": ox, "y": oy, "width": pw, "height": ph}}
+        att = {"x": ox, "y": oy, "width": pw, "height": ph}
+        # scale：原版换图另给了缩放的（例如攻击图比待机图画得小）照抄，anchor 仍对准 body 骨
+        if pose.get("scale", 1.0) != 1.0:
+            s = pose["scale"]
+            att.update(x=round(ox * s, 3), y=round(oy * s, 3), scaleX=s, scaleY=s)
+        data["skins"][0]["attachments"][slot] = {slot: att}
         atlas += f"\n{page}\nsize:{pw},{ph}\nfilter:Linear,Linear\n{slot}\nbounds:0,0,{pw},{ph}\n"
 
     animator = Animator(rig, data)
