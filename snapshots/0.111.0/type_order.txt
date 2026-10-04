@@ -679,6 +679,7 @@ LibraryOfRuina.infra.helpers.PowerIconResolver
 LibraryOfRuina.infra.helpers.PresentationGuard
 LibraryOfRuina.infra.helpers.TypeDiscoveryOrder
 LibraryOfRuina.framework.visuals.CombatBackgroundImage
+LibraryOfRuina.framework.visuals.RuntimeSpineBody
 LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals
 LibraryOfRuina.framework.visuals.INonSpineVisualTriggerHandler
 LibraryOfRuina.framework.visuals.ITargetedAttackLungeVisuals
@@ -2488,6 +2489,11 @@ LibraryOfRuina.interop.ids.LibraryOfRuinaPublicIds+Intents
 LibraryOfRuina.interop.catalog.LibraryOfRuinaInteropRegistry+RawModelCategories
 LibraryOfRuina.infra.patching.LibraryPatcher+Result
 LibraryOfRuina.infra.helpers.GodotTextureSafety+TextureSourcePath
+LibraryOfRuina.framework.visuals.RuntimeSpineBody+Spec
+LibraryOfRuina.framework.visuals.RuntimeSpineBody+GhostSpec
+LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName
+LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName
+LibraryOfRuina.framework.visuals.RuntimeSpineBody+SignalName
 LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodName
 LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName
 LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+SignalName
