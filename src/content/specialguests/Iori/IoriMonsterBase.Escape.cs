@@ -50,12 +50,11 @@ public abstract partial class IoriMonsterBase
         TryQueueEscapeAfterHpChange(creature, delta);
     }
 
-    public override async Task AfterCurrentHpChanged(
+    public virtual async Task AfterCurrentHpChanged(
         Creature creature,
         decimal delta,
         LibraryDamageType type)
     {
-        await base.AfterCurrentHpChanged(creature, delta, type);
         TryQueueEscapeAfterHpChange(creature, delta);
     }
 

@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Technology;
 
-public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShooterPageMode>
+public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShooterPageMode>, ILibraryAbstractModel
 {
     internal const int CommissionDamagePercent = 50;
     internal const int CommissionGoldPerKill = 80;
@@ -255,7 +256,7 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
             target,
             cardSource);
 
-    public override Task AfterDamageGiven(
+    public Task AfterDamageGiven(
         PlayerChoiceContext choiceContext,
         Creature? dealer,
         DamageResult result,
@@ -363,7 +364,7 @@ public sealed class MagicBulletShooterPageRelic : ModalPageRelic<MagicBulletShoo
                 : 1m;
     }
 
-    public override decimal ModifyDamageMultiplicative(
+    public decimal ModifyDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,

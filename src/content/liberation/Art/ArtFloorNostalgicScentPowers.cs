@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
@@ -40,7 +41,7 @@ public sealed class ArtFloorPetalPower : LibraryOfRuinaPowerModel
     ];
 }
 
-public sealed class ArtFloorSuffocatingAtonementPower : LibraryPowerModel
+public sealed class ArtFloorSuffocatingAtonementPower : LibraryPowerModel, ILibraryAbstractModel
 {
     protected override string? LegacyPowerId => "ART_FLOOR_SUFFOCATING_ATONEMENT_POWER";
 
@@ -58,7 +59,7 @@ public sealed class ArtFloorSuffocatingAtonementPower : LibraryPowerModel
         return ShouldBlockNonCrownDamage(target, amount, dealer, cardSource) ? 0m : amount;
     }
 
-    public override decimal ModifyHpLostAfterOstyLate(
+    public decimal ModifyHpLostAfterOstyLate(
         Creature target,
         decimal amount,
         ValueProp props,
@@ -192,7 +193,7 @@ public sealed class ArtFloorFragrancePower : LibraryOfRuinaPowerModel
     }
 }
 
-public sealed class ArtFloorCollapsePower : LibraryPowerModel
+public sealed class ArtFloorCollapsePower : LibraryPowerModel, ILibraryAbstractModel
 {
     protected override string? LegacyPowerId => "ART_FLOOR_COLLAPSE_POWER";
 
@@ -221,7 +222,7 @@ public sealed class ArtFloorCollapsePower : LibraryPowerModel
         return target == Owner && amount > 0m ? amount * 2m : amount;
     }
 
-    public override decimal ModifyHpLostAfterOstyLate(
+    public decimal ModifyHpLostAfterOstyLate(
         Creature target,
         decimal num,
         ValueProp props,
@@ -238,7 +239,7 @@ public sealed class ArtFloorCollapsePower : LibraryPowerModel
         return Task.CompletedTask;
     }
 
-    public override Task AfterModifyingHpLostAfterOsty(LibraryDamageType type)
+    public Task AfterModifyingHpLostAfterOsty(LibraryDamageType type)
     {
         Flash();
         return Task.CompletedTask;
@@ -288,7 +289,7 @@ public sealed class ArtFloorNextTurnCollapsePower : LibraryPowerModel
     }
 }
 
-public sealed class ArtFloorClayDollPower : LibraryPowerModel
+public sealed class ArtFloorClayDollPower : LibraryPowerModel, ILibraryAbstractModel
 {
     protected override string? LegacyPowerId => "ART_FLOOR_CLAY_DOLL_POWER";
 
@@ -308,7 +309,7 @@ public sealed class ArtFloorClayDollPower : LibraryPowerModel
         return ShouldBlockDebuffLifeLoss(target, amount, props, dealer, cardSource) ? 0m : amount;
     }
 
-    public override decimal ModifyHpLostAfterOstyLate(
+    public decimal ModifyHpLostAfterOstyLate(
         Creature target,
         decimal num,
         ValueProp props,
@@ -334,7 +335,7 @@ public sealed class ArtFloorClayDollPower : LibraryPowerModel
     }
 }
 
-public sealed class ArtFloorDustToDustPower : LibraryPowerModel
+public sealed class ArtFloorDustToDustPower : LibraryPowerModel, ILibraryAbstractModel
 {
     protected override string? LegacyPowerId => "ART_FLOOR_DUST_TO_DUST_POWER";
 
@@ -344,7 +345,7 @@ public sealed class ArtFloorDustToDustPower : LibraryPowerModel
 
     protected override bool IsVisibleInternal => false;
 
-    public override Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
+    public Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
     {
         if (target != Owner || Owner.IsDead || Owner is not LibraryCreature lc || lc.CurrentChaoValue > 0)
         {
@@ -355,7 +356,7 @@ public sealed class ArtFloorDustToDustPower : LibraryPowerModel
         return CreatureCmd.Kill(Owner, force: true);
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature != Owner || Owner.IsDead)
         {

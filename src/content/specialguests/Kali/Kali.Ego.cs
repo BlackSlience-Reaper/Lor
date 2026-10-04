@@ -148,7 +148,7 @@ public sealed partial class Kali
         }
     }
 
-    public override async Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
+    public async Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
     {
         if (target == Creature && EgoActive && amount < 0m && target is LibraryCreature { CurrentChaoValue: <= 0 })
         {
@@ -156,7 +156,7 @@ public sealed partial class Kali
         }
     }
 
-    public override async Task AfterStun(Creature creature)
+    public async Task AfterStun(Creature creature)
     {
         if (creature != Creature)
         {

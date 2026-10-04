@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace LibraryOfRuina.content.liberation.Natural;
 
-public sealed class NaturalFloorTearEdgeBoss : NaturalFloorDespairMonster, ILiberationPrimaryPhaseBoss
+public sealed class NaturalFloorTearEdgeBoss : NaturalFloorDespairMonster, ILiberationPrimaryPhaseBoss, ILibraryAbstractModel
 {
     private static readonly string[] Ids = ["GRANT_TEARDROP", "SHELTERING_UNKNOWN", "PHASE_END"];
 
@@ -201,9 +202,8 @@ public sealed class NaturalFloorTearEdgeBoss : NaturalFloorDespairMonster, ILibe
         }
     }
 
-    public override async Task AfterStun(Creature creature)
+    public async Task AfterStun(Creature creature)
     {
-        await base.AfterStun(creature);
         if (creature == Creature)
         {
             await SyncUntargetablePower();

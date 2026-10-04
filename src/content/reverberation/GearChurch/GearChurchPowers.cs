@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -39,7 +40,7 @@ public abstract class GearChurchPassivePower : LibraryOfRuinaPowerModel
             : Task.CompletedTask;
 }
 
-public sealed class EileenNuovoFabricPower : GearChurchPassivePower
+public sealed class EileenNuovoFabricPower : GearChurchPassivePower, ILibraryAbstractModel
 {
     private sealed class AttackPlay(CardPlay play, bool protectedHit)
     {
@@ -138,7 +139,7 @@ public sealed class EileenNuovoFabricPower : GearChurchPassivePower
     =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -FabricReduction : 0m;
 
-    public override decimal ModifyChaoDamageAdditive(Creature? target, decimal amount, ValueProp props,
+    public decimal ModifyChaoDamageAdditive(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -FabricReduction : 0m;
 
@@ -152,7 +153,7 @@ public sealed class EileenNuovoFabricPower : GearChurchPassivePower
     =>
         IsProtected(target, props) ? 0m : 1m;
 
-    public override decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+    public decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) =>
         IsProtected(target, props) ? 0m : 1m;
 }
@@ -193,7 +194,7 @@ public sealed class GearChurchSmokeWreathPower : GearChurchPassivePower
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<GearChurchSmokePower>()];
 }
 
-public sealed class GearChurchSoberSmokePower : GearChurchPassivePower
+public sealed class GearChurchSoberSmokePower : GearChurchPassivePower, ILibraryAbstractModel
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         [new DynamicVar("Reduction", SoberReductionPercent), new DynamicVar("Cost", SoberSmokeCost)];
@@ -220,11 +221,11 @@ public sealed class GearChurchSoberSmokePower : GearChurchPassivePower
 #endif
     => Multiplier(target, props);
 
-    public override decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+    public decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) => Multiplier(target, props);
 }
 
-public sealed class GearChurchSmokePower : LibraryOfRuinaPowerModel
+public sealed class GearChurchSmokePower : LibraryOfRuinaPowerModel, ILibraryAbstractModel
 {
     private sealed class SmokePercentVar(string name, int percentPerStack) : DynamicVar(name, 0m)
     {
@@ -295,7 +296,7 @@ public sealed class GearChurchSmokePower : LibraryOfRuinaPowerModel
         return multiplier;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
+    public decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) =>
         dealer == Owner && ValuePropCompat.IsPoweredAttack(props) ? OutgoingMultiplier(CalculationStacks) : 1m;
 }

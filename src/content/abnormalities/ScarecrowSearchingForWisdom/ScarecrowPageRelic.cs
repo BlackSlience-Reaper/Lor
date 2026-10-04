@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
@@ -21,7 +22,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 
-public sealed class ScarecrowPageRelic : ModalPageRelic<ScarecrowPageMode>
+public sealed class ScarecrowPageRelic : ModalPageRelic<ScarecrowPageMode>, ILibraryAbstractModel
 {
     internal const int RakeCardsToCopy = 2;
     //internal const int RakeCopiedCardCostIncrease = 1;
@@ -118,7 +119,7 @@ public sealed class ScarecrowPageRelic : ModalPageRelic<ScarecrowPageMode>
         return HarvestDamageBonus;
     }
 
-    public override decimal ModifyChaoDamageAdditive(
+    public decimal ModifyChaoDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,

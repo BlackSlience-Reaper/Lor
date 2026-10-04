@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using LibraryLib.Utils.Resistance;
 using LibraryOfRuina.framework.powers;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -9,7 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Natural;
 
-public sealed class NihilBadGuyPower : LibraryOfRuinaPowerModel
+public sealed class NihilBadGuyPower : LibraryOfRuinaPowerModel, ILibraryAbstractModel
 {
     protected override string LegacyPowerId => "NIHIL_BAD_GUY_POWER";
 
@@ -46,7 +47,7 @@ public sealed class NihilBadGuyPower : LibraryOfRuinaPowerModel
             : 1m;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,

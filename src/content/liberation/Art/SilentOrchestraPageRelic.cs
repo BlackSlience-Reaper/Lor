@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
-public sealed class SilentOrchestraPageRelic : ModalPageRelic<SilentOrchestraPageMode>
+public sealed class SilentOrchestraPageRelic : ModalPageRelic<SilentOrchestraPageMode>, ILibraryAbstractModel
 {
     internal const int FerventAdorationDamagePercent = 200;
     internal const int FinaleStunTurns = 1;
@@ -179,7 +180,7 @@ public sealed class SilentOrchestraPageRelic : ModalPageRelic<SilentOrchestraPag
             null);
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (Mode != SilentOrchestraPageMode.Finale
             || _applyingFinaleStun

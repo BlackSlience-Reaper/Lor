@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using LibraryOfRuina.framework.powers;
 using LibraryLib.Utils.Resistance;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -9,7 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.QueenOfHatred;
 
-public sealed class LibraryOfRuinaQueenBadGuyPower : LibraryOfRuinaPowerModel
+public sealed class LibraryOfRuinaQueenBadGuyPower : LibraryOfRuinaPowerModel, ILibraryAbstractModel
 {
     protected override string LegacyPowerId => "QUEEN_BAD_GUY_POWER";
 
@@ -46,7 +47,7 @@ public sealed class LibraryOfRuinaQueenBadGuyPower : LibraryOfRuinaPowerModel
             : 1m;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,

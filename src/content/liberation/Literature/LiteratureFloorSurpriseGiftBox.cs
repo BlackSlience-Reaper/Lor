@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.Leticia;
@@ -17,7 +18,7 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace LibraryOfRuina.content.liberation.Literature;
 
-public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
+public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel, ILibraryAbstractModel
 {
     private const string MoveOneId = "EE_YO_LI_WOO";
     private const string MoveTwoId = "COUGH_OMM_JJI_AO";
@@ -142,12 +143,12 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
         }
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature != Creature
             || MoveStateMachine is not { } stateMachine)
         {
-            return base.AfterStun(creature);
+            return Task.CompletedTask;
         }
 
         if (NextMove is { Id: "STUNNED" } stunnedMove
@@ -158,7 +159,7 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel
             stunnedMove.FollowUpState = router;
         }
 
-        return base.AfterStun(creature);
+        return Task.CompletedTask;
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()

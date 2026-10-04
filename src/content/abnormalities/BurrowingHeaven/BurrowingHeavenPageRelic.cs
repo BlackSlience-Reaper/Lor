@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
@@ -19,7 +20,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.BurrowingHeaven;
 
-public sealed class BurrowingHeavenPageRelic : ModalPageRelic<BurrowingHeavenPageMode>
+public sealed class BurrowingHeavenPageRelic : ModalPageRelic<BurrowingHeavenPageMode>, ILibraryAbstractModel
 {
     internal const int WitheringBloodWingsReflectPercent = 100;
     internal const int OthersGazeHandCards = 1;
@@ -173,7 +174,7 @@ public sealed class BurrowingHeavenPageRelic : ModalPageRelic<BurrowingHeavenPag
         return ModifyPhysicalDamageMultiplier(target, dealer, props, cardSource);
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal num,
         ValueProp props,

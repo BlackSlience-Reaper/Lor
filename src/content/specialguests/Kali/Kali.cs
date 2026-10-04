@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace LibraryOfRuina.content.specialguests.Kali;
 /// （计划存在基类的五个槽位里）；<c>Kali.Moves.cs</c> 是各张卡的执行与卡牌共用的攻击演出。
 /// 纯规则方法（<c>BuildPlanCardIds</c>、<c>ResolvePlanCardLimit</c> 等）被卡牌与验证套件按 <c>Kali.X</c> 引用，留在本类型上。
 /// </summary>
-public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwner, ITargetedMonsterAttackProvider, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
+public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwner, ITargetedMonsterAttackProvider, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
 
     public const int EgoHpThreshold = 300;
@@ -439,7 +440,7 @@ public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwn
         return Task.CompletedTask;
     }
 
-    public override Task AfterCurrentHpChanged(Creature creature, decimal delta, LibraryDamageType type)
+    public Task AfterCurrentHpChanged(Creature creature, decimal delta, LibraryDamageType type)
     {
         QueueFirstEgoManifestation(creature);
         return Task.CompletedTask;
@@ -456,7 +457,7 @@ public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwn
         await TrackUnblockedPlayerDamage(dealer, results, props, target);
     }
 
-    public override async Task AfterDamageGiven(
+    public async Task AfterDamageGiven(
         PlayerChoiceContext choiceContext,
         Creature? dealer,
         DamageResult results,

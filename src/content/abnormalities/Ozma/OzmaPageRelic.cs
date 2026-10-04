@@ -25,7 +25,7 @@ public enum OzmaPageMode
     LifePowder = 3
 }
 
-public sealed class OzmaPageRelic : ModalPageRelic<OzmaPageMode>
+public sealed class OzmaPageRelic : ModalPageRelic<OzmaPageMode>, ILibraryAbstractModel
 {
     // 旧日之力：攻击牌费用增加量
     public const int CostIncrease = 1;
@@ -135,7 +135,7 @@ public sealed class OzmaPageRelic : ModalPageRelic<OzmaPageMode>
             : 1m;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,

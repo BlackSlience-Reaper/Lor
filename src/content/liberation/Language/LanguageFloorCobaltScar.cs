@@ -44,7 +44,7 @@ public enum LanguageFloorCobaltScarForm
 
 public sealed class LanguageFloorCobaltScar :
     CounterIntentMonsterModel,
-    ILiberationPrimaryPhaseBoss, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
+    ILiberationPrimaryPhaseBoss, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
     private const string NormalCompositeMoveId = "LANGUAGE_FLOOR_COBALT_COMPOSITE";
     private const string ShadowCompositeMoveId = "LANGUAGE_FLOOR_COBALT_SHADOW_COMPOSITE";
@@ -285,7 +285,7 @@ public sealed class LanguageFloorCobaltScar :
         await base.BeforeDeath(creature);
     }
 
-    public override Task BeforeStun(Creature creature)
+    public Task BeforeStun(Creature creature)
     {
         if (creature == Creature && IsOpeningCounterPlan)
         {
@@ -293,7 +293,7 @@ public sealed class LanguageFloorCobaltScar :
             ClearCounterIntentQueueAndRefresh(forceRefresh: true);
         }
 
-        return base.BeforeStun(creature);
+        return Task.CompletedTask;
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
@@ -464,7 +464,7 @@ public sealed class LanguageFloorCobaltScar :
         }
     }
 
-    public override Task AfterCurrentChaoValueChanged(
+    public Task AfterCurrentChaoValueChanged(
         Creature target,
         decimal amount,
         LibraryDamageType type)

@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ public sealed class AlriuneAtonementCrownPower : LibraryPowerModel
     ];
 }
 
-public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive
+public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive, ILibraryAbstractModel
 {
     // 每次打出及其全部 Replay 共用一次授权；嵌套打牌拥有独立序列。
     private sealed class PlaySeries(CardModel card, Player player)
@@ -167,7 +168,7 @@ public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive
         decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource) =>
         Authorize(choiceContext, target, cardSource);
 
-    public override Task BeforeChaoDamageReceived(PlayerChoiceContext choiceContext, Creature target,
+    public Task BeforeChaoDamageReceived(PlayerChoiceContext choiceContext, Creature target,
         decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, LibraryDamageType type) =>
         Authorize(choiceContext, target, cardSource);
 
@@ -181,7 +182,7 @@ public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive
     =>
         MayDamage(target, cardSource) ? decimal.MaxValue : 0m;
 
-    public override decimal ModifyChaoDamageCap(Creature? target, ValueProp props, Creature? dealer,
+    public decimal ModifyChaoDamageCap(Creature? target, ValueProp props, Creature? dealer,
         CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) =>
         MayDamage(target, cardSource) ? decimal.MaxValue : 0m;
 
@@ -197,7 +198,7 @@ public sealed class AlriuneSuffocatingAtonementPower : AlriuneGreenPassive
     }
 }
 
-public sealed class AlriuneFlowerTearsPower : AlriuneGreenPassive
+public sealed class AlriuneFlowerTearsPower : AlriuneGreenPassive, ILibraryAbstractModel
 {
     [SavedProperty]
     public bool TriggeredForCurrentStagger { get; set; }
@@ -223,7 +224,7 @@ public sealed class AlriuneFlowerTearsPower : AlriuneGreenPassive
         HoverTipFactory.FromPower<AlriuneAtonementCrownPower>()
     ];
 
-    public override Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
+    public Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
     {
         if (target == Owner && Owner is LibraryCreature { CurrentChaoValue: > 0 })
         {
@@ -232,7 +233,7 @@ public sealed class AlriuneFlowerTearsPower : AlriuneGreenPassive
         return Task.CompletedTask;
     }
 
-    public override Task BeforeStun(Creature creature)
+    public Task BeforeStun(Creature creature)
     {
         if (creature == Owner && Owner is LibraryCreature { IsChaoed: false })
         {
@@ -241,7 +242,7 @@ public sealed class AlriuneFlowerTearsPower : AlriuneGreenPassive
         return Task.CompletedTask;
     }
 
-    public override async Task AfterStun(Creature creature)
+    public async Task AfterStun(Creature creature)
     {
         if (creature != Owner || Owner.IsDead || TriggeredForCurrentStagger
             || Owner is not LibraryCreature { IsChaoed: true }
@@ -261,7 +262,7 @@ public sealed class AlriuneFlowerTearsPower : AlriuneGreenPassive
     }
 }
 
-public sealed class AlriuneDustToDustPower : LibraryFakeDeathPowerModel
+public sealed class AlriuneDustToDustPower : LibraryFakeDeathPowerModel, ILibraryAbstractModel
 {
     protected override string LegacyPowerId => "ALRIUNE_DUST_TO_DUST_POWER";
 
@@ -284,7 +285,7 @@ public sealed class AlriuneDustToDustPower : LibraryFakeDeathPowerModel
             ? dustborn.EnterFakeDeath()
             : Task.CompletedTask;
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature == Owner && Owner.IsAlive && Owner is LibraryCreature { IsChaoed: true })
         {
@@ -295,7 +296,7 @@ public sealed class AlriuneDustToDustPower : LibraryFakeDeathPowerModel
     }
 }
 
-public sealed class AlriuneClayDollPower : AlriuneGreenPassive
+public sealed class AlriuneClayDollPower : AlriuneGreenPassive, ILibraryAbstractModel
 {
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
@@ -303,7 +304,7 @@ public sealed class AlriuneClayDollPower : AlriuneGreenPassive
         HoverTipFactory.FromPower<LibraryBleedingPower>()
     ];
 
-    public override decimal ModifyEffectiveAmountMultiplicative(LibraryBasePowerModel power,
+    public decimal ModifyEffectiveAmountMultiplicative(LibraryBasePowerModel power,
         decimal amount, Creature? dealer, CardModel? cardSource) =>
         power.Owner == Owner && power is LibraryBurnPower or LibraryBleedingPower ? 0m : 1m;
 }

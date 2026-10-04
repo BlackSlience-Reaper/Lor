@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.interop;
@@ -15,7 +16,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Natural;
 
-public sealed class NaturalFloorNihilBoss : NaturalFloorNihilMonster, ILiberationPrimaryPhaseBoss
+public sealed class NaturalFloorNihilBoss : NaturalFloorNihilMonster, ILiberationPrimaryPhaseBoss, ILibraryAbstractModel
 {
     public NaturalFloorNihilForm Form { get; private set; }
 
@@ -332,9 +333,8 @@ public sealed class NaturalFloorNihilBoss : NaturalFloorNihilMonster, ILiberatio
         await CreatureCmd.TriggerAnim(Creature, "Idle", 0f);
     }
 
-    public override async Task AfterStun(Creature creature)
+    public async Task AfterStun(Creature creature)
     {
-        await base.AfterStun(creature);
         if (creature == Creature && Form == NaturalFloorNihilForm.Wrath && !WrathStaggered)
         {
             WrathStaggered = true;

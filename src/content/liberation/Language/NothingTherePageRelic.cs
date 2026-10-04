@@ -21,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.liberation.Language;
 
-public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
+public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>, ILibraryAbstractModel
 {
     public const int GoodbyeDamageMultiplier = 2;
 
@@ -228,7 +228,7 @@ public sealed class NothingTherePageRelic : ModalPageRelic<NothingTherePageMode>
             : 1m;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,
