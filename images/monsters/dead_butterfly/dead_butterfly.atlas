@@ -1,0 +1,11 @@
+idle.png
+size:200,235
+filter:Linear,Linear
+dead_butterfly
+bounds:0,0,200,235
+
+spine_fx.png
+size:360,335
+filter:Linear,Linear
+fx
+bounds:0,0,360,335

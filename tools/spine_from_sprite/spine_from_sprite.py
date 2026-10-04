@@ -65,12 +65,12 @@ class Rig:
         self.W, self.H = src.size
         # atlas_page 指向现成贴图（与图集同目录、尺寸相同）时不另存 PNG，运行时由引擎按图集目录加载那张贴图
         self.page = cfg.get("atlas_page", f"{self.name}.png")
-        if "atlas_page" not in cfg:
+        if "atlas_page" not in cfg and "layers" not in cfg:
             src.save(out_dir / self.page)
         self.bones = [{"name": "root"}]
         self.world = {"root": (0.0, 0.0, 0.0)}  # name -> (x, y, 世界角)
         self.segments = {}
-        self.limbs = cfg["limbs"]
+        self.limbs = cfg.get("limbs", {})
 
     def sk(self, p):
         return (p[0] - self.W / 2, self.H - p[1])
@@ -96,6 +96,10 @@ class Rig:
     def build_bones(self):
         body = self.cfg["body"]
         self.add_bone("body", "root", self.sk(body["center"]))
+        # 椭圆部件（头、群体里的每一只……）：骨头放在 bone 点（例如翅根，扇翅时以它为轴），蒙皮区域是 center/radii 椭圆
+        self.parts = self.cfg.get("parts", {})
+        for name, part in self.parts.items():
+            self.add_bone(name, part.get("parent", "body"), self.sk(part.get("bone", part["center"])))
         for limb, joints in self.limbs.items():
             pts = [self.sk(p) for p in joints]
             parent = "body"
@@ -108,11 +112,13 @@ class Rig:
             self.add_bone(f"{leg}_target", "root", self.sk(self.limbs[leg][2]))
 
     # 网格：按 cell 像素切格，只保留有不透明像素的格子（外扩一格），每个顶点按到各骨段的距离做高斯权重，最多 3 根骨头
-    def build_mesh(self):
+    # 分层时每层单独建网格：alpha 是该层贴图的透明度，allowed 是该层能绑的骨头（只按这些骨头算权重）
+    def build_mesh(self, alpha=None, allowed=None):
         W, H = self.W, self.H
         cell = self.cfg.get("cell", 5)
         sigma = self.cfg.get("sigma", 5.0)
-        alpha = self.img.getchannel("A")
+        if alpha is None:
+            alpha = self.img.getchannel("A")
         cols, rows = math.ceil(W / cell), math.ceil(H / cell)
         occupied = set()
         for cy in range(rows):
@@ -134,25 +140,44 @@ class Rig:
             a, b, c, d = vid(cx, cy), vid(cx + 1, cy), vid(cx + 1, cy + 1), vid(cx, cy + 1)
             triangles += [a, b, c, a, c, d]
 
-        body = self.cfg["body"]
-        bc = self.sk(body["center"])
-        rx, ry = body["radii"]
+        def ellipse_dist(center, radii):
+            c = self.sk(center)
+            rx, ry = radii
 
-        def body_dist(p):
-            n = math.hypot((p[0] - bc[0]) / rx, (p[1] - bc[1]) / ry)
-            return max(0.0, (n - 1.0) * min(rx, ry))
+            def dist(p):
+                n = math.hypot((p[0] - c[0]) / rx, (p[1] - c[1]) / ry)
+                return max(0.0, (n - 1.0) * min(rx, ry))
+
+            return dist
+
+        body = self.cfg["body"]
+        # skin=false：身体只当分组中心（例如蝴蝶群），不参与蒙皮
+        regions = {}
+        if body.get("skin", True):
+            regions["body"] = ellipse_dist(body["center"], body["radii"])
+        for name, part in self.parts.items():
+            regions[name] = ellipse_dist(part["center"], part["radii"])
 
         def seg_dist(p, a, b):
             vx, vy = b[0] - a[0], b[1] - a[1]
             t = max(0.0, min(1.0, ((p[0] - a[0]) * vx + (p[1] - a[1]) * vy) / (vx * vx + vy * vy)))
             return math.hypot(p[0] - a[0] - t * vx, p[1] - a[1] - t * vy)
 
+        segments = self.segments
+        if allowed is not None:
+            regions = {n: d for n, d in regions.items() if n in allowed}
+            segments = {n: s for n, s in segments.items() if n in allowed}
+            if not regions and not segments:
+                # 该层只跟一根没有蒙皮区域的骨头走（例如躯干层跟 body）：所有顶点全权重给它
+                regions = {n: (lambda p: 0.0) for n in allowed}
+
         index = {b["name"]: i for i, b in enumerate(self.bones)}
         vertex_data, uvs = [], []
+        dominant = []
         for px, py in verts:
             p = self.sk((px, py))
-            dists = {"body": body_dist(p)}
-            for name, (a, b) in self.segments.items():
+            dists = {name: dist(p) for name, dist in regions.items()}
+            for name, (a, b) in segments.items():
                 dists[name] = seg_dist(p, a, b)
             dmin = min(dists.values())
             weights = {n: math.exp(-((d - dmin) ** 2) / (2 * sigma * sigma))
@@ -162,6 +187,7 @@ class Rig:
             top = [(n, w / total) for n, w in top if w / total > 0.02]
             total = sum(w for _, w in top)
             vertex_data.append(len(top))
+            dominant.append(top[0][0])
             for n, w in top:
                 bx, by, ba = self.world[n]
                 dx, dy = p[0] - bx, p[1] - by
@@ -169,9 +195,74 @@ class Rig:
                 vertex_data += [index[n], round(dx * math.cos(r) - dy * math.sin(r), 2),
                                 round(dx * math.sin(r) + dy * math.cos(r), 2), round(w / total, 4)]
             uvs += [round(px / W, 5), round(py / H, 5)]
-        self.mesh = {"type": "mesh", "uvs": uvs, "triangles": triangles, "vertices": vertex_data,
-                     "hull": 0, "width": W, "height": H}
+        # 同一网格内按三角形顺序绘制、后画的在上。网格按列从左往右排，挥到身体前面的武器会被身体盖住；
+        # draw_on_top 列出的骨头为主的三角形挪到最后画。
+        on_top = set(self.cfg.get("draw_on_top", []))
+        if on_top:
+            tris = [triangles[i:i + 3] for i in range(0, len(triangles), 3)]
+            front = [t for t in tris if any(dominant[v] in on_top for v in t)]
+            back = [t for t in tris if not any(dominant[v] in on_top for v in t)]
+            triangles = [v for t in back + front for v in t]
+        mesh = {"type": "mesh", "uvs": uvs, "triangles": triangles, "vertices": vertex_data,
+                "hull": 0, "width": W, "height": H}
+        if allowed is not None:
+            return mesh, len(verts)
+        self.mesh = mesh
         self.vertex_count = len(verts)
+
+    # 分层：layers 按从后到前的顺序列出图层，除第一层（底层，通常是躯干）外每层用 mask 圈出自己的像素；
+    # 底层是剩下的像素，再在 inpaint 列出的区域里按周围纹理补齐（被手臂、头挡住的部分，手臂挥开时不会露洞）。
+    # 每层存成一张页面贴图、单独建网格、只绑 bones 列出的骨头（躯干、头整块跟一根骨头走，不再拉伸）。
+    def build_layers(self):
+        import cv2
+
+        W, H = self.W, self.H
+        src = np.asarray(self.img).copy()
+        taken = np.zeros((H, W), np.float32)
+        layers = self.cfg["layers"]
+        out = []
+
+        def shape_mask(spec):
+            m = np.zeros((H, W), np.uint8)
+            for poly in spec.get("polygons", []):
+                cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
+            for cx, cy, rx, ry in spec.get("ellipses", []):
+                cv2.ellipse(m, (int(cx), int(cy)), (int(rx), int(ry)), 0, 0, 360, 255, -1)
+            for x1, y1, x2, y2, r in spec.get("capsules", []):
+                cv2.line(m, (int(x1), int(y1)), (int(x2), int(y2)), 255, int(2 * r))
+            return m
+
+        images = {}
+        for layer in layers[1:]:
+            # 遮罩外扩 grow 像素：原图描边外侧的抗锯齿像素要跟着这一层走，否则底层会留一圈细白边
+            grow = int(layer.get("grow", 3))
+            m = shape_mask(layer["mask"])
+            if grow > 0:
+                m = cv2.dilate(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * grow + 1, 2 * grow + 1)))
+            m = m.astype(np.float32) / 255
+            img = src.copy()
+            img[..., 3] = (img[..., 3] * m).astype(np.uint8)
+            images[layer["name"]] = img
+            taken = np.maximum(taken, m)
+        base = src.copy()
+        base[..., 3] = (base[..., 3] * (1 - taken)).astype(np.uint8)
+        fill = shape_mask({"polygons": layers[0].get("inpaint", []), "ellipses": layers[0].get("inpaint_ellipses", [])})
+        if fill.any():
+            # 只用剩下的躯干像素推算补洞颜色：被别的层拿走的像素、透明像素（RGB 可能是白的）都当作未知，
+            # 免得手臂、头（黄眼、红嘴）的颜色渗进来
+            unknown = cv2.bitwise_or(fill, ((taken > 0.5) | (src[..., 3] < 128)).astype(np.uint8) * 255)
+            rgb = cv2.inpaint(np.ascontiguousarray(src[..., :3]), unknown, 9, cv2.INPAINT_TELEA)
+            base[..., :3] = np.where(fill[..., None] > 0, rgb, base[..., :3])
+            base[..., 3] = np.maximum(base[..., 3], fill)
+        images[layers[0]["name"]] = base
+
+        for layer in layers:
+            img = Image.fromarray(images[layer["name"]], "RGBA")
+            page = f"{self.name}_{layer['name']}.png"
+            img.save(self.out / page)
+            mesh, count = self.build_mesh(img.getchannel("A"), set(layer["bones"]))
+            out.append((layer["name"], page, mesh, count))
+        return out
 
     def ik(self):
         out = []
@@ -226,7 +317,7 @@ class Animator:
             for i in range(steps + 1):
                 t = duration * i / steps
                 keys.append({"time": round(t, 4), "color": "".join(f"{round(c * 255):02x}" for c in color(t))})
-            anim["slots"] = {self.rig.name: {"rgba": keys}}
+            anim["slots"] = {slot: {"rgba": keys} for slot in self.rig.slot_names}
         if ik:
             anim["ik"] = ik
         return anim
@@ -261,7 +352,238 @@ class Animator:
                         bones[name] = {"rotate": rot(arm_amp[min(i, len(arm_amp) - 1)] * sign, arm_lag[min(i, len(arm_lag) - 1)])}
                 else:
                     bones[names[-1]] = {"rotate": rot(leg_tip * sign, 1.4)}
+
+        # 部件：bob 上下、sway 左右、rotate 摆角、flap 扇翅（以骨头为轴横向缩放，flap_cycles 是每个循环扇几下），phase 错开
+        parts = p.get("parts", {})
+        n = 96
+
+        def pkeys(fn):
+            return [dict({"time": round(T * i / n, 4)}, **fn(2 * math.pi * i / n)) for i in range(n + 1)]
+
+        for name, o in parts.items():
+            ph0 = o.get("phase", 0.0)
+            ch = {}
+            if o.get("bob") or o.get("sway"):
+                ch["translate"] = pkeys(lambda ph, o=o, ph0=ph0: {
+                    "x": round(o.get("sway", 0.0) * math.sin(ph + ph0 + 1.1), 3),
+                    "y": round(o.get("bob", 0.0) * math.sin(ph + ph0), 3)})
+            if o.get("rotate"):
+                ch["rotate"] = pkeys(lambda ph, o=o, ph0=ph0: {"value": round(o["rotate"] * math.sin(ph + ph0 - 0.5), 3)})
+            if o.get("flap"):
+                ch["scale"] = pkeys(lambda ph, o=o, ph0=ph0: {
+                    "x": round(1 - o["flap"] * (0.5 - 0.5 * math.cos(o.get("flap_cycles", 4) * ph + ph0)), 4), "y": 1.0})
+            if ch:
+                bones[name] = ch
         return {"bones": bones}
+
+    def part_names(self):
+        return list(self.rig.parts)
+
+    def part_local(self, name):
+        return self.bones[name].get("x", 0.0), self.bones[name].get("y", 0.0)
+
+    # 群体攻击（蝴蝶群等，身体只当分组中心）：各部件往中心聚拢 → 整群冲出 dash（命中在 dash_out 结束，默认 0.3 秒）→ 散回原位；
+    # 全程快速扇翅。fx 默认在命中前后炸开。
+    def swarm_attack(self, p):
+        T = p.get("duration", 1.0)
+        tm = dict({"gather": [0.0, 0.16], "dash_out": [0.12, 0.3], "dash_back": [0.5, 0.85], "scatter": [0.32, 0.6]},
+                  **p.get("timing", {}))
+        dash_x, gather = p.get("dash", -120.0), p.get("gather", 0.55)
+        flap, hz = p.get("flap", 0.6), p.get("flap_hz", 7.0)
+        parts = self.part_names()
+
+        def fn(t):
+            g = seg(t, *tm["gather"]) * (1 - seg(t, *tm["scatter"]))
+            dash = seg(t, *tm["dash_out"]) * (1 - seg(t, *tm["dash_back"]))
+            ch = {"body": {"x": dash_x * dash, "y": 8 * math.sin(math.pi * clamp01(t / T))}}
+            for i, name in enumerate(parts):
+                bx, by = self.part_local(name)
+                f = 0.5 - 0.5 * math.cos(2 * math.pi * hz * t + i * 1.3)
+                ch[name] = {"x": -bx * gather * g, "y": -by * gather * g,
+                            "rotate": 14 * dash * (1 if i % 2 else -1), "sx": 1 - flap * f, "sy": 1.0}
+            return ch, {}
+
+        anim = self.build(fn, T)
+        if "fx" in p:
+            fx = dict({"on": 0.24, "off": 0.62, "extra_spin": 0.0, "scale_from": 0.5, "scale_to": 1.1,
+                       "fade_in": 0.05, "fade_out": 0.25, "scale_time": 0.12}, **p["fx"])
+            self.add_spin_fx(anim, fx, T)
+        return anim
+
+    # 群体受击：整群向后（+x）退，各部件被打散（离中心 spread 倍）、乱转、扇翅变快，再飞回；可选闪红
+    def swarm_hurt(self, p):
+        T = p.get("duration", 0.6)
+        kb, spread, flash = p.get("knockback", 24.0), p.get("spread", 0.35), p.get("flash", 0.45)
+        parts = self.part_names()
+
+        def fn(t):
+            hit = seg(t, 0.0, 0.05) * (1 - seg(t, 0.12, T))
+            ch = {"body": {"x": kb * hit}}
+            for i, name in enumerate(parts):
+                bx, by = self.part_local(name)
+                wob = math.exp(-6 * t) * math.sin(22 * t + i)
+                f = 0.5 - 0.5 * math.cos(2 * math.pi * 9 * t + i)
+                ch[name] = {"x": bx * spread * hit, "y": by * spread * hit,
+                            "rotate": 25 * wob * (1 if i % 2 else -1), "sx": 1 - 0.5 * f, "sy": 1.0}
+            return ch, {}
+
+        def color(t):
+            k = seg(t, 0.0, 0.05) * (1 - seg(t, 0.08, 0.3))
+            return (1.0, 1 - flash * k, 1 - flash * k, 1.0)
+
+        return self.build(fn, T, color if flash else None)
+
+    # 群体死亡：各部件按 stagger 先后停止扇翅、打着旋飘落到 rest_heights（骨头离地高度，默认椭圆半高的一半），停在地上
+    def swarm_die(self, p):
+        T = p.get("duration", 1.8)
+        stagger, fall_time = p.get("stagger", 0.18), p.get("fall_time", 0.9)
+        rest = p.get("rest_heights", {})
+        parts = self.part_names()
+
+        def fn(t):
+            ch = {}
+            for i, name in enumerate(parts):
+                t0 = 0.1 + i * stagger
+                fall = clamp01((t - t0) / fall_time)
+                ease = fall ** 1.6
+                bone_y = self.rig.world[name][1]
+                target = rest.get(name, self.rig.parts[name]["radii"][1] * 0.5)
+                flutter = math.sin(math.pi * fall)
+                beat = (1 - fall) * (0.5 - 0.5 * math.cos(2 * math.pi * 6 * t + i))
+                # 落下时各自往外飘开（离分组中心 drift 倍），免得叠成一堆
+                # drift_x 可按部件直接指定横向落点偏移（像素）
+                bx, _ = self.part_local(name)
+                dx = p.get("drift_x", {}).get(name, bx * p.get("drift", 0.6))
+                ch[name] = {"x": 16 * flutter * math.sin(5 * t + i) + dx * smooth(fall),
+                            "y": (target - bone_y) * ease,
+                            "rotate": (40 if i % 2 else -40) * smooth(fall), "sx": 1 - 0.6 * beat - 0.3 * smooth(fall), "sy": 1.0}
+            return ch, {}
+
+        return self.build(fn, T)
+
+    # ---- 关节链（分层后用）：每节给目标世界角，按数值插值，转向由数值决定 ----
+    # 初始世界角归一到 [0, 360)，配置里的角度从它出发按数值走，例如初始 251° → 115° 是经过 180°（前方）往上抬。
+    # 每节的旋转偏移 = 目标世界角 − 初始世界角 − 父链（身体旋转 + 上几节偏移）之和。
+
+    def chain_setup(self, names):
+        return [self.world_angle[n] % 360 for n in names]
+
+    def chain_offsets(self, names, worlds, body_rot):
+        offs, acc = [], body_rot
+        for name, w in zip(names, worlds):
+            off = w - self.world_angle[name] % 360 - acc
+            offs.append(off)
+            acc += off
+        return offs
+
+    # 关节挥击：arm 链各节 抬到 raise → 劈到 strike（命中在 strike 结束，默认 0.3 秒）→ 收回；每往外一节晚 lag 秒，形成甩鞭的跟随。
+    # 身体先后仰蓄力，劈下时前冲 lunge、前倾 lean；head 部件跟着点头。
+    def joint_swing(self, p):
+        T = p.get("duration", 1.15)
+        tm = dict({"raise": [0.0, 0.16], "strike": [0.17, 0.3], "recover": [0.75, 1.1]}, **p.get("timing", {}))
+        names = self.segs(p["arm"])
+        setup = self.chain_setup(names)
+        raise_w, strike_w, lag = p["raise"], p["strike"], p.get("lag", 0.015)
+        lunge, lean, head = p.get("lunge", -60.0), p.get("lean", 8.0), p.get("head")
+
+        def fn(t):
+            r, s, back = seg(t, *tm["raise"]), seg(t, *tm["strike"]), seg(t, *tm["recover"])
+            windup, strike = r * (1 - s), s * (1 - back)
+            body_rot = -0.7 * lean * windup + lean * strike
+            ch = {"body": {"rotate": body_rot, "x": 10 * windup + lunge * strike, "y": -4 * windup,
+                           "sx": 1 + 0.03 * windup, "sy": 1 - 0.03 * windup}}
+            worlds = []
+            for i, (s0, a, b) in enumerate(zip(setup, raise_w, strike_w)):
+                d = lag * i
+                ri = seg(t, tm["raise"][0] + d, tm["raise"][1] + d)
+                si = seg(t, tm["strike"][0] + d, tm["strike"][1] + d)
+                bi = seg(t, tm["recover"][0] + d, tm["recover"][1] + d)
+                worlds.append(s0 + (a - s0) * ri + (b - a) * si + (s0 - b) * bi)
+            for name, off in zip(names, self.chain_offsets(names, worlds, body_rot)):
+                ch[name] = {"rotate": off}
+            if head:
+                ch[head] = {"rotate": -6 * windup + 8 * strike}
+            return ch, {}
+
+        anim = self.build(fn, T)
+        if "fx" in p:
+            fx = dict({"on": 0.2, "off": 0.6, "extra_spin": 0.0, "scale_from": 0.92, "scale_to": 1.0,
+                       "fade_in": 0.06, "fade_out": 0.22, "scale_time": 0.1}, **p["fx"])
+            self.add_spin_fx(anim, fx, T)
+        return anim
+
+    # 关节姿势（防御等）：arm 链各节举到 pose 世界角，停住再放下；身体后仰 lean
+    def joint_pose(self, p):
+        T = p.get("duration", 0.6)
+        tm = dict({"up": [0.0, 0.14], "down": [0.42, 0.6]}, **p.get("timing", {}))
+        names = self.segs(p["arm"])
+        setup = self.chain_setup(names)
+        pose, lean, head, lag = p["pose"], p.get("lean", -5.0), p.get("head"), p.get("lag", 0.02)
+
+        def fn(t):
+            k0 = seg(t, *tm["up"]) * (1 - seg(t, *tm["down"]))
+            body_rot = lean * k0
+            ch = {"body": {"rotate": body_rot, "x": 6 * k0, "y": -3 * k0, "sx": 1 + 0.02 * k0, "sy": 1 - 0.02 * k0}}
+            worlds = []
+            for i, (s0, a) in enumerate(zip(setup, pose)):
+                d = lag * i
+                k = seg(t, tm["up"][0] + d, tm["up"][1] + d) * (1 - seg(t, tm["down"][0] + d, tm["down"][1] + d))
+                worlds.append(s0 + (a - s0) * k)
+            for name, off in zip(names, self.chain_offsets(names, worlds, body_rot)):
+                ch[name] = {"rotate": off}
+            if head:
+                ch[head] = {"rotate": -5 * k0}
+            return ch, {}
+
+        return self.build(fn, T)
+
+    # 武器姿势（防御等）：weapon 举到目标世界角 angle、身体后仰 lean，停住再放下；角度同样换算成离初始角最近的等价角
+    def weapon_pose(self, p):
+        T = p.get("duration", 0.6)
+        tm = dict({"up": [0.0, 0.12], "down": [0.42, 0.6]}, **p.get("timing", {}))
+        names = self.segs(p["weapon"])
+        rel = wrap(p["angle"] - self.world_angle[names[0]])
+        lean, head = p.get("lean", -5.0), p.get("head")
+
+        def fn(t):
+            k = seg(t, *tm["up"]) * (1 - seg(t, *tm["down"]))
+            ch = {"body": {"rotate": lean * k, "x": 6 * k, "y": -3 * k, "sx": 1 + 0.02 * k, "sy": 1 - 0.02 * k},
+                  names[0]: {"rotate": (rel - lean) * k}}
+            if head:
+                ch[head] = {"rotate": -5 * k}
+            return ch, {}
+
+        return self.build(fn, T)
+
+    # 挥武器攻击：weapon 肢体（第一节的父骨是 body）按目标世界角 抬起 raise_angle → 劈下 strike_angle（命中在 strike 结束，默认 0.3 秒）
+    # → 收回；身体先后仰蓄力，劈下时前冲 lunge、前倾 lean。角度按数值直接插值，所以抬起、劈下的方向由数值大小决定（不绕最短路）。
+    def swing_attack(self, p):
+        T = p.get("duration", 1.0)
+        tm = dict({"raise": [0.0, 0.16], "strike": [0.18, 0.3], "recover": [0.5, 0.9]}, **p.get("timing", {}))
+        names = self.segs(p["weapon"])
+        w0 = self.world_angle[names[0]]
+        rel_raise, rel_strike = wrap(p["raise_angle"] - w0), wrap(p["strike_angle"] - w0)
+        lunge, lean, head = p.get("lunge", -60.0), p.get("lean", 8.0), p.get("head")
+
+        def fn(t):
+            r, s, back = seg(t, *tm["raise"]), seg(t, *tm["strike"]), seg(t, *tm["recover"])
+            windup, strike = r * (1 - s), s * (1 - back)
+            body_rot = -0.7 * lean * windup + lean * strike
+            ch = {"body": {"rotate": body_rot, "x": 10 * windup + lunge * strike, "y": -4 * windup,
+                           "sx": 1 + 0.03 * windup, "sy": 1 - 0.03 * windup}}
+            # 目标角换算成离初始角最近的等价角（骨头的初始角可能记成负数），再按数值插值
+            rel = rel_raise * r + (rel_strike - rel_raise) * s - rel_strike * back
+            ch[names[0]] = {"rotate": rel - body_rot}
+            if head:
+                ch[head] = {"rotate": -6 * windup + 8 * strike}
+            return ch, {}
+
+        anim = self.build(fn, T)
+        if "fx" in p:
+            fx = dict({"on": 0.2, "off": 0.6, "extra_spin": 0.0, "scale_from": 0.92, "scale_to": 1.0,
+                       "fade_in": 0.06, "fade_out": 0.22, "scale_time": 0.1}, **p["fx"])
+            self.add_spin_fx(anim, fx, T)
+        return anim
 
     def straight_offsets(self, limb, radial):
         names = self.segs(limb)
@@ -323,16 +645,18 @@ class Animator:
         return anim
 
     def add_spin_fx(self, anim, fx, T):
-        """旋转期间显示的特效图层：挂在 body 下的 fx 骨上，额外自转并放大，淡入淡出。"""
+        """特效图层：挂在 body 下的 fx 骨上，在 on–off 之间显示，淡入 fade_in、淡出 fade_out 秒，额外自转 extra_spin 度，
+        scale_time 秒内从 scale_from 放大到 scale_to。"""
         on, off = fx.get("on", 0.34), fx.get("off", 1.0)
         extra = fx.get("extra_spin", 400.0)
+        fade_in, fade_out, scale_time = fx.get("fade_in", 0.1), fx.get("fade_out", 0.16), fx.get("scale_time", 0.16)
         steps = round(T * FPS)
         rot, scale, rgba = [], [], []
         for i in range(steps + 1):
             t = T * i / steps
-            a = seg(t, on, on + 0.1) * (1 - seg(t, off - 0.16, off))
+            a = seg(t, on, on + fade_in) * (1 - seg(t, off - fade_out, off))
             rot.append({"time": round(t, 4), "value": round(extra * smooth((t - on) / (off - on)), 3)})
-            s = fx.get("scale_from", 0.82) + (fx.get("scale_to", 1.02) - fx.get("scale_from", 0.82)) * seg(t, on, on + 0.16)
+            s = fx.get("scale_from", 0.82) + (fx.get("scale_to", 1.02) - fx.get("scale_from", 0.82)) * seg(t, on, on + scale_time)
             scale.append({"time": round(t, 4), "x": round(s, 4), "y": round(s, 4)})
             rgba.append({"time": round(t, 4), "color": f"ffffff{round(a * 255):02x}"})
         anim["bones"]["fx"] = {"rotate": rot, "scale": scale}
@@ -413,12 +737,31 @@ class Animator:
 # ---------------------------------------------------------------- 特效抠图
 
 def extract_fx(fx, out_dir, page):
-    """按颜色从原图抠特效（默认“红色占优”），挖掉 pivot 半径 inner 以内，返回 (图集尺寸, 相对 body 的偏移)。"""
+    """从原攻击图抠特效，返回 (图集尺寸, 相对 fx 骨的偏移)。pivot（原图像素）对准 body 骨。
+    key="red"（默认）按“红色占优”取像素；key="all" 保留全部不透明像素。
+    exclude 挖掉角色本体：每项是 {"ellipse": [cx, cy, rx, ry]} 或 {"capsule": [x1, y1, x2, y2, r]}（原图像素，边缘 8 像素羽化）。
+    inner_radius 再挖掉 pivot 周围一圈（red 默认 140，all 默认 0）。"""
     src = Image.open(fx["source"]).convert("RGBA")
     a = np.asarray(src).astype(np.float32)
     r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
-    lo, span = fx.get("key_low", 25.0), fx.get("key_span", 70.0)
-    k = np.clip(((r - np.maximum(g, b)) - lo) / span, 0, 1) * (al / 255)
+    key = fx.get("key", "red")
+    if key == "red":
+        lo, span = fx.get("key_low", 25.0), fx.get("key_span", 70.0)
+        k = np.clip(((r - np.maximum(g, b)) - lo) / span, 0, 1) * (al / 255)
+    else:
+        k = al / 255
+    if fx.get("exclude"):
+        yy, xx = np.mgrid[0:a.shape[0], 0:a.shape[1]].astype(np.float32)
+        for ex in fx["exclude"]:
+            if "ellipse" in ex:
+                cx, cy, rx, ry = ex["ellipse"]
+                d = (np.hypot((xx - cx) / rx, (yy - cy) / ry) - 1) * min(rx, ry)
+            else:
+                x1, y1, x2, y2, rr = ex["capsule"]
+                vx, vy = x2 - x1, y2 - y1
+                t = np.clip(((xx - x1) * vx + (yy - y1) * vy) / (vx * vx + vy * vy), 0, 1)
+                d = np.hypot(xx - x1 - t * vx, yy - y1 - t * vy) - rr
+            k = k * np.clip(d / 8, 0, 1)
     out = np.zeros_like(a)
     out[..., :3] = a[..., :3]
     out[..., 3] = 255 * k
@@ -426,10 +769,11 @@ def extract_fx(fx, out_dir, page):
     box = img.getchannel("A").point(lambda v: 255 if v > 10 else 0).getbbox()
     crop = np.asarray(img.crop(box)).copy()
     px, py = fx["pivot"][0] - box[0], fx["pivot"][1] - box[1]
-    yy, xx = np.mgrid[0:crop.shape[0], 0:crop.shape[1]]
-    dist = np.hypot(xx - px, yy - py)
-    inner = fx.get("inner_radius", 140.0)
-    crop[..., 3] = (crop[..., 3] * np.clip((dist - inner) / 20, 0, 1)).astype(np.uint8)
+    inner = fx.get("inner_radius", 140.0 if key == "red" else 0.0)
+    if inner > 0:
+        yy, xx = np.mgrid[0:crop.shape[0], 0:crop.shape[1]]
+        dist = np.hypot(xx - px, yy - py)
+        crop[..., 3] = (crop[..., 3] * np.clip((dist - inner) / 20, 0, 1)).astype(np.uint8)
     fx_img = Image.fromarray(crop, "RGBA")
     fx_img.save(out_dir / page)
     w, h = fx_img.size
@@ -455,18 +799,36 @@ def main():
 
     rig = Rig(cfg, out_dir)
     rig.build_bones()
-    rig.build_mesh()
     name, W, H = rig.name, rig.W, rig.H
+    if "layers" in cfg:
+        # 分层：每层一个槽位（按配置顺序从后到前）、一个网格附件、一页图集；附件与区域名都用 <name>_<层名>
+        layer_meshes = rig.build_layers()
+        slots, attachments, atlas_pages = [], {}, []
+        for layer_name, page, mesh, _ in layer_meshes:
+            region = f"{name}_{layer_name}"
+            slots.append({"name": region, "bone": "root", "attachment": region})
+            attachments[region] = {region: mesh}
+            atlas_pages.append(f"{page}\nsize:{W},{H}\nfilter:Linear,Linear\n{region}\nbounds:0,0,{W},{H}\n")
+        rig.slot_names = [s["name"] for s in slots]
+        rig.vertex_count = sum(c for *_, c in layer_meshes)
+        tri_count = sum(len(m["triangles"]) // 3 for _, _, m, _ in layer_meshes)
+        atlas = "\n".join(atlas_pages)
+    else:
+        rig.build_mesh()
+        rig.slot_names = [name]
+        slots = [{"name": name, "bone": "root", "attachment": name}]
+        attachments = {name: {name: rig.mesh}}
+        tri_count = len(rig.mesh["triangles"]) // 3
+        atlas = f"{rig.page}\nsize:{W},{H}\nfilter:Linear,Linear\n{name}\nbounds:0,0,{W},{H}\n"
     data = {
         "skeleton": {"hash": f"tier1-{name}", "spine": "4.2.00", "x": -W / 2, "y": 0, "width": W, "height": H,
                      "images": "./", "audio": ""},
         "bones": rig.bones,
-        "slots": [{"name": name, "bone": "root", "attachment": name}],
+        "slots": slots,
         "ik": rig.ik(),
-        "skins": [{"name": "default", "attachments": {name: {name: rig.mesh}}}],
+        "skins": [{"name": "default", "attachments": attachments}],
         "animations": {},
     }
-    atlas = f"{rig.page}\nsize:{W},{H}\nfilter:Linear,Linear\n{name}\nbounds:0,0,{W},{H}\n"
 
     anims = cfg.get("animations", {})
     fx_cfg = next((a["fx"] for a in anims.values() if "fx" in a), None)
@@ -475,7 +837,12 @@ def main():
         (fw, fh), (ox, oy) = extract_fx(fx_cfg, out_dir, fx_page)
         data["bones"].append({"name": "fx", "parent": "body"})
         data["slots"].insert(0, {"name": "fx", "bone": "fx"})  # 排在本体后面，初始不显示
-        data["skins"][0]["attachments"]["fx"] = {"fx": {"x": ox, "y": oy, "width": fw, "height": fh}}
+        attachment = {"x": ox, "y": oy, "width": fw, "height": fh}
+        # 攻击图与待机图画幅比例不同时按 scale 缩放特效（偏移一起缩放，pivot 仍对准 body）
+        fx_scale = fx_cfg.get("scale", 1.0)
+        if fx_scale != 1.0:
+            attachment.update(x=round(ox * fx_scale, 3), y=round(oy * fx_scale, 3), scaleX=fx_scale, scaleY=fx_scale)
+        data["skins"][0]["attachments"]["fx"] = {"fx": attachment}
         atlas += f"\n{fx_page}\nsize:{fw},{fh}\nfilter:Linear,Linear\nfx\nbounds:0,0,{fw},{fh}\n"
 
     animator = Animator(rig, data)
@@ -485,7 +852,7 @@ def main():
 
     (out_dir / f"{name}.spine-json").write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
     (out_dir / f"{name}.atlas").write_text(atlas, encoding="utf-8")
-    print(f"{name}: bones={len(data['bones'])} verts={rig.vertex_count} tris={len(rig.mesh['triangles']) // 3} "
+    print(f"{name}: bones={len(data['bones'])} verts={rig.vertex_count} tris={tri_count} "
           f"ik={[c['bendPositive'] for c in data['ik']]} anims={list(data['animations'])} -> {out_dir}")
 
 

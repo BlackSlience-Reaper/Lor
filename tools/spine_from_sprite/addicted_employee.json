@@ -1,0 +1,330 @@
+{
+  "name": "addicted_employee",
+  "image": "../../images/monsters/addicted_employee/addicted_employee_idle.png",
+  "cell": 5,
+  "sigma": 5.0,
+  "body": {
+    "center": [
+      288,
+      255
+    ],
+    "radii": [
+      80,
+      135
+    ]
+  },
+  "parts": {
+    "head": {
+      "center": [
+        272,
+        77
+      ],
+      "radii": [
+        70,
+        68
+      ],
+      "bone": [
+        276,
+        142
+      ]
+    }
+  },
+  "limbs": {
+    "armL": [
+      [
+        252,
+        180
+      ],
+      [
+        234,
+        232
+      ],
+      [
+        238,
+        270
+      ],
+      [
+        8,
+        378
+      ]
+    ]
+  },
+  "layers": [
+    {
+      "name": "torso",
+      "bones": [
+        "body"
+      ],
+      "inpaint": [
+        [
+          [
+            246,
+            170
+          ],
+          [
+            262,
+            172
+          ],
+          [
+            264,
+            262
+          ],
+          [
+            250,
+            282
+          ],
+          [
+            242,
+            240
+          ]
+        ]
+      ],
+      "inpaint_ellipses": [
+        [
+          272,
+          141,
+          34,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "head",
+      "bones": [
+        "head"
+      ],
+      "mask": {
+        "ellipses": [
+          [
+            272,
+            77,
+            72,
+            70
+          ]
+        ]
+      }
+    },
+    {
+      "name": "arm",
+      "bones": [
+        "armL1",
+        "armL2",
+        "armL3"
+      ],
+      "mask": {
+        "polygons": [
+          [
+            [
+              245,
+              165
+            ],
+            [
+              262,
+              172
+            ],
+            [
+              264,
+              200
+            ],
+            [
+              263,
+              240
+            ],
+            [
+              260,
+              262
+            ],
+            [
+              252,
+              278
+            ],
+            [
+              246,
+              292
+            ],
+            [
+              232,
+              300
+            ],
+            [
+              214,
+              300
+            ],
+            [
+              206,
+              292
+            ],
+            [
+              214,
+              276
+            ],
+            [
+              204,
+              262
+            ],
+            [
+              212,
+              248
+            ],
+            [
+              204,
+              236
+            ],
+            [
+              208,
+              222
+            ],
+            [
+              204,
+              214
+            ],
+            [
+              218,
+              206
+            ],
+            [
+              228,
+              195
+            ],
+            [
+              236,
+              178
+            ]
+          ]
+        ],
+        "capsules": [
+          [
+            240,
+            268,
+            8,
+            378,
+            11
+          ]
+        ]
+      }
+    }
+  ],
+  "animations": {
+    "idle": {
+      "type": "idle",
+      "duration": 2.4,
+      "bob": 2.5,
+      "breath": 0.012,
+      "arm_sway": [
+        2.0,
+        3.0,
+        4.0
+      ],
+      "arm_lag": [
+        0.6,
+        1.0,
+        1.4
+      ],
+      "parts": {
+        "head": {
+          "rotate": 3.0,
+          "phase": 0.8
+        }
+      }
+    },
+    "attack": {
+      "type": "joint_swing",
+      "duration": 1.3,
+      "arm": "armL",
+      "head": "head",
+      "raise": [
+        115.0,
+        70.0,
+        20.0
+      ],
+      "strike": [
+        222.0,
+        212.0,
+        198.0
+      ],
+      "lag": 0.015,
+      "lunge": -70.0,
+      "lean": 8.0,
+      "timing": {
+        "recover": [
+          0.92,
+          1.25
+        ]
+      },
+      "fx": {
+        "source": "../../images/monsters/addicted_employee/addicted_employee_attack.png",
+        "key": "all",
+        "pivot": [
+          378,
+          453
+        ],
+        "exclude": [
+          {
+            "ellipse": [
+              365,
+              300,
+              92,
+              88
+            ]
+          },
+          {
+            "ellipse": [
+              462,
+              440,
+              170,
+              130
+            ]
+          },
+          {
+            "capsule": [
+              485,
+              495,
+              330,
+              690,
+              24
+            ]
+          }
+        ],
+        "page": "addicted_employee_spine_fx.png"
+      }
+    },
+    "guard": {
+      "type": "joint_pose",
+      "duration": 0.6,
+      "arm": "armL",
+      "head": "head",
+      "pose": [
+        125.0,
+        95.0,
+        150.0
+      ],
+      "lean": -5.0
+    },
+    "hurt": {
+      "type": "hurt",
+      "duration": 0.6,
+      "knockback": 26.0,
+      "tilt": -12.0,
+      "flail": [
+        12.0,
+        18.0,
+        24.0
+      ],
+      "flash": 0.45
+    },
+    "die": {
+      "type": "die",
+      "duration": 1.6,
+      "rest_height": 78.0,
+      "body_rotate": -80.0,
+      "body_x": 40.0,
+      "world_angles": {
+        "armL": [
+          200.0,
+          190.0,
+          185.0
+        ]
+      }
+    }
+  }
+}
