@@ -159,7 +159,6 @@ mutable	LibraryOfRuina.patches.DodgeDiceCombatFeedback._damagePreviewModes	Syste
 mutable	LibraryOfRuina.patches.DodgeDiceCombatFeedback._pendingBlockHitSfxSkips	System.Int32
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._applied	System.Boolean
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._defaultCursor	Godot.Image
-mutable	LibraryOfRuina.patches.LibraryCursorPatch._inspectCursor	Godot.Image
 mutable	LibraryOfRuina.patches.LibraryCursorPatch._tiltedCursor	Godot.Image
 mutable	LibraryOfRuina.patches.NTargetedIntentLines._arrowStartTexture	Godot.Texture2D
 mutable	LibraryOfRuina.patches.NTargetedIntentLines._arrowTexture	Godot.Texture2D
@@ -1861,7 +1860,6 @@ readonly	LibraryOfRuina.interop.VanillaPrivate.CreatureSpineAnimator	LibraryOfRu
 readonly	LibraryOfRuina.interop.VanillaPrivate.CreatureStateDisplay	LibraryOfRuina.interop.VanillaPrivateFieldRef`2[MegaCrit.Sts2.Core.Nodes.Combat.NCreature,MegaCrit.Sts2.Core.Nodes.Combat.NCreatureStateDisplay]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CreatureStateDisplayHealthBar	LibraryOfRuina.interop.VanillaPrivateFieldRef`2[MegaCrit.Sts2.Core.Nodes.Combat.NCreatureStateDisplay,MegaCrit.Sts2.Core.Nodes.Combat.NHealthBar]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CreatureStateDisplayOriginalPosition	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Combat.NCreatureStateDisplay,Godot.Vector2]
-readonly	LibraryOfRuina.interop.VanillaPrivate.CursorManagerCursorInspect	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.CommonUi.NCursorManager,Godot.Image]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CursorManagerCursorNotTilted	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.CommonUi.NCursorManager,Godot.Image]
 readonly	LibraryOfRuina.interop.VanillaPrivate.CursorManagerCursorTilted	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.CommonUi.NCursorManager,Godot.Image]
 readonly	LibraryOfRuina.interop.VanillaPrivate.DropdownPositionerDropdownNode	LibraryOfRuina.interop.VanillaPrivateField`2[MegaCrit.Sts2.Core.Nodes.Screens.Settings.NDropdownPositioner,Godot.Control]

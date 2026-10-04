@@ -13,14 +13,14 @@ internal static class LibraryCursorPatch
 {
     private const string CursorDefaultPath = "res://images/packed/common_ui/cursor_default.png";
     private const string CursorTiltedPath = "res://images/packed/common_ui/cursor_tilted.png";
-    private const string CursorInspectPath = "res://images/packed/common_ui/cursor_inspect.png";
 
-    private static readonly Vector2 CursorHotSpot = new(17f, 17f);
+    // 照原版的定法放在箭头填色尖端（11,6）上方一格的描边上：原版默认图尖端 (14,6)、热点 (14,5)。
+    // 原版两张图共用一个热点，按下时那张往左倒，尖端离开热点几像素，属于原版的按压效果。
+    private static readonly Vector2 CursorHotSpot = new(11f, 5f);
 
 
     private static Image? _defaultCursor;
     private static Image? _tiltedCursor;
-    private static Image? _inspectCursor;
     private static bool _applied;
 
     public static void ApplyToCurrentGame()
@@ -36,13 +36,10 @@ internal static class LibraryCursorPatch
         {
             var defaultCursor = _defaultCursor ??= LoadImage(CursorDefaultPath);
             var tiltedCursor = _tiltedCursor ??= LoadImage(CursorTiltedPath);
-            var inspectCursor = _inspectCursor ??= LoadImage(CursorInspectPath);
 
             VanillaPrivate.CursorManagerCursorTilted.Set(cursorManager, tiltedCursor);
             VanillaPrivate.CursorManagerCursorNotTilted.Set(cursorManager, defaultCursor);
-            VanillaPrivate.CursorManagerCursorInspect.Set(cursorManager, inspectCursor);
 
-            Input.SetCustomMouseCursor(inspectCursor, Input.CursorShape.Help, CursorHotSpot);
             cursorManager.OverrideCursor(tiltedCursor, defaultCursor, CursorHotSpot);
 
             if (!_applied)
