@@ -28,6 +28,9 @@ internal enum TechnologyFloorMk4HelperInitialMove
 
 public sealed class TechnologyFloorMk4Helper : LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => AllAroundHelperCreatureVisuals.DeathSeconds;
+
     public override int DefaultChaoResistance => 30;
 
     private const int NormalMinHp = 38;

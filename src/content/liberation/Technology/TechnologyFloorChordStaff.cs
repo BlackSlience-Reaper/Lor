@@ -29,6 +29,9 @@ internal enum TechnologyFloorChordStaffInitialMove
 
 public sealed class TechnologyFloorChordStaff : LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => AddictedEmployeeCreatureVisuals.DeathSeconds;
+
     public override int DefaultChaoResistance => 30;
 
     private const string ShiveringMoveId = "SHIVERING";

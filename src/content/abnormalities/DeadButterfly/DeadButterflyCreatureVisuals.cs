@@ -26,6 +26,9 @@ public partial class DeadButterflyCreatureVisuals : SpineSpriteAttackCreatureVis
     /// </summary>
     internal const float FollowUpHitSeconds = 0.2f;
 
+    /// <summary>死亡动画时长，秒；原版等它播完再做溶解消失。</summary>
+    internal const float DeathSeconds = 1.8f;
+
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
     private static readonly RuntimeSpineBody.Spec Spine = new(

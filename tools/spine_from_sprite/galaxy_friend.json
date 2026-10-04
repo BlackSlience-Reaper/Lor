@@ -1,0 +1,163 @@
+{
+ "name": "galaxy_friend",
+ "image": "../../images/monsters/galaxy_friend/idle.png",
+ "atlas_page": "idle.png",
+ "cell": 5,
+ "sigma": 7.0,
+ "body": {
+  "center": [
+   205,
+   200
+  ],
+  "radii": [
+   150,
+   62
+  ]
+ },
+ "limbs": {
+  "armL": [
+   [
+    178,
+    170
+   ],
+   [
+    170,
+    95
+   ],
+   [
+    110,
+    40
+   ],
+   [
+    15,
+    62
+   ]
+  ]
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 3.0,
+   "bob": 0.0,
+   "breath": 0.03,
+   "arm_sway": [
+    2.0,
+    3.0,
+    5.0
+   ],
+   "arm_lag": [
+    0.5,
+    1.0,
+    1.5
+   ]
+  },
+  "attack": {
+   "type": "lunge",
+   "duration": 1.1,
+   "dash": -20.0,
+   "lean": 4.0,
+   "jab": -6.0,
+   "jabs": [
+    0.3,
+    0.5,
+    0.7
+   ],
+   "timing": {
+    "dash_back": [
+     0.85,
+     1.05
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/galaxy_friend/attack.png",
+    "page": "galaxy_friend_spine_attack.png",
+    "anchor": [
+     584,
+     341
+    ],
+    "on": 0.15,
+    "off": 0.88,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "pulse": {
+     "times": [
+      0.3,
+      0.5,
+      0.7
+     ],
+     "amp": 0.03
+    }
+   }
+  },
+  "parry": {
+   "type": "lunge",
+   "duration": 0.8,
+   "dash": 15.0,
+   "lean": -4.0,
+   "wind_lean": 2.0,
+   "timing": {
+    "wind": [
+     0.0,
+     0.06
+    ],
+    "dash_out": [
+     0.06,
+     0.18
+    ],
+    "dash_back": [
+     0.5,
+     0.75
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/galaxy_friend/parry.png",
+    "page": "galaxy_friend_spine_parry.png",
+    "anchor": [
+     300,
+     336
+    ],
+    "on": 0.06,
+    "off": 0.58,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -6.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.4,
+   "swap": {
+    "source": "../../images/monsters/galaxy_friend/hit.png",
+    "page": "galaxy_friend_spine_hurt.png",
+    "anchor": [
+     170,
+     228
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 62.0,
+   "body_rotate": -5.0,
+   "body_x": 6.0,
+   "world_angles": {
+    "armL": [
+     205.0,
+     200.0,
+     190.0
+    ]
+   }
+  }
+ }
+}
