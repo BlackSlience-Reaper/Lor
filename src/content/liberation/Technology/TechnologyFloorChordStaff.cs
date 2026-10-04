@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
+using LibraryOfRuina.content.abnormalities.AddictedEmployee;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
@@ -257,7 +258,8 @@ public sealed class TechnologyFloorChordStaff : LorMonsterModel
         LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, TechnologyFloorAssets.SongMachineAttackSfx, -2f);
         AttackCommand attack = await DamageCmd.Attack(damage)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds)
+            // 等待对准 Spine 攻击动画的命中帧（与原版怪物攻击的默认等待相同），见 AddictedEmployeeCreatureVisuals
+            .WithAttackerAnim("Attack", AddictedEmployeeCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
         LocalOggOneShotPlayer.StopExclusive(AttackSfxSlot);

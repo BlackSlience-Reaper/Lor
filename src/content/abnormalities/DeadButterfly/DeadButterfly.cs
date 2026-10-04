@@ -248,7 +248,7 @@ public sealed class DeadButterfly : LorMonsterModel
         {
             if (Creature.IsDead) return;
             LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-            await ExecuteAttackSegment(HeavyDamage);
+            await ExecuteAttackSegment(HeavyDamage, followUp: i > 0);
             await Cmd.CustomScaledWait(ScaleDuration(0.04f), ScaleDuration(0.08f));
         }
     }
@@ -264,11 +264,12 @@ public sealed class DeadButterfly : LorMonsterModel
 
     private static float ScaleDuration(float seconds) => seconds * AnimationDurationScale;
 
-    private Task ExecuteAttackSegment(int damage)
+    // 多段攻击只播一次 Spine 攻击动画：第一段等到扑到最远的命中帧，后续各段短等待，都落在同一次动画里（见 DeadButterflyCreatureVisuals）
+    private Task ExecuteAttackSegment(int damage, bool followUp = false)
     {
         return AbnormalityAnimHelper.ExecuteAttackSegment(
             this,
             damage,
-            delaySeconds: ScaleDuration(AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds));
+            delaySeconds: followUp ? DeadButterflyCreatureVisuals.FollowUpHitSeconds : DeadButterflyCreatureVisuals.AttackImpactSeconds);
     }
 }

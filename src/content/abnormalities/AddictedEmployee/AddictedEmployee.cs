@@ -190,6 +190,10 @@ public sealed class AddictedEmployee : LorMonsterModel
         return new MonsterMoveStateMachine(states, initialState);
     }
 
+    // 多段攻击只播一次 Spine 攻击动画：第一段等到命中帧，后续各段短等待，都落在同一次动画里（见 AddictedEmployeeCreatureVisuals）
+    private static float HitDelay(int hit) =>
+        hit == 0 ? AddictedEmployeeCreatureVisuals.AttackImpactSeconds : AddictedEmployeeCreatureVisuals.FollowUpHitSeconds;
+
     private async Task TremblingStrikeMove(IReadOnlyList<Creature> targets)
     {
         StartBackgroundMoonTextLoop(NormalBackgroundTextLineKeys);
@@ -214,7 +218,7 @@ public sealed class AddictedEmployee : LorMonsterModel
         {
             if (Creature.IsDead) return;
             LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AddictedEmployeeAssets.SongMachineAttackSfx, -2f);
-            await AbnormalityAnimHelper.ExecuteAttackSegment(this, ShiveringDamage);
+            await AbnormalityAnimHelper.ExecuteAttackSegment(this, ShiveringDamage, delaySeconds: HitDelay(hit));
             LocalOggOneShotPlayer.StopExclusive(AttackSfxSlot);
             await Cmd.CustomScaledWait(0.09f, 0.18f);
         }
@@ -231,7 +235,7 @@ public sealed class AddictedEmployee : LorMonsterModel
             Dictionary<Creature, int> hpBefore = SnapshotPlayerHp(targets);
 
             LocalOggOneShotPlayer.PlayExclusive(AttackSfxSlot, AddictedEmployeeAssets.SongMachineAttackSfx, -2f);
-            await AbnormalityAnimHelper.ExecuteAttackSegment(this, MelodyDamage);
+            await AbnormalityAnimHelper.ExecuteAttackSegment(this, MelodyDamage, delaySeconds: HitDelay(hit));
             LocalOggOneShotPlayer.StopExclusive(AttackSfxSlot);
             await Cmd.CustomScaledWait(0.09f, 0.18f);
 
