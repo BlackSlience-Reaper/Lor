@@ -1,10 +1,12 @@
 using Godot;
+using LibraryOfRuina.content.abnormalities.AllAroundHelper;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Technology;
 
-public partial class TechnologyFloorMk4HelperCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>小帮手Mk2 与小帮手共用同一套贴图，也共用它的 Spine 身体。</summary>
+public partial class TechnologyFloorMk4HelperCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(TechnologyFloorMk4Helper))]
     internal static readonly CreatureVisualLayout Layout = new(
@@ -16,6 +18,8 @@ public partial class TechnologyFloorMk4HelperCreatureVisuals : SpriteAttackCreat
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => AllAroundHelperCreatureVisuals.Spine;
 
     private static SpriteVisualProfile BuildProfile()
     {

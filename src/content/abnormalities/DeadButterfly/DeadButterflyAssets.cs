@@ -11,4 +11,8 @@ internal static class DeadButterflyAssets
     internal const string DeadButterflyAttackTexture = "res://images/monsters/dead_butterfly/attack.png";
     internal const string DeadButterflyHitTexture = "res://images/monsters/dead_butterfly/hit.png";
     internal const string DeadButterflyIdleTexture = "res://images/monsters/dead_butterfly/idle.png";
+    // Spine 身体（tools/spine_from_sprite 生成，三只蝴蝶各一根骨头）：骨骼与图集以原始文件打进 PCK，运行时按路径加载；
+    // 图集第一页直接引用上面的待机贴图，第二页是从攻击贴图抠出的爆刺
+    internal const string DeadButterflySpineAtlas = "res://images/monsters/dead_butterfly/dead_butterfly.atlas";
+    internal const string DeadButterflySpineSkeleton = "res://images/monsters/dead_butterfly/dead_butterfly.spine-json";
 }

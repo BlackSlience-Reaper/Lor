@@ -1,0 +1,170 @@
+{
+  "name": "dead_butterfly",
+  "image": "../../images/monsters/dead_butterfly/idle.png",
+  "cell": 4,
+  "sigma": 4.0,
+  "body": {
+    "center": [
+      110,
+      130
+    ],
+    "skin": false
+  },
+  "parts": {
+    "bf1": {
+      "center": [
+        97,
+        68
+      ],
+      "radii": [
+        42,
+        70
+      ],
+      "bone": [
+        75,
+        70
+      ]
+    },
+    "bf2": {
+      "center": [
+        167,
+        153
+      ],
+      "radii": [
+        26,
+        48
+      ],
+      "bone": [
+        151,
+        152
+      ]
+    },
+    "bf3": {
+      "center": [
+        57,
+        190
+      ],
+      "radii": [
+        55,
+        50
+      ],
+      "bone": [
+        66,
+        200
+      ]
+    }
+  },
+  "animations": {
+    "idle": {
+      "type": "idle",
+      "duration": 2.4,
+      "bob": 0.0,
+      "breath": 0.0,
+      "parts": {
+        "bf1": {
+          "bob": 6.0,
+          "sway": 3.0,
+          "rotate": 4.0,
+          "flap": 0.35,
+          "flap_cycles": 3,
+          "phase": 0.0
+        },
+        "bf2": {
+          "bob": 5.0,
+          "sway": 4.0,
+          "rotate": 5.0,
+          "flap": 0.4,
+          "flap_cycles": 4,
+          "phase": 2.1
+        },
+        "bf3": {
+          "bob": 4.0,
+          "sway": 3.0,
+          "rotate": 3.0,
+          "flap": 0.3,
+          "flap_cycles": 3,
+          "phase": 4.2
+        }
+      }
+    },
+    "attack": {
+      "type": "swarm_attack",
+      "duration": 1.15,
+      "dash": -110.0,
+      "gather": 0.5,
+      "flap": 0.6,
+      "flap_hz": 7.0,
+      "timing": {
+        "dash_back": [
+          0.72,
+          1.05
+        ],
+        "scatter": [
+          0.5,
+          0.8
+        ]
+      },
+      "fx": {
+        "source": "../../images/monsters/dead_butterfly/attack.png",
+        "key": "all",
+        "pivot": [
+          175,
+          150
+        ],
+        "exclude": [
+          {
+            "ellipse": [
+              207,
+              110,
+              60,
+              76
+            ]
+          },
+          {
+            "ellipse": [
+              275,
+              195,
+              50,
+              57
+            ]
+          },
+          {
+            "ellipse": [
+              160,
+              235,
+              56,
+              70
+            ]
+          }
+        ],
+        "page": "spine_fx.png"
+      }
+    },
+    "cast": {
+      "type": "swarm_hurt",
+      "duration": 0.6,
+      "knockback": 0.0,
+      "spread": 0.3,
+      "flash": 0.0
+    },
+    "hurt": {
+      "type": "swarm_hurt",
+      "duration": 0.6,
+      "knockback": 24.0,
+      "spread": 0.35,
+      "flash": 0.45
+    },
+    "die": {
+      "type": "swarm_die",
+      "duration": 1.8,
+      "stagger": 0.18,
+      "fall_time": 0.9,
+      "drift_x": {
+        "bf1": 5.0,
+        "bf2": 60.0,
+        "bf3": -40.0
+      }
+    }
+  },
+  "atlas_page": "idle.png"
+}

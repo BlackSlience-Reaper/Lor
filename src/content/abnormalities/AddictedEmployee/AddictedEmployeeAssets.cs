@@ -7,4 +7,7 @@ internal static class AddictedEmployeeAssets
 {
     internal const string SongMachineAttackSfx = "res://audio/sfx/song_machine/song_machine_attack.ogg";
     internal const string AddictedEmployeeMonsterPrefix = "res://images/monsters/addicted_employee/addicted_employee_";
+    // Spine 身体（tools/spine_from_sprite 生成，按躯干、头、手臂分层）：骨骼与图集以原始文件打进 PCK，运行时按路径加载
+    internal const string AddictedEmployeeSpineAtlas = "res://images/monsters/addicted_employee/addicted_employee.atlas";
+    internal const string AddictedEmployeeSpineSkeleton = "res://images/monsters/addicted_employee/addicted_employee.spine-json";
 }
