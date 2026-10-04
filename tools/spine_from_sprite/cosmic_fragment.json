@@ -1,0 +1,233 @@
+{
+ "name": "cosmic_fragment",
+ "image": "../../images/monsters/cosmic_fragment/cosmic_fragment_idle.png",
+ "atlas_page": "cosmic_fragment_idle.png",
+ "cell": 4,
+ "sigma": 5.0,
+ "body": {
+  "center": [
+   155,
+   182
+  ],
+  "radii": [
+   62,
+   72
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    120,
+    72
+   ],
+   "radii": [
+    85,
+    45
+   ],
+   "bone": [
+    148,
+    108
+   ]
+  }
+ },
+ "limbs": {
+  "legL": [
+   [
+    98,
+    150
+   ],
+   [
+    45,
+    150
+   ],
+   [
+    28,
+    285
+   ],
+   [
+    4,
+    312
+   ]
+  ],
+  "legFL": [
+   [
+    102,
+    120
+   ],
+   [
+    72,
+    122
+   ],
+   [
+    72,
+    210
+   ],
+   [
+    90,
+    258
+   ]
+  ],
+  "legR": [
+   [
+    185,
+    108
+   ],
+   [
+    205,
+    85
+   ],
+   [
+    262,
+    250
+   ],
+   [
+    285,
+    312
+   ]
+  ],
+  "legFR": [
+   [
+    205,
+    160
+   ],
+   [
+    215,
+    205
+   ],
+   [
+    203,
+    262
+   ],
+   [
+    212,
+    312
+   ]
+  ]
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.6,
+   "bob": 3.0,
+   "breath": 0.02,
+   "leg_tip_sway": 4.0,
+   "parts": {
+    "head": {
+     "rotate": 5.0,
+     "sway": 2.0,
+     "phase": 0.6
+    }
+   }
+  },
+  "attack": {
+   "type": "lunge",
+   "duration": 1.1,
+   "head": "head",
+   "dash": -30.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3
+   ],
+   "swap": {
+    "source": "../../images/monsters/cosmic_fragment/cosmic_fragment_attack.png",
+    "anchor": [
+     435,
+     175
+    ],
+    "on": 0.15,
+    "off": 0.88,
+    "fade_in": 0.04,
+    "fade_out": 0.12
+   }
+  },
+  "echo": {
+   "type": "lunge",
+   "duration": 1.3,
+   "head": "head",
+   "dash": -10.0,
+   "lean": 3.0,
+   "jab": -4.0,
+   "jabs": [
+    0.3,
+    0.58,
+    0.86
+   ],
+   "timing": {
+    "dash_back": [
+     1.0,
+     1.25
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/cosmic_fragment/cosmic_fragment_attack2.png",
+    "anchor": [
+     290,
+     290
+    ],
+    "on": 0.12,
+    "off": 1.08,
+    "fade_in": 0.05,
+    "fade_out": 0.12,
+    "pulse": {
+     "times": [
+      0.3,
+      0.58,
+      0.86
+     ],
+     "amp": 0.06
+    }
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 22.0,
+   "tilt": -10.0,
+   "flail": [
+    10.0,
+    16.0,
+    22.0
+   ],
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/cosmic_fragment/cosmic_fragment_hit.png",
+    "anchor": [
+     210,
+     198
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 60.0,
+   "body_rotate": -8.0,
+   "body_x": 6.0,
+   "world_angles": {
+    "legL": [
+     190.0,
+     200.0,
+     180.0
+    ],
+    "legFL": [
+     200.0,
+     215.0,
+     185.0
+    ],
+    "legR": [
+     350.0,
+     342.0,
+     0.0
+    ],
+    "legFR": [
+     340.0,
+     315.0,
+     355.0
+    ]
+   }
+  }
+ }
+}
