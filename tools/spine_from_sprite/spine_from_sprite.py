@@ -343,6 +343,9 @@ class Animator:
             "translate": keys(lambda ph: {"x": 0, "y": round(bob * math.sin(ph), 3)}),
             "scale": keys(lambda ph: {"x": round(1 - breath * math.sin(ph), 4), "y": round(1 + breath * math.sin(ph), 4)}),
         }}
+        # sway：身体绕自己的骨头左右摆（度）。骨头放在脚下时就是插在地上的杆子随风晃
+        if p.get("sway"):
+            bones["body"]["rotate"] = keys(lambda ph: {"value": round(p["sway"] * math.sin(ph + 0.7), 3)})
         for side in ("L", "R"):
             sign = 1 if side == "L" else -1
             for limb in self.limbs:
@@ -539,6 +542,41 @@ class Animator:
 
         return self.build(fn, T)
 
+    # 头部甩出（求知的稻草人的收割等）：head 先后仰蓄力 wind_tilt，再往前甩 lash_tilt 并在停住时轻颤，身体跟着前倾 lean，
+    # 两臂张开 arms 度；fx 一般挂在 head 上（fx.parent），从 scale_from 迅速放大，像从头里伸出去。
+    # 命中在 lash 结束（默认 0.28 秒），多段伤害放在 lash 结束到 back 开始之间。
+    def head_lash(self, p):
+        T = p.get("duration", 1.2)
+        tm = dict({"wind": [0.0, 0.16], "lash": [0.16, 0.28], "back": [0.85, 1.15]}, **p.get("timing", {}))
+        head = p.get("head", "head")
+        wind_tilt, lash_tilt = p.get("wind_tilt", -14.0), p.get("lash_tilt", 18.0)
+        lean, arms = p.get("lean", 5.0), p.get("arms", 25.0)
+
+        def fn(t):
+            w, l, b = seg(t, *tm["wind"]), seg(t, *tm["lash"]), seg(t, *tm["back"])
+            windup, lash = w * (1 - l), l * (1 - b)
+            tremble = math.sin(48 * t) * lash
+            ch = {"body": {"rotate": -0.6 * lean * windup + lean * lash, "x": 8 * windup - 16 * lash,
+                           "sx": 1 + 0.02 * windup, "sy": 1 - 0.02 * windup},
+                  head: {"rotate": wind_tilt * windup + lash_tilt * lash + 2.5 * tremble,
+                         "sx": 1 + 0.05 * lash, "sy": 1 + 0.05 * lash}}
+            for limb in self.limbs:
+                if not is_arm(limb):
+                    continue
+                sign, names = side_sign(limb), self.segs(limb)
+                ch[names[0]] = {"rotate": sign * arms * (0.4 * windup + lash) + 2 * tremble}
+                if len(names) > 1:
+                    ch[names[1]] = {"rotate": -sign * 0.6 * arms * lash}
+            return ch, {}
+
+        anim = self.build(fn, T)
+        if "fx" in p:
+            fx = dict({"on": tm["lash"][0] + 0.02, "off": tm["back"][0] + 0.1, "extra_spin": 0.0,
+                       "scale_from": 0.15, "scale_to": 1.0, "fade_in": 0.04, "fade_out": 0.25, "scale_time": 0.12},
+                      **p["fx"])
+            self.add_spin_fx(anim, fx, T)
+        return anim
+
     # 武器姿势（防御等）：weapon 举到目标世界角 angle、身体后仰 lean，停住再放下；角度同样换算成离初始角最近的等价角
     def weapon_pose(self, p):
         T = p.get("duration", 0.6)
@@ -661,11 +699,37 @@ class Animator:
             s = fx.get("scale_from", 0.82) + (fx.get("scale_to", 1.02) - fx.get("scale_from", 0.82)) * seg(t, on, on + scale_time)
             scale.append({"time": round(t, 4), "x": round(s, 4), "y": round(s, 4)})
             rgba.append({"time": round(t, 4), "color": f"ffffff{round(a * 255):02x}"})
-        anim["bones"]["fx"] = {"rotate": rot, "scale": scale}
-        anim.setdefault("slots", {})["fx"] = {
-            "attachment": [{"time": round(on, 4), "name": "fx"}, {"time": off, "name": None}],
+        slot = fx.get("slot", "fx")
+        anim["bones"][slot] = {"rotate": rot, "scale": scale}
+        anim.setdefault("slots", {})[slot] = {
+            "attachment": [{"time": round(on, 4), "name": slot}, {"time": off, "name": None}],
             "rgba": rgba,
         }
+
+    def add_pose(self, anim, pose):
+        """换图姿势：on–off 之间把分层身体淡出、换成原图里抠出的人物（pose_<动画名> 槽位，挂在 body 下，跟着身体的
+        前冲、倾斜走），换入 fade_in、换回 fade_out 秒交叉淡入淡出（都缺省时取 fade）。动画已有的闪红等颜色关键帧会保留，并同样作用到换图上。"""
+        T = max((k["time"] for tl in anim.get("bones", {}).values() for keys in tl.values() for k in keys), default=1.0)
+        on, off = pose["on"], pose["off"]
+        fade_in, fade_out = pose.get("fade_in", pose.get("fade", 0.05)), pose.get("fade_out", pose.get("fade", 0.05))
+        slot = pose["slot"]
+        steps = round(T * FPS)
+        slots = anim.setdefault("slots", {})
+        existing = slots.get(self.rig.slot_names[0], {}).get("rgba")
+        layer_keys, pose_keys = [], []
+        for i in range(steps + 1):
+            t = T * i / steps
+            vis = (seg(t, on, on + fade_in) if on > 0 else 1.0) * (1 - seg(t, off - fade_out, off))
+            rgb, alpha = "ffffff", 1.0
+            if existing:
+                c = min(existing, key=lambda k: abs(k["time"] - t))["color"]
+                rgb, alpha = c[:6], int(c[6:], 16) / 255
+            layer_keys.append({"time": round(t, 4), "color": f"{rgb}{round(alpha * (1 - vis) * 255):02x}"})
+            pose_keys.append({"time": round(t, 4), "color": f"{rgb}{round(alpha * vis * 255):02x}"})
+        for name in self.rig.slot_names:
+            slots.setdefault(name, {})["rgba"] = layer_keys
+        slots[slot] = {"attachment": [{"time": round(on, 4), "name": slot}, {"time": round(off, 4), "name": None}],
+                       "rgba": pose_keys}
 
     # 受击：向后（+x）击退、后仰、压扁，四肢带衰减乱甩，脚踩地；可选闪红
     def hurt(self, p):
@@ -741,7 +805,8 @@ class Animator:
 def extract_fx(fx, out_dir, page):
     """从原攻击图抠特效，返回 (图集尺寸, 相对 fx 骨的偏移)。pivot（原图像素）对准 body 骨。
     key="red"（默认）按“红色占优”取像素；key="all" 保留全部不透明像素。
-    exclude 挖掉角色本体：每项是 {"ellipse": [cx, cy, rx, ry]} 或 {"capsule": [x1, y1, x2, y2, r]}（原图像素，边缘 8 像素羽化）。
+    exclude 挖掉角色本体：每项是 {"ellipse": [cx, cy, rx, ry]}、{"capsule": [x1, y1, x2, y2, r]} 或
+    {"polygon": [[x, y], ...]}（原图像素，边缘 8 像素羽化）。
     inner_radius 再挖掉 pivot 周围一圈（red 默认 140，all 默认 0）。"""
     src = Image.open(fx["source"]).convert("RGBA")
     a = np.asarray(src).astype(np.float32)
@@ -758,12 +823,25 @@ def extract_fx(fx, out_dir, page):
             if "ellipse" in ex:
                 cx, cy, rx, ry = ex["ellipse"]
                 d = (np.hypot((xx - cx) / rx, (yy - cy) / ry) - 1) * min(rx, ry)
+            elif "polygon" in ex:
+                import cv2
+                m = np.zeros(a.shape[:2], np.uint8)
+                cv2.fillPoly(m, [np.array(ex["polygon"], np.int32)], 255)
+                d = cv2.distanceTransform(255 - m, cv2.DIST_L2, 5) - cv2.distanceTransform(m, cv2.DIST_L2, 5)
             else:
                 x1, y1, x2, y2, rr = ex["capsule"]
                 vx, vy = x2 - x1, y2 - y1
                 t = np.clip(((xx - x1) * vx + (yy - y1) * vy) / (vx * vx + vy * vy), 0, 1)
                 d = np.hypot(xx - x1 - t * vx, yy - y1 - t * vy) - rr
             k = k * np.clip(d / 8, 0, 1)
+    if fx.get("include"):
+        # include：只保留这些多边形里的像素，用来从原图里抠出人物本体做换图姿势。羽化与 exclude 互补（向外 8 像素淡出），
+        # 同一张原图用同一个多边形一边 include 出人物、一边 exclude 出特效，两层叠在一起时切口看不出接缝。
+        import cv2
+        m = np.zeros(a.shape[:2], np.uint8)
+        for poly in fx["include"]:
+            cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
+        k = k * (1 - np.clip(cv2.distanceTransform(255 - m, cv2.DIST_L2, 5) / 8, 0, 1))
     out = np.zeros_like(a)
     out[..., :3] = a[..., :3]
     out[..., 3] = 255 * k
@@ -796,8 +874,9 @@ def main():
     # 配置里的贴图路径可以写相对路径，按配置文件所在目录解析
     cfg["image"] = str((cfg_path.parent / cfg["image"]).resolve())
     for anim in cfg.get("animations", {}).values():
-        if "fx" in anim:
-            anim["fx"]["source"] = str((cfg_path.parent / anim["fx"]["source"]).resolve())
+        for key in ("fx", "swap"):
+            if key in anim:
+                anim[key]["source"] = str((cfg_path.parent / anim[key]["source"]).resolve())
 
     rig = Rig(cfg, out_dir)
     rig.build_bones()
@@ -805,6 +884,9 @@ def main():
     if "layers" in cfg:
         # 分层：每层一个槽位（按配置顺序从后到前）、一个网格附件、一页图集；附件与区域名都用 <name>_<层名>
         layer_meshes = rig.build_layers()
+        # behind=true 的层画在底层后面（例如从躯干两侧伸出、根部藏在领结后的手臂）
+        behind = {l["name"] for l in cfg["layers"][1:] if l.get("behind")}
+        layer_meshes = [m for m in layer_meshes if m[0] in behind] + [m for m in layer_meshes if m[0] not in behind]
         slots, attachments, atlas_pages = [], {}, []
         for layer_name, page, mesh, _ in layer_meshes:
             region = f"{name}_{layer_name}"
@@ -833,24 +915,57 @@ def main():
     }
 
     anims = cfg.get("animations", {})
-    fx_cfg = next((a["fx"] for a in anims.values() if "fx" in a), None)
-    if fx_cfg:
-        fx_page = fx_cfg.get("page", "fx.png")
+    # 每个带 fx 的动画各一个特效槽位：第一个叫 fx（页面默认 fx.png），之后的叫 fx_<动画名>（页面默认 fx_<动画名>.png）。
+    # 骨头默认挂在 body 下，parent 可改挂到别的骨头（例如从头部甩出的特效挂 head，pivot 对准那根骨头）。
+    for anim_name, a in anims.items():
+        if "fx" not in a:
+            continue
+        fx_cfg = a["fx"]
+        slot = "fx" if not any(s["name"] == "fx" for s in data["slots"]) else f"fx_{anim_name}"
+        fx_cfg["slot"] = slot
+        fx_page = fx_cfg.get("page", f"{slot}.png")
         (fw, fh), (ox, oy) = extract_fx(fx_cfg, out_dir, fx_page)
-        data["bones"].append({"name": "fx", "parent": "body"})
-        data["slots"].insert(0, {"name": "fx", "bone": "fx"})  # 排在本体后面，初始不显示
-        attachment = {"x": ox, "y": oy, "width": fw, "height": fh}
-        # 攻击图与待机图画幅比例不同时按 scale 缩放特效（偏移一起缩放，pivot 仍对准 body）
         fx_scale = fx_cfg.get("scale", 1.0)
+        bone = {"name": slot, "parent": fx_cfg.get("parent", "body")}
+        # origin（原图像素）：特效骨放在这一点上，缩放、自转以它为中心（例如从头里伸出的茎以茎根为中心放大）
+        bx = by = 0.0
+        if "origin" in fx_cfg:
+            bx = (fx_cfg["origin"][0] - fx_cfg["pivot"][0]) * fx_scale
+            by = (fx_cfg["pivot"][1] - fx_cfg["origin"][1]) * fx_scale
+            bone.update(x=round(bx, 2), y=round(by, 2))
+        data["bones"].append(bone)
+        data["slots"].insert(0, {"name": slot, "bone": slot})  # 排在本体后面，初始不显示
+        # 攻击图与待机图画幅比例不同时按 scale 缩放特效（偏移一起缩放，pivot 仍对准 body）
+        attachment = {"x": ox, "y": oy, "width": fw, "height": fh}
+        if fx_scale != 1.0 or bx or by:
+            attachment.update(x=round(ox * fx_scale - bx, 3), y=round(oy * fx_scale - by, 3))
         if fx_scale != 1.0:
-            attachment.update(x=round(ox * fx_scale, 3), y=round(oy * fx_scale, 3), scaleX=fx_scale, scaleY=fx_scale)
-        data["skins"][0]["attachments"]["fx"] = {"fx": attachment}
-        atlas += f"\n{fx_page}\nsize:{fw},{fh}\nfilter:Linear,Linear\nfx\nbounds:0,0,{fw},{fh}\n"
+            attachment.update(scaleX=fx_scale, scaleY=fx_scale)
+        data["skins"][0]["attachments"][slot] = {slot: attachment}
+        atlas += f"\n{fx_page}\nsize:{fw},{fh}\nfilter:Linear,Linear\n{slot}\nbounds:0,0,{fw},{fh}\n"
+
+    # 换图（swap）：source 是原攻击/受击图，include 圈出人物本体，anchor 是人物脚下对应 body 骨的点（原图像素）。
+    # 每个带 swap 的动画一个槽位 pose_<动画名>，排在最前面，初始不显示。
+    for anim_name, a in anims.items():
+        if "swap" not in a:
+            continue
+        pose = a["swap"]
+        slot = pose["slot"] = f"pose_{anim_name}"
+        page = pose.get("page", f"{name}_pose_{anim_name}.png")
+        spec = {"source": pose["source"], "key": "all", "include": pose.get("include"), "exclude": pose.get("exclude"),
+                "pivot": pose["anchor"], "inner_radius": 0.0}
+        (pw, ph), (ox, oy) = extract_fx(spec, out_dir, page)
+        data["bones"].append({"name": slot, "parent": "body"})
+        data["slots"].append({"name": slot, "bone": slot})
+        data["skins"][0]["attachments"][slot] = {slot: {"x": ox, "y": oy, "width": pw, "height": ph}}
+        atlas += f"\n{page}\nsize:{pw},{ph}\nfilter:Linear,Linear\n{slot}\nbounds:0,0,{pw},{ph}\n"
 
     animator = Animator(rig, data)
     for anim_name, p in anims.items():
         kind = p.get("type", anim_name)
         data["animations"][anim_name] = getattr(animator, kind)(p)
+        if "swap" in p:
+            animator.add_pose(data["animations"][anim_name], p["swap"])
 
     (out_dir / f"{name}.spine-json").write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
     (out_dir / f"{name}.atlas").write_text(atlas, encoding="utf-8")
