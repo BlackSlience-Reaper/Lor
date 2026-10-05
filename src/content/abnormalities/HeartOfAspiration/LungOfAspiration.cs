@@ -22,10 +22,10 @@ public sealed class LungOfAspiration : AspirationMonsterBase
     private const string ContractingPulseMoveId = "CONTRACTING_PULSE";
     private const string ViolentPulseMoveId = "VIOLENT_PULSE";
     private const int ContractingPulseMinDamage = 12;
-    private const int ContractingPulseMaxDamage = 15;
+    private const int ContractingPulseMaxDamage = 13;
     private const int WeakAmount = 2;
     private const int ViolentPulseMinDamage = 8;
-    private const int ViolentPulseMaxDamage = 11;
+    private const int ViolentPulseMaxDamage = 9;
     private const int ViolentPulseHits = 3;
     private const int StrengthAmount = 3;
 
@@ -46,12 +46,12 @@ public sealed class LungOfAspiration : AspirationMonsterBase
     private int? _violentPulseDamageRoll;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 406, 270);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 306, 270);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 410, 274);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 310, 274);
 
-    public override int DefaultChaoResistance => 240;
+    public override int DefaultChaoResistance => 200;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

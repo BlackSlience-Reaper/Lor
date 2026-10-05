@@ -27,8 +27,8 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
     private const string AspirationPulseMoveId = "ASPIRATION_PULSE";
     private const string PulseMoveId = "PULSE";
     private const int AspirationPulseMinDamage = 19;
-    private const int AspirationPulseMaxDamage = 23;
-    private const int QuicknessAmount = 6;
+    private const int AspirationPulseMaxDamage = 21;
+    private const int QuicknessAmount = 3;
     private const int BuffTurns = 1;
     private const int PulseBlock = 32;
     private const int PulseRegen = 20;
@@ -51,12 +51,12 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
     private int? _aspirationPulseDamageRoll;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 426, 321);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 326, 321);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 430, 324);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 330, 324);
 
-    public override int DefaultChaoResistance => 250;
+    public override int DefaultChaoResistance => 210;
 
     public override IEnumerable<string> AssetPaths =>
         HeartOfAspirationCreatureVisuals

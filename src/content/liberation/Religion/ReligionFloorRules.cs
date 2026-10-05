@@ -6,23 +6,23 @@ namespace LibraryOfRuina.content.liberation.Religion;
 
 internal static class ReligionFloorRules
 {
-    // 第二阶段的救赎判定、生命下限和血条白色区域共用同一取整阈值。
-    internal static int SecondPhaseMinimumHp(int maximumHp) =>
-        (int)Math.Ceiling(maximumHp * SecondPhaseMinimumPercent / 100m);
-
     internal const int ParadiseHp = 666; // 失乐园：基础最大体力。
     internal const int ParadiseChao = 666; // 失乐园：最大混乱抗性。
     internal const int FirstPhaseMinimumHp = 1; // 第一阶段：生命下限。
-    internal const int SecondPhaseMinimumPercent = 50; // 第二阶段：成功阈值及生命下限百分比。
-    internal const int DamageReductionPercent = 75; // 免疫：所有来源生命伤害减免百分比。
+    internal const int SalvationHp = 0; // 第二阶段：体力降至零时锁定下回合救赎。
+    internal const int TrialFailureMinimumHp = 1; // 为何不安：限时结束时至少保有的失败体力。
+    internal const int FirstPhaseDamageReductionPercent = 75; // 第一阶段免疫：所有来源生命伤害减免百分比。
+    internal const int SecondPhaseDamageReductionPercent = 50; // 第二阶段免疫：所有来源生命伤害减免百分比。
     internal const int ApostleFakeDeathHp = 0; // 不死：进入原版死亡保留状态时的生命值。
     internal const int FalseDeathThreshold = 2; // 不死：进入假死的体力阈值。
-    internal const int RequiredKills = 12; // 时机已然成熟：胜利所需新增假死次数。
-    internal const int SurvivalHp = 1; // 十二使徒结局：存活玩家保留体力。
-    internal const int TrialTurns = 3; // 为何不安：第二阶段完整敌方回合数。
+    internal const int RequiredKills = 12; // 时机已然成熟：触发恢复与玩家失血的累计使徒击杀次数。
+    internal const int RipeTimeHpLossPercent = 99; // 时机已然成熟：玩家损失当前生命的百分比，损失向下取整。
+    internal const int RevelationStatLimit = 6; // 启示：力量、敏捷、强壮、忍耐各自的层数上限。
+    internal const int RevelationCardLimit = 6; // 启示：每名玩家每回合可打出的卡牌数上限。
+    internal const int TrialTurns = 6; // 为何不安：第二阶段完整敌方回合数，不计转阶段当回合。
     internal const int ExplosionMultiplier = 2; // 自爆：队伍最高最大生命的伤害倍率。
     internal const int CrownProtection = 999; // 荆棘之冠：永久守护层数。
-    internal const float RepentanceSeconds = 6f; // 赎罪：忏悔姿态停留秒数。
+    internal const float RepentanceSeconds = 5f; // 赎罪：忏悔姿态停留秒数。
     internal const float FrameSeconds = 1f; // 敌人场景：每个动作帧持续秒数。
     internal const int AweFirstTurn = 2; // 起身迎接我吧：首次施放的敌方回合。
     internal const int AweInterval = 3; // 起身迎接我吧：施放间隔。

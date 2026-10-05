@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Godot;
 using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -14,7 +13,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Combat.HealthBars;
 using LibraryOfRuina.framework.powers;
 
 namespace LibraryOfRuina.content.liberation.Religion;
@@ -43,9 +41,8 @@ public abstract class ReligionFloorHpFloorPower : ReligionFloorGreenPassivePower
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("Reduction", ReligionFloorRules.DamageReductionPercent),
+        new DynamicVar("Reduction", ReligionFloorRules.FirstPhaseDamageReductionPercent),
         new DynamicVar("Minimum", ReligionFloorRules.FirstPhaseMinimumHp),
-        new DynamicVar("Half", ReligionFloorRules.SecondPhaseMinimumPercent),
         new DynamicVar("Threshold", ReligionFloorRules.FalseDeathThreshold)
     ];
 
@@ -61,7 +58,7 @@ public abstract class ReligionFloorHpFloorPower : ReligionFloorGreenPassivePower
         {
             if (Owner.Monster is ReligionFloorLostParadise && Encounter?.Phase == 2)
             {
-                return ReligionFloorRules.SecondPhaseMinimumHp(Owner.MaxHp);
+                return ReligionFloorRules.SalvationHp;
             }
             return ReligionFloorRules.FirstPhaseMinimumHp;
         }
@@ -76,12 +73,16 @@ public abstract class ReligionFloorHpFloorPower : ReligionFloorGreenPassivePower
 
         if (Owner.Monster is ReligionFloorLostParadise)
         {
-            amount *= (100m - ReligionFloorRules.DamageReductionPercent) / 100m;
+            int reduction = Encounter.Phase == 2
+                ? ReligionFloorRules.SecondPhaseDamageReductionPercent
+                : ReligionFloorRules.FirstPhaseDamageReductionPercent;
+            amount *= (100m - reduction) / 100m;
         }
         return Math.Min(amount, Math.Max(0m, Owner.CurrentHp - MinimumHp));
     }
 
     public override bool ShouldDieLate(Creature creature) => creature != Owner || Owner.Monster is ReligionFloorApostle { IsFakeDead: true }
+        || Owner.Monster is ReligionFloorLostParadise && Encounter?.Phase == 2
         || Encounter is not { IsSettling: false, Completed: false };
 
     public override Task AfterPreventingDeath(Creature creature) => creature == Owner
@@ -89,7 +90,8 @@ public abstract class ReligionFloorHpFloorPower : ReligionFloorGreenPassivePower
         : Task.CompletedTask;
 
     public override bool ShouldStopCombatFromEnding() => Owner.Monster is ReligionFloorLostParadise
-        && Encounter is { IsSettling: true, Completed: false }
+        && Encounter is { Completed: false } encounter
+        && (encounter.IsSettling || encounter.Outcome == ReligionFloorOutcome.Salvation)
         && Owner.CombatState?.PlayerCreatures.Any(static player => player.IsAlive) == true;
 
     public override bool ShouldCreatureBeRemovedFromCombatAfterDeath(Creature creature)
@@ -104,7 +106,7 @@ public abstract class ReligionFloorHpFloorPower : ReligionFloorGreenPassivePower
             return false;
         }
         return Owner.Monster is not ReligionFloorLostParadise
-            || Encounter is not { IsSettling: true, Completed: false };
+            || Encounter is not { Completed: false };
     }
 
     public override bool ShouldAllowHitting(Creature creature) =>
@@ -152,28 +154,23 @@ public sealed class ReligionFloorImmortalityPower : ReligionFloorHpFloorPower
     protected override bool IsParadise => false;
 }
 
-public sealed class ReligionFloorImmunityPower : ReligionFloorHpFloorPower, IHealthBarForecastSource
+public sealed class ReligionFloorImmunityPower : ReligionFloorHpFloorPower
 {
     protected override bool IsParadise => true;
 
-    public IEnumerable<HealthBarForecastSegment> GetHealthBarForecastSegments(HealthBarForecastContext context)
+    public override void AddVariablesToDescription(LocString description, int? amountOverride = null)
     {
-        if (!IsMutable || Encounter is not { Phase: 2, Completed: false }
-            || Owner.IsDead || Owner.CurrentHp <= 0)
-        {
-            return [];
-        }
+        RefreshDisplayedState();
+    }
 
-        // 白色从血条左端覆盖最大生命的一半；到达阈值后覆盖全部剩余生命。
-        int whiteHp = Math.Min(Owner.CurrentHp, ReligionFloorRules.SecondPhaseMinimumHp(Owner.MaxHp));
-        return HealthBarForecasts.Single(
-            whiteHp,
-            Colors.White,
-            HealthBarForecastGrowthDirection.FromLeft,
-            order: 0,
-            overlayMaterial: null,
-            overlaySelfModulate: null,
-            affectsHpLabel: false);
+    internal void RefreshDisplayedState()
+    {
+        if (IsMutable)
+        {
+            DynamicVars["Reduction"].BaseValue = Encounter?.Phase == 2
+                ? ReligionFloorRules.SecondPhaseDamageReductionPercent
+                : ReligionFloorRules.FirstPhaseDamageReductionPercent;
+        }
     }
 }
 
@@ -187,7 +184,7 @@ public sealed class ReligionFloorRipeTimePower : ReligionFloorGreenPassivePower
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("Kills", ReligionFloorRules.RequiredKills),
-        new DynamicVar("Hp", ReligionFloorRules.SurvivalHp)
+        new DynamicVar("Loss", ReligionFloorRules.RipeTimeHpLossPercent)
     ];
 }
 
@@ -200,39 +197,16 @@ public sealed class ReligionFloorTrialPower : ReligionFloorGreenPassivePower
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar("Turns", ReligionFloorRules.TrialTurns),
-        new DynamicVar("Half", ReligionFloorRules.SecondPhaseMinimumPercent),
-        new DynamicVar("Damage", 0)
+        new DynamicVar("Minimum", ReligionFloorRules.TrialFailureMinimumHp),
+        new DynamicVar("Multiplier", ReligionFloorRules.ExplosionMultiplier)
     ];
 
-    public override void AddVariablesToDescription(LocString description, int? amountOverride = null)
-    {
-        UpdateDescriptionVariables();
-        description.Add("Damage", Encounter?.ExplosionDamage ?? 0);
-        description.Add("Remaining", DisplayAmount);
-    }
-
-    internal void RefreshDisplayedState()
-    {
-        UpdateDescriptionVariables();
-        InvokeDisplayAmountChanged();
-    }
+    internal void RefreshDisplayedState() => InvokeDisplayAmountChanged();
 
     public override Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
         RefreshDisplayedState();
         return base.AfterApplied(applier, cardSource);
-    }
-
-    private void UpdateDescriptionVariables()
-    {
-        if (!IsMutable)
-        {
-            return;
-        }
-
-        // 原版在 AddVariablesToDescription 后注入 DynamicVars，因此必须更新变量本身。
-        DynamicVars["Damage"].BaseValue = Encounter?.ExplosionDamage ?? 0;
-        DynamicVars["Turns"].BaseValue = DisplayAmount;
     }
 }
 

@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.intents;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
@@ -46,6 +47,9 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
 
     [SavedProperty]
     public ReligionFloorOutcome Outcome { get; private set; }
+
+    [SavedProperty]
+    public int OutcomeRound { get; private set; }
 
     [SavedProperty]
     public bool Initialized { get; private set; }
@@ -153,10 +157,11 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
     internal void CheckSalvation()
     {
         if (Phase == 2 && Outcome == ReligionFloorOutcome.Pending && Boss is { } boss
-            && boss.Creature.CurrentHp <= ReligionFloorRules.SecondPhaseMinimumHp(boss.Creature.MaxHp))
+            && boss.Creature.CurrentHp <= ReligionFloorRules.SalvationHp)
         {
             Outcome = ReligionFloorOutcome.Salvation;
-            boss.PlanMove(ReligionFloorMonster.SalvationMove);
+            OutcomeRound = (_combat?.RoundNumber ?? 0) + 1;
+            boss.PlanMove(ReligionFloorMonster.SalvationMove, rollDamage: false);
         }
     }
 
@@ -170,12 +175,19 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
 
         await EnsurePhasePowers();
 
-        if (side == CombatSide.Enemy && Outcome != ReligionFloorOutcome.Pending)
+        if (side == CombatSide.Player && Outcome != ReligionFloorOutcome.Pending && combat.RoundNumber >= OutcomeRound)
         {
             await ResolveOutcome(context);
         }
         else if (side == CombatSide.Player)
         {
+            if (Phase == 2)
+            {
+                foreach (Creature player in combat.PlayerCreatures.Where(static player => player.IsAlive))
+                {
+                    await PowerCmdCompat.Ensure<ReligionFloorRevelationPower>(player);
+                }
+            }
             ResetReclaimProgress();
             RepairApostlePlans();
             ReligionFloorPresentation.Refresh(this);
@@ -195,27 +207,23 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
         await ReligionFloorClockPresentation.Play(KilledApostles - clockSteps, clockSteps);
 
         EnemyTurnsCompleted++;
-        if (KilledApostles >= ReligionFloorRules.RequiredKills)
+        if (Phase == 1 && KilledApostles >= ReligionFloorRules.RequiredKills)
         {
-            IsSettling = true;
+            await RestoreParadise(boss);
             foreach (Creature player in _combat.PlayerCreatures.Where(static player => player.IsAlive))
             {
-                await CreatureCmd.SetCurrentHp(player, ReligionFloorRules.SurvivalHp);
+                decimal remainingHp = Math.Ceiling(player.CurrentHp * (100m - ReligionFloorRules.RipeTimeHpLossPercent) / 100m);
+                await CreatureCmd.SetCurrentHp(player, remainingHp);
             }
-            await FinishVictory();
-            return;
         }
 
+        bool enteredSecondPhase = false;
         if (Phase == 1 && boss.Creature.CurrentHp <= ReligionFloorRules.FirstPhaseMinimumHp)
         {
             Phase = 2;
+            enteredSecondPhase = true;
             await EnsurePhasePowers();
-            await CreatureCmd.SetCurrentHp(boss.Creature, boss.Creature.MaxHp);
-            if (boss.Creature is LibraryCreature library)
-            {
-                library.RestorePreStunResistance();
-                library.SetCurrentChaoValueInternal(library.MaxChaoValue);
-            }
+            await RestoreParadise(boss);
             foreach (ReligionFloorApostle apostle in Apostles)
             {
                 await apostle.Wake();
@@ -230,19 +238,63 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
             if (Outcome == ReligionFloorOutcome.Pending && TrialTurnsCompleted >= ReligionFloorRules.TrialTurns)
             {
                 Outcome = ReligionFloorOutcome.Explosion;
+                OutcomeRound = _combat.RoundNumber + 1;
             }
         }
 
         boss.Creature.GetPower<ReligionFloorTrialPower>()?.RefreshDisplayedState();
         await ExhaustSacrifices(context);
+        if (enteredSecondPhase)
+        {
+            await ResetPlayerPiles(context);
+        }
         PlanNextTurn();
+    }
+
+    private static async Task RestoreParadise(ReligionFloorLostParadise boss)
+    {
+        await CreatureCmd.SetCurrentHp(boss.Creature, boss.Creature.MaxHp);
+        if (boss.Creature is LibraryCreature library)
+        {
+            library.RestorePreStunResistance();
+            library.SetCurrentChaoValueInternal(library.MaxChaoValue);
+        }
+    }
+
+    private async Task ResetPlayerPiles(PlayerChoiceContext context)
+    {
+        if (_combat == null)
+        {
+            return;
+        }
+
+        foreach (var player in _combat.Players)
+        {
+            if (player.PlayerCombatState is not { } state)
+            {
+                continue;
+            }
+
+            // 转阶段交换牌堆：只回收处理前已在消耗堆的牌，本次消耗的牌留在消耗堆。
+            CardModel[] previouslyExhaustedCards = state.ExhaustPile.Cards.ToArray();
+            CardModel[] cards = state.DrawPile.Cards.Concat(state.DiscardPile.Cards)
+                .Where(static card => card.Type is not (CardType.Status or CardType.Curse))
+                .ToArray();
+            foreach (CardModel card in cards)
+            {
+                await CardCmd.Exhaust(context, card, causedByEthereal: false);
+            }
+            await CardPileCmd.Add(previouslyExhaustedCards, PileType.Discard, clonedBy: Boss);
+        }
     }
 
     internal async Task EnsurePhasePowers()
     {
         if (Phase == 2 && Boss is { } boss)
         {
+            await PowerCmdCompat.RemoveIfPresent<ReligionFloorRipeTimePower>(boss.Creature);
             await PowerCmdCompat.Ensure<ReligionFloorTrialPower>(boss.Creature);
+            boss.Creature.GetPower<ReligionFloorImmunityPower>()?.RefreshDisplayedState();
         }
     }
 
@@ -286,7 +338,7 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
 
     internal void RepairApostlePlans(ReligionFloorApostle? awakened = null, bool rerollAll = false)
     {
-        if (!Initialized || _repairingPlans || _combat == null || Completed || IsSettling)
+        if (!Initialized || _repairingPlans || _combat == null || Completed || IsSettling || Outcome != ReligionFloorOutcome.Pending)
         {
             return;
         }
@@ -389,6 +441,11 @@ public sealed partial class ReligionFloorLiberationEncounter : LiberationEncount
             {
                 await PowerCmdCompat.Apply<ReligionFloorCrownPower>(player, 1, boss.Creature, null);
                 await LibraryPowerCmd.Apply<LibraryProtectionPower>(context, player, ReligionFloorRules.CrownProtection, 0, true, boss.Creature, null);
+            }
+            // 赎罪安吉拉出现前移除三个使徒，包含假死使徒的战斗状态与残留视觉节点。
+            foreach (ReligionFloorApostle apostle in Apostles)
+            {
+                await LiberationPhaseCleanup.RemoveTransitionCreature(apostle.Creature, _combat);
             }
             await CreatureCmd.Kill(boss.Creature, force: true);
             RepentanceVisible = true;
