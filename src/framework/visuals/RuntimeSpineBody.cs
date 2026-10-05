@@ -30,7 +30,12 @@ internal sealed partial class RuntimeSpineBody : Node2D
         float HurtHoldSeconds,
         GhostSpec? Ghosts,
         // 其他触发（例如 "Guard"、"Cast"）对应的动画：播一次再回待机；没列出的触发返回 false
-        IReadOnlyDictionary<string, string>? ExtraTriggers = null);
+        IReadOnlyDictionary<string, string>? ExtraTriggers = null,
+        // 每次攻击轮流换动画（来宾的打击、突刺、斩击，与原版逐帧外观的 Cycle 相同）；为 null 时只用 AttackAnimation
+        IReadOnlyList<string>? AttackCycle = null,
+        // 同一招式的后续段（原版连击默认每段都重发攻击触发）把攻击动画拉回这个时间点（秒，通常是命中帧），
+        // 段数再多也一直停在攻击姿势；为 null 时后续段直接忽略
+        float? AttackHoldSeconds = null);
 
     internal sealed record GhostSpec(float LagSeconds, float[] Alpha, float FadeInStart, float FadeInEnd, float FadeOutStart, float FadeOutEnd);
 
@@ -42,6 +47,8 @@ internal sealed partial class RuntimeSpineBody : Node2D
     private float[] _ghostTimes = [];
     private bool _started;
     private bool _holdingHurt;
+    private int _attackIndex;
+    private string? _currentAttack;
 
     internal static RuntimeSpineBody? TryCreate(Sprite2D anchor, Spec spec)
     {
@@ -270,20 +277,32 @@ internal sealed partial class RuntimeSpineBody : Node2D
     // 各段伤害的等待由怪物按动画里的命中时刻安排。
     private void PlayAttack()
     {
-        if (!_holdingHurt && CurrentAnimation(_main) == _spec.AttackAnimation)
+        if (!_holdingHurt && _currentAttack != null && CurrentAnimation(_main) == _currentAttack)
         {
+            if (_spec.AttackHoldSeconds is { } hold && Current(_main) is { } entry
+                && entry.Call("get_track_time").AsSingle() > hold)
+            {
+                entry.Call("set_track_time", hold);
+            }
+
             return;
         }
+
+        // 轮换只在新招式开始时前进一格，同一招式的后续段落在上面的提前返回里
+        string attack = _spec.AttackCycle is { Count: > 0 } cycle
+            ? cycle[_attackIndex++ % cycle.Count]
+            : _spec.AttackAnimation;
+        _currentAttack = attack;
 
         // 快速模式不改动画速度：原版也只缩短命令间的等待（Cmd.CustomScaledWait），命中帧靠前的动画因此照常对得上。
         _holdingHurt = false;
         GodotObject state = State(_main);
-        state.Call("set_animation", _spec.AttackAnimation, false, 0);
+        state.Call("set_animation", attack, false, 0);
         OffsetLoop(state.Call("add_animation", _spec.IdleAnimation, 0f, true, 0).AsGodotObject());
 
         for (int i = 0; i < _ghosts.Length; i++)
         {
-            State(_ghosts[i]).Call("set_animation", _spec.AttackAnimation, false, 0);
+            State(_ghosts[i]).Call("set_animation", attack, false, 0);
             _ghosts[i].Call("update_skeleton", 0f);
             _ghostTimes[i] = 0f;
         }
@@ -297,7 +316,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
         }
 
         GodotObject? current = Current(_main);
-        if (current == null || _holdingHurt || CurrentAnimation(_main) != _spec.AttackAnimation)
+        if (current == null || _holdingHurt || CurrentAnimation(_main) != _currentAttack)
         {
             HideGhosts();
             return;
