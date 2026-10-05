@@ -1,0 +1,928 @@
+{
+ "name": "guest_pameli",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/pameli",
+ "origin": [
+  -97.5,
+  1.0
+ ],
+ "skin_tint": [
+  0.861,
+  0.881,
+  0.834
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "Pameli_Default",
+   "bones": {
+    "body": {
+     "at": [
+      -1.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -1.5,
+      310.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -12.0,
+      425.0
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      -143.5,
+      223.5
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "weapon",
+    "P_voo": "weapon",
+    "body_2": "body",
+    "body_3": "body",
+    "body_4": "body",
+    "P_voo_2": "body",
+    "body_5": "body",
+    "P_voo_3": "body",
+    "body_6": "body",
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head"
+   }
+  },
+  "Damaged": {
+   "source": "Pameli_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      -34.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -34.8,
+      272.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -45.5,
+      393.8
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "P_voo": "body",
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head"
+   }
+  },
+  "Hit": {
+   "source": "Pameli_Hit",
+   "bones": {
+    "body": {
+     "at": [
+      -49.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -49.9,
+      273.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -60.0,
+      387.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "P_voo": "body",
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head",
+    "body_2": "body",
+    "P_voo_2": "body"
+   }
+  },
+  "Penetrate": {
+   "source": "Pameli_Penetrate",
+   "bones": {
+    "body": {
+     "at": [
+      -37.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -37.5,
+      266.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -47.5,
+      381.0
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "body": "body",
+    "front_hair_2": "hair",
+    "body_2": "body",
+    "P_voo": "body"
+   }
+  },
+  "Slash": {
+   "source": "Pameli_Slash",
+   "bones": {
+    "body": {
+     "at": [
+      -31.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -31.5,
+      263.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -42.0,
+      380.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "P_voo": "body",
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "sy": [
+      0.009,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      2.0,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.4,
+      1,
+      0.4
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      1.2,
+      1,
+      0.3
+     ]
+    }
+   }
+  },
+  "strike": {
+   "duration": 1.0,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Hit",
+     0.05
+    ],
+    [
+     0.78,
+     "Default",
+     0.08
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -60,
+       "out"
+      ],
+      [
+       0.75,
+       -60
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.7,
+       -4
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.7,
+       0
+      ],
+      [
+       1.0,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -20.0,
+       "out"
+      ],
+      [
+       0.7,
+       -20.0
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Hit.body": {
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ],
+     "sx": [
+      [
+       0.15,
+       1
+      ],
+      [
+       0.3,
+       1.03,
+       "out"
+      ],
+      [
+       0.45,
+       1
+      ]
+     ],
+     "sy": [
+      [
+       0.15,
+       1
+      ],
+      [
+       0.3,
+       0.97,
+       "out"
+      ],
+      [
+       0.45,
+       1
+      ]
+     ]
+    },
+    "Hit.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Hit.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "thrust": {
+   "duration": 1.0,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Penetrate",
+     0.05
+    ],
+    [
+     0.78,
+     "Default",
+     0.08
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.7,
+       -4
+      ],
+      [
+       0.95,
+       0
+      ]
+     ],
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       12,
+       "out"
+      ],
+      [
+       0.7,
+       12
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.7,
+       0
+      ],
+      [
+       1.0,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -6.0,
+       "out"
+      ],
+      [
+       0.7,
+       -6.0
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Penetrate.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -14,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Penetrate.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Penetrate.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "slash": {
+   "duration": 1.0,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Slash",
+     0.05
+    ],
+    [
+     0.78,
+     "Default",
+     0.08
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.7,
+       -4
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.7,
+       0
+      ],
+      [
+       1.0,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -32.0,
+       "out"
+      ],
+      [
+       0.7,
+       -32.0
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Slash.body": {
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       3,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "y": [
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -8,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Slash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Slash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.6,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0.04
+    ],
+    [
+     0.42,
+     "Default",
+     0.1
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       5.0,
+       "out"
+      ],
+      [
+       1.2,
+       5.0
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

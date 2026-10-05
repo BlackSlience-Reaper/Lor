@@ -1,0 +1,1716 @@
+{
+ "eri": {
+  "layers": "eri",
+  "prefix": "eri",
+  "poses": {
+   "idle": {
+    "motion": "Eri_Default",
+    "err": 1.961,
+    "second": [
+     54.656,
+     "Eri_Penetrate"
+    ],
+    "mod": "eri.webp",
+    "bottom_center": [
+     -129.5,
+     -71.0
+    ],
+    "size": [
+     515,
+     568
+    ]
+   },
+   "strike": {
+    "motion": "Eri_Hit",
+    "err": 0.545,
+    "second": [
+     31.205,
+     "Eri_Penetrate"
+    ],
+    "mod": "eri_attack_strike.webp",
+    "bottom_center": [
+     157.0,
+     5.0
+    ],
+    "size": [
+     606,
+     440
+    ]
+   },
+   "thrust": {
+    "motion": "Eri_Penetrate",
+    "err": 0.475,
+    "second": [
+     57.112,
+     "Eri_Damaged"
+    ],
+    "mod": "eri_attack_thrust.webp",
+    "bottom_center": [
+     -230.0,
+     5.0
+    ],
+    "size": [
+     750,
+     428
+    ]
+   },
+   "slash": {
+    "motion": "Eri_Slash",
+    "err": 2.605,
+    "second": [
+     59.038,
+     "Eri_Default"
+    ],
+    "mod": "eri_attack_slash.webp",
+    "bottom_center": [
+     -64.5,
+     5.0
+    ],
+    "size": [
+     429,
+     764
+    ]
+   },
+   "hurt": {
+    "motion": "Eri_Damaged",
+    "err": 2.365,
+    "second": [
+     38.111,
+     "Eri_Default"
+    ],
+    "mod": "eri_hit.webp",
+    "bottom_center": [
+     153.5,
+     -8.0
+    ],
+    "size": [
+     607,
+     439
+    ]
+   }
+  },
+  "skin_tint": [
+   0.525,
+   0.494,
+   0.463
+  ]
+ },
+ "yun": {
+  "layers": "yun",
+  "prefix": "yun",
+  "poses": {
+   "idle": {
+    "motion": "Yoon_Default",
+    "err": 1.644,
+    "second": [
+     30.27,
+     "Yoon_Guard"
+    ],
+    "mod": "yun.webp",
+    "bottom_center": [
+     6.5,
+     4.0
+    ],
+    "size": [
+     241,
+     464
+    ]
+   },
+   "strike": {
+    "motion": "Yoon_Hit",
+    "err": 0.808,
+    "second": [
+     37.292,
+     "Yoon_Slash"
+    ],
+    "mod": "yun_attack_strike.webp",
+    "bottom_center": [
+     31.0,
+     5.0
+    ],
+    "size": [
+     280,
+     455
+    ]
+   },
+   "thrust": {
+    "motion": "Yoon_Penetrate",
+    "err": 0.715,
+    "second": [
+     40.105,
+     "Yoon_Default"
+    ],
+    "mod": "yun_attack_thrust.webp",
+    "bottom_center": [
+     -24.0,
+     5.0
+    ],
+    "size": [
+     364,
+     450
+    ]
+   },
+   "slash": {
+    "motion": "Yoon_Slash",
+    "err": 1.108,
+    "second": [
+     15.251,
+     "Yoon_Penetrate"
+    ],
+    "mod": "yun_attack_slash.webp",
+    "bottom_center": [
+     6.0,
+     5.0
+    ],
+    "size": [
+     304,
+     461
+    ]
+   },
+   "hurt": {
+    "motion": "Yoon_Damaged",
+    "err": 1.696,
+    "second": [
+     14.057,
+     "Yoon_Guard"
+    ],
+    "mod": "yun_hit.webp",
+    "bottom_center": [
+     -6.5,
+     5.0
+    ],
+    "size": [
+     253,
+     457
+    ]
+   }
+  },
+  "skin_tint": [
+   0.824,
+   0.792,
+   0.78
+  ]
+ },
+ "philip": {
+  "layers": "philip",
+  "prefix": "philip",
+  "poses": {
+   "idle": {
+    "motion": "Philip_Default",
+    "err": 3.442,
+    "second": [
+     38.066,
+     "Philip_Damaged"
+    ],
+    "mod": "philip.png",
+    "bottom_center": [
+     -109.0,
+     4.0
+    ],
+    "size": [
+     380,
+     486
+    ]
+   },
+   "strike": {
+    "motion": "Philip_Hit",
+    "err": 9.904,
+    "second": [
+     23.589,
+     "Philip_Slash"
+    ],
+    "mod": "philip_attack_strike.webp",
+    "bottom_center": [
+     103.5,
+     1.0
+    ],
+    "size": [
+     449,
+     456
+    ]
+   },
+   "thrust": {
+    "motion": "Philip_Penetrate",
+    "err": 1.347,
+    "second": [
+     58.191,
+     "Philip_Move"
+    ],
+    "mod": "philip_attack_thrust.webp",
+    "bottom_center": [
+     -127.0,
+     5.0
+    ],
+    "size": [
+     640,
+     450
+    ]
+   },
+   "slash": {
+    "motion": "Philip_Slash",
+    "err": 1.572,
+    "second": [
+     19.783,
+     "Philip_Damaged"
+    ],
+    "mod": "philip_attack_slash.webp",
+    "bottom_center": [
+     -6.5,
+     -99.0
+    ],
+    "size": [
+     279,
+     547
+    ]
+   },
+   "hurt": {
+    "motion": "Philip_Damaged",
+    "err": 1.572,
+    "second": [
+     24.145,
+     "Philip_Move"
+    ],
+    "mod": "philip_hit.webp",
+    "bottom_center": [
+     -97.5,
+     -3.0
+    ],
+    "size": [
+     405,
+     451
+    ]
+   }
+  },
+  "skin_tint": [
+   0.014,
+   0.01,
+   0.0
+  ]
+ },
+ "salvador": {
+  "layers": "salvador",
+  "prefix": "salvador",
+  "poses": {
+   "idle": {
+    "motion": "Salvador_Default",
+    "err": 5.826,
+    "second": [
+     38.199,
+     "Salvador_Evade"
+    ],
+    "mod": "salvador.png",
+    "bottom_center": [
+     -19.5,
+     -1.0
+    ],
+    "size": [
+     227,
+     489
+    ]
+   },
+   "strike": {
+    "motion": "Salvador_Hit",
+    "err": 3.377,
+    "second": [
+     20.89,
+     "Salvador_Penetrate"
+    ],
+    "mod": "salvador_attack_strike.webp",
+    "bottom_center": [
+     70.5,
+     4.0
+    ],
+    "size": [
+     527,
+     418
+    ]
+   },
+   "thrust": {
+    "motion": "Salvador_Penetrate",
+    "err": 1.799,
+    "second": [
+     56.943,
+     "Salvador_Hit"
+    ],
+    "mod": "salvador_attack_thrust.webp",
+    "bottom_center": [
+     -215.5,
+     4.0
+    ],
+    "size": [
+     847,
+     422
+    ]
+   },
+   "slash": {
+    "motion": "Salvador_Slash",
+    "err": 1.19,
+    "second": [
+     31.336,
+     "Salvador_Guard"
+    ],
+    "mod": "salvador_attack_slash.webp",
+    "bottom_center": [
+     -80.5,
+     -185.0
+    ],
+    "size": [
+     443,
+     654
+    ]
+   },
+   "hurt": {
+    "motion": "Salvador_Damaged",
+    "err": 1.33,
+    "second": [
+     43.853,
+     "Salvador_Slash"
+    ],
+    "mod": "salvador_hit.webp",
+    "bottom_center": [
+     -22.5,
+     -4.0
+    ],
+    "size": [
+     397,
+     395
+    ]
+   }
+  },
+  "skin_tint": [
+   0.377,
+   0.447,
+   0.388
+  ]
+ },
+ "yuna": {
+  "layers": "yuna",
+  "prefix": "yuna",
+  "poses": {
+   "idle": {
+    "motion": "Yuna_Default",
+    "err": 6.785,
+    "second": [
+     33.095,
+     "Yuna_Damaged"
+    ],
+    "mod": "yuna.png",
+    "bottom_center": [
+     16.5,
+     0.0
+    ],
+    "size": [
+     261,
+     476
+    ]
+   },
+   "strike": {
+    "motion": "Yuna_Hit",
+    "err": 0.672,
+    "second": [
+     49.485,
+     "Yuna_Penetrate"
+    ],
+    "mod": "yuna_attack_strike.webp",
+    "bottom_center": [
+     -76.5,
+     -9.0
+    ],
+    "size": [
+     705,
+     457
+    ]
+   },
+   "thrust": {
+    "motion": "Yuna_Penetrate",
+    "err": 1.829,
+    "second": [
+     77.311,
+     "Yuna_Hit"
+    ],
+    "mod": "yuna_attack_thrust.webp",
+    "bottom_center": [
+     -279.0,
+     8.0
+    ],
+    "size": [
+     980,
+     435
+    ]
+   },
+   "slash": {
+    "motion": "Yuna_Slash",
+    "err": 0.741,
+    "second": [
+     47.578,
+     "Yuna_Penetrate"
+    ],
+    "mod": "yuna_attack_slash.webp",
+    "bottom_center": [
+     -139.0,
+     -187.0
+    ],
+    "size": [
+     584,
+     628
+    ]
+   },
+   "hurt": {
+    "motion": "Yuna_Damaged",
+    "err": 0.425,
+    "second": [
+     33.856,
+     "Yuna_Move"
+    ],
+    "mod": "yuna_hit.webp",
+    "bottom_center": [
+     32.0,
+     5.0
+    ],
+    "size": [
+     308,
+     454
+    ]
+   }
+  },
+  "skin_tint": [
+   0.605,
+   0.629,
+   0.551
+  ]
+ },
+ "oscar": {
+  "layers": "oscar",
+  "prefix": "oscar",
+  "poses": {
+   "idle": {
+    "motion": "Oscar_Default",
+    "err": 4.741,
+    "second": [
+     24.833,
+     "Oscar_Evade"
+    ],
+    "mod": "oscar.webp",
+    "bottom_center": [
+     -76.5,
+     -92.0
+    ],
+    "size": [
+     513,
+     598
+    ]
+   },
+   "strike": {
+    "motion": "Oscar_Hit",
+    "err": 1.165,
+    "second": [
+     23.935,
+     "Oscar_Slash"
+    ],
+    "mod": "oscar_attack_strike.webp",
+    "bottom_center": [
+     251.5,
+     5.0
+    ],
+    "size": [
+     789,
+     504
+    ]
+   },
+   "thrust": {
+    "motion": "Oscar_Penetrate",
+    "err": 1.606,
+    "second": [
+     50.238,
+     "Oscar_Damaged"
+    ],
+    "mod": "oscar_attack_thrust.webp",
+    "bottom_center": [
+     -339.0,
+     5.0
+    ],
+    "size": [
+     926,
+     472
+    ]
+   },
+   "slash": {
+    "motion": "Oscar_Slash",
+    "err": 1.127,
+    "second": [
+     23.075,
+     "Oscar_Move"
+    ],
+    "mod": "oscar_attack_slash.webp",
+    "bottom_center": [
+     -96.5,
+     -143.0
+    ],
+    "size": [
+     561,
+     627
+    ]
+   },
+   "hurt": {
+    "motion": "Oscar_Damaged",
+    "err": 0.834,
+    "second": [
+     24.331,
+     "Oscar_Move"
+    ],
+    "mod": "oscar_hit.webp",
+    "bottom_center": [
+     -73.0,
+     -123.0
+    ],
+    "size": [
+     486,
+     622
+    ]
+   }
+  }
+ },
+ "pamela": {
+  "layers": "pamela",
+  "prefix": "pamela",
+  "poses": {
+   "idle": {
+    "motion": "Pamela_Default",
+    "err": 4.49,
+    "second": [
+     87.738,
+     "Pamela_Slash"
+    ],
+    "mod": "pamela.webp",
+    "bottom_center": [
+     18.5,
+     2.0
+    ],
+    "size": [
+     289,
+     740
+    ]
+   },
+   "strike": {
+    "motion": "Pamela_Hit",
+    "err": 1.541,
+    "second": [
+     20.321,
+     "Pamela_Slash"
+    ],
+    "mod": "pamela_attack_strike.webp",
+    "bottom_center": [
+     234.5,
+     2.0
+    ],
+    "size": [
+     757,
+     505
+    ]
+   },
+   "thrust": {
+    "motion": "Pamela_Penetrate",
+    "err": 2.054,
+    "second": [
+     59.921,
+     "Pamela_Damaged"
+    ],
+    "mod": "pamela_attack_thrust.webp",
+    "bottom_center": [
+     -256.0,
+     5.0
+    ],
+    "size": [
+     834,
+     448
+    ]
+   },
+   "slash": {
+    "motion": "Pamela_Slash",
+    "err": 2.005,
+    "second": [
+     20.529,
+     "Pamela_Damaged"
+    ],
+    "mod": "pamela_attack_slash.webp",
+    "bottom_center": [
+     -124.0,
+     -191.0
+    ],
+    "size": [
+     614,
+     645
+    ]
+   },
+   "hurt": {
+    "motion": "Pamela_Damaged",
+    "err": 0.991,
+    "second": [
+     20.38,
+     "Pamela_Slash"
+    ],
+    "mod": "pamela_hit.webp",
+    "bottom_center": [
+     -103.5,
+     -100.0
+    ],
+    "size": [
+     695,
+     577
+    ]
+   }
+  },
+  "skin_tint": [
+   0.854,
+   0.876,
+   0.828
+  ]
+ },
+ "pameli": {
+  "layers": "pameli",
+  "prefix": "pameli",
+  "poses": {
+   "idle": {
+    "motion": "Pameli_Default",
+    "err": 2.18,
+    "second": [
+     77.257,
+     "Pameli_Damaged"
+    ],
+    "mod": "pameli.webp",
+    "bottom_center": [
+     -97.5,
+     1.0
+    ],
+    "size": [
+     379,
+     722
+    ]
+   },
+   "strike": {
+    "motion": "Pameli_Hit",
+    "err": 2.419,
+    "second": [
+     21.818,
+     "Pameli_Slash"
+    ],
+    "mod": "pameli_attack_strike.webp",
+    "bottom_center": [
+     231.5,
+     -3.0
+    ],
+    "size": [
+     769,
+     512
+    ]
+   },
+   "thrust": {
+    "motion": "Pameli_Penetrate",
+    "err": 0.921,
+    "second": [
+     44.674,
+     "Pameli_Damaged"
+    ],
+    "mod": "pameli_attack_thrust.webp",
+    "bottom_center": [
+     -254.5,
+     5.0
+    ],
+    "size": [
+     831,
+     451
+    ]
+   },
+   "slash": {
+    "motion": "Pameli_Slash",
+    "err": 1.113,
+    "second": [
+     26.219,
+     "Pameli_Damaged"
+    ],
+    "mod": "pameli_attack_slash.webp",
+    "bottom_center": [
+     -124.0,
+     -191.0
+    ],
+    "size": [
+     614,
+     635
+    ]
+   },
+   "hurt": {
+    "motion": "Pameli_Damaged",
+    "err": 1.311,
+    "second": [
+     39.832,
+     "Pameli_Penetrate"
+    ],
+    "mod": "pameli_hit.webp",
+    "bottom_center": [
+     -239.0,
+     -28.0
+    ],
+    "size": [
+     728,
+     480
+    ]
+   }
+  },
+  "skin_tint": [
+   0.861,
+   0.881,
+   0.834
+  ]
+ },
+ "gin": {
+  "layers": "gin",
+  "prefix": "gin",
+  "poses": {
+   "idle": {
+    "motion": "Gin_Default",
+    "err": 0.797,
+    "second": [
+     35.109,
+     "Gin_Penetrate"
+    ],
+    "mod": "gin.png",
+    "bottom_center": [
+     -107.5,
+     -36.0
+    ],
+    "size": [
+     635,
+     530
+    ]
+   },
+   "strike": {
+    "motion": "Gin_Hit",
+    "err": 0.936,
+    "second": [
+     25.035,
+     "Gin_Penetrate"
+    ],
+    "mod": "gin_attack_strike.webp",
+    "bottom_center": [
+     25.0,
+     -10.0
+    ],
+    "size": [
+     728,
+     446
+    ]
+   },
+   "thrust": {
+    "motion": "Gin_Penetrate",
+    "err": 1.078,
+    "second": [
+     50.243,
+     "Gin_Evade"
+    ],
+    "mod": "gin_attack_thrust.webp",
+    "bottom_center": [
+     -282.0,
+     5.0
+    ],
+    "size": [
+     850,
+     430
+    ]
+   },
+   "slash": {
+    "motion": "Gin_Slash",
+    "err": 0.943,
+    "second": [
+     13.738,
+     "Gin_Penetrate"
+    ],
+    "mod": "gin_attack_slash.webp",
+    "bottom_center": [
+     -54.5,
+     -276.0
+    ],
+    "size": [
+     397,
+     699
+    ]
+   },
+   "hurt": {
+    "motion": "Gin_Damaged",
+    "err": 0.879,
+    "second": [
+     29.432,
+     "Gin_Evade"
+    ],
+    "mod": "gin_hit.webp",
+    "bottom_center": [
+     52.5,
+     4.0
+    ],
+    "size": [
+     497,
+     456
+    ]
+   }
+  },
+  "skin_tint": [
+   0.502,
+   0.462,
+   0.455
+  ]
+ },
+ "yang": {
+  "layers": "yang",
+  "prefix": "yang",
+  "poses": {
+   "idle": {
+    "motion": "Yang_Default",
+    "err": 5.561,
+    "second": [
+     16.719,
+     "Yang_Slash"
+    ],
+    "mod": "yang.png",
+    "bottom_center": [
+     113.5,
+     17.0
+    ],
+    "size": [
+     487,
+     416
+    ]
+   },
+   "strike": {
+    "motion": "Yang_Hit",
+    "err": 7.129,
+    "second": [
+     30.552,
+     "Yang_Slash"
+    ],
+    "mod": "yang_attack_strike.webp",
+    "bottom_center": [
+     160.5,
+     6.0
+    ],
+    "size": [
+     615,
+     400
+    ]
+   },
+   "thrust": {
+    "motion": "Yang_Penetrate",
+    "err": 1.276,
+    "second": [
+     41.639,
+     "Yang_Evade"
+    ],
+    "mod": "yang_attack_thrust.webp",
+    "bottom_center": [
+     -51.0,
+     4.0
+    ],
+    "size": [
+     614,
+     471
+    ]
+   },
+   "slash": {
+    "motion": "Yang_Slash",
+    "err": 3.211,
+    "second": [
+     70.238,
+     "Yang_Damaged"
+    ],
+    "mod": "yang_attack_slash.webp",
+    "bottom_center": [
+     20.0,
+     4.0
+    ],
+    "size": [
+     302,
+     686
+    ]
+   },
+   "hurt": {
+    "motion": "Yang_Damaged",
+    "err": 0.926,
+    "second": [
+     22.349,
+     "Yang_Guard"
+    ],
+    "mod": "yang_hit.webp",
+    "bottom_center": [
+     109.0,
+     -15.0
+    ],
+    "size": [
+     470,
+     462
+    ]
+   }
+  },
+  "skin_tint": [
+   0.85,
+   0.848,
+   0.805
+  ]
+ },
+ "sayo": {
+  "layers": "sayo_f",
+  "prefix": "sayo",
+  "poses": {
+   "idle": {
+    "motion": "Sayo_F_Default",
+    "err": 5.954,
+    "second": [
+     28.836,
+     "Sayo_F_Evade"
+    ],
+    "mod": "sayo.png",
+    "bottom_center": [
+     -96.5,
+     7.0
+    ],
+    "size": [
+     427,
+     552
+    ]
+   },
+   "strike": {
+    "motion": "Sayo_F_Hit",
+    "err": 2.358,
+    "second": [
+     16.328,
+     "Sayo_F_Penetrate"
+    ],
+    "mod": "sayo_attack_strike.webp",
+    "bottom_center": [
+     79.5,
+     4.0
+    ],
+    "size": [
+     647,
+     484
+    ]
+   },
+   "thrust": {
+    "motion": "Sayo_F_Penetrate",
+    "err": 0.767,
+    "second": [
+     54.18,
+     "Sayo_F_Hit"
+    ],
+    "mod": "sayo_attack_thrust.webp",
+    "bottom_center": [
+     -211.0,
+     4.0
+    ],
+    "size": [
+     818,
+     484
+    ]
+   },
+   "slash": {
+    "motion": "Sayo_F_Slash",
+    "err": 0.664,
+    "second": [
+     56.509,
+     "Sayo_F_Penetrate"
+    ],
+    "mod": "sayo_attack_slash.webp",
+    "bottom_center": [
+     5.0,
+     5.0
+    ],
+    "size": [
+     410,
+     802
+    ]
+   },
+   "hurt": {
+    "motion": "Sayo_F_Damaged",
+    "err": 1.352,
+    "second": [
+     31.463,
+     "Sayo_F_Guard"
+    ],
+    "mod": "sayo_hit.webp",
+    "bottom_center": [
+     -97.5,
+     -27.0
+    ],
+    "size": [
+     389,
+     563
+    ]
+   }
+  },
+  "skin_tint": [
+   1.0,
+   1.0,
+   1.004
+  ]
+ },
+ "mccullin": {
+  "layers": "mccullin",
+  "prefix": "mccullin",
+  "poses": {
+   "idle": {
+    "motion": "McCullin_Default",
+    "err": 7.359,
+    "second": [
+     16.426,
+     "McCullin_Guard"
+    ],
+    "mod": "mccullin.webp",
+    "bottom_center": [
+     -51.5,
+     4.0
+    ],
+    "size": [
+     295,
+     500
+    ]
+   },
+   "strike": {
+    "motion": "McCullin_Hit",
+    "err": 0.439,
+    "second": [
+     68.123,
+     "McCullin_Guard"
+    ],
+    "mod": "mccullin_attack_strike.webp",
+    "bottom_center": [
+     -14.0,
+     4.0
+    ],
+    "size": [
+     440,
+     601
+    ]
+   },
+   "thrust": {
+    "motion": "McCullin_Penetrate",
+    "err": 6.641,
+    "second": [
+     67.06,
+     "McCullin_Damaged"
+    ],
+    "mod": "mccullin_attack_thrust.webp",
+    "bottom_center": [
+     -81.5,
+     8.0
+    ],
+    "size": [
+     577,
+     416
+    ]
+   },
+   "slash": {
+    "motion": "McCullin_Slash",
+    "err": 1.184,
+    "second": [
+     22.542,
+     "McCullin_Hit"
+    ],
+    "mod": "mccullin_attack_slash.webp",
+    "bottom_center": [
+     -117.5,
+     -7.0
+    ],
+    "size": [
+     479,
+     459
+    ]
+   },
+   "hurt": {
+    "motion": "McCullin_Damaged",
+    "err": 3.613,
+    "second": [
+     43.362,
+     "McCullin_Slash"
+    ],
+    "mod": "mccullin_hit.webp",
+    "bottom_center": [
+     -127.0,
+     -3.0
+    ],
+    "size": [
+     410,
+     493
+    ]
+   }
+  },
+  "skin_tint": [
+   0.278,
+   0.255,
+   0.235
+  ]
+ },
+ "naoki": {
+  "layers": "naoki",
+  "prefix": "naoki",
+  "poses": {
+   "idle": {
+    "motion": "Naoki_Default",
+    "err": 6.005,
+    "second": [
+     13.674,
+     "Naoki_Guard"
+    ],
+    "mod": "naoki.webp",
+    "bottom_center": [
+     -1.5,
+     4.0
+    ],
+    "size": [
+     275,
+     474
+    ]
+   },
+   "strike": {
+    "motion": "Naoki_Hit",
+    "err": 0.949,
+    "second": [
+     30.358,
+     "Naoki_Penetrate"
+    ],
+    "mod": "naoki_attack_strike.webp",
+    "bottom_center": [
+     68.0,
+     2.0
+    ],
+    "size": [
+     480,
+     448
+    ]
+   },
+   "thrust": {
+    "motion": "Naoki_Penetrate",
+    "err": 1.875,
+    "second": [
+     78.792,
+     "Naoki_Hit"
+    ],
+    "mod": "naoki_attack_thrust.webp",
+    "bottom_center": [
+     -107.0,
+     2.0
+    ],
+    "size": [
+     476,
+     424
+    ]
+   },
+   "slash": {
+    "motion": "Naoki_Slash",
+    "err": 0.113,
+    "second": [
+     26.558,
+     "Naoki_Penetrate"
+    ],
+    "mod": "naoki_attack_slash.webp",
+    "bottom_center": [
+     23.5,
+     1.0
+    ],
+    "size": [
+     393,
+     426
+    ]
+   },
+   "hurt": {
+    "motion": "Naoki_Damaged",
+    "err": 2.622,
+    "second": [
+     19.994,
+     "Naoki_Guard"
+    ],
+    "mod": "naoki_hit.webp",
+    "bottom_center": [
+     -8.5,
+     3.0
+    ],
+    "size": [
+     293,
+     472
+    ]
+   }
+  },
+  "skin_tint": [
+   0.722,
+   0.667,
+   0.647
+  ]
+ },
+ "taein": {
+  "layers": "taein",
+  "prefix": "taein",
+  "poses": {
+   "idle": {
+    "motion": "Taein_Default",
+    "err": 3.667,
+    "second": [
+     68.54,
+     "Taein_Penetrate"
+    ],
+    "mod": "taein.webp",
+    "bottom_center": [
+     -143.5,
+     -1.0
+    ],
+    "size": [
+     499,
+     513
+    ]
+   },
+   "strike": {
+    "motion": "Taein_Hit",
+    "err": 3.851,
+    "second": [
+     51.837,
+     "Taein_Penetrate"
+    ],
+    "mod": "taein_attack_strike.webp",
+    "bottom_center": [
+     -112.0,
+     -29.0
+    ],
+    "size": [
+     516,
+     432
+    ]
+   },
+   "thrust": {
+    "motion": "Taein_Penetrate",
+    "err": 4.901,
+    "second": [
+     57.471,
+     "Taein_Default"
+    ],
+    "mod": "taein_attack_thrust.webp",
+    "bottom_center": [
+     -175.0,
+     3.0
+    ],
+    "size": [
+     642,
+     409
+    ]
+   },
+   "slash": {
+    "motion": "Taein_Slash",
+    "err": 5.295,
+    "second": [
+     53.121,
+     "Taein_Move"
+    ],
+    "mod": "taein_attack_slash.webp",
+    "bottom_center": [
+     -36.5,
+     -139.0
+    ],
+    "size": [
+     397,
+     539
+    ]
+   },
+   "hurt": {
+    "motion": "Taein_Damaged",
+    "err": 5.524,
+    "second": [
+     47.241,
+     "Taein_Evade"
+    ],
+    "mod": "taein_hit.webp",
+    "bottom_center": [
+     -84.0,
+     0.0
+    ],
+    "size": [
+     356,
+     471
+    ]
+   }
+  }
+ },
+ "arnold": {
+  "layers": "arnold",
+  "prefix": "brotherhood_of_iron/arnold",
+  "poses": {
+   "idle": {
+    "motion": "Arnold_Default",
+    "err": 4.677,
+    "second": [
+     37.814,
+     "Arnold_Guard"
+    ],
+    "mod": "arnold.webp",
+    "bottom_center": [
+     -37.5,
+     4.0
+    ],
+    "size": [
+     255,
+     437
+    ]
+   },
+   "strike": {
+    "motion": "Arnold_Hit",
+    "err": 0.883,
+    "second": [
+     37.996,
+     "Arnold_Penetrate"
+    ],
+    "mod": "arnold_attack_strike.webp",
+    "bottom_center": [
+     65.5,
+     5.0
+    ],
+    "size": [
+     465,
+     443
+    ]
+   },
+   "thrust": {
+    "motion": "Arnold_Penetrate",
+    "err": 1.21,
+    "second": [
+     54.68,
+     "Arnold_Damaged"
+    ],
+    "mod": "arnold_attack_thrust.webp",
+    "bottom_center": [
+     -85.0,
+     3.0
+    ],
+    "size": [
+     594,
+     415
+    ]
+   },
+   "slash": {
+    "motion": "Arnold_Slash",
+    "err": 1.216,
+    "second": [
+     34.746,
+     "Arnold_Evade"
+    ],
+    "mod": "arnold_attack_slash.webp",
+    "bottom_center": [
+     -28.0,
+     5.0
+    ],
+    "size": [
+     350,
+     430
+    ]
+   },
+   "hurt": {
+    "motion": "Arnold_Damaged",
+    "err": 2.897,
+    "second": [
+     56.303,
+     "Arnold_Penetrate"
+    ],
+    "mod": "arnold_hit.webp",
+    "bottom_center": [
+     -79.0,
+     5.0
+    ],
+    "size": [
+     414,
+     466
+    ]
+   }
+  }
+ },
+ "consta": {
+  "layers": "consta",
+  "prefix": "brotherhood_of_iron/consta",
+  "poses": {
+   "idle": {
+    "motion": "Consta_Default",
+    "err": 7.993,
+    "second": [
+     10.106,
+     "Consta_Guard"
+    ],
+    "mod": "consta.webp",
+    "bottom_center": [
+     8.0,
+     4.0
+    ],
+    "size": [
+     296,
+     504
+    ]
+   },
+   "strike": {
+    "motion": "Consta_Hit",
+    "err": 0.887,
+    "second": [
+     36.246,
+     "Consta_Evade"
+    ],
+    "mod": "consta_attack_strike.webp",
+    "bottom_center": [
+     182.5,
+     4.0
+    ],
+    "size": [
+     719,
+     516
+    ]
+   },
+   "thrust": {
+    "motion": "Consta_Penetrate",
+    "err": 0.784,
+    "second": [
+     66.521,
+     "Consta_Slash"
+    ],
+    "mod": "consta_attack_thrust.webp",
+    "bottom_center": [
+     -275.0,
+     4.0
+    ],
+    "size": [
+     752,
+     408
+    ]
+   },
+   "slash": {
+    "motion": "Consta_Slash",
+    "err": 0.27,
+    "second": [
+     47.239,
+     "Consta_Penetrate"
+    ],
+    "mod": "consta_attack_slash.webp",
+    "bottom_center": [
+     -195.0,
+     -111.0
+    ],
+    "size": [
+     604,
+     533
+    ]
+   },
+   "hurt": {
+    "motion": "Consta_Damaged",
+    "err": 0.501,
+    "second": [
+     36.858,
+     "Consta_Evade"
+    ],
+    "mod": "consta_hit.webp",
+    "bottom_center": [
+     -11.0,
+     4.0
+    ],
+    "size": [
+     346,
+     507
+    ]
+   }
+  }
+ },
+ "mo": {
+  "layers": "mo",
+  "prefix": "brotherhood_of_iron/mo",
+  "poses": {
+   "idle": {
+    "motion": "Mo_Guard",
+    "err": 4.615,
+    "second": [
+     29.256,
+     "Mo_Evade"
+    ],
+    "mod": "mo.webp",
+    "bottom_center": [
+     -4.0,
+     -13.0
+    ],
+    "size": [
+     284,
+     489
+    ]
+   },
+   "strike": {
+    "motion": "Mo_Hit",
+    "err": 1.018,
+    "second": [
+     37.154,
+     "Mo_Move"
+    ],
+    "mod": "mo_attack_strike.webp",
+    "bottom_center": [
+     230.0,
+     5.0
+    ],
+    "size": [
+     748,
+     522
+    ]
+   },
+   "thrust": {
+    "motion": "Mo_Penetrate",
+    "err": 0.727,
+    "second": [
+     66.67,
+     "Mo_Slash"
+    ],
+    "mod": "mo_attack_thrust.webp",
+    "bottom_center": [
+     -258.0,
+     4.0
+    ],
+    "size": [
+     860,
+     434
+    ]
+   },
+   "slash": {
+    "motion": "Mo_Slash",
+    "err": 1.489,
+    "second": [
+     40.308,
+     "Mo_Default"
+    ],
+    "mod": "mo_attack_slash.webp",
+    "bottom_center": [
+     -201.5,
+     -45.0
+    ],
+    "size": [
+     703,
+     429
+    ]
+   },
+   "hurt": {
+    "motion": "Mo_Damaged",
+    "err": 2.386,
+    "second": [
+     44.434,
+     "Mo_Default"
+    ],
+    "mod": "mo_hit.webp",
+    "bottom_center": [
+     5.0,
+     -16.0
+    ],
+    "size": [
+     372,
+     495
+    ]
+   }
+  }
+ },
+ "finn": {
+  "layers": "finn",
+  "prefix": "finn",
+  "poses": {
+   "idle": {
+    "motion": "Finn_Default",
+    "err": 1.369,
+    "second": [
+     47.545,
+     "Finn_Penetrate"
+    ],
+    "mod": "finn.png",
+    "bottom_center": [
+     -85.0,
+     4.0
+    ],
+    "size": [
+     424,
+     478
+    ]
+   }
+  },
+  "skin_tint": [
+   0.827,
+   0.792,
+   0.769
+  ]
+ },
+ "meow": {
+  "layers": "meow_f",
+  "prefix": "meow",
+  "poses": {
+   "idle": {
+    "motion": "Meow_F_Default",
+    "err": 4.291,
+    "second": [
+     34.783,
+     "Meow_F_Evade"
+    ],
+    "mod": "meow.webp",
+    "bottom_center": [
+     98.0,
+     1.0
+    ],
+    "size": [
+     458,
+     525
+    ]
+   }
+  },
+  "skin_tint": [
+   0.557,
+   0.496,
+   0.494
+  ]
+ },
+ "mu_mu": {
+  "layers": "mu_mu",
+  "prefix": "mu_mu",
+  "poses": {
+   "idle": {
+    "motion": "Mumu_Default",
+    "err": 1.996,
+    "second": [
+     32.905,
+     "Mumu_Evade"
+    ],
+    "mod": "mu_mu.webp",
+    "bottom_center": [
+     -113.0,
+     -145.0
+    ],
+    "size": [
+     380,
+     726
+    ]
+   }
+  },
+  "skin_tint": [
+   0.543,
+   0.475,
+   0.432
+  ]
+ },
+ "oink": {
+  "layers": "oink",
+  "prefix": "oink",
+  "poses": {
+   "idle": {
+    "motion": "Oink_Default",
+    "err": 2.336,
+    "second": [
+     59.744,
+     "Oink_Evade"
+    ],
+    "mod": "oink.webp",
+    "bottom_center": [
+     -3.0,
+     7.0
+    ],
+    "size": [
+     352,
+     495
+    ]
+   }
+  }
+ }
+}

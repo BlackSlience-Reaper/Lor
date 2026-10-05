@@ -5,7 +5,7 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.DawnOffice;
 
-/// <summary>芬恩的外观：只有一张待机图，攻击、受击都是骨骼动作，见 <see cref="GuestSpine"/>。</summary>
+/// <summary>芬恩的外观：贴图外观只有一张待机图；Spine 身体用原版分层立绘，攻击、受击换成原版对应姿势，见 <see cref="GuestSpine"/>。</summary>
 public partial class FinnCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(Finn))]
