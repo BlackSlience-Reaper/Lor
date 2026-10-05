@@ -41,7 +41,7 @@ internal static class LayeredBossSpine
     /// <summary>
     /// 给 <c>DeathAnimLengthOverride</c> 用：只有死后会被移出战斗时才等死亡动画。
     /// 解放战转阶段的假死不移除节点，死亡补丁不播动画；原版却会对任何死亡按这个时长等待，
-    /// 返回 0 让转阶段保持原来的节奏。没挂 Spine 身体时（动画效果不是高档）同样返回 0。
+    /// 返回 0 让转阶段保持原来的节奏。没挂 Spine 身体时（动画效果关闭）同样返回 0。
     /// </summary>
     internal static float DeathLength(MonsterModel monster) =>
         monster.Creature is { CombatState: { } combatState } creature
