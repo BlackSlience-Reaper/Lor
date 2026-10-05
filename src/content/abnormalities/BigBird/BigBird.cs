@@ -5,6 +5,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Hooks;
 using MegaCrit.Sts2.Core.Combat;
@@ -101,6 +102,8 @@ public sealed class BigBird : CounterIntentMonsterModel, ITargetedMonsterAttackP
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 700, 593);
 
     public override int DefaultChaoResistance => 320;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

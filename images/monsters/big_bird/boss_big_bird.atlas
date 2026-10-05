@@ -1,0 +1,15 @@
+boss_big_bird.webp
+size:1890,307
+filter:Linear,Linear
+Guard/body
+bounds:0,0,409,307
+Hit/body
+bounds:411,0,305,306
+RescueClose/body
+bounds:718,0,307,295
+Default/body
+bounds:1027,0,296,294
+Charm/body
+bounds:1325,0,445,290
+Default/lantern
+bounds:1772,0,116,116

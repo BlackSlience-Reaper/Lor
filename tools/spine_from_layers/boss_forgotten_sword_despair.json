@@ -1,0 +1,481 @@
+{
+ "name": "boss_forgotten_sword_despair",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/forgotten_sword",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -33.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Despair",
+ "motions": {
+  "Despair": {
+   "source": "Despair",
+   "bones": {
+    "body": {
+     "at": [
+      43.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      43.9,
+      358.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      448.9
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      0,
+      200
+     ]
+    }
+   },
+   "assign": {
+    "body": "weapon"
+   }
+  },
+  "DespairAttack": {
+   "source": "DespairAttack",
+   "bones": {
+    "body": {
+     "at": [
+      -38.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -38.2,
+      377.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -85.2,
+      467.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "DespairHit": {
+   "source": "DespairHit",
+   "bones": {
+    "body": {
+     "at": [
+      43.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      43.4,
+      342.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -0.5,
+      420.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Despair",
+     0
+    ]
+   ],
+   "osc": {
+    "Despair.body": {},
+    "Despair.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Despair.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    },
+    "Despair.weapon": {
+     "rotate": [
+      1.6,
+      1,
+      0.3
+     ]
+    },
+    "move": {
+     "y": [
+      7,
+      1,
+      0.0
+     ]
+    }
+   }
+  },
+  "attack": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Despair",
+     0
+    ],
+    [
+     0.15,
+     "DespairAttack",
+     0
+    ],
+    [
+     0.75,
+     "Despair",
+     0
+    ]
+   ],
+   "keys": {
+    "Despair.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Despair.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "DespairAttack.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "DespairAttack.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "DespairAttack.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "DespairHit",
+     0
+    ],
+    [
+     0.4,
+     "Despair",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "DespairHit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "DespairHit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "DespairHit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Despair",
+     0
+    ]
+   ],
+   "keys": {
+    "Despair.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Despair.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Despair.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    },
+    "Despair.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       0,
+       "out"
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

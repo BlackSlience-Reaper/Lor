@@ -1,0 +1,579 @@
+{
+ "name": "boss_big_bird_rescue",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/big_bird",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -9.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "RescueOpen",
+ "motions": {
+  "RescueOpen": {
+   "source": "RescueOpen",
+   "bones": {
+    "body": {
+     "at": [
+      34.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      34.2,
+      362.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.5,
+      465.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Charm": {
+   "source": "Charm",
+   "bones": {
+    "body": {
+     "at": [
+      52.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      52.4,
+      372.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.5,
+      456.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Guard": {
+   "source": "Guard",
+   "bones": {
+    "body": {
+     "at": [
+      47.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      47.7,
+      365.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      455.0
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Hit": {
+   "source": "Hit",
+   "bones": {
+    "body": {
+     "at": [
+      35.6,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      35.6,
+      363.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      453.1
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "RescueClose": {
+   "source": "RescueClose",
+   "bones": {
+    "body": {
+     "at": [
+      35.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      35.8,
+      357.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      443.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "RescueOpen",
+     0
+    ]
+   ],
+   "osc": {
+    "RescueOpen.body": {},
+    "RescueOpen.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "RescueOpen.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "guard": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "Guard",
+     0
+    ],
+    [
+     0.55,
+     "RescueOpen",
+     0
+    ]
+   ],
+   "keys": {
+    "Guard.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "Guard.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Guard.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       12,
+       "out"
+      ],
+      [
+       0.55,
+       6
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "charm": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "RescueOpen",
+     0
+    ],
+    [
+     0.1,
+     "Charm",
+     0
+    ],
+    [
+     0.9,
+     "RescueOpen",
+     0
+    ]
+   ],
+   "keys": {
+    "RescueOpen.body": {},
+    "Charm.body": {},
+    "Charm.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Charm.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "rescue": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "RescueOpen",
+     0
+    ],
+    [
+     0.15,
+     "RescueClose",
+     0
+    ],
+    [
+     0.75,
+     "RescueOpen",
+     0
+    ]
+   ],
+   "keys": {
+    "RescueOpen.body": {},
+    "RescueOpen.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "RescueClose.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "RescueClose.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "RescueClose.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Hit",
+     0
+    ],
+    [
+     0.4,
+     "RescueOpen",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Hit.body": {},
+    "Hit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Hit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "RescueOpen",
+     0
+    ]
+   ],
+   "keys": {
+    "RescueOpen.body": {},
+    "RescueOpen.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "RescueOpen.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

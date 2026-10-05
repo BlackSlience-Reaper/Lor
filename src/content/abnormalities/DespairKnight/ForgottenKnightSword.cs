@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -167,6 +168,8 @@ public sealed class ForgottenKnightSword : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 103, 98);
     
     public override int DefaultChaoResistance => 80;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance DefaultPhysicalResistanceData => NormalResistance();
 

@@ -4,9 +4,43 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.BigBird;
 
+/// <summary>
+/// 大鸟的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图按姿势做成整块，tools/spine_from_layers/sprite_layers.py），
+/// 加载失败时退回下面的逐帧换图。普通、沉睡、救赎三个形态各一副骨架；普通待机的提灯单独一块，挂在嘴下像钟摆一样摆。
+/// 各姿势按爪尖对齐、动作只做水平位移，爪子始终在同一高度。
+/// </summary>
 public sealed partial class BigBirdCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["Guard"] = "guard",
+        ["Block"] = "guard",
+        ["Charm"] = "charm",
+        ["Cast"] = "charm",
+        ["Rescue"] = "rescue",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "big_bird", "big_bird", "rescue", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec SleepSpine = LayeredBossSpine.Create(
+        "big_bird", "big_bird_sleep", "rescue", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec RescueSpine = LayeredBossSpine.Create(
+        "big_bird", "big_bird_rescue", "rescue", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [Spine, SleepSpine, RescueSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => variantKey switch
+    {
+        SleepVariant => SleepSpine,
+        RescueVariant => RescueSpine,
+        _ => Spine,
+    };
+
     [MonsterVisual(typeof(BigBird))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -12f), new(0.60f, 0.60f), -151f, -326f, 190f, -3f, new(0f, -204f), new(44f, -372f))

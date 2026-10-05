@@ -1,0 +1,13 @@
+boss_big_bird_sleep.webp
+size:1783,307
+filter:Linear,Linear
+Guard/body
+bounds:0,0,409,307
+Hit/body
+bounds:411,0,305,306
+RescueClose/body
+bounds:718,0,307,295
+Charm/body
+bounds:1027,0,445,290
+Sleep/body
+bounds:1474,0,307,269

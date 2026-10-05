@@ -1,0 +1,964 @@
+{
+ "name": "boss_forgotten_sword_normal",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/forgotten_sword",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -1.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Normal",
+ "motions": {
+  "Normal": {
+   "source": "Normal",
+   "bones": {
+    "body": {
+     "at": [
+      7.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      7.9,
+      305.0
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      375.0
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      0,
+      200
+     ]
+    }
+   },
+   "assign": {
+    "body": "weapon"
+   }
+  },
+  "NormalBlunt": {
+   "source": "NormalBlunt",
+   "bones": {
+    "body": {
+     "at": [
+      -19.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -19.5,
+      325.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -83.2,
+      398.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalHit": {
+   "source": "NormalHit",
+   "bones": {
+    "body": {
+     "at": [
+      28.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      28.4,
+      48.0
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      59.1
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalParry": {
+   "source": "NormalParry",
+   "bones": {
+    "body": {
+     "at": [
+      12.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      12.5,
+      280.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      345.0
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalPierce": {
+   "source": "NormalPierce",
+   "bones": {
+    "body": {
+     "at": [
+      -37.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -37.7,
+      202.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -86.2,
+      244.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalSlash": {
+   "source": "NormalSlash",
+   "bones": {
+    "body": {
+     "at": [
+      -55.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -55.7,
+      493.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -86.2,
+      603.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Normal",
+     0
+    ]
+   ],
+   "osc": {
+    "Normal.body": {},
+    "Normal.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Normal.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    },
+    "Normal.weapon": {
+     "rotate": [
+      1.6,
+      1,
+      0.3
+     ]
+    },
+    "move": {
+     "y": [
+      7,
+      1,
+      0.0
+     ]
+    }
+   }
+  },
+  "blunt": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Normal",
+     0
+    ],
+    [
+     0.15,
+     "NormalBlunt",
+     0
+    ],
+    [
+     0.75,
+     "Normal",
+     0
+    ]
+   ],
+   "keys": {
+    "Normal.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Normal.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "NormalBlunt.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "NormalBlunt.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "NormalBlunt.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "pierce": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Normal",
+     0
+    ],
+    [
+     0.15,
+     "NormalPierce",
+     0
+    ],
+    [
+     0.75,
+     "Normal",
+     0
+    ]
+   ],
+   "keys": {
+    "Normal.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Normal.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "NormalPierce.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "NormalPierce.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "NormalPierce.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "slash": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Normal",
+     0
+    ],
+    [
+     0.15,
+     "NormalSlash",
+     0
+    ],
+    [
+     0.75,
+     "Normal",
+     0
+    ]
+   ],
+   "keys": {
+    "Normal.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Normal.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "NormalSlash.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "NormalSlash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "NormalSlash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "parry": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "NormalParry",
+     0
+    ],
+    [
+     0.55,
+     "Normal",
+     0
+    ]
+   ],
+   "keys": {
+    "NormalParry.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "NormalParry.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "NormalParry.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       12,
+       "out"
+      ],
+      [
+       0.55,
+       6
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "NormalHit",
+     0
+    ],
+    [
+     0.4,
+     "Normal",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "NormalHit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "NormalHit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "NormalHit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Normal",
+     0
+    ]
+   ],
+   "keys": {
+    "Normal.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Normal.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Normal.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    },
+    "Normal.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       0,
+       "out"
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

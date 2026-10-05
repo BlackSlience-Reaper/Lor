@@ -1,0 +1,15 @@
+boss_forgotten_sword_teardrop.webp
+size:1799,377
+filter:Linear,Linear
+TeardropSlash/body
+bounds:0,0,262,377
+TeardropHit/body
+bounds:264,0,233,287
+Teardrop/body
+bounds:499,0,218,286
+TeardropParry/body
+bounds:719,0,218,286
+TeardropPierce/body
+bounds:939,0,310,276
+TeardropBlunt/body
+bounds:1251,0,546,264

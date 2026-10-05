@@ -10,6 +10,7 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -93,6 +94,8 @@ public sealed class PriceOfSilence : LorMonsterModel, ILibraryAbstractModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 350, 243);
 
     public override int DefaultChaoResistance => 180;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
