@@ -27,7 +27,6 @@ using LibraryOfRuina.content.guests.WedgeOffice;
 using LibraryOfRuina.content.guests.YunOffice;
 using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.content.liberation.Technology;
-using LibraryOfRuina.content.relics.StandaloneRelics;
 using LibraryOfRuina.framework.cards;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
@@ -183,15 +182,12 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Powers.AllAroundHelperRecognitionMode, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_ALL_AROUND_HELPER_RECOGNITION_MODE_POWER", typeof(LibraryOfRuinaAllAroundHelperRecognitionModePower), "ALL_AROUND_HELPER_RECOGNITION_MODE_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.AllAroundHelperSwift, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_ALL_AROUND_HELPER_SWIFT_POWER", typeof(LibraryOfRuinaAllAroundHelperSwiftPower), "ALL_AROUND_HELPER_SWIFT_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.ImprovDrumming, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_IMPROV_DRUMMING_POWER", typeof(LibraryOfRuinaImprovDrummingPower), "IMPROV_DRUMMING_POWER"),
-        Model(LibraryOfRuinaPublicIds.Powers.BleedThorns, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_BLEED_THORNS_POWER", typeof(LibraryOfRuinaBleedThornsPower), "BLEED_THORNS_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.BigBadWolfPunishEvil, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "BIG_BAD_WOLF_PUNISH_EVIL_POWER", typeof(BigBadWolfPunishEvilPower), "BIG_BAD_WOLF_PUNISH_EVIL_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.BigBadWolfBornToBe, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "BIG_BAD_WOLF_BORN_TO_BE_POWER", typeof(BigBadWolfBornToBePower), "BIG_BAD_WOLF_BORN_TO_BE_POWER"),
-        Model(LibraryOfRuinaPublicIds.Powers.BlindNavigation, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_BLIND_NAVIGATION_POWER", typeof(LibraryOfRuinaBlindNavigationPower), "BLIND_NAVIGATION_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.BloodThirst, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_BLOOD_THIRST_POWER", typeof(LibraryOfRuinaBloodThirstPower), "BLOOD_THIRST_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.CostReduction, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_COST_REDUCTION_POWER", typeof(LibraryOfRuinaCostReductionPower), "COST_REDUCTION_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.DawnFire, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_DAWN_FIRE_POWER", typeof(LibraryOfRuinaDawnFirePower), "DAWN_FIRE_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.ForsakenMurdererFear, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_FORSAKEN_MURDERER_FEAR_POWER", typeof(LibraryOfRuinaForsakenMurdererFearPower), "FORSAKEN_MURDERER_FEAR_POWER"),
-        Model(LibraryOfRuinaPublicIds.Powers.GhostConceal, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_GHOST_CONCEAL_POWER", typeof(LibraryOfRuinaGhostConcealPower), "GHOST_CONCEAL_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.HappyTeddyAffection, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_HAPPY_TEDDY_AFFECTION_POWER", typeof(LibraryOfRuinaHappyTeddyAffectionPower), "HAPPY_TEDDY_AFFECTION_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.ForgottenAffection, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "FORGOTTEN_AFFECTION_POWER", typeof(ForgottenAffectionPower), "FORGOTTEN_AFFECTION_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.ForgottenAffectionAttack, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "FORGOTTEN_AFFECTION_ATTACK_POWER", typeof(ForgottenAffectionAttackPower), "FORGOTTEN_AFFECTION_ATTACK_POWER"),
@@ -227,7 +223,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Powers.SalvationHand, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_SALVATION_HAND_POWER", typeof(LibraryOfRuinaSalvationHandPower), "LIBRARY_OF_RUINA_SALVATION_HAND_POWER"),
         
         Model(LibraryOfRuinaPublicIds.Powers.NextTurnStrength, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_NEXT_TURN_STRENGTH", typeof(LibraryOfRuinaNextTurnStrength), "NEXT_TURN_STRENGTH_POWER"),
-        Model(LibraryOfRuinaPublicIds.Powers.PoisonFang, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_POISON_FANG_POWER", typeof(LibraryOfRuinaPoisonFangPower), "POISON_FANG_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.PreservedDamage, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "PRESERVED_DAMAGE_POWER", typeof(PreservedDamagePower), "PRESERVED_DAMAGE_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.QueenBadGuy, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_QUEEN_BAD_GUY_POWER", typeof(LibraryOfRuinaQueenBadGuyPower), "QUEEN_BAD_GUY_POWER"),
         Model(LibraryOfRuinaPublicIds.Powers.QueenBind, LibraryOfRuinaInteropCategory.Powers, RawModelCategories.Power, "LIBRARY_OF_RUINA_QUEEN_BIND_POWER", typeof(LibraryOfRuinaQueenBindPower), "QUEEN_BIND_POWER"),
@@ -261,7 +256,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Relics.AllAroundHelperPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "ALL_AROUND_HELPER_PAGE_RELIC", typeof(AllAroundHelperPageRelic), "ALL_AROUND_HELPER_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.DeadButterfliesBook, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "DEAD_BUTTERFLIES_BOOK_RELIC", typeof(DeadButterfliesBookRelic), "DEAD_BUTTERFLIES_BOOK_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.LittleRedMercenaryPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "LITTLE_RED_MERCENARY_PAGE_RELIC", typeof(LittleRedMercenaryPageRelic), "LITTLE_RED_MERCENARY_PAGE_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.MagicCurse, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "MAGIC_CURSE_RELIC", typeof(MagicCurseRelic), "MAGIC_CURSE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.ForsakenMurdererPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FORSAKEN_MURDERER_PAGE_RELIC", typeof(ForsakenMurdererPageRelic), "FORSAKEN_MURDERER_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.FuneralOfTheDeadButterfliesPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "FUNERAL_OF_THE_DEAD_BUTTERFLIES_PAGE_RELIC", typeof(FuneralOfTheDeadButterfliesPageRelic), "FUNERAL_OF_THE_DEAD_BUTTERFLIES_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.LeticiaPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "LETICIA_PAGE_RELIC", typeof(LeticiaPageRelic), "LETICIA_PAGE_RELIC"),
@@ -271,7 +265,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Model(LibraryOfRuinaPublicIds.Relics.QueenOfHatredPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "QUEEN_OF_HATRED_PAGE_RELIC", typeof(QueenOfHatredPageRelic), "QUEEN_OF_HATRED_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.RedShoesPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "RED_SHOES_PAGE_RELIC", typeof(RedShoesPageRelic), "RED_SHOES_PAGE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.SongMachinePage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "SONG_MACHINE_PAGE_RELIC", typeof(SongMachinePageRelic), "SONG_MACHINE_PAGE_RELIC"),
-        Model(LibraryOfRuinaPublicIds.Relics.ProofOfExistence, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "PROOF_OF_EXISTENCE_RELIC", typeof(ProofOfExistenceRelic), "PROOF_OF_EXISTENCE_RELIC"),
         Model(LibraryOfRuinaPublicIds.Relics.TodaysShyLookPage, LibraryOfRuinaInteropCategory.Relics, RawModelCategories.Relic, "TODAYS_SHY_LOOK_PAGE_RELIC", typeof(TodaysShyLookPageRelic), "TODAYS_SHY_LOOK_PAGE_RELIC"),
     ];
 
@@ -283,11 +276,6 @@ internal static class LibraryOfRuinaInteropRegistry
         Intent(LibraryOfRuinaPublicIds.Intents.BadgedBuff, typeof(BadgedBuffIntent), IntentType.Buff, "BADGED_BUFF"),
         Intent(LibraryOfRuinaPublicIds.Intents.BadgedDebuff, typeof(BadgedDebuffIntent), IntentType.Debuff, "BADGED_DEBUFF"),
         Intent(LibraryOfRuinaPublicIds.Intents.DynamicAttack, typeof(DynamicAttackIntent), IntentType.Attack, "ATTACK"),
-        Intent(LibraryOfRuinaPublicIds.Intents.FoxAttack, typeof(FoxAttackIntent), IntentType.Attack, "FOX_ATTACK"),
-        Intent(LibraryOfRuinaPublicIds.Intents.FoxBuff, typeof(FoxBuffIntent), IntentType.Buff, "FOX_BUFF"),
-        Intent(LibraryOfRuinaPublicIds.Intents.FoxDefend, typeof(FoxDefendIntent), IntentType.Defend, "FOX_DEFEND"),
-        Intent(LibraryOfRuinaPublicIds.Intents.FoxEnergy, typeof(FoxEnergyIntent), IntentType.Buff, "FOX_ENERGY"),
-        Intent(LibraryOfRuinaPublicIds.Intents.FoxWeak, typeof(FoxWeakIntent), IntentType.Debuff, "FOX_WEAK"),
         Intent(LibraryOfRuinaPublicIds.Intents.SpiderBudWebDebuff, typeof(SpiderBudWebDebuffIntent), IntentType.Debuff, "SPIDER_BUD_WEB_DEBUFF"),
     ];
 

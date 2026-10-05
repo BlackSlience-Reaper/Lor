@@ -67,8 +67,6 @@ WrathServantPageRelic
 WarmheartedWoodsmanPageRelic
 TodaysShyLookPageRelic
 MagicBulletShooterPageRelic
-MagicCurseRelic
-ProofOfExistenceRelic
 SpinyBusPageRelic
 SpiderBudPageRelic
 SongMachinePageRelic

@@ -58,8 +58,6 @@ relic	LibraryOfRuina.content.abnormalities.WrathServant.WrathServantPageRelic
 relic	LibraryOfRuina.content.abnormalities.WarmheartedWoodsman.WarmheartedWoodsmanPageRelic
 relic	LibraryOfRuina.content.abnormalities.TodaysShyLook.TodaysShyLookPageRelic
 relic	LibraryOfRuina.content.liberation.Technology.MagicBulletShooterPageRelic
-relic	LibraryOfRuina.content.relics.StandaloneRelics.MagicCurseRelic
-relic	LibraryOfRuina.content.relics.StandaloneRelics.ProofOfExistenceRelic
 relic	LibraryOfRuina.content.abnormalities.SpinyBus.SpinyBusPageRelic
 relic	LibraryOfRuina.content.abnormalities.SpiderBud.SpiderBudPageRelic
 relic	LibraryOfRuina.content.abnormalities.SongMachine.SongMachinePageRelic
