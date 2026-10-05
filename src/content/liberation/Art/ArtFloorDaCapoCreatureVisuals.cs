@@ -1,11 +1,25 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
-public sealed partial class ArtFloorDaCapoCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>Da Capo（含终章）的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class ArtFloorDaCapoCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "art_floor",
+        "dacapo",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "guard",
+            ["Special"] = "special",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ArtFloorDaCapoBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -188f), new(0.58f, 0.58f), -185f, -428f, 182f, -15f, new(0f, -205f), new(0f, -452f))

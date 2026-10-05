@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
@@ -5,8 +6,28 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
-public sealed partial class ArtFloorPleasureCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>欢愉的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class ArtFloorPleasureCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "art_floor",
+        "pleasure",
+        "blunt",
+        new Dictionary<string, string>
+        {
+            ["Blunt"] = "blunt",
+            ["AttackBlunt"] = "blunt",
+            ["Pierce"] = "pierce",
+            ["AttackPierce"] = "pierce",
+            ["Slash"] = "slash",
+            ["AttackSlash"] = "slash",
+            ["Dodge"] = "dodge",
+            ["EgoS1"] = "ego_s1",
+            ["EgoS2"] = "ego_s2",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ArtFloorPleasureBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -24f), new(0.58f, 0.58f), -132f, -290f, 132f, 40f, new(0f, -132f), new(0f, -328f))

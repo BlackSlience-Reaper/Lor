@@ -1,6 +1,7 @@
 {
  "name": "boss_chord",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/chord",
+ "texture_scale": 0.6,
  "origin": [
   28.5,
   11.0

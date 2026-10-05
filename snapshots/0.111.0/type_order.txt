@@ -676,6 +676,7 @@ LibraryOfRuina.infra.helpers.PowerIconResolver
 LibraryOfRuina.infra.helpers.PresentationGuard
 LibraryOfRuina.infra.helpers.TypeDiscoveryOrder
 LibraryOfRuina.framework.visuals.CombatBackgroundImage
+LibraryOfRuina.framework.visuals.LayeredBossSpine
 LibraryOfRuina.framework.visuals.RuntimeSpineBody
 LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals
 LibraryOfRuina.framework.visuals.SpineSpriteAttackCreatureVisuals
@@ -1298,7 +1299,6 @@ LibraryOfRuina.content.liberation.Technology.SolemnMourningEgoCard
 LibraryOfRuina.content.liberation.Technology.SolemnMourningPersistentSealAffliction
 LibraryOfRuina.content.liberation.Technology.SolemnMourningSealIntentPatch
 LibraryOfRuina.content.liberation.Technology.TechnologyFloorAssets
-LibraryOfRuina.content.liberation.Technology.TechnologyFloorBossSpine
 LibraryOfRuina.content.liberation.Technology.TechnologyFloorChordBoss
 LibraryOfRuina.content.liberation.Technology.TechnologyFloorChordBossCreatureVisuals
 LibraryOfRuina.content.liberation.Technology.ChordInspiringPower

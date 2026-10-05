@@ -1,6 +1,7 @@
 {
  "name": "boss_magic_bullet",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/magic_bullet",
+ "texture_scale": 0.6,
  "origin": [
   -140.0,
   -48.0

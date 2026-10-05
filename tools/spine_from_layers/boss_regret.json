@@ -1,6 +1,7 @@
 {
  "name": "boss_regret",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/regret",
+ "texture_scale": 0.6,
  "origin": [
   -169.0,
   -34.0

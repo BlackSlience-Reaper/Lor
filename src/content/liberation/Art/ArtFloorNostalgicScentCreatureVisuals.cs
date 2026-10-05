@@ -1,11 +1,30 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
-public sealed partial class ArtFloorNostalgicScentCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>余香的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class ArtFloorNostalgicScentCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "art_floor",
+        "nostalgic_scent",
+        "blunt",
+        new Dictionary<string, string>
+        {
+            ["Ranged"] = "ranged",
+            ["Blunt"] = "blunt",
+            ["Pierce"] = "pierce",
+            ["Guard"] = "guard",
+            ["EgoS1"] = "ego_s1",
+            ["EgoS2"] = "ego_s2",
+            ["EgoS3"] = "ego_s3",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ArtFloorNostalgicScentBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -30f), new(0.58f, 0.58f), -148f, -340f, 148f, 12f, new(0f, -154f), new(0f, -370f))
