@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -9,6 +10,28 @@ namespace LibraryOfRuina.content.abnormalities.KingOfGreed;
 internal sealed partial class KingOfGreedCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
+    // Spine 身体按动画库（国王 / 魔法少女形态）各一副，见 tools/spine_from_layers/build_boss_configs.py；
+    // 特殊照场景动画在 0.975 秒换第二张图
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        [KingOfGreedAnimationContract.AttackStabTrigger] = "stab",
+        [KingOfGreedAnimationContract.AttackSlashTrigger] = "slash",
+        ["Special"] = "special",
+        ["SpecialIntro"] = "intro",
+        ["SpecialAttack"] = "special_attack",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec KingSpine = LayeredBossSpine.Create(
+        "king_of_greed", "greed_king", "stab", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec MagicalGirlSpine = LayeredBossSpine.Create(
+        "king_of_greed", "greed_girl", "stab", SpineTriggers());
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [KingSpine, MagicalGirlSpine];
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == KingOfGreedAnimationContract.KingLibrary ? KingSpine : MagicalGirlSpine;
+
     internal const string ScenePath =
         KingOfGreedAssets.KingOfGreedScene;
 
@@ -102,9 +125,18 @@ internal static class KingOfGreedAnimationContract
         };
 }
 
+/// <summary>金色琥珀的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（只有待机与受击），加载失败时退回下面的贴图。</summary>
 public partial class GoldenAmberCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "king_of_greed",
+        "greed_amber",
+        "hurt",
+        new Dictionary<string, string>());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(GoldenAmber))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 0f), new(0.48f, 0.48f), -155f, -430f, 155f, 12f, new(0f, -215f), new(0f, -465f));

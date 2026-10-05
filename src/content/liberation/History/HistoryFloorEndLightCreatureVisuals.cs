@@ -1,12 +1,29 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.History;
 
+/// <summary>
+/// 终末之光的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。
+/// 攻击的火环是从模组攻击图抠出的（原版火环比模组图大一倍），见 tools/spine_from_layers/build_boss_configs.py。
+/// </summary>
 public partial class HistoryFloorEndLightCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "history_floor",
+        "end_light",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "cast",
+            ["Parry"] = "cast",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(HistoryFloorEndLightBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -98f), new(0.58f, 0.58f), -131f, -290f, 155f, 30f, new(0f, -100f), new(0f, -320f))

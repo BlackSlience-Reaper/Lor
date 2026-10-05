@@ -1,0 +1,13 @@
+boss_swan_bro_smile.webp
+size:1036,296
+filter:Linear,Linear
+Penetrate/근거리_공격
+bounds:0,0,167,296
+Fire/원거리_공격_복사
+bounds:169,0,516,289
+Damaged/피격
+bounds:687,0,170,255
+Default/body
+bounds:859,0,74,188
+Default/head
+bounds:935,0,99,104

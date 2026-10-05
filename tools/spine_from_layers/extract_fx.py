@@ -1,7 +1,7 @@
 """模组原图 = 原版某个动作的分层合成 + 模组作者叠上去的特效（原版里单独播放的弹道、光束等）时，把特效抠出来。
 先在原图里找合成图的位置（只比合成图不透明的部分，避开特效），再把与合成图不同的像素（合成图外的、或颜色差很多的）
 存成一张特效图，打印它在原版角色坐标里的中心，供 spine_from_layers 配置的 extra 层使用。
-用法：extract_fx.py <分层目录> <动作> <模组图> <输出.png>"""
+用法：extract_fx.py <分层目录> <动作> <模组图> <输出.png> [去掉的层,逗号分隔]"""
 import json
 import sys
 from pathlib import Path
@@ -11,7 +11,14 @@ from PIL import Image
 
 root, motion, mod_path, out = Path(sys.argv[1]).expanduser(), sys.argv[2], Path(sys.argv[3]), Path(sys.argv[4])
 info = json.loads((root / "layers.json").read_text())[motion]
-comp = np.asarray(Image.open(root / f"{motion}.composite.png").convert("RGBA")).astype(np.float32)
+if len(sys.argv) > 5:
+    # 第 5 个参数：去掉的层（逗号分隔）。原版特效层与模组图里的特效比例不同时（终末之光的火环），去掉它们只拿人物定位，
+    # 模组图里的特效整块抠出来代替
+    sys.path.insert(0, str(Path(__file__).parent))
+    from match_dropped import composite  # noqa: E402
+    comp = np.asarray(composite(root, motion, set(sys.argv[5].split(",")))).astype(np.float32)
+else:
+    comp = np.asarray(Image.open(root / f"{motion}.composite.png").convert("RGBA")).astype(np.float32)
 mod = np.asarray(Image.open(mod_path).convert("RGBA")).astype(np.float32)
 CH, CW = comp.shape[:2]
 MH, MW = mod.shape[:2]

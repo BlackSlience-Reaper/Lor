@@ -61,7 +61,8 @@ def load_layers(cfg):
     tint = cfg.get("skin_tint")
     motions = {}
     for motion, m in cfg["motions"].items():
-        src = info[m["source"]]["layers"]
+        # drop：不要的层（模组图里没有的饰物；今天也很害羞五张表情全身图叠在一个动作里，每副骨架只留一张）
+        src = [l for l in info[m["source"]]["layers"] if l["name"] not in m.get("drop", [])]
         layers = []
         for l in src:
             im = Image.open(root / m["source"] / f"{l['name']}.png").convert("RGBA")

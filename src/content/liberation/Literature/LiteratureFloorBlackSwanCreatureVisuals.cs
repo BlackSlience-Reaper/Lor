@@ -81,6 +81,28 @@ internal sealed partial class
     internal const string ScenePath =
         LiteratureFloorAssets.BlackSwanBrotherScene;
 
+    // 一到五哥战斗中共用同一套图，六哥带笑另一套；原版只有待机分层，攻击、受击是整图
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "swan_bro",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["AttackAlt"] = "attack_alt",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec SixthSpine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "swan_bro_smile",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["AttackAlt"] = "attack_alt",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == LibraryForBrother(6) ? SixthSpine : Spine;
+
     protected override string ResolveCurrentAnimationLibrary()
     {
         if (GetParent()
@@ -100,6 +122,8 @@ internal sealed partial class
     internal void ShowInactiveOrDeadIdle(
         LiteratureFloorBlackSwanBrotherBase brother)
     {
+        // 各自的倒下待机图（带黏液）只有整图，骨架藏掉
+        DetachSpineBody();
         AnimationPlayer.Stop();
 
         Sprite2D visuals = GetNode<Sprite2D>("%Visuals");

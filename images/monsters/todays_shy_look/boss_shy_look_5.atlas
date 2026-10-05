@@ -1,0 +1,9 @@
+boss_shy_look_5.webp
+size:817,404
+filter:Linear,Linear
+Atk/5
+bounds:0,0,509,404
+Damaged/5
+bounds:511,0,195,319
+Default/5
+bounds:708,0,107,316

@@ -153,6 +153,25 @@ internal abstract partial class SceneAnimatedCreatureVisuals
         body.SyncHoldHurt(_wasChaoed);
     }
 
+    /// <summary>
+    /// 之后一直用场景贴图、不再建或显示 Spine 身体：外观要停在某张静态贴图上时调用（黑天鹅兄弟倒下后的各自待机图），
+    /// 先调这个再摆贴图。
+    /// </summary>
+    internal void DetachSpineBody()
+    {
+        _spineReady = false;
+        _spine = null;
+        _activeSpineSpec = null;
+        foreach (RuntimeSpineBody? body in _spineBodies.Values)
+        {
+            if (body != null)
+            {
+                body.Visible = false;
+                body.ProcessMode = ProcessModeEnum.Disabled;
+            }
+        }
+    }
+
     /// <summary>死亡补丁转来的 "Dead"，见 <c>SpineSpriteDeathAnimPatch</c>；没有 Spine 身体时不做事。</summary>
     internal void PlayDeath() => _spine?.Play("Dead", holdHurtPose: false);
 
