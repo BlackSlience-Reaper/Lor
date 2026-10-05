@@ -46,7 +46,36 @@ internal abstract partial class ReligionFloorCreatureVisuals : SceneAnimatedCrea
 }
 
 [MonsterVisual(typeof(ReligionFloorLostParadise), ScenePath = "res://scenes/creature_visuals/religion_floor_lost_paradise.tscn")]
-internal sealed partial class ReligionFloorLostParadiseVisuals : ReligionFloorCreatureVisuals;
+internal sealed partial class ReligionFloorLostParadiseVisuals : ReligionFloorCreatureVisuals
+{
+    // Spine 身体见 LayeredBossSpine；忏悔期间（repentance 库）所有动作都停在忏悔姿势，另一副骨架只做受击晃动
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "religion_floor_liberation",
+        "lost_paradise",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "guard",
+            ["Cast"] = "cast",
+            ["Wake"] = "wake",
+            ["Special"] = "special",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec RepentanceSpine = LayeredBossSpine.Create(
+        "religion_floor_liberation",
+        "lost_paradise_repentance",
+        "hurt",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "hurt",
+            ["Cast"] = "hurt",
+            ["Wake"] = "hurt",
+            ["Special"] = "hurt",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == "repentance" ? RepentanceSpine : Spine;
+}
 
 [MonsterVisual(typeof(ReligionFloorScytheApostle), ScenePath = "res://scenes/creature_visuals/religion_floor_scythe_apostle.tscn")]
 internal sealed partial class ReligionFloorScytheApostleVisuals : ReligionFloorCreatureVisuals;

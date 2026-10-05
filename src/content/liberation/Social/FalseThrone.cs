@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.patching;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -71,6 +72,9 @@ public sealed class FalseThrone :
     LorMonsterModel,
     ISocialFloorMagicalPowderTarget, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
+    /// <summary>死亡动画时长；不会移出战斗的死亡返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public const int NormalHp = 888;
     public const int ToughHp = 999;
     public const int ChaoResistance = 250;

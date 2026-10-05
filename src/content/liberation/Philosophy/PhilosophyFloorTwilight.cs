@@ -7,6 +7,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryLib.Entities.Creatures;
 using MegaCrit.Sts2.Core.Combat;
@@ -117,6 +118,9 @@ public sealed partial class PhilosophyFloorTwilight :
     CounterIntentMonsterModel,
     IEncounterDynamicBgmTrackSource, ILibraryAbstractModel
 {
+    /// <summary>死亡动画时长；不会移出战斗的死亡返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const int AllEggMask = 0b111;
     private const string RouterStateId = "PHILOSOPHY_FLOOR_TWILIGHT_ROUTER";
     internal const int EggBreakHpLossPercent = 10;

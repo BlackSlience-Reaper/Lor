@@ -8,10 +8,44 @@ namespace LibraryOfRuina.content.liberation.Social;
 /// Original False Throne action sprites flattened from the unpacked Unity
 /// prefab as complete in-place composites. Each composite keeps the source
 /// character root aligned even when an attack effect expands to the left.
+/// Spine 身体见 <see cref="LayeredBossSpine"/>：变形前后各一副骨架，加载失败时退回下面的逐帧换图。
 /// </summary>
 public sealed partial class FalseThroneCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static readonly IReadOnlyDictionary<string, string> SpineTriggers = new Dictionary<string, string>
+    {
+        ["Damaged"] = "hurt",
+        ["Hurt"] = "hurt",
+        ["Guard"] = "guard",
+        ["Block"] = "guard",
+        ["Fire"] = "fire",
+        ["Insolence"] = "fire",
+        ["Manners"] = "fire",
+        ["FriendlyGreeting"] = "fire",
+        ["OverflowingLight"] = "overflowing_light",
+        ["AllSilent"] = "area",
+        ["BigMistake"] = "area",
+        ["Area"] = "area",
+        ["FunIsOver"] = "rage",
+        ["Rage"] = "rage",
+        ["Transform"] = "polymorph",
+        ["Polymorph"] = "polymorph",
+        ["MagicalPowder"] = "polymorph",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec Spine =
+        LayeredBossSpine.Create("social_floor_liberation", "false_throne", "fire", SpineTriggers);
+
+    // 变形触发会切到 transformed 形态（见下面的 SwitchToVariant），切换后由这副骨架接着播；它的待机就是变形姿势
+    internal static readonly RuntimeSpineBody.Spec TransformedSpine =
+        LayeredBossSpine.Create("social_floor_liberation", "false_throne_transformed", "fire", SpineTriggers);
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == TransformedVariantKey ? TransformedSpine : Spine;
+
     [MonsterVisual(typeof(FalseThrone))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -8f), new(0.504f, 0.504f), -190f, -545f, 190f, 10f, new(0f, -285f), new(20f, -600f))

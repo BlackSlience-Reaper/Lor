@@ -13,8 +13,50 @@ namespace LibraryOfRuina.content.liberation.Philosophy;
 /// different cropped canvas sizes.
 /// </summary>
 public sealed partial class PhilosophyFloorTwilightCreatureVisuals
-    : SpriteAttackCreatureVisuals, INonSpineVisualTriggerHandler
+    : SpineSpriteAttackCreatureVisuals, INonSpineVisualTriggerHandler
 {
+    // Spine 身体见 LayeredBossSpine；触发别名与下面 TryPlayTrigger 的映射一致
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "philosophy_floor_twilight",
+        "twilight",
+        "pierce",
+        new Dictionary<string, string>
+        {
+            ["Default"] = "idle",
+            ["Standing"] = "idle",
+            ["G"] = "guard",
+            ["Guard"] = "guard",
+            ["Block"] = "guard",
+            ["Defend"] = "guard",
+            ["Hurt"] = "hurt",
+            ["Damaged"] = "hurt",
+            ["J"] = "slash",
+            ["Slash"] = "slash",
+            ["AttackSlash"] = "slash",
+            ["Z"] = "pierce",
+            ["Penetrate"] = "pierce",
+            ["AttackStrike"] = "pierce",
+            ["F"] = "forest_light",
+            ["ForestLight"] = "forest_light",
+            ["Cast"] = "forest_light",
+            ["S1"] = "brilliant_eyes",
+            ["BrilliantEyes"] = "brilliant_eyes",
+            ["EyeLaser"] = "brilliant_eyes",
+            ["Watch"] = "brilliant_eyes",
+            ["S2"] = "punishment",
+            ["Punishment"] = "punishment",
+            ["S3"] = "punishment_followup",
+            ["PunishmentFollowup"] = "punishment_followup",
+            ["S4"] = "judgement",
+            ["Judgement"] = "judgement",
+            ["Judgment"] = "judgement",
+            ["S5"] = "peace",
+            ["Peace"] = "peace",
+            ["PeaceSlam"] = "peace",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     internal const string DefaultTexturePath =
         PhilosophyFloorAssets.TwilightDefaultTexture;
     internal const string GuardTexturePath =
@@ -119,6 +161,12 @@ public sealed partial class PhilosophyFloorTwilightCreatureVisuals
 
         _animationPlayer.AnimationFinished += OnAnimationFinished;
         PlayAnimation("Default");
+        if (HasSpineBody)
+        {
+            // Spine 接管后场景动画不再播放；骨架按这里摆好的待机贴图重新对齐
+            _animationPlayer.Stop();
+            RealignSpineBody();
+        }
     }
 
     public override void _ExitTree()
@@ -142,6 +190,12 @@ public sealed partial class PhilosophyFloorTwilightCreatureVisuals
     /// </summary>
     public new bool TryPlayTrigger(string triggerName)
     {
+        if (HasSpineBody)
+        {
+            BeforeResolveSpriteTrigger(triggerName);
+            return PlaySpineTrigger(triggerName);
+        }
+
         string? animationName = triggerName switch
         {
             "Idle" or "Default" or "Standing" => "Default",
@@ -193,6 +247,13 @@ public sealed partial class PhilosophyFloorTwilightCreatureVisuals
 
     protected override void RestoreIdleState()
     {
+        // 有 Spine 身体时贴图一直藏着，由基类让 Spine 定格或解除受击姿势
+        if (HasSpineBody)
+        {
+            base.RestoreIdleState();
+            return;
+        }
+
         // 薄暝由独立 AnimationPlayer 管理布局，混乱恢复也经由同一入口。
         if (!PlayAnimation("Default"))
         {
