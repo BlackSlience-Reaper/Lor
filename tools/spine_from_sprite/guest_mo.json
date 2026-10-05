@@ -1,0 +1,154 @@
+{
+ "name": "guest_mo",
+ "image": "../../images/monsters/brotherhood_of_iron/mo.webp",
+ "atlas_page": "mo.webp",
+ "cell": 6,
+ "sigma": 10.0,
+ "body": {
+  "center": [
+   146.85045433162495,
+   349.0
+  ],
+  "radii": [
+   94.0,
+   139.0
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    134.11760928201394,
+    118.4
+   ],
+   "radii": [
+    73.92,
+    97.02
+   ],
+   "bone": [
+    134.11760928201394,
+    210.0
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 2.5,
+   "breath": 0.012,
+   "parts": {
+    "head": {
+     "rotate": 2.5,
+     "phase": 0.7
+    }
+   }
+  },
+  "strike": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": -60.0,
+   "lean": 5.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/brotherhood_of_iron/mo_attack_strike.webp",
+    "anchor": [
+     189.92,
+     358.56
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.125
+   }
+  },
+  "thrust": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/brotherhood_of_iron/mo_attack_thrust.webp",
+    "anchor": [
+     641.92,
+     308.56
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.125
+   },
+   "jab": 0.0
+  },
+  "slash": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/brotherhood_of_iron/mo_attack_slash.webp",
+    "anchor": [
+     522.92,
+     213.56
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.125
+   },
+   "jab": 0.0
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/brotherhood_of_iron/mo_hit.webp",
+    "anchor": [
+     214.85,
+     334.0
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1,
+    "reuse_page": true
+   }
+  },
+  "die": {
+   "type": "slump",
+   "duration": 1.2,
+   "head": "head",
+   "droop": 14.0,
+   "sag": 9.2,
+   "lean": 4.0
+  }
+ }
+}

@@ -1,0 +1,154 @@
+{
+ "name": "guest_eri",
+ "image": "../../images/monsters/eri.webp",
+ "atlas_page": "eri.webp",
+ "cell": 6,
+ "sigma": 10.0,
+ "body": {
+  "center": [
+   306.71735459293876,
+   397.5
+  ],
+  "radii": [
+   212.5,
+   169.5
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    356.80766163758733,
+    115.0
+   ],
+   "radii": [
+    90.4,
+    118.64999999999999
+   ],
+   "bone": [
+    356.80766163758733,
+    228.0
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 2.5,
+   "breath": 0.012,
+   "parts": {
+    "head": {
+     "rotate": 2.5,
+     "phase": 0.7
+    }
+   }
+  },
+  "strike": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": -60.0,
+   "lean": 5.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/eri_attack_strike.webp",
+    "anchor": [
+     31.44,
+     290.81
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1429
+   }
+  },
+  "thrust": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/eri_attack_thrust.webp",
+    "anchor": [
+     501.44,
+     278.81
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1429
+   },
+   "jab": 0.0
+  },
+  "slash": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/eri_attack_slash.webp",
+    "anchor": [
+     167.94,
+     614.81
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1429
+   },
+   "jab": 0.0
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/eri_hit.webp",
+    "anchor": [
+     47.72,
+     255.5
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1,
+    "reuse_page": true
+   }
+  },
+  "die": {
+   "type": "slump",
+   "duration": 1.2,
+   "head": "head",
+   "droop": 14.0,
+   "sag": 11.3,
+   "lean": 4.0
+  }
+ }
+}

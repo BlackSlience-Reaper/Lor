@@ -1,0 +1,154 @@
+{
+ "name": "guest_salvador",
+ "image": "../../images/monsters/salvador.png",
+ "atlas_page": "salvador.png",
+ "cell": 6,
+ "sigma": 10.0,
+ "body": {
+  "center": [
+   116.75048518379052,
+   342.0
+  ],
+  "radii": [
+   63.5,
+   146.0
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    115.963386103096,
+    99.2
+   ],
+   "radii": [
+    77.76,
+    102.06
+   ],
+   "bone": [
+    115.963386103096,
+    196.0
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 2.5,
+   "breath": 0.012,
+   "parts": {
+    "head": {
+     "rotate": 2.5,
+     "phase": 0.7
+    }
+   }
+  },
+  "strike": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": -60.0,
+   "lean": 5.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/salvador_attack_strike.webp",
+    "anchor": [
+     112.64,
+     284.36
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1
+   }
+  },
+  "thrust": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/salvador_attack_thrust.webp",
+    "anchor": [
+     568.14,
+     288.36
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1
+   },
+   "jab": 0.0
+  },
+  "slash": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/salvador_attack_slash.webp",
+    "anchor": [
+     250.64,
+     330.36
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1
+   },
+   "jab": 0.0
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/salvador_hit.webp",
+    "anchor": [
+     121.75,
+     238.0
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1,
+    "reuse_page": true
+   }
+  },
+  "die": {
+   "type": "slump",
+   "duration": 1.2,
+   "head": "head",
+   "droop": 14.0,
+   "sag": 9.7,
+   "lean": 4.0
+  }
+ }
+}

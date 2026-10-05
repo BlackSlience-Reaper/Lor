@@ -1,0 +1,154 @@
+{
+ "name": "guest_pameli",
+ "image": "../../images/monsters/pameli.webp",
+ "atlas_page": "pameli.webp",
+ "cell": 6,
+ "sigma": 10.0,
+ "body": {
+  "center": [
+   263.2136079336013,
+   574.0
+  ],
+  "radii": [
+   87.0,
+   146.0
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    267.48321706760095,
+    331.2
+   ],
+   "radii": [
+    81.9,
+    102.06
+   ],
+   "bone": [
+    267.48321706760095,
+    428.0
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 2.5,
+   "breath": 0.012,
+   "parts": {
+    "head": {
+     "rotate": 2.5,
+     "phase": 0.7
+    }
+   }
+  },
+  "strike": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": -60.0,
+   "lean": 5.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/pameli_attack_strike.webp",
+    "anchor": [
+     110.58,
+     374.13
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1064
+   }
+  },
+  "thrust": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/pameli_attack_thrust.webp",
+    "anchor": [
+     642.58,
+     254.13
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1064
+   },
+   "jab": 0.0
+  },
+  "slash": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/pameli_attack_slash.webp",
+    "anchor": [
+     376.08,
+     305.13
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1064
+   },
+   "jab": 0.0
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/pameli_hit.webp",
+    "anchor": [
+     541.21,
+     299.0
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1,
+    "reuse_page": true
+   }
+  },
+  "die": {
+   "type": "slump",
+   "duration": 1.2,
+   "head": "head",
+   "droop": 14.0,
+   "sag": 9.7,
+   "lean": 4.0
+  }
+ }
+}

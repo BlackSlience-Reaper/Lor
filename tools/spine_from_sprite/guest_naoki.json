@@ -1,0 +1,151 @@
+{
+ "name": "guest_naoki",
+ "image": "../../images/monsters/naoki.webp",
+ "atlas_page": "naoki.webp",
+ "cell": 6,
+ "sigma": 10.0,
+ "body": {
+  "center": [
+   133.44791855086694,
+   335.0
+  ],
+  "radii": [
+   93.0,
+   138.0
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    106.30074960502874,
+    105.80000000000001
+   ],
+   "radii": [
+    86.10000000000001,
+    96.39
+   ],
+   "bone": [
+    106.30074960502874,
+    197.0
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 2.5,
+   "breath": 0.012,
+   "parts": {
+    "head": {
+     "rotate": 2.5,
+     "phase": 0.7
+    }
+   }
+  },
+  "strike": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": -60.0,
+   "lean": 5.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/naoki_attack_strike.webp",
+    "anchor": [
+     117.45,
+     306.0
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true
+   }
+  },
+  "thrust": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/naoki_attack_thrust.webp",
+    "anchor": [
+     267.45,
+     280.0
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true
+   },
+   "jab": 0.0
+  },
+  "slash": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/naoki_attack_slash.webp",
+    "anchor": [
+     130.45,
+     282.0
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true
+   },
+   "jab": 0.0
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/naoki_hit.webp",
+    "anchor": [
+     142.45,
+     331.0
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1,
+    "reuse_page": true
+   }
+  },
+  "die": {
+   "type": "slump",
+   "duration": 1.2,
+   "head": "head",
+   "droop": 14.0,
+   "sag": 9.2,
+   "lean": 4.0
+  }
+ }
+}
