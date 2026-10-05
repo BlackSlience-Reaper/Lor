@@ -1,0 +1,15 @@
+boss_nihil_love.webp
+size:1339,258
+filter:Linear,Linear
+atk/atk
+bounds:0,0,333,258
+guard/guard
+bounds:335,0,241,258
+atk 2/atk_2
+bounds:578,0,197,197
+atk 3/atk_3
+bounds:777,0,212,176
+hit/hit
+bounds:991,0,190,176
+nomal/nomal
+bounds:1183,0,154,161

@@ -11,6 +11,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -31,6 +32,9 @@ public sealed class NaturalFloorLoveAndHatredBoss : LorMonsterModel, ILiberation
     private const string ReviveMoveId = "REVIVE_AND_EMPOWER";
 
     public int LiberationPhase => 1;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public const string VideoPath = NaturalFloorAssets.LoveAndHatredInversionVideo;
     public const int BlockAmount = 22; // 以爱之名！：自身格挡。

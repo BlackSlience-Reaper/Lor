@@ -1,0 +1,262 @@
+{
+ "name": "boss_tear_edge_stabbed1",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/tear_edge",
+ "texture_scale": 0.6,
+ "origin": [
+  -10.5,
+  -71.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "S1",
+ "motions": {
+  "S1": {
+   "source": "Despair_S1",
+   "bones": {
+    "body": {
+     "at": [
+      98.6,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      98.6,
+      281.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      86.5,
+      390.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "back_hair_2": "hair",
+    "body_2": "body",
+    "head_복사": "head",
+    "face": "head",
+    "librarian_front_acce": "body",
+    "front_hair": "hair",
+    "librarian_front_acce_2": "body",
+    "body_3": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "S1",
+     0
+    ]
+   ],
+   "osc": {
+    "S1.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "S1.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "S1.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "S1",
+     0
+    ],
+    [
+     0.4,
+     "S1",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "S1.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "S1.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "S1.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "S1",
+     0
+    ]
+   ],
+   "keys": {
+    "S1.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "S1.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "S1.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

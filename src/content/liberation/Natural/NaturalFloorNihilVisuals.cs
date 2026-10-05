@@ -17,6 +17,178 @@ namespace LibraryOfRuina.content.liberation.Natural;
 [MonsterVisual(typeof(NaturalFloorCourageStatue), ScenePath = NaturalFloorNihilVisuals.SceneRoot + "courage_statue.tscn")]
 internal sealed partial class NaturalFloorNihilVisuals : SceneAnimatedCreatureVisuals
 {
+    // Spine 身体按动画库（形态）各一副，见 tools/spine_from_layers/build_boss_configs.py 的自然层配置
+    internal static readonly RuntimeSpineBody.Spec NihilSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "attack",
+            ["Slash"] = "attack",
+            ["Fire"] = "attack",
+            ["Pierce"] = "attack",
+            ["Strike"] = "attack",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "evade",
+            ["Stunned"] = "stunned",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec DespairSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_despair",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "attack",
+            ["Slash"] = "attack",
+            ["Fire"] = "attack",
+            ["Pierce"] = "attack",
+            ["Strike"] = "attack",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "evade",
+            ["Stunned"] = "stunned",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec GreedSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_greed",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "slash",
+            ["Slash"] = "slash",
+            ["Fire"] = "slash",
+            ["Pierce"] = "strike",
+            ["Strike"] = "strike",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "evade",
+            ["Stunned"] = "stunned",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec HatredSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_hatred",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "slash",
+            ["Slash"] = "slash",
+            ["Fire"] = "fire",
+            ["Pierce"] = "slash",
+            ["Strike"] = "slash",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "evade",
+            ["Stunned"] = "stunned",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec WrathSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_wrath",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "slash",
+            ["Slash"] = "slash",
+            ["Fire"] = "slash",
+            ["Pierce"] = "slash",
+            ["Strike"] = "strike",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "evade",
+            ["Stunned"] = "stunned",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec LoveSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_love",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "attack",
+            ["Slash"] = "attack",
+            ["Fire"] = "fire",
+            ["Pierce"] = "attack",
+            ["Strike"] = "attack",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec JusticeSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_justice",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "attack",
+            ["Slash"] = "attack",
+            ["Fire"] = "attack",
+            ["Pierce"] = "attack",
+            ["Strike"] = "attack",
+            ["Special"] = "attack",
+            ["Stunned"] = "stunned",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec HappinessSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_happiness",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "slash",
+            ["Slash"] = "slash",
+            ["Fire"] = "slash",
+            ["Pierce"] = "pierce",
+            ["Strike"] = "slash",
+            ["Special"] = "special",
+            ["Cast"] = "guard",
+            ["Defend"] = "guard",
+            ["Evade"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec CourageSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nihil_courage",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Attack"] = "slash",
+            ["Slash"] = "slash",
+            ["Fire"] = "slash",
+            ["Pierce"] = "slash",
+            ["Strike"] = "strike",
+            ["Special"] = "special",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        (GetParent() as NCreature)?.Entity?.Monster switch
+        {
+            NaturalFloorNihilBoss => library switch
+            {
+                "despair" => DespairSpine,
+                "greed" => GreedSpine,
+                "hatred" => HatredSpine,
+                "wrath" => WrathSpine,
+                _ => NihilSpine,
+            },
+            NaturalFloorLoveGirl => LoveSpine,
+            NaturalFloorJusticeGirl => JusticeSpine,
+            NaturalFloorHappinessGirl => HappinessSpine,
+            NaturalFloorCourageGirl => CourageSpine,
+            _ => null,
+        };
+
     internal const float HitTime = 0.48f; // 虚无与魔法少女：参照自然层普通动作的打击时点。
 
     // 特性参数只能是常量，所以登记处写成 SceneRoot + "<id>.tscn"，与 ScenePath(id) 拼出的路径相同。

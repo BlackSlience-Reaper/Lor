@@ -8,6 +8,57 @@ namespace LibraryOfRuina.content.liberation.Natural;
 [MonsterVisual(typeof(NaturalFloorGoldRushBoss), ScenePath = NaturalFloorGoldRushVisuals.ScenePath)]
 internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatureVisuals
 {
+    // Spine 身体按动画库（形态）各一副，见 tools/spine_from_layers/build_boss_configs.py 的自然层配置
+    internal static readonly RuntimeSpineBody.Spec HumanSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "gold_rush_human",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "intro",
+            ["Guard"] = "guard",
+            ["SpecialAttack"] = "special_attack",
+            ["SpecialIntro"] = "intro",
+            ["Transform"] = "intro",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec KingSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "gold_rush_king",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "intro",
+            ["Guard"] = "guard",
+            ["SpecialAttack"] = "special_attack",
+            ["SpecialIntro"] = "intro",
+            ["Transform"] = "intro",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec HumanChargingSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "gold_rush_human_charging",
+        "hurt",
+        new Dictionary<string, string>
+        {
+        });
+
+    internal static readonly RuntimeSpineBody.Spec KingChargingSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "gold_rush_king_charging",
+        "hurt",
+        new Dictionary<string, string>
+        {
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
+    {
+        "king" => KingSpine,
+        "human_charging" => HumanChargingSpine,
+        "king_charging" => KingChargingSpine,
+        _ => HumanSpine,
+    };
+
     internal const string ScenePath = NaturalFloorAssets.GoldRushBossScene;
     internal const float AttackHitTime = 0.48f; // 普通攻击：参照贪婪国王的单次动作时点。
     internal const float GuardTime = 0.48f; // 为了幸福：格挡姿态保持秒数。

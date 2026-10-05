@@ -187,6 +187,124 @@ BOSSES = {
                                                      "hits": [1.44]}, "step"),
                   "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
     },
+    # 自然层。原来也是场景动画，但每个动作只有一张图，按统一时长。场景按形态换动画库（闪金冲锋人形/王形与蓄力、
+    # 以爱与憎之名人形/蛇形/特殊待机、泪锋之剑五个形态、虚无缥缈五个阶段），每个库一副骨架，待机姿势就是该库的 Idle 图。
+    # 蛇形是原版放大 1.25 倍、正义是 2 倍（root_scale）。魔法少女和蛇形在原版只有整图。
+    "blind_rage": {
+        "prefix": "EGO_Wrath_", "origin": [-145.5, -303.0], "weapons": [],
+        "anims": {"attack_strike": ("attack", "Hit", "dash"), "attack_thrust": ("attack", "Penetrate", "dash"),
+                  "attack_slash": ("attack", "Slash", "step"), "special_s1": ("attack", "S1", "dash"),
+                  "special_s2": ("attack", "S2", "step"), "special_s3": ("attack", "S3", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "gold_rush_human": {
+        "layers": "gold_rush_human", "prefix": "Greed_", "origin": [57.0, 8.0], "weapons": [],
+        "anims": {"attack": ("attack", "Hit", "dash"), "guard": ("guard", "Guard", "brace"),
+                  "intro": ("skill", "Special", "rise"), "special_attack": ("attack", "S1", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "gold_rush_human_charging": {
+        "layers": "gold_rush_human", "prefix": "Greed_", "base": "Special", "origin": [74.0, 4.0], "weapons": [],
+        "anims": {"hurt": ("hurt", "Special")},
+    },
+    "gold_rush_king": {
+        "layers": "gold_rush_king", "prefix": "Greed_", "origin": [53.0, 6.0], "weapons": [],
+        "anims": {"attack": ("attack", "Hit", "dash"), "guard": ("guard", "Guard", "brace"),
+                  "intro": ("skill", "Special", "rise"), "special_attack": ("attack", "S1", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "gold_rush_king_charging": {
+        "layers": "gold_rush_king", "prefix": "Greed_", "base": "Special", "origin": [74.0, 4.0], "weapons": [],
+        "anims": {"hurt": ("hurt", "Special")},
+    },
+    "love_hatred_human": {
+        "prefix": "HatredHuman_", "origin": [-13.0, -165.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "fire": ("attack", "Fire", "recoil"),
+                  "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
+    },
+    "love_hatred_special": {
+        "layers": "love_hatred_human", "prefix": "HatredHuman_", "base": "Special", "origin": [-20.5, -68.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "fire": ("attack", "Fire", "recoil"),
+                  "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
+    },
+    "love_hatred_snake": {
+        "prefix": "HatredSnake_", "origin": [17.8, -51.8], "root_scale": 1.25, "weapons": [],
+        "anims": {"strike": ("attack", "Penetrate", "dash"), "fire": ("attack", "Fire", "recoil"),
+                  "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
+    },
+    "tear_edge": {
+        "prefix": "Despair_", "origin": [92.5, 2.0], "weapons": [],
+        "anims": {"attack": ("attack", "Special", "dash"), "guard": ("guard", "Damaged", "brace"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "tear_edge_despair": {
+        "layers": "tear_edge", "prefix": "Despair_", "base": "Special", "origin": [-221.5, 0.0], "weapons": [],
+        "anims": {"attack": ("attack", "Special", "dash"), "guard": ("guard", "Damaged", "brace"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    # 被剑刺穿的三个形态：场景里所有动作都停在同一张图，骨架只做受击晃动
+    "tear_edge_stabbed1": {"layers": "tear_edge", "prefix": "Despair_", "base": "S1", "origin": [-10.5, -71.0],
+                           "weapons": [], "anims": {"hurt": ("hurt", "S1")}},
+    "tear_edge_stabbed2": {"layers": "tear_edge", "prefix": "Despair_", "base": "S2", "origin": [12.5, -98.0],
+                           "weapons": [], "anims": {"hurt": ("hurt", "S2")}},
+    "tear_edge_stabbed3": {"layers": "tear_edge", "prefix": "Despair_", "base": "S3", "origin": [62.5, -97.0],
+                           "weapons": [], "anims": {"hurt": ("hurt", "S3")}},
+    "nihil": {
+        "prefix": "Nihil_", "origin": [-32.0, 5.0], "weapons": [],
+        "anims": {"attack": ("attack", "Special", "dash"), "special": ("skill", "Special", "rise"),
+                  "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"),
+                  "hurt": ("hurt", "Damaged"), "stunned": ("hurt", "Damaged")},
+        "holds": {"stunned": 2.0},
+    },
+    "nihil_despair": {
+        "prefix": "Despair_", "origin": [-32.0, 5.0], "weapons": [],
+        "extra": {"Fire": [{"name": "fx", "image": "fx/nihil_despair_fire.png", "center": [-348.5, 476.0]}]},
+        "anims": {"attack": ("attack", "Fire", "recoil"), "special": ("skill", "Fire", "recoil"),
+                  "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"),
+                  "hurt": ("hurt", "Damaged"), "stunned": ("hurt", "Damaged")},
+        "holds": {"stunned": 2.0},
+    },
+    "nihil_greed": {
+        "prefix": "GreedPhase_", "origin": [-32.0, 5.0], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "strike": ("attack", "Hit", "dash"),
+                  "special": ("skill", "S1", "dash"), "guard": ("guard", "Guard", "brace"),
+                  "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged"), "stunned": ("hurt", "Damaged")},
+        "holds": {"stunned": 2.0},
+    },
+    "nihil_hatred": {
+        "prefix": "Hatred_", "origin": [-32.0, 5.0], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "fire": ("attack", "Fire", "recoil"),
+                  "special": ("skill", "Special", "rise"), "guard": ("guard", "Guard", "brace"),
+                  "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged"), "stunned": ("hurt", "Damaged")},
+        "holds": {"stunned": 2.0},
+    },
+    "nihil_wrath": {
+        "prefix": "Wrath_", "origin": [-32.0, 5.0], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "strike": ("attack", "Hit", "dash"),
+                  "special": ("skill", "S3", "dash"), "guard": ("guard", "Guard", "brace"),
+                  "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged"), "stunned": ("hurt", "Damaged")},
+        "holds": {"stunned": 2.0},
+    },
+    "nihil_love": {
+        "prefix": "", "base": "nomal", "origin": [80.5, 117.0], "weapons": [],
+        "anims": {"attack": ("attack", "atk", "dash"), "fire": ("attack", "atk 2", "recoil"),
+                  "special": ("skill", "atk 3", "rise"), "guard": ("guard", "guard", "brace"), "hurt": ("hurt", "hit")},
+    },
+    "nihil_justice": {
+        "prefix": "", "base": "nomal", "origin": [63.6, 106.2], "root_scale": 2.0, "weapons": [],
+        "anims": {"attack": ("attack", "trans", "dash"), "hurt": ("hurt", "damaged"), "stunned": ("hurt", "grogi")},
+        "holds": {"stunned": 2.0},
+    },
+    "nihil_happiness": {
+        "prefix": "", "origin": [6.5, -1.0], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "pierce": ("attack", "Hit", "dash"),
+                  "special": ("skill", "S1", "dash"), "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
+    },
+    "nihil_courage": {
+        "prefix": "", "base": "보통", "origin": [-18.5, 35.0], "weapons": [],
+        "anims": {"slash": ("attack", "종", "step"), "strike": ("attack", "횡", "dash"),
+                  "special": ("skill", "특수", "dash"), "hurt": ("hurt", "피격")},
+    },
     # 艺术层
     "dacapo": {
         "prefix": "Orchestra_", "origin": [-2.5, -136.0],

@@ -1,6 +1,7 @@
 using LibraryLib.Models;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.encounters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.interop;
 using System;
 using System.Linq;
@@ -37,6 +38,9 @@ public sealed class NaturalFloorNihilBoss : NaturalFloorNihilMonster, ILiberatio
     public bool GreedGroupPending { get; private set; }
 
     public int LiberationPhase => 5;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public Task TriggerReviveAndEmpowerState() => Task.CompletedTask;
 

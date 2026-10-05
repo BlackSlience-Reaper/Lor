@@ -5,6 +5,7 @@ using LibraryOfRuina.content.abnormalities.WrathServant;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -20,6 +21,9 @@ public sealed class NaturalFloorBlindRageBoss : NaturalFloorWrathMonster, ILiber
     private static readonly string[] Ids = ["UUUGH", "AAAH", "AAAAH", "EVIL_INCARNATION", "REVIVE_AND_EMPOWER"];
 
     public int LiberationPhase => 2;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public Task TriggerReviveAndEmpowerState()
     {

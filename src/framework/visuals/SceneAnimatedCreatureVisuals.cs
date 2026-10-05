@@ -28,6 +28,10 @@ internal abstract partial class SceneAnimatedCreatureVisuals
     private bool _wasChaoed;
     private string? _heldChaosAnimation;
     private RuntimeSpineBody? _spine;
+    // 每份骨架只建一次：骨架原点按建立时那个动画库的待机贴图对齐，各库的待机贴图不同，所以第一次换到该库时才建
+    private readonly Dictionary<RuntimeSpineBody.Spec, RuntimeSpineBody?> _spineBodies = new();
+    private RuntimeSpineBody.Spec? _activeSpineSpec;
+    private bool _spineReady;
 
     protected abstract string ResolveCurrentAnimationLibrary();
 
@@ -36,6 +40,12 @@ internal abstract partial class SceneAnimatedCreatureVisuals
     /// 动画里换姿势的时刻要和动画契约的命中时刻一致，怪物代码按契约结算伤害。
     /// </summary>
     internal virtual RuntimeSpineBody.Spec? SpineSpec => null;
+
+    /// <summary>
+    /// 当前动画库用的骨架；按形态换动画库的外观（自然层）每个库一副，默认都用 <see cref="SpineSpec"/>。
+    /// 返回 null 的库只用场景动画。
+    /// </summary>
+    internal virtual RuntimeSpineBody.Spec? SpineSpecFor(string library) => SpineSpec;
 
     protected virtual string NormalizeTriggerName(string triggerName) =>
         triggerName;
@@ -77,32 +87,61 @@ internal abstract partial class SceneAnimatedCreatureVisuals
                 + "falling back to the code-built idle pose.");
         }
 
-        TryAttachSpine();
+        _spineReady = true;
+        SyncSpineBody();
     }
 
-    // 骨架原点对齐待机贴图的底边中点，所以先把待机动画的贴图、位置、缩放落到 %Visuals 上再建。
-    private void TryAttachSpine()
+    // 每帧和每次触发前按当前动画库选骨架，换库（换形态）时切过去；没有骨架或加载失败的库退回场景动画。
+    private void SyncSpineBody()
     {
-        if (SpineSpec is not { } spec
-            || _idleVisuals == null
-            || !PlayAnimation(ResolveQualifiedAnimationName(IdleTrigger)))
+        if (!_spineReady || _idleVisuals == null || _animationPlayer == null)
         {
             return;
         }
 
-        _spine = RuntimeSpineBody.TryCreate(_idleVisuals, spec);
-        if (_spine == null)
+        RuntimeSpineBody.Spec? spec = SpineSpecFor(ResolveCurrentAnimationLibrary());
+        if (ReferenceEquals(spec, _activeSpineSpec))
+        {
+            return;
+        }
+
+        _activeSpineSpec = spec;
+        RuntimeSpineBody? body = null;
+        if (spec != null && !_spineBodies.TryGetValue(spec, out body))
+        {
+            // 骨架原点对齐待机贴图的底边中点，所以先把这个库的待机动画（贴图、位置、缩放）落到 %Visuals 上再建
+            body = PlayAnimation(ResolveQualifiedAnimationName(IdleTrigger))
+                ? RuntimeSpineBody.TryCreate(_idleVisuals, spec)
+                : null;
+            _spineBodies[spec] = body;
+        }
+        else
+        {
+            body?.Play(IdleTrigger, holdHurtPose: false);
+        }
+
+        foreach (RuntimeSpineBody? other in _spineBodies.Values)
+        {
+            if (other != null)
+            {
+                other.Visible = other == body;
+                other.ProcessMode = other == body ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+            }
+        }
+
+        _spine = body;
+        if (body == null)
         {
             PlayCurrentIdle();
             return;
         }
 
-        _animationPlayer!.Stop();
+        _animationPlayer.Stop();
         _heldChaosAnimation = null;
         _idleVisuals.Visible = false;
         _attackVisuals!.Visible = false;
         _wasChaoed = MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this);
-        _spine.SyncHoldHurt(_wasChaoed);
+        body.SyncHoldHurt(_wasChaoed);
     }
 
     /// <summary>死亡补丁转来的 "Dead"，见 <c>SpineSpriteDeathAnimPatch</c>；没有 Spine 身体时不做事。</summary>
@@ -111,6 +150,7 @@ internal abstract partial class SceneAnimatedCreatureVisuals
     public override void _Process(double delta)
     {
         base._Process(delta);
+        SyncSpineBody();
         RefreshChaosIdle();
     }
 
@@ -129,6 +169,9 @@ internal abstract partial class SceneAnimatedCreatureVisuals
         _wasChaoed = false;
         _heldChaosAnimation = null;
         _spine = null;
+        _spineBodies.Clear();
+        _activeSpineSpec = null;
+        _spineReady = false;
         base._ExitTree();
     }
 
@@ -145,6 +188,7 @@ internal abstract partial class SceneAnimatedCreatureVisuals
             return false;
         }
 
+        SyncSpineBody();
         if (_spine != null)
         {
             // Spine 不认识的触发也算处理过：否则触发桥会退回 AnimationPlayer，把藏起来的贴图又显示出来
