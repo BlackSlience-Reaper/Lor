@@ -367,6 +367,60 @@ BOSSES = {
                   "field_of_corpses": ("timeline", {"frames": [[0, "S1"], [0.7, "S2"]], "length": 1.4}, "dash"),
                   "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged")},
     },
+    # 文学层黑天鹅的兄弟：一到五哥共用一套原版人物（无表情），六哥是带笑的另一套；攻击、受击在原版都是整图，
+    # 只有待机分了腿、身体、头。模组里一到五哥沉睡/倒下时显示的带黏液待机图不走骨骼（见外观类）
+    "swan_bro": {
+        "prefix": "BlackSwanBro_", "origin": [-26.5, 4.0], "weapons": [],
+        "anims": {"attack": ("attack", "Penetrate", "dash"), "attack_alt": ("attack", "Penetrate", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "swan_bro_smile": {
+        "prefix": "BlackSwanBro_", "origin": [-23.5, -32.0], "weapons": [],
+        "anims": {"attack": ("attack", "Penetrate", "dash"), "attack_alt": ("attack", "Fire", "recoil"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    # 历史层终末之光（焦化少女 E.G.O）：模组图没有两只角（原版类型 8 的饰物层），去掉。原版攻击的火环层比模组图里大一倍，
+    # 也去掉，换成从模组攻击图抠出的火环：extract_fx.py 带去掉的层定位人物，火环拆成人物身后与从人物前面穿过的两层
+    "end_light": {
+        "prefix": "ScorchedGirl_", "origin": [-64.0, -112.0], "weapons": [],
+        "drop": {"*": ["librarian_only"], "Hit": ["back_acce", "front_acce", "effect", "effect_2", "effect_3"]},
+        "extra": {"Hit": [{"name": "fx_back", "image": "fx/end_light_attack_back.png", "center": [-254.5, 259.5], "order": 0},
+                          {"name": "fx", "image": "fx/end_light_attack_front.png", "center": [117.5, 249.5]}]},
+        "anims": {"attack": ("attack", "Hit", "dash"), "cast": ("guard", "Guard", "brace"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    # 异想体贪婪国王：国王形态（失去理智）与魔法少女形态各一副，待机分层、动作在原版只有 1–2 层；
+    # Special 照场景动画 0.975 秒换第二张。金色琥珀模组图是原版 1.82 倍
+    "greed_king": {
+        "prefix": "", "origin": [-5.5, -65.0], "weapons": [],
+        "anims": {"stab": ("attack", "Hit", "dash"), "slash": ("attack", "Slash", "step"),
+                  "special": ("timeline", {"frames": [[0, "Special"], [0.975, "S1"]], "length": 1.95}, "step"),
+                  "intro": ("skill", "Special", "rise"), "special_attack": ("attack", "S1", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "greed_girl": {
+        "prefix": "", "origin": [6.5, -1.0], "weapons": [],
+        "anims": {"stab": ("attack", "Hit", "dash"), "slash": ("attack", "Slash", "step"),
+                  "special": ("timeline", {"frames": [[0, "Special"], [0.975, "S1"]], "length": 1.95}, "step"),
+                  "intro": ("skill", "Special", "rise"), "special_attack": ("attack", "S1", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "greed_amber": {
+        "prefix": "KingOfGreedAmber_", "origin": [-9.0, -1.5], "root_scale": 1.82, "weapons": [],
+        "anims": {"hurt": ("hurt", "Damaged")},
+    },
+    # 扭曲列车的汤吗丽：两个阶段各一副，待机 19 层，攻击、受击、三角铁在原版都是整图
+    "tomerry_p1": {
+        "prefix": "TomerryPhase1_", "origin": [-38.0, -21.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "thrust": ("attack", "Penetrate", "dash"),
+                  "slash": ("attack", "Slash", "step"), "hurt": ("hurt", "Damaged")},
+    },
+    "tomerry_p2": {
+        "prefix": "TomerryPhase2_", "origin": [-36.5, -21.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "thrust": ("attack", "Penetrate", "dash"),
+                  "slash": ("attack", "Slash", "step"), "triangle": ("attack", "SpecialAtk", "step"),
+                  "hurt": ("hurt", "Damaged")},
+    },
     # 艺术层
     "dacapo": {
         "prefix": "Orchestra_", "origin": [-2.5, -136.0],
@@ -412,6 +466,16 @@ BOSSES = {
                   "guard": ("guard", "Guard"), "ego_s1": ("skill", "S1"), "ego_s2": ("skill", "S2")},
     },
 }
+
+# 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
+# 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
+for _e in range(1, 6):
+    BOSSES[f"shy_look_{_e}"] = {
+        "layers": "shy_look", "prefix": "ShyLookToday_", "origin": [-33.0, 6.0], "weapons": [],
+        "drop": {"*": [str(i) for i in range(1, 6) if i != _e]},
+        "anims": {"attack": ("attack", "Atk", "step"), "cast": ("skill", "Default", "rise"),
+                  "hurt": ("hurt", "Damaged")},
+    }
 
 
 def lag(pose, t0):
@@ -576,17 +640,19 @@ def main():
         motions = {}
         for pose in poses:
             src = spec["prefix"] + pose
-            bones, assign, _ = rig_motion(LAYERS / src_dir, src, info[src]["layers"])
+            drop = spec.get("drop", {}).get(pose, spec.get("drop", {}).get("*", []))
+            bones, assign, _ = rig_motion(LAYERS / src_dir, src, [l for l in info[src]["layers"] if l["name"] not in drop])
             extra = spec.get("extra", {}).get(pose, [])
             for ex in extra:
-                assign[ex["name"]] = "body"
+                assign[ex["name"]] = ex.get("bone", "body") if ex.get("bone", "body") in bones else "body"
             if pose == base:
                 for i, w in enumerate(spec["weapons"]):
                     role = "weapon" + ("" if i == 0 else str(i + 1))
                     bones[role] = {"parent": "body", "at": w["pivot"]}
                     for l in w["layers"]:
                         assign[l] = role
-            motions[pose] = {"source": src, "bones": bones, "assign": assign, **({"extra": extra} if extra else {})}
+            motions[pose] = {"source": src, "bones": bones, "assign": assign, **({"extra": extra} if extra else {}),
+                             **({"drop": drop} if drop else {})}
         cfg = {"name": f"boss_{name}", "layers_dir": f"~/.local/share/LibraryOfRuina-layers/{src_dir}", "texture_scale": 0.6,
                **({"root_scale": spec["root_scale"]} if "root_scale" in spec else {}),
                "origin": spec["origin"], "skin_tint": [1.0, 1.0, 1.0], "fps": 30, "setup_motion": base,

@@ -1,0 +1,304 @@
+{
+ "name": "boss_greed_amber",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/greed_amber",
+ "texture_scale": 0.6,
+ "root_scale": 1.82,
+ "origin": [
+  -9.0,
+  -1.5
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "KingOfGreedAmber_Default",
+   "bones": {
+    "body": {
+     "at": [
+      1.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      1.7,
+      238.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -8.8,
+      352.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "body_3": "body",
+    "body_4": "body",
+    "body_5": "body",
+    "body_6": "body",
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head",
+    "body_7": "body",
+    "body_8": "body",
+    "body_9": "body"
+   }
+  },
+  "Damaged": {
+   "source": "KingOfGreedAmber_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      1.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      1.7,
+      238.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -8.8,
+      352.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "body_3": "body",
+    "body_4": "body",
+    "body_5": "body",
+    "body_6": "body",
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head",
+    "body_7": "body",
+    "body_8": "body",
+    "body_9": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0
+    ],
+    [
+     0.4,
+     "Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
