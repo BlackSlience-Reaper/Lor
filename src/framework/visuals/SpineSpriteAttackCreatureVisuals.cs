@@ -27,8 +27,17 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
     }
 
     // 触发桥按接口调用；这里重新实现接口，有 Spine 身体时由它处理，否则走基类的换图动作。
-    bool INonSpineVisualTriggerHandler.TryPlayTrigger(string triggerName) =>
-        _spine?.Play(triggerName, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this)) ?? TryPlayTrigger(triggerName);
+    // 基类换图前会调 BeforeResolveSpriteTrigger（棘刺公交在这里播受击音效），走 Spine 时同样先调。
+    bool INonSpineVisualTriggerHandler.TryPlayTrigger(string triggerName)
+    {
+        if (_spine == null)
+        {
+            return TryPlayTrigger(triggerName);
+        }
+
+        BeforeResolveSpriteTrigger(triggerName);
+        return _spine.Play(triggerName, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
+    }
 
     // 基类在混乱状态切换、动作结束时回到这里重设两张贴图；有 Spine 身体时贴图一直藏着，由 Spine 定格或解除受击姿势。
     protected override void RestoreIdleState()
@@ -37,6 +46,12 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
         HideSprites();
         _spine?.SyncHoldHurt(MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
     }
+
+    /// <summary>
+    /// 原版 <c>NCreature.StartDeathAnim</c> 只给原版 Spine 怪物发 "Dead" 触发，贴图外观收不到，由死亡补丁转到这里。
+    /// 怪物要同时把 <c>DeathAnimLengthOverride</c> 设成死亡动画时长，原版才会等动画播完再做溶解消失。
+    /// </summary>
+    internal void PlayDeath() => _spine?.Play("Dead", holdHurtPose: false);
 
     private void HideSprites()
     {

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.visuals;
@@ -16,6 +17,9 @@ namespace LibraryOfRuina.content.guests.WedgeOffice;
 
 public sealed class Oscar : MonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
     public override int MinInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 89, 87);
 

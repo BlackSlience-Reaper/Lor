@@ -21,6 +21,9 @@ namespace LibraryOfRuina.content.abnormalities.HeartOfAspiration;
 
 public sealed class HeartOfAspiration : AspirationMonsterBase
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => HeartOfAspirationCreatureVisuals.DeathSeconds;
+
     private const string AspirationPulseMoveId = "ASPIRATION_PULSE";
     private const string PulseMoveId = "PULSE";
     private const int AspirationPulseMinDamage = 19;
@@ -104,7 +107,7 @@ public sealed class HeartOfAspiration : AspirationMonsterBase
         int damage = EnsureAspirationPulseDamageRoll();
         AttackCommand attack = await DamageCmd.Attack(damage)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", 0.35f)
+            .WithAttackerAnim("Attack", HeartOfAspirationCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(null);
 

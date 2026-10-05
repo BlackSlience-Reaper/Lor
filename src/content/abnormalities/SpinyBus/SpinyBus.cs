@@ -24,7 +24,11 @@ namespace LibraryOfRuina.content.abnormalities.SpinyBus;
 
 public sealed class SpinyBus : LorMonsterModel
 {
-    private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => SpinyBusCreatureVisuals.DeathSeconds;
+
+    // 每段都等到 Spine 换图后的命中：小头爆炸三段交替两种攻击，每段都是一次新动画（见 SpinyBusCreatureVisuals）
+    private const float SegmentDelaySeconds = SpinyBusCreatureVisuals.AttackImpactSeconds;
 
     private const string TrustGameMoveId = "TRUST_GAME";
     private const string GrinningMoveId = "GRINNING";

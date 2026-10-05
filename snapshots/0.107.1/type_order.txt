@@ -552,6 +552,7 @@ LibraryOfRuina.ui.StaggerBadgeRefreshPatch
 LibraryOfRuina.ui.StaggerBadgeResistIconsPatch
 LibraryOfRuina.content.liberation.Religion.ReligionFloorSacrificePlayPatch
 LibraryOfRuina.patches.VanillaIntentTargetFlashPatch
+LibraryOfRuina.patches.visuals.SpineSpriteDeathAnimPatch
 GodotPlugins.Game.Main
 LibraryOfRuina.ui.BlockTransferButton
 LibraryOfRuina.ui.BlockTransferOverlay
@@ -630,7 +631,6 @@ LibraryOfRuina.patches.visuals.MonsterVisualCatalog
 LibraryOfRuina.patches.visuals.MonsterVisualAttribute
 LibraryOfRuina.patches.visuals.MonsterVisualFactoryAttribute
 LibraryOfRuina.patches.visuals.MonsterVisualRegistry
-LibraryOfRuina.patches.visuals.FinnVisualDeclaration
 LibraryOfRuina.patches.visuals.WrappedMonsterVisualFactory
 LibraryOfRuina.patches.visuals.MonsterVisualDebug
 LibraryOfRuina.patches.dispatch.IntentVisualDispatch
@@ -1816,6 +1816,7 @@ LibraryOfRuina.content.liberation.Art.BeyondFragmentEgoCard
 LibraryOfRuina.content.liberation.Art.SilentOrchestraPageChoiceCardBase
 LibraryOfRuina.content.liberation.Art.SilentOrchestraPageMode
 LibraryOfRuina.content.guests.GuestReceptionPoolRegistry
+LibraryOfRuina.content.guests.GuestSpine
 LibraryOfRuina.content.guests.IGuestReceptionEncounter
 LibraryOfRuina.content.guests.YunOffice.Yun
 LibraryOfRuina.content.guests.YunOffice.YunCreatureVisuals
@@ -1840,10 +1841,13 @@ LibraryOfRuina.content.guests.WedgeOffice.WedgePerseverancePower
 LibraryOfRuina.content.guests.WedgeOffice.WedgePiercingPower
 LibraryOfRuina.content.guests.MusiciansOfBremen.LibraryOfRuinaImprovDrummingPower
 LibraryOfRuina.content.guests.MusiciansOfBremen.Meow
+LibraryOfRuina.content.guests.MusiciansOfBremen.MeowCreatureVisuals
 LibraryOfRuina.content.guests.MusiciansOfBremen.Mo
 LibraryOfRuina.content.guests.MusiciansOfBremen.MuMu
+LibraryOfRuina.content.guests.MusiciansOfBremen.MuMuCreatureVisuals
 LibraryOfRuina.content.guests.MusiciansOfBremen.MusiciansOfBremenNormal
 LibraryOfRuina.content.guests.MusiciansOfBremen.Oink
+LibraryOfRuina.content.guests.MusiciansOfBremen.OinkCreatureVisuals
 LibraryOfRuina.content.guests.KuroKumo.KuroKumoAnimatedBackground
 LibraryOfRuina.content.guests.KuroKumo.KuroKumoAssets
 LibraryOfRuina.content.guests.KuroKumo.KuroKumoNormal
@@ -1861,6 +1865,7 @@ LibraryOfRuina.content.guests.DawnOffice.DawnOfficeDialogueHelper
 LibraryOfRuina.content.guests.DawnOffice.DawnOfficeNormal
 LibraryOfRuina.content.guests.DawnOffice.DawnOfficeTripleAttackCreatureVisuals
 LibraryOfRuina.content.guests.DawnOffice.Finn
+LibraryOfRuina.content.guests.DawnOffice.FinnCreatureVisuals
 LibraryOfRuina.content.guests.DawnOffice.FinnWeak
 LibraryOfRuina.content.guests.DawnOffice.Gin
 LibraryOfRuina.content.guests.DawnOffice.GinCreatureVisuals
@@ -2923,6 +2928,15 @@ LibraryOfRuina.content.guests.WedgeOffice.WedgeOfficeSingleImageCreatureVisuals+
 LibraryOfRuina.content.guests.WedgeOffice.WedgeOfficeSingleImageCreatureVisuals+PropertyName
 LibraryOfRuina.content.guests.WedgeOffice.WedgeOfficeSingleImageCreatureVisuals+SignalName
 LibraryOfRuina.content.guests.WedgeOffice.WedgePerseverancePower+Data
+LibraryOfRuina.content.guests.MusiciansOfBremen.MeowCreatureVisuals+MethodName
+LibraryOfRuina.content.guests.MusiciansOfBremen.MeowCreatureVisuals+PropertyName
+LibraryOfRuina.content.guests.MusiciansOfBremen.MeowCreatureVisuals+SignalName
+LibraryOfRuina.content.guests.MusiciansOfBremen.MuMuCreatureVisuals+MethodName
+LibraryOfRuina.content.guests.MusiciansOfBremen.MuMuCreatureVisuals+PropertyName
+LibraryOfRuina.content.guests.MusiciansOfBremen.MuMuCreatureVisuals+SignalName
+LibraryOfRuina.content.guests.MusiciansOfBremen.OinkCreatureVisuals+MethodName
+LibraryOfRuina.content.guests.MusiciansOfBremen.OinkCreatureVisuals+PropertyName
+LibraryOfRuina.content.guests.MusiciansOfBremen.OinkCreatureVisuals+SignalName
 LibraryOfRuina.content.guests.KuroKumo.KuroKumoAnimatedBackground+MethodName
 LibraryOfRuina.content.guests.KuroKumo.KuroKumoAnimatedBackground+PropertyName
 LibraryOfRuina.content.guests.KuroKumo.KuroKumoAnimatedBackground+SignalName
@@ -2941,6 +2955,9 @@ LibraryOfRuina.content.guests.HookOffice.NaokiCreatureVisuals+SignalName
 LibraryOfRuina.content.guests.DawnOffice.DawnOfficeTripleAttackCreatureVisuals+MethodName
 LibraryOfRuina.content.guests.DawnOffice.DawnOfficeTripleAttackCreatureVisuals+PropertyName
 LibraryOfRuina.content.guests.DawnOffice.DawnOfficeTripleAttackCreatureVisuals+SignalName
+LibraryOfRuina.content.guests.DawnOffice.FinnCreatureVisuals+MethodName
+LibraryOfRuina.content.guests.DawnOffice.FinnCreatureVisuals+PropertyName
+LibraryOfRuina.content.guests.DawnOffice.FinnCreatureVisuals+SignalName
 LibraryOfRuina.content.guests.DawnOffice.GinCreatureVisuals+MethodName
 LibraryOfRuina.content.guests.DawnOffice.GinCreatureVisuals+PropertyName
 LibraryOfRuina.content.guests.DawnOffice.GinCreatureVisuals+SignalName

@@ -1,0 +1,242 @@
+{
+ "name": "fairy_mass",
+ "image": "../../images/monsters/fairy_festival/fairy_mass.png",
+ "atlas_page": "fairy_mass.png",
+ "cell": 5,
+ "sigma": 7.0,
+ "body": {
+  "center": [
+   210,
+   140
+  ],
+  "radii": [
+   150,
+   115
+  ]
+ },
+ "parts": {
+  "wingL": {
+   "center": [
+    95,
+    262
+   ],
+   "radii": [
+    85,
+    35
+   ],
+   "bone": [
+    190,
+    252
+   ]
+  },
+  "wingL2": {
+   "center": [
+    105,
+    322
+   ],
+   "radii": [
+    65,
+    25
+   ],
+   "bone": [
+    190,
+    302
+   ]
+  },
+  "wingR": {
+   "center": [
+    360,
+    278
+   ],
+   "radii": [
+    85,
+    35
+   ],
+   "bone": [
+    250,
+    258
+   ]
+  },
+  "wingR2": {
+   "center": [
+    340,
+    332
+   ],
+   "radii": [
+    60,
+    25
+   ],
+   "bone": [
+    250,
+    302
+   ]
+  }
+ },
+ "limbs": {
+  "legL": [
+   [
+    205,
+    335
+   ],
+   [
+    100,
+    330
+   ],
+   [
+    92,
+    485
+   ]
+  ],
+  "legFL": [
+   [
+    210,
+    345
+   ],
+   [
+    130,
+    380
+   ],
+   [
+    165,
+    520
+   ]
+  ],
+  "legFR": [
+   [
+    230,
+    345
+   ],
+   [
+    300,
+    380
+   ],
+   [
+    270,
+    520
+   ]
+  ],
+  "legR": [
+   [
+    235,
+    335
+   ],
+   [
+    345,
+    330
+   ],
+   [
+    350,
+    478
+   ]
+  ]
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.0,
+   "bob": 4.0,
+   "breath": 0.02,
+   "leg_tip_sway": 3.0,
+   "parts": {
+    "wingL": {
+     "flap": 0.35,
+     "flap_cycles": 10
+    },
+    "wingL2": {
+     "flap": 0.3,
+     "flap_cycles": 10,
+     "phase": 0.6
+    },
+    "wingR": {
+     "flap": 0.35,
+     "flap_cycles": 10,
+     "phase": 0.3
+    },
+    "wingR2": {
+     "flap": 0.3,
+     "flap_cycles": 10,
+     "phase": 0.9
+    }
+   }
+  },
+  "attack": {
+   "type": "lunge",
+   "duration": 1.1,
+   "dash": -40.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3,
+    0.55
+   ],
+   "swap": {
+    "source": "../../images/monsters/fairy_festival/fairy_mass_attack.png",
+    "page": "fairy_mass_spine_attack.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.46,
+     "frame_scale": 0.5
+    },
+    "on": 0.15,
+    "off": 0.85,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "pulse": {
+     "times": [
+      0.3,
+      0.55
+     ],
+     "amp": 0.04
+    }
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/fairy_festival/fairy_mass_hit.png",
+    "page": "fairy_mass_spine_hurt.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.46
+    },
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 115.0,
+   "body_rotate": -25.0,
+   "body_x": 10.0,
+   "world_angles": {
+    "legL": [
+     185.0,
+     195.0
+    ],
+    "legFL": [
+     205.0,
+     200.0
+    ],
+    "legFR": [
+     335.0,
+     340.0
+    ],
+    "legR": [
+     355.0,
+     345.0
+    ]
+   }
+  }
+ }
+}

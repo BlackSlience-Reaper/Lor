@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.patches.visuals;
@@ -17,6 +18,9 @@ namespace LibraryOfRuina.content.guests.DawnOffice;
 
 public sealed class Finn : MonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
     public override int MinInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 65, 63);
 
@@ -24,7 +28,7 @@ public sealed class Finn : MonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 68, 65);
 
     public override IEnumerable<string> AssetPaths =>
-        new[] { MonsterVisualCatalog.GetStaticDefaultIdleTexturePath(Id.Entry) }
+        MonsterVisualCatalog.GetRequiredProfile(Id.Entry).AssetPaths
             .Concat(base.AssetPaths.Skip(1))
             .Distinct();
 

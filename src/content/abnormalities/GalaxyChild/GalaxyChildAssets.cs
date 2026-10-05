@@ -16,4 +16,7 @@ internal static class GalaxyChildAssets
     internal const string GalaxyFriendHitTexture = "res://images/monsters/galaxy_friend/hit.png";
     internal const string GalaxyFriendIdleTexture = "res://images/monsters/galaxy_friend/idle.png";
     internal const string GalaxyFriendParryTexture = "res://images/monsters/galaxy_friend/parry.png";
+    // Spine 身体（tools/spine_from_sprite 生成）：骨骼与图集以原始文件打进 PCK，运行时按路径加载
+    internal const string GalaxyFriendSpineAtlas = "res://images/monsters/galaxy_friend/galaxy_friend.atlas";
+    internal const string GalaxyFriendSpineSkeleton = "res://images/monsters/galaxy_friend/galaxy_friend.spine-json";
 }

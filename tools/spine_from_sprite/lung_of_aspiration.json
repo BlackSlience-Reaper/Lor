@@ -1,0 +1,174 @@
+{
+ "name": "lung_of_aspiration",
+ "image": "../../images/monsters/lung_of_aspiration/idle.png",
+ "atlas_page": "idle.png",
+ "cell": 5,
+ "sigma": 7.0,
+ "body": {
+  "center": [
+   140,
+   160
+  ],
+  "radii": [
+   40,
+   95
+  ]
+ },
+ "parts": {
+  "lobeL": {
+   "center": [
+    75,
+    150
+   ],
+   "radii": [
+    62,
+    90
+   ],
+   "bone": [
+    120,
+    110
+   ]
+  },
+  "lobeR": {
+   "center": [
+    238,
+    160
+   ],
+   "radii": [
+    55,
+    90
+   ],
+   "bone": [
+    185,
+    110
+   ]
+  },
+  "mouth": {
+   "center": [
+    65,
+    60
+   ],
+   "radii": [
+    50,
+    40
+   ],
+   "bone": [
+    125,
+    30
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 1.5,
+   "breath": 0.01,
+   "parts": {
+    "lobeL": {
+     "flap": 0.07,
+     "flap_cycles": 1
+    },
+    "lobeR": {
+     "flap": 0.07,
+     "flap_cycles": 1,
+     "phase": 0.3
+    },
+    "mouth": {
+     "rotate": 4.0,
+     "phase": 0.8
+    }
+   }
+  },
+  "attack": {
+   "type": "lunge",
+   "duration": 1.3,
+   "dash": -40.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3,
+    0.6,
+    0.9
+   ],
+   "swap": {
+    "source": "../../images/monsters/lung_of_aspiration/attack.png",
+    "page": "lung_of_aspiration_spine_attack.png",
+    "align": {
+     "mode": "bottom",
+     "base_scale": 0.984
+    },
+    "on": 0.15,
+    "off": 1.05,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "pulse": {
+     "times": [
+      0.3,
+      0.6,
+      0.9
+     ],
+     "amp": 0.04
+    }
+   },
+   "timing": {
+    "dash_back": [
+     1.0,
+     1.25
+    ]
+   }
+  },
+  "special": {
+   "type": "lunge",
+   "duration": 1.1,
+   "dash": -20.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3
+   ],
+   "swap": {
+    "source": "../../images/monsters/lung_of_aspiration/special.png",
+    "page": "lung_of_aspiration_spine_special.png",
+    "align": {
+     "mode": "bottom",
+     "base_scale": 0.984
+    },
+    "on": 0.15,
+    "off": 0.85,
+    "fade_in": 0.04,
+    "fade_out": 0.12
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/lung_of_aspiration/hit.png",
+    "page": "lung_of_aspiration_spine_hurt.png",
+    "align": {
+     "mode": "bottom",
+     "base_scale": 0.984
+    },
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 70.0,
+   "body_rotate": -60.0,
+   "body_x": 10.0,
+   "world_angles": {}
+  }
+ }
+}

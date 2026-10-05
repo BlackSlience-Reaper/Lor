@@ -1,0 +1,244 @@
+{
+ "name": "small_spider",
+ "image": "../../images/monsters/spider_bud/small_spider_idle.png",
+ "atlas_page": "small_spider_idle.png",
+ "cell": 6,
+ "sigma": 7.0,
+ "body": {
+  "center": [
+   400,
+   150
+  ],
+  "radii": [
+   125,
+   85
+  ]
+ },
+ "limbs": {
+  "armL": [
+   [
+    300,
+    150
+   ],
+   [
+    190,
+    190
+   ],
+   [
+    150,
+    10
+   ],
+   [
+    5,
+    270
+   ]
+  ],
+  "armBL": [
+   [
+    305,
+    140
+   ],
+   [
+    245,
+    190
+   ],
+   [
+    195,
+    10
+   ],
+   [
+    55,
+    275
+   ]
+  ]
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.0,
+   "bob": 3.0,
+   "breath": 0.02,
+   "arm_sway": [
+    2.0,
+    4.0,
+    6.0
+   ],
+   "arm_lag": [
+    0.5,
+    1.0,
+    1.5
+   ]
+  },
+  "attack": {
+   "type": "joint_swing",
+   "duration": 1.1,
+   "arm": "armL",
+   "raise": [
+    150.0,
+    95.0,
+    60.0
+   ],
+   "strike": [
+    190.0,
+    170.0,
+    250.0
+   ],
+   "chains": [
+    {
+     "arm": "armBL",
+     "raise": [
+      145.0,
+      100.0,
+      65.0
+     ],
+     "strike": [
+      195.0,
+      175.0,
+      255.0
+     ]
+    }
+   ],
+   "lag": 0.02,
+   "lunge": -40.0,
+   "lean": 6.0,
+   "timing": {
+    "recover": [
+     0.78,
+     1.05
+    ]
+   },
+   "fx": {
+    "source": "../../images/monsters/spider_bud/small_spider_attack.png",
+    "page": "small_spider_spine_fx.png",
+    "key": "all",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.6
+    },
+    "exclude": [
+     {
+      "polygon": [
+       [
+        340,
+        265
+       ],
+       [
+        500,
+        270
+       ],
+       [
+        620,
+        290
+       ],
+       [
+        690,
+        480
+       ],
+       [
+        560,
+        520
+       ],
+       [
+        460,
+        525
+       ],
+       [
+        380,
+        520
+       ],
+       [
+        330,
+        470
+       ]
+      ]
+     }
+    ],
+    "on": 0.2,
+    "off": 0.8,
+    "fade_in": 0.05,
+    "fade_out": 0.25,
+    "scale_from": 0.9,
+    "scale_to": 1.0,
+    "extra_spin": 15.0
+   }
+  },
+  "cast": {
+   "type": "joint_pose",
+   "duration": 0.8,
+   "arm": "armL",
+   "pose": [
+    130.0,
+    100.0,
+    170.0
+   ],
+   "chains": [
+    {
+     "arm": "armBL",
+     "pose": [
+      125.0,
+      105.0,
+      175.0
+     ]
+    }
+   ],
+   "lag": 0.03,
+   "lean": -12.0,
+   "body_x": 8.0,
+   "body_y": 8.0,
+   "wobble": 2.0,
+   "timing": {
+    "up": [
+     0.0,
+     0.15
+    ],
+    "down": [
+     0.55,
+     0.75
+    ]
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/spider_bud/small_spider_cast.png",
+    "page": "small_spider_spine_hurt.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.6
+    },
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 45.0,
+   "body_rotate": 0.0,
+   "body_x": 10.0,
+   "world_angles": {
+    "armL": [
+     190.0,
+     200.0,
+     185.0
+    ],
+    "armBL": [
+     195.0,
+     205.0,
+     190.0
+    ]
+   }
+  }
+ }
+}

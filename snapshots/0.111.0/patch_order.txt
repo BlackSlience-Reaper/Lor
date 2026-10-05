@@ -189,6 +189,7 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "StartDeathAnim"
   Prefix LibraryOfRuina.content.liberation.Natural.NaturalFloorSwordFalseDeathVisualPatch.Prefix
   Prefix LibraryOfRuina.patches.visuals.LiteratureFloorBlackSwanBrotherDeathVisualPatch.Prefix
   Prefix LibraryOfRuina.content.abnormalities.Alriune.AlriuneDustbornDeathVisualPatch.Prefix
+  Prefix LibraryOfRuina.patches.visuals.SpineSpriteDeathAnimPatch.Prefix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Combat.NCreature), "UpdateIntent")
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntentFirst.Postfix
   Postfix LibraryOfRuina.patches.dispatch.IntentVisualDispatch+UpdateIntent.Postfix

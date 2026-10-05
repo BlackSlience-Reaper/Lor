@@ -2,7 +2,7 @@ using LibraryOfRuina.framework.visuals;
 
 namespace LibraryOfRuina.content.guests.DawnOffice;
 
-public abstract partial class DawnOfficeTripleAttackCreatureVisuals : SpriteAttackCreatureVisuals
+public abstract partial class DawnOfficeTripleAttackCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     internal static SpriteVisualProfile BuildTripleAttackProfile(
         string texturePrefix,

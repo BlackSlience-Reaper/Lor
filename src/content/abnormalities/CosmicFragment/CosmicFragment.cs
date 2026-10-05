@@ -25,15 +25,20 @@ namespace LibraryOfRuina.content.abnormalities.CosmicFragment;
 
 public sealed class CosmicFragment : LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => CosmicFragmentCreatureVisuals.DeathSeconds;
+
     public const string IdleTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_idle.png";
     public const string AttackTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_attack.png";
     public const string Attack2TexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_attack2.png";
     public const string HitTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_hit.png";
+    // Spine 身体（tools/spine_from_sprite 生成）：骨骼与图集以原始文件打进 PCK，运行时按路径加载
+    internal const string SpineAtlasPath = "res://images/monsters/cosmic_fragment/cosmic_fragment.atlas";
+    internal const string SpineSkeletonPath = "res://images/monsters/cosmic_fragment/cosmic_fragment.spine-json";
     public const string AttackSfxPath = "res://audio/sfx/cosmic_fragment/cosmic_fragment_hit.ogg";
     public const string SingingSfxPath = "res://audio/sfx/cosmic_fragment/cosmic_fragment_singing.ogg";
     public const string EchoAttackSfxPath = "res://audio/sfx/cosmic_fragment/cosmic_fragment_echo_attack.ogg";
 
-    private const float SegmentDelaySeconds = AbnormalityAnimHelper.DefaultAttackSegmentDelaySeconds;
     private static readonly string CosmicFragmentPageRelicTitleLocKey =
         $"{ModelDb.GetId<CosmicFragmentPageRelic>().Entry}.title";
 
@@ -136,7 +141,7 @@ public sealed class CosmicFragment : LorMonsterModel
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
         AttackCommand attack = await DamageCmd.Attack(PenetrateDmg)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
+            .WithAttackerAnim("Attack", CosmicFragmentCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
 
@@ -184,7 +189,13 @@ public sealed class CosmicFragment : LorMonsterModel
 
             LocalOggOneShotPlayer.Play(EchoAttackSfxPath, -2f);
             await AbnormalityAnimHelper.ExecuteAttackSegment(
-                this, EchoDmg, animId: "Attack2", delaySeconds: SegmentDelaySeconds);
+                this,
+                EchoDmg,
+                animId: "Attack2",
+                // 回响只换一次图，第一段等到换图后的命中，后续各段落在人物鼓起的时刻（见 CosmicFragmentCreatureVisuals）
+                delaySeconds: i == 0
+                    ? CosmicFragmentCreatureVisuals.AttackImpactSeconds
+                    : CosmicFragmentCreatureVisuals.EchoFollowUpSeconds);
             await Cmd.CustomScaledWait(0.04f, 0.08f);
         }
         

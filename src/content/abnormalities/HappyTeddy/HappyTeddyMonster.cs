@@ -24,6 +24,9 @@ namespace LibraryOfRuina.content.abnormalities.HappyTeddy;
 
 public sealed class HappyTeddyMonster : CounterIntentMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => HappyTeddyCreatureVisuals.DeathSeconds;
+
     private static readonly string[] NormalBackgroundTextLineKeys =
     [
         "HAPPY_TEDDY_MONSTER.backgroundText.normal.0",
@@ -235,7 +238,13 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
         {
             if (Creature.IsDead) return;
             LocalOggOneShotPlayer.Play(HappyTeddyAssets.NormalAttackSfx, -2.5f);
-            await AbnormalityAnimHelper.ExecuteAttackSegment(this, DisplayOfAffectionDamage);
+            // 示爱只换一次出拳图，第一拳等到换图后的命中，后续各拳落在往前顶的时刻（见 HappyTeddyCreatureVisuals）
+            await AbnormalityAnimHelper.ExecuteAttackSegment(
+                this,
+                DisplayOfAffectionDamage,
+                delaySeconds: i == 0
+                    ? HappyTeddyCreatureVisuals.AttackImpactSeconds
+                    : HappyTeddyCreatureVisuals.FollowUpHitSeconds);
         }
         //await LibraryOfRuinaDodgeDicePower.ApplyDodge(Creature, DodgeAmount, Creature, null);
         AdvanceBaseCadence();
@@ -257,7 +266,7 @@ public sealed class HappyTeddyMonster : CounterIntentMonsterModel
 
         await DamageCmd.Attack(NostalgicEmbraceDamage)
             .FromMonster(this)
-            .WithAttackerAnim("NostalgicEmbrace", 0.375f)
+            .WithAttackerAnim("NostalgicEmbrace", HappyTeddyCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
 

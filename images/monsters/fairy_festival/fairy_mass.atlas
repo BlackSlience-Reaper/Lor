@@ -1,0 +1,17 @@
+fairy_mass.png
+size:457,523
+filter:Linear,Linear
+fairy_mass
+bounds:0,0,457,523
+
+fairy_mass_spine_attack.png
+size:827,739
+filter:Linear,Linear
+pose_attack
+bounds:0,0,827,739
+
+fairy_mass_spine_hurt.png
+size:475,532
+filter:Linear,Linear
+pose_hurt
+bounds:0,0,475,532

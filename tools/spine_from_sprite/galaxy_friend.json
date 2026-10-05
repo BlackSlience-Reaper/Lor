@@ -1,0 +1,325 @@
+{
+ "name": "galaxy_friend",
+ "image": "../../images/monsters/galaxy_friend/idle.png",
+ "atlas_page": "idle.png",
+ "cell": 5,
+ "sigma": 7.0,
+ "body": {
+  "center": [
+   205,
+   200
+  ],
+  "radii": [
+   150,
+   62
+  ]
+ },
+ "limbs": {
+  "armL": [
+   [
+    178,
+    170
+   ],
+   [
+    170,
+    95
+   ],
+   [
+    110,
+    40
+   ],
+   [
+    15,
+    62
+   ]
+  ]
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 3.0,
+   "bob": 0.0,
+   "breath": 0.03,
+   "arm_sway": [
+    2.0,
+    3.0,
+    5.0
+   ],
+   "arm_lag": [
+    0.5,
+    1.0,
+    1.5
+   ]
+  },
+  "attack": {
+   "type": "joint_swing",
+   "duration": 1.1,
+   "arm": "armL",
+   "raise": [
+    85.0,
+    100.0,
+    125.0
+   ],
+   "strike": [
+    105.0,
+    150.0,
+    192.0
+   ],
+   "lag": 0.02,
+   "lunge": -20.0,
+   "lean": 4.0,
+   "timing": {
+    "recover": [
+     0.85,
+     1.05
+    ]
+   },
+   "fx": {
+    "source": "../../images/monsters/galaxy_friend/attack.png",
+    "page": "galaxy_friend_spine_fx.png",
+    "key": "all",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.55
+    },
+    "exclude": [
+     {
+      "polygon": [
+       [
+        365,
+        60
+       ],
+       [
+        395,
+        0
+       ],
+       [
+        560,
+        0
+       ],
+       [
+        640,
+        200
+       ],
+       [
+        700,
+        340
+       ],
+       [
+        780,
+        370
+       ],
+       [
+        780,
+        430
+       ],
+       [
+        395,
+        430
+       ],
+       [
+        395,
+        330
+       ],
+       [
+        415,
+        320
+       ],
+       [
+        425,
+        230
+       ],
+       [
+        405,
+        215
+       ],
+       [
+        440,
+        200
+       ],
+       [
+        470,
+        140
+       ],
+       [
+        400,
+        140
+       ],
+       [
+        372,
+        120
+       ]
+      ]
+     },
+     {
+      "polygon": [
+       [
+        600,
+        180
+       ],
+       [
+        780,
+        180
+       ],
+       [
+        780,
+        380
+       ],
+       [
+        640,
+        340
+       ]
+      ]
+     },
+     {
+      "polygon": [
+       [
+        540,
+        0
+       ],
+       [
+        780,
+        0
+       ],
+       [
+        780,
+        200
+       ],
+       [
+        620,
+        200
+       ]
+      ]
+     }
+    ],
+    "on": 0.2,
+    "off": 0.85,
+    "fade_in": 0.05,
+    "fade_out": 0.25,
+    "scale_from": 0.85,
+    "scale_to": 1.0,
+    "scale_time": 0.1
+   }
+  },
+  "parry": {
+   "type": "lunge",
+   "duration": 0.8,
+   "dash": 15.0,
+   "lean": -4.0,
+   "wind_lean": 2.0,
+   "timing": {
+    "wind": [
+     0.0,
+     0.06
+    ],
+    "dash_out": [
+     0.06,
+     0.18
+    ],
+    "dash_back": [
+     0.5,
+     0.75
+    ]
+   },
+   "fx": {
+    "source": "../../images/monsters/galaxy_friend/parry.png",
+    "page": "galaxy_friend_spine_fx_parry.png",
+    "key": "all",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.55
+    },
+    "exclude": [
+     {
+      "polygon": [
+       [
+        150,
+        150
+       ],
+       [
+        260,
+        145
+       ],
+       [
+        320,
+        200
+       ],
+       [
+        360,
+        300
+       ],
+       [
+        400,
+        330
+       ],
+       [
+        469,
+        395
+       ],
+       [
+        469,
+        420
+       ],
+       [
+        130,
+        420
+       ],
+       [
+        130,
+        360
+       ],
+       [
+        150,
+        300
+       ]
+      ]
+     }
+    ],
+    "on": 0.06,
+    "off": 0.55,
+    "fade_in": 0.05,
+    "fade_out": 0.15,
+    "scale_from": 0.8,
+    "scale_to": 1.0,
+    "scale_time": 0.12
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -6.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.4,
+   "swap": {
+    "source": "../../images/monsters/galaxy_friend/hit.png",
+    "page": "galaxy_friend_spine_hurt.png",
+    "anchor": [
+     170,
+     228
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 62.0,
+   "body_rotate": -5.0,
+   "body_x": 6.0,
+   "world_angles": {
+    "armL": [
+     205.0,
+     200.0,
+     190.0
+    ]
+   }
+  }
+ }
+}

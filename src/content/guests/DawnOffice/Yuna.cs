@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.powers;
@@ -17,6 +18,9 @@ namespace LibraryOfRuina.content.guests.DawnOffice;
 
 public sealed class Yuna : MonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
     private static readonly string[] BattleStartLines =
     {
         "YUNA.dialogue.battleStart.0",

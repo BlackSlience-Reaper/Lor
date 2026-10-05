@@ -16,6 +16,9 @@ namespace LibraryOfRuina.content.abnormalities.HeartOfAspiration;
 
 public sealed class LungOfAspiration : AspirationMonsterBase
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => LungOfAspirationCreatureVisuals.DeathSeconds;
+
     private const string ContractingPulseMoveId = "CONTRACTING_PULSE";
     private const string ViolentPulseMoveId = "VIOLENT_PULSE";
     private const int ContractingPulseMinDamage = 12;
@@ -99,7 +102,7 @@ public sealed class LungOfAspiration : AspirationMonsterBase
         LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
         AttackCommand attack = await DamageCmd.Attack(EnsureContractingPulseDamageRoll())
             .FromMonster(this)
-            .WithAttackerAnim("Special", 0.35f)
+            .WithAttackerAnim("Special", LungOfAspirationCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(null);
 
@@ -135,7 +138,7 @@ public sealed class LungOfAspiration : AspirationMonsterBase
             .FromMonster(this)
             .WithHitCount(ViolentPulseHits)
             .OnlyPlayAnimOnce()
-            .WithAttackerAnim("Attack", 0.35f)
+            .WithAttackerAnim("Attack", LungOfAspirationCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
 

@@ -1,9 +1,10 @@
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.DawnOffice;
 
-public partial class YangCreatureVisuals : SpriteAttackCreatureVisuals
+public partial class YangCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(Yang))]
     internal static readonly CreatureVisualLayout Layout = new(
@@ -18,4 +19,9 @@ public partial class YangCreatureVisuals : SpriteAttackCreatureVisuals
             0.58f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "yang", GuestSpine.StrikeThrustSlash);
 }

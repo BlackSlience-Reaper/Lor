@@ -22,6 +22,9 @@ public enum FairyMassVariant
 
 public sealed class FairyMass : CounterIntentMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => FairyMassCreatureVisuals.DeathSeconds;
+
     private const string WingbeatMoveId = "WINGBEAT";
     private const string GluttonyMoveId = "GLUTTONY";
 
@@ -120,7 +123,7 @@ public sealed class FairyMass : CounterIntentMonsterModel
         {
             if (Creature.IsDead) return;
             LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-            AttackCommand attack = await ExecuteSegmentAttack(WingbeatDamage);
+            AttackCommand attack = await ExecuteSegmentAttack(WingbeatDamage, i);
             IReadOnlyList<Creature> bleedTargets = AttackCommandCompat.Results(attack)
                 .Where(result => result.Receiver.IsPlayer && result.UnblockedDamage > 0)
                 .Select(result => result.Receiver)
@@ -144,16 +147,19 @@ public sealed class FairyMass : CounterIntentMonsterModel
             }
 
             LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-            await ExecuteSegmentAttack(GluttonyDamage);
+            await ExecuteSegmentAttack(GluttonyDamage, i);
             await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, GluttonyHealPerHit));
         }
     }
 
-    private Task<AttackCommand> ExecuteSegmentAttack(int damage)
+    // 多段攻击只换一次攻击图：第一段等到换图后的命中，后续各段短等待（见 FairyMassCreatureVisuals）
+    private Task<AttackCommand> ExecuteSegmentAttack(int damage, int segment)
     {
         return DamageCmd.Attack(damage)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
+            .WithAttackerAnim(
+                "Attack",
+                segment == 0 ? FairyMassCreatureVisuals.AttackImpactSeconds : FairyMassCreatureVisuals.FollowUpHitSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
     }

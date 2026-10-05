@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
@@ -23,4 +24,9 @@ public partial class PameliCreatureVisuals : DawnOfficeTripleAttackCreatureVisua
             0.52f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "pameli", GuestSpine.StrikeThrustSlash);
 }

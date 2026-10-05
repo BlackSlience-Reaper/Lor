@@ -1,0 +1,167 @@
+{
+ "name": "red_shoes_right",
+ "image": "../../images/monsters/red_shoes/right_shoe.png",
+ "atlas_page": "right_shoe.png",
+ "cell": 6,
+ "sigma": 8.0,
+ "body": {
+  "center": [
+   430,
+   505
+  ],
+  "radii": [
+   90,
+   38
+  ]
+ },
+ "limbs": {
+  "armL": [
+   [
+    448,
+    470
+   ],
+   [
+    448,
+    222
+   ],
+   [
+    130,
+    170
+   ]
+  ]
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.2,
+   "bob": 2.0,
+   "breath": 0.0,
+   "sway": 2.0,
+   "arm_sway": [
+    1.0,
+    2.5
+   ],
+   "arm_lag": [
+    0.4,
+    1.0
+   ]
+  },
+  "attack": {
+   "type": "joint_swing",
+   "duration": 1.3,
+   "arm": "armL",
+   "raise": [
+    65.0,
+    95.0
+   ],
+   "strike": [
+    140.0,
+    215.0
+   ],
+   "lag": 0.03,
+   "lunge": -30.0,
+   "lean": 10.0,
+   "timing": {
+    "recover": [
+     0.95,
+     1.25
+    ]
+   },
+   "fx": {
+    "source": "../../images/monsters/red_shoes/right_shoe_attack.png",
+    "page": "red_shoes_right_spine_fx.png",
+    "key": "all",
+    "pivot": [
+     671,
+     735
+    ],
+    "on": 0.2,
+    "off": 0.95,
+    "fade_in": 0.05,
+    "fade_out": 0.3,
+    "scale_from": 0.9,
+    "scale_to": 1.0,
+    "extra_spin": 20.0,
+    "exclude": [
+     {
+      "polygon": [
+       [
+        520,
+        520
+       ],
+       [
+        879,
+        520
+       ],
+       [
+        879,
+        820
+       ],
+       [
+        700,
+        820
+       ],
+       [
+        640,
+        1010
+       ],
+       [
+        430,
+        1010
+       ],
+       [
+        390,
+        820
+       ],
+       [
+        450,
+        700
+       ],
+       [
+        500,
+        590
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "hurt": {
+   "type": "joint_pose",
+   "duration": 0.6,
+   "arm": "armL",
+   "pose": [
+    62.0,
+    80.0
+   ],
+   "lag": 0.03,
+   "lean": -10.0,
+   "body_x": 28.0,
+   "wobble": 4.0,
+   "flash": 0.45,
+   "timing": {
+    "up": [
+     0.0,
+     0.08
+    ],
+    "down": [
+     0.24,
+     0.56
+    ]
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 30.0,
+   "body_rotate": -40.0,
+   "body_x": 10.0,
+   "world_angles": {
+    "armL": [
+     175.0,
+     190.0
+    ]
+   }
+  }
+ }
+}

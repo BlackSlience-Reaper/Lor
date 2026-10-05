@@ -12,4 +12,7 @@ internal static class HappyTeddyAssets
     internal const string MusicBoxSfx = "res://audio/sfx/happy_teddy/happy_teddy_music_box.ogg";
     internal const string NormalAttackSfx = "res://audio/sfx/happy_teddy/happy_teddy_normal_attack.ogg";
     internal const string HappyTeddyMonsterPrefix = "res://images/monsters/happy_teddy";
+    // Spine 身体（tools/spine_from_sprite 生成）：骨骼与图集以原始文件打进 PCK，运行时按路径加载
+    internal const string HappyTeddySpineAtlas = "res://images/monsters/happy_teddy.atlas";
+    internal const string HappyTeddySpineSkeleton = "res://images/monsters/happy_teddy.spine-json";
 }
