@@ -13,6 +13,7 @@ using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -376,9 +377,19 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
 
         LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_attack.ogg");
         AttackCommand attack = await ExecuteTargetedAttackSegment(target, BeastHuntDamage, "Attack");
+        if (!CanContinueMove)
+        {
+            return;
+        }
+
         if (target.IsAlive)
         {
             await LibraryPowerCmd.Apply<LibraryDisarmPower>(target, BeastHuntFlaw, BeastHuntFlawTurns, Creature, null);
+        }
+
+        if (!CanContinueMove)
+        {
+            return;
         }
 
         await CreatureCmd.GainBlock(Creature, BeastHuntBlock, ValueProp.Move, null);
@@ -397,11 +408,20 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
         bool hitTarget = false;
         for (int i = 0; i < CatchBreathHits; i++)
         {
-            if (Creature.IsDead) return;
+            if (!CanContinueMove)
+            {
+                return;
+            }
+
             LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_attack.ogg");
             AttackCommand segment = await ExecuteTargetedAttackSegment(target, CatchBreathDamage, "Attack");
             hitTarget |= AttackCommandCompat.Results(segment).Any(result => result.Receiver == target && result.TotalDamage > 0);
         }
+        if (!CanContinueMove)
+        {
+            return;
+        }
+
         await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, CatchBreathHeal));
         await HandleAngerAfterAttack(hitTarget, target);
     }
@@ -416,11 +436,21 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
 
         LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_fire.ogg");
         AttackCommand attack = await ExecuteTargetedAttackSegment(target, HollowPointDamage, "Fire");
+        if (!CanContinueMove)
+        {
+            return;
+        }
+
         if (target.IsAlive)
         {
             if (target.IsPlayer)
             {
                 await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(target, HollowPointConfusionTurns, Creature, null);
+            }
+
+            if (!CanContinueMove || !target.IsAlive)
+            {
+                return;
             }
 
             await LibraryPowerCmd.Apply<LibraryVulnerablePower>(
@@ -455,10 +485,24 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
                 .WithIndiscriminateBlockBreak(this, StrikeDamage, actualTargets)
                 .Execute(null);
 
+            if (!CanContinueMove)
+            {
+                return;
+            }
+
             Creature? wolf = LittleRedMercenaryEncounterHelper.FindWolf(CombatState);
             hitWolf = wolf != null && AttackCommandCompat.Results(segment).Any(result => result.Receiver == wolf && result.TotalDamage > 0);
         }
-        await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(actualTargets.Where(creature => creature.IsPlayer), 1, Creature, null);
+        await PowerCmdCompat.Apply<LibraryOfRuinaConfusionPower>(
+            actualTargets.Where(creature => creature.IsPlayer && creature.IsAlive),
+            1,
+            Creature,
+            null);
+        if (!CanContinueMove)
+        {
+            return;
+        }
+
         await PowerCmdCompat.Apply<LibraryOfRuinaNextTurnStrength>(Creature, actualTargets.Count, Creature, null);
         await HandleAngerAfterAttack(hitWolf, LittleRedMercenaryEncounterHelper.FindWolf(CombatState));
     }
@@ -477,7 +521,11 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
         {
             for (int i = 0; i < BulletShowerHits; i++)
             {
-                if (Creature.IsDead) break;
+                if (!CanContinueMove)
+                {
+                    return;
+                }
+
                 await IndiscriminateAttackBlockBreaker.BreakBlockBeforeAttack(this, BulletShowerDamage, actualTargets);
                 LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "little_red_fire.ogg");
                 AttackCommand segment = await DamageCmd.Attack(BulletShowerDamage)
@@ -494,8 +542,19 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
                 }
             }
         }
+        if (!CanContinueMove)
+        {
+            return;
+        }
+
         await HandleAngerAfterAttack(hitWolf, wolf);
     }
+
+    // 击杀狼会强制清场小红帽，后续攻击、回复及 Power 结算须随本次行动停止。
+    private bool CanContinueMove =>
+        Creature.IsAlive
+        && Creature.CombatState != null
+        && !CombatManager.Instance.IsOverOrEnding;
 
     private Creature? ResolveTarget()
     {
@@ -519,7 +578,7 @@ public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedM
 
     private async Task HandleAngerAfterAttack(bool hitWolf, Creature? wolf)
     {
-        if (wolf == null)
+        if (!CanContinueMove || wolf == null || !wolf.IsAlive)
         {
             return;
         }
