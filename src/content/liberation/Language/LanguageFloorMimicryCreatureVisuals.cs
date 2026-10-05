@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -13,9 +14,51 @@ using MegaCrit.Sts2.Core.TestSupport;
 
 namespace LibraryOfRuina.content.liberation.Language;
 
-public sealed partial class LanguageFloorMimicryCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>拟态的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。各形态各一副骨架。</summary>
+public sealed partial class LanguageFloorMimicryCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "mimicry_1",
+        "thrust",
+        new Dictionary<string, string>
+        {
+            ["AttackThrust"] = "thrust",
+            ["Parry"] = "parry",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec SecondSpine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "mimicry_2",
+        "parry",
+        new Dictionary<string, string>
+        {
+            ["Parry"] = "parry",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec ThirdSpine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "mimicry_3",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["AttackStrike"] = "strike",
+            ["AttackThrust"] = "thrust",
+            ["AttackSlash"] = "slash",
+            ["Parry"] = "parry",
+            ["Hello"] = "hello",
+            ["Goodbye"] = "goodbye",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => variantKey switch
+        {
+            SecondVariant => SecondSpine,
+            ThirdVariant => ThirdSpine,
+            _ => Spine,
+        };
+
     [MonsterVisual(typeof(LanguageFloorMimicry))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -80f), new(0.78f, 0.78f), -180f, -390f, 180f, 12f, new(0f, -130f), new(0f, -410f))

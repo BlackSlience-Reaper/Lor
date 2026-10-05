@@ -57,7 +57,12 @@ def tip_point(root, motion, l, pivot):
 def rig_motion(root, motion, layers, weapon_names=None):
     heads = [l for l in layers if l["type"] == 5] or [l for l in layers if l["type"] in HEAD_TYPES]
     hb = [bbox(root, motion, l) for l in heads]
-    x0, y0, x1, y1 = min(b[0] for b in hb), min(b[1] for b in hb), max(b[2] for b in hb), max(b[3] for b in hb)
+    if not hb:
+        # 整图怪物（暗影狼、拟态第二形态）没有头层：取全部层包围盒的上四分之一当头，头骨只用来定转轴
+        ab = [bbox(root, motion, l) for l in layers]
+        top, bottom = max(b[3] for b in ab), min(b[1] for b in ab)
+        hb = [(min(b[0] for b in ab), top - (top - bottom) / 4, max(b[2] for b in ab), top)]
+    x0, y0, x1, y1 =min(b[0] for b in hb), min(b[1] for b in hb), max(b[2] for b in hb), max(b[3] for b in hb)
     hw, hh = x1 - x0, y1 - y0
     neck = [round((x0 + x1) / 2 + 0.07 * hw, 1), round(y0 + 0.05 * hh, 1)]
     hair = [round((x0 + x1) / 2, 1), round(y0 + 0.75 * hh, 1)]

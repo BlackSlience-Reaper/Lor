@@ -12,11 +12,11 @@ R = Path("/Users/iniad/LibraryOfRuina")
 HERE = Path(__file__).resolve().parent
 RENDER = Path.home() / ".claude/skills/sts2-spine-from-sprite/scripts/render.sh"
 FEET_Y = 860
-TITLES = {"emerald_bough": "翠枝", "fluttering": "翅振", "forgotten": "忘却", "wasp": "蜂后", "dacapo": "Da Capo", "little_galaxy": "我们的小小银河", "nostalgic_scent": "余香", "pleasure": "欢愉", "beyond_fragment": "彼方的碎片", "chord": "和弦", "grinder_mk4": "研削机Mk4", "magic_bullet": "魔弹", "regret": "悔恨", "solemn_mourning": "庄严哀悼"}
+TITLES = {"scarlet_scar": "猩红创痕", "cobalt_scar": "郁蓝创痕", "cobalt_big_wolf": "郁蓝创痕·大坏狼", "cobalt_shadow": "郁蓝创痕·失去一切的狼", "dipsia": "渴血症", "mimicry_1": "拟态·一", "mimicry_2": "拟态·二", "mimicry_3": "拟态·三", "smiling_face": "笑靥", "emerald_bough": "翠枝", "fluttering": "翅振", "forgotten": "忘却", "wasp": "蜂后", "dacapo": "Da Capo", "little_galaxy": "我们的小小银河", "nostalgic_scent": "余香", "pleasure": "欢愉", "beyond_fragment": "彼方的碎片", "chord": "和弦", "grinder_mk4": "研削机Mk4", "magic_bullet": "魔弹", "regret": "悔恨", "solemn_mourning": "庄严哀悼"}
 ACT = {"idle": "待机", "attack": "攻击", "attack_fire": "远程", "attack_strike": "打击", "attack_slash": "斩击",
        "attack_thrust": "突刺", "attack_right": "右击", "attack_left": "左击", "hurt": "受击", "guard": "防御",
        "parry": "格挡", "dodge": "闪避", "ego": "E.G.O", "ego_s1": "E.G.O 1", "ego_s2": "E.G.O 2", "ego_s3": "E.G.O 3",
-       "special": "特殊", "die": "死亡", "ranged": "远程", "blunt": "打击", "pierce": "突刺", "slash": "斩击", "attack2": "攻击 2", "strike": "打击", "hunger": "饥饿连击", "cast": "施法"}
+       "special": "特殊", "die": "死亡", "ranged": "远程", "blunt": "打击", "pierce": "突刺", "slash": "斩击", "attack2": "攻击 2", "strike": "打击", "hunger": "饥饿连击", "cast": "施法", "shot_1": "射击 1", "shot_2": "射击 2", "shot_3": "射击 3", "s1": "技能 1", "s2": "技能 2", "howl": "嚎叫", "fire": "远程", "group_break": "群体破坏", "group_attack": "群体攻击", "evade": "闪避", "thrust": "突刺", "hello": "你好", "goodbye": "再见", "scream": "尖叫", "vomit": "呕吐"}
 
 
 def frames_dir(n):
@@ -43,7 +43,7 @@ def render(n):
 
 def compose(names, dst):
     font = ImageFont.truetype("/System/Library/Fonts/Hiragino Sans GB.ttc", 18)
-    crop = (100, 0, 1500, 1000)  # 高个子（光环、头冠）不被切掉
+    crop = tuple(int(v) for v in os.environ.get("CROP", "100,0,1500,1000").split(","))  # 高个子（光环、头冠）不被切掉；特效宽的放大取景
     tw, th = (int(v) for v in os.environ.get("TILE", "392x280").split("x"))
     step = int(os.environ.get("STEP", "2"))  # 默认抽成每秒 15 帧，控制 GIF 体积
     cols = 3
