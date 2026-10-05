@@ -467,6 +467,52 @@ BOSSES = {
     },
 }
 
+# 原版只有整图的怪物：分层目录由 sprite_layers.py 从模组贴图做出（每张图一个动作，硬部件单独抠层），origin 是它打印的值。
+# rigid：只平移、转动，不缩放
+_SWORD_IDLE = {"move": {"y": [7, 1, 0.0]}}
+for _form, _anims in {
+    "normal": {"blunt": ("attack", "NormalBlunt", "dash"), "pierce": ("attack", "NormalPierce", "dash"),
+               "slash": ("attack", "NormalSlash", "step"), "parry": ("guard", "NormalParry", "brace"),
+               "hurt": ("hurt", "NormalHit")},
+    "teardrop": {"blunt": ("attack", "TeardropBlunt", "dash"), "pierce": ("attack", "TeardropPierce", "dash"),
+                 "slash": ("attack", "TeardropSlash", "step"), "parry": ("guard", "TeardropParry", "brace"),
+                 "hurt": ("hurt", "TeardropHit")},
+    "despair": {"attack": ("attack", "DespairAttack", "dash"), "hurt": ("hurt", "DespairHit")},
+}.items():
+    # 遗忘骑士之剑：悬空的剑，三个形态各一副；待机整把剑绕剑身中点轻晃、上下浮
+    BOSSES[f"forgotten_sword_{_form}"] = {
+        "layers": "forgotten_sword", "prefix": "", "base": _form.capitalize(), "rigid": True,
+        "origin": {"normal": [0.0, -1.0], "teardrop": [0.0, -25.0], "despair": [0.0, -33.0]}[_form],
+        "weapons": [{"layers": ["body"], "pivot": [0, 200], "raise": 0, "idle": {"rotate": [1.6, 1, 0.3]}}],
+        "idle": _SWORD_IDLE, "anims": _anims,
+    }
+BOSSES["price_of_silence"] = {
+    # 沉默的代价：立着的权杖，待机绕底部慢慢摆
+    "prefix": "", "origin": [0.0, -4.0], "rigid": True, "weapons": [],
+    "idle": {"Default.body": {"rotate": [1.4, 1, 0.0]}},
+    "anims": {"special": ("attack", "Special", "step"), "hurt": ("hurt", "Default")},
+}
+_BIG_BIRD_ANIMS = {"guard": ("guard", "Guard", "brace"), "charm": ("skill", "Charm"),
+                   "rescue": ("attack", "RescueClose", "step"), "hurt": ("hurt", "Hit")}
+for _name, _base, _origin in [("big_bird", "Default", [0.0, -17.0]), ("big_bird_sleep", "Sleep", [0.0, -16.0]),
+                              ("big_bird_rescue", "RescueOpen", [0.0, -9.0])]:
+    # 大鸟：普通、沉睡、救赎三个形态；普通待机的提灯（连光晕）挂在嘴下的提手上像钟摆一样摆。
+    # 用户要求爪子始终同一高度：各姿势按爪尖对齐（sprite_layers.py 的 pin_y），动作不转身体、魅惑不上浮
+    BOSSES[_name] = {
+        "layers": "big_bird", "prefix": "", "base": _base, "origin": _origin, "rigid": True, "no_tilt": True,
+        "weapons": ([{"layers": ["lantern"], "pivot": [-151.5, 133.0], "raise": 0, "idle": {"rotate": [5.0, 1, 0.25]}}]
+                    if _base == "Default" else []),
+        "anims": _BIG_BIRD_ANIMS,
+    }
+BOSSES["forsaken_murderer"] = {
+    # 被遗弃的杀人魔：被铁皮裹住跪着的人，各姿势按膝盖对齐（sprite_layers.py 的 pin），用户要求膝盖始终同一高度。
+    # 绕膝盖转会让小腿另一头的脚扎进地面，所以动作只做水平位移（no_tilt），待机只绕膝盖微微晃
+    "prefix": "", "origin": [0.0, -207.0], "rigid": True, "weapons": [], "pivot": [4.0, -200.0], "no_tilt": True,
+    "preview_on_origin": True,
+    "idle": {"Default.body": {"rotate": [0.8, 1, 0.0]}},
+    "anims": {"attack": ("attack", "Attack", "dash"), "hurt": ("hurt", "Hit")},
+}
+
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
 for _e in range(1, 6):
@@ -621,6 +667,24 @@ def animations(spec):
                            **{f"{D}.weapon" + ("" if i == 0 else str(i + 1)):
                               {"rotate": [[0, 0], [0.7, -w["raise"] * 5, "out"], [1.2, -w["raise"] * 5]]}
                               for i, w in enumerate(weapons)}}}
+    # idle：额外的待机摆动（悬空的剑上下浮、提灯摆），合并进待机的 osc
+    for target, chs in spec.get("idle", {}).items():
+        out["idle"]["osc"].setdefault(target, {}).update(chs)
+    # rigid：只有整图的怪物（sprite_layers.py）整块平移、转动，不缩放。整张图一起伸缩看起来像软胶，用户不要
+    # no_tilt：身体骨头不转、不上下动（跪地、站地的整图一转，着地的另一头就会扎进地面），只留水平位移；
+    # 待机的 idle 摆动不受影响
+    if spec.get("no_tilt"):
+        for name, a in out.items():
+            for target, chs in a.get("keys", {}).items():
+                if target.endswith(".body"):
+                    chs.pop("rotate", None)
+                    chs.pop("y", None)
+    if spec.get("rigid"):
+        for a in out.values():
+            for group in ("keys", "osc"):
+                for chs in a.get(group, {}).values():
+                    chs.pop("sx", None)
+                    chs.pop("sy", None)
     return out
 
 
@@ -642,6 +706,9 @@ def main():
             src = spec["prefix"] + pose
             drop = spec.get("drop", {}).get(pose, spec.get("drop", {}).get("*", []))
             bones, assign, _ = rig_motion(LAYERS / src_dir, src, [l for l in info[src]["layers"] if l["name"] not in drop])
+            if "pivot" in spec:
+                # 身体转动的轴（默认在头正下方的地面）；跪着的杀人魔放在膝盖，转动时膝盖不离地
+                bones["body"]["at"] = spec["pivot"]
             extra = spec.get("extra", {}).get(pose, [])
             for ex in extra:
                 assign[ex["name"]] = ex.get("bone", "body") if ex.get("bone", "body") in bones else "body"
@@ -655,6 +722,8 @@ def main():
                              **({"drop": drop} if drop else {})}
         cfg = {"name": f"boss_{name}", "layers_dir": f"~/.local/share/LibraryOfRuina-layers/{src_dir}", "texture_scale": 0.6,
                **({"root_scale": spec["root_scale"]} if "root_scale" in spec else {}),
+               # 预览的地面线默认放坐标原点（外观的贴图 Position）；Position 在贴图中心的（被遗弃的杀人魔）改放待机图底边
+               **({"preview_on_origin": True} if spec.get("preview_on_origin") else {}),
                "origin": spec["origin"], "skin_tint": [1.0, 1.0, 1.0], "fps": 30, "setup_motion": base,
                "motions": motions, "animations": animations(spec)}
         (out_dir / f"boss_{name}.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
