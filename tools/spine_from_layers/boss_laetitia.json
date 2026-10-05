@@ -1,0 +1,1021 @@
+{
+ "name": "boss_laetitia",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/laetitia",
+ "texture_scale": 0.6,
+ "origin": [
+  -56.0,
+  8.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "EGO_Latitia_Default",
+   "bones": {
+    "body": {
+     "at": [
+      -3.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -3.5,
+      310.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -14.0,
+      425.8
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "body_2": "body",
+    "effect_2": "body",
+    "effect_3": "body",
+    "body_3": "body",
+    "effect_4": "body",
+    "body_4": "body",
+    "effect_5": "body",
+    "body_5": "body",
+    "effect_6": "body",
+    "body_6": "body",
+    "effect_7": "body",
+    "head": "head",
+    "effect_8": "body",
+    "body_7": "body",
+    "effect_9": "body",
+    "face": "head",
+    "front_hair": "hair",
+    "effect_10": "body",
+    "front_acce": "head",
+    "effect_11": "body",
+    "body_8": "body",
+    "effect_12": "body"
+   }
+  },
+  "Damaged": {
+   "source": "EGO_Latitia_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      -46.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -46.8,
+      291.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -57.5,
+      412.0
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "effect_2": "body",
+    "head": "head",
+    "body_2": "body",
+    "face": "head",
+    "body_3": "body",
+    "effect_3": "body",
+    "front_hair": "hair",
+    "effect_4": "body",
+    "front_acce": "head",
+    "effect_5": "body",
+    "effect_6": "body"
+   }
+  },
+  "Fire": {
+   "source": "EGO_Latitia_Fire",
+   "bones": {
+    "body": {
+     "at": [
+      10.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      10.8,
+      310.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      422.8
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "effect_2": "body",
+    "head": "head",
+    "effect_3": "body",
+    "body_2": "body",
+    "face": "head",
+    "front_hair": "hair",
+    "effect_4": "body",
+    "front_acce": "head",
+    "effect_5": "body"
+   }
+  },
+  "Guard": {
+   "source": "EGO_Latitia_Guard",
+   "bones": {
+    "body": {
+     "at": [
+      -11.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -11.1,
+      308.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -21.5,
+      424.5
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "effect_2": "body",
+    "head": "head",
+    "body_2": "body",
+    "face": "head",
+    "front_hair": "hair",
+    "effect_3": "body",
+    "front_acce": "head",
+    "effect_4": "body",
+    "body_3": "body",
+    "body_4": "body",
+    "레이어_2": "body"
+   }
+  },
+  "S1": {
+   "source": "EGO_Latitia_S1",
+   "bones": {
+    "body": {
+     "at": [
+      10.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      10.4,
+      310.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -0.5,
+      422.8
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "effect_2": "body",
+    "head": "head",
+    "body_2": "body",
+    "effect_3": "body",
+    "face": "head",
+    "front_hair": "hair",
+    "effect_4": "body",
+    "front_acce": "head",
+    "effect_5": "body",
+    "fx": "body"
+   },
+   "extra": [
+    {
+     "name": "fx",
+     "image": "fx/laetitia_super_s1.png",
+     "center": [
+      -56.5,
+      365.0
+     ]
+    }
+   ]
+  },
+  "S2": {
+   "source": "EGO_Latitia_S2",
+   "bones": {
+    "body": {
+     "at": [
+      10.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      10.8,
+      310.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      422.8
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "effect_2": "body",
+    "head": "head",
+    "effect_3": "body",
+    "effect_4": "body",
+    "body_3": "body",
+    "face": "head",
+    "front_hair": "hair",
+    "effect_5": "body",
+    "front_acce": "head",
+    "effect_6": "body",
+    "fx": "body"
+   },
+   "extra": [
+    {
+     "name": "fx",
+     "image": "fx/laetitia_super_s2.png",
+     "center": [
+      -151.0,
+      624.5
+     ]
+    }
+   ]
+  },
+  "S3": {
+   "source": "EGO_Latitia_S3",
+   "bones": {
+    "body": {
+     "at": [
+      10.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      10.8,
+      310.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      422.8
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "effect": "body",
+    "back_acce": "body",
+    "body": "body",
+    "effect_2": "body",
+    "head": "head",
+    "effect_4": "body",
+    "effect_5_1": "body",
+    "body_3": "body",
+    "face": "head",
+    "front_hair": "hair",
+    "effect_5": "body",
+    "front_acce": "head",
+    "effect_6": "body",
+    "fx": "body"
+   },
+   "extra": [
+    {
+     "name": "fx",
+     "image": "fx/laetitia_super_s3.png",
+     "center": [
+      -50.5,
+      525.0
+     ]
+    }
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "attack": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Fire",
+     0
+    ],
+    [
+     0.75,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Fire.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Fire.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Fire.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "cast": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "Guard",
+     0
+    ],
+    [
+     0.55,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Guard.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "Guard.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Guard.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       12,
+       "out"
+      ],
+      [
+       0.55,
+       6
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "super_gift": {
+   "duration": 3.6,
+   "show": [
+    [
+     0,
+     "S1",
+     0
+    ],
+    [
+     0.933,
+     "S2",
+     0
+    ],
+    [
+     1.8,
+     "S3",
+     0
+    ],
+    [
+     3.3,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "S1.body": {
+     "x": [
+      [
+       0,
+       8
+      ],
+      [
+       0.15,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "S1.head": {
+     "rotate": [
+      [
+       0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "S1.hair": {
+     "rotate": [
+      [
+       0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "S2.body": {
+     "x": [
+      [
+       0.933,
+       8
+      ],
+      [
+       1.083,
+       -6,
+       "out"
+      ],
+      [
+       1.3330000000000002,
+       0
+      ]
+     ]
+    },
+    "S2.head": {
+     "rotate": [
+      [
+       0.933,
+       -5
+      ],
+      [
+       1.103,
+       4,
+       "out"
+      ],
+      [
+       1.3330000000000002,
+       0
+      ]
+     ]
+    },
+    "S2.hair": {
+     "rotate": [
+      [
+       0.933,
+       -4
+      ],
+      [
+       1.143,
+       5,
+       "out"
+      ],
+      [
+       1.383,
+       0
+      ]
+     ]
+    },
+    "S3.body": {
+     "x": [
+      [
+       1.8,
+       8
+      ],
+      [
+       1.95,
+       -6,
+       "out"
+      ],
+      [
+       2.2,
+       0
+      ]
+     ]
+    },
+    "S3.head": {
+     "rotate": [
+      [
+       1.8,
+       -5
+      ],
+      [
+       1.97,
+       4,
+       "out"
+      ],
+      [
+       2.2,
+       0
+      ]
+     ]
+    },
+    "S3.hair": {
+     "rotate": [
+      [
+       1.8,
+       -4
+      ],
+      [
+       2.0100000000000002,
+       5,
+       "out"
+      ],
+      [
+       2.25,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0,
+       "out"
+      ],
+      [
+       3.3,
+       0
+      ],
+      [
+       3.5999999999999996,
+       0
+      ]
+     ],
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.25,
+       14,
+       "out"
+      ],
+      [
+       3.3,
+       14
+      ],
+      [
+       3.5999999999999996,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0
+    ],
+    [
+     0.4,
+     "Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

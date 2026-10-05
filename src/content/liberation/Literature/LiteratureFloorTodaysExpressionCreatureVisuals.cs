@@ -10,6 +10,21 @@ namespace LibraryOfRuina.content.liberation.Literature;
 internal sealed partial class LiteratureFloorTodaysExpressionCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // Spine 身体的触发与动画契约同名；多段招式的换姿势时刻照场景动画，见 tools/spine_from_layers/build_boss_configs.py
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "todays_expression",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Angry"] = "angry",
+            ["WaveringFeelings"] = "wavering_feelings",
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LiteratureFloorAssets.TodaysExpressionBossScene;
 

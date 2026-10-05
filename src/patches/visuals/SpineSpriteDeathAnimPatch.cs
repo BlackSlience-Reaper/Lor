@@ -12,11 +12,20 @@ internal static class SpineSpriteDeathAnimPatch
 {
     private static void Prefix(NCreature __instance, bool shouldRemove)
     {
-        if (shouldRemove
-            && __instance.DeathAnimationTask is not { IsCompleted: false }
-            && __instance.Visuals is SpineSpriteAttackCreatureVisuals visuals)
+        if (!shouldRemove || __instance.DeathAnimationTask is { IsCompleted: false })
         {
-            visuals.PlayDeath();
+            return;
+        }
+
+        // 场景动画外观（文学层）挂了 Spine 身体时同样补发
+        switch (__instance.Visuals)
+        {
+            case SpineSpriteAttackCreatureVisuals visuals:
+                visuals.PlayDeath();
+                break;
+            case SceneAnimatedCreatureVisuals scene:
+                scene.PlayDeath();
+                break;
         }
     }
 }

@@ -8,6 +8,22 @@ namespace LibraryOfRuina.content.liberation.Literature;
 internal sealed partial class LiteratureFloorBloodlustCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // Spine 身体的触发与动画契约同名；多段招式的换姿势时刻照场景动画，见 tools/spine_from_layers/build_boss_configs.py
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "bloodlust",
+        "persistence",
+        new Dictionary<string, string>
+        {
+            ["Persistence"] = "persistence",
+            ["Obsession"] = "obsession",
+            ["DesireBurst"] = "desire_burst",
+            ["Unbearable"] = "unbearable",
+            ["Cast"] = "cast",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LiteratureFloorAssets.BloodlustBossScene;
 

@@ -10,6 +10,7 @@ using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -94,6 +95,9 @@ public sealed class LiteratureFloorBlackSwanBoss :
     public int CompletedMoveCycleMask { get; private set; }
 
     public int LiberationPhase => Phase;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     internal bool IsSwanSongQueued =>
         NextMove.StateId == SwanSongMoveId;
