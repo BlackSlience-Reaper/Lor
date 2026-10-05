@@ -5,6 +5,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -44,6 +45,8 @@ public sealed class Tomerry : MonsterModel
     public override int MinInitialHp => 680;
 
     public override int MaxInitialHp => 700;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override IEnumerable<string> AssetPaths =>
         TomerryCreatureVisuals.Profile.AssetPaths

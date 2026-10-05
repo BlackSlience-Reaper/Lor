@@ -8,6 +8,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -30,6 +31,8 @@ public sealed class HistoryFloorEndLightBoss : LiberationPhaseBossMonster
     private const float BackgroundTextIntervalSeconds = 5f;
 
     public override int DefaultChaoResistance => 30;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
 
     public const string IdleTexturePath = HistoryFloorAssets.EndLightTexture;

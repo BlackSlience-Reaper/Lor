@@ -11,6 +11,7 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -182,6 +183,8 @@ public sealed class KingOfGreed : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 510, 485);
 
     public override int DefaultChaoResistance => 210;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

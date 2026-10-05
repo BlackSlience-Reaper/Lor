@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
@@ -5,8 +7,39 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.abnormalities.TodaysShyLook;
 
-public partial class TodaysShyLookCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 今天也很害羞的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。
+/// 原版每个动作是五种表情的全身整图叠在一起，没有身体部件，所以每种表情一副骨架、只有整体动作，按当前表情切换。
+/// </summary>
+public partial class TodaysShyLookCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec[] ExpressionSpines =
+        Enumerable.Range(1, 5).Select(expression => LayeredBossSpine.Create(
+            "todays_shy_look",
+            $"shy_look_{expression}",
+            "attack",
+            new Dictionary<string, string>
+            {
+                ["Cast"] = "cast",
+            })).ToArray();
+
+    internal override RuntimeSpineBody.Spec SpineSpec => ExpressionSpines[4];
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => ExpressionSpines;
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey)
+    {
+        for (int expression = 1; expression <= 5; expression++)
+        {
+            if (variantKey == VariantKey(expression))
+            {
+                return ExpressionSpines[expression - 1];
+            }
+        }
+
+        return SpineSpec;
+    }
+
     [MonsterVisual(typeof(TodaysShyLook))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -142f), new(0.58f, 0.58f), -126f, -330f, 118f, 12f, new(0f, -142f), new(0f, -366f))

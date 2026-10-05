@@ -3,6 +3,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -41,6 +42,8 @@ public sealed class GoldenAmber : LorMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 90, 75);
 
     public override int DefaultChaoResistance => 50;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

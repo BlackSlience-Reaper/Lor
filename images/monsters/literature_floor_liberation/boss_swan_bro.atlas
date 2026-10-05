@@ -1,0 +1,11 @@
+boss_swan_bro.webp
+size:518,296
+filter:Linear,Linear
+Penetrate/근거리_공격
+bounds:0,0,167,296
+Damaged/피격
+bounds:169,0,170,255
+Default/body
+bounds:341,0,74,188
+Default/head
+bounds:417,0,99,104

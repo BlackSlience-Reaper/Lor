@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -104,6 +105,8 @@ public sealed class TodaysShyLook : CounterIntentMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 113, 101);
 
     public override int DefaultChaoResistance => 70;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
