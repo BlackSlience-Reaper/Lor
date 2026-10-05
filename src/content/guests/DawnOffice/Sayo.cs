@@ -19,7 +19,7 @@ namespace LibraryOfRuina.content.guests.DawnOffice;
 public sealed class Sayo : MonsterModel
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, GuestSpine.DeathSeconds);
 
     private static readonly string[] AttackAnimTriggers =
     {

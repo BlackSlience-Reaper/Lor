@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -17,7 +18,7 @@ namespace LibraryOfRuina.content.abnormalities.HeartOfAspiration;
 public sealed class LungOfAspiration : AspirationMonsterBase
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => LungOfAspirationCreatureVisuals.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, LungOfAspirationCreatureVisuals.DeathSeconds);
 
     private const string ContractingPulseMoveId = "CONTRACTING_PULSE";
     private const string ViolentPulseMoveId = "VIOLENT_PULSE";

@@ -171,6 +171,11 @@ internal sealed partial class NaturalFloorNihilVisuals : SceneAnimatedCreatureVi
             ["Special"] = "special",
         });
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        ((GetParent() as NCreature)?.Entity?.Monster is NaturalFloorNihilBoss)
+            ? [NihilSpine, DespairSpine, GreedSpine, HatredSpine, WrathSpine]
+            : base.AllSpineSpecs;
+
     internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
         (GetParent() as NCreature)?.Entity?.Monster switch
         {

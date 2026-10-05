@@ -8,6 +8,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -25,7 +26,7 @@ namespace LibraryOfRuina.content.abnormalities.ScarecrowSearchingForWisdom;
 public sealed class ScarecrowSearchingForWisdom : LorMonsterModel
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => ScarecrowSearchingForWisdomCreatureVisuals.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, ScarecrowSearchingForWisdomCreatureVisuals.DeathSeconds);
 
     private static readonly string[] BattleStartLines =
     {

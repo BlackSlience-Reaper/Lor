@@ -54,7 +54,8 @@ internal sealed partial class RuntimeSpineBody : Node2D
     {
         try
         {
-            if (!ClassDB.ClassExists("SpineSprite"))
+            // “动画效果”不是高档时不建 Spine 身体，调用方照加载失败处理：退回逐帧换图或场景动画
+            if (!AnimationEffects.SpineEnabled || !ClassDB.ClassExists("SpineSprite"))
             {
                 return null;
             }
@@ -113,7 +114,62 @@ internal sealed partial class RuntimeSpineBody : Node2D
         ZAsRelative = anchor.ZAsRelative;
     }
 
+    /// <summary>
+    /// 出场时把外观各形态的骨架先读进缓存（见 <see cref="LoadData"/>），战斗中换形态时不再现读。
+    /// 动画效果不是高档时什么都不做。
+    /// </summary>
+    internal static void Preload(Spec spec)
+    {
+        try
+        {
+            if (!AnimationEffects.SpineEnabled || !ClassDB.ClassExists("SpineSprite"))
+            {
+                return;
+            }
+
+            LoadData(spec, spec.DefaultMix);
+            if (spec.Ghosts != null)
+            {
+                LoadData(spec, 0f);
+            }
+        }
+        catch (Exception exception)
+        {
+            LorLog.PatchFailure("RuntimeSpineBody.Preload", exception);
+        }
+    }
+
+    // 骨架数据按（骨骼文件，默认混合时长）缓存：同一种怪物再出场、换回见过的形态时不再读图集、解析骨骼
+    // （实测每份 30–75 毫秒，出场和战斗中换形态时会卡几帧）。数据资源可以由多个 SpineSprite 共用。
+    // 只留最近用过的 16 份（一场战斗最多的是虚无缥缈：五个阶段加四位魔法少女），更早的放手，贴图随最后一个使用者释放。
+    private const int DataCacheSize = 16;
+    private static readonly List<(string Path, float Mix, GodotObject Data)> DataCache = [];
+
     private static GodotObject? LoadData(Spec spec, float mix)
+    {
+        int hit = DataCache.FindIndex(entry => entry.Path == spec.SkeletonPath && entry.Mix == mix);
+        if (hit >= 0)
+        {
+            (string Path, float Mix, GodotObject Data) entry = DataCache[hit];
+            DataCache.RemoveAt(hit);
+            DataCache.Add(entry);
+            return entry.Data;
+        }
+
+        GodotObject? data = LoadDataUncached(spec, mix);
+        if (data != null)
+        {
+            DataCache.Add((spec.SkeletonPath, mix, data));
+            if (DataCache.Count > DataCacheSize)
+            {
+                DataCache.RemoveAt(0);
+            }
+        }
+
+        return data;
+    }
+
+    private static GodotObject? LoadDataUncached(Spec spec, float mix)
     {
         GodotObject atlas = ClassDB.Instantiate("SpineAtlasResource").AsGodotObject();
         GodotObject file = ClassDB.Instantiate("SpineSkeletonFileResource").AsGodotObject();

@@ -47,6 +47,10 @@ internal abstract partial class SceneAnimatedCreatureVisuals
     /// </summary>
     internal virtual RuntimeSpineBody.Spec? SpineSpecFor(string library) => SpineSpec;
 
+    /// <summary>出场时先读进缓存的全部骨架；按形态换动画库的外观要列出各库的，战斗中换形态才不会现读。</summary>
+    internal virtual IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        SpineSpecFor(ResolveCurrentAnimationLibrary()) is { } spec ? [spec] : [];
+
     protected virtual string NormalizeTriggerName(string triggerName) =>
         triggerName;
 
@@ -88,7 +92,18 @@ internal abstract partial class SceneAnimatedCreatureVisuals
         }
 
         _spineReady = true;
+        foreach (RuntimeSpineBody.Spec spec in AllSpineSpecs)
+        {
+            RuntimeSpineBody.Preload(spec);
+        }
+
         SyncSpineBody();
+
+        // “动画效果”低档：场景动画的 visible 轨道照旧瞬间切换，由淡入淡出组件补上过渡
+        if (AnimationEffects.CrossfadeEnabled)
+        {
+            SpriteCrossfade.Attach(this, _idleVisuals, _attackVisuals);
+        }
     }
 
     // 每帧和每次触发前按当前动画库选骨架，换库（换形态）时切过去；没有骨架或加载失败的库退回场景动画。
@@ -146,6 +161,9 @@ internal abstract partial class SceneAnimatedCreatureVisuals
 
     /// <summary>死亡补丁转来的 "Dead"，见 <c>SpineSpriteDeathAnimPatch</c>；没有 Spine 身体时不做事。</summary>
     internal void PlayDeath() => _spine?.Play("Dead", holdHurtPose: false);
+
+    /// <summary>当前形态挂着 Spine 身体（死亡时长见 <see cref="AnimationEffects.DeathLength"/>）。</summary>
+    internal bool HasSpineBody => _spine != null;
 
     public override void _Process(double delta)
     {

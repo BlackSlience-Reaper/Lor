@@ -4,6 +4,7 @@ using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -21,7 +22,7 @@ namespace LibraryOfRuina.content.guests.MusiciansOfBremen;
 public sealed class MuMu : MonsterModel
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, GuestSpine.DeathSeconds);
 
     public override IEnumerable<string> AssetPaths =>
         MonsterVisualCatalog.GetRequiredProfile(Id.Entry).AssetPaths

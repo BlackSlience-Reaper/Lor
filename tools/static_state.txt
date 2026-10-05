@@ -235,6 +235,7 @@ LibraryOfRuina.framework.intents.rendering.IntentDisplayStyleState._current	harm
 LibraryOfRuina.framework.intents.rendering.VanillaIntentProxies.Sources	instance	-	以原版风格画法生成的显示意图为弱键：VanillaIntentMapper 映射时写入源意图与源下标；显示意图只挂在本地 NIntent 节点上，节点换意图后随之回收
 LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.PreselectDepths	instance	-	正在奖励界面预选模式的书页遗物实例；TryPreselectPageChoice 进出时增减
 LibraryOfRuina.framework.relics.AbnormalityPageRewardResumePatch.RestoredRooms	combat	-	以 CombatRoom 为弱键：MarkRestored（读档恢复时）写入；OfferRoomEndRewards 的 Postfix 消费后移除
+LibraryOfRuina.framework.visuals.RuntimeSpineBody.DataCache	harmless	cache	按骨骼文件缓存最近用过的 Spine 骨架数据资源，只影响加载耗时与画面，不承载玩法状态
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals.VisibleBottomByTexturePath	harmless	cache	按贴图路径缓存可见底边位置
 LibraryOfRuina.infra.helpers.GodotTextureSafety.SourcePaths	instance	-	以 Texture2D 为弱键：RegisterSourcePath 记录源路径，供失效后重新加载
 LibraryOfRuina.infra.helpers.LorLog.Counts	harmless	log	InfoOnce/WarnOnce/ErrorOnce/FirstTime 的去重与 WarnFirst/PatchFailure 的节流计数；键是调用方加前缀的字符串，存活到进程结束，不参与玩法

@@ -43,6 +43,9 @@ public sealed partial class FalseThroneCreatureVisuals
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [Spine, TransformedSpine];
+
     internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
         variantKey == TransformedVariantKey ? TransformedSpine : Spine;
 

@@ -51,6 +51,9 @@ internal sealed partial class NaturalFloorGoldRushVisuals : SceneAnimatedCreatur
         {
         });
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [HumanSpine, KingSpine, HumanChargingSpine, KingChargingSpine];
+
     internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
     {
         "king" => KingSpine,
