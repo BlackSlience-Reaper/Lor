@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.patches.visuals;
@@ -8,21 +9,26 @@ namespace LibraryOfRuina.framework.visuals;
 /// 贴图外观上换 Spine 身体的公共部分（骨骼由 tools/spine_from_sprite 从贴图生成，见 <see cref="RuntimeSpineBody"/>）。
 /// 贴图外观照旧建好：布局、碰撞框、目标头像都读那张待机 Sprite2D；Spine 加载成功后两张 Sprite2D 一直藏着，
 /// 触发交给 Spine，混乱时定格受击姿势。加载失败时什么都不换，退回基类的贴图与换图动作。
+/// 会换形态的怪物（贴图外观的 Variant）可以按形态给不同骨架，见 <see cref="SpineSpecFor"/>。
 /// </summary>
 public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCreatureVisuals, INonSpineVisualTriggerHandler
 {
+    // 每份骨架只建一次：骨架原点按建立时那张待机贴图对齐，各形态的待机贴图不同，所以第一次换到该形态时才建
+    private readonly Dictionary<RuntimeSpineBody.Spec, RuntimeSpineBody?> _bodies = new();
     private RuntimeSpineBody? _spine;
+    private RuntimeSpineBody.Spec? _activeSpec;
+    private bool _ready;
 
     internal abstract RuntimeSpineBody.Spec SpineSpec { get; }
+
+    /// <summary>当前形态用的骨架；默认所有形态共用 <see cref="SpineSpec"/>。</summary>
+    internal virtual RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => SpineSpec;
 
     public override void _Ready()
     {
         base._Ready();
-        if (GetNodeOrNull<Sprite2D>("%Visuals") is { } idle)
-        {
-            _spine = RuntimeSpineBody.TryCreate(idle, SpineSpec);
-        }
-
+        _ready = true;
+        SyncSpineBody();
         HideSprites();
     }
 
@@ -39,10 +45,11 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
         return _spine.Play(triggerName, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
     }
 
-    // 基类在混乱状态切换、动作结束时回到这里重设两张贴图；有 Spine 身体时贴图一直藏着，由 Spine 定格或解除受击姿势。
+    // 基类在混乱状态切换、动作结束、换形态时回到这里重设两张贴图；有 Spine 身体时贴图一直藏着，由 Spine 定格或解除受击姿势。
     protected override void RestoreIdleState()
     {
         base.RestoreIdleState();
+        SyncSpineBody();
         HideSprites();
         _spine?.SyncHoldHurt(MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
     }
@@ -52,6 +59,48 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
     /// 怪物要同时把 <c>DeathAnimLengthOverride</c> 设成死亡动画时长，原版才会等动画播完再做溶解消失。
     /// </summary>
     internal void PlayDeath() => _spine?.Play("Dead", holdHurtPose: false);
+
+    // 基类 _Ready 里设初始形态时也会走到 RestoreIdleState，那时还不建骨架，等 _Ready 末尾再建。
+    private void SyncSpineBody()
+    {
+        if (!_ready)
+        {
+            return;
+        }
+
+        RuntimeSpineBody.Spec spec = SpineSpecFor(CurrentSpriteVariantKey);
+        if (ReferenceEquals(spec, _activeSpec))
+        {
+            return;
+        }
+
+        _activeSpec = spec;
+        if (!_bodies.TryGetValue(spec, out RuntimeSpineBody? body))
+        {
+            body = GetNodeOrNull<Sprite2D>("%Visuals") is { } idle ? RuntimeSpineBody.TryCreate(idle, spec) : null;
+            _bodies[spec] = body;
+        }
+        else
+        {
+            body?.Play("Idle", holdHurtPose: false);
+        }
+
+        foreach (RuntimeSpineBody? other in _bodies.Values)
+        {
+            if (other != null)
+            {
+                other.Visible = other == body;
+                other.ProcessMode = other == body ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+            }
+        }
+
+        _spine = body;
+        // 这个形态的骨架没加载成功：先前藏起来的待机贴图要露出来，退回换图
+        if (body == null && GetNodeOrNull<Sprite2D>("%Visuals") is { } sprite)
+        {
+            sprite.Visible = true;
+        }
+    }
 
     private void HideSprites()
     {
