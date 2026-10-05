@@ -151,7 +151,7 @@ internal sealed partial class IncomingDamageSimulation
 
         foreach (OrbModel orb in combat.OrbQueue.Orbs.ToArray())
         {
-            MethodInfo method = AccessTools.Method(orb.GetType(), nameof(OrbModel.TriggerPassive));
+            MethodInfo method = AccessTools.Method(orb.GetType(), GameApi.OrbPassiveMethod);
             HookReader.TryInvoke(orb, method, null, null);
         }
 

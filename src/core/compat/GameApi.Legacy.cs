@@ -35,6 +35,8 @@ internal static partial class GameApi
     internal static object?[] ModifyDamageHookArguments(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, object modifiers) => [runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, modifiers];
     internal static StringName Confirm => MegaInput.accept;
     internal static void ActivateEvoke(DarkOrb orb, Creature target) { } // 旧版激发没有此通知。
+    // 旧版没有 TriggerPassive，回合钩子直接调各球的 Passive。
+    internal const string OrbPassiveMethod = nameof(OrbModel.Passive);
     internal static void ResetEventCombat(EventSynchronizer synchronizer) { } // 旧版没有事件战斗同步器。
     // 旧版 EventModel.EnterCombatWithoutExitingEvent 的参数是 mutableEncounter，直接 new CombatState，
     // 后者对遭遇调用 AssertMutable；泛型重载自己传 ModelDb.Encounter<T>().ToMutable()。
