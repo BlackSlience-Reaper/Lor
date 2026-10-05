@@ -9,18 +9,18 @@ namespace LibraryOfRuina.content.liberation.Religion;
 
 public sealed class ReligionFloorStaffApostle : ReligionFloorApostle
 {
-    private const int HpMinNormal = 61; // 权杖使徒：普通进阶生命下限。
-    private const int HpMaxNormal = 64; // 权杖使徒：普通进阶生命上限。
-    private const int HpMinHigh = 67; // 权杖使徒：ToughEnemies 进阶生命下限。
-    private const int HpMaxHigh = 70; // 权杖使徒：ToughEnemies 进阶生命上限。
-    private const int ChaoMaximum = 60; // 权杖使徒：混乱抗性上限。
-    private const int AbandonStrengthNormal = 1; // 他没有撇下我：普通进阶下回合力量。
-    private const int AbandonStrengthHigh = 2; // 他没有撇下我：DeadlyEnemies 进阶下回合力量。
+    private const int HpMinNormal = 121; // 权杖使徒：普通进阶生命下限。
+    private const int HpMaxNormal = 124; // 权杖使徒：普通进阶生命上限。
+    private const int HpMinHigh = 127; // 权杖使徒：ToughEnemies 进阶生命下限。
+    private const int HpMaxHigh = 130; // 权杖使徒：ToughEnemies 进阶生命上限。
+    private const int ChaoMaximum = 90; // 权杖使徒：混乱抗性上限。
+    private const int AbandonStrengthNormal = 2; // 他没有撇下我：普通进阶下回合力量。
+    private const int AbandonStrengthHigh = 3; // 他没有撇下我：DeadlyEnemies 进阶下回合力量。
     private const int AbandonWeight = 45; // 他没有撇下我：随机权重。
-    private const int LampWeakNormal = 1; // 您必点着我的灯：普通进阶永久虚弱。
-    private const int LampWeakHigh = 2; // 您必点着我的灯：DeadlyEnemies 进阶永久虚弱。
-    private const int LampFlawNormal = 1; // 您必点着我的灯：普通进阶永久破绽。
-    private const int LampFlawHigh = 2; // 您必点着我的灯：DeadlyEnemies 进阶永久破绽。
+    private const int LampWeakNormal = 2; // 您必点着我的灯：普通进阶永久虚弱。
+    private const int LampWeakHigh = 3; // 您必点着我的灯：DeadlyEnemies 进阶永久虚弱。
+    private const int LampFlawNormal = 2; // 您必点着我的灯：普通进阶永久破绽。
+    private const int LampFlawHigh = 3; // 您必点着我的灯：DeadlyEnemies 进阶永久破绽。
     private const int LampWeight = 25; // 您必点着我的灯：随机权重。
     internal const int WordDamageMin = 23; // 愿您的话语临到我身上：单次伤害下限。
     internal const int WordDamageMax = 25; // 愿您的话语临到我身上：单次伤害上限。

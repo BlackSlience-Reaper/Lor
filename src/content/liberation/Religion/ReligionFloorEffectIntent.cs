@@ -6,7 +6,7 @@ using LibraryOfRuina.framework.intents;
 
 namespace LibraryOfRuina.content.liberation.Religion;
 
-internal enum ReligionEffectKind { Defend, Buff, Debuff, CardDebuff, Summon }
+internal enum ReligionEffectKind { Defend, Buff, Debuff, CardDebuff, StatusCard, Summon }
 
 internal sealed class ReligionFloorEffectIntent(string key, Func<int> amount, ReligionEffectKind kind) : AbstractIntent, IIntentTargetLineProvider
 {
@@ -22,7 +22,7 @@ internal sealed class ReligionFloorEffectIntent(string key, Func<int> amount, Re
             return [];
         }
 
-        if (kind is ReligionEffectKind.Debuff or ReligionEffectKind.CardDebuff || key == "RELIGION_SALVATION")
+        if (kind is ReligionEffectKind.Debuff or ReligionEffectKind.CardDebuff or ReligionEffectKind.StatusCard || key == "RELIGION_SALVATION")
         {
             return combat.PlayerCreatures.Where(static creature => creature.IsAlive)
                 .Select(static creature => new IntentTargetLineTarget(creature)).ToArray();
@@ -46,14 +46,21 @@ internal sealed class ReligionFloorEffectIntent(string key, Func<int> amount, Re
         ReligionEffectKind.Buff => IntentType.Buff,
         ReligionEffectKind.Summon => IntentType.Summon,
         ReligionEffectKind.CardDebuff => IntentType.CardDebuff,
+        ReligionEffectKind.StatusCard => IntentType.StatusCard,
         _ => IntentType.Debuff
     };
 
-    protected override string IntentPrefix =>
-        kind == ReligionEffectKind.CardDebuff ? "CARD_DEBUFF" : kind.ToString().ToUpperInvariant();
+    protected override string IntentPrefix => kind switch
+    {
+        ReligionEffectKind.CardDebuff => "CARD_DEBUFF",
+        ReligionEffectKind.StatusCard => "STATUS",
+        _ => kind.ToString().ToUpperInvariant()
+    };
 
     protected override string SpritePath =>
-        $"atlases/intent_atlas.sprites/intent_{IntentPrefix.ToLowerInvariant()}.tres";
+        kind == ReligionEffectKind.StatusCard
+            ? "atlases/intent_atlas.sprites/intent_status_card.tres"
+            : $"atlases/intent_atlas.sprites/intent_{IntentPrefix.ToLowerInvariant()}.tres";
 
     protected override LocString GetIntentDescription(IEnumerable<Creature> targets, Creature owner)
     {
@@ -61,6 +68,7 @@ internal sealed class ReligionFloorEffectIntent(string key, Func<int> amount, Re
         text.Add("Amount", amount());
         text.Add("Strength", ReligionFloorRules.WelcomeStrength);
         text.Add("Flaw", ReligionFloorStaffApostle.LampFlaw);
+        text.Add("Frail", ReligionFloorScytheApostle.SonFrail);
         return text;
     }
 }

@@ -10,21 +10,22 @@ namespace LibraryOfRuina.content.liberation.Religion;
 
 public sealed class ReligionFloorScytheApostle : ReligionFloorApostle
 {
-    private const int HpMinNormal = 90; // 镰刀使徒：普通进阶生命下限。
-    private const int HpMaxNormal = 94; // 镰刀使徒：普通进阶生命上限。
-    private const int HpMinHigh = 97; // 镰刀使徒：ToughEnemies 进阶生命下限。
-    private const int HpMaxHigh = 100; // 镰刀使徒：ToughEnemies 进阶生命上限。
-    private const int ChaoMaximum = 80; // 镰刀使徒：混乱抗性上限。
-    internal const int FollowBlock = 33; // 起来跟从您：所有使徒格挡。
+    private const int HpMinNormal = 140; // 镰刀使徒：普通进阶生命下限。
+    private const int HpMaxNormal = 144; // 镰刀使徒：普通进阶生命上限。
+    private const int HpMinHigh = 147; // 镰刀使徒：ToughEnemies 进阶生命下限。
+    private const int HpMaxHigh = 150; // 镰刀使徒：ToughEnemies 进阶生命上限。
+    private const int ChaoMaximum = 110; // 镰刀使徒：混乱抗性上限。
+    internal const int FollowBlock = 66; // 起来跟从您：所有使徒格挡。
     private const int FollowWeight = 1; // 起来跟从您：三招等权。
-    internal const int SonDamageMin = 13; // 您是神的儿子：单次伤害下限。
-    internal const int SonDamageMax = 15; // 您是神的儿子：单次伤害上限。
+    internal const int SonDamageMin = 11; // 您是神的儿子：单次伤害下限。
+    internal const int SonDamageMax = 12; // 您是神的儿子：单次伤害上限。
     internal const int SonHits = 1; // 您是神的儿子：攻击次数。
     internal const int SonWeak = 2; // 您是神的儿子：原版虚弱层数。
+    internal const int SonFrail = 2; // 您是神的儿子：原版脆弱层数。
     private const int SonWeight = 1; // 您是神的儿子：三招等权。
     internal const int RevealDamageMin = 8; // 求您显给我们看：单次伤害下限。
     internal const int RevealDamageMax = 9; // 求您显给我们看：单次伤害上限。
-    internal const int RevealHits = 2; // 求您显给我们看：攻击次数。
+    internal const int RevealHits = 3; // 求您显给我们看：攻击次数。
     private const int RevealWeight = 1; // 求您显给我们看：三招等权。
 
     internal override string AssetName => "scythe_apostle";
@@ -79,6 +80,7 @@ public sealed class ReligionFloorScytheApostle : ReligionFloorApostle
         if (move == 1)
         {
             await PowerCmdCompat.Apply<WeakPower>(targets.Where(static target => target.IsAlive), SonWeak, Creature, null);
+            await PowerCmdCompat.Apply<FrailPower>(targets.Where(static target => target.IsAlive), SonFrail, Creature, null);
         }
     }
 }

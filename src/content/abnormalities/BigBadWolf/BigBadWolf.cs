@@ -260,7 +260,7 @@ public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
             return Task.CompletedTask;
         }
 
-        return SpitPendingCard(new BlockingPlayerChoiceContext());
+        return SpitPendingCard(new ThrowingPlayerChoiceContext());
     }
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
