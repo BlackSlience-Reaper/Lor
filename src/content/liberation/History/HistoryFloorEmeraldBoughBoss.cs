@@ -10,6 +10,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -98,6 +99,9 @@ public sealed class HistoryFloorEmeraldBoughBoss : LiberationPhaseBossMonster
     private ConditionalBranchState? _chooserState;
 
     public override int LiberationPhase => Phase;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     protected override bool ReviveTriggerPlaysHitAnimation => true;
 

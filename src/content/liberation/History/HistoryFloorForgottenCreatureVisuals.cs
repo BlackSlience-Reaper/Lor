@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.visuals;
@@ -5,9 +6,24 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.History;
 
-public partial class HistoryFloorForgottenCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>忘却的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public partial class HistoryFloorForgottenCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "history_floor",
+        "forgotten",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["AttackStrike"] = "strike",
+            ["AttackSlash"] = "slash",
+            ["LongingEmbrace"] = "special",
+            ["Cast"] = "special",
+            ["Parry"] = "special",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(HistoryFloorForgottenBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 45f), new(0.50f, 0.50f), -190f, -235f, 190f, 5f, new(0f, -88f), new(0f, -300f))

@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -96,6 +97,9 @@ public sealed class HistoryFloorFlutteringBoss : LiberationPhaseBossMonster
     private MoveState? _hungerFrenzyState;
 
     public override int LiberationPhase => Phase;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     protected override bool ReviveTriggerPlaysHitAnimation => true;
 

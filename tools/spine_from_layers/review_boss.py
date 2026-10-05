@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 dst, names = sys.argv[1], sys.argv[2:]
-crop = (100, 200, 1500, 1000)
+crop = (100, 0, 1500, 1000)
 s = 0.2
 w, h = round((crop[2] - crop[0]) * s), round((crop[3] - crop[1]) * s)
 rows = []

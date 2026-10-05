@@ -132,7 +132,9 @@ def main():
     motions = load_layers(cfg)
 
     # 骨头：root → move（整体位移，冲刺、击退）→ 各动作的骨头
-    bones = [{"name": "root"}, {"name": "move", "parent": "root"}]
+    # root_scale：模组贴图是原版按某倍数缩放过的（翅振 1.2 倍）时整体放大，骨架才与模组待机图对齐
+    rs = cfg.get("root_scale", 1.0)
+    bones = [{"name": "root", **({"scaleX": rs, "scaleY": rs} if rs != 1.0 else {})}, {"name": "move", "parent": "root"}]
     world = {"root": (0.0, 0.0), "move": (0.0, 0.0)}
     for motion, m in cfg["motions"].items():
         for role, b in m["bones"].items():
