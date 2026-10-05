@@ -490,6 +490,8 @@ class Animator:
         dash, lean, wind_lean = p.get("dash", -40.0), p.get("lean", 6.0), p.get("wind_lean", -5.0)
         jabs, jab = p.get("jabs", []), p.get("jab", -10.0)
         head, arm_raise = p.get("head"), p.get("arm_raise", 0.0)
+        # head_wind/head_out：head 部件在蓄力、冲出时的摆角（挂在丝上的茧往前荡就写负的 head_out）；tint：冲出期间染红的强度
+        head_wind, head_out, tint = p.get("head_wind", -4.0), p.get("head_out", 5.0), p.get("tint", 0.0)
 
         def fn(t):
             w, o, b = seg(t, *tm["wind"]), seg(t, *tm["dash_out"]), seg(t, *tm["dash_back"])
@@ -498,17 +500,62 @@ class Animator:
             ch = {"body": {"rotate": wind_lean * windup + lean * out, "x": 8 * windup + dash * out + jab * kick,
                            "y": -4 * windup, "sx": 1 + 0.04 * windup - 0.02 * out, "sy": 1 - 0.04 * windup + 0.02 * out}}
             if head:
-                ch[head] = {"rotate": -4 * windup + 5 * out}
+                ch[head] = {"rotate": head_wind * windup + head_out * out}
             if arm_raise:
                 for limb in self.limbs:
                     if is_arm(limb):
                         ch[self.segs(limb)[0]] = {"rotate": side_sign(limb) * arm_raise * (windup + out)}
             return ch, {}
 
-        anim = self.build(fn, T)
+        def color(t):
+            k = seg(t, *tm["wind"]) * (1 - seg(t, *tm["dash_back"]))
+            return (1.0, 1 - tint * k, 1 - tint * k, 1.0)
+
+        anim = self.build(fn, T, color if tint else None)
         if "fx" in p:
             fx = dict({"on": tm["dash_out"][0], "off": tm["dash_back"][0], "extra_spin": 0.0, "scale_from": 0.9,
                        "scale_to": 1.0, "fade_in": 0.05, "fade_out": 0.2, "scale_time": 0.12}, **p["fx"])
+            self.add_spin_fx(anim, fx, T)
+        return anim
+
+    # 只动一个部件的关键帧动画（挂在丝上的蜘蛛巢等）：身体完全不动，挂点就固定在部件骨头上。
+    # rotate/sx/sy 是 [[时间, 值], ...]，相邻关键帧之间平滑过渡；ring 是从 start 起带衰减的摆动（amp 度、freq 次/秒、decay）；
+    # flash 是开头闪红强度，tint 是 [[时间, 强度], ...] 的持续染红；可带 fx。
+    def part_keys(self, p):
+        T = p.get("duration", 1.0)
+        part = p["part"]
+
+        def curve(keys, default):
+            if not keys:
+                return lambda t: default
+            def f(t):
+                if t <= keys[0][0]:
+                    return keys[0][1]
+                for (t0, v0), (t1, v1) in zip(keys, keys[1:]):
+                    if t <= t1:
+                        return v0 + (v1 - v0) * smooth((t - t0) / (t1 - t0) if t1 > t0 else 1.0)
+                return keys[-1][1]
+            return f
+
+        rot, sx, sy = curve(p.get("rotate"), 0.0), curve(p.get("sx"), 1.0), curve(p.get("sy"), 1.0)
+        ring = p.get("ring")
+        flash, tint = p.get("flash", 0.0), curve(p.get("tint"), 0.0)
+
+        def fn(t):
+            r = rot(t)
+            if ring and t >= ring["start"]:
+                dt = t - ring["start"]
+                r += ring["amp"] * math.exp(-ring.get("decay", 5.0) * dt) * math.sin(2 * math.pi * ring.get("freq", 3.0) * dt)
+            return {part: {"rotate": r, "sx": sx(t), "sy": sy(t)}}, {}
+
+        def color(t):
+            k = flash * seg(t, 0.0, 0.05) * (1 - seg(t, 0.08, 0.3)) + tint(t)
+            return (1.0, 1 - k, 1 - k, 1.0)
+
+        anim = self.build(fn, T, color if (flash or p.get("tint")) else None)
+        if "fx" in p:
+            fx = dict({"on": 0.15, "off": 0.8, "extra_spin": 0.0, "scale_from": 0.9, "scale_to": 1.0,
+                       "fade_in": 0.05, "fade_out": 0.2, "scale_time": 0.12}, **p["fx"])
             self.add_spin_fx(anim, fx, T)
         return anim
 
@@ -517,9 +564,9 @@ class Animator:
     def joint_swing(self, p):
         T = p.get("duration", 1.15)
         tm = dict({"raise": [0.0, 0.16], "strike": [0.17, 0.3], "recover": [0.75, 1.1]}, **p.get("timing", {}))
-        names = self.segs(p["arm"])
-        setup = self.chain_setup(names)
-        raise_w, strike_w, lag = p["raise"], p["strike"], p.get("lag", 0.015)
+        # chains：同时挥动的其他链（两条镰刀前肢等），每项 {arm, raise, strike}
+        chains = [(p["arm"], p["raise"], p["strike"])] + [(c["arm"], c["raise"], c["strike"]) for c in p.get("chains", [])]
+        lag = p.get("lag", 0.015)
         lunge, lean, head = p.get("lunge", -60.0), p.get("lean", 8.0), p.get("head")
 
         def fn(t):
@@ -528,15 +575,17 @@ class Animator:
             body_rot = -0.7 * lean * windup + lean * strike
             ch = {"body": {"rotate": body_rot, "x": 10 * windup + lunge * strike, "y": -4 * windup,
                            "sx": 1 + 0.03 * windup, "sy": 1 - 0.03 * windup}}
-            worlds = []
-            for i, (s0, a, b) in enumerate(zip(setup, raise_w, strike_w)):
-                d = lag * i
-                ri = seg(t, tm["raise"][0] + d, tm["raise"][1] + d)
-                si = seg(t, tm["strike"][0] + d, tm["strike"][1] + d)
-                bi = seg(t, tm["recover"][0] + d, tm["recover"][1] + d)
-                worlds.append(s0 + (a - s0) * ri + (b - a) * si + (s0 - b) * bi)
-            for name, off in zip(names, self.chain_offsets(names, worlds, body_rot)):
-                ch[name] = {"rotate": off}
+            for arm, raise_w, strike_w in chains:
+                names = self.segs(arm)
+                worlds = []
+                for i, (s0, a, b) in enumerate(zip(self.chain_setup(names), raise_w, strike_w)):
+                    d = lag * i
+                    ri = seg(t, tm["raise"][0] + d, tm["raise"][1] + d)
+                    si = seg(t, tm["strike"][0] + d, tm["strike"][1] + d)
+                    bi = seg(t, tm["recover"][0] + d, tm["recover"][1] + d)
+                    worlds.append(s0 + (a - s0) * ri + (b - a) * si + (s0 - b) * bi)
+                for name, off in zip(names, self.chain_offsets(names, worlds, body_rot)):
+                    ch[name] = {"rotate": off}
             if head:
                 ch[head] = {"rotate": -6 * windup + 8 * strike}
             return ch, {}
@@ -548,30 +597,40 @@ class Animator:
             self.add_spin_fx(anim, fx, T)
         return anim
 
-    # 关节姿势（防御等）：arm 链各节举到 pose 世界角，停住再放下；身体后仰 lean
+    # 关节姿势（防御、施法、受击等）：arm 链各节摆到 pose 世界角，停住再放下；身体后仰 lean、平移 body_x，可选颤动 wobble 与闪红 flash
     def joint_pose(self, p):
         T = p.get("duration", 0.6)
         tm = dict({"up": [0.0, 0.14], "down": [0.42, 0.6]}, **p.get("timing", {}))
-        names = self.segs(p["arm"])
-        setup = self.chain_setup(names)
-        pose, lean, head, lag = p["pose"], p.get("lean", -5.0), p.get("head"), p.get("lag", 0.02)
+        # chains：同时摆姿势的其他链，每项 {arm, pose}
+        chains = [(p["arm"], p["pose"])] + [(c["arm"], c["pose"]) for c in p.get("chains", [])]
+        lean, head, lag = p.get("lean", -5.0), p.get("head"), p.get("lag", 0.02)
+        # body_x：身体平移（受击时写正数就是被击退）；wobble：到位后各节带衰减的颤动（度）；flash：闪红强度
+        body_x, wobble, flash = p.get("body_x", 6.0), p.get("wobble", 0.0), p.get("flash", 0.0)
+        body_y = p.get("body_y", -3.0)
 
         def fn(t):
             k0 = seg(t, *tm["up"]) * (1 - seg(t, *tm["down"]))
             body_rot = lean * k0
-            ch = {"body": {"rotate": body_rot, "x": 6 * k0, "y": -3 * k0, "sx": 1 + 0.02 * k0, "sy": 1 - 0.02 * k0}}
-            worlds = []
-            for i, (s0, a) in enumerate(zip(setup, pose)):
-                d = lag * i
-                k = seg(t, tm["up"][0] + d, tm["up"][1] + d) * (1 - seg(t, tm["down"][0] + d, tm["down"][1] + d))
-                worlds.append(s0 + (a - s0) * k)
-            for name, off in zip(names, self.chain_offsets(names, worlds, body_rot)):
-                ch[name] = {"rotate": off}
+            ch = {"body": {"rotate": body_rot, "x": body_x * k0, "y": body_y * k0, "sx": 1 + 0.02 * k0, "sy": 1 - 0.02 * k0}}
+            shake = math.exp(-7 * max(0.0, t - tm["up"][1])) * math.sin(30 * t) * (t > tm["up"][0]) if wobble else 0.0
+            for arm, pose in chains:
+                names = self.segs(arm)
+                worlds = []
+                for i, (s0, a) in enumerate(zip(self.chain_setup(names), pose)):
+                    d = lag * i
+                    k = seg(t, tm["up"][0] + d, tm["up"][1] + d) * (1 - seg(t, tm["down"][0] + d, tm["down"][1] + d))
+                    worlds.append(s0 + (a - s0) * k + wobble * (i + 1) * shake * k)
+                for name, off in zip(names, self.chain_offsets(names, worlds, body_rot)):
+                    ch[name] = {"rotate": off}
             if head:
                 ch[head] = {"rotate": -5 * k0}
             return ch, {}
 
-        return self.build(fn, T)
+        def color(t):
+            k = seg(t, 0.0, 0.05) * (1 - seg(t, 0.08, 0.3))
+            return (1.0, 1 - flash * k, 1 - flash * k, 1.0)
+
+        return self.build(fn, T, color if flash else None)
 
     # 头部甩出（求知的稻草人的收割等）：head 先后仰蓄力 wind_tilt，再往前甩 lash_tilt 并在停住时轻颤，身体跟着前倾 lean，
     # 两臂张开 arms 度；fx 一般挂在 head 上（fx.parent），从 scale_from 迅速放大，像从头里伸出去。
@@ -902,6 +961,36 @@ def extract_fx(fx, out_dir, page):
     return (w, h), (w / 2 - px, py - h / 2)
 
 
+def visible_bottom(path):
+    a = np.asarray(Image.open(path).convert("RGBA"))[..., 3]
+    rows = np.nonzero(a.max(axis=1) > 0)[0]
+    return float(rows.max() + 1) if len(rows) else float(a.shape[0])
+
+
+def align_swap(pose, rig, cfg):
+    """按原版贴图外观的换图规则算 anchor 与 scale，换图位置与原来逐帧换图时一致。
+    align = {"mode": "center" | "bottom", "base_scale": 待机贴图缩放, "frame_scale": 换图帧缩放（缺省同待机）,
+             "nudge": [x, y]（原版 Frame.Nudge，父节点单位；Lunge 帧的 Nudge 是冲刺终点，不要填）}。
+    center 对应 SpriteVisualProfile.Centered()（图片中心对齐待机图中心），bottom 对应默认的可见底边中点对齐。"""
+    al = pose["align"]
+    base = al["base_scale"]
+    s = al.get("frame_scale", base) / base
+    nx, ny = (v / base for v in al.get("nudge", [0.0, 0.0]))
+    src = Image.open(pose["source"])
+    w, h = src.size
+    W, H = rig.W, rig.H
+    if al.get("mode", "bottom") == "center":
+        q = (w / 2, h / 2)
+        p = (W / 2 + nx, H / 2 + ny)
+    else:
+        q = (w / 2, visible_bottom(pose["source"]))
+        p = (W / 2 + nx, visible_bottom(cfg["image"]) + ny)
+    bx, by = cfg["body"]["center"]
+    pose["anchor"] = [round(q[0] - (p[0] - bx) / s, 2), round(q[1] - (p[1] - by) / s, 2)]
+    if abs(s - 1.0) > 1e-6:
+        pose["scale"] = round(s, 4)
+
+
 # ---------------------------------------------------------------- 主流程
 
 def main():
@@ -966,6 +1055,12 @@ def main():
         slot = "fx" if not any(s["name"] == "fx" for s in data["slots"]) else f"fx_{anim_name}"
         fx_cfg["slot"] = slot
         fx_page = fx_cfg.get("page", f"{slot}.png")
+        if "align" in fx_cfg:
+            # 特效放在原版逐帧换图时那张攻击图的位置上：pivot、scale 与 swap 的 align 同一套算法
+            probe = {"source": fx_cfg["source"], "align": fx_cfg["align"]}
+            align_swap(probe, rig, cfg)
+            fx_cfg["pivot"] = probe["anchor"]
+            fx_cfg["scale"] = probe.get("scale", 1.0)
         (fw, fh), (ox, oy) = extract_fx(fx_cfg, out_dir, fx_page)
         fx_scale = fx_cfg.get("scale", 1.0)
         bone = {"name": slot, "parent": fx_cfg.get("parent", "body")}
@@ -992,6 +1087,8 @@ def main():
         if "swap" not in a:
             continue
         pose = a["swap"]
+        if "align" in pose:
+            align_swap(pose, rig, cfg)
         slot = pose["slot"] = f"pose_{anim_name}"
         page = pose.get("page", f"{name}_pose_{anim_name}.png")
         spec = {"source": pose["source"], "key": "all", "include": pose.get("include"), "exclude": pose.get("exclude"),
