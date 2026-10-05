@@ -1,5 +1,5 @@
 boss_tear_edge_stabbed1.webp
-size:1539,329
+size:1180,329
 filter:Linear,Linear
 S1/body_3
 bounds:0,0,156,329
@@ -11,13 +11,7 @@ S1/back_hair
 bounds:560,0,251,188
 S1/front_hair
 bounds:813,0,147,139
-S1/librarian_front_acce_2
-bounds:962,0,147,139
 S1/body_2
-bounds:1111,0,110,109
+bounds:962,0,110,109
 S1/head_복사
-bounds:1223,0,104,93
-S1/face
-bounds:1329,0,103,80
-S1/librarian_front_acce
-bounds:1434,0,103,74
+bounds:1074,0,104,93

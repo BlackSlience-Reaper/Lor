@@ -1,5 +1,5 @@
 boss_gold_rush_king_charging.webp
-size:1261,244
+size:1123,244
 filter:Linear,Linear
 Special/back_hair
 bounds:0,0,316,244
@@ -7,13 +7,7 @@ Special/body
 bounds:318,0,386,226
 Special/front_hair
 bounds:706,0,126,211
-Special/liabrarian_front_acce_2
-bounds:834,0,51,115
 Special/body_2
-bounds:887,0,196,114
+bounds:834,0,196,114
 Special/head
-bounds:1085,0,89,100
-Special/face
-bounds:1176,0,71,56
-Special/liabrarian_front_acce
-bounds:1249,0,10,11
+bounds:1032,0,89,100
