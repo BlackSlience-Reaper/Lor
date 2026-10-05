@@ -228,7 +228,7 @@ internal static class PowerIconVerificationPatch
             foreach (Type modeType in modeTypes)
             {
                 // 模式由 ModelDb 注册后不能再直接构造；取规范实例，赋给 Mode 时由能力克隆并绑定
-                if (CanonicalMode.MakeGenericMethod(modeType).Invoke(null, null) is not LibraryPowerModeModel canonicalMode)
+                if (ModelDb.GetByIdOrNull<LibraryPowerModeModel>(ModelDb.GetId(modeType)) is not { } canonicalMode)
                 {
                     failures.Add(canonicalPower.Id + ": could not resolve mode " + modeType.FullName);
                     continue;
@@ -265,9 +265,6 @@ internal static class PowerIconVerificationPatch
             return 0;
         }
     }
-
-    private static readonly MethodInfo CanonicalMode =
-        typeof(LibraryPowerModeModel).GetMethod(nameof(LibraryPowerModeModel.Canonical))!;
 
     private static Type ResolveModeFamily(Type modeType)
     {

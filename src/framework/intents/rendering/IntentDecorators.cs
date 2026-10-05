@@ -99,17 +99,6 @@ internal sealed class TargetIndicatorIntentDecorator : IIntentDecorator
     };
 }
 
-/// <summary>狐狸的防御、强化、能量、虚弱意图把数值写进原版数字标签。</summary>
-internal sealed class FoxIntentValueDecorator : IIntentDecorator
-{
-    public string Name => "FoxValue";
-
-    public IntentDecoratorOutcome Render(IntentRenderStage stage, ref IntentRenderContext context) =>
-        stage == IntentRenderStage.IntentVisuals
-            ? FoxIntentValuePatch.OnUpdateVisuals(context.IntentNode!, context.Intent!)
-            : IntentDecoratorOutcome.Skipped;
-}
-
 /// <summary>技术层和弦 E.G.O.：格挡不足时后两段攻击意图变暗。</summary>
 internal sealed class ChordEgoDimIntentDecorator : IIntentDecorator
 {

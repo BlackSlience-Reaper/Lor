@@ -606,7 +606,7 @@ internal static class MonsterStateMachineIntentGraphFeature
 
         try
         {
-            return VanillaPrivate.ConditionalBranchStateEvaluateStates.Invoke(conditional, null) as string;
+            return VanillaPrivate.ConditionalBranchStateEvaluateStates.Invoke(conditional) as string;
         }
         catch
         {

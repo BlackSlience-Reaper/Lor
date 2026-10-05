@@ -367,7 +367,9 @@ internal static class PageRelicPipelineVerificationPatch
 
     private static string Describe(Exception ex)
     {
-        Exception inner = ex is TargetInvocationException { InnerException: not null } wrapped ? wrapped.InnerException : ex;
+        Exception inner = ex is TargetInvocationException { InnerException: { } innerException }
+            ? innerException
+            : ex;
         string message = inner.Message.Split('\n')[0];
         return inner.GetType().Name + ": " + message;
     }

@@ -489,11 +489,6 @@ internal static partial class IntentRenderVerificationPatch
         yield return ("targeted.monster-attack", static () => new TargetedMonsterAttackIntent(7, 1, "WOLF_FEROCIOUS_FANGS.description"));
         yield return ("indiscriminate", static () => new IndiscriminateAttackIntent(5, 1, null));
         yield return ("indiscriminate.badged", static () => new IndiscriminateAttackIntent(5, 2, null, IntentBadge.Weak(1)));
-        yield return ("fox.attack", static () => new FoxAttackIntent(6));
-        yield return ("fox.defend", static () => new FoxDefendIntent(5));
-        yield return ("fox.buff", static () => new FoxBuffIntent(2));
-        yield return ("fox.energy", static () => new FoxEnergyIntent(1));
-        yield return ("fox.weak", static () => new FoxWeakIntent(1));
         yield return ("dynamic-attack", static () => new DynamicAttackIntent(4, () => 2));
     }
 
