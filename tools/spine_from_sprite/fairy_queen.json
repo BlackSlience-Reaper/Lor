@@ -286,7 +286,11 @@
     "align": {
      "mode": "center",
      "base_scale": 0.58,
-     "frame_scale": 0.56
+     "frame_scale": 0.58,
+     "nudge": [
+      -109.04,
+      -29.0
+     ]
     },
     "on": 0.15,
     "off": 0.9,
@@ -327,7 +331,12 @@
     "page": "fairy_queen_spine_cast.png",
     "align": {
      "mode": "center",
-     "base_scale": 0.58
+     "base_scale": 0.58,
+     "frame_scale": 0.58,
+     "nudge": [
+      -7.54,
+      2.9
+     ]
     },
     "on": 0.04,
     "off": 1.25,
@@ -351,7 +360,12 @@
     "page": "fairy_queen_spine_hurt.png",
     "align": {
      "mode": "center",
-     "base_scale": 0.58
+     "base_scale": 0.58,
+     "frame_scale": 0.58,
+     "nudge": [
+      11.02,
+      35.96
+     ]
     },
     "on": 0.0,
     "off": 0.42,
