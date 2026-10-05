@@ -9,11 +9,10 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-layers_root, mod_root, dst = Path(sys.argv[1]).expanduser(), Path(sys.argv[2]), Path(sys.argv[3])
 SUFFIX = {"idle": "", "strike": "_attack_strike", "thrust": "_attack_thrust", "slash": "_attack_slash", "hurt": "_hit"}
 
 
-def find_mod(prefix, kind):
+def find_mod(mod_root, prefix, kind):
     for ext in (".webp", ".png"):
         p = mod_root / f"{prefix}{SUFFIX[kind]}{ext}"
         if p.exists():
@@ -56,29 +55,36 @@ def match(comp_path, mod_path):
     return e, dx - PAD, dy - PAD
 
 
-result = {}
-for arg in sys.argv[4:]:
-    name, rest = arg.split("=")
-    sub, _, prefix = rest.partition(",")
-    prefix = prefix or name
-    info = json.loads((layers_root / sub / "layers.json").read_text())
-    motions = [m for m in info if not m.endswith("_Standing")]
-    entry = {"layers": sub, "prefix": prefix, "poses": {}}
-    for kind in SUFFIX:
-        mp = find_mod(prefix, kind)
-        if mp is None:
-            continue
-        cands = []
-        for m in motions:
-            e, dx, dy = match(layers_root / sub / f"{m}.composite.png", mp)
-            cands.append((e, m, dx, dy))
-        cands.sort()
-        e, m, dx, dy = cands[0]
-        W, H = Image.open(mp).size
-        ox, oy = info[m]["composite_origin"]
-        bottom = [round(dx + W / 2 - ox, 2), round(oy - (dy + H), 2)]
-        entry["poses"][kind] = {"motion": m, "err": round(e, 3), "second": [round(cands[1][0], 3), cands[1][1]],
-                                "mod": mp.name, "bottom_center": bottom, "size": [W, H]}
-        print(name, kind, m, round(e, 2), "next", cands[1][1], round(cands[1][0], 2), bottom, flush=True)
-    result[name] = entry
-dst.write_text(json.dumps(result, ensure_ascii=False, indent=1))
+def main():
+    layers_root, mod_root, dst = Path(sys.argv[1]).expanduser(), Path(sys.argv[2]), Path(sys.argv[3])
+    result = {}
+    for arg in sys.argv[4:]:
+        name, rest = arg.split("=")
+        sub, _, prefix = rest.partition(",")
+        prefix = prefix or name
+        info = json.loads((layers_root / sub / "layers.json").read_text())
+        motions = [m for m in info if not m.endswith("_Standing")]
+        entry = {"layers": sub, "prefix": prefix, "poses": {}}
+        for kind in SUFFIX:
+            mp = find_mod(mod_root, prefix, kind)
+            if mp is None:
+                continue
+            cands = []
+            for m in motions:
+                e, dx, dy = match(layers_root / sub / f"{m}.composite.png", mp)
+                cands.append((e, m, dx, dy))
+            cands.sort()
+            e, m, dx, dy = cands[0]
+            W, H = Image.open(mp).size
+            ox, oy = info[m]["composite_origin"]
+            bottom = [round(dx + W / 2 - ox, 2), round(oy - (dy + H), 2)]
+            entry["poses"][kind] = {"motion": m, "err": round(e, 3), "second": [round(cands[1][0], 3), cands[1][1]],
+                                    "mod": mp.name, "bottom_center": bottom, "size": [W, H]}
+            print(name, kind, m, round(e, 2), "next", cands[1][1], round(cands[1][0], 2), bottom, flush=True)
+        result[name] = entry
+    dst.write_text(json.dumps(result, ensure_ascii=False, indent=1))
+
+
+# 只在直接运行时执行：type_tints.py 等会导入 match()，导入时跑主流程曾把命令行里的模组贴图当输出路径覆盖掉
+if __name__ == "__main__":
+    main()

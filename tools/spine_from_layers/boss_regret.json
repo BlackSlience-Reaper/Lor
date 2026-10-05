@@ -1,0 +1,1111 @@
+{
+ "name": "boss_regret",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/regret",
+ "origin": [
+  -169.0,
+  -34.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "Murderer_Default",
+   "bones": {
+    "body": {
+     "at": [
+      -89.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -89.9,
+      284.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -100.5,
+      404.2
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      -55,
+      105
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "body_2": "body",
+    "body_3": "weapon",
+    "body_4": "body",
+    "body_5": "body",
+    "body_6": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair"
+   }
+  },
+  "Damaged": {
+   "source": "Murderer_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      -108.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -108.1,
+      215.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -118.5,
+      332.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair",
+    "body_2": "body"
+   }
+  },
+  "Guard": {
+   "source": "Murderer_Guard",
+   "bones": {
+    "body": {
+     "at": [
+      -36.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -36.1,
+      270.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -46.5,
+      387.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair",
+    "body_2": "body"
+   }
+  },
+  "HitL_S1": {
+   "source": "Murderer_HitL_S1",
+   "bones": {
+    "body": {
+     "at": [
+      -143.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -143.9,
+      240.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -154.0,
+      354.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair",
+    "body_2": "body"
+   }
+  },
+  "HitR_Penetrate": {
+   "source": "Murderer_HitR_Penetrate",
+   "bones": {
+    "body": {
+     "at": [
+      -143.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -143.9,
+      240.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -154.0,
+      354.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "back_hair": "hair",
+    "body_2": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair"
+   }
+  },
+  "Slash": {
+   "source": "Murderer_Slash",
+   "bones": {
+    "body": {
+     "at": [
+      -107.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -107.1,
+      241.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -117.5,
+      357.5
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair"
+   }
+  },
+  "Slash_S3": {
+   "source": "Murderer_Slash_S3",
+   "bones": {
+    "body": {
+     "at": [
+      -108.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -108.1,
+      231.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -118.5,
+      348.2
+     ]
+    }
+   },
+   "assign": {
+    "back_hair": "hair",
+    "body": "body",
+    "head": "head",
+    "face": "head",
+    "front_acce": "head",
+    "front_hair": "hair",
+    "body_2": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      1.2,
+      1,
+      0.3
+     ]
+    }
+   }
+  },
+  "attack_right": {
+   "duration": 0.95,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "HitR_Penetrate",
+     0
+    ],
+    [
+     0.65,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.65,
+       -4
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.65,
+       0
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "HitR_Penetrate.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -18,
+       "out"
+      ],
+      [
+       0.65,
+       -18
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "HitR_Penetrate.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "HitR_Penetrate.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "attack_left": {
+   "duration": 0.95,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "HitL_S1",
+     0
+    ],
+    [
+     0.65,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.65,
+       -4
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.65,
+       0
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "HitL_S1.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -18,
+       "out"
+      ],
+      [
+       0.65,
+       -18
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "HitL_S1.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "HitL_S1.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "attack_slash": {
+   "duration": 0.95,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Slash",
+     0
+    ],
+    [
+     0.65,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.65,
+       -4
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.65,
+       0
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Slash.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -18,
+       "out"
+      ],
+      [
+       0.65,
+       -18
+      ],
+      [
+       0.95,
+       0
+      ]
+     ]
+    },
+    "Slash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Slash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.53,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0
+    ],
+    [
+     0.28,
+     "Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.48000000000000004,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.28,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.33,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.38,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "parry": {
+   "duration": 0.85,
+   "show": [
+    [
+     0,
+     "Guard",
+     0
+    ],
+    [
+     0.6,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Guard.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "Guard.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Guard.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "ego": {
+   "duration": 1.5,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.1,
+     "Slash_S3",
+     0
+    ],
+    [
+     1.2000000000000002,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.1,
+       0.97,
+       "out"
+      ],
+      [
+       1.2000000000000002,
+       0.97
+      ],
+      [
+       1.5000000000000002,
+       1
+      ]
+     ]
+    },
+    "Slash_S3.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       1.2000000000000002,
+       0
+      ]
+     ]
+    },
+    "Slash_S3.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Slash_S3.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       5,
+       "out"
+      ],
+      [
+       1.2,
+       5
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

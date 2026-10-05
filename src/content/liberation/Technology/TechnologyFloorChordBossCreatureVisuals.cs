@@ -1,11 +1,28 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Technology;
 
-public sealed partial class TechnologyFloorChordBossCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>和弦的外观：Spine 身体见 <see cref="TechnologyFloorBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class TechnologyFloorChordBossCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = TechnologyFloorBossSpine.Create(
+        "chord",
+        "attack_fire",
+        new Dictionary<string, string>
+        {
+            ["AttackFire"] = "attack_fire",
+            ["AttackStrike"] = "attack_strike",
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+            ["EgoS1"] = "ego_s1",
+            ["EgoS2"] = "ego_s2",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(TechnologyFloorChordBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -155f), new(0.576f, 0.576f), -170f, -315f, 170f, 12f, new(0f, -155f), new(-20f, -340f))
@@ -33,7 +50,7 @@ public sealed partial class TechnologyFloorChordBossCreatureVisuals : SpriteAtta
         profile.Frame("parry", TechnologyFloorChordBoss.ParryTexturePath);
         profile.Frame("ego_s1", TechnologyFloorChordBoss.EgoS1TexturePath);
         profile.Frame("ego_s2", TechnologyFloorChordBoss.EgoS2TexturePath);
-        profile.Swap("attack_fire", 0.42f, "Attack");
+        profile.Swap("attack_fire", 0.42f, "Attack", "AttackFire");
         profile.Swap("attack_strike", 0.42f, "AttackStrike");
         profile.Swap("hit", 0.40f, "Hit");
         profile.Swap("parry", 0.40f, "Guard", "Cast");

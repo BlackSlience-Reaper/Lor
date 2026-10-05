@@ -102,6 +102,9 @@ public sealed class TechnologyFloorGrinderMk4Boss : LiberationPhaseBossMonster
 
     public override int LiberationPhase => Phase;
 
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="TechnologyFloorBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => TechnologyFloorBossSpine.DeathLength(this);
+
     protected override bool ReviveTriggerPlaysHitAnimation => true;
 
     protected override string? ReviveAndEmpowerAnimation => "Cast";

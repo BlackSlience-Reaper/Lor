@@ -1,11 +1,29 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Technology;
 
-public partial class TechnologyFloorGrinderMk4BossCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>研削机Mk4的外观：Spine 身体见 <see cref="TechnologyFloorBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public partial class TechnologyFloorGrinderMk4BossCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = TechnologyFloorBossSpine.Create(
+        "grinder_mk4",
+        "attack_slash",
+        new Dictionary<string, string>
+        {
+            ["AttackStrike"] = "attack_slash",
+            ["AttackSlash"] = "attack_slash",
+            ["AttackThrust"] = "attack_thrust",
+            ["Cast"] = "dodge",
+            ["EgoS1"] = "ego_s1",
+            ["EgoS2"] = "ego_s2",
+            ["EgoS3"] = "ego_s3",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(TechnologyFloorGrinderMk4Boss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -155f), new(0.576f, 0.576f), -170f, -315f, 170f, 12f, new(0f, -155f), new(-20f, -340f))
