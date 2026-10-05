@@ -154,7 +154,7 @@ internal static class VanillaPrivate
 
     // 音乐
     internal static readonly VanillaPrivateField<NRunMusicController, Node> RunMusicControllerProxy = new("_proxy");
-    internal static readonly VanillaPrivateField<NRunMusicController, string> RunMusicControllerCurrentAmbience = new("_currentAmbience");
+    internal static readonly VanillaPrivateField<NRunMusicController, string?> RunMusicControllerCurrentAmbience = new("_currentAmbience");
 
     /// <summary>初始化步骤：触发解析并汇总缺失项。缺失不中断初始化，用到它的功能各自降级。</summary>
     internal static void Report()

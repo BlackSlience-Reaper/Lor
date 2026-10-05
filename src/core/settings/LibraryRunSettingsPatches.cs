@@ -149,7 +149,8 @@ internal static class LibraryHiddenModifiers
 
     internal static bool IsHidden(ModifierModel modifier) => CarrierTypes.Contains(modifier.GetType());
 
-    internal static bool IsHidden(ModelId id) => CarrierTypes.Any(type => ModelDb.GetId(type) == id);
+    internal static bool IsHidden(ModelId? id) =>
+        id != null && CarrierTypes.Any(type => ModelDb.GetId(type) == id);
 }
 
 [HarmonyPatch(typeof(NTopBarModifier), nameof(NTopBarModifier.Create))]
