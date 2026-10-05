@@ -135,6 +135,58 @@ BOSSES = {
                   "scream": ("skill", "Shout_S1", "rise"), "vomit": ("skill", "Vomit_S2", "step"),
                   "hurt": ("hurt", "Damaged")},
     },
+    # 文学层。原来是场景动画：多段招式照 scenes/creature_visuals/*_animations.tres 的换图时刻（scene_timelines.py 读出）
+    # 做成 timeline，hits 是动画契约（LiteratureFloor*AnimationContract）里的命中时刻；单张图的动作按统一时长。
+    # 模组图上叠的特效（Laetitia 的心、赤瞳的刀光、此刻的神情的血肉团）用 extract_fx.py 抠成额外层。
+    "black_swan": {
+        "prefix": "EGO_BlackSwan_", "origin": [21.5, -27.0], "weapons": [],
+        "anims": {"slash_one": ("attack", "Slash", "step"), "slash_two": ("attack", "Slash_S2", "step"),
+                  "pierce": ("attack", "Penetrate", "dash"), "guard": ("seq", ["Guard", "Guard_S1"], "brace"),
+                  "special": ("skill", "Special", "rise"), "hurt": ("hurt", "Damaged")},
+    },
+    "bloodlust": {
+        "prefix": "EGO_RedShoes_", "origin": [-55.5, -124.0], "weapons": [],
+        "anims": {"persistence": ("timeline", {"frames": [[0, "Hit"], [0.9, "Slash"]], "length": 1.8,
+                                               "hits": [0.5, 1.3]}, "dash"),
+                  "obsession": ("timeline", {"frames": [[0, "Slash"]], "length": 1.3, "hits": [0.64]}, "step"),
+                  "desire_burst": ("timeline", {"frames": [[0, "Hit"], [0.72, "Slash"], [1.44, "Hit"], [1.86, "Evade"]],
+                                                "length": 2.3, "hits": [0.4, 1.1, 1.8]}, "dash"),
+                  "unbearable": ("timeline", {"frames": [[0, "HS"], [0.6, "SpecialCard_JS5"], [1.2, "HS"],
+                                                         [1.8, "SpecialCard_JS5"]],
+                                              "length": 4.1, "hits": [0.5, 1.1, 1.7, 2.3, 3.3]}, "dash"),
+                  "cast": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged")},
+    },
+    "laetitia": {
+        "prefix": "EGO_Latitia_", "origin": [-56.0, 8.0], "weapons": [],
+        "extra": {"S1": [{"name": "fx", "image": "fx/laetitia_super_s1.png", "center": [-56.5, 365.0]}],
+                  "S2": [{"name": "fx", "image": "fx/laetitia_super_s2.png", "center": [-151.0, 624.5]}],
+                  "S3": [{"name": "fx", "image": "fx/laetitia_super_s3.png", "center": [-50.5, 525.0]}]},
+        "anims": {"attack": ("attack", "Fire", "step"), "cast": ("guard", "Guard", "brace"),
+                  "super_gift": ("timeline", {"frames": [[0, "S1"], [0.933, "S2"], [1.8, "S3"]], "length": 3.3}, "rise"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "red_eyes": {
+        "prefix": "EGO_SpiderBud_", "origin": [-297.5, -201.0], "weapons": [],
+        "extra": {"S1": [{"name": "fx", "image": "fx/red_eyes_s1.png", "center": [-182.0, 38.0]}],
+                  "Slash": [{"name": "fx", "image": "fx/red_eyes_slash.png", "center": [-578.0, 285.0]}],
+                  "Hit": [{"name": "fx", "image": "fx/red_eyes_strike.png", "center": [65.5, 396.0]}]},
+        "anims": {"flickering_eyes": ("skill", "Special", "rise"), "unknown": ("skill", "Special", "step"),
+                  "screech": ("timeline", {"frames": [[0, "Special"], [0.533, "Hit"], [1.1, "Slash"], [2.067, "S1"]],
+                                           "length": 3.0, "hits": [0.5, 1.1, 2.1]}, "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "todays_expression": {
+        "prefix": "Ego_ShyLookToday_", "origin": [3.5, -1.0], "weapons": [],
+        "extra": {"Guard": [{"name": "fx", "image": "fx/todays_expression_guard.png", "center": [-280.5, 254.5]}],
+                  "G_S1": [{"name": "fx", "image": "fx/todays_expression_s1.png", "center": [-369.5, 381.5]}],
+                  "Atk_S2": [{"name": "fx", "image": "fx/todays_expression_s2.png", "center": [-362.0, 368.5]}],
+                  "Penetrate": [{"name": "fx", "image": "fx/todays_expression_thrust.png", "center": [-562.0, 210.5]}]},
+        "anims": {"attack": ("timeline", {"frames": [[0, "Penetrate"]], "length": 1.3, "hits": [0.64]}, "step"),
+                  "angry": ("timeline", {"frames": [[0, "Penetrate"]], "length": 2.1, "hits": [0.44, 1.04, 1.64]}, "step"),
+                  "wavering_feelings": ("timeline", {"frames": [[0, "G_S1"], [0.9, "Atk_S2"]], "length": 2.5,
+                                                     "hits": [1.44]}, "step"),
+                  "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
+    },
     # 艺术层
     "dacapo": {
         "prefix": "Orchestra_", "origin": [-2.5, -136.0],
@@ -217,6 +269,46 @@ def move_keys(style, t0, t1, end):
     return {}
 
 
+# 场景动画（文学层）照搬的换图时间线：frames 是 [时刻, 姿势]，length 后回待机；怪物代码按契约里的命中时刻结算伤害，
+# 所以换姿势的时刻不能改。整体按动作类型位移，每个命中时刻再往前顶一下（hits）。
+TIMELINE_BASE = {"dash": -70, "step": -25}
+
+
+def timeline(D, tl, style):
+    frames = []
+    for t, p in tl["frames"]:
+        if not frames or frames[-1][1] != p:  # 场景里同一张图连着设两次，只算一段
+            frames.append((t, p))
+    length = tl["length"]
+    end = length + 0.3
+    show = (([[0, D, 0]] if frames[0][0] > 0 else []) + [[round(t, 3), p, 0] for t, p in frames]
+            + [[round(length, 3), D, 0]])
+    keys = {}
+
+    def add(target, channel, ks):
+        keys.setdefault(target, {}).setdefault(channel, []).extend(ks)
+
+    bounds = [t for t, _ in frames[1:]] + [length]
+    for (t0, p), t1 in zip(frames, bounds):
+        step = t1 - t0
+        add(f"{p}.body", "x", [[t0, 8], [t0 + min(0.15, step * 0.5), -6, "out"], [t0 + min(0.4, step), 0]])
+        for target, ch in lag(p, t0).items():
+            add(target, "rotate", [k for k in ch["rotate"] if k[0] <= t1])
+    base = TIMELINE_BASE.get(style, 0)
+    xs = [[0, 0], [0.15, base, "out"]]
+    for h in tl.get("hits", []):
+        if h - 0.08 > xs[-1][0]:
+            xs += [[h - 0.08, base], [h, base - 22, "out"], [min(h + 0.2, length), base]]
+    xs += [[length, base], [end, 0]]
+    keys["move"] = {"x": [k for i, k in enumerate(xs) if i == 0 or k[0] > xs[i - 1][0]]}
+    if style == "rise":
+        keys["move"]["y"] = [[0, 0], [0.25, 14, "out"], [length, 14], [end, 0]]
+    for chs in keys.values():
+        for c, ks in chs.items():
+            ks.sort(key=lambda k: k[0])
+    return {"duration": round(end, 3), "show": show, "keys": keys}
+
+
 def animations(spec):
     D = spec.get("base", "Default")  # 待机姿势；原版动作名不统一时（翅振 FairySpecialX_S2）前缀写短、这里写全
     weapons = spec["weapons"]
@@ -227,7 +319,7 @@ def animations(spec):
     out = {"idle": {"duration": 2.4, "show": [[0, D, 0]], "osc": idle_osc}}
     for name, (kind, pose, *opt) in spec["anims"].items():
         style = opt[0] if opt else None
-        hold = spec.get("holds", {}).get(name) or (SEQ_STEP * len(pose) if kind == "seq" else HOLD[kind])
+        hold = spec.get("holds", {}).get(name) or (SEQ_STEP * len(pose) if kind == "seq" else HOLD.get(kind, 0))
         if kind == "attack":
             on, off = 0.15, 0.15 + hold
             end = off + 0.3
@@ -266,6 +358,8 @@ def animations(spec):
                 keys.update(lag(p, t0))
             keys.update(move_keys(style, on, off, end))
             out[name] = {"duration": round(end, 3), "show": show, "keys": keys}
+        elif kind == "timeline":
+            out[name] = timeline(D, pose, style)
         else:
             on = 0.1
             off = on + hold
@@ -296,7 +390,7 @@ def main():
         info = json.loads((LAYERS / src_dir / "layers.json").read_text())
         used = set()
         for _, p, *_ in spec["anims"].values():
-            used.update(p if isinstance(p, list) else [p])
+            used.update([f[1] for f in p["frames"]] if isinstance(p, dict) else p if isinstance(p, list) else [p])
         base = spec.get("base", "Default")
         poses = [base] + sorted(used - {base})
         motions = {}

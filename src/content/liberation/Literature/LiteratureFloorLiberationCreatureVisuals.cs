@@ -8,6 +8,19 @@ namespace LibraryOfRuina.content.liberation.Literature;
 internal sealed partial class LiteratureFloorLaetitiaBossCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // Spine 身体的触发与动画契约同名；多段招式的换姿势时刻照场景动画，见 tools/spine_from_layers/build_boss_configs.py
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "laetitia",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "cast",
+            ["SuperGift"] = "super_gift",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LiteratureFloorAssets.LaetitiaBossScene;
 
@@ -90,6 +103,20 @@ internal static class LiteratureFloorLittleWitchFriendAnimationContract
 internal sealed partial class LiteratureFloorRedEyesCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // Spine 身体的触发与动画契约同名；多段招式的换姿势时刻照场景动画，见 tools/spine_from_layers/build_boss_configs.py
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "red_eyes",
+        "screech",
+        new Dictionary<string, string>
+        {
+            ["FlickeringEyes"] = "flickering_eyes",
+            ["Unknown"] = "unknown",
+            ["Screech"] = "screech",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LiteratureFloorAssets.RedEyesBossScene;
 
