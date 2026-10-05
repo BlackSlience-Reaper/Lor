@@ -1,0 +1,817 @@
+{
+ "name": "boss_beyond_fragment",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/beyond_fragment",
+ "texture_scale": 0.6,
+ "origin": [
+  -173.0,
+  -70.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "UniverseFragment_Default",
+   "bones": {
+    "body": {
+     "at": [
+      -9.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -9.9,
+      308.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -20.5,
+      423.0
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      -10,
+      215
+     ]
+    }
+   },
+   "assign": {
+    "body": "weapon",
+    "body_2": "body",
+    "body_3": "body",
+    "body_4": "body",
+    "body_5": "body",
+    "body_6": "body",
+    "body_7": "body",
+    "body_8": "body",
+    "head": "head",
+    "body_9": "body"
+   }
+  },
+  "Damaged": {
+   "source": "UniverseFragment_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      0.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      0.8,
+      321.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -10.0,
+      433.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "head": "head",
+    "body_3": "body",
+    "effect": "body"
+   }
+  },
+  "S3": {
+   "source": "UniverseFragment_S3",
+   "bones": {
+    "body": {
+     "at": [
+      12.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      12.1,
+      308.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      1.0,
+      420.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "face": "head",
+    "body_3": "body",
+    "effect": "body"
+   }
+  },
+  "ZDown_S2": {
+   "source": "UniverseFragment_ZDown_S2",
+   "bones": {
+    "body": {
+     "at": [
+      -114.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -114.9,
+      172.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -125.0,
+      289.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "effect": "body",
+    "body_2": "body",
+    "head": "head",
+    "body_3": "body"
+   }
+  },
+  "ZUp_S1": {
+   "source": "UniverseFragment_ZUp_S1",
+   "bones": {
+    "body": {
+     "at": [
+      -28.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -28.9,
+      282.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -39.5,
+      400.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "head": "head",
+    "body_3": "body",
+    "effect": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      1.2,
+      1,
+      0.3
+     ]
+    }
+   }
+  },
+  "attack": {
+   "duration": 0.87,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "ZUp_S1",
+     0
+    ],
+    [
+     0.57,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.57,
+       -4
+      ],
+      [
+       0.8699999999999999,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.57,
+       0
+      ],
+      [
+       0.8699999999999999,
+       0
+      ]
+     ]
+    },
+    "ZUp_S1.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -18,
+       "out"
+      ],
+      [
+       0.57,
+       -18
+      ],
+      [
+       0.8699999999999999,
+       0
+      ]
+     ]
+    },
+    "ZUp_S1.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ZUp_S1.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "attack2": {
+   "duration": 0.87,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "ZDown_S2",
+     0
+    ],
+    [
+     0.57,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.57,
+       -4
+      ],
+      [
+       0.8699999999999999,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.57,
+       0
+      ],
+      [
+       0.8699999999999999,
+       0
+      ]
+     ]
+    },
+    "ZDown_S2.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -18,
+       "out"
+      ],
+      [
+       0.57,
+       -18
+      ],
+      [
+       0.8699999999999999,
+       0
+      ]
+     ]
+    },
+    "ZDown_S2.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ZDown_S2.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "ego": {
+   "duration": 1.0,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.1,
+     "S3",
+     0
+    ],
+    [
+     0.7,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.1,
+       0.97,
+       "out"
+      ],
+      [
+       0.7,
+       0.97
+      ],
+      [
+       1.0,
+       1
+      ]
+     ]
+    },
+    "S3.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.7,
+       0
+      ]
+     ]
+    },
+    "S3.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "S3.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0
+    ],
+    [
+     0.4,
+     "Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       5,
+       "out"
+      ],
+      [
+       1.2,
+       5
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

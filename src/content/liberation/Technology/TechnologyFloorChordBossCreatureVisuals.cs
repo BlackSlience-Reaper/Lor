@@ -5,10 +5,11 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Technology;
 
-/// <summary>和弦的外观：Spine 身体见 <see cref="TechnologyFloorBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+/// <summary>和弦的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
 public sealed partial class TechnologyFloorChordBossCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
-    internal static readonly RuntimeSpineBody.Spec Spine = TechnologyFloorBossSpine.Create(
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "technology_floor",
         "chord",
         "attack_fire",
         new Dictionary<string, string>

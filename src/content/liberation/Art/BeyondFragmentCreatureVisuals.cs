@@ -1,11 +1,25 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
-public sealed partial class BeyondFragmentCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>彼方的碎片的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class BeyondFragmentCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "art_floor",
+        "beyond_fragment",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Attack2"] = "attack2",
+            ["Ego"] = "ego",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ArtFloorBeyondFragmentBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(-108f, -205f), new(0.58f, 0.58f), -400f, -435f, 190f, 14f, new(0f, -210f), new(0f, -438f))

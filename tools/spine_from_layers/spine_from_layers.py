@@ -48,28 +48,36 @@ def load_layers(cfg):
                 cy -= (y0 + y1) / 2 - h / 2
                 im = im.crop(box)
             layers.append({"name": l["name"], "image": im, "center": (cx, cy), "order": l["order"]})
+        # 额外层：原版里单独播放、模组原图上叠着的特效（extract_fx.py 抠出），路径相对配置文件
+        for ex in m.get("extra", []):
+            im = Image.open(cfg["_dir"] / ex["image"]).convert("RGBA")
+            layers.append({"name": ex["name"], "image": im, "center": tuple(ex["center"]), "order": ex.get("order", 999)})
         layers.sort(key=lambda l: l["order"])
         motions[motion] = layers
     return motions
 
 
-def pack(images, max_w=2048, pad=2):
-    """简单的按高度排序的行打包；返回 {key: (x, y)} 与页尺寸。"""
+def pack(images, max_w=2048, max_h=4096, pad=2):
+    """按高度排序的行打包，一页放不下就开新页（页高不超过 max_h：部分显卡纹理上限 8192，大页也占显存）。
+    返回 {key: (页号, x, y)} 与各页尺寸。"""
     items = sorted(images.items(), key=lambda kv: -kv[1].height)
+    pages = [[0, 0]]
     x = y = row_h = 0
     pos = {}
-    width = 0
     for key, im in items:
         if x + im.width + pad > max_w:
             x = 0
             y += row_h + pad
             row_h = 0
-        pos[key] = (x, y)
+        if y + im.height > max_h and (x > 0 or y > 0):
+            pages.append([0, 0])
+            x = y = row_h = 0
+        pos[key] = (len(pages) - 1, x, y)
         x += im.width + pad
         row_h = max(row_h, im.height)
-        width = max(width, x)
-    height = y + row_h
-    return pos, (width, height)
+        pages[-1][0] = max(pages[-1][0], x)
+        pages[-1][1] = max(pages[-1][1], y + row_h)
+    return pos, pages
 
 
 # ---------------------------------------------------------------- 动画曲线
@@ -114,6 +122,7 @@ def main():
     args = ap.parse_args()
     cfg_path = Path(args.config).resolve()
     cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+    cfg["_dir"] = cfg_path.parent
     out = Path(args.out) if args.out else cfg_path.parent / "out"
     out.mkdir(parents=True, exist_ok=True)
     name = cfg["name"]
@@ -135,19 +144,35 @@ def main():
             world[bname] = (wx, wy)
 
     # 图集
-    images = {f"{motion}/{l['name']}": l["image"] for motion, ls in motions.items() for l in ls}
-    pos, (pw, ph) = pack(images)
-    page = Image.new("RGBA", (pw, ph))
-    for key, (x, y) in pos.items():
-        page.alpha_composite(images[key], (x, y))
-    # 无损 WebP：比 PNG 小约三分之一，模组其余贴图也是 WebP
-    page_name = f"{name}.webp"
-    page.save(out / page_name, lossless=True, method=6)
-    atlas = [page_name, f"size:{pw},{ph}", "filter:Linear,Linear"]
-    for key, (x, y) in pos.items():
-        im = images[key]
-        atlas += [key, f"bounds:{x},{y},{im.width},{im.height}"]
+    # texture_scale < 1 时贴图按比例缩小存放，附件仍按原尺寸绘制（运行库按 附件尺寸/区域尺寸 拉伸）。
+    # 游戏里 Boss 只按 0.5–0.6 倍显示，存 0.6 倍几乎看不出差别，体积和显存约为三分之一。
+    ts = cfg.get("texture_scale", 1.0)
+    images = {}
+    for motion, ls in motions.items():
+        for l in ls:
+            im = l["image"]
+            if ts != 1.0:
+                im = im.resize((max(1, round(im.width * ts)), max(1, round(im.height * ts))), Image.LANCZOS)
+            images[f"{motion}/{l['name']}"] = im
+    pos, pages = pack(images)
+    atlas = []
+    for p, (pw, ph) in enumerate(pages):
+        page = Image.new("RGBA", (pw, ph))
+        for key, (pi, x, y) in pos.items():
+            if pi == p:
+                page.alpha_composite(images[key], (x, y))
+        # 无损 WebP：比 PNG 小约三分之一，模组其余贴图也是 WebP
+        page_name = f"{name}.webp" if p == 0 else f"{name}_{p + 1}.webp"
+        page.save(out / page_name, lossless=True, method=6)
+        if atlas:
+            atlas.append("")
+        atlas += [page_name, f"size:{pw},{ph}", "filter:Linear,Linear"]
+        for key, (pi, x, y) in pos.items():
+            if pi == p:
+                im = images[key]
+                atlas += [key, f"bounds:{x},{y},{im.width},{im.height}"]
     (out / f"{name}.atlas").write_text("\n".join(atlas) + "\n")
+    pw, ph = pages[0]
 
     # 槽位与附件
     slots = []
@@ -244,7 +269,7 @@ def main():
         "animations": anims,
     }
     (out / f"{name}.spine-json").write_text(json.dumps(skel, ensure_ascii=False, separators=(",", ":")))
-    print(f"{name}: bones={len(bones)} slots={len(slots)} page={pw}x{ph} anims={list(anims)} -> {out}")
+    print(f"{name}: bones={len(bones)} slots={len(slots)} pages={[f"{w}x{h}" for w, h in pages]} anims={list(anims)} -> {out}")
 
 
 if __name__ == "__main__":

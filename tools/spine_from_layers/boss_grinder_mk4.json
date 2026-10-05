@@ -1,6 +1,7 @@
 {
  "name": "boss_grinder_mk4",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/grinder_mk4",
+ "texture_scale": 0.6,
  "origin": [
   14.0,
   -11.0
