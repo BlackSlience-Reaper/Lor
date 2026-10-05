@@ -1,0 +1,363 @@
+{
+ "name": "fairy_queen",
+ "image": "../../images/monsters/fairy_festival/fairy_queen.png",
+ "cell": 6,
+ "sigma": 8.0,
+ "body": {
+  "center": [
+   370,
+   320
+  ],
+  "radii": [
+   120,
+   110
+  ]
+ },
+ "parts": {
+  "wing1": {
+   "center": [
+    312,
+    105
+   ],
+   "radii": [
+    35,
+    105
+   ],
+   "bone": [
+    300,
+    205
+   ]
+  },
+  "wing2": {
+   "center": [
+    380,
+    150
+   ],
+   "radii": [
+    35,
+    85
+   ],
+   "bone": [
+    355,
+    225
+   ]
+  },
+  "wing3": {
+   "center": [
+    490,
+    160
+   ],
+   "radii": [
+    100,
+    45
+   ],
+   "bone": [
+    400,
+    235
+   ]
+  }
+ },
+ "limbs": {
+  "legL": [
+   [
+    300,
+    260
+   ],
+   [
+    235,
+    185
+   ],
+   [
+    130,
+    420
+   ],
+   [
+    30,
+    555
+   ]
+  ],
+  "legFL": [
+   [
+    420,
+    330
+   ],
+   [
+    545,
+    185
+   ],
+   [
+    420,
+    420
+   ],
+   [
+    310,
+    560
+   ]
+  ],
+  "legR": [
+   [
+    470,
+    420
+   ],
+   [
+    630,
+    535
+   ],
+   [
+    755,
+    335
+   ],
+   [
+    840,
+    570
+   ]
+  ]
+ },
+ "layers": [
+  {
+   "name": "body",
+   "bones": [
+    "body",
+    "legL1",
+    "legL2",
+    "legL3",
+    "legFL1",
+    "legFL2",
+    "legFL3",
+    "legR1",
+    "legR2",
+    "legR3"
+   ]
+  },
+  {
+   "name": "wings",
+   "bones": [
+    "wing1",
+    "wing2",
+    "wing3"
+   ],
+   "behind": true,
+   "grow": 2,
+   "mask": {
+    "polygons": [
+     [
+      [
+       270,
+       0
+      ],
+      [
+       352,
+       0
+      ],
+      [
+       352,
+       190
+      ],
+      [
+       335,
+       203
+      ],
+      [
+       290,
+       203
+      ],
+      [
+       270,
+       200
+      ]
+     ],
+     [
+      [
+       345,
+       55
+      ],
+      [
+       425,
+       55
+      ],
+      [
+       428,
+       150
+      ],
+      [
+       405,
+       212
+      ],
+      [
+       385,
+       226
+      ],
+      [
+       360,
+       220
+      ],
+      [
+       338,
+       212
+      ]
+     ],
+     [
+      [
+       392,
+       185
+      ],
+      [
+       440,
+       130
+      ],
+      [
+       520,
+       85
+      ],
+      [
+       592,
+       65
+      ],
+      [
+       598,
+       105
+      ],
+      [
+       560,
+       165
+      ],
+      [
+       530,
+       182
+      ],
+      [
+       465,
+       208
+      ],
+      [
+       418,
+       230
+      ],
+      [
+       398,
+       236
+      ],
+      [
+       385,
+       222
+      ]
+     ]
+    ]
+   }
+  }
+ ],
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 3.0,
+   "breath": 0.015,
+   "leg_tip_sway": 2.0,
+   "parts": {
+    "wing1": {
+     "flap": 0.3,
+     "flap_cycles": 10
+    },
+    "wing2": {
+     "flap": 0.3,
+     "flap_cycles": 10,
+     "phase": 0.5
+    },
+    "wing3": {
+     "flap": 0.3,
+     "flap_cycles": 10,
+     "phase": 1.0
+    }
+   }
+  },
+  "attack": {
+   "type": "lunge",
+   "duration": 1.1,
+   "dash": -40.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3,
+    0.5,
+    0.7
+   ],
+   "swap": {
+    "source": "../../images/monsters/fairy_festival/fairy_queen_attack.png",
+    "page": "fairy_queen_spine_attack.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58,
+     "frame_scale": 0.56
+    },
+    "on": 0.15,
+    "off": 0.9,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "pulse": {
+     "times": [
+      0.3,
+      0.5,
+      0.7
+     ],
+     "amp": 0.04
+    }
+   }
+  },
+  "cast": {
+   "type": "lunge",
+   "duration": 1.5,
+   "dash": 12.0,
+   "lean": -4.0,
+   "wind_lean": 2.0,
+   "timing": {
+    "wind": [
+     0.0,
+     0.05
+    ],
+    "dash_out": [
+     0.05,
+     0.18
+    ],
+    "dash_back": [
+     1.2,
+     1.45
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/fairy_festival/fairy_queen_cast.png",
+    "page": "fairy_queen_spine_cast.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58
+    },
+    "on": 0.04,
+    "off": 1.25,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/fairy_festival/fairy_queen_hit.png",
+    "page": "fairy_queen_spine_hurt.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58
+    },
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  }
+ }
+}

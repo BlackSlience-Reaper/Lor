@@ -1,0 +1,11 @@
+spider_bud_idle.png
+size:198,394
+filter:Linear,Linear
+spider_bud
+bounds:0,0,198,394
+
+spider_bud_spine_fx.png
+size:573,538
+filter:Linear,Linear
+fx
+bounds:0,0,573,538
