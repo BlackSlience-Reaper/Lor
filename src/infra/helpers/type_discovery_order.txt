@@ -558,3 +558,4 @@ StaggerBadgeResistIconsPatch
 ReligionFloorSacrificePlayPatch
 VanillaIntentTargetFlashPatch
 ReligionFloorSalvationDeathPatch
+SpineSpriteDeathAnimPatch

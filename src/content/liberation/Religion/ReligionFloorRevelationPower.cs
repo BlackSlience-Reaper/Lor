@@ -39,7 +39,7 @@ public sealed class ReligionFloorRevelationPower : ReligionFloorPower
 
     public override Task BeforeCardPlayed(CardPlay play)
     {
-        if (play.Player == Owner.Player && play.IsFirstInSeries)
+        if (play.PlayerCompat() == Owner.Player && play.IsFirstInSeries)
         {
             CardsPlayed++;
         }
