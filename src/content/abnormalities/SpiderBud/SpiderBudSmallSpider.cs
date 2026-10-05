@@ -15,6 +15,9 @@ namespace LibraryOfRuina.content.abnormalities.SpiderBud;
 
 public sealed class SpiderBudSmallSpider : CounterIntentMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => SpiderBudSmallSpiderCreatureVisuals.DeathSeconds;
+
     private const string AttackMoveId = "SHARP_FANGS";
     private const string WebMoveId = "SLENDER_WEB";
 
@@ -144,7 +147,7 @@ public sealed class SpiderBudSmallSpider : CounterIntentMonsterModel
         await DamageCmd.Attack(SharpFangsDamage)
             .FromMonster(this)
             .WithHitCount(SharpFangsHits)
-            .WithAttackerAnim("Attack", 0.225f)
+            .WithAttackerAnim("Attack", SpiderBudSmallSpiderCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
     }

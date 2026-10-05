@@ -1,0 +1,174 @@
+{
+ "name": "spiny_bus",
+ "image": "../../images/monsters/spiny_bus/idle.png",
+ "atlas_page": "idle.png",
+ "cell": 5,
+ "sigma": 7.0,
+ "body": {
+  "center": [
+   190,
+   260
+  ],
+  "radii": [
+   115,
+   125
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    110,
+    100
+   ],
+   "radii": [
+    92,
+    88
+   ],
+   "bone": [
+    185,
+    115
+   ]
+  },
+  "bud": {
+   "center": [
+    150,
+    378
+   ],
+   "radii": [
+    45,
+    48
+   ],
+   "bone": [
+    128,
+    318
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.6,
+   "bob": 2.0,
+   "breath": 0.015,
+   "parts": {
+    "head": {
+     "rotate": 4.0,
+     "phase": 0.5
+    },
+    "bud": {
+     "rotate": 6.0,
+     "phase": 1.2
+    }
+   }
+  },
+  "attack": {
+   "type": "lunge",
+   "duration": 1.1,
+   "dash": -35.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3
+   ],
+   "swap": {
+    "source": "../../images/monsters/spiny_bus/attack.png",
+    "page": "spiny_bus_spine_attack.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58
+    },
+    "on": 0.15,
+    "off": 0.85,
+    "fade_in": 0.04,
+    "fade_out": 0.12
+   },
+   "head": "head"
+  },
+  "attack2": {
+   "type": "lunge",
+   "duration": 1.1,
+   "dash": -35.0,
+   "lean": 5.0,
+   "jabs": [
+    0.3
+   ],
+   "swap": {
+    "source": "../../images/monsters/spiny_bus/attack2.png",
+    "page": "spiny_bus_spine_attack2.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58
+    },
+    "on": 0.15,
+    "off": 0.85,
+    "fade_in": 0.04,
+    "fade_out": 0.12
+   },
+   "head": "head"
+  },
+  "parry": {
+   "type": "lunge",
+   "duration": 0.75,
+   "dash": 12.0,
+   "lean": -4.0,
+   "wind_lean": 2.0,
+   "timing": {
+    "wind": [
+     0.0,
+     0.05
+    ],
+    "dash_out": [
+     0.05,
+     0.18
+    ],
+    "dash_back": [
+     0.5,
+     0.7
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/spiny_bus/parry.png",
+    "page": "spiny_bus_spine_parry.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58
+    },
+    "on": 0.04,
+    "off": 0.55,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flail": [
+    8.0,
+    12.0,
+    16.0
+   ],
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/spiny_bus/hit.png",
+    "page": "spiny_bus_spine_hurt.png",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.58
+    },
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1
+   }
+  },
+  "die": {
+   "type": "die",
+   "duration": 1.6,
+   "rest_height": 95.0,
+   "body_rotate": -75.0,
+   "body_x": 10.0,
+   "world_angles": {}
+  }
+ }
+}

@@ -52,41 +52,153 @@
    ]
   },
   "attack": {
-   "type": "lunge",
+   "type": "joint_swing",
    "duration": 1.1,
-   "dash": -20.0,
-   "lean": 4.0,
-   "jab": -6.0,
-   "jabs": [
-    0.3,
-    0.5,
-    0.7
+   "arm": "armL",
+   "raise": [
+    85.0,
+    100.0,
+    125.0
    ],
+   "strike": [
+    105.0,
+    150.0,
+    192.0
+   ],
+   "lag": 0.02,
+   "lunge": -20.0,
+   "lean": 4.0,
    "timing": {
-    "dash_back": [
+    "recover": [
      0.85,
      1.05
     ]
    },
-   "swap": {
+   "fx": {
     "source": "../../images/monsters/galaxy_friend/attack.png",
-    "page": "galaxy_friend_spine_attack.png",
-    "anchor": [
-     584,
-     341
+    "page": "galaxy_friend_spine_fx.png",
+    "key": "all",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.55
+    },
+    "exclude": [
+     {
+      "polygon": [
+       [
+        365,
+        60
+       ],
+       [
+        395,
+        0
+       ],
+       [
+        560,
+        0
+       ],
+       [
+        640,
+        200
+       ],
+       [
+        700,
+        340
+       ],
+       [
+        780,
+        370
+       ],
+       [
+        780,
+        430
+       ],
+       [
+        395,
+        430
+       ],
+       [
+        395,
+        330
+       ],
+       [
+        415,
+        320
+       ],
+       [
+        425,
+        230
+       ],
+       [
+        405,
+        215
+       ],
+       [
+        440,
+        200
+       ],
+       [
+        470,
+        140
+       ],
+       [
+        400,
+        140
+       ],
+       [
+        372,
+        120
+       ]
+      ]
+     },
+     {
+      "polygon": [
+       [
+        600,
+        180
+       ],
+       [
+        780,
+        180
+       ],
+       [
+        780,
+        380
+       ],
+       [
+        640,
+        340
+       ]
+      ]
+     },
+     {
+      "polygon": [
+       [
+        540,
+        0
+       ],
+       [
+        780,
+        0
+       ],
+       [
+        780,
+        200
+       ],
+       [
+        620,
+        200
+       ]
+      ]
+     }
     ],
-    "on": 0.15,
-    "off": 0.88,
-    "fade_in": 0.04,
-    "fade_out": 0.12,
-    "pulse": {
-     "times": [
-      0.3,
-      0.5,
-      0.7
-     ],
-     "amp": 0.03
-    }
+    "on": 0.2,
+    "off": 0.85,
+    "fade_in": 0.05,
+    "fade_out": 0.25,
+    "scale_from": 0.85,
+    "scale_to": 1.0,
+    "scale_time": 0.1
    }
   },
   "parry": {
@@ -109,17 +221,67 @@
      0.75
     ]
    },
-   "swap": {
+   "fx": {
     "source": "../../images/monsters/galaxy_friend/parry.png",
-    "page": "galaxy_friend_spine_parry.png",
-    "anchor": [
-     300,
-     336
+    "page": "galaxy_friend_spine_fx_parry.png",
+    "key": "all",
+    "align": {
+     "mode": "center",
+     "base_scale": 0.55
+    },
+    "exclude": [
+     {
+      "polygon": [
+       [
+        150,
+        150
+       ],
+       [
+        260,
+        145
+       ],
+       [
+        320,
+        200
+       ],
+       [
+        360,
+        300
+       ],
+       [
+        400,
+        330
+       ],
+       [
+        469,
+        395
+       ],
+       [
+        469,
+        420
+       ],
+       [
+        130,
+        420
+       ],
+       [
+        130,
+        360
+       ],
+       [
+        150,
+        300
+       ]
+      ]
+     }
     ],
     "on": 0.06,
-    "off": 0.58,
-    "fade_in": 0.04,
-    "fade_out": 0.1
+    "off": 0.55,
+    "fade_in": 0.05,
+    "fade_out": 0.15,
+    "scale_from": 0.8,
+    "scale_to": 1.0,
+    "scale_time": 0.12
    }
   },
   "hurt": {

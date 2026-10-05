@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bglcluqxsdmck"
-path="res://.godot/imported/galaxy_friend_spine_attack.png-cdb8967104018d06ef1912354effd92f.ctex"
+uid="uid://dql8a0aqfhddx"
+path="res://.godot/imported/heart_of_aspiration_spine_guard.png-265bbde543beda2a5c2771f40f565de6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/monsters/galaxy_friend/galaxy_friend_spine_attack.png"
-dest_files=["res://.godot/imported/galaxy_friend_spine_attack.png-cdb8967104018d06ef1912354effd92f.ctex"]
+source_file="res://images/monsters/heart_of_aspiration/heart_of_aspiration_spine_guard.png"
+dest_files=["res://.godot/imported/heart_of_aspiration_spine_guard.png-265bbde543beda2a5c2771f40f565de6.ctex"]
 
 [params]
 

@@ -25,6 +25,9 @@ namespace LibraryOfRuina.content.abnormalities.RedShoes;
 
 public sealed class RedShoesLeft : CounterIntentMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => RedShoesLeftCreatureVisuals.DeathSeconds;
+
     private const string BloodThirstMoveId = "BLOOD_THIRST";
     private const string DesireMoveId = "DESIRE";
 
@@ -128,7 +131,7 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
     {
         AttackCommand attack = await DamageCmd.Attack(BloodThirstDamage)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", 1.47f)
+            .WithAttackerAnim("Attack", RedShoesLeftCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
 
@@ -195,6 +198,9 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
 
 public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterAttackProvider
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => RedShoesRightCreatureVisuals.DeathSeconds;
+
     private const string DesireBurstMoveId = "DESIRE_BURST";
     private const string ObsessionMoveId = "OBSESSION";
 
@@ -331,7 +337,7 @@ public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterA
             using var forcedTargetScope = TargetedMonsterAttackHelper.ForceTargets(Creature, alive);
             AttackCommand attack = await DamageCmd.Attack(DesireBurstDamage)
                 .FromMonster(this)
-                .WithAttackerAnim("Attack", 1.47f)
+                .WithAttackerAnim("Attack", RedShoesRightCreatureVisuals.AttackImpactSeconds)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(null);
 
@@ -379,7 +385,7 @@ public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterA
         using var forcedTargetScope = TargetedMonsterAttackHelper.ForceTargets(Creature, alive);
         await DamageCmd.Attack(dmg)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", 1.47f)
+            .WithAttackerAnim("Attack", RedShoesRightCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
 

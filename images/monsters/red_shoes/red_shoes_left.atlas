@@ -1,0 +1,11 @@
+left_shoe.png
+size:501,541
+filter:Linear,Linear
+red_shoes_left
+bounds:0,0,501,541
+
+red_shoes_left_spine_fx.png
+size:619,939
+filter:Linear,Linear
+fx
+bounds:0,0,619,939

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dca4enrmn7k6m"
-path="res://.godot/imported/galaxy_friend_spine_parry.png-c8d33f52d977005be2d69d5ce6837468.ctex"
+uid="uid://xlv72v04nxl8"
+path="res://.godot/imported/lung_of_aspiration_spine_hurt.png-6d384346fe2de4ce207ff211483281ff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/monsters/galaxy_friend/galaxy_friend_spine_parry.png"
-dest_files=["res://.godot/imported/galaxy_friend_spine_parry.png-c8d33f52d977005be2d69d5ce6837468.ctex"]
+source_file="res://images/monsters/lung_of_aspiration/lung_of_aspiration_spine_hurt.png"
+dest_files=["res://.godot/imported/lung_of_aspiration_spine_hurt.png-6d384346fe2de4ce207ff211483281ff.ctex"]
 
 [params]
 

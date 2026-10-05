@@ -26,6 +26,9 @@ namespace LibraryOfRuina.content.abnormalities.SpiderBud;
 
 public sealed class SpiderBud : CounterIntentMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => SpiderBudCreatureVisuals.DeathSeconds;
+
     private static readonly string[] NormalBackgroundTextLineKeys =
     [
         "SPIDER_BUD.backgroundText.normal.0",
@@ -284,7 +287,7 @@ public sealed class SpiderBud : CounterIntentMonsterModel
         LocalOggOneShotPlayer.Play(AttackSfxPath, -1.5f);
         await DamageCmd.Attack(HuntDamage)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", 0.9f)
+            .WithAttackerAnim("Attack", SpiderBudCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
     }

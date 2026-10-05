@@ -4,17 +4,17 @@ filter:Linear,Linear
 galaxy_friend
 bounds:0,0,373,271
 
-galaxy_friend_spine_attack.png
-size:763,422
+galaxy_friend_spine_fx.png
+size:409,358
 filter:Linear,Linear
-pose_attack
-bounds:0,0,763,422
+fx
+bounds:0,0,409,358
 
-galaxy_friend_spine_parry.png
-size:450,404
+galaxy_friend_spine_fx_parry.png
+size:366,404
 filter:Linear,Linear
-pose_parry
-bounds:0,0,450,404
+fx_parry
+bounds:0,0,366,404
 
 galaxy_friend_spine_hurt.png
 size:434,298

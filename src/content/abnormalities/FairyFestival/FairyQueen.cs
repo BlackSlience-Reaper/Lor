@@ -295,7 +295,7 @@ public sealed class FairyQueen : CounterIntentMonsterModel
     {
         RefreshBackgroundMoonTextLoop();
         LocalOggOneShotPlayer.Play(AttackSfxPath, -1.5f);
-        await ExecuteSegmentAttack(PredationDamage);
+        await ExecuteSegmentAttack(PredationDamage, 0);
         await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, PredationHeal));
         await CreatureCmd.GainBlock(Creature, PredationBlock, ValueProp.Move, null);
     }
@@ -311,7 +311,7 @@ public sealed class FairyQueen : CounterIntentMonsterModel
             }
 
             LocalOggOneShotPlayer.Play(AttackSfxPath, -2f);
-            AttackCommand attack = await ExecuteSegmentAttack(StarvedFlutteringDamage);
+            AttackCommand attack = await ExecuteSegmentAttack(StarvedFlutteringDamage, i);
             IReadOnlyList<Creature> bleedTargets = AttackCommandCompat.Results(attack)
                 .Where(result => result.Receiver.IsPlayer && result.UnblockedDamage > 0)
                 .Select(result => result.Receiver)
@@ -325,11 +325,14 @@ public sealed class FairyQueen : CounterIntentMonsterModel
         }
     }
 
-    private Task<AttackCommand> ExecuteSegmentAttack(int damage)
+    // 多段攻击只换一次攻击图：第一段等到换图后的命中，后续各段短等待（见 FairyQueenCreatureVisuals）
+    private Task<AttackCommand> ExecuteSegmentAttack(int damage, int segment)
     {
         return DamageCmd.Attack(damage)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", SegmentDelaySeconds)
+            .WithAttackerAnim(
+                "Attack",
+                segment == 0 ? FairyQueenCreatureVisuals.AttackImpactSeconds : FairyQueenCreatureVisuals.FollowUpHitSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
     }

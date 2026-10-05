@@ -1,0 +1,17 @@
+small_spider_idle.png
+size:618,298
+filter:Linear,Linear
+small_spider
+bounds:0,0,618,298
+
+small_spider_spine_fx.png
+size:705,728
+filter:Linear,Linear
+fx
+bounds:0,0,705,728
+
+small_spider_spine_hurt.png
+size:466,552
+filter:Linear,Linear
+pose_hurt
+bounds:0,0,466,552
