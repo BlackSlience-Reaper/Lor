@@ -224,12 +224,6 @@ public abstract partial class SpriteAttackCreatureVisuals
 
         // 3. 确保初始状态：待机显示，攻击隐藏
         RestoreIdleState();
-
-        // “动画效果”低档：换图时淡入淡出（高档由 Spine 身体接管，子类在这之后才建）
-        if (AnimationEffects.CrossfadeEnabled)
-        {
-            SpriteCrossfade.Attach(this, _idleVisuals, _attackVisuals);
-        }
     }
 
     public override void _Process(double delta)

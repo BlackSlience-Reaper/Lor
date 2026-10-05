@@ -54,7 +54,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
     {
         try
         {
-            // “动画效果”不是高档时不建 Spine 身体，调用方照加载失败处理：退回逐帧换图或场景动画
+            // “动画效果”关闭时不建 Spine 身体，调用方照加载失败处理：退回逐帧换图或场景动画
             if (!AnimationEffects.SpineEnabled || !ClassDB.ClassExists("SpineSprite"))
             {
                 return null;
@@ -116,7 +116,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
 
     /// <summary>
     /// 出场时把外观各形态的骨架先读进缓存（见 <see cref="LoadData"/>），战斗中换形态时不再现读。
-    /// 动画效果不是高档时什么都不做。
+    /// 动画效果关闭时什么都不做。
     /// </summary>
     internal static void Preload(Spec spec)
     {

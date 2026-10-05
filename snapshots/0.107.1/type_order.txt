@@ -672,7 +672,6 @@ LibraryOfRuina.infra.helpers.ResolvedPowerIcon
 LibraryOfRuina.infra.helpers.PowerIconResolver
 LibraryOfRuina.infra.helpers.PresentationGuard
 LibraryOfRuina.infra.helpers.TypeDiscoveryOrder
-LibraryOfRuina.framework.visuals.AnimationEffectLevel
 LibraryOfRuina.framework.visuals.AnimationEffects
 LibraryOfRuina.framework.visuals.CombatBackgroundImage
 LibraryOfRuina.framework.visuals.LayeredBossSpine
@@ -685,7 +684,6 @@ LibraryOfRuina.framework.visuals.IContinuousAttackVisuals
 LibraryOfRuina.framework.visuals.SpriteVisualTriggerType
 LibraryOfRuina.framework.visuals.SpriteVisualTriggerSpec
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals
-LibraryOfRuina.framework.visuals.SpriteCrossfade
 LibraryOfRuina.framework.visuals.SpriteVisualAnchorMode
 LibraryOfRuina.framework.visuals.SpriteAnimationFrameSelection
 LibraryOfRuina.framework.visuals.SpriteVisualVariantDefinition
@@ -2502,10 +2500,6 @@ LibraryOfRuina.framework.visuals.SpineSpriteAttackCreatureVisuals+SignalName
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+MethodName
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyName
 LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+SignalName
-LibraryOfRuina.framework.visuals.SpriteCrossfade+Watch
-LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName
-LibraryOfRuina.framework.visuals.SpriteCrossfade+PropertyName
-LibraryOfRuina.framework.visuals.SpriteCrossfade+SignalName
 LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection+PageRelicRegistration
 LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection+PageRelicPostObtainedEffect
 LibraryOfRuina.framework.relics.AbnormalityPageRewardResumePatch+RestoreMarker

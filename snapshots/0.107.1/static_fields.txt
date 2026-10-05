@@ -1961,10 +1961,6 @@ readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyNa
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyName._useVisibleBottomCenterAnchor	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyName._wasChaoed	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals.VisibleBottomByTexturePath	System.Collections.Generic.Dictionary`2[System.String,System.Single]
-readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName.Attach	Godot.StringName
-readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName.OnFramePreDraw	Godot.StringName
-readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName._EnterTree	Godot.StringName
-readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName._ExitTree	Godot.StringName
 readonly	LibraryOfRuina.infra.helpers.GodotTextureSafety.SourcePaths	System.Runtime.CompilerServices.ConditionalWeakTable`2[Godot.Texture2D,LibraryOfRuina.infra.helpers.GodotTextureSafety+TextureSourcePath]
 readonly	LibraryOfRuina.infra.helpers.LibraryAssemblyTypes.Scan	System.Lazy`1[System.ValueTuple`2[System.Type[],System.Reflection.ReflectionTypeLoadException]]
 readonly	LibraryOfRuina.infra.helpers.LorLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]

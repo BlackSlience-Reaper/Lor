@@ -98,12 +98,6 @@ internal abstract partial class SceneAnimatedCreatureVisuals
         }
 
         SyncSpineBody();
-
-        // “动画效果”低档：场景动画的 visible 轨道照旧瞬间切换，由淡入淡出组件补上过渡
-        if (AnimationEffects.CrossfadeEnabled)
-        {
-            SpriteCrossfade.Attach(this, _idleVisuals, _attackVisuals);
-        }
     }
 
     // 每帧和每次触发前按当前动画库选骨架，换库（换形态）时切过去；没有骨架或加载失败的库退回场景动画。
