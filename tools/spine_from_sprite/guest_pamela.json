@@ -59,7 +59,7 @@
     "source": "../../images/monsters/pamela_attack_strike.webp",
     "anchor": [
      75.44,
-     364.42
+     368.94
     ],
     "on": 0.15,
     "off": 0.78,
@@ -85,7 +85,7 @@
     "source": "../../images/monsters/pamela_attack_thrust.webp",
     "anchor": [
      602.44,
-     230.42
+     241.94
     ],
     "on": 0.15,
     "off": 0.78,
@@ -112,7 +112,7 @@
     "source": "../../images/monsters/pamela_attack_slash.webp",
     "anchor": [
      388.94,
-     312.42
+     316.94
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/pamela_hit.webp",
     "anchor": [
      401.0,
-     321.0
+     326.0
     ],
     "on": 0.0,
     "off": 0.42,
@@ -147,7 +147,7 @@
    "duration": 1.2,
    "head": "head",
    "droop": 14.0,
-   "sag": 11.9,
+   "sag": 11.8,
    "lean": 4.0
   }
  }

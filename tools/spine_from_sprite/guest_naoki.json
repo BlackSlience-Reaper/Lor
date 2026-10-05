@@ -59,7 +59,7 @@
     "source": "../../images/monsters/naoki_attack_strike.webp",
     "anchor": [
      117.45,
-     306.0
+     309.0
     ],
     "on": 0.15,
     "off": 0.78,
@@ -84,7 +84,7 @@
     "source": "../../images/monsters/naoki_attack_thrust.webp",
     "anchor": [
      267.45,
-     280.0
+     283.0
     ],
     "on": 0.15,
     "off": 0.78,
@@ -110,7 +110,7 @@
     "source": "../../images/monsters/naoki_attack_slash.webp",
     "anchor": [
      130.45,
-     282.0
+     285.0
     ],
     "on": 0.15,
     "off": 0.78,
@@ -130,7 +130,7 @@
     "source": "../../images/monsters/naoki_hit.webp",
     "anchor": [
      142.45,
-     331.0
+     334.0
     ],
     "on": 0.0,
     "off": 0.42,

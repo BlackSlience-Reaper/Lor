@@ -6,27 +6,27 @@
  "sigma": 10.0,
  "body": {
   "center": [
-   263.2136079336013,
-   574.0
+   263.3176895306859,
+   570.5
   ],
   "radii": [
    87.0,
-   146.0
+   144.5
   ]
  },
  "parts": {
   "head": {
    "center": [
-    267.48321706760095,
-    331.2
+    267.38858858858856,
+    330.2
    ],
    "radii": [
     81.9,
-    102.06
+    101.00999999999999
    ],
    "bone": [
-    267.48321706760095,
-    428.0
+    267.38858858858856,
+    426.0
    ]
   }
  },
@@ -58,8 +58,8 @@
    "swap": {
     "source": "../../images/monsters/pameli_attack_strike.webp",
     "anchor": [
-     110.58,
-     374.13
+     110.67,
+     375.49
     ],
     "on": 0.15,
     "off": 0.78,
@@ -84,8 +84,8 @@
    "swap": {
     "source": "../../images/monsters/pameli_attack_thrust.webp",
     "anchor": [
-     642.58,
-     254.13
+     642.67,
+     259.49
     ],
     "on": 0.15,
     "off": 0.78,
@@ -111,8 +111,8 @@
    "swap": {
     "source": "../../images/monsters/pameli_attack_slash.webp",
     "anchor": [
-     376.08,
-     305.13
+     376.17,
+     306.49
     ],
     "on": 0.15,
     "off": 0.78,
@@ -132,8 +132,8 @@
    "swap": {
     "source": "../../images/monsters/pameli_hit.webp",
     "anchor": [
-     541.21,
-     299.0
+     540.32,
+     300.5
     ],
     "on": 0.0,
     "off": 0.42,
@@ -147,7 +147,7 @@
    "duration": 1.2,
    "head": "head",
    "droop": 14.0,
-   "sag": 9.7,
+   "sag": 9.6,
    "lean": 4.0
   }
  }

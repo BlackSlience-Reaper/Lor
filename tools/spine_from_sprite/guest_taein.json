@@ -59,7 +59,7 @@
     "source": "../../images/monsters/taein_attack_strike.webp",
     "anchor": [
      299.03,
-     290.88
+     289.88
     ],
     "on": 0.15,
     "off": 0.78,
@@ -112,7 +112,7 @@
     "source": "../../images/monsters/taein_attack_slash.webp",
     "anchor": [
      186.53,
-     397.88
+     394.88
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/taein_hit.webp",
     "anchor": [
      236.13,
-     324.0
+     323.0
     ],
     "on": 0.0,
     "off": 0.42,

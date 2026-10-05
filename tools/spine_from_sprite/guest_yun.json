@@ -7,22 +7,22 @@
  "body": {
   "center": [
    116.20717519477785,
-   323.0
+   322.5
   ],
   "radii": [
    84.0,
-   139.0
+   138.5
   ]
  },
  "parts": {
   "head": {
    "center": [
     105.93018731163926,
-    92.4
+    92.2
    ],
    "radii": [
     76.125,
-    97.02
+    96.81
    ],
    "bone": [
     105.93018731163926,
@@ -59,7 +59,7 @@
     "source": "../../images/monsters/yun_attack_strike.webp",
     "anchor": [
      106.94,
-     301.0
+     324.46
     ],
     "on": 0.15,
     "off": 0.78,
@@ -85,7 +85,7 @@
     "source": "../../images/monsters/yun_attack_thrust.webp",
     "anchor": [
      198.94,
-     262.0
+     319.46
     ],
     "on": 0.15,
     "off": 0.78,
@@ -112,7 +112,7 @@
     "source": "../../images/monsters/yun_attack_slash.webp",
     "anchor": [
      142.94,
-     265.0
+     330.46
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/yun_hit.webp",
     "anchor": [
      124.21,
-     269.0
+     316.5
     ],
     "on": 0.0,
     "off": 0.42,

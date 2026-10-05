@@ -6,27 +6,27 @@
  "sigma": 10.0,
  "body": {
   "center": [
-   116.75048518379052,
-   342.0
+   116.74641874856749,
+   335.5
   ],
   "radii": [
    63.5,
-   146.0
+   143.5
   ]
  },
  "parts": {
   "head": {
    "center": [
-    115.963386103096,
-    99.2
+    115.95713437561844,
+    97.4
    ],
    "radii": [
-    77.76,
-    102.06
+    76.32000000000001,
+    100.17
    ],
    "bone": [
-    115.963386103096,
-    196.0
+    115.95713437561844,
+    192.0
    ]
   }
  },
@@ -58,8 +58,8 @@
    "swap": {
     "source": "../../images/monsters/salvador_attack_strike.webp",
     "anchor": [
-     112.64,
-     284.36
+     113.63,
+     279.64
     ],
     "on": 0.15,
     "off": 0.78,
@@ -84,8 +84,8 @@
    "swap": {
     "source": "../../images/monsters/salvador_attack_thrust.webp",
     "anchor": [
-     568.14,
-     288.36
+     562.63,
+     286.64
     ],
     "on": 0.15,
     "off": 0.78,
@@ -111,8 +111,8 @@
    "swap": {
     "source": "../../images/monsters/salvador_attack_slash.webp",
     "anchor": [
-     250.64,
-     330.36
+     250.63,
+     338.64
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/salvador_hit.webp",
     "anchor": [
      121.75,
-     238.0
+     235.5
     ],
     "on": 0.0,
     "off": 0.42,
@@ -147,7 +147,7 @@
    "duration": 1.2,
    "head": "head",
    "droop": 14.0,
-   "sag": 9.7,
+   "sag": 9.5,
    "lean": 4.0
   }
  }

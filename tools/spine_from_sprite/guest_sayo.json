@@ -7,22 +7,22 @@
  "body": {
   "center": [
    288.4452785568938,
-   388.5
+   388.0
   ],
   "radii": [
    62.0,
-   162.5
+   162.0
   ]
  },
  "parts": {
   "head": {
    "center": [
     296.4052614985813,
-    118.2
+    118.0
    ],
    "radii": [
-    86.56,
-    113.61
+    86.4,
+    113.39999999999999
    ],
    "bone": [
     296.4052614985813,
@@ -58,8 +58,8 @@
    "swap": {
     "source": "../../images/monsters/sayo_attack_strike.webp",
     "anchor": [
-     83.36,
-     329.12
+     82.89,
+     329.59
     ],
     "on": 0.15,
     "off": 0.78,
@@ -84,8 +84,8 @@
    "swap": {
     "source": "../../images/monsters/sayo_attack_thrust.webp",
     "anchor": [
-     511.6,
-     288.26
+     511.0,
+     246.86
     ],
     "on": 0.15,
     "off": 0.78,
@@ -111,8 +111,8 @@
    "swap": {
     "source": "../../images/monsters/sayo_attack_slash.webp",
     "anchor": [
-     78.47,
-     639.18
+     78.98,
+     639.68
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/sayo_hit.webp",
     "anchor": [
      254.45,
-     346.5
+     369.0
     ],
     "on": 0.0,
     "off": 0.42,

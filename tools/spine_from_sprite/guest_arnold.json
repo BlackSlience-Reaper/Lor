@@ -59,7 +59,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/arnold_attack_strike.webp",
     "anchor": [
      114.7,
-     321.62
+     320.62
     ],
     "on": 0.15,
     "off": 0.78,
@@ -85,7 +85,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/arnold_attack_thrust.webp",
     "anchor": [
      423.7,
-     292.62
+     290.62
     ],
     "on": 0.15,
     "off": 0.78,
@@ -112,7 +112,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/arnold_attack_slash.webp",
     "anchor": [
      194.7,
-     308.62
+     305.62
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/arnold_hit.webp",
     "anchor": [
      320.43,
-     333.5
+     329.5
     ],
     "on": 0.0,
     "off": 0.42,

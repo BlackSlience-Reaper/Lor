@@ -59,7 +59,7 @@
     "source": "../../images/monsters/yang_attack_strike.webp",
     "anchor": [
      102.33,
-     284.78
+     283.78
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/yang_hit.webp",
     "anchor": [
      126.35,
-     318.0
+     317.0
     ],
     "on": 0.0,
     "off": 0.42,

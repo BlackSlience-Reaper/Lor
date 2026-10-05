@@ -7,22 +7,22 @@
  "body": {
   "center": [
    151.5318410744264,
-   361.5
+   361.0
   ],
   "radii": [
    93.0,
-   140.5
+   140.0
   ]
  },
  "parts": {
   "head": {
    "center": [
     123.86305242440508,
-    128.4
+    128.2
    ],
    "radii": [
     82.425,
-    98.07
+    97.86
    ],
    "bone": [
     123.86305242440508,
@@ -59,7 +59,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/consta_attack_strike.webp",
     "anchor": [
      185.88,
-     352.38
+     383.92
     ],
     "on": 0.15,
     "off": 0.78,
@@ -85,7 +85,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/consta_attack_thrust.webp",
     "anchor": [
      651.88,
-     244.38
+     275.92
     ],
     "on": 0.15,
     "off": 0.78,
@@ -112,7 +112,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/consta_attack_slash.webp",
     "anchor": [
      461.38,
-     283.38
+     286.92
     ],
     "on": 0.15,
     "off": 0.78,
@@ -133,7 +133,7 @@
     "source": "../../images/monsters/brotherhood_of_iron/consta_hit.webp",
     "anchor": [
      217.53,
-     364.5
+     364.0
     ],
     "on": 0.0,
     "off": 0.42,
