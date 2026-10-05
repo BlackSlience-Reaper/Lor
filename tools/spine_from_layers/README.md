@@ -17,4 +17,11 @@
 5. `render_guests.py`：用游戏引擎渲染预览并拼 21 人总览 GIF；`review_sheet.py`、`layer_sheet.py`、`grid_motion.py`
    用来抽关键帧、看各层、读转轴坐标。
 
+Boss（触发多、每个触发一张原图）走另一条线：`build_boss_configs.py` 里手填原版动作对应、停留时长、武器转轴
+（E.G.O 司书没有单独的手部层，自动找不到握把），`type_tints.py` 求骨架原点并核对各类层要不要上色，
+`render_bosses.py` 渲染并拼多格 GIF，`review_boss.py` 抽关键帧。产物是 `boss_<名字>.json` → `images/monsters/<楼层>/boss_*`。
+
+查哪些怪物在原版有分层：`survey_bundles.py` 盘点每个预制体的动作数与层数，`signatures.py` 用缩略特征把模组贴图对到
+原版动作，`name_map.py` 把贴图路径对回怪物类与中文名。
+
 换姿势是附件瞬间切换，不做逐层淡入淡出：Spine 不能把一组层合起来再淡化，逐层半透明会透出被前发盖住的光头皮。

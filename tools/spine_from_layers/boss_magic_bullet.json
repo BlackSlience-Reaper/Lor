@@ -1,0 +1,644 @@
+{
+ "name": "boss_magic_bullet",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/magic_bullet",
+ "origin": [
+  -140.0,
+  -48.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "ScorchedGirl_Default",
+   "bones": {
+    "body": {
+     "at": [
+      -7.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -7.5,
+      313.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -18.0,
+      428.0
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      -110,
+      180
+     ]
+    }
+   },
+   "assign": {
+    "head": "head",
+    "front_hair": "hair",
+    "face": "head",
+    "body": "body",
+    "body_2": "body",
+    "body_3": "body",
+    "body_4": "body",
+    "body_5": "body",
+    "body_6": "body",
+    "body_7": "body",
+    "body_8": "weapon",
+    "body_9": "weapon",
+    "body_10": "body",
+    "body_11": "body",
+    "body_12": "body"
+   }
+  },
+  "Breakded_Special": {
+   "source": "ScorchedGirl_Breakded_Special",
+   "bones": {
+    "body": {
+     "at": [
+      9.3,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      9.3,
+      311.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -2.0,
+      424.5
+     ]
+    }
+   },
+   "assign": {
+    "head": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "body",
+    "face": "head",
+    "body": "body",
+    "body_2": "body"
+   }
+  },
+  "Damaged": {
+   "source": "ScorchedGirl_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      -58.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -58.2,
+      286.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -69.0,
+      407.8
+     ]
+    }
+   },
+   "assign": {
+    "head": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "body",
+    "face": "head",
+    "body": "body",
+    "body_2": "body",
+    "body_3": "body"
+   }
+  },
+  "Fire": {
+   "source": "ScorchedGirl_Fire",
+   "bones": {
+    "body": {
+     "at": [
+      4.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      4.5,
+      309.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -6.0,
+      422.5
+     ]
+    }
+   },
+   "assign": {
+    "head": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "body",
+    "face": "head",
+    "body": "body",
+    "body_2": "body",
+    "body_3": "body",
+    "body_4": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      1.2,
+      1,
+      0.3
+     ]
+    }
+   }
+  },
+  "attack": {
+   "duration": 1.15,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Fire",
+     0
+    ],
+    [
+     0.85,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.85,
+       -4
+      ],
+      [
+       1.15,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.85,
+       0
+      ],
+      [
+       1.15,
+       0
+      ]
+     ]
+    },
+    "Fire.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -18,
+       "out"
+      ],
+      [
+       0.85,
+       -18
+      ],
+      [
+       1.15,
+       0
+      ]
+     ]
+    },
+    "Fire.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Fire.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0
+    ],
+    [
+     0.4,
+     "Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "special": {
+   "duration": 3.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.1,
+     "Breakded_Special",
+     0
+    ],
+    [
+     3.1,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.1,
+       0.97,
+       "out"
+      ],
+      [
+       3.1,
+       0.97
+      ],
+      [
+       3.4,
+       1
+      ]
+     ]
+    },
+    "Breakded_Special.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       3.1,
+       0
+      ]
+     ]
+    },
+    "Breakded_Special.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Breakded_Special.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       5,
+       "out"
+      ],
+      [
+       1.2,
+       5
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
