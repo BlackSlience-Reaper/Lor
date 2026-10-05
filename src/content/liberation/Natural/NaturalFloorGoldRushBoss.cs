@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -88,6 +89,9 @@ public sealed class NaturalFloorGoldRushBoss : NaturalFloorPhaseMonster, ILibera
     public override LibraryCreatureResistanceData.Resistance? DefaultChaoResistanceData => new(LibraryResistanceLevel.Resist);
 
     public int LiberationPhase => 4;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LocString Title => L10NMonsterLookup(Id.Entry + (IsKingForm ? ".kingName" : ".name"));
 

@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -28,6 +29,9 @@ public sealed class NaturalFloorTearEdgeBoss : NaturalFloorDespairMonster, ILibe
     protected override string[] MoveIds => Ids;
 
     public int LiberationPhase => 3;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public const int PlatingAmount = 4; // 未知：为其他剑施加的覆甲层数。
 

@@ -7,6 +7,47 @@ namespace LibraryOfRuina.content.liberation.Natural;
 [MonsterVisual(typeof(NaturalFloorLoveAndHatredBoss), ScenePath = NaturalFloorLoveAndHatredVisuals.ScenePath)]
 internal sealed partial class NaturalFloorLoveAndHatredVisuals : SceneAnimatedCreatureVisuals
 {
+    // Spine 身体按动画库（形态）各一副，见 tools/spine_from_layers/build_boss_configs.py 的自然层配置
+    internal static readonly RuntimeSpineBody.Spec HumanSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "love_hatred_human",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["Strike"] = "strike",
+            ["Fire"] = "fire",
+            ["Guard"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec SnakeSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "love_hatred_snake",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["Strike"] = "strike",
+            ["Fire"] = "fire",
+            ["Guard"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec SpecialSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "love_hatred_special",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["Strike"] = "strike",
+            ["Fire"] = "fire",
+            ["Guard"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
+    {
+        "snake" => SnakeSpine,
+        "special" => SpecialSpine,
+        _ => HumanSpine,
+    };
+
     internal const string ScenePath = NaturalFloorAssets.LoveAndHatredBossScene;
     internal const string AnimationRoot = NaturalFloorAssets.LoveAndHatredScenePrefix;
     internal const string ImageRoot = NaturalFloorAssets.LoveAndHatredMonsterRoot;

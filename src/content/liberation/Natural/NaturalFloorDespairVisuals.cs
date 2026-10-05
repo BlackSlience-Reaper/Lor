@@ -57,6 +57,71 @@ internal abstract partial class NaturalFloorDespairVisuals : SceneAnimatedCreatu
 [MonsterVisual(typeof(NaturalFloorTearEdgeBoss), ScenePath = NaturalFloorTearEdgeVisuals.ScenePath)]
 internal sealed partial class NaturalFloorTearEdgeVisuals : NaturalFloorDespairVisuals
 {
+    // Spine 身体按动画库（形态）各一副，见 tools/spine_from_layers/build_boss_configs.py 的自然层配置
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "tear_edge",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "attack",
+            ["Evade"] = "guard",
+            ["Guard"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec DespairSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "tear_edge_despair",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "attack",
+            ["Evade"] = "guard",
+            ["Guard"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec Stabbed1Spine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "tear_edge_stabbed1",
+        "hurt",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "hurt",
+            ["Evade"] = "hurt",
+            ["Guard"] = "hurt",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec Stabbed2Spine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "tear_edge_stabbed2",
+        "hurt",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "hurt",
+            ["Evade"] = "hurt",
+            ["Guard"] = "hurt",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec Stabbed3Spine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "tear_edge_stabbed3",
+        "hurt",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "hurt",
+            ["Evade"] = "hurt",
+            ["Guard"] = "hurt",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
+    {
+        "despair" => DespairSpine,
+        "stabbed1" => Stabbed1Spine,
+        "stabbed2" => Stabbed2Spine,
+        "stabbed3" => Stabbed3Spine,
+        _ => NormalSpine,
+    };
+
     internal const string ScenePath = NaturalFloorAssets.TearEdgeBossScene;
     internal static readonly string[] AssetPaths = new[] { ScenePath }
         .Concat(new[] { "normal", "despair", "stabbed1", "stabbed2", "stabbed3" }
