@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using LibraryOfRuina.content.guests.MusiciansOfBremen;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Helpers;
@@ -54,18 +53,6 @@ internal static class MonsterVisualRegistry
         BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
 
     internal static string EntryOf(Type monsterType) => ModelDb.GetId(monsterType).Entry;
-
-    /// <summary>
-    /// 不来梅乐队三只怪（Meow、MuMu、Oink）的场景外观，走 <see cref="WrappedMonsterVisualFactory.CreateFromScene"/>：
-    /// 场景根可以直接是 <see cref="NCreatureVisuals"/>，也不校验怪物的 AssetPaths。它们不进 <see cref="BuildEntries"/> 的表。
-    /// </summary>
-    internal static Dictionary<string, string> BuildSpecialScenePaths() =>
-        new(StringComparer.Ordinal)
-        {
-            [EntryOf(typeof(Meow))] = SceneHelper.GetScenePath("creature_visuals/meow"),
-            [EntryOf(typeof(MuMu))] = SceneHelper.GetScenePath("creature_visuals/mu_mu"),
-            [EntryOf(typeof(Oink))] = SceneHelper.GetScenePath("creature_visuals/oink"),
-        };
 
     internal static Dictionary<string, MonsterVisualCatalogEntry> BuildEntries()
     {
@@ -141,10 +128,10 @@ internal static class MonsterVisualRegistry
                 Layout: layout,
                 Profile: null,
                 StaticDefaultIdleTexturePath: texturePath,
-                Factory: static monster => WrappedMonsterVisualFactory.CreateStaticSpriteVisuals(
+                Factory: monster => WrappedMonsterVisualFactory.CreateStaticSpriteVisuals(
                     monster.Id.Entry,
                     MonsterVisualCatalog.GetLayout(monster.Id.Entry),
-                    MonsterVisualCatalog.GetStaticDefaultIdleTexturePath(monster.Id.Entry)));
+                    texturePath));
         }
 
         Type visuals = attribute.Visuals ?? declaring;

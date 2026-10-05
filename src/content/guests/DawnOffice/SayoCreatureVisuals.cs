@@ -1,9 +1,11 @@
+using System.Collections.Generic;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.DawnOffice;
 
-public partial class SayoCreatureVisuals : SpriteAttackCreatureVisuals
+public partial class SayoCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(Sayo))]
     internal static readonly CreatureVisualLayout Layout = new(
@@ -12,6 +14,20 @@ public partial class SayoCreatureVisuals : SpriteAttackCreatureVisuals
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create(
+            "",
+            "sayo",
+            null,
+            new Dictionary<string, string>
+            {
+                ["AttackStrike"] = "strike",
+                ["AttackThrust"] = "thrust",
+                ["AttackSlash"] = "slash",
+            });
 
     private static SpriteVisualProfile BuildProfile()
     {

@@ -167,8 +167,7 @@ internal static class MonsterVisualLayoutVerificationPatch
         Row("lookup " + id
             + " contains=" + MonsterVisualCatalog.Contains(id)
             + " layout=" + Safe(() => Describe(MonsterVisualCatalog.GetLayout(id)))
-            + " profile=" + Safe(() => DescribeProfile(MonsterVisualCatalog.GetRequiredProfile(id)))
-            + " static=" + Safe(() => MonsterVisualCatalog.GetStaticDefaultIdleTexturePath(id)));
+            + " profile=" + Safe(() => DescribeProfile(MonsterVisualCatalog.GetRequiredProfile(id))));
     }
 
     private static void RecordCreated(

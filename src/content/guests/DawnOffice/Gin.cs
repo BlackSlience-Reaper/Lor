@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.visuals;
@@ -17,6 +18,9 @@ namespace LibraryOfRuina.content.guests.DawnOffice;
 
 public sealed class Gin : MonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
     public override int MinInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 81, 79);
 
@@ -37,7 +41,7 @@ public sealed class Gin : MonsterModel
     private const int SilentMistNextTurnStrength = 2;
     private const int CleanUpVulnerable = 3;
     private const int CleanUpGuard = 1;
-    private const float AttackAnimDelaySeconds = 0.825f;
+    private const float AttackAnimDelaySeconds = GuestSpine.AttackImpactSeconds;
 
     public override async Task AfterAddedToRoom()
     {

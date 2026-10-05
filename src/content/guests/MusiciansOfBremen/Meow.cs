@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.patches;
+using LibraryOfRuina.patches.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -17,6 +19,14 @@ namespace LibraryOfRuina.content.guests.MusiciansOfBremen;
 
 public sealed class Meow : MonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
+    public override IEnumerable<string> AssetPaths =>
+        MonsterVisualCatalog.GetRequiredProfile(Id.Entry).AssetPaths
+            .Concat(base.AssetPaths.Skip(1))
+            .Distinct();
+
     public override int MinInitialHp =>
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 94, 91);
 
