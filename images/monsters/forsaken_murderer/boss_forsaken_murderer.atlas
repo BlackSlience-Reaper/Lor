@@ -1,0 +1,9 @@
+boss_forsaken_murderer.webp
+size:1253,533
+filter:Linear,Linear
+Attack/body
+bounds:0,0,638,533
+Hit/body
+bounds:640,0,230,420
+Default/body
+bounds:872,0,379,248

@@ -6,6 +6,7 @@ using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -63,6 +64,8 @@ public sealed class ForsakenMurderer : CounterIntentMonsterModel
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 54, 52);
 
     public override int DefaultChaoResistance => 30;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

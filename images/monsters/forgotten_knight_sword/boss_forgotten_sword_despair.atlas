@@ -1,0 +1,9 @@
+boss_forgotten_sword_despair.webp
+size:1161,308
+filter:Linear,Linear
+Despair/body
+bounds:0,0,376,308
+DespairAttack/body
+bounds:378,0,403,308
+DespairHit/body
+bounds:783,0,376,269

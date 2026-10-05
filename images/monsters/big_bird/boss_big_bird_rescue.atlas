@@ -1,0 +1,13 @@
+boss_big_bird_rescue.webp
+size:1765,353
+filter:Linear,Linear
+RescueOpen/body
+bounds:0,0,289,353
+Guard/body
+bounds:291,0,409,307
+Hit/body
+bounds:702,0,305,306
+RescueClose/body
+bounds:1009,0,307,295
+Charm/body
+bounds:1318,0,445,290

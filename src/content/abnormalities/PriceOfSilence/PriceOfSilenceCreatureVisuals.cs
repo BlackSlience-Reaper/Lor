@@ -4,9 +4,25 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.PriceOfSilence;
 
+/// <summary>
+/// 沉默的代价的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，只平移、转动），
+/// 加载失败时退回下面的逐帧换图。待机绕底部慢慢摆。
+/// </summary>
 public sealed partial class PriceOfSilenceCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "price_of_silence",
+        "price_of_silence",
+        "special",
+        new Dictionary<string, string>
+        {
+            ["Special"] = "special",
+            ["Cast"] = "special",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(PriceOfSilence))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -10f), new(0.56f, 0.56f), -168f, -449f, 197f, 16f, new(0f, -166f), new(70f, -470f))

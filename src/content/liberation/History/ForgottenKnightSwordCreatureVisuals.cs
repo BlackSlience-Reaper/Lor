@@ -6,9 +6,59 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.liberation.History;
 
+/// <summary>
+/// 遗忘骑士之剑的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，只平移、转动），加载失败时退回下面的逐帧换图。
+/// 普通、泪滴、绝望三个形态各一副骨架；待机整把剑悬空轻晃。打击、斩击、突刺原图里的剑只画了一半大，骨架里放大到与待机同大。
+/// </summary>
 public sealed partial class ForgottenKnightSwordCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "forgotten_knight_sword",
+        "forgotten_sword_normal",
+        "blunt",
+        new Dictionary<string, string>
+        {
+            ["NormalBlunt"] = "blunt",
+            ["NormalPierce"] = "pierce",
+            ["NormalSlash"] = "slash",
+            ["NormalParry"] = "parry",
+            ["Cast"] = "parry",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec TeardropSpine = LayeredBossSpine.Create(
+        "forgotten_knight_sword",
+        "forgotten_sword_teardrop",
+        "blunt",
+        new Dictionary<string, string>
+        {
+            ["TeardropBlunt"] = "blunt",
+            ["TeardropPierce"] = "pierce",
+            ["TeardropSlash"] = "slash",
+            ["TeardropParry"] = "parry",
+            ["Cast"] = "parry",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec DespairSpine = LayeredBossSpine.Create(
+        "forgotten_knight_sword",
+        "forgotten_sword_despair",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["DespairAttack"] = "attack",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => NormalSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine, TeardropSpine, DespairSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => variantKey switch
+    {
+        TeardropVariant => TeardropSpine,
+        DespairVariant => DespairSpine,
+        _ => NormalSpine,
+    };
+
     [MonsterVisual(typeof(ForgottenKnightSword))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 6f), new(0.54f, 0.54f), -74f, -242f, 78f, 14f, new(0f, -120f), new(0f, -292f))
