@@ -4,7 +4,11 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.RedShoes;
 
-public partial class RedShoesRightCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 红舞鞋（右）的外观：Spine 身体（tools/spine_from_sprite/red_shoes_right.json 生成），做法同左鞋。欲望爆发三段每段都按 AttackImpactSeconds 等待，都落在劈下后的定格里（0.95 秒后才收回）。
+/// 接入方式见 <see cref="SpineSpriteAttackCreatureVisuals"/>。
+/// </summary>
+public partial class RedShoesRightCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(RedShoesRight))]
     internal static readonly CreatureVisualLayout Layout = new(
@@ -14,6 +18,26 @@ public partial class RedShoesRightCreatureVisuals : SpriteAttackCreatureVisuals
     };
 
     internal static readonly SpriteVisualProfile Profile = BuildProfile();
+
+    /// <summary>换成攻击图后命中的时刻，秒，与原版怪物攻击的默认等待相同。</summary>
+    internal const float AttackImpactSeconds = 0.3f;
+
+    /// <summary>死亡动画时长，秒；原版等它播完再做溶解消失。</summary>
+    internal const float DeathSeconds = 1.6f;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine = new(
+        "res://images/monsters/red_shoes/red_shoes_right.atlas",
+        "res://images/monsters/red_shoes/red_shoes_right.spine-json",
+        IdleAnimation: "idle",
+        AttackAnimation: "attack",
+        HurtAnimation: "hurt",
+        DeathAnimation: "die",
+        DefaultMix: 0.12f,
+        HurtHoldSeconds: 0.1f,
+        Ghosts: null,
+        ExtraTriggers: null);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
 

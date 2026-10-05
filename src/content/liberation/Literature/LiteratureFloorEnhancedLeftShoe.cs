@@ -19,6 +19,9 @@ namespace LibraryOfRuina.content.liberation.Literature;
 public sealed class LiteratureFloorEnhancedLeftShoe :
     LorMonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => RedShoesLeftCreatureVisuals.DeathSeconds;
+
     public const string WhisperingDesireMoveId = "WHISPERING_DESIRE";
     public const string HiddenDesireMoveId = "HIDDEN_DESIRE";
     public const int WhisperingDesireHits = 2;
@@ -129,7 +132,7 @@ public sealed class LiteratureFloorEnhancedLeftShoe :
         await DamageCmd.Attack(WhisperingDesireDamage)
             .WithHitCount(WhisperingDesireHits)
             .FromMonster(this)
-            .WithAttackerAnim("Attack", 0.18f)
+            .WithAttackerAnim("Attack", RedShoesLeftCreatureVisuals.AttackImpactSeconds)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(null);
         await ApplyBleedToLivingPlayers();

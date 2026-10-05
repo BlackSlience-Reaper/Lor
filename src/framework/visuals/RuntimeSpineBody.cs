@@ -23,7 +23,8 @@ internal sealed partial class RuntimeSpineBody : Node2D
         string IdleAnimation,
         string AttackAnimation,
         string HurtAnimation,
-        string DeathAnimation,
+        // 为 null 时死亡不播动画（保持当前姿势），怪物也不设 DeathAnimLengthOverride，原版立即溶解
+        string? DeathAnimation,
         float DefaultMix,
         // 混乱时定格的受击时间点（秒）
         float HurtHoldSeconds,
@@ -176,7 +177,11 @@ internal sealed partial class RuntimeSpineBody : Node2D
                 PlayAttack();
                 return true;
             case "Dead":
-                PlayOnce(_spec.DeathAnimation, thenIdle: false);
+                if (_spec.DeathAnimation is { } death)
+                {
+                    PlayOnce(death, thenIdle: false);
+                }
+
                 HideGhosts();
                 return true;
             default:
