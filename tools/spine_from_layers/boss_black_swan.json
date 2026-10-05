@@ -54,7 +54,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body"
+    "librarian_front_acce_2": "head"
    }
   },
   "Damaged": {
@@ -86,11 +86,11 @@
     "body": "body",
     "head": "head",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body",
+    "librarian_front_acce_2": "head",
     "effect": "body"
    }
   },
@@ -123,11 +123,11 @@
     "body": "body",
     "head": "head",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body",
+    "librarian_front_acce_2": "head",
     "body_2": "body",
     "effect": "body"
    }
@@ -167,7 +167,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body"
+    "librarian_front_acce_2": "head"
    }
   },
   "Penetrate": {
@@ -199,11 +199,11 @@
     "body": "body",
     "head": "head",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body",
+    "librarian_front_acce_2": "head",
     "effect": "body"
    }
   },
@@ -238,11 +238,11 @@
     "body_2": "body",
     "head": "head",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body"
+    "librarian_front_acce_2": "head"
    }
   },
   "Slash_S2": {
@@ -275,11 +275,11 @@
     "effect": "body",
     "head": "head",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body"
+    "librarian_front_acce_2": "head"
    }
   },
   "Special": {
@@ -312,11 +312,11 @@
     "body": "body",
     "head": "head",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "face": "head",
     "front_hair": "hair",
     "front_acce_2": "head",
-    "librarian_front_acce_2": "body"
+    "librarian_front_acce_2": "head"
    }
   }
  },

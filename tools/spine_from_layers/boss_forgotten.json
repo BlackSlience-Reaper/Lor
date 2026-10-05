@@ -62,7 +62,7 @@
     "front_acce": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body"
+    "librarian_only": "head"
    }
   },
   "Damaged": {
@@ -95,7 +95,7 @@
     "front_acce": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body",
+    "librarian_only": "head",
     "body_2": "body"
    }
   },
@@ -125,12 +125,12 @@
    },
    "assign": {
     "body": "body",
-    "librarian_only_1": "body",
+    "librarian_only_1": "head",
     "head": "head",
     "front_acce": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body",
+    "librarian_only": "hair",
     "body_2": "body",
     "effect": "body"
    }
@@ -165,7 +165,7 @@
     "front_acce": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body",
+    "librarian_only": "head",
     "effect": "body"
    }
   },
@@ -199,7 +199,7 @@
     "front_acce": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body",
+    "librarian_only": "head",
     "effect": "body"
    }
   }

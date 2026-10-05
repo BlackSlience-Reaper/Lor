@@ -55,7 +55,7 @@
     "body_6": "body",
     "head": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_7": "body",
     "body_11": "weapon"
    }
@@ -89,7 +89,7 @@
     "body": "body",
     "head": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -122,7 +122,7 @@
     "body": "body",
     "head": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_2": "body",
     "effect": "body"
    }
@@ -157,7 +157,7 @@
     "body_2": "body",
     "head": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -190,7 +190,7 @@
     "body": "body",
     "head": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   }

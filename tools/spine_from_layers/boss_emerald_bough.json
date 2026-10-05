@@ -50,7 +50,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body"
+    "librarian_only": "head"
    }
   },
   "Damaged": {
@@ -114,7 +114,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body"
+    "librarian_only": "head"
    }
   },
   "Guard": {
@@ -146,7 +146,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_only": "body",
+    "librarian_only": "head",
     "body_2": "body",
     "effect": "body"
    }
@@ -181,7 +181,7 @@
     "face": "head",
     "front_hair": "hair",
     "body_2": "body",
-    "librarian_only": "body"
+    "librarian_only": "head"
    }
   }
  },

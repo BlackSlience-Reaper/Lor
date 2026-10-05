@@ -46,7 +46,7 @@
     "body_5": "body",
     "body_6": "body",
     "head": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "hood": "head"
    }
   },
@@ -77,7 +77,7 @@
    "assign": {
     "body": "body",
     "head": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "hood": "head",
     "effect": "body"
    }
@@ -109,7 +109,7 @@
    "assign": {
     "body": "body",
     "head": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "hood": "head"
    }
   },
@@ -140,7 +140,7 @@
    "assign": {
     "body": "body",
     "head": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "hood": "head",
     "body_2": "body",
     "effect": "body"
@@ -173,7 +173,7 @@
    "assign": {
     "body": "body",
     "head": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "hood": "head",
     "body_2": "body",
     "effect": "body"
@@ -206,7 +206,7 @@
    "assign": {
     "body": "body",
     "head": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "hood": "head",
     "effect": "body"
    }

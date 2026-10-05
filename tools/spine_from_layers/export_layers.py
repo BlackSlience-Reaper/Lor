@@ -95,10 +95,17 @@ for obj in env.objects:
     layers.sort(key=lambda l: l["order"])
     result[motion] = layers
 
+def effective_scale(l):
+    """层贴图在角色坐标里的实际缩放：世界缩放 × 100 / 每单位像素。原版大多是 100，薄暝的 F/S3、赤瞳的红眼茧、
+    喵呜的突刺等是 50，同样像素的图要画大一倍；坐标统一按 1 单位 = 100 像素。"""
+    k = 100.0 / (l.get("ppu") or 100.0)
+    return l["scale"][0] * k, l["scale"][1] * k
+
+
 def placed(l):
     """层贴图按世界缩放、旋转变换后的图与其中心（角色根坐标，y 向上）。"""
     w, h = l["size"]
-    sx, sy = l["scale"]
+    sx, sy = effective_scale(l)
     r = math.radians(l["rot"])
     ox, oy = (0.5 - l["pivot"][0]) * w * sx, (0.5 - l["pivot"][1]) * h * sy
     cx = l["pos"][0] + math.cos(r) * ox - math.sin(r) * oy

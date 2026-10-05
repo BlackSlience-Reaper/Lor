@@ -189,7 +189,7 @@ BOSSES = {
     },
     # 自然层。原来也是场景动画，但每个动作只有一张图，按统一时长。场景按形态换动画库（闪金冲锋人形/王形与蓄力、
     # 以爱与憎之名人形/蛇形/特殊待机、泪锋之剑五个形态、虚无缥缈五个阶段），每个库一副骨架，待机姿势就是该库的 Idle 图。
-    # 蛇形是原版放大 1.25 倍、正义是 2 倍（root_scale）。魔法少女和蛇形在原版只有整图。
+    # 蛇形模组图是原版实际大小的 1.25 倍（root_scale）；爱之魔法少女原版每单位 50 像素，模组图只有实际的一半。魔法少女和蛇形在原版只有整图。
     "blind_rage": {
         "prefix": "EGO_Wrath_", "origin": [-145.5, -303.0], "weapons": [],
         "anims": {"attack_strike": ("attack", "Hit", "dash"), "attack_thrust": ("attack", "Penetrate", "dash"),
@@ -286,12 +286,13 @@ BOSSES = {
         "holds": {"stunned": 2.0},
     },
     "nihil_love": {
-        "prefix": "", "base": "nomal", "origin": [80.5, 117.0], "weapons": [],
+        # 原版每单位 50 像素，实际是贴图的 2 倍大；模组图按贴图原尺寸，所以整体缩回一半
+        "prefix": "", "base": "nomal", "origin": [80.5, -17.5], "root_scale": 0.5, "weapons": [],
         "anims": {"attack": ("attack", "atk", "dash"), "fire": ("attack", "atk 2", "recoil"),
                   "special": ("skill", "atk 3", "rise"), "guard": ("guard", "guard", "brace"), "hurt": ("hurt", "hit")},
     },
     "nihil_justice": {
-        "prefix": "", "base": "nomal", "origin": [63.6, 106.2], "root_scale": 2.0, "weapons": [],
+        "prefix": "", "base": "nomal", "origin": [63.4, -20.8], "weapons": [],
         "anims": {"attack": ("attack", "trans", "dash"), "hurt": ("hurt", "damaged"), "stunned": ("hurt", "grogi")},
         "holds": {"stunned": 2.0},
     },
@@ -304,6 +305,67 @@ BOSSES = {
         "prefix": "", "base": "보통", "origin": [-18.5, 35.0], "weapons": [],
         "anims": {"slash": ("attack", "종", "step"), "strike": ("attack", "횡", "dash"),
                   "special": ("skill", "특수", "dash"), "hurt": ("hurt", "피격")},
+    },
+    # 宗教层失乐园：场景内嵌 normal / repentance 两个动画库；repentance 期间所有动作都停在忏悔图（原版 S5）
+    "lost_paradise": {
+        "prefix": "", "origin": [14.0, -57.0], "weapons": [],
+        "anims": {"attack": ("attack", "S3", "dash"), "guard": ("guard", "Guard", "brace"),
+                  "cast": ("skill", "S1", "rise"), "wake": ("skill", "F", "rise"),
+                  "special": ("timeline", {"frames": [[0, "S1"], [1.0, "F"], [2.0, "S3"]], "length": 3.0}, "rise"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "lost_paradise_repentance": {
+        "layers": "lost_paradise", "prefix": "", "base": "S5", "origin": [9.5, -34.0], "weapons": [],
+        "anims": {"hurt": ("hurt", "S5")},
+    },
+    # 社会层伪王座：模组图是原版放大 2 倍；变形后的待机是 Polymorph_S4，其余动作两种形态相同
+    "false_throne": {
+        "prefix": "", "origin": [-5.0, -6.5], "root_scale": 2.0, "weapons": [],
+        "anims": {"fire": ("attack", "Hit_Fire", "recoil"), "overflowing_light": ("attack", "Penetrate_Fire_S1", "recoil"),
+                  "area": ("skill", "AreaAtk_S2", "rise"), "rage": ("skill", "Rage_S3", "step"),
+                  "polymorph": ("skill", "Polymorph_S4", "rise"), "guard": ("guard", "Guard", "brace"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "false_throne_transformed": {
+        "layers": "false_throne", "prefix": "", "base": "Polymorph_S4", "origin": [-21.5, -6.2], "root_scale": 2.0,
+        "weapons": [],
+        "anims": {"fire": ("attack", "Hit_Fire", "recoil"), "overflowing_light": ("attack", "Penetrate_Fire_S1", "recoil"),
+                  "area": ("skill", "AreaAtk_S2", "rise"), "rage": ("skill", "Rage_S3", "step"),
+                  "polymorph": ("skill", "Polymorph_S4", "rise"), "guard": ("guard", "Guard", "brace"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    # 哲学层薄暝：模组图是原版放大 2 倍（F、S3 原版每单位 50 像素，模组运行时再放大 2 倍，骨架按实际大小已经一致）
+    "twilight": {
+        "prefix": "", "origin": [-6.0, -50.5], "root_scale": 2.0, "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "pierce": ("attack", "Hit", "dash"),
+                  "forest_light": ("skill", "BigBird_S1", "rise"), "brilliant_eyes": ("skill", "NormalAndCharm_Fire", "rise"),
+                  "punishment": ("attack", "SmallBird_S2", "dash"), "punishment_followup": ("attack", "SmallBird_S3", "dash"),
+                  "judgement": ("skill", "LongBird_S4", "rise"), "peace": ("attack", "S5", "dash"),
+                  "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Damaged")},
+    },
+    # 特殊来宾卡莉：普通形态与红雾（E.G.O）各一副。血雾五段、尸山两段照场景动画的换图时刻；
+    # 模组的打击、斩击图缩小了 0.45 倍并叠着血色弧光，弧光放大回原尺寸后抠成额外层
+    "kali": {
+        "prefix": "Kali_", "origin": [-193.0, -213.0], "weapons": [],
+        "extra": {"Slash": [{"name": "fx", "image": "fx/kali_slash.png", "center": [-167.5, 143.5]}],
+                  "Hit": [{"name": "fx", "image": "fx/kali_blunt.png", "center": [-136.5, 366.0]}]},
+        "anims": {"slash": ("attack", "Slash", "step"), "blunt": ("attack", "Hit", "dash"),
+                  "pierce": ("attack", "Penetrate", "dash"), "move": ("attack", "Move", "dash"),
+                  "blood_mist": ("timeline", {"frames": [[0, "S3"], [0.7, "S4"], [1.4, "S5"], [2.1, "Slash2"], [2.8, "Hit2"]],
+                                              "length": 3.6}, "dash"),
+                  "field_of_corpses": ("timeline", {"frames": [[0, "Slash"]], "length": 1.4}, "step"),
+                  "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged")},
+    },
+    "red_mist": {
+        "prefix": "TheRedMist_", "origin": [75.5, 6.0], "weapons": [],
+        "extra": {"Slash": [{"name": "fx", "image": "fx/red_mist_slash.png", "center": [-237.5, 444.5]}],
+                  "Hit": [{"name": "fx", "image": "fx/red_mist_blunt.png", "center": [-281.5, 331.0]}]},
+        "anims": {"slash": ("attack", "Slash", "step"), "blunt": ("attack", "Hit", "dash"),
+                  "pierce": ("attack", "Penetrate", "dash"), "move": ("attack", "Move", "dash"),
+                  "blood_mist": ("timeline", {"frames": [[0, "S3"], [0.7, "S4"], [1.4, "S5"], [2.1, "Slash2"], [2.8, "Hit2"]],
+                                              "length": 3.6}, "dash"),
+                  "field_of_corpses": ("timeline", {"frames": [[0, "S1"], [0.7, "S2"]], "length": 1.4}, "dash"),
+                  "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged")},
     },
     # 艺术层
     "dacapo": {

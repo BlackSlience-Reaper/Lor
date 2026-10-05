@@ -54,6 +54,47 @@ def tip_point(root, motion, l, pivot):
     return float(px[i]), float(py[i])
 
 
+def opaque(root, motion, l):
+    """层的不透明掩码与 RGB（按实际缩放），以及左上角在角色坐标里的位置（y 向上）。"""
+    im = Image.open(root / motion / f"{l['name']}.png").convert("RGBA")
+    k = 100.0 / (l.get("ppu") or 100.0)
+    sx, sy = abs(l["scale"][0] * k), abs(l["scale"][1] * k)
+    if abs(sx - 1) > 1e-3 or abs(sy - 1) > 1e-3:
+        im = im.resize((max(1, round(im.width * sx)), max(1, round(im.height * sy))))
+    a = np.asarray(im).astype(np.float32)
+    cx, cy = l.get("center", l["pos"])
+    return a, round(cx - im.width / 2), round(cy + im.height / 2)
+
+
+def covered(root, motion, a, b, cache):
+    """a 的不透明像素有多少落在 b 的不透明像素上，以及重合处的平均色差。"""
+    pa_full, ax, ay = cache.setdefault(a["name"], opaque(root, motion, a))
+    pb_full, bx, by = cache.setdefault(b["name"], opaque(root, motion, b))
+    x0, x1 = max(ax, bx), min(ax + pa_full.shape[1], bx + pb_full.shape[1])
+    y1, y0 = min(ay, by), max(ay - pa_full.shape[0], by - pb_full.shape[0])
+    total = (pa_full[..., 3] > 128).sum()
+    if x1 <= x0 or y1 <= y0 or total == 0:
+        return 0.0, 255.0
+    pa = pa_full[ay - y1:ay - y0, x0 - ax:x1 - ax]
+    pb = pb_full[by - y1:by - y0, x0 - bx:x1 - bx]
+    both = (pa[..., 3] > 128) & (pb[..., 3] > 128)
+    if not both.any():
+        return 0.0, 255.0
+    return both.sum() / total, float(np.abs(pa[both][:, :3] - pb[both][:, :3]).mean())
+
+
+def duplicate_of(root, motion, l, others, cache, max_diff=25.0):
+    """原版有的东西画了两份、静止时完全重合（例如类型 8 的“司书头饰”和头发层里各一顶皇冠）。返回与 l 重复的那层。"""
+    best = None
+    for o in others:
+        if o is l:
+            continue
+        frac, diff = covered(root, motion, l, o, cache)
+        if frac >= 0.5 and diff < max_diff and (best is None or frac > best[0]):
+            best = (frac, o)
+    return best[1] if best else None
+
+
 def rig_motion(root, motion, layers, weapon_names=None):
     heads = [l for l in layers if l["type"] == 5] or [l for l in layers if l["type"] in HEAD_TYPES]
     hb = [bbox(root, motion, l) for l in heads]
@@ -98,6 +139,54 @@ def rig_motion(root, motion, layers, weapon_names=None):
                         assign[h["name"]] = "weapon"
                 tip = tip_point(root, motion, max(wl, key=lambda l: l["size"][0] * l["size"][1]), grip)
                 weapon = {"grip": grip, "tip": tip}
+    # 两份重合的东西挂在不同骨头上，动起来就会错开成重影，所以重复的那份跟着原件走
+    cache = {}
+    # 原版常把同一件饰物画两份（类型 8 的“司书头饰”和头发/脸/背饰层里各一份，类型标注也不统一），静止时完全重合。
+    # 两份挂在不同骨头上，动起来就错开成重影，所以每组重复层统一挂一根骨头：组里有头或头发上的层，跟面积最大的那层；
+    # 否则都挂身体。没有重复的类型 8 层几乎都是头饰，挂到头上。
+    group = {l["name"]: l["name"] for l in layers}
+
+    def find(n):
+        while group[n] != n:
+            n = group[n]
+        return n
+
+    for i, la in enumerate(layers):
+        for lb in layers[i + 1:]:
+            frac, diff = covered(root, motion, la, lb, cache)
+            frac_b, _ = covered(root, motion, lb, la, cache)
+            if max(frac, frac_b) >= 0.5 and diff < 12:
+                group[find(la["name"])] = find(lb["name"])
+    members = {}
+    for l in layers:
+        members.setdefault(find(l["name"]), []).append(l)
+    for ms in members.values():
+        if len(ms) == 1:
+            l = ms[0]
+            if l["type"] == 8:
+                # 整块压在头发或头上的饰物（发带、发卡）跟着那层走，免得头发甩动时滑开
+                hosts = [(covered(root, motion, l, o, cache)[0], o) for o in layers
+                         if o is not l and o["type"] != 8 and assign[o["name"]] in ("head", "hair")]
+                hosts = [h for h in hosts if h[0] >= 0.9]
+                assign[l["name"]] = assign[max(hosts, key=lambda h: h[0])[1]["name"]] if hosts else "head"
+            continue
+        movers = [m for m in ms if assign[m["name"]] in ("head", "hair") and m["type"] != 8]
+        target = assign[max(movers, key=lambda m: m["size"][0] * m["size"][1])["name"]] if movers else "body"
+        for m in ms:
+            if assign[m["name"]] != "weapon":
+                assign[m["name"]] = target
+    if weapon is not None:
+        # 整块压在武器上的身体层（尤娜琴盒上的背带、握着琴盒的手套）跟着武器走
+        weapon_layers = [l for l in layers if assign[l["name"]] == "weapon"]
+        for l in layers:
+            if assign[l["name"]] == "body" and any(covered(root, motion, l, w, cache)[0] >= 0.9 for w in weapon_layers):
+                assign[l["name"]] = "weapon"
+        # 握把旁的手：皮肤层若还画着身体其它部位（沙耶的这层连着两条腿），不能跟着武器转
+        body_layers = [l for l in layers if assign[l["name"]] == "body"]
+        for l in layers:
+            if (assign[l["name"]] == "weapon" and l["type"] == SKIN and l["name"] not in (weapon_names or [])
+                    and duplicate_of(root, motion, l, body_layers, cache, max_diff=12.0) is not None):
+                assign[l["name"]] = "body"
     return bones, assign, weapon
 
 

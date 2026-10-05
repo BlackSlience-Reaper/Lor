@@ -2,9 +2,10 @@
  "name": "boss_nihil_love",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/nihil_love",
  "texture_scale": 0.6,
+ "root_scale": 0.5,
  "origin": [
   80.5,
-  117.0
+  -17.5
  ],
  "skin_tint": [
   1.0,

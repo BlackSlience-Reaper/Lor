@@ -65,7 +65,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "head"
    }
   },
   "Damaged": {
@@ -101,7 +101,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "effect": "body"
    }
   },
@@ -138,7 +138,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "head"
    }
   },
   "Guard": {
@@ -174,7 +174,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "body_2": "body",
     "effect": "body"
    }
@@ -215,7 +215,7 @@
     "front_hair": "hair",
     "body_3": "body",
     "front_acce": "head",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "head"
    }
   },
   "Penetrate": {
@@ -251,7 +251,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "effect": "body"
    }
   },
@@ -328,7 +328,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librian_front_acce": "body",
+    "librian_front_acce": "head",
     "effect": "body"
    }
   },
@@ -367,7 +367,7 @@
     "face": "head",
     "front_hair": "hair",
     "front_acce": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "effect_2": "body"
    }
   }

@@ -1,11 +1,11 @@
 boss_nihil_justice.webp
-size:1053,273
+size:1262,328
 filter:Linear,Linear
 trans/trans
-bounds:0,0,259,273
+bounds:0,0,311,328
 damaged/damaged
-bounds:261,0,283,271
+bounds:313,0,339,325
 nomal/nomal
-bounds:546,0,238,254
+bounds:654,0,287,305
 grogi/grogi
-bounds:786,0,265,253
+bounds:943,0,317,303

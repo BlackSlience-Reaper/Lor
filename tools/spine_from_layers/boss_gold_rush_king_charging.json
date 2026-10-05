@@ -43,9 +43,9 @@
     "body": "body",
     "head": "head",
     "face": "head",
-    "liabrarian_front_acce": "body",
+    "liabrarian_front_acce": "head",
     "front_hair": "hair",
-    "liabrarian_front_acce_2": "body",
+    "liabrarian_front_acce_2": "hair",
     "body_2": "body"
    }
   }

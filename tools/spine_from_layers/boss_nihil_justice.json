@@ -2,10 +2,9 @@
  "name": "boss_nihil_justice",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/nihil_justice",
  "texture_scale": 0.6,
- "root_scale": 2.0,
  "origin": [
-  63.6,
-  106.2
+  63.4,
+  -20.8
  ],
  "skin_tint": [
   1.0,

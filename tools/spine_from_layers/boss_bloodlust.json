@@ -53,7 +53,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_12": "body"
    }
   },
@@ -86,7 +86,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_2": "body",
     "effect": "body"
    }
@@ -120,7 +120,7 @@
     "head": "head",
     "face": "head",
     "front_hair_복사_2": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_2": "body"
    }
   },
@@ -153,7 +153,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_2": "body",
     "effect": "body"
    }
@@ -187,7 +187,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -221,7 +221,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "hair"
    }
   },
   "SpecialCard_JS5": {
@@ -254,7 +254,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "hair"
    }
   }
  },

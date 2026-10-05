@@ -48,7 +48,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "hair"
    }
   },
   "Damaged": {
@@ -81,7 +81,7 @@
     "head": "head",
     "face": "head",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_2": "body",
     "effect": "body"
    }
@@ -111,13 +111,13 @@
     }
    },
    "assign": {
-    "librarian_back_acce": "body",
+    "librarian_back_acce": "hair",
     "back_hair": "hair",
     "head": "head",
     "face": "head",
     "body": "body",
     "front_hair_복사": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -146,13 +146,13 @@
     }
    },
    "assign": {
-    "librarian_back_acce_복사": "body",
+    "librarian_back_acce_복사": "hair",
     "back_hair": "hair",
     "head": "head",
     "face": "head",
     "body": "body",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   }
