@@ -10,6 +10,8 @@ namespace LibraryOfRuina.framework.visuals;
 /// C# runtime host for a scriptless creature-visual scene. The scene owns
 /// editable nodes and AnimationPlayer tracks; this class only routes combat
 /// triggers and restores the current phase's idle animation.
+/// 给了 <see cref="SpineSpec"/> 且加载成功时，由 Spine 身体接管全部触发：场景的两张 Sprite2D 藏起来，
+/// AnimationPlayer 不再播放，场景动画只在 Spine 加载失败时兜底。
 /// </summary>
 internal abstract partial class SceneAnimatedCreatureVisuals
     : NCreatureVisuals,
@@ -25,8 +27,15 @@ internal abstract partial class SceneAnimatedCreatureVisuals
     private int _continuousAttackChainDepth;
     private bool _wasChaoed;
     private string? _heldChaosAnimation;
+    private RuntimeSpineBody? _spine;
 
     protected abstract string ResolveCurrentAnimationLibrary();
+
+    /// <summary>
+    /// 原版分层生成的 Spine 身体（见 <see cref="LayeredBossSpine"/>）；为 null 时只用场景动画。
+    /// 动画里换姿势的时刻要和动画契约的命中时刻一致，怪物代码按契约结算伤害。
+    /// </summary>
+    internal virtual RuntimeSpineBody.Spec? SpineSpec => null;
 
     protected virtual string NormalizeTriggerName(string triggerName) =>
         triggerName;
@@ -67,7 +76,37 @@ internal abstract partial class SceneAnimatedCreatureVisuals
                 + $"Idle animation '{ResolveQualifiedAnimationName(IdleTrigger)}'; "
                 + "falling back to the code-built idle pose.");
         }
+
+        TryAttachSpine();
     }
+
+    // 骨架原点对齐待机贴图的底边中点，所以先把待机动画的贴图、位置、缩放落到 %Visuals 上再建。
+    private void TryAttachSpine()
+    {
+        if (SpineSpec is not { } spec
+            || _idleVisuals == null
+            || !PlayAnimation(ResolveQualifiedAnimationName(IdleTrigger)))
+        {
+            return;
+        }
+
+        _spine = RuntimeSpineBody.TryCreate(_idleVisuals, spec);
+        if (_spine == null)
+        {
+            PlayCurrentIdle();
+            return;
+        }
+
+        _animationPlayer!.Stop();
+        _heldChaosAnimation = null;
+        _idleVisuals.Visible = false;
+        _attackVisuals!.Visible = false;
+        _wasChaoed = MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this);
+        _spine.SyncHoldHurt(_wasChaoed);
+    }
+
+    /// <summary>死亡补丁转来的 "Dead"，见 <c>SpineSpriteDeathAnimPatch</c>；没有 Spine 身体时不做事。</summary>
+    internal void PlayDeath() => _spine?.Play("Dead", holdHurtPose: false);
 
     public override void _Process(double delta)
     {
@@ -89,6 +128,7 @@ internal abstract partial class SceneAnimatedCreatureVisuals
         _continuousAttackChainDepth = 0;
         _wasChaoed = false;
         _heldChaosAnimation = null;
+        _spine = null;
         base._ExitTree();
     }
 
@@ -103,6 +143,13 @@ internal abstract partial class SceneAnimatedCreatureVisuals
         if (string.IsNullOrWhiteSpace(normalizedTrigger))
         {
             return false;
+        }
+
+        if (_spine != null)
+        {
+            // Spine 不认识的触发也算处理过：否则触发桥会退回 AnimationPlayer，把藏起来的贴图又显示出来
+            _spine.Play(normalizedTrigger, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
+            return true;
         }
 
         if (normalizedTrigger is IdleTrigger or "Hit"
@@ -142,6 +189,18 @@ internal abstract partial class SceneAnimatedCreatureVisuals
     {
         if (_animationPlayer == null || !IsInstanceValid(_animationPlayer))
         {
+            return;
+        }
+
+        if (_spine != null)
+        {
+            bool chaoed = MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this);
+            if (_wasChaoed != chaoed)
+            {
+                _wasChaoed = chaoed;
+                _spine.SyncHoldHurt(chaoed);
+            }
+
             return;
         }
 
