@@ -113,6 +113,9 @@ internal sealed partial class NaturalFloorTearEdgeVisuals : NaturalFloorDespairV
             ["Guard"] = "hurt",
         });
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [NormalSpine, DespairSpine, Stabbed1Spine, Stabbed2Spine, Stabbed3Spine];
+
     internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
     {
         "despair" => DespairSpine,

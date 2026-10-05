@@ -24,10 +24,18 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
     /// <summary>当前形态用的骨架；默认所有形态共用 <see cref="SpineSpec"/>。</summary>
     internal virtual RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => SpineSpec;
 
+    /// <summary>出场时先读进缓存的全部骨架；会换形态的外观要列出各形态的，战斗中换形态才不会现读。</summary>
+    internal virtual IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [SpineSpec];
+
     public override void _Ready()
     {
         base._Ready();
         _ready = true;
+        foreach (RuntimeSpineBody.Spec spec in AllSpineSpecs)
+        {
+            RuntimeSpineBody.Preload(spec);
+        }
+
         SyncSpineBody();
         HideSprites();
     }
@@ -46,7 +54,7 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
     }
 
     /// <summary>有 Spine 身体在接管触发（自己管触发入口的外观，例如薄暝，要先问这个）。</summary>
-    protected bool HasSpineBody => _spine != null;
+    internal bool HasSpineBody => _spine != null;
 
     /// <summary>自己重新摆放待机贴图的外观（薄暝）摆完后调用：骨架重新对齐到待机贴图，贴图再藏起来。</summary>
     protected void RealignSpineBody()

@@ -32,6 +32,9 @@ internal sealed partial class KaliCreatureVisuals
     internal static readonly RuntimeSpineBody.Spec RedMistSpine =
         LayeredBossSpine.Create("red_mist", "red_mist", "blunt", SpineTriggers());
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [Spine, RedMistSpine];
+
     internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
         library == KaliAnimationContract.EgoLibrary ? RedMistSpine : Spine;
 

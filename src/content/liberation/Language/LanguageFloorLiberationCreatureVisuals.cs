@@ -182,6 +182,9 @@ public sealed partial class LanguageFloorCobaltScarCreatureVisuals : SpineSprite
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [Spine, BigWolfSpine, ShadowSpine];
+
     internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => variantKey switch
         {
             BigWolfVariant => BigWolfSpine,

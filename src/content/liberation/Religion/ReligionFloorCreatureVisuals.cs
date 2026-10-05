@@ -73,6 +73,9 @@ internal sealed partial class ReligionFloorLostParadiseVisuals : ReligionFloorCr
             ["Special"] = "hurt",
         });
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [Spine, RepentanceSpine];
+
     internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
         library == "repentance" ? RepentanceSpine : Spine;
 }

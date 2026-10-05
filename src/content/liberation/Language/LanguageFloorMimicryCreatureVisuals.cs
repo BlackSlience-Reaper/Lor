@@ -52,6 +52,9 @@ public sealed partial class LanguageFloorMimicryCreatureVisuals : SpineSpriteAtt
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [Spine, SecondSpine, ThirdSpine];
+
     internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => variantKey switch
         {
             SecondVariant => SecondSpine,

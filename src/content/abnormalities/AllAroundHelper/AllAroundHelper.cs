@@ -7,6 +7,7 @@ using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -32,7 +33,7 @@ internal enum AllAroundHelperInitialMove
 public sealed class AllAroundHelper : CounterIntentMonsterModel
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AllAroundHelperCreatureVisuals.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, AllAroundHelperCreatureVisuals.DeathSeconds);
 
     private static readonly string[] NormalBackgroundTextLineKeys =
     [

@@ -4,6 +4,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -30,7 +31,7 @@ internal enum DeadButterflyInitialMove
 public sealed class DeadButterfly : LorMonsterModel
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => DeadButterflyCreatureVisuals.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, DeadButterflyCreatureVisuals.DeathSeconds);
 
     public override int DefaultChaoResistance => 10;
 

@@ -41,6 +41,9 @@ internal sealed partial class NaturalFloorLoveAndHatredVisuals : SceneAnimatedCr
             ["Guard"] = "guard",
         });
 
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [HumanSpine, SnakeSpine, SpecialSpine];
+
     internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
     {
         "snake" => SnakeSpine,

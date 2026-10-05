@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -27,7 +28,7 @@ namespace LibraryOfRuina.content.abnormalities.SpiderBud;
 public sealed class SpiderBud : CounterIntentMonsterModel
 {
     // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => SpiderBudCreatureVisuals.DeathSeconds;
+    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, SpiderBudCreatureVisuals.DeathSeconds);
 
     private static readonly string[] NormalBackgroundTextLineKeys =
     [

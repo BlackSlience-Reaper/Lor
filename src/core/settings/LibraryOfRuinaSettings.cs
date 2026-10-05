@@ -6,6 +6,7 @@ using Godot;
 using LibraryOfRuina.features.ftue;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents.rendering;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Logging;
@@ -328,6 +329,11 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
         get => IntentDisplayStyleState.Current;
         set => IntentDisplayStyleState.Set(value);
     }
+
+    // 只影响本机怪物外观（framework/visuals/AnimationEffects.cs）：关=逐帧换图，低=换图加淡入淡出，高=原版分层生成的
+    // Spine 骨骼动画。不参与联机比对；外观在怪物出场时按当时的档位建立，局内切换对之后出场的怪物生效。
+    [SettingsSection("CombatUi")]
+    public static AnimationEffectLevel AnimationEffectLevel { get; set; } = AnimationEffectLevel.High;
 
     [SettingsIgnore]
     public static bool MultiplayerScalingEnabled

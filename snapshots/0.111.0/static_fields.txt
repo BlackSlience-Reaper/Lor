@@ -1871,6 +1871,7 @@ readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._ghosts	
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._holdingHurt	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._main	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._started	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody.DataCache	System.Collections.Generic.List`1[System.ValueTuple`3[System.String,System.Single,Godot.GodotObject]]
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodName.ApplyFallbackIdlePose	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodName.BeginContinuousAttackChain	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodName.EndContinuousAttackChain	Godot.StringName
@@ -1890,6 +1891,7 @@ readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodNam
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodName._Ready	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName.AnimationPlayer	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName.CurrentAnimationName	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName.HasSpineBody	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName._animationPlayer	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName._attackVisuals	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+PropertyName._continuousAttackChainDepth	Godot.StringName
@@ -1957,6 +1959,10 @@ readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyNa
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyName._useVisibleBottomCenterAnchor	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals+PropertyName._wasChaoed	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.SpriteAttackCreatureVisuals.VisibleBottomByTexturePath	System.Collections.Generic.Dictionary`2[System.String,System.Single]
+readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName.Attach	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName.OnFramePreDraw	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName._EnterTree	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.SpriteCrossfade+MethodName._ExitTree	Godot.StringName
 readonly	LibraryOfRuina.infra.helpers.GodotTextureSafety.SourcePaths	System.Runtime.CompilerServices.ConditionalWeakTable`2[Godot.Texture2D,LibraryOfRuina.infra.helpers.GodotTextureSafety+TextureSourcePath]
 readonly	LibraryOfRuina.infra.helpers.LibraryAssemblyTypes.Scan	System.Lazy`1[System.ValueTuple`2[System.Type[],System.Reflection.ReflectionTypeLoadException]]
 readonly	LibraryOfRuina.infra.helpers.LorLog.Counts	System.Collections.Concurrent.ConcurrentDictionary`2[System.String,System.Int32]

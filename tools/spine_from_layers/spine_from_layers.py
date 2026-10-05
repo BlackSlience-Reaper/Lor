@@ -21,6 +21,40 @@ from PIL import Image
 # ---------------------------------------------------------------- 素材
 
 
+def merge_runs(motions, cfg):
+    """同一姿势里叠放顺序相邻、挂在同一根骨头上的层合成一张图（附件），画面不变（动画只动骨头，不单独动层）。
+    游戏里每个槽位每帧都有固定开销，不显示的姿势的槽位也算：实测 8 个虚无缥缈·贪婪同屏，65 个槽位比 15 个
+    每帧多约 6 毫秒。合并后槽位数大约减半。"""
+    merged = {}
+    for motion, ls in motions.items():
+        assign = cfg["motions"][motion]["assign"]
+        runs = []
+        for l in ls:
+            if runs and assign[runs[-1][-1]["name"]] == assign[l["name"]]:
+                runs[-1].append(l)
+            else:
+                runs.append([l])
+        out = []
+        for run in runs:
+            if len(run) == 1:
+                out.append(run[0])
+                continue
+            # 角色坐标 y 向上；画布左上角是这组层的并集包围盒左上角
+            left = min(l["center"][0] - l["image"].width / 2 for l in run)
+            right = max(l["center"][0] + l["image"].width / 2 for l in run)
+            top = max(l["center"][1] + l["image"].height / 2 for l in run)
+            bottom = min(l["center"][1] - l["image"].height / 2 for l in run)
+            canvas = Image.new("RGBA", (math.ceil(right - left), math.ceil(top - bottom)))
+            for l in run:
+                x = round(l["center"][0] - l["image"].width / 2 - left)
+                y = round(top - (l["center"][1] + l["image"].height / 2))
+                canvas.alpha_composite(l["image"], (x, y))
+            out.append({"name": run[0]["name"], "image": canvas, "center": ((left + right) / 2, (top + bottom) / 2),
+                        "order": run[0]["order"]})
+        merged[motion] = out
+    return merged
+
+
 def load_layers(cfg):
     root = Path(cfg["layers_dir"]).expanduser()
     info = json.loads((root / "layers.json").read_text())
@@ -144,6 +178,8 @@ def main():
     shift = (-cfg["origin"][0], -cfg["origin"][1])
     setup_motion = cfg["setup_motion"]
     motions = load_layers(cfg)
+    if cfg.get("merge_layers", True):
+        motions = merge_runs(motions, cfg)
 
     # 骨头：root → move（整体位移，冲刺、击退）→ 各动作的骨头
     # root_scale：模组贴图是原版按某倍数缩放过的（翅振 1.2 倍）时整体放大，骨架才与模组待机图对齐
