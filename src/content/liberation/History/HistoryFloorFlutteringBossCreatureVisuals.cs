@@ -1,12 +1,28 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.History;
 
-public partial class HistoryFloorFlutteringBossCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>翅振的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public partial class HistoryFloorFlutteringBossCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "history_floor",
+        "fluttering",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["AttackStrike"] = "strike",
+            ["AttackSlash"] = "slash",
+            ["HungerFrenzy"] = "hunger",
+            ["Cast"] = "guard",
+            ["Parry"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(HistoryFloorFlutteringBoss))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -122f), new(0.4756f, 0.4756f), -145f, -260f, 145f, 30f, new(0f, -86f), new(0f, -292f))

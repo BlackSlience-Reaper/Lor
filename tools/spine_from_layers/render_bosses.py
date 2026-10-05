@@ -12,11 +12,11 @@ R = Path("/Users/iniad/LibraryOfRuina")
 HERE = Path(__file__).resolve().parent
 RENDER = Path.home() / ".claude/skills/sts2-spine-from-sprite/scripts/render.sh"
 FEET_Y = 860
-TITLES = {"dacapo": "Da Capo", "little_galaxy": "我们的小小银河", "nostalgic_scent": "余香", "pleasure": "欢愉", "beyond_fragment": "彼方的碎片", "chord": "和弦", "grinder_mk4": "研削机Mk4", "magic_bullet": "魔弹", "regret": "悔恨", "solemn_mourning": "庄严哀悼"}
+TITLES = {"emerald_bough": "翠枝", "fluttering": "翅振", "forgotten": "忘却", "wasp": "蜂后", "dacapo": "Da Capo", "little_galaxy": "我们的小小银河", "nostalgic_scent": "余香", "pleasure": "欢愉", "beyond_fragment": "彼方的碎片", "chord": "和弦", "grinder_mk4": "研削机Mk4", "magic_bullet": "魔弹", "regret": "悔恨", "solemn_mourning": "庄严哀悼"}
 ACT = {"idle": "待机", "attack": "攻击", "attack_fire": "远程", "attack_strike": "打击", "attack_slash": "斩击",
        "attack_thrust": "突刺", "attack_right": "右击", "attack_left": "左击", "hurt": "受击", "guard": "防御",
        "parry": "格挡", "dodge": "闪避", "ego": "E.G.O", "ego_s1": "E.G.O 1", "ego_s2": "E.G.O 2", "ego_s3": "E.G.O 3",
-       "special": "特殊", "die": "死亡", "ranged": "远程", "blunt": "打击", "pierce": "突刺", "slash": "斩击", "attack2": "攻击 2"}
+       "special": "特殊", "die": "死亡", "ranged": "远程", "blunt": "打击", "pierce": "突刺", "slash": "斩击", "attack2": "攻击 2", "strike": "打击", "hunger": "饥饿连击", "cast": "施法"}
 
 
 def frames_dir(n):
