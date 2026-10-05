@@ -1,12 +1,29 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Language;
 
-public sealed partial class LanguageFloorDipsiaCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>渴血症的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class LanguageFloorDipsiaCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "dipsia",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["AttackFire"] = "fire",
+            ["AttackStrike"] = "strike",
+            ["AttackSlash"] = "slash",
+            ["GroupBreak"] = "group_break",
+            ["GroupAttack"] = "group_attack",
+            ["Cast"] = "evade",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(LanguageFloorDipsia))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -128f), new(0.72f, 0.72f), -160f, -360f, 160f, 12f, new(0f, -150f), new(0f, -395f))

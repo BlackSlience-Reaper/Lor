@@ -10,6 +10,7 @@ using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
@@ -253,6 +254,9 @@ public sealed class LanguageFloorMimicry :
         _lastAttackTargetCombatIds;
 
     public int LiberationPhase => 5;
+
+    /// <summary>死亡动画时长；转阶段的假死返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     internal int ScaledFormThreeRegenerationDamageThreshold =>
         (int)Math.Ceiling(

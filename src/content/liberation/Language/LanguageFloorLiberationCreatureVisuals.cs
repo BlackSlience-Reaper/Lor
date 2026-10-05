@@ -1,12 +1,27 @@
+using System.Collections.Generic;
 using Godot;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Language;
 
-public sealed partial class LanguageFloorScarletScarCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>猩红创痕的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class LanguageFloorScarletScarCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "scarlet_scar",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Fire"] = "shot_1",
+            ["ShootS1"] = "shot_1",
+            ["ShootS2"] = "shot_2",
+            ["ShootS3"] = "shot_3",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(LanguageFloorScarletScar))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 42f), new(-0.50f, 0.50f), -158f, -294f, 158f, 12f, new(0f, -76f), new(0f, -330f))
@@ -59,9 +74,24 @@ public sealed partial class LanguageFloorScarletScarCreatureVisuals
     }
 }
 
-public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>失去一切的狼的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "cobalt_shadow",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["WolfSlash"] = "attack",
+            ["Special"] = "howl",
+            ["Howl"] = "howl",
+            ["WolfS2"] = "howl",
+            ["WolfHowl"] = "howl",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(LanguageFloorLostEverythingWolf))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 20f), new(0.62f, 0.62f), -235f, -317f, 235f, 12f, new(-20f, -86f), new(-70f, -300f))
@@ -110,9 +140,55 @@ public sealed partial class LanguageFloorLostEverythingWolfCreatureVisuals
     }
 }
 
-public sealed partial class LanguageFloorCobaltScarCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>郁蓝创痕的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。各形态各一副骨架。</summary>
+public sealed partial class LanguageFloorCobaltScarCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "cobalt_scar",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["CobaltStrike"] = "strike",
+            ["CobaltSlash"] = "slash",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec BigWolfSpine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "cobalt_big_wolf",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["BigWolfStrike"] = "strike",
+            ["BigWolfSlash"] = "slash",
+            ["BigWolfGuard"] = "guard",
+            ["BigWolfS1"] = "s1",
+            ["BigWolfS2"] = "s2",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec ShadowSpine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "cobalt_shadow",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["ShadowAssault"] = "attack",
+            ["BigWolfStrike"] = "attack",
+            ["BigWolfSlash"] = "attack",
+            ["BigWolfS1"] = "attack",
+            ["BigWolfS2"] = "howl",
+            ["ShadowHowl"] = "howl",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => variantKey switch
+        {
+            BigWolfVariant => BigWolfSpine,
+            ShadowVariant => ShadowSpine,
+            _ => Spine,
+        };
+
     [MonsterVisual(typeof(LanguageFloorCobaltScar))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 18f), new(0.62f, 0.62f), -235f, -400f, 235f, 12f, new(-20f, -86f), new(-70f, -300f))
@@ -276,9 +352,23 @@ public sealed partial class LanguageFloorCobaltScarCreatureVisuals
     }
 }
 
-public sealed partial class LanguageFloorSmilingFaceCreatureVisuals
-    : SpriteAttackCreatureVisuals
+/// <summary>笑靥的外观：Spine 身体见 <see cref="LayeredBossSpine"/>，加载失败时退回下面的逐帧换图。</summary>
+public sealed partial class LanguageFloorSmilingFaceCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "smiling_face",
+        "thrust",
+        new Dictionary<string, string>
+        {
+            ["AttackThrust"] = "thrust",
+            ["AttackSlash"] = "slash",
+            ["Scream"] = "scream",
+            ["Vomit"] = "vomit",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(LanguageFloorSmilingFace))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 48f), new(0.48f, 0.48f), -245f, -390f, 245f, 12f, new(0f, -110f), new(0f, -320f))

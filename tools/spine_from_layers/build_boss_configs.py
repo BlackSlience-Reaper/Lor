@@ -80,6 +80,61 @@ BOSSES = {
         "anims": {"strike": ("attack", "Hit", "dash"), "pierce": ("attack", "Penetrate", "dash"),
                   "cast": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged")},
     },
+    # 语言层。原版 E.G.O 动作名不带前缀；郁蓝创痕和拟态按形态各一副骨架（layers 指向同一人物的不同预制体）
+    "scarlet_scar": {
+        "prefix": "", "origin": [-99.5, -121.0], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "shot_1": ("attack", "S1", "recoil"),
+                  "shot_2": ("attack", "S2", "recoil"), "shot_3": ("attack", "S3", "recoil"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "cobalt_scar": {
+        "layers": "cobalt_normal", "prefix": "", "origin": [48.5, -16.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "slash": ("attack", "Slash", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "cobalt_big_wolf": {
+        "layers": "cobalt_polymorph", "prefix": "", "origin": [76.0, -16.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "slash": ("attack", "Slash", "dash"),
+                  "guard": ("guard", "Guard", "brace"), "s1": ("attack", "S1", "dash"),
+                  "s2": ("skill", "S2", "step"), "hurt": ("hurt", "Damaged")},
+    },
+    "cobalt_shadow": {
+        "layers": "cobalt_stealth", "prefix": "", "origin": [122.0, -26.0], "weapons": [],
+        "anims": {"attack": ("attack", "Penetrate", "dash"), "howl": ("skill", "Howl_S2", "rise"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "dipsia": {
+        "prefix": "", "origin": [-29.0, -19.0], "weapons": [],
+        "anims": {"fire": ("attack", "Fire", "recoil"), "strike": ("attack", "Hit", "dash"),
+                  "slash": ("attack", "Slash", "step"), "group_break": ("skill", "S1", "step"),
+                  "group_attack": ("attack", "S2", "dash"), "evade": ("guard", "Evade", "hop"),
+                  "hurt": ("hurt", "Damaged")},
+        "holds": {"group_break": 0.55},  # 战斗里按 GroupBreakSegmentSeconds 分段等待
+    },
+    "mimicry_1": {
+        "layers": "mimicry_lv1", "prefix": "", "origin": [9.0, -35.0], "weapons": [],
+        "anims": {"thrust": ("attack", "Penetrate", "dash"), "parry": ("guard", "Default", "brace"),
+                  "hurt": ("hurt", "Damaged")},
+    },
+    "mimicry_2": {
+        # 原版第二形态只有一张整图：受击、招架都用待机姿势，只靠整体位移和泛红
+        "layers": "mimicry_lv2", "prefix": "", "origin": [-21.0, 4.0], "weapons": [],
+        "anims": {"parry": ("guard", "Default", "brace"), "hurt": ("hurt", "Default")},
+    },
+    "mimicry_3": {
+        "layers": "mimicry_lv3", "prefix": "", "origin": [-43.0, -263.0], "weapons": [],
+        "anims": {"strike": ("attack", "Hit", "dash"), "thrust": ("attack", "Penetrate", "dash"),
+                  "slash": ("attack", "Slash", "step"), "parry": ("guard", "Guard", "brace"),
+                  "hello": ("skill", "Fire", "step"), "goodbye": ("skill", "GoodBye_S1", "dash"),
+                  "hurt": ("hurt", "Damaged")},
+        "holds": {"goodbye": 1.4},  # 再见的斩击特效按 1.4 秒排
+    },
+    "smiling_face": {
+        "prefix": "", "origin": [-83.5, -306.0], "weapons": [],
+        "anims": {"thrust": ("attack", "Penetrate", "step"), "slash": ("attack", "Slash", "step"),
+                  "scream": ("skill", "Shout_S1", "rise"), "vomit": ("skill", "Vomit_S2", "step"),
+                  "hurt": ("hurt", "Damaged")},
+    },
     # 艺术层
     "dacapo": {
         "prefix": "Orchestra_", "origin": [-2.5, -136.0],
@@ -237,7 +292,8 @@ def main():
     for name, spec in BOSSES.items():
         if only and name not in only:
             continue
-        info = json.loads((LAYERS / name / "layers.json").read_text())
+        src_dir = spec.get("layers", name)
+        info = json.loads((LAYERS / src_dir / "layers.json").read_text())
         used = set()
         for _, p, *_ in spec["anims"].values():
             used.update(p if isinstance(p, list) else [p])
@@ -246,7 +302,7 @@ def main():
         motions = {}
         for pose in poses:
             src = spec["prefix"] + pose
-            bones, assign, _ = rig_motion(LAYERS / name, src, info[src]["layers"])
+            bones, assign, _ = rig_motion(LAYERS / src_dir, src, info[src]["layers"])
             extra = spec.get("extra", {}).get(pose, [])
             for ex in extra:
                 assign[ex["name"]] = "body"
@@ -257,7 +313,7 @@ def main():
                     for l in w["layers"]:
                         assign[l] = role
             motions[pose] = {"source": src, "bones": bones, "assign": assign, **({"extra": extra} if extra else {})}
-        cfg = {"name": f"boss_{name}", "layers_dir": f"~/.local/share/LibraryOfRuina-layers/{name}", "texture_scale": 0.6,
+        cfg = {"name": f"boss_{name}", "layers_dir": f"~/.local/share/LibraryOfRuina-layers/{src_dir}", "texture_scale": 0.6,
                **({"root_scale": spec["root_scale"]} if "root_scale" in spec else {}),
                "origin": spec["origin"], "skin_tint": [1.0, 1.0, 1.0], "fps": 30, "setup_motion": base,
                "motions": motions, "animations": animations(spec)}
