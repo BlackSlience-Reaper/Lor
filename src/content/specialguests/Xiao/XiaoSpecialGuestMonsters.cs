@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.specialguests.Xiao;
 
-public sealed class XiaoStageOne : XiaoSpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
+public sealed class XiaoStageOne : XiaoSpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
     public bool IsFakeDead { get; private set; }
 
@@ -131,12 +132,11 @@ public sealed class XiaoStageOne : XiaoSpecialGuestMonsterBase, LibraryOfRuina.i
         await TryEnterFakeDeath(creature, delta);
     }
 
-    public override async Task AfterCurrentHpChanged(
+    public async Task AfterCurrentHpChanged(
         Creature creature,
         decimal delta,
         LibraryDamageType type)
     {
-        await base.AfterCurrentHpChanged(creature, delta, type);
         await TryEnterFakeDeath(creature, delta);
     }
 

@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
@@ -62,7 +63,7 @@ public abstract class CryingPassivePower : LibraryOfRuinaPowerModel
     }
 }
 
-public sealed class CryingNuovoFabricPower : CryingPassivePower
+public sealed class CryingNuovoFabricPower : CryingPassivePower, ILibraryAbstractModel
 {
     private static int Reduction => DamageValue(FabricReduction, FabricHighReduction);
 
@@ -82,11 +83,11 @@ public sealed class CryingNuovoFabricPower : CryingPassivePower
     =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -Reduction : 0m;
 
-    public override decimal ModifyChaoDamageAdditive(Creature? target, decimal amount, ValueProp props,
+    public decimal ModifyChaoDamageAdditive(Creature? target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type) =>
         target == Owner && ValuePropCompat.IsPoweredAttack(props) ? -Reduction : 0m;
 
-    public override decimal ModifyEffectiveAmountMultiplicative(LibraryBasePowerModel power,
+    public decimal ModifyEffectiveAmountMultiplicative(LibraryBasePowerModel power,
         decimal amount, Creature? dealer, CardModel? cardSource) =>
         power is LibraryBurnPower && power.Owner == Owner ? 0m : 1m;
 }
@@ -156,7 +157,7 @@ public sealed class CryingBlazingBladePower : CryingPhasePower
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar("Burn", BladeBurn)];
 }
 
-public sealed class CryingHotHeartPower : CryingPassivePower
+public sealed class CryingHotHeartPower : CryingPassivePower, ILibraryAbstractModel
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -171,7 +172,7 @@ public sealed class CryingHotHeartPower : CryingPassivePower
         HoverTipFactory.FromPower<LibraryEndurancePower>()
     ];
 
-    public override decimal ModifyEffectiveAmountMultiplicative(LibraryBasePowerModel power,
+    public decimal ModifyEffectiveAmountMultiplicative(LibraryBasePowerModel power,
         decimal amount, Creature? dealer, CardModel? cardSource) =>
         power is LibraryBurnPower && power.Owner == Owner ? ChildBurnMultiplier : 1m;
 }

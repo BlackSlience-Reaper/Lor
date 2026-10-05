@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -180,7 +181,7 @@ internal interface ICounterIntentQueueMultiplicity
     int CounterQueueCount { get; }
 }
 
-public abstract class CounterIntentMonsterModel : LorMonsterModel, ICounterIntentQueueOwner
+public abstract class CounterIntentMonsterModel : LorMonsterModel, ICounterIntentQueueOwner, ILibraryAbstractModel
 {
     private CounterIntentQueue _counterIntentQueue = CreateCounterIntentQueue();
     private MoveState? _counterIntentMoveState;
@@ -308,7 +309,7 @@ public abstract class CounterIntentMonsterModel : LorMonsterModel, ICounterInten
         await TryTriggerCounterIntent(choiceContext, target, result, props, dealer);
     }
 
-    public override async Task AfterDamageReceived(
+    public virtual Task AfterDamageReceived(
         PlayerChoiceContext choiceContext,
         Creature target,
         DamageResult result,
@@ -317,7 +318,7 @@ public abstract class CounterIntentMonsterModel : LorMonsterModel, ICounterInten
         CardModel? cardSource,
         LibraryDamageType type)
     {
-        await base.AfterDamageReceived(choiceContext, target, result, props, dealer, cardSource, type);
+        return Task.CompletedTask;
     }
 
     private void PrepareCounterIntentForIncomingDamage(

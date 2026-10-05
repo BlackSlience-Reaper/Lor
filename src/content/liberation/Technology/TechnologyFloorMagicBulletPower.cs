@@ -63,7 +63,7 @@ public sealed class TechnologyFloorMagicBulletPower : LibraryOfRuinaPowerModel, 
         await boss.TriggerInternalPhaseTransition();
     }
 
-    public override decimal ModifyChaoDamageCap(
+    public decimal ModifyChaoDamageCap(
         Creature? target,
         ValueProp props,
         Creature? dealer,
@@ -88,7 +88,7 @@ public sealed class TechnologyFloorMagicBulletPower : LibraryOfRuinaPowerModel, 
             : maxFinalLossBeforeTruncation / multiplier;
     }
 
-    public override async Task AfterCurrentChaoValueChanged(
+    public async Task AfterCurrentChaoValueChanged(
         Creature target,
         decimal amount,
         LibraryDamageType type)

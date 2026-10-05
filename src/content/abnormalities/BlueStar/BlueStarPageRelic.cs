@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
@@ -20,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.BlueStar;
 
-public sealed class BlueStarPageRelic : ModalPageRelic<BlueStarPageMode>
+public sealed class BlueStarPageRelic : ModalPageRelic<BlueStarPageMode>, ILibraryAbstractModel
 {
     public const int AtonementPercent = 15;
     public const int VoiceTurnInterval = 3;
@@ -162,7 +163,7 @@ public sealed class BlueStarPageRelic : ModalPageRelic<BlueStarPageMode>
         }
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal num,
         ValueProp props,
@@ -183,7 +184,7 @@ public sealed class BlueStarPageRelic : ModalPageRelic<BlueStarPageMode>
         return 1m + AtonementPercent / 100m;
     }
 
-    public override async Task AfterStun(Creature creature)
+    public async Task AfterStun(Creature creature)
     {
         if (Mode != BlueStarPageMode.Atonement
             || creature.IsDead

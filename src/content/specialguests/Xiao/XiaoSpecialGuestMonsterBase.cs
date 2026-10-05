@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace LibraryOfRuina.content.specialguests.Xiao;
 /// Xiao-reception-local implementation of the reusable special-guest combat
 /// contract.  State is authoritative and saved; UI may only read it.
 /// </summary>
-public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
+public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase, ILibraryAbstractModel
 {
     private const string RouterMoveId = "XIAO_GUEST_ROUTER";
     private const string CompositeMoveId = "XIAO_GUEST_COMPOSITE";
@@ -392,7 +393,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
 
     protected void EnterHiddenIntent() => Plan.Hide();
 
-    public override async Task AfterStun(Creature creature)
+    public virtual Task AfterStun(Creature creature)
     {
         if (creature == Creature && Creature.IsAlive)
         {
@@ -403,7 +404,7 @@ public abstract class XiaoSpecialGuestMonsterBase : SpecialGuestMonsterBase
             PlanNextTurn(RunRng.MonsterAi);
         }
 
-        await base.AfterStun(creature);
+        return Task.CompletedTask;
     }
 
     private AbstractIntent CreateIntent(XiaoGuestMove move)

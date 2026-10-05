@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ internal static class FalseThroneWoodsmanMaxEnergyPatch
 
 public sealed class FalseThrone :
     LorMonsterModel,
-    ISocialFloorMagicalPowderTarget, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
+    ISocialFloorMagicalPowderTarget, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
     public const int NormalHp = 888;
     public const int ToughHp = 999;
@@ -495,7 +496,7 @@ public sealed class FalseThrone :
                 : amount;
     }
 
-    public override decimal ModifyChaoDamageCap(
+    public decimal ModifyChaoDamageCap(
         Creature? target,
         ValueProp props,
         Creature? dealer,
@@ -569,7 +570,7 @@ public sealed class FalseThrone :
         return HandlePositiveHpDamage(creature, delta);
     }
 
-    public override Task AfterCurrentHpChanged(
+    public Task AfterCurrentHpChanged(
         Creature creature,
         decimal delta,
         LibraryDamageType type)
@@ -577,7 +578,7 @@ public sealed class FalseThrone :
         return HandlePositiveHpDamage(creature, delta);
     }
 
-    public override async Task AfterCurrentChaoValueChanged(
+    public async Task AfterCurrentChaoValueChanged(
         Creature target,
         decimal amount,
         LibraryDamageType type)

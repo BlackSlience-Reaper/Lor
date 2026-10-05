@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.BigBadWolf;
 
-public sealed class BigBadWolf : LorMonsterModel
+public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
 {
     private const string Root = "res://images/monsters/big_bad_wolf/";
     public const string IdleTexturePath = Root + "idle.png";
@@ -103,12 +104,12 @@ public sealed class BigBadWolf : LorMonsterModel
     public bool HasPendingCard => _pendingCards.Count > 0;
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 452, 430);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 412, 400);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 455, 438);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 415, 408);
 
-    public override int DefaultChaoResistance => 80;
+    public override int DefaultChaoResistance => 70;
 
     // Doom removes the creature node before the Kill chain runs. Keep the
     // node alive so swallowed-card cleanup and death rewards still execute
@@ -247,7 +248,7 @@ public sealed class BigBadWolf : LorMonsterModel
         }
     }
 
-    public override Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
+    public Task AfterCurrentChaoValueChanged(Creature target, decimal amount, LibraryDamageType type)
     {
         if (target != Creature
             || amount >= 0m

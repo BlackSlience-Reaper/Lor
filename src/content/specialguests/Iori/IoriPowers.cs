@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
@@ -90,7 +91,7 @@ public sealed class IoriDimensionalWalkPassivePower : IoriPowerBase
     ];
 }
 
-public sealed class IoriStanceShiftPassivePower : IoriPowerBase
+public sealed class IoriStanceShiftPassivePower : IoriPowerBase, ILibraryAbstractModel
 {
     protected override string PowerId =>
         "IORI_STANCE_SHIFT_PASSIVE_POWER";
@@ -196,7 +197,7 @@ public sealed class IoriStanceShiftPassivePower : IoriPowerBase
     /// both vanilla and Ruina hooks. Cancel the displayed generic type Power's
     /// inferred contribution so the point is counted once.
     /// </summary>
-    public override decimal ModifyDamageAdditive(
+    public decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,

@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
@@ -68,7 +69,7 @@ public sealed class BlueStarNovaVoicePower : LibraryOfRuinaPowerModel
     ];
 }
 
-public sealed class BlueStarReturnToStarsPower : LibraryOfRuinaPowerModel
+public sealed class BlueStarReturnToStarsPower : LibraryOfRuinaPowerModel, ILibraryAbstractModel
 {
     private List<Creature> _pendingFollowers = [];
 
@@ -90,7 +91,7 @@ public sealed class BlueStarReturnToStarsPower : LibraryOfRuinaPowerModel
         new DynamicVar("HpLossPercent", BlueStarAltar.ReturnHpLossPercent)
     ];
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         QueueFollower(creature);
         return Task.CompletedTask;

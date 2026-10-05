@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace LibraryOfRuina.content.specialguests;
 /// </summary>
 public abstract class SpecialGuestMonsterBase :
     LorMonsterModel,
-    ILibraryEmotionBarSource
+    ILibraryEmotionBarSource, ILibraryAbstractModel
 {
     protected const int StoredIntentSlots = 5;
     private static readonly int[] DefaultEmotionThresholds = [3, 3, 5, 7, 9];
@@ -120,7 +121,7 @@ public abstract class SpecialGuestMonsterBase :
             combatState);
     }
 
-    public override Task AfterDamageReceived(
+    public virtual Task AfterDamageReceived(
         PlayerChoiceContext choiceContext,
         Creature target,
         DamageResult result,

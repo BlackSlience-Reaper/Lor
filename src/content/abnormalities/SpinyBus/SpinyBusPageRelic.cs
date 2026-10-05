@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Threading.Tasks;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.relics;
@@ -17,7 +18,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.SpinyBus;
 
-public sealed class SpinyBusPageRelic : ModalPageRelic<SpinyBusPageMode>
+public sealed class SpinyBusPageRelic : ModalPageRelic<SpinyBusPageMode>, ILibraryAbstractModel
 {
     internal const int ThornsDamageBonus = 5;
     internal const int PleasureFlawStacks = 1;
@@ -92,7 +93,7 @@ public sealed class SpinyBusPageRelic : ModalPageRelic<SpinyBusPageMode>
             silent: true);
     }
 
-    public override decimal ModifyDamageAdditive(
+    public decimal ModifyDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,
@@ -114,7 +115,7 @@ public sealed class SpinyBusPageRelic : ModalPageRelic<SpinyBusPageMode>
         return ThornsDamageBonus;
     }
 
-    public override decimal ModifyChaoDamageAdditive(
+    public decimal ModifyChaoDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,

@@ -31,6 +31,8 @@ internal static partial class GameApi
     internal static bool HasHibernate(Creature creature) => false;
     internal static Rng CreateRng(ulong seed, string label) => new Rng(unchecked((uint)seed), label);
     internal static decimal ModifyDamage(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, out IEnumerable<AbstractModel> modifiers) => Hook.ModifyDamage(runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, out modifiers);
+    // 伤害预览按 Hook.ModifyDamage 的实际参数表解释执行；旧版没有 cardPlay 参数。
+    internal static object?[] ModifyDamageHookArguments(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, object modifiers) => [runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, modifiers];
     internal static StringName Confirm => MegaInput.accept;
     internal static void ActivateEvoke(DarkOrb orb, Creature target) { } // 旧版激发没有此通知。
     internal static void ResetEventCombat(EventSynchronizer synchronizer) { } // 旧版没有事件战斗同步器。

@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
@@ -26,7 +27,7 @@ public enum NosferatuPageMode
     Wine = 3
 }
 
-public sealed class NosferatuPageRelic : ModalPageRelic<NosferatuPageMode>
+public sealed class NosferatuPageRelic : ModalPageRelic<NosferatuPageMode>, ILibraryAbstractModel
 {
     internal const int HydrophobiaBleed = 3;
     internal const int VampirismDamageBonus = 5;
@@ -102,7 +103,7 @@ public sealed class NosferatuPageRelic : ModalPageRelic<NosferatuPageMode>
             : 0m;
     }
 
-    public override decimal ModifyChaoDamageAdditive(
+    public decimal ModifyChaoDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,

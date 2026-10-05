@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -298,7 +299,7 @@ public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
     }
 }
 
-public sealed class ReverberationPhilip : CryingChildMonsterBase, IFinalHpLossClamp
+public sealed class ReverberationPhilip : CryingChildMonsterBase, IFinalHpLossClamp, ILibraryAbstractModel
 {
     public int Phase { get; private set; } = 1;
 
@@ -341,7 +342,7 @@ public sealed class ReverberationPhilip : CryingChildMonsterBase, IFinalHpLossCl
         RefreshResistances();
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature == Creature && Phase < 3)
         {

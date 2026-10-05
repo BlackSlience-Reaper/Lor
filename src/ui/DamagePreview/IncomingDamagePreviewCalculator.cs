@@ -1,34 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Godot;
-using LibraryLib.Combat.HealthBars;
 using LibraryLib.Entities.Creatures;
 using LibraryLib.Hooks;
-using LibraryOfRuina.content.liberation.Literature;
+using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Players;
-using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Orbs;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.ui.DamagePreview;
 
-/// <summary>一名受击者在下一次敌方回合结束前的受伤预览。</summary>
+/// <summary>一名受击者在下次玩家行动前的受伤预览。</summary>
 internal sealed record IncomingDamagePreviewResult(
     int Blocked,
     int HpLoss,
@@ -39,8 +33,8 @@ internal sealed record IncomingDamagePreviewResult(
 /// <summary>
 /// 按实际结算顺序模拟本地玩家回合结束与随后的敌方回合：回合结束格挡、自伤与持续伤害，
 /// 再按敌人行动顺序逐次命中。伤害、格挡与失去生命值全部经由原版或基础库 Hook，
-/// 因此所有能力、遗物、附魔与敌方修正都按其当前状态参与计算；
-/// 受击者状态只在模拟对象内推进，不修改实际战斗数据。
+/// 监听者的扣血逻辑由隔离的 Hook 解释器读取，未知调用标记为部分预测。
+/// 格挡、生命、层数与钩子字段只在模拟对象内推进。
 /// </summary>
 internal static class IncomingDamagePreviewCalculator
 {
@@ -75,179 +69,50 @@ internal static class IncomingDamagePreviewCalculator
         var simulation = new IncomingDamageSimulation(combat, targets);
         using (IncomingDamageSimulation.Enter(simulation))
         {
-            if (localPlayer != null && simulation.TryGetState(localPlayer, out IncomingDamageTargetState? playerState))
+            Creature[] playerParticipants = combat.Players.Select(static player => player.Creature).ToArray();
+            if (localPlayer != null)
             {
-                SimulatePlayerTurnEnd(simulation, playerState!);
+                simulation.SimulateTurnEnd(CombatSide.Player, playerParticipants, before: true);
+                foreach (Creature player in playerParticipants)
+                {
+                    simulation.SimulateHand(player);
+                }
+
+                simulation.SimulateTurnEnd(CombatSide.Player, playerParticipants, before: false);
             }
 
             simulation.BeginEnemyTurn();
+            Creature[] enemyParticipants = combat.Enemies.ToArray();
+            simulation.SimulateTurnStart(CombatSide.Enemy, enemyParticipants);
             SimulateEnemyAttacks(simulation);
+            simulation.SimulateTurnEnd(CombatSide.Enemy, enemyParticipants, before: true);
+            simulation.SimulateTurnEnd(CombatSide.Enemy, enemyParticipants, before: false);
+            simulation.SimulateTurnStart(CombatSide.Player, combat.GetCreaturesOnSide(CombatSide.Player));
         }
 
         var results = new Dictionary<Creature, IncomingDamagePreviewResult>();
         foreach (IncomingDamageTargetState state in simulation.States)
         {
-            if (state.HasIncomingDamage)
+            if (targets.Contains(state.Creature) && (state.HasIncomingDamage || simulation.IsPartial))
             {
-                results[state.Creature] = BuildResult(state);
+                results[state.Creature] = BuildResult(state, simulation.IsPartial);
             }
         }
 
         return results;
     }
 
-    private static IncomingDamagePreviewResult BuildResult(IncomingDamageTargetState state)
+    private static IncomingDamagePreviewResult BuildResult(IncomingDamageTargetState state, bool isPartial)
     {
-        bool isLethal = state.Hp <= 0;
+        bool isLethal = !isPartial && state.Hp <= 0;
         string blocked = DamagePreviewTrace.Tint(state.Blocked.ToString(), StsColors.blue);
         string hpLoss = HpLossText(state.HpLoss);
         string lethal = isLethal ? LethalIcon : "";
-        string summary = $"{BlockIcon}{blocked}\n{HeartIcon}{hpLoss}{lethal}";
-        string total = $"= {BlockIcon}{blocked} {HeartIcon}{hpLoss}{lethal}";
+        string partial = isPartial ? " ?" : "";
+        string summary = $"{BlockIcon}{blocked}\n{HeartIcon}{hpLoss}{lethal}{partial}";
+        string total = $"= {BlockIcon}{blocked} {HeartIcon}{hpLoss}{lethal}{partial}";
         string details = string.Join("\n", state.Details.Append(total));
         return new IncomingDamagePreviewResult(state.Blocked, state.HpLoss, isLethal, summary, details);
-    }
-
-    /// <summary>
-    /// 玩家回合结束：先按原版 BeforeSideTurnEnd 顺序获得格挡（奥利哈钢在其余格挡之前检查是否没有格挡），
-    /// 再结算充能球被动与手牌回合结束效果，最后是 AfterSideTurnEnd 的持续伤害。
-    /// 这些条目排在敌人攻击标题之前，只用来源图标区分，不附加文字。
-    /// </summary>
-    private static void SimulatePlayerTurnEnd(IncomingDamageSimulation simulation, IncomingDamageTargetState state)
-    {
-        Creature creature = state.Creature;
-        Player? player = creature.Player;
-        if (player?.PlayerCombatState == null)
-        {
-            return;
-        }
-
-        bool hadNoBlockBeforeTurnEnd = state.Block <= 0;
-        foreach (PlatingPower plating in creature.Powers.OfType<PlatingPower>())
-        {
-            simulation.GainBlock(state, plating.Amount, ValueProp.Unpowered, DamagePreviewTrace.Name(plating));
-        }
-
-        foreach (RelicModel relic in player.Relics)
-        {
-            switch (relic)
-            {
-                case CloakClasp clasp:
-                    int handCount = player.PlayerCombatState!.Hand.Cards.Count;
-                    if (handCount > 0)
-                    {
-                        simulation.GainBlock(
-                            state,
-                            (int)(handCount * clasp.DynamicVars.Block.BaseValue),
-                            ValueProp.Unpowered,
-                            DamagePreviewTrace.Name(clasp));
-                    }
-                    break;
-                case Orichalcum or FakeOrichalcum when hadNoBlockBeforeTurnEnd:
-                    simulation.GainBlock(state, relic.DynamicVars.Block, DamagePreviewTrace.Name(relic));
-                    break;
-                // 本回合打出攻击牌后涟漪水盆转为普通状态，与其回合结束判定一致。
-                case RippleBasin { Status: RelicStatus.Active } basin:
-                    simulation.GainBlock(state, basin.DynamicVars.Block, DamagePreviewTrace.Name(basin));
-                    break;
-            }
-        }
-
-        foreach (Player owner in simulation.Combat.Players)
-        {
-            // 冬眠使该玩家的冰霜球被动同时为其他玩家提供格挡。
-            if (owner != player && !GameApi.HasHibernate(owner.Creature))
-            {
-                continue;
-            }
-
-            foreach (FrostOrb frost in owner.PlayerCombatState?.OrbQueue.Orbs.OfType<FrostOrb>() ?? [])
-            {
-                string icon = DamagePreviewTrace.Name(frost);
-                int triggers = Hook.ModifyOrbPassiveTriggerCount(simulation.Combat, frost, 1, out _);
-                for (int trigger = 0; trigger < triggers; trigger++)
-                {
-                    simulation.GainBlock(state, frost.PassiveVal, ValueProp.Unpowered, icon);
-                }
-            }
-        }
-
-        foreach (CardModel card in player.PlayerCombatState!.Hand.Cards.ToArray())
-        {
-            if (!card.HasTurnEndInHandEffect || !TryGetTurnEndSelfDamage(card, out decimal amount, out ValueProp props))
-            {
-                continue;
-            }
-
-            simulation.ResolveHit(
-                state, amount, props, creature, card, LibraryDamageType.None, "", applyDamageHooks: true);
-        }
-
-        foreach (PowerModel power in creature.Powers.ToArray())
-        {
-            if (state.IsDown)
-            {
-                return;
-            }
-
-            switch (power)
-            {
-                case ICorrosionFollowUpPower corrosion when corrosion.Amount > 0:
-                    using (corrosion.EnterDamageSourceScope())
-                    {
-                        simulation.ResolveHit(
-                            state,
-                            corrosion.Amount,
-                            CorrosionFollowUpRules.DamageProps,
-                            corrosion.GetTurnEndDamageDealer(),
-                            null,
-                            LibraryDamageType.None,
-                            DamagePreviewTrace.Name(power),
-                            applyDamageHooks: true);
-                    }
-
-                    state.CorrosionStacks[corrosion] = CorrosionFollowUpRules.StacksAfterTurnEnd(corrosion.Amount);
-                    break;
-                // 烧伤在所属方回合结束时按有效层数造成伤害；数值与生命条预测共用同一来源。
-                case LibraryBurnPower burn:
-                    foreach (LibraryHealthBarDamageForecast forecast in burn.GetLibraryHealthBarDamageForecasts(
-                                 new LibraryHealthBarForecastContext(creature)))
-                    {
-                        simulation.ResolveHit(
-                            state,
-                            forecast.Damage,
-                            forecast.Props,
-                            forecast.Dealer,
-                            forecast.CardSource,
-                            LibraryDamageType.None,
-                            DamagePreviewTrace.Name(power),
-                            applyDamageHooks: true);
-                    }
-                    break;
-            }
-        }
-    }
-
-    /// <summary>手牌回合结束自伤沿用原版约定：伤害变量为 Damage，失去生命值变量为不可格挡的 HpLoss。</summary>
-    private static bool TryGetTurnEndSelfDamage(CardModel card, out decimal amount, out ValueProp props)
-    {
-        if (card.DynamicVars.TryGetValue("Damage", out DynamicVar? damage) && damage is DamageVar damageVar)
-        {
-            amount = damageVar.BaseValue;
-            props = damageVar.Props;
-            return amount > 0m;
-        }
-
-        if (card.DynamicVars.TryGetValue("HpLoss", out DynamicVar? hpLoss) && hpLoss is HpLossVar)
-        {
-            amount = hpLoss.BaseValue;
-            props = ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move;
-            return amount > 0m;
-        }
-
-        amount = 0m;
-        props = ValueProp.Unpowered;
-        return false;
     }
 
     /// <summary>按敌人行动顺序结算每个攻击意图的每次命中；反击意图在玩家回合内触发，不计入敌方回合。</summary>
@@ -275,7 +140,9 @@ internal static class IncomingDamagePreviewCalculator
                     continue;
                 }
 
-                SimulateAttack(simulation, enemy, attack, ordinaryTargets, targets);
+                simulation.HookReader.TryExecute(enemy.Monster,
+                    AccessTools.Method(typeof(IncomingDamagePreviewCalculator), nameof(SimulateAttack)),
+                    () => SimulateAttack(simulation, enemy, attack, ordinaryTargets, targets));
             }
         }
     }
@@ -305,10 +172,15 @@ internal static class IncomingDamagePreviewCalculator
         var headerAdded = new HashSet<IncomingDamageTargetState>();
         for (int hit = 0; hit < hits; hit++)
         {
+            if (simulation.TryGetState(enemy, out IncomingDamageTargetState? enemyState) && enemyState!.IsDown)
+            {
+                return;
+            }
+
             foreach (Creature target in targets)
             {
-                Creature receiver = LibraryHooks.ModifyDamageTarget(
-                    simulation.Combat, target, amount, ValueProp.Move, enemy, type);
+                Creature receiver = (Creature)simulation.EvaluateHook(typeof(LibraryHooks),
+                    nameof(LibraryHooks.ModifyDamageTarget), simulation.Combat, target, amount, ValueProp.Move, enemy, type)!;
                 if (!simulation.TryGetState(receiver, out IncomingDamageTargetState? state) || state!.IsDown)
                 {
                     continue;
@@ -321,13 +193,14 @@ internal static class IncomingDamagePreviewCalculator
 
                 IncomingHitOutcome outcome = simulation.ResolveHit(
                     state, amount, ValueProp.Move, enemy, null, type, "", applyDamageHooks);
-                simulation.ResolveCorrosionFollowUps(state, outcome, ValueProp.Move, enemy);
+                simulation.DispatchDamageCallbacks(state, outcome, ValueProp.Move, enemy, null);
             }
         }
     }
 }
 
-internal readonly record struct IncomingHitOutcome(int Blocked, int HpLoss, int TotalDamage);
+internal readonly record struct IncomingHitOutcome(int Blocked, int HpLoss, int TotalDamage,
+    IReadOnlyList<MegaCrit.Sts2.Core.Entities.Creatures.DamageResult>? RedirectedResults = null);
 
 /// <summary>模拟期间单个受击者的格挡、生命、混乱与次数进度。</summary>
 internal sealed class IncomingDamageTargetState
@@ -368,31 +241,48 @@ internal sealed class IncomingDamageTargetState
 
     internal bool IsDown => Hp <= 0;
 
-    internal Dictionary<ICorrosionFollowUpPower, int> CorrosionStacks { get; } = [];
-
     internal List<string> Details { get; } = [];
+
+    internal IncomingDamageTargetState Snapshot()
+    {
+        var snapshot = new IncomingDamageTargetState(Creature);
+        snapshot.Restore(this);
+        return snapshot;
+    }
+
+    internal void Restore(IncomingDamageTargetState snapshot)
+    {
+        Block = snapshot.Block;
+        Hp = snapshot.Hp;
+        ChaoValue = snapshot.ChaoValue;
+        IsChaoed = snapshot.IsChaoed;
+        Blocked = snapshot.Blocked;
+        HpLoss = snapshot.HpLoss;
+        HpLostThisSide = snapshot.HpLostThisSide;
+        HpLostSinceOwnerTurnStart = snapshot.HpLostSinceOwnerTurnStart;
+        HasIncomingDamage = snapshot.HasIncomingDamage;
+        Details.Clear();
+        Details.AddRange(snapshot.Details);
+    }
 }
 
 /// <summary>
 /// 一次预览的模拟上下文。<see cref="Current"/> 只在同步计算期间存在，
-/// 供有次数或每回合上限的受伤修正读取模拟进度（见 <see cref="IncomingDamagePreviewModelPatches"/>）。
+/// 实际监听者的字段与次数进度由 <see cref="IncomingDamagePreviewHookReader"/> 独立保存。
 /// </summary>
-internal sealed class IncomingDamageSimulation
+internal sealed partial class IncomingDamageSimulation
 {
     [ThreadStatic]
     private static IncomingDamageSimulation? _current;
 
     private readonly Dictionary<Creature, IncomingDamageTargetState> _states = [];
-    private readonly Dictionary<AbstractModel, int> _triggerCounts = [];
     private readonly Dictionary<Creature, int> _redirectHp = [];
-    private readonly HashSet<BlackSwanDreamPageRelic> _dearFamilySlipperyCandidates = [];
-    private readonly HashSet<BlackSwanDreamPageRelic> _dearFamilySlipperyConsumptions = [];
 
     internal IncomingDamageSimulation(CombatState combat, IReadOnlyList<Creature> targets)
     {
         Combat = combat;
         Run = combat.RunState;
-        foreach (Creature target in targets)
+        foreach (Creature target in combat.Creatures.Concat(targets).Distinct())
         {
             _states[target] = new IncomingDamageTargetState(target);
         }
@@ -430,8 +320,6 @@ internal sealed class IncomingDamageSimulation
         }
     }
 
-    internal int GetTriggerCount(AbstractModel model) => _triggerCounts.GetValueOrDefault(model);
-
     internal void GainBlock(IncomingDamageTargetState state, BlockVar block, string source)
     {
         GainBlock(state, block.BaseValue, block.Props, source);
@@ -440,7 +328,8 @@ internal sealed class IncomingDamageSimulation
     /// <summary>与 CreatureCmd.GainBlock 相同：经格挡 Hook 修正后按整数累加。</summary>
     internal void GainBlock(IncomingDamageTargetState state, decimal amount, ValueProp props, string source)
     {
-        decimal modified = Math.Max(0m, Hook.ModifyBlock(Combat, state.Creature, amount, props, null, null, out _));
+        decimal modified = Math.Max(0m, EvaluateDecimalHook(typeof(Hook), nameof(Hook.ModifyBlock),
+            Combat, state.Creature, amount, props, null, null, OutputReference(_ => { })));
         int before = state.Block;
         state.Block = (int)Math.Min(state.Block + modified, 999999999m);
         int gained = state.Block - before;
@@ -462,38 +351,57 @@ internal sealed class IncomingDamageSimulation
         CardModel? cardSource,
         LibraryDamageType type,
         string source,
-        bool applyDamageHooks)
+        bool applyDamageHooks,
+        bool forceLibraryPipeline = false,
+        bool resolveChaos = true)
     {
         state.HasIncomingDamage = true;
         Creature target = state.Creature;
         // 强化攻击命中非玩家的 Library 生物时由基础库结算抗性与混乱；其余伤害走原版管线。
-        bool libraryPipeline = target is LibraryCreature { IsPlayer: false }
-            && ValuePropCompat.IsPoweredAttack(props);
+        bool libraryPipeline = target is LibraryCreature
+            && (forceLibraryPipeline || !target.IsPlayer && ValuePropCompat.IsPoweredAttack(props));
         LibraryDamageType pipelineType = libraryPipeline ? type : LibraryDamageType.None;
-        int blockBeforeHit = state.Block;
+        IncomingDamageTargetState blockState = target.PetOwner != null
+            && TryGetState(target.PetOwner.Creature, out IncomingDamageTargetState? parentState)
+            ? parentState! : state;
+        int blockBeforeHit = blockState.Block;
         decimal blocked;
         int hpLoss;
+        IReadOnlyList<MegaCrit.Sts2.Core.Entities.Creatures.DamageResult> redirectedResults;
         using (var trace = new DamagePreviewTrace(amount, source))
         {
             decimal damage = amount;
             if (applyDamageHooks)
             {
+                IEnumerable<AbstractModel> damageModifiers = [];
+                var modifierOutput = OutputReference(value => damageModifiers =
+                    ((System.Collections.IEnumerable?)value)?.Cast<AbstractModel>() ?? []);
                 damage = libraryPipeline
-                    ? LibraryHooks.ModifyDamage(Run, Combat, target, dealer, amount, props, cardSource, null,
-                        ModifyDamageHookType.All, CardPreviewMode.None, out _, pipelineType)
-                    : GameApi.ModifyDamage(Run, Combat, target, dealer, amount, props, cardSource, null,
-                        ModifyDamageHookType.All, CardPreviewMode.None, out _);
+                    ? EvaluateDecimalHook(typeof(LibraryHooks), nameof(LibraryHooks.ModifyDamage), Run, Combat,
+                        target, dealer, amount, props, cardSource, null, ModifyDamageHookType.All, CardPreviewMode.None,
+                        modifierOutput, pipelineType)
+                    : EvaluateDecimalHook(typeof(Hook), nameof(Hook.ModifyDamage), GameApi.ModifyDamageHookArguments(
+                        Run, Combat, target, dealer, amount, props, cardSource, null, ModifyDamageHookType.All,
+                        CardPreviewMode.None, modifierOutput));
                 trace.Set(damage, "");
+                foreach (AbstractModel modifier in damageModifiers)
+                {
+                    HookReader.TryInvoke(modifier,
+                        AccessTools.Method(modifier.GetType(), nameof(AbstractModel.AfterModifyingDamageAmount)),
+                        [cardSource]);
+                }
             }
 
             damage = Math.Max(0m, damage);
-            blocked = props.HasFlag(ValueProp.Unblockable) ? 0m : Math.Min(state.Block, damage);
+            SimulateHooks(nameof(AbstractModel.BeforeDamageReceived), null, target, damage, props, dealer, cardSource);
+            blocked = props.HasFlag(ValueProp.Unblockable) ? 0m : Math.Min(blockState.Block, damage);
             if (blocked > 0m)
             {
                 trace.Add(-blocked, IncomingDamagePreviewCalculator.BlockIcon);
             }
 
-            state.Block = Math.Max(0, state.Block - (int)blocked);
+            blockState.Block = Math.Max(0, blockState.Block - (int)blocked);
+            state.Block = blockState.Block;
             decimal unblocked = Math.Max(damage - blocked, 0m);
             if (libraryPipeline && ResistancePreview.ShouldApplyResistance(props, pipelineType))
             {
@@ -507,7 +415,8 @@ internal sealed class IncomingDamageSimulation
                 unblocked *= resistance.GetMultiplier();
             }
 
-            hpLoss = ResolveHpLoss(state, unblocked, props, dealer, cardSource, pipelineType, libraryPipeline, trace);
+            hpLoss = ResolveHpLoss(state, unblocked, props, dealer, cardSource, pipelineType, libraryPipeline, trace,
+                out redirectedResults);
             trace.Set(hpLoss, "");
             state.Details.Add(trace.RenderResult(IncomingDamagePreviewCalculator.HpLossText(hpLoss)));
         }
@@ -517,12 +426,12 @@ internal sealed class IncomingDamageSimulation
         state.Hp -= hpLoss;
         state.HpLostThisSide += hpLoss;
         state.HpLostSinceOwnerTurnStart += hpLoss;
-        if (libraryPipeline)
+        if (libraryPipeline && resolveChaos)
         {
             ResolveChaos(state, amount, blockBeforeHit, props, dealer, pipelineType);
         }
 
-        return new IncomingHitOutcome((int)blocked, hpLoss, (int)blocked + hpLoss);
+        return new IncomingHitOutcome((int)blocked, hpLoss, (int)blocked + hpLoss, redirectedResults);
     }
 
     private int ResolveHpLoss(
@@ -533,13 +442,16 @@ internal sealed class IncomingDamageSimulation
         CardModel? cardSource,
         LibraryDamageType type,
         bool libraryPipeline,
-        DamagePreviewTrace trace)
+        DamagePreviewTrace trace,
+        out IReadOnlyList<MegaCrit.Sts2.Core.Entities.Creatures.DamageResult> redirectedResults)
     {
+        redirectedResults = [];
         Creature target = state.Creature;
         decimal hp = ModifyHpLost(target, unblocked, props, dealer, cardSource, type, libraryPipeline, afterRedirect: false);
-        Creature hpTarget = libraryPipeline
-            ? LibraryHooks.ModifyUnblockedDamageTarget(Combat, target, hp, props, dealer, type)
-            : Hook.ModifyUnblockedDamageTarget(Combat, target, hp, props, dealer);
+        Creature hpTarget = (Creature)(libraryPipeline
+            ? EvaluateHook(typeof(LibraryHooks), nameof(LibraryHooks.ModifyUnblockedDamageTarget),
+                Combat, target, hp, props, dealer, type)
+            : EvaluateHook(typeof(Hook), nameof(Hook.ModifyUnblockedDamageTarget), Combat, target, hp, props, dealer))!;
         // 模拟中已被击倒的伤害承担者（如奥斯提）不再分担后续伤害。
         if (hpTarget != target && GetRedirectHp(hpTarget) <= 0)
         {
@@ -550,7 +462,6 @@ internal sealed class IncomingDamageSimulation
         if (hpTarget == target)
         {
             int hpLoss = Math.Min(ToDamage(hp), Math.Max(0, state.Hp));
-            ConsumeSlipperyAfterHit(target, hpLoss);
             return hpLoss;
         }
 
@@ -559,69 +470,30 @@ internal sealed class IncomingDamageSimulation
         _redirectHp[hpTarget] = Math.Max(0, redirectHp - redirected);
         int overkill = Math.Max(0, redirected - redirectHp);
         trace.Set(overkill, "");
-        // 原版 CreatureCmd.Damage 先为承担者、再为原目标各生成一个 DamageResult（宠物吸收全部时原目标那份失血为 0），
-        // 之后按结果逐个回调 AfterDamageReceived，回调的 target 是该结果的 Receiver。滑溜只在 target 是持有者且
-        // 该结果失血 ≥ 1 时扣层，所以承担者与原目标各按自己那份失血消耗自己的滑溜；溢出部分已先经原目标的
-        // AfterOsty 修正（滑溜在扣层前生效），扣层在本次命中的修正之后发生。
+        // 承担者先结算自己的失血，原目标再处理溢出；各自的受伤回调复用对应 DamageResult。
         int redirectLoss = Math.Min(redirected, redirectHp);
+        if (TryGetState(hpTarget, out IncomingDamageTargetState? redirectState))
+        {
+            redirectState!.Hp = Math.Max(0, redirectHp - redirectLoss);
+            redirectState.HpLoss += redirectLoss;
+            redirectState.HpLostThisSide += redirectLoss;
+            redirectState.HpLostSinceOwnerTurnStart += redirectLoss;
+        }
+
+        redirectedResults = [new MegaCrit.Sts2.Core.Entities.Creatures.DamageResult(hpTarget, props)
+        {
+            UnblockedDamage = redirectLoss,
+            OverkillDamage = overkill,
+            WasTargetKilled = redirectLoss >= redirectHp
+        }];
         if (overkill <= 0)
         {
-            ConsumeSlipperyAfterHit(hpTarget, redirectLoss);
-            ConsumeSlipperyAfterHit(target, 0);
             return 0;
         }
 
         decimal toTarget = ModifyHpLost(target, overkill, props, dealer, cardSource, type, libraryPipeline, afterRedirect: true);
         int targetLoss = Math.Min(ToDamage(toTarget), Math.Max(0, state.Hp));
-        ConsumeSlipperyAfterHit(hpTarget, redirectLoss);
-        ConsumeSlipperyAfterHit(target, targetLoss);
         return targetLoss;
-    }
-
-    /// <summary>按遗物实际收到的 Hook 输入记录候选条件，标记仅保存在当前模拟中。</summary>
-    internal void RecordDearFamilySlipperyCandidate(
-        BlackSwanDreamPageRelic relic, Creature target, decimal amount, bool afterRedirect)
-    {
-        if (afterRedirect)
-        {
-            if (_dearFamilySlipperyCandidates.Remove(relic) && target == relic.Owner.Creature)
-            {
-                _dearFamilySlipperyConsumptions.Add(relic);
-            }
-
-            return;
-        }
-
-        if (target == relic.Owner.Creature)
-        {
-            _dearFamilySlipperyConsumptions.Remove(relic);
-        }
-
-        _dearFamilySlipperyCandidates.Remove(relic);
-        if (relic.Mode == BlackSwanDreamPageMode.DearFamily
-            && target == relic.Owner.Creature
-            && amount >= 1m
-            && target.GetPower<SlipperyPower>() is { } slippery
-            && GetTriggerCount(slippery) < slippery.Amount)
-        {
-            _dearFamilySlipperyCandidates.Add(relic);
-        }
-    }
-
-    /// <summary>滑溜由受伤事件消耗，即使把 1 点伤害保持为 1 也会扣层，不能按修正器是否改变数值计数。</summary>
-    private void ConsumeSlipperyAfterHit(Creature target, int unblockedDamage)
-    {
-        bool dearFamilyConsumes = _dearFamilySlipperyConsumptions.RemoveWhere(relic => relic.Owner.Creature == target) > 0;
-        if (target.GetPower<SlipperyPower>() is not { } slippery
-            || GetTriggerCount(slippery) >= slippery.Amount)
-        {
-            return;
-        }
-
-        if (unblockedDamage >= 1 || dearFamilyConsumes)
-        {
-            _triggerCounts[slippery] = GetTriggerCount(slippery) + 1;
-        }
     }
 
     private decimal ModifyHpLost(
@@ -635,28 +507,28 @@ internal sealed class IncomingDamageSimulation
         bool afterRedirect)
     {
         decimal result;
-        IEnumerable<AbstractModel> modifiers;
+        IEnumerable<AbstractModel> modifiers = [];
+        var output = OutputReference(value => modifiers = ((System.Collections.IEnumerable?)value)?.Cast<AbstractModel>() ?? []);
         if (libraryPipeline)
         {
             result = afterRedirect
-                ? LibraryHooks.ModifyHpLostAfterOsty(Run, Combat, target, amount, props, dealer, cardSource, out modifiers, type)
-                : LibraryHooks.ModifyHpLostBeforeOsty(Run, Combat, target, amount, props, dealer, cardSource, out modifiers, type);
+                ? EvaluateDecimalHook(typeof(LibraryHooks), nameof(LibraryHooks.ModifyHpLostAfterOsty),
+                    Run, Combat, target, amount, props, dealer, cardSource, output, type)
+                : EvaluateDecimalHook(typeof(LibraryHooks), nameof(LibraryHooks.ModifyHpLostBeforeOsty),
+                    Run, Combat, target, amount, props, dealer, cardSource, output, type);
         }
         else
         {
-            result = Hook.ModifyHpLost(Run, Combat, target, amount, props, dealer, cardSource,
-                afterRedirect ? HpLossHookPhase.AfterOsty : HpLossHookPhase.BeforeOsty, out modifiers);
+            result = EvaluateDecimalHook(typeof(Hook), nameof(Hook.ModifyHpLost), Run, Combat, target, amount,
+                props, dealer, cardSource, afterRedirect ? HpLossHookPhase.AfterOsty : HpLossHookPhase.BeforeOsty, output);
         }
 
-        // 数值修正后置回调只通知改变了数值的模型；滑溜另由受伤事件消耗，避免重复扣层。
+        // 数值修正后置回调只通知改变了数值的监听者，次数消耗由真实回调的 IL 推进。
         foreach (AbstractModel modifier in modifiers)
         {
-            if (modifier is SlipperyPower)
-            {
-                continue;
-            }
-
-            _triggerCounts[modifier] = GetTriggerCount(modifier) + 1;
+            string method = afterRedirect ? nameof(AbstractModel.AfterModifyingHpLostAfterOsty)
+                : nameof(AbstractModel.AfterModifyingHpLostBeforeOsty);
+            HookReader.TryInvoke(modifier, AccessTools.Method(modifier.GetType(), method));
         }
 
         return result;
@@ -679,8 +551,9 @@ internal sealed class IncomingDamageSimulation
             return;
         }
 
-        decimal chaos = LibraryHooks.ModifyChaoDamage(Run, Combat, target, dealer, Math.Max(0m, amount - blockBeforeHit),
-            props, null, null, ModifyChaoDamageHookType.All, CardPreviewMode.None, out _, type);
+        decimal chaos = EvaluateDecimalHook(typeof(LibraryHooks), nameof(LibraryHooks.ModifyChaoDamage), Run, Combat,
+            target, dealer, Math.Max(0m, amount - blockBeforeHit), props, null, null,
+            ModifyChaoDamageHookType.All, CardPreviewMode.None, OutputReference(_ => { }), type);
         if (ResistancePreview.ShouldApplyResistance(props, type))
         {
             chaos *= target.GetChaosResistanceLevel(type).GetMultiplier();
@@ -695,40 +568,9 @@ internal sealed class IncomingDamageSimulation
         }
     }
 
-    /// <summary>腐蚀类能力在强化攻击命中后追加伤害；追加伤害为无强化伤害，不会再次触发。</summary>
-    internal void ResolveCorrosionFollowUps(
-        IncomingDamageTargetState state,
-        IncomingHitOutcome outcome,
-        ValueProp props,
-        Creature? attacker)
-    {
-        foreach (ICorrosionFollowUpPower corrosion in state.Creature.Powers.OfType<ICorrosionFollowUpPower>().ToArray())
-        {
-            int stacks = state.CorrosionStacks.TryGetValue(corrosion, out int remaining)
-                ? remaining
-                : corrosion.Amount;
-            if (state.IsDown || !CorrosionFollowUpRules.TriggersOnHit(stacks, outcome.TotalDamage, props))
-            {
-                continue;
-            }
-
-            using (corrosion.EnterDamageSourceScope())
-            {
-                ResolveHit(
-                    state,
-                    stacks,
-                    CorrosionFollowUpRules.DamageProps,
-                    corrosion.GetHitFollowUpDealer(attacker),
-                    null,
-                    LibraryDamageType.None,
-                    DamagePreviewTrace.Name(corrosion),
-                    applyDamageHooks: true);
-            }
-        }
-    }
-
-    private int GetRedirectHp(Creature creature) =>
-        _redirectHp.TryGetValue(creature, out int hp) ? hp : Math.Max(0, creature.IsAlive ? creature.CurrentHp : 0);
+    private int GetRedirectHp(Creature creature) => TryGetState(creature, out IncomingDamageTargetState? state)
+        ? Math.Max(0, state!.Hp)
+        : _redirectHp.GetValueOrDefault(creature, Math.Max(0, creature.CurrentHp));
 
     private static int ToDamage(decimal amount) => (int)Math.Clamp(amount, 0m, 999999999m);
 

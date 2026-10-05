@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ using MegaCrit.Sts2.Core.Models;
 
 namespace LibraryOfRuina.content.liberation.Religion;
 
-public sealed class ReligionFloorLostParadise : ReligionFloorMonster, IEncounterDynamicBgmTrackSource
+public sealed class ReligionFloorLostParadise : ReligionFloorMonster, IEncounterDynamicBgmTrackSource, ILibraryAbstractModel
 {
     internal override string AssetName => "lost_paradise";
 
@@ -77,13 +78,13 @@ public sealed class ReligionFloorLostParadise : ReligionFloorMonster, IEncounter
         }
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature.Monster is ReligionFloorApostle)
         {
             Encounter?.RepairApostlePlans();
         }
-        return base.AfterStun(creature);
+        return Task.CompletedTask;
     }
 
     public override Task AfterCombatEnd(CombatRoom room)

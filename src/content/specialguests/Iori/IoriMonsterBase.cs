@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace LibraryOfRuina.content.specialguests.Iori;
 /// （快照的存取在 <see cref="IoriReceptionSnapshotStore"/>）。
 /// </summary>
 public abstract partial class IoriMonsterBase :
-    SpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
+    SpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
     internal const string RouterMoveId = "IORI_ROUTER";
     internal const string CompositeMoveId = "IORI_COMPOSITE";

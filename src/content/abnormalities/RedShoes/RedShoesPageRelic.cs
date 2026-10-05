@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
@@ -20,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.RedShoes;
 
-public sealed class RedShoesPageRelic : ModalPageRelic<RedShoesPageMode>
+public sealed class RedShoesPageRelic : ModalPageRelic<RedShoesPageMode>, ILibraryAbstractModel
 {
     internal const int GlitterStrength = 2;
     internal const int GlitterEndTurnHpLoss = 1;
@@ -190,7 +191,7 @@ public sealed class RedShoesPageRelic : ModalPageRelic<RedShoesPageMode>
         return BloodThirstDamageMultiplier;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal amount,
         ValueProp props,

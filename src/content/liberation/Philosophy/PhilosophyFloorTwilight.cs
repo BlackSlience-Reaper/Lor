@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,7 +115,7 @@ internal sealed class PhilosophyFloorTwilightPersistentState
 
 public sealed partial class PhilosophyFloorTwilight :
     CounterIntentMonsterModel,
-    IEncounterDynamicBgmTrackSource
+    IEncounterDynamicBgmTrackSource, ILibraryAbstractModel
 {
     internal const int AllEggMask = 0b111;
     private const string RouterStateId = "PHILOSOPHY_FLOOR_TWILIGHT_ROUTER";
@@ -399,7 +400,7 @@ public sealed partial class PhilosophyFloorTwilight :
             combatState);
     }
 
-    public override Task AfterCurrentChaoValueChanged(
+    public Task AfterCurrentChaoValueChanged(
         Creature target,
         decimal amount,
         LibraryDamageType type)
@@ -418,7 +419,7 @@ public sealed partial class PhilosophyFloorTwilight :
         return BreakActiveEgg();
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         return creature == Creature
             ? BreakActiveEgg()

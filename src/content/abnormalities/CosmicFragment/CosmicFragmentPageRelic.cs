@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.CosmicFragment;
 
-public sealed class CosmicFragmentPageRelic : ModalPageRelic<CosmicFragmentPageMode>
+public sealed class CosmicFragmentPageRelic : ModalPageRelic<CosmicFragmentPageMode>, ILibraryAbstractModel
 {
     internal const int OtherworldlyEchoChaosLoss = 13;
     internal const int OtherworldlyEchoHeal = 3;
@@ -119,7 +120,7 @@ public sealed class CosmicFragmentPageRelic : ModalPageRelic<CosmicFragmentPageM
         }
     }
 
-    public override async Task AfterDamageGiven(
+    public async Task AfterDamageGiven(
         PlayerChoiceContext choiceContext,
         Creature? dealer,
         DamageResult result,
@@ -161,7 +162,7 @@ public sealed class CosmicFragmentPageRelic : ModalPageRelic<CosmicFragmentPageM
         return Task.CompletedTask;
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(
+    public decimal ModifyChaoDamageMultiplicative(
         Creature? target,
         decimal num,
         ValueProp props,

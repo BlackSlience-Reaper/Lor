@@ -43,14 +43,14 @@ public sealed class CosmicFragment : LorMonsterModel
         $"{ModelDb.GetId<CosmicFragmentPageRelic>().Entry}.title";
 
     public override int MinInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 181, 169);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 151, 149);
 
     public override int MaxInitialHp =>
-        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 190, 172);
+        AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 155, 152);
 
     private int _nextEchoStrengthGain = 2;
 
-    public override int DefaultChaoResistance => 140;
+    public override int DefaultChaoResistance => 120;
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.powers;
 using LibraryLib.Entities.Creatures;
@@ -23,7 +24,7 @@ public sealed class NaturalFloorEverythingIsEmptyPower : NaturalFloorGreenPassiv
     protected override string LegacyPowerId => "NATURAL_FLOOR_EVERYTHING_IS_EMPTY_POWER";
 }
 
-public sealed class NaturalFloorNihilImmunityPower : NaturalFloorGreenPassivePower
+public sealed class NaturalFloorNihilImmunityPower : NaturalFloorGreenPassivePower, ILibraryAbstractModel
 {
     // 无谓之举：所有形态下被施加的灾厄层数降低百分比。
     private const int DoomStackReductionPercent = 50;
@@ -68,7 +69,7 @@ public sealed class NaturalFloorNihilImmunityPower : NaturalFloorGreenPassivePow
             : amount;
     }
 
-    public override decimal ModifyChaoDamageCap(
+    public decimal ModifyChaoDamageCap(
         Creature? target, ValueProp props, Creature? dealer,
         CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type)
     {
@@ -116,7 +117,7 @@ public sealed class NaturalFloorNihilImmunityPower : NaturalFloorGreenPassivePow
     }
 }
 
-public abstract class NaturalFloorNihilFormPower : NaturalFloorGreenPassivePower
+public abstract class NaturalFloorNihilFormPower : NaturalFloorGreenPassivePower, ILibraryAbstractModel
 {
     internal abstract NaturalFloorNihilForm Form { get; }
 
@@ -148,7 +149,7 @@ public abstract class NaturalFloorNihilFormPower : NaturalFloorGreenPassivePower
         return GetIncomingDamageMultiplier(target, dealer);
     }
 
-    public override decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount,
+    public virtual decimal ModifyChaoDamageMultiplicative(Creature? target, decimal amount,
         ValueProp props, Creature? dealer, CardModel? cardSource, CardPlay? cardPlay, LibraryDamageType type)
     {
         return GetIncomingDamageMultiplier(target, dealer);

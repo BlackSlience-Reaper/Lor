@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
@@ -20,7 +21,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;
 
-public sealed class QueenBee : LorMonsterModel
+public sealed class QueenBee : LorMonsterModel, ILibraryAbstractModel
 {
     private const string RouterId = "QUEEN_BEE_ROUTER";
     private const string VigilanceMoveId = "QUEEN_BEE_VIGILANCE_MOVE";
@@ -143,7 +144,7 @@ public sealed class QueenBee : LorMonsterModel
         await base.AfterDeath(choiceContext, creature, wasRemovalPrevented, deathAnimLength);
     }
 
-    public override async Task AfterDamageReceived(
+    public async Task AfterDamageReceived(
         PlayerChoiceContext choiceContext,
         Creature target,
         DamageResult result,

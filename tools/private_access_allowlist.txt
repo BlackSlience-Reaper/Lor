@@ -12,6 +12,7 @@ patches/GroupAttackEnemyTurnPriorityPatch.cs	GroupAttackEnemyTurnPriorityPatch.P
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	AccessTools.Method	本模组方法（nameof），Transpiler 替换的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.Transpiler	AccessTools.Method	本模组方法 DamagePreviewTrace.Record（nameof），Transpiler 插入的调用目标
 core/localization/PowerInlineIconSizing.cs	MeasureInlineDimensionsPatch.Transpiler	AccessTools.Method	Godot 公开方法 Texture2D.GetSize 与本模组方法（nameof），Transpiler 的匹配与替换目标
+ui/DamagePreview/IncomingDamagePreviewCalculator.cs	IncomingDamagePreviewCalculator.SimulateEnemyAttacks	AccessTools.Method	本模组方法（nameof），受伤预览解释执行的来源标记
 
 # Public members looked up by name on a runtime type.
 content/abnormalities/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetProperty	探测卡牌的公开“可升级”成员，各版本名字不同
@@ -21,10 +22,20 @@ features/secondascension/LibrarySecondAscensionUiPatch.cs	LibrarySecondAscension
 patches/RelicSavedModeDescriptionPatch.cs	RelicSavedModeDescriptionPatch.Postfix	AccessTools.Property	按约定探测任意遗物运行时类型上名为 Mode 的枚举属性（本模组多模式书页遗物用这个约定；遵循同一约定、带同名 DynamicVar 的其他遗物也会被处理）
 framework/relics/AbnormalityPageRewardPreselection.cs	AbnormalityPageRewardPreselection.DiscoverPageRelics	AccessTools.Property	本模组书页遗物的 Mode 属性，声明在各遗物类上
 core/settings/ExtAutoModSettings.cs	ExtAutoModSettings.GenerateOptionsForAllProperties	.GetProperty	本模组设置类上的公开属性（按可见性条件里写的属性名）
+ui/DamagePreview/IncomingDamagePreviewCalculator.cs	IncomingDamageSimulation.ResolveHit	AccessTools.Method	受伤预览按运行时类型解析公开钩子 AfterModifyingDamageAmount（nameof）
+ui/DamagePreview/IncomingDamagePreviewCalculator.cs	IncomingDamageSimulation.ModifyHpLost	AccessTools.Method	受伤预览按运行时类型解析公开钩子 AfterModifyingHpLost*（nameof）
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.SimulateHooks	AccessTools.Method	受伤预览按运行时类型解析 AbstractModel 的公开钩子（名字来自 nameof）
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.SimulateTurnStart	AccessTools.Method	公开方法 Hook.ShouldClearBlock（nameof），受伤预览解释执行
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.SimulateHand	AccessTools.Method	按运行时类型解析公开虚方法 OrbModel.TriggerPassive / CardModel.OnTurnEndInHand，受伤预览解释执行
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.TryInterpretCommand	AccessTools.Method	公开方法 PowerModel.ShouldRemoveDueToAmount（nameof）与 BCL object.MemberwiseClone，受伤预览模拟施加能力
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.SimulateDeath	AccessTools.Method	按运行时类型解析公开钩子 AfterPreventingDeath（nameof）
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.RemovePreviewPower	AccessTools.Method	按运行时类型解析公开虚方法 PowerModel.AfterRemoved（nameof）
+ui/DamagePreview/IncomingDamagePreviewHooks.cs	IncomingDamageSimulation.ModifyPowerOffset	AccessTools.Method	按运行时类型解析公开钩子 AfterModifyingPowerAmountGiven/Received（nameof）
 
 # Infrastructure that walks compiler-generated or third-party types.
 infra/patching/LibraryPatcher.cs	LibraryPatcher.GuardedBodies	.GetMethod	原版拷贝守卫：取任意 async/迭代器方法的编译器生成状态机 MoveNext
 patches/RoomIconPathCustomOverridePatch.cs	IconProperties.Create	.GetProperty	BaseLib/RitsuLib 内容类型上的公开图标属性，按类型探测
+ui/DamagePreview/IncomingDamagePreviewHookReader.cs	IncomingDamagePreviewHookReader.Invoke	AccessTools.Method	受伤预览解释执行 async 方法：取编译器生成状态机的 MoveNext
 
 # Other mods (optional compatibility; the mod may not be installed).
 ui/DamagePreview/RolandDicePreviewModifiers.cs	RolandDicePreviewModifiers.BindPreview	AccessTools.TypeByName	第三方模组 RolandMod 的类型

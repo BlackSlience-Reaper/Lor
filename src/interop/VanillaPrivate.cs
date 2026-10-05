@@ -52,6 +52,9 @@ internal static class VanillaPrivate
     internal static readonly VanillaPrivateMethod<OrbModel> OrbModelPlayEvokeSfx = new("PlayEvokeSfx");
     internal static readonly VanillaPrivateFieldRef<MegaCrit.Sts2.Core.Models.Relics.BeatingRemnant, decimal> BeatingRemnantDamageReceivedThisTurn =
         new("_damageReceivedThisTurn");
+    /// <summary>受伤预览模拟施加新能力时，复制规范能力后标为可变并挂上目标；不运行模型构造或 AfterCloned。</summary>
+    internal static readonly VanillaPrivateProperty<AbstractModel, bool> AbstractModelIsMutable = new("IsMutable");
+    internal static readonly VanillaPrivateField<PowerModel, Creature> PowerModelOwner = new("_owner");
 
     // 怪物招式状态机
     internal static readonly VanillaPrivateProperty<ConditionalBranchState, IEnumerable> ConditionalBranchStateStates = new("States");

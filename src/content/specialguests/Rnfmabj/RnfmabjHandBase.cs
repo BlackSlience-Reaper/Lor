@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +19,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.specialguests.Rnfmabj;
 
-public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp
+public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
     internal const int SurvivalHp = 1;
 
@@ -78,12 +79,11 @@ public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.infra
         await RefreshAvailabilityAfterHpChanged(creature);
     }
 
-    public override async Task AfterCurrentHpChanged(
+    public virtual async Task AfterCurrentHpChanged(
         Creature creature,
         decimal delta,
         LibraryDamageType type)
     {
-        await base.AfterCurrentHpChanged(creature, delta, type);
         await RefreshAvailabilityAfterHpChanged(creature);
     }
 
@@ -122,7 +122,7 @@ public abstract class RnfmabjHandBase : RnfmabjMonsterBase, LibraryOfRuina.infra
             ? CreatureCmd.SetCurrentHp(Creature, SurvivalHp)
             : Task.CompletedTask;
 
-    public override decimal ModifyChaoDamageAdditive(
+    public virtual decimal ModifyChaoDamageAdditive(
         Creature? target,
         decimal amount,
         ValueProp props,

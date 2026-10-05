@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ using MegaCrit.Sts2.Core.Rooms;
 
 namespace LibraryOfRuina.content.abnormalities.PriceOfSilence;
 
-public sealed class PriceOfSilence : LorMonsterModel
+public sealed class PriceOfSilence : LorMonsterModel, ILibraryAbstractModel
 {
     internal const string InevitableDoomMoveId = "INEVITABLE_DOOM";
     internal const string UnknownMoveId = "UNKNOWN";
@@ -246,7 +247,7 @@ public sealed class PriceOfSilence : LorMonsterModel
         
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature == Creature && _pendingExposure && _useDoomDuringExposure)
         {

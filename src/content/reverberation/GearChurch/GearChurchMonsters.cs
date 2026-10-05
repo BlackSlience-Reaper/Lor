@@ -1,3 +1,4 @@
+using LibraryLib.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -291,7 +292,7 @@ public abstract class GearChurchMonsterBase : SpecialGuestMonsterBase, ITargeted
     }
 }
 
-public sealed class ReverberationEileen : GearChurchMonsterBase, IFinalHpLossClamp
+public sealed class ReverberationEileen : GearChurchMonsterBase, IFinalHpLossClamp, ILibraryAbstractModel
 {
     private bool _wasChaoedBeforeStun;
 
@@ -333,7 +334,7 @@ public sealed class ReverberationEileen : GearChurchMonsterBase, IFinalHpLossCla
     internal int ScaledDeathChaoDamage =>
         (int)Math.Ceiling(MultiplayerScalingPatchHelper.ScaleHpAmount(Creature.CombatState, this, DeathChaoDamage));
 
-    public override Task BeforeStun(Creature creature)
+    public Task BeforeStun(Creature creature)
     {
         if (creature == Creature && creature is LibraryCreature library)
         {
@@ -342,7 +343,7 @@ public sealed class ReverberationEileen : GearChurchMonsterBase, IFinalHpLossCla
         return Task.CompletedTask;
     }
 
-    public override Task AfterStun(Creature creature)
+    public Task AfterStun(Creature creature)
     {
         if (creature == Creature && !_wasChaoedBeforeStun
             && creature is LibraryCreature { IsChaoed: true }
