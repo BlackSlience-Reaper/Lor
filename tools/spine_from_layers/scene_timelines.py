@@ -11,7 +11,9 @@ text = Path(sys.argv[1]).read_text(encoding="utf-8")
 ext = {i: p for p, i in re.findall(r'\[ext_resource type="Texture2D"[^\]]*path="([^"]+)" id="([^"]+)"\]', text)}
 out = {}
 for block in re.split(r'\n(?=\[sub_resource type="Animation")', text):
-    name = re.search(r'resource_name = "([^"]+)"', block)
+    # 场景里内嵌的动画库（失乐园）没有 resource_name，用子资源 id（anim_<库>_<动作>）
+    name = (re.search(r'resource_name = "([^"]+)"', block)
+            or re.search(r'\[sub_resource type="Animation" id="([^"]+)"\]', block))
     if not name:
         continue
     length = re.search(r"\nlength = ([0-9.]+)", block)

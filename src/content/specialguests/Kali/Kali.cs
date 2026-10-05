@@ -7,6 +7,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using LibraryOfRuina.ui;
 using MegaCrit.Sts2.Core.Combat;
@@ -31,6 +32,9 @@ namespace LibraryOfRuina.content.specialguests.Kali;
 /// </summary>
 public sealed partial class Kali : SpecialGuestMonsterBase, IEnemyCardRuntimeOwner, ITargetedMonsterAttackProvider, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
+    /// <summary>死亡动画时长；不会移出战斗的死亡返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
 
     public const int EgoHpThreshold = 300;
     public const int DefaultChaoMax = 270;

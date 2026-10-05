@@ -66,13 +66,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
             }
 
             var body = new RuntimeSpineBody { Name = "RuntimeSpineBody", _spec = spec };
-            Rect2 rect = anchor.GetRect();
-            Vector2 bottomCenter = new(rect.Position.X + rect.Size.X * 0.5f, rect.End.Y);
-            Vector2 scale = anchor.Scale * new Vector2(anchor.FlipH ? -1f : 1f, 1f);
-            body.Position = anchor.Position + bottomCenter * anchor.Scale;
-            body.Scale = scale;
-            body.ZIndex = anchor.ZIndex;
-            body.ZAsRelative = anchor.ZAsRelative;
+            body.AlignTo(anchor);
 
             if (spec.Ghosts is { } ghosts)
             {
@@ -104,6 +98,19 @@ internal sealed partial class RuntimeSpineBody : Node2D
             LorLog.PatchFailure("RuntimeSpineBody.Create", exception);
             return null;
         }
+    }
+
+    /// <summary>
+    /// 骨架原点对到待机贴图底边中点，缩放、翻转和层级照贴图。建立时调一次；自己重新摆放贴图的外观（薄暝）摆完后再调。
+    /// </summary>
+    internal void AlignTo(Sprite2D anchor)
+    {
+        Rect2 rect = anchor.GetRect();
+        Vector2 bottomCenter = new(rect.Position.X + rect.Size.X * 0.5f, rect.End.Y);
+        Position = anchor.Position + bottomCenter * anchor.Scale;
+        Scale = anchor.Scale * new Vector2(anchor.FlipH ? -1f : 1f, 1f);
+        ZIndex = anchor.ZIndex;
+        ZAsRelative = anchor.ZAsRelative;
     }
 
     private static GodotObject? LoadData(Spec spec, float mix)

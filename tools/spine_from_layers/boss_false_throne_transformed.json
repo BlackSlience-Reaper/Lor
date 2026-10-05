@@ -1,0 +1,1189 @@
+{
+ "name": "boss_false_throne_transformed",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/false_throne",
+ "texture_scale": 0.6,
+ "root_scale": 2.0,
+ "origin": [
+  -21.5,
+  -6.2
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Polymorph_S4",
+ "motions": {
+  "Polymorph_S4": {
+   "source": "Polymorph_S4",
+   "bones": {
+    "body": {
+     "at": [
+      9.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      9.8,
+      227.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -20.2,
+      306.1
+     ]
+    }
+   },
+   "assign": {
+    "변이": "body"
+   }
+  },
+  "AreaAtk_S2": {
+   "source": "AreaAtk_S2",
+   "bones": {
+    "body": {
+     "at": [
+      -0.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -0.5,
+      310.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -11.0,
+      425.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "librarian_back_acce": "hair",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "hair",
+    "effect": "body"
+   }
+  },
+  "Damaged": {
+   "source": "Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      -6.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -6.5,
+      308.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -17.0,
+      425.0
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "librarian_back_acce": "hair",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "hair",
+    "body_3": "body",
+    "effect": "body"
+   }
+  },
+  "Guard": {
+   "source": "Guard",
+   "bones": {
+    "body": {
+     "at": [
+      -0.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -0.5,
+      310.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -11.0,
+      425.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "effect": "body",
+    "body_2": "body",
+    "librarian_back_acce": "hair",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "hair"
+   }
+  },
+  "Hit_Fire": {
+   "source": "Hit_Fire",
+   "bones": {
+    "body": {
+     "at": [
+      -0.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -0.5,
+      310.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -11.0,
+      425.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "librarian_back_acce": "hair",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "hair"
+   }
+  },
+  "Penetrate_Fire_S1": {
+   "source": "Penetrate_Fire_S1",
+   "bones": {
+    "body": {
+     "at": [
+      -0.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -0.5,
+      310.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -11.0,
+      425.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "body_2": "body",
+    "librarian_back_acce": "hair",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "hair"
+   }
+  },
+  "Rage_S3": {
+   "source": "Rage_S3",
+   "bones": {
+    "body": {
+     "at": [
+      -13.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -13.4,
+      351.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -23.5,
+      464.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "librarian_back_acce": "head",
+    "head": "head",
+    "face": "head",
+    "front_hair": "hair",
+    "librarian_front_acce": "hair",
+    "effect": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "osc": {
+    "Polymorph_S4.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "Polymorph_S4.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Polymorph_S4.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "fire": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ],
+    [
+     0.15,
+     "Hit_Fire",
+     0
+    ],
+    [
+     0.75,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Polymorph_S4.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Polymorph_S4.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Hit_Fire.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Hit_Fire.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Hit_Fire.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.22999999999999998,
+       16,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "overflowing_light": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ],
+    [
+     0.15,
+     "Penetrate_Fire_S1",
+     0
+    ],
+    [
+     0.75,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Polymorph_S4.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Polymorph_S4.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Penetrate_Fire_S1.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Penetrate_Fire_S1.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Penetrate_Fire_S1.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.22999999999999998,
+       16,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "area": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ],
+    [
+     0.1,
+     "AreaAtk_S2",
+     0
+    ],
+    [
+     0.9,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Polymorph_S4.body": {
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.1,
+       0.97,
+       "out"
+      ],
+      [
+       0.9,
+       0.97
+      ],
+      [
+       1.2,
+       1
+      ]
+     ]
+    },
+    "AreaAtk_S2.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "AreaAtk_S2.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "AreaAtk_S2.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "rage": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ],
+    [
+     0.1,
+     "Rage_S3",
+     0
+    ],
+    [
+     0.9,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Polymorph_S4.body": {
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.1,
+       0.97,
+       "out"
+      ],
+      [
+       0.9,
+       0.97
+      ],
+      [
+       1.2,
+       1
+      ]
+     ]
+    },
+    "Rage_S3.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Rage_S3.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Rage_S3.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       0
+      ],
+      [
+       0.22,
+       -25,
+       "out"
+      ],
+      [
+       0.9,
+       -25
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "polymorph": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ],
+    [
+     0.1,
+     "Polymorph_S4",
+     0
+    ],
+    [
+     0.9,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Polymorph_S4.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Polymorph_S4.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Polymorph_S4.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "guard": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "Guard",
+     0
+    ],
+    [
+     0.55,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Guard.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "Guard.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Guard.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       12,
+       "out"
+      ],
+      [
+       0.55,
+       6
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Damaged",
+     0
+    ],
+    [
+     0.4,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Polymorph_S4",
+     0
+    ]
+   ],
+   "keys": {
+    "Polymorph_S4.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "Polymorph_S4.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Polymorph_S4.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

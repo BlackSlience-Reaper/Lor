@@ -12,6 +12,29 @@ namespace LibraryOfRuina.content.specialguests.Kali;
 internal sealed partial class KaliCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
+    // Spine 身体见 LayeredBossSpine：普通形态（normal 库）与红雾（ego 库）各一副；血雾、尸山的换姿势时刻照场景动画
+    private static IReadOnlyDictionary<string, string> SpineTriggers() => new Dictionary<string, string>
+    {
+        ["AttackPierce"] = "pierce",
+        ["AttackBlunt"] = "blunt",
+        ["AttackSlash"] = "slash",
+        ["BloodMist"] = "blood_mist",
+        ["FieldOfCorpses"] = "field_of_corpses",
+        ["Guard"] = "guard",
+        ["Move"] = "move",
+        ["Evade"] = "evade",
+    };
+
+    // 场景里普通形态的 Attack 用斩击图、红雾用打击图
+    internal static readonly RuntimeSpineBody.Spec Spine =
+        LayeredBossSpine.Create("red_mist", "kali", "slash", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec RedMistSpine =
+        LayeredBossSpine.Create("red_mist", "red_mist", "blunt", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == KaliAnimationContract.EgoLibrary ? RedMistSpine : Spine;
+
     internal const string ScenePath =
         "res://scenes/creature_visuals/kali.tscn";
     internal static readonly Vector2 SceneMotionRootPosition = new(0f, -30f);

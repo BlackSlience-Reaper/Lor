@@ -45,9 +45,9 @@
     "body_2": "body",
     "head_복사": "head",
     "face": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "head",
     "front_hair": "hair",
-    "librarian_front_acce_2": "body",
+    "librarian_front_acce_2": "hair",
     "body_3": "body"
    }
   }

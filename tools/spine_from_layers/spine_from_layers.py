@@ -37,9 +37,23 @@ def load_layers(cfg):
                 g = g.point(lambda v: round(v * tint[1]))
                 b = b.point(lambda v: round(v * tint[2]))
                 im = Image.merge("RGBA", (r, g, b, a))
-            w, h = l["size"]
-            cx = l["pos"][0] + (0.5 - l["pivot"][0]) * w
-            cy = l["pos"][1] + (0.5 - l["pivot"][1]) * h
+            # 层的世界缩放、每单位像素和旋转直接烘进贴图（中心用 export_layers 按同样规则算好的 center）；
+            # 绝大多数层缩放 1、100 像素每单位、不旋转，这一步什么都不做
+            sx, sy = l["scale"][0] * 100.0 / (l.get("ppu") or 100.0), l["scale"][1] * 100.0 / (l.get("ppu") or 100.0)
+            if abs(abs(sx) - 1) > 1e-3 or abs(abs(sy) - 1) > 1e-3:
+                im = im.resize((max(1, round(im.width * abs(sx))), max(1, round(im.height * abs(sy)))), Image.LANCZOS)
+            if sx < 0:
+                im = im.transpose(Image.FLIP_LEFT_RIGHT)
+            if sy < 0:
+                im = im.transpose(Image.FLIP_TOP_BOTTOM)
+            if abs(l.get("rot", 0.0)) > 1e-3:
+                im = im.rotate(l["rot"], resample=Image.BICUBIC, expand=True)
+            w, h = im.size
+            if "center" in l:
+                cx, cy = l["center"]
+            else:
+                cx = l["pos"][0] + (0.5 - l["pivot"][0]) * w
+                cy = l["pos"][1] + (0.5 - l["pivot"][1]) * h
             # 裁掉透明边，附件中心随之挪到裁剪框中心（原版切片常带大片空白，攻击图尤甚）
             box = im.getchannel("A").getbbox()
             if box:

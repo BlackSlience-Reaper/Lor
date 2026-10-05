@@ -42,18 +42,18 @@
     "back_hair": "hair",
     "body": "body",
     "body_2": "body",
-    "body_3": "body",
+    "body_3": "hair",
     "body_4": "body",
     "body_5": "body",
     "body_6": "body",
     "body_7": "body",
-    "librarian_head": "body",
+    "librarian_head": "head",
     "head": "head",
     "face": "head",
     "body_9": "body",
     "body_10": "body",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "body_11": "body"
    }
   },
@@ -85,12 +85,12 @@
     "body": "body",
     "back_hair": "hair",
     "body_2": "body",
-    "librarina_head": "body",
+    "librarina_head": "head",
     "head": "head",
     "face_2": "head",
     "body_3": "body",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -149,12 +149,12 @@
    "assign": {
     "back_hair": "hair",
     "body": "body",
-    "librarian_head": "body",
+    "librarian_head": "head",
     "head": "head",
     "face": "head",
     "body_2": "body",
     "front_hair": "hair",
-    "librarian_front_acce": "body"
+    "librarian_front_acce": "hair"
    }
   },
   "Hit": {
@@ -184,10 +184,10 @@
    "assign": {
     "body": "body",
     "back_hair": "hair",
-    "librarian_head": "body",
+    "librarian_head": "head",
     "head": "head",
     "face": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "front_hair": "hair",
     "body_2": "body",
     "effect": "body"
@@ -221,11 +221,11 @@
     "back_hair": "hair",
     "body": "body",
     "head": "head",
-    "librarian_head": "body",
+    "librarian_head": "head",
     "face": "head",
     "body_2": "body",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -257,12 +257,12 @@
     "body": "body",
     "back_hair": "hair",
     "body_2_1": "body",
-    "librarian_head": "body",
+    "librarian_head": "head",
     "head": "head",
     "face": "head",
     "body_2": "body",
     "front_hair": "hair",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "effect": "body"
    }
   },
@@ -293,10 +293,10 @@
    "assign": {
     "body": "body",
     "back_hair": "hair",
-    "librarian_head": "body",
+    "librarian_head": "head",
     "head": "head",
     "face": "head",
-    "librarian_front_acce": "body",
+    "librarian_front_acce": "hair",
     "front_hair": "hair",
     "body_2": "body",
     "effect": "body"

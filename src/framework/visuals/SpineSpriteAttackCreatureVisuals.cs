@@ -42,7 +42,32 @@ public abstract partial class SpineSpriteAttackCreatureVisuals : SpriteAttackCre
         }
 
         BeforeResolveSpriteTrigger(triggerName);
-        return _spine.Play(triggerName, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
+        return PlaySpineTrigger(triggerName);
+    }
+
+    /// <summary>有 Spine 身体在接管触发（自己管触发入口的外观，例如薄暝，要先问这个）。</summary>
+    protected bool HasSpineBody => _spine != null;
+
+    /// <summary>自己重新摆放待机贴图的外观（薄暝）摆完后调用：骨架重新对齐到待机贴图，贴图再藏起来。</summary>
+    protected void RealignSpineBody()
+    {
+        if (_spine != null && GetNodeOrNull<Sprite2D>("%Visuals") is { } idle)
+        {
+            _spine.AlignTo(idle);
+        }
+
+        HideSprites();
+    }
+
+    /// <summary>
+    /// 把触发交给 Spine。触发里声明的换形态照样切换（伪王座的变形），切换后由新形态的骨架播放；
+    /// 新骨架不认识这个触发时停在它的待机，也算处理过。
+    /// </summary>
+    protected bool PlaySpineTrigger(string triggerName)
+    {
+        ApplyTriggerVariantSwitch(triggerName);
+        _spine?.Play(triggerName, MonsterChaosIdleVisualPatch.ShouldHoldHitPose(this));
+        return true;
     }
 
     // 基类在混乱状态切换、动作结束、换形态时回到这里重设两张贴图；有 Spine 身体时贴图一直藏着，由 Spine 定格或解除受击姿势。
