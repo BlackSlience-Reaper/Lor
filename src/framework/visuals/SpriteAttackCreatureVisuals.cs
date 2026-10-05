@@ -450,6 +450,42 @@ public abstract partial class SpriteAttackCreatureVisuals
             $"{GetType().Name} does not declare that sprite frame.");
     }
 
+    // 当前形态专属的动作优先，其次是不分形态的
+    private static SpriteAnimationDefinition? FindProfileAnimation(
+        SpriteVisualProfile profile,
+        string variantKey,
+        string triggerName) =>
+        profile.Animations
+            .FirstOrDefault(candidate =>
+                string.Equals(
+                    candidate.VariantKey,
+                    variantKey,
+                    StringComparison.Ordinal)
+                && candidate.TriggerNames.Contains(
+                    triggerName,
+                    StringComparer.Ordinal))
+        ?? profile.Animations.FirstOrDefault(candidate =>
+            candidate.VariantKey == null
+            && candidate.TriggerNames.Contains(
+                triggerName,
+                StringComparer.Ordinal));
+
+    /// <summary>
+    /// 只做触发里声明的换形态（<c>SwitchToVariant</c>），不换图。Spine 身体接管触发时用：
+    /// 动作交给 Spine，形态照样切换（伪王座的变形）。
+    /// </summary>
+    protected void ApplyTriggerVariantSwitch(string triggerName)
+    {
+        if (_loadedProfile is { } profile
+            && _currentVariantKey is { } variantKey
+            && !string.IsNullOrWhiteSpace(triggerName)
+            && FindProfileAnimation(profile, variantKey, triggerName)?.ResultVariantKey is { } result
+            && result != variantKey)
+        {
+            SetSpriteVisualVariant(result);
+        }
+    }
+
     private bool TryGetProfileTriggerSpec(
         string triggerName,
         out SpriteVisualTriggerSpec spec,
@@ -465,20 +501,7 @@ public abstract partial class SpriteAttackCreatureVisuals
             return false;
         }
 
-        SpriteAnimationDefinition? animation = profile.Animations
-            .FirstOrDefault(candidate =>
-                string.Equals(
-                    candidate.VariantKey,
-                    variantKey,
-                    StringComparison.Ordinal)
-                && candidate.TriggerNames.Contains(
-                    triggerName,
-                    StringComparer.Ordinal))
-            ?? profile.Animations.FirstOrDefault(candidate =>
-                candidate.VariantKey == null
-                && candidate.TriggerNames.Contains(
-                    triggerName,
-                    StringComparer.Ordinal));
+        SpriteAnimationDefinition? animation = FindProfileAnimation(profile, variantKey, triggerName);
         if (animation == null)
         {
             spec = default;
