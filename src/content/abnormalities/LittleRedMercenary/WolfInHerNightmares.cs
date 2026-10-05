@@ -373,7 +373,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
     {
         await EnsurePhaseTwo();
         Creature? target = ResolveTarget();
-        if (target == null)
+        if (!CanContinueNormalMove || target == null)
         {
             return;
         }
@@ -384,6 +384,11 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
         {
             LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "wolf_claw.ogg");
             AttackCommand segment = await ExecuteTargetedAttackSegment(target, CruelClawsDamage, "Slash");
+            if (!CanContinueNormalMove)
+            {
+                return;
+            }
+
             unblockedHitsOnLittleRed += CountUnblockedHitsOnLittleRed(AttackCommandCompat.Results(segment));
         }
         if (target.IsAlive)
@@ -399,7 +404,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
     {
         await EnsurePhaseTwo();
         Creature? target = ResolveTarget();
-        if (target == null)
+        if (!CanContinueNormalMove || target == null)
         {
             return;
         }
@@ -412,6 +417,11 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
         {
             LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "wolf_bite.ogg");
             AttackCommand segment = await ExecuteTargetedAttackSegment(target, BloodstainedHuntDamage, "Thrust");
+            if (!CanContinueNormalMove)
+            {
+                return;
+            }
+
             anyUnblockedOnTarget |= AttackCommandCompat.Results(segment).Any(result => result.Receiver == target && result.UnblockedDamage > 0);
             unblockedHitsOnLittleRed += CountUnblockedHitsOnLittleRed(AttackCommandCompat.Results(segment));
         }
@@ -429,14 +439,24 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
     {
         await EnsurePhaseTwo();
         Creature? target = ResolveTarget();
-        if (target == null)
+        if (!CanContinueNormalMove || target == null)
         {
             return;
         }
 
         LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "wolf_bite.ogg");
         AttackCommand attack = await ExecuteTargetedAttackSegment(target, FerociousFangsDamage, "Thrust");
+        if (!CanContinueNormalMove)
+        {
+            return;
+        }
+
         await CreatureCmd.GainBlock(Creature, FerociousFangsBlock, ValueProp.Move, null);
+        if (!CanContinueNormalMove)
+        {
+            return;
+        }
+
         await CreatureCmd.Heal(Creature, MultiplayerScalingPatchHelper.ScaleMonsterHealAmount(Creature, FerociousFangsHeal));
         await HandleLittleRedAngerAfterWolfAttack(CountUnblockedHitsOnLittleRed(AttackCommandCompat.Results(attack)), isHowl: false);
         await AfterBaseMove();
@@ -445,6 +465,11 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
     private async Task HowlMove(IReadOnlyList<Creature> targets)
     {
         await EnsurePhaseTwo();
+        if (!CanContinueNormalMove)
+        {
+            return;
+        }
+
         LocalOggOneShotPlayer.Play(LittleRedMercenaryEncounterHelper.SfxRoot + "wolf_howl.ogg");
         IReadOnlyList<Creature> actualTargets = GetHowlTargets(Creature);
         if (actualTargets.Count == 0)
@@ -463,9 +488,18 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
             .WithIndiscriminateBlockBreak(this, HowlDamage, actualTargets)
             .Execute(null);
 
+        if (!CanContinueNormalMove)
+        {
+            return;
+        }
+
         foreach (Creature target in actualTargets.Where(static creature => creature.IsAlive))
         {
             await PowerCmdCompat.Apply<FrailPower>(target, HowlFrail, Creature, null);
+            if (!CanContinueNormalMove)
+            {
+                return;
+            }
         }
 
         await HandleLittleRedAngerAfterWolfAttack(CountUnblockedHitsOnLittleRed(AttackCommandCompat.Results(attack)), isHowl: true);
@@ -511,6 +545,13 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
         await CreatureCmd.Kill(Creature, force: true);
     }
 
+    // 普通招式中小红帽死亡会立即进入终幕；停止旧招式，保留终幕的清空能力与眩晕状态。
+    private bool CanContinueNormalMove =>
+        !_littleRedDeathFinaleActive
+        && Creature.IsAlive
+        && Creature.CombatState != null
+        && !CombatManager.Instance.IsOverOrEnding;
+
     private Creature? ResolveTarget()
     {
         return TargetedMonsterAttackHelper.GetPrimaryTarget(Creature);
@@ -533,7 +574,8 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
 
     private async Task HandleLittleRedAngerAfterWolfAttack(int unblockedHitsOnLittleRed, bool isHowl)
     {
-        if (LittleRedMercenaryEncounterHelper.FindLittleRed(CombatState)?.Monster is not LittleRedRidingHoodedMercenary littleRed)
+        if (!CanContinueNormalMove
+            || LittleRedMercenaryEncounterHelper.FindLittleRed(CombatState)?.Monster is not LittleRedRidingHoodedMercenary littleRed)
         {
             return;
         }
@@ -608,7 +650,7 @@ public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMo
 
     private async Task AfterBaseMove()
     {
-        if (_littleRedDeathFinaleActive)
+        if (!CanContinueNormalMove)
         {
             return;
         }

@@ -100,7 +100,7 @@ internal static class LittleRedMercenaryEncounterHelper
             return;
         }
 
-        await CleanupRemainingEnemiesAndWin(wolf.CombatState, except: null);
+        await CleanupRemainingEnemies(wolf.CombatState, except: null);
     }
 
     private static async Task OnWolfDied(PlayerChoiceContext choiceContext, Creature wolf, Creature? dealer)
@@ -114,13 +114,12 @@ internal static class LittleRedMercenaryEncounterHelper
         Creature? red = FindLittleRed(combatState);
         if (red == null)
         {
-            await CombatManager.Instance.CheckWinCondition();
             return;
         }
 
         if (dealer?.Monster is LittleRedRidingHoodedMercenary)
         {
-            await CleanupRemainingEnemiesAndWin(combatState, except: null);
+            await CleanupRemainingEnemies(combatState, except: null);
             return;
         }
 
@@ -150,7 +149,7 @@ internal static class LittleRedMercenaryEncounterHelper
         }
     }
 
-    private static async Task CleanupRemainingEnemiesAndWin(CombatStateLike combatState, Creature? except)
+    private static async Task CleanupRemainingEnemies(CombatStateLike combatState, Creature? except)
     {
         foreach (Creature enemy in combatState.Enemies.ToArray())
         {
@@ -162,10 +161,7 @@ internal static class LittleRedMercenaryEncounterHelper
             await CreatureCmd.Kill(enemy, force: true);
         }
 
-        if (CombatManager.Instance.IsInProgress)
-        {
-            await CombatManager.Instance.CheckWinCondition();
-        }
+        // AfterDeath 仍处于伤害与死亡钩子内，胜利结算交给原版行动结束后的安全检查点。
     }
 
     public static bool TryAddLittleRedPageReward(AbstractRoom? room, Player player, ICollection<Reward> rewards)
