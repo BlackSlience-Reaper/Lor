@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Godot;
-using LibraryOfRuina.content.guests.DawnOffice;
 using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -17,9 +16,6 @@ internal sealed record MonsterVisualCatalogEntry(
 
 internal static class MonsterVisualCatalog
 {
-    private static readonly IReadOnlyDictionary<string, string> SpecialScenePaths =
-        MonsterVisualRegistry.BuildSpecialScenePaths();
-
     private static readonly object ModelAssetPathValidationLock = new();
 
     private static readonly HashSet<string> ValidatedModelAssetPathIds =
@@ -39,8 +35,7 @@ internal static class MonsterVisualCatalog
     internal static IEnumerable<string> RegisteredIds => Entries.Keys;
 
     internal static bool Contains(string monsterIdEntry) =>
-        Entries.ContainsKey(monsterIdEntry)
-        || SpecialScenePaths.ContainsKey(monsterIdEntry);
+        Entries.ContainsKey(monsterIdEntry);
 
     internal static CreatureVisualLayout GetLayout(string monsterIdEntry)
     {
@@ -76,32 +71,9 @@ internal static class MonsterVisualCatalog
             $"No sprite visual profile is registered for '{monsterIdEntry}'.");
     }
 
-    internal static string GetStaticDefaultIdleTexturePath(
-        string monsterIdEntry)
-    {
-        if (Entries.TryGetValue(
-                monsterIdEntry,
-                out MonsterVisualCatalogEntry? entry)
-            && !string.IsNullOrWhiteSpace(
-                entry.StaticDefaultIdleTexturePath))
-        {
-            return entry.StaticDefaultIdleTexturePath;
-        }
-
-        throw new InvalidOperationException(
-            $"No static idle texture is registered for '{monsterIdEntry}'.");
-    }
-
     internal static NCreatureVisuals Create(MonsterModel monster)
     {
         string id = monster.Id.Entry;
-        if (SpecialScenePaths.TryGetValue(id, out string? scenePath))
-        {
-            MonsterVisualDebug.Trace(
-                $"Create id={id} scenePath={scenePath}");
-            return WrappedMonsterVisualFactory.CreateFromScene(scenePath);
-        }
-
         if (Entries.TryGetValue(id, out MonsterVisualCatalogEntry? entry))
         {
             ValidateModelAssetPaths(monster, entry);
@@ -152,7 +124,6 @@ internal static class MonsterVisualCatalog
     {
         var validatedResourcePaths = new HashSet<string>(
             StringComparer.Ordinal);
-        string staticSpriteId = MonsterVisualRegistry.EntryOf(typeof(Finn));
 
         foreach ((string id, MonsterVisualCatalogEntry entry) in Entries)
         {
@@ -222,18 +193,8 @@ internal static class MonsterVisualCatalog
                 entry.StaticDefaultIdleTexturePath!,
                 validatedResourcePaths);
 
-            if (id != staticSpriteId)
-            {
-                throw new InvalidOperationException(
-                    $"FINN must remain the single static sprite fallback; "
-                    + $"found '{id}'.");
-            }
         }
 
-        foreach ((string id, string scenePath) in SpecialScenePaths)
-        {
-            ValidateResourcePath(id, scenePath, validatedResourcePaths);
-        }
     }
 
     private static void ValidateLayout(

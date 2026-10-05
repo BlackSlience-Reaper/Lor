@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.content.guests.MusiciansOfBremen;
 using LibraryOfRuina.content.guests.WedgeOffice;
 using LibraryOfRuina.framework.visuals;
@@ -6,7 +7,7 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.BrotherhoodOfIron;
 
-public abstract partial class BrotherhoodOfIronCreatureVisuals : SpriteAttackCreatureVisuals
+public abstract partial class BrotherhoodOfIronCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     internal static SpriteVisualProfile BuildProfile(
         string textureName,
@@ -59,6 +60,11 @@ public partial class MoCreatureVisuals : BrotherhoodOfIronCreatureVisuals
         BuildProfile("mo", 26f, -145.2f, 0.54f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("brotherhood_of_iron/", "mo", GuestSpine.ThrustStrikeSlash);
 }
 
 public partial class ConstaCreatureVisuals : BrotherhoodOfIronCreatureVisuals
@@ -74,6 +80,11 @@ public partial class ConstaCreatureVisuals : BrotherhoodOfIronCreatureVisuals
         BuildProfile("consta", 24f, -145.2f, 0.52f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("brotherhood_of_iron/", "consta", GuestSpine.ThrustStrikeSlash);
 }
 
 public partial class ArnoldCreatureVisuals : BrotherhoodOfIronCreatureVisuals
@@ -89,4 +100,9 @@ public partial class ArnoldCreatureVisuals : BrotherhoodOfIronCreatureVisuals
         BuildProfile("arnold", 24f, -145.2f, 0.52f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("brotherhood_of_iron/", "arnold", GuestSpine.ThrustStrikeSlash);
 }

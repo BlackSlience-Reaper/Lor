@@ -1,9 +1,10 @@
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.DawnOffice;
 
-public partial class GinCreatureVisuals : SpriteAttackCreatureVisuals
+public partial class GinCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     [MonsterVisual(typeof(Gin))]
     internal static readonly CreatureVisualLayout Layout = new(
@@ -18,4 +19,9 @@ public partial class GinCreatureVisuals : SpriteAttackCreatureVisuals
             0.53f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "gin", GuestSpine.StrikeThrustSlash);
 }

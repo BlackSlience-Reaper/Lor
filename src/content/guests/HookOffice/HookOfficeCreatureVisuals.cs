@@ -1,10 +1,11 @@
 using Godot;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.guests.HookOffice;
 
-public abstract partial class HookOfficeCreatureVisuals : SpriteAttackCreatureVisuals
+public abstract partial class HookOfficeCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
     internal static SpriteVisualProfile BuildProfile(
         string texturePrefix,
@@ -63,6 +64,11 @@ public partial class TaeinCreatureVisuals : HookOfficeCreatureVisuals
             0.50f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "taein", GuestSpine.ThrustStrikeSlash);
 }
 
 public partial class MccullinCreatureVisuals : HookOfficeCreatureVisuals
@@ -84,6 +90,11 @@ public partial class MccullinCreatureVisuals : HookOfficeCreatureVisuals
             0.50f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "mccullin", GuestSpine.StrikeThrustSlash);
 }
 
 public partial class NaokiCreatureVisuals : HookOfficeCreatureVisuals
@@ -105,4 +116,9 @@ public partial class NaokiCreatureVisuals : HookOfficeCreatureVisuals
             0.50f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "naoki", GuestSpine.ThrustStrikeSlash);
 }

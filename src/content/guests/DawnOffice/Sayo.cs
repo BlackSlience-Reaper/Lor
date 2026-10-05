@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
@@ -17,6 +18,9 @@ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 namespace LibraryOfRuina.content.guests.DawnOffice;
 public sealed class Sayo : MonsterModel
 {
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
     private static readonly string[] AttackAnimTriggers =
     {
         "AttackStrike",
@@ -49,7 +53,7 @@ public sealed class Sayo : MonsterModel
     private const int CleanUpWeakAmount = 2;
     private const int BackStreetsBleed = 3;
     private const int BackStreetsMultiHits = 2;
-    private const float AttackAnimDelaySeconds = 0.825f;
+    private const float AttackAnimDelaySeconds = GuestSpine.AttackImpactSeconds;
 
     public override async Task AfterAddedToRoom()
     {

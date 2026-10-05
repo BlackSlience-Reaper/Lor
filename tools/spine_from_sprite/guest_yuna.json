@@ -1,0 +1,154 @@
+{
+ "name": "guest_yuna",
+ "image": "../../images/monsters/yuna.png",
+ "atlas_page": "yuna.png",
+ "cell": 6,
+ "sigma": 10.0,
+ "body": {
+  "center": [
+   136.20196489285996,
+   329.5
+  ],
+  "radii": [
+   97.5,
+   141.5
+  ]
+ },
+ "parts": {
+  "head": {
+   "center": [
+    99.51722541823712,
+    94.2
+   ],
+   "radii": [
+    84.0,
+    98.91
+   ],
+   "bone": [
+    99.51722541823712,
+    188.0
+   ]
+  }
+ },
+ "animations": {
+  "idle": {
+   "type": "idle",
+   "duration": 2.4,
+   "bob": 2.5,
+   "breath": 0.012,
+   "parts": {
+    "head": {
+     "rotate": 2.5,
+     "phase": 0.7
+    }
+   }
+  },
+  "strike": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": -60.0,
+   "lean": 5.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/yuna_attack_strike.webp",
+    "anchor": [
+     443.19,
+     326.94
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1042
+   }
+  },
+  "thrust": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/yuna_attack_thrust.webp",
+    "anchor": [
+     741.69,
+     304.94
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1042
+   },
+   "jab": 0.0
+  },
+  "slash": {
+   "type": "lunge",
+   "duration": 1.0,
+   "head": "head",
+   "dash": 0.0,
+   "lean": 2.0,
+   "timing": {
+    "dash_back": [
+     0.75,
+     0.95
+    ]
+   },
+   "swap": {
+    "source": "../../images/monsters/yuna_attack_slash.webp",
+    "anchor": [
+     442.19,
+     338.94
+    ],
+    "on": 0.15,
+    "off": 0.78,
+    "fade_in": 0.04,
+    "fade_out": 0.12,
+    "reuse_page": true,
+    "scale": 1.1042
+   },
+   "jab": 0.0
+  },
+  "hurt": {
+   "type": "hurt",
+   "duration": 0.6,
+   "knockback": 20.0,
+   "tilt": -8.0,
+   "flash": 0.45,
+   "swap": {
+    "source": "../../images/monsters/yuna_hit.webp",
+    "anchor": [
+     135.2,
+     310.5
+    ],
+    "on": 0.0,
+    "off": 0.42,
+    "fade_in": 0.04,
+    "fade_out": 0.1,
+    "reuse_page": true
+   }
+  },
+  "die": {
+   "type": "slump",
+   "duration": 1.2,
+   "head": "head",
+   "droop": 14.0,
+   "sag": 9.4,
+   "lean": 4.0
+  }
+ }
+}

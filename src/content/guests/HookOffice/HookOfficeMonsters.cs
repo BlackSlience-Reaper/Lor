@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
@@ -18,7 +19,10 @@ namespace LibraryOfRuina.content.guests.HookOffice;
 
 public abstract class HookOfficeMonsterBase : MonsterModel
 {
-    protected const float AttackAnimDelaySeconds = 0.675f;
+    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
+    public override float DeathAnimLengthOverride => GuestSpine.DeathSeconds;
+
+    protected const float AttackAnimDelaySeconds = GuestSpine.AttackImpactSeconds;
 
     internal abstract SpriteVisualProfile SpriteProfile { get; }
 

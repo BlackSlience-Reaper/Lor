@@ -518,6 +518,30 @@ class Animator:
             self.add_spin_fx(anim, fx, T)
         return anim
 
+    # 原地站着死：被打得一震、往后晃一下，再低头、身体微微往下垮并稍往前倾，停住（消失交给游戏）。不倒地。
+    # head 是头部件名，droop 是低头角度，sag 是身体下沉像素，lean 是最后的前倾角度。
+    def slump(self, p):
+        T = p.get("duration", 1.2)
+        head, droop, sag, lean = p.get("head"), p.get("droop", 14.0), p.get("sag", 8.0), p.get("lean", 4.0)
+
+        def fn(t):
+            jolt = seg(t, 0.0, 0.06) * (1 - seg(t, 0.12, 0.3))
+            fall = seg(t, 0.2, 0.75)
+            wob = math.exp(-6 * max(0.0, t - 0.75)) * math.sin(14 * max(0.0, t - 0.75)) * (t > 0.75)
+            ch = {"body": {"rotate": -6 * jolt + lean * fall + 0.8 * wob, "x": 10 * jolt, "y": -sag * fall,
+                           "sx": 1 + 0.02 * fall, "sy": 1 - 0.035 * fall}}
+            if head:
+                ch[head] = {"rotate": -5 * jolt + droop * fall + 1.5 * wob}
+            return ch, {}
+
+        flash = p.get("flash", 0.45)
+
+        def color(t):
+            k = seg(t, 0.0, 0.05) * (1 - seg(t, 0.08, 0.3))
+            return (1.0, 1 - flash * k, 1 - flash * k, 1.0)
+
+        return self.build(fn, T, color if flash else None)
+
     # 只动一个部件的关键帧动画（挂在丝上的蜘蛛巢等）：身体完全不动，挂点就固定在部件骨头上。
     # rotate/sx/sy 是 [[时间, 值], ...]，相邻关键帧之间平滑过渡；ring 是从 start 起带衰减的摆动（amp 度、freq 次/秒、decay）；
     # flash 是开头闪红强度，tint 是 [[时间, 强度], ...] 的持续染红；可带 fx。
@@ -1090,10 +1114,17 @@ def main():
         if "align" in pose:
             align_swap(pose, rig, cfg)
         slot = pose["slot"] = f"pose_{anim_name}"
-        page = pose.get("page", f"{name}_pose_{anim_name}.png")
-        spec = {"source": pose["source"], "key": "all", "include": pose.get("include"), "exclude": pose.get("exclude"),
-                "pivot": pose["anchor"], "inner_radius": 0.0}
-        (pw, ph), (ox, oy) = extract_fx(spec, out_dir, page)
+        if pose.get("reuse_page"):
+            # 整张原图不抠：图集页直接引用原贴图（须与图集同目录），不另存一份 PNG
+            page = Path(pose["source"]).name
+            pw, ph = Image.open(pose["source"]).size
+            ax, ay = pose["anchor"]
+            ox, oy = pw / 2 - ax, ay - ph / 2
+        else:
+            page = pose.get("page", f"{name}_pose_{anim_name}.png")
+            spec = {"source": pose["source"], "key": "all", "include": pose.get("include"), "exclude": pose.get("exclude"),
+                    "pivot": pose["anchor"], "inner_radius": 0.0}
+            (pw, ph), (ox, oy) = extract_fx(spec, out_dir, page)
         data["bones"].append({"name": slot, "parent": "body"})
         data["slots"].append({"name": slot, "bone": slot})
         att = {"x": ox, "y": oy, "width": pw, "height": ph}

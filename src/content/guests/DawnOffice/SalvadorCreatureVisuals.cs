@@ -1,4 +1,5 @@
 using Godot;
+using LibraryOfRuina.content.guests;
 using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches.visuals;
 
@@ -22,4 +23,9 @@ public partial class SalvadorCreatureVisuals : DawnOfficeTripleAttackCreatureVis
             0.55f);
 
     internal override SpriteVisualProfile SpriteProfile => Profile;
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    private static readonly RuntimeSpineBody.Spec Spine =
+        GuestSpine.Create("", "salvador", GuestSpine.StrikeThrustSlash);
 }
