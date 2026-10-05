@@ -1836,7 +1836,6 @@ readonly	LibraryOfRuina.framework.intents.rendering.IntentRenderPipeline.Order	L
 readonly	LibraryOfRuina.framework.intents.rendering.IntentRenderPipeline.VanillaOrder	LibraryOfRuina.framework.intents.rendering.IIntentDecorator[][]
 readonly	LibraryOfRuina.framework.intents.rendering.VanillaIntentMapper.CombinedKinds	System.String[]
 readonly	LibraryOfRuina.framework.intents.rendering.VanillaIntentProxies.Sources	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.MonsterMoves.Intents.AbstractIntent,LibraryOfRuina.framework.intents.rendering.VanillaIntentProxySource]
-readonly	LibraryOfRuina.framework.powers.LibraryOfRuinaBlindNavigationPower.DamageMultiplier	System.Decimal
 readonly	LibraryOfRuina.framework.powers.LibraryOfRuinaCostReductionPower.AfflictionAmountPerCard	System.Decimal
 readonly	LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.PageRelicsById	System.Lazy`1[System.Collections.Generic.IReadOnlyDictionary`2[MegaCrit.Sts2.Core.Models.ModelId,LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection+PageRelicRegistration]]
 readonly	LibraryOfRuina.framework.relics.AbnormalityPageRewardPreselection.PreselectDepths	System.Runtime.CompilerServices.ConditionalWeakTable`2[MegaCrit.Sts2.Core.Models.RelicModel,System.Runtime.CompilerServices.StrongBox`1[System.Int32]]

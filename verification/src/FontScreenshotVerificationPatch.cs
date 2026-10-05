@@ -238,17 +238,20 @@ internal static class FontScreenshotVerificationPatch
             node.Hitbox.EmitSignal(Control.SignalName.MouseEntered);
             await WaitSeconds(1.2);
 
+            Node hoverTipsContainer = NGame.Instance?.HoverTipsContainer
+                ?? throw new InvalidOperationException("Hover tip container is unavailable.");
+
             if (ReferencePanelType is { } referenceType)
             {
                 // 对照组：只截参考模组自己画的意图图，本模组的意图图保持关闭。
-                Control referencePanel = FindAll<Control>(NGame.Instance!.HoverTipsContainer)
+                Control referencePanel = FindAll<Control>(hoverTipsContainer)
                                              .FirstOrDefault(candidate => candidate.Visible && candidate.GetType().FullName == referenceType)
                                          ?? throw new InvalidOperationException(referenceType + " did not open on hover.");
                 await Capture(shotName, [Crop("intent_panel", referencePanel)]);
                 return;
             }
 
-            NMonsterIntentGraphPanel panel = FindAll<NMonsterIntentGraphPanel>(NGame.Instance!.HoverTipsContainer)
+            NMonsterIntentGraphPanel panel = FindAll<NMonsterIntentGraphPanel>(hoverTipsContainer)
                                                  .FirstOrDefault(static candidate => candidate.Visible)
                                              ?? throw new InvalidOperationException("Intent graph panel did not open on hover.");
             Control monsterName = panel.FindChild("MonsterName", true, false) as Control

@@ -20,14 +20,14 @@ internal static class TemporaryMapRunAccessor
 
     public static void ClearScreens(RunManager runManager)
     {
-        VanillaPrivate.RunManagerClearScreens.Invoke(runManager, null);
+        VanillaPrivate.RunManagerClearScreens.Invoke(runManager);
     }
 
     public static Task FadeIn(RunManager runManager, bool showTransition) => RunManagerCompat.FadeIn(runManager, showTransition);
 
     public static async Task ExitCurrentRooms(RunManager runManager)
     {
-        if (VanillaPrivate.RunManagerExitCurrentRooms.Invoke(runManager, null) is Task task)
+        if (VanillaPrivate.RunManagerExitCurrentRooms.Invoke(runManager) is Task task)
         {
             await task;
         }

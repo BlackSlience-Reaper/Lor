@@ -11,6 +11,8 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>LibraryOfRuinaVerification</RootNamespace>
     <AssemblyName>LibraryOfRuinaVerification</AssemblyName>
+    <GodotProjectDir>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..'))</GodotProjectDir>
+    <GodotProjectDirBase64>$([MSBuild]::ConvertToBase64('$(GodotProjectDir)'))</GodotProjectDirBase64>
     <NoWarn>$(NoWarn);CS0436;CS1998</NoWarn>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -28,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <CompilerVisibleProperty Include="GodotProjectDir" />
+    <CompilerVisibleProperty Include="GodotProjectDirBase64" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" PrivateAssets="all" />
   </ItemGroup>
 

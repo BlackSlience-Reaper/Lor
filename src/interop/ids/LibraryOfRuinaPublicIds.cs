@@ -181,10 +181,8 @@ public static class LibraryOfRuinaPublicIds
         public const string ImprovDrumming = Prefix + "improv_drumming";
         public const string RapidWear = Prefix + "rapid_wear";
         public const string Bleed = Prefix + "bleed";
-        public const string BleedThorns = Prefix + "bleed_thorns";
         public const string BigBadWolfPunishEvil = Prefix + "big_bad_wolf_punish_evil";
         public const string BigBadWolfBornToBe = Prefix + "big_bad_wolf_born_to_be";
-        public const string BlindNavigation = Prefix + "blind_navigation";
         public const string BloodThirst = Prefix + "blood_thirst";
         public const string Burn = Prefix + "burn";
         public const string CostReduction = Prefix + "cost_reduction";
@@ -192,7 +190,6 @@ public static class LibraryOfRuinaPublicIds
         public const string Flaw = Prefix + "flaw";
         public const string ForsakenMurdererFear = Prefix + "forsaken_murderer_fear";
         public const string StrengthDown = Prefix + "strength_down";
-        public const string GhostConceal = Prefix + "ghost_conceal";
         public const string Guard = Prefix + "guard";
         public const string HappyTeddyAffection = Prefix + "happy_teddy_affection";
         public const string ForgottenAffection = Prefix + "forgotten_affection";
@@ -234,9 +231,7 @@ public static class LibraryOfRuinaPublicIds
         public const string InkOver = Prefix + "ink_over";
         public const string LittleRedPrey = Prefix + "little_red_prey";
         public const string SalvationHand = Prefix + "salvation_hand";
-        public const string MistEvasion = Prefix + "mist_evasion";
         public const string NextTurnStrength = Prefix + "next_turn_strength";
-        public const string PoisonFang = Prefix + "poison_fang";
         public const string PreservedDamage = Prefix + "preserved_damage";
         public const string QueenBind = Prefix + "queen_bind";
         public const string Untargetable = Prefix + "untargetable";
@@ -273,13 +268,11 @@ public static class LibraryOfRuinaPublicIds
         public const string AllAroundHelperPage = Prefix + "all_around_helper_page";
         public const string DeadButterfliesBook = Prefix + "dead_butterflies_book";
         public const string LittleRedMercenaryPage = Prefix + "little_red_mercenary_page";
-        public const string MagicCurse = Prefix + "magic_curse";
         public const string ForsakenMurdererPage = Prefix + "forsaken_murderer_page";
         public const string FuneralOfTheDeadButterfliesPage = Prefix + "funeral_of_the_dead_butterflies_page";
         public const string FairyFestivalPage = Prefix + "fairy_festival_page";
         public const string HappyTeddyPage = Prefix + "happy_teddy_page";
         public const string QueenOfHatredPage = Prefix + "queen_of_hatred_page";
-        public const string ProofOfExistence = Prefix + "proof_of_existence";
         public const string RedShoesPage = Prefix + "red_shoes_page";
         public const string SongMachinePage = Prefix + "song_machine_page";
         public const string SpiderBudPage = Prefix + "spider_bud_page";
@@ -298,11 +291,6 @@ public static class LibraryOfRuinaPublicIds
         public const string BadgedBuff = Prefix + "badged_buff";
         public const string BadgedDebuff = Prefix + "badged_debuff";
         public const string DynamicAttack = Prefix + "dynamic_attack";
-        public const string FoxAttack = Prefix + "fox_attack";
-        public const string FoxBuff = Prefix + "fox_buff";
-        public const string FoxDefend = Prefix + "fox_defend";
-        public const string FoxEnergy = Prefix + "fox_energy";
-        public const string FoxWeak = Prefix + "fox_weak";
         public const string SpiderBudWebDebuff = Prefix + "spider_bud_web_debuff";
     }
 }

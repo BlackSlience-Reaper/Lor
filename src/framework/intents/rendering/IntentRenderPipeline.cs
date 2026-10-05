@@ -138,7 +138,6 @@ internal static class IntentRenderPipeline
         var counter = new CounterIntentDecorator();
         var enemyCard = new EnemyCardIntentDecorator();
         var targetIndicator = new TargetIndicatorIntentDecorator();
-        var fox = new FoxIntentValueDecorator();
         var chordEgoDim = new ChordEgoDimIntentDecorator();
         var solemnMourningSeal = new SolemnMourningSealIntentDecorator();
 
@@ -146,7 +145,7 @@ internal static class IntentRenderPipeline
         order[(int)IntentRenderStage.CreatureLayout] = [combined, counter];
         order[(int)IntentRenderStage.CreatureDecorate] = [enemyCard, targetIndicator];
         // 原版战斗状态变化只刷新 NIntent.UpdateVisuals；逐节点调色同时覆盖格挡和封印变化。
-        order[(int)IntentRenderStage.IntentVisuals] = [badgeDetail, combined, counter, fox, solemnMourningSeal, chordEgoDim];
+        order[(int)IntentRenderStage.IntentVisuals] = [badgeDetail, combined, counter, solemnMourningSeal, chordEgoDim];
         order[(int)IntentRenderStage.IntentFrame] = [combined, counter];
         order[(int)IntentRenderStage.IntentHovered] = [badgeDetail];
         order[(int)IntentRenderStage.IntentHoveredAfter] = [targetIndicator];
