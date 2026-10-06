@@ -27,7 +27,7 @@ public partial class RedShoesLeftCreatureVisuals : SpineSpriteAttackCreatureVisu
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
-    private static readonly RuntimeSpineBody.Spec Spine = new(
+    internal static readonly RuntimeSpineBody.Spec Spine = new(
         "res://images/monsters/red_shoes/red_shoes_left.atlas",
         "res://images/monsters/red_shoes/red_shoes_left.spine-json",
         IdleAnimation: "idle",

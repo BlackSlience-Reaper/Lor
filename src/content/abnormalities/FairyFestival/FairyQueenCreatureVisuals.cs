@@ -28,7 +28,7 @@ public partial class FairyQueenCreatureVisuals : SpineSpriteAttackCreatureVisual
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
-    private static readonly RuntimeSpineBody.Spec Spine = new(
+    internal static readonly RuntimeSpineBody.Spec Spine = new(
         "res://images/monsters/fairy_festival/fairy_queen.atlas",
         "res://images/monsters/fairy_festival/fairy_queen.spine-json",
         IdleAnimation: "idle",

@@ -29,7 +29,7 @@ public partial class HappyTeddyCreatureVisuals : SpineSpriteAttackCreatureVisual
 
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
-    private static readonly RuntimeSpineBody.Spec Spine = new(
+    internal static readonly RuntimeSpineBody.Spec Spine = new(
         HappyTeddyAssets.HappyTeddySpineAtlas,
         HappyTeddyAssets.HappyTeddySpineSkeleton,
         IdleAnimation: "idle",
