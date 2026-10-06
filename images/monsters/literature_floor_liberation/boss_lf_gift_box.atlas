@@ -1,0 +1,11 @@
+boss_lf_gift_box.webp
+size:441,263
+filter:Linear,Linear
+Attack/body
+bounds:0,0,140,263
+Default/body
+bounds:142,0,86,176
+Hit/body
+bounds:230,0,91,176
+Cast/body
+bounds:323,0,116,175

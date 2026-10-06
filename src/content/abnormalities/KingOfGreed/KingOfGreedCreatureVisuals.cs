@@ -161,9 +161,15 @@ public partial class GoldenAmberCreatureVisuals
     }
 }
 
+/// <summary>闪耀的幸福：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，待机轻浮慢摇），加载失败时退回贴图。</summary>
 public partial class ShiningHappinessCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "king_of_greed", "shining_happiness", "hurt", new Dictionary<string, string>());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ShiningHappiness))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 0f), new(0.50f, 0.50f), -82f, -188f, 82f, 8f, new(0f, -88f), new(0f, -222f));

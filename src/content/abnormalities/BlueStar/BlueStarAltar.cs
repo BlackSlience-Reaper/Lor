@@ -8,6 +8,7 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -102,6 +103,8 @@ public sealed class BlueStarAltar : LorMonsterModel
     public override int MaxInitialHp => MaxHp;
 
     public override int DefaultChaoResistance => MaxChao;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance?
         DefaultPhysicalResistanceData => NormalResistance();

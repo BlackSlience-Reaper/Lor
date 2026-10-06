@@ -160,9 +160,22 @@ public partial class ScaredyCatCreatureVisuals
     }
 }
 
+/// <summary>家：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，待机微微晃），加载失败时退回贴图。</summary>
 public sealed partial class RoadHomeHouseCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "road_home",
+        "road_home_house",
+        "guard",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(RoadHomeHouse))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -18f), new(0.62f, 0.62f), -226f, -259f, 220f, 14f, new(0f, -124f), new(0f, -292f))

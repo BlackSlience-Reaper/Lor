@@ -3,9 +3,23 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Social;
 
+/// <summary>翡翠水晶：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，待机轻浮慢摇），加载失败时退回贴图。</summary>
 public sealed partial class EmeraldCrystalCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "social_floor_liberation",
+        "emerald_crystal",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Damaged"] = "hurt",
+            ["Guard"] = "guard",
+            ["Block"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(EmeraldCrystal))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -8f), new(0.38f, 0.38f), -95f, -210f, 95f, 8f, new(0f, -98f), new(0f, -240f))

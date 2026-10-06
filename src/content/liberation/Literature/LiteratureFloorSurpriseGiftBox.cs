@@ -7,6 +7,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -64,6 +65,8 @@ public sealed class LiteratureFloorSurpriseGiftBox : LorMonsterModel, ILibraryAb
         34);
 
     public override int DefaultChaoResistance => 20;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance?
         DefaultPhysicalResistanceData => CreateResistance();

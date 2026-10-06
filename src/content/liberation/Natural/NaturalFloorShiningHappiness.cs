@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.content.abnormalities.KingOfGreed;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -30,6 +31,8 @@ public sealed class NaturalFloorShiningHappiness : NaturalFloorPhaseMonster
     public override int MaxInitialHp => ModelDb.Monster<ShiningHappiness>().MaxInitialHp * (100 + HpIncreasePercent) / 100;
 
     public override int DefaultChaoResistance => ModelDb.Monster<ShiningHappiness>().DefaultChaoResistance;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData =>
         ModelDb.Monster<ShiningHappiness>().DefaultPhysicalResistanceData;
