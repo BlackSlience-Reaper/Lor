@@ -1,0 +1,40 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Hit": [
+   202,
+   394
+  ],
+  "Normal": [
+   133,
+   505
+  ],
+  "Slash": [
+   552,
+   672
+  ],
+  "Strike": [
+   559,
+   373
+  ],
+  "Swallowed": [
+   161,
+   465
+  ],
+  "SwallowedHit": [
+   204,
+   377
+  ],
+  "SwallowedSlash": [
+   555,
+   689
+  ],
+  "SwallowedStrike": [
+   560,
+   375
+  ]
+ },
+ "sizes": {}
+}

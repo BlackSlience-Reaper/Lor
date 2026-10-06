@@ -1,0 +1,32 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   726,
+   634
+  ],
+  "Default": [
+   604,
+   587
+  ],
+  "Guard": [
+   570,
+   620
+  ],
+  "Hit": [
+   542,
+   618
+  ],
+  "Pain": [
+   555,
+   758
+  ],
+  "Sorrow": [
+   658,
+   700
+  ]
+ },
+ "sizes": {}
+}

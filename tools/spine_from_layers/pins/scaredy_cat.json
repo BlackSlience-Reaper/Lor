@@ -1,0 +1,36 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Companion": [
+   190,
+   192
+  ],
+  "CompanionHit": [
+   180,
+   257
+  ],
+  "Hit": [
+   288,
+   501
+  ],
+  "Normal": [
+   205,
+   350
+  ],
+  "Ranged": [
+   1004,
+   473
+  ],
+  "Slash": [
+   241,
+   550
+  ],
+  "Strike": [
+   451,
+   355
+  ]
+ },
+ "sizes": {}
+}

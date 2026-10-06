@@ -1,0 +1,633 @@
+{
+ "name": "boss_big_bad_wolf_swallowed",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/big_bad_wolf",
+ "texture_scale": 0.6,
+ "preview_on_origin": true,
+ "origin": [
+  0.0,
+  -236.5
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Swallowed",
+ "motions": {
+  "Swallowed": {
+   "source": "Swallowed",
+   "bones": {
+    "body": {
+     "at": [
+      33.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      33.4,
+      105.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      4.0,
+      188.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "SwallowedHit": {
+   "source": "SwallowedHit",
+   "bones": {
+    "body": {
+     "at": [
+      30.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      30.7,
+      36.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -3.5,
+      105.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "SwallowedSlash": {
+   "source": "SwallowedSlash",
+   "bones": {
+    "body": {
+     "at": [
+      -181.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -181.1,
+      265.5
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -232.5,
+      395.6
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "SwallowedStrike": {
+   "source": "SwallowedStrike",
+   "bones": {
+    "body": {
+     "at": [
+      -182.6,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -182.6,
+      36.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -234.5,
+      104.0
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Swallowed",
+     0
+    ]
+   ],
+   "osc": {
+    "Swallowed.body": {
+     "rotate": [
+      1.0,
+      1,
+      0.0
+     ]
+    },
+    "Swallowed.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Swallowed.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "strike": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Swallowed",
+     0
+    ],
+    [
+     0.15,
+     "SwallowedStrike",
+     0
+    ],
+    [
+     0.75,
+     "Swallowed",
+     0
+    ]
+   ],
+   "keys": {
+    "Swallowed.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Swallowed.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "SwallowedStrike.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "SwallowedStrike.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "SwallowedStrike.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "slash": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Swallowed",
+     0
+    ],
+    [
+     0.15,
+     "SwallowedSlash",
+     0
+    ],
+    [
+     0.75,
+     "Swallowed",
+     0
+    ]
+   ],
+   "keys": {
+    "Swallowed.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Swallowed.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "SwallowedSlash.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "SwallowedSlash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "SwallowedSlash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "SwallowedHit",
+     0
+    ],
+    [
+     0.4,
+     "Swallowed",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "SwallowedHit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "SwallowedHit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "SwallowedHit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Swallowed",
+     0
+    ]
+   ],
+   "keys": {
+    "Swallowed.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Swallowed.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Swallowed.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
