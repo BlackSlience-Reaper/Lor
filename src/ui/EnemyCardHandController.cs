@@ -276,10 +276,11 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
 
     public string CardId { get; }
 
-    private readonly EnemyCardSpec _spec;
-    private readonly AbstractIntent _intent;
-    private readonly IReadOnlyList<Creature> _targets;
-    private readonly Creature _owner;
+    // 同一张牌的意图刷新时复用节点，只换绑定（见 Rebind），所以这几个不是只读
+    private EnemyCardSpec _spec;
+    private AbstractIntent _intent;
+    private IReadOnlyList<Creature> _targets;
+    private Creature _owner;
     private readonly NCard _card;
     private bool _isHovered;
 
@@ -308,6 +309,17 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
         _card.Position = CardSize * 0.5f;
         _card.MouseFilter = MouseFilterEnum.Ignore;
         this.AddChildSafely(_card);
+        WireCardVisuals(_card, spec.Id);
+    }
+
+    /// <summary>同一张牌的意图刷新：换上新的显示用卡牌数据并重画，节点和卡牌场景沿用。</summary>
+    private void Rebind(EnemyCardSpec spec, AbstractIntent intent, IEnumerable<Creature> targets, Creature owner)
+    {
+        _spec = spec;
+        _intent = intent;
+        _targets = targets as IReadOnlyList<Creature> ?? targets.ToArray();
+        _owner = owner;
+        _card.Model = spec.CreateDisplayCardForIntent(intent, _targets, owner);
         WireCardVisuals(_card, spec.Id);
     }
 
@@ -349,8 +361,18 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
             }
 
             Control holder = intentNode.GetNode<Control>("%IntentHolder");
-            RemoveExisting(holder);
+            // 原版每次加减能力都会刷新意图：同一张牌只换卡牌数据（伤害数值可能变了），不再删掉重建整张卡牌场景
+            EnemyCardIntentVisualNode? reusable = holder.GetChildren().OfType<EnemyCardIntentVisualNode>()
+                .FirstOrDefault(visual => visual.CardId == spec.Id && IsInstanceValid(visual) && !visual.IsQueuedForDeletion());
+            RemoveExisting(holder, keep: reusable);
             ConfigureNativeIntentSlot(intentNode, holder);
+            if (reusable != null)
+            {
+                reusable.Rebind(spec, intent, targets, owner);
+                reusable.Position = GetFloatingCardTopLeft();
+                return true;
+            }
+
             var cardVisual = new EnemyCardIntentVisualNode(spec, intent, targets, owner);
             cardVisual.Position = GetFloatingCardTopLeft();
             holder.AddChildSafely(cardVisual);
@@ -522,12 +544,12 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
         }
     }
 
-    private static void RemoveExisting(Control holder)
+    private static void RemoveExisting(Control holder, Node? keep = null)
     {
         foreach (Node child in holder.GetChildren().ToArray())
         {
             string name = child.Name.ToString();
-            if (name.StartsWith(CardNodePrefix, StringComparison.Ordinal))
+            if (!ReferenceEquals(child, keep) && name.StartsWith(CardNodePrefix, StringComparison.Ordinal))
             {
                 holder.RemoveChildSafely(child);
                 child.QueueFreeSafely();
