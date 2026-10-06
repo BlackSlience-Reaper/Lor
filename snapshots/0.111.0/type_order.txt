@@ -2549,6 +2549,8 @@ LibraryOfRuina.features.ftue.NLibraryOfRuinaCombatRulesFtue+SignalName
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup+MethodName
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup+PropertyName
 LibraryOfRuina.features.ftue.NLibraryOfRuinaFtuePopup+SignalName
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+GlowParameters
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+GlowLink
 LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName
 LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName
 LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+SignalName

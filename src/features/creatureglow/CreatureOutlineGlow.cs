@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using HarmonyLib;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -12,7 +13,8 @@ namespace LibraryOfRuina.features.creatureglow;
 /// 本模组战斗里给敌人贴图加一圈沿轮廓的微弱外发光，把怪物从细节繁杂的整幅插画背景里分出来。
 /// 每张怪物 Sprite2D 下挂一个同贴图、画在父节点身后的子 Sprite2D，着色器把四边外扩后按透明度向外扩散。
 /// 颜色沿用怪物身后那块背景的色相，只把明度往反方向推一点；背景越暗、越花，光越实。纯表现层，不参与任何同步状态。
-/// Spine 骨骼动画的怪物（原版、玩家）不处理：网格只覆盖贴图本身，外扩不出去。
+/// 本模组挂在贴图外观上的 Spine 身体（RuntimeSpineBody）整副放进 CanvasGroup 再发光，见 SpineShaderCode。
+/// 原版自带 Spine 的怪物与玩家不处理：网格只覆盖贴图本身，外扩不出去。
 /// </summary>
 internal sealed partial class CreatureOutlineGlow : Node
 {
@@ -61,10 +63,41 @@ internal sealed partial class CreatureOutlineGlow : Node
         }
         """;
 
+    // Spine 身体的外发光：CanvasGroup 把整副骨架画进离屏缓冲后由这个着色器处理（见 RuntimeSpineBody.EnableOutline）。
+    // 采样方式与贴图版相同，只是在屏幕空间按像素外扩；缓冲里是预乘透明度的颜色，骨架盖在光上面
+    private const string SpineShaderCode = """
+        shader_type canvas_item;
+        render_mode unshaded;
+
+        uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear;
+        uniform vec4 glow_color : source_color = vec4(1.0, 1.0, 1.0, 0.0);
+        uniform float radius = 20.0;
+
+        void fragment() {
+            vec4 c = textureLod(screen_texture, SCREEN_UV, 0.0);
+            float sum = 0.0;
+            for (int i = 0; i < 16; i++) {
+                float angle = float(i) * 0.39269908 + 0.19634954;
+                vec2 d = vec2(cos(angle), sin(angle)) * SCREEN_PIXEL_SIZE * radius;
+                sum += textureLod(screen_texture, SCREEN_UV + d * 0.25, 0.0).a;
+                sum += textureLod(screen_texture, SCREEN_UV + d * 0.55, 0.0).a * 0.6;
+                sum += textureLod(screen_texture, SCREEN_UV + d, 0.0).a * 0.3;
+            }
+            float glow = glow_color.a * sum / (16.0 * 1.9);
+            vec3 rgb = c.rgb + glow_color.rgb * glow * (1.0 - c.a);
+            float a = c.a + glow * (1.0 - c.a);
+            COLOR = vec4(a > 0.0001 ? rgb / a : vec3(0.0), a) * COLOR;
+        }
+        """;
+
     private static readonly Dictionary<ulong, Image?> ImageCache = new();
     private static Shader? _shader;
+    private static Shader? _spineShader;
 
-    private readonly List<(Sprite2D Source, Sprite2D Glow, ShaderMaterial Material)> _glows = [];
+    private ShaderMaterial? _spineMaterial;
+    private float _spineRadius = -1f;
+
+    private readonly List<GlowLink> _glows = [];
     private NCreatureVisuals _visuals = null!;
     private double _sinceRefresh = RefreshInterval;
     private Color _color = new(1f, 1f, 1f, 0f);
@@ -89,14 +122,14 @@ internal sealed partial class CreatureOutlineGlow : Node
             _sinceRefresh = 0;
             CollectSprites(_visuals);
             RefreshColor();
+            RefreshSpineRadius();
         }
 
-        foreach ((Sprite2D source, Sprite2D glow, ShaderMaterial material) in _glows)
+        // 被换掉的贴图节点释放后，它下面的发光一起没了，条目直接去掉
+        _glows.RemoveAll(static link => !GodotObject.IsInstanceValid(link.Source) || !GodotObject.IsInstanceValid(link.Glow));
+        foreach (GlowLink link in _glows)
         {
-            if (GodotObject.IsInstanceValid(source) && GodotObject.IsInstanceValid(glow))
-            {
-                Sync(source, glow, material);
-            }
+            Sync(link);
         }
     }
 
@@ -104,6 +137,18 @@ internal sealed partial class CreatureOutlineGlow : Node
     {
         foreach (Node child in node.GetChildren())
         {
+            if (child is RuntimeSpineBody body)
+            {
+                // 动画效果开着时贴图都藏着，换成整副骨架发光；各形态的骨架共用一份 material
+                if (!body.HasOutline)
+                {
+                    float bodyScale = Mathf.Max(0.0001f, body.GetGlobalTransformWithCanvas().Scale.Abs().X);
+                    body.EnableOutline(SpineMaterial(), ScreenRadius * 2f / bodyScale);
+                }
+
+                continue;
+            }
+
             if (child is Sprite2D sprite && sprite.Name != GlowName && sprite.GetNodeOrNull(GlowName) == null)
             {
                 var material = new ShaderMaterial { Shader = _shader ??= new Shader { Code = ShaderCode } };
@@ -115,8 +160,9 @@ internal sealed partial class CreatureOutlineGlow : Node
                     Material = material,
                 };
                 sprite.AddChild(glow);
-                _glows.Add((sprite, glow, material));
-                Sync(sprite, glow, material);
+                var link = new GlowLink(sprite, glow, material);
+                _glows.Add(link);
+                Sync(link);
                 material.SetShaderParameter("glow_color", _color);
             }
 
@@ -127,8 +173,40 @@ internal sealed partial class CreatureOutlineGlow : Node
         }
     }
 
-    private static void Sync(Sprite2D source, Sprite2D glow, ShaderMaterial material)
+    private ShaderMaterial SpineMaterial()
     {
+        if (_spineMaterial == null)
+        {
+            _spineMaterial = new ShaderMaterial { Shader = _spineShader ??= new Shader { Code = SpineShaderCode } };
+            _spineMaterial.SetShaderParameter("glow_color", _color);
+            _spineRadius = -1f;
+        }
+
+        RefreshSpineRadius();
+        return _spineMaterial;
+    }
+
+    // 着色器按渲染目标的像素外扩；画面按窗口缩放时，换算成与贴图版相同的界面单位宽度
+    private void RefreshSpineRadius()
+    {
+        if (_spineMaterial == null || _visuals.GetViewport() is not { } viewport)
+        {
+            return;
+        }
+
+        float visible = viewport.GetVisibleRect().Size.X;
+        float pixels = viewport.GetTexture()?.GetSize().X ?? visible;
+        float radius = ScreenRadius * (visible > 0f ? pixels / visible : 1f);
+        if (!Mathf.IsEqualApprox(radius, _spineRadius))
+        {
+            _spineRadius = radius;
+            _spineMaterial.SetShaderParameter("radius", radius);
+        }
+    }
+
+    private static void Sync(GlowLink link)
+    {
+        Sprite2D source = link.Source, glow = link.Glow;
         if (glow.Texture != source.Texture)
         {
             glow.Texture = source.Texture;
@@ -161,11 +239,33 @@ internal sealed partial class CreatureOutlineGlow : Node
             uv = new Rect2(new Vector2(source.FrameCoords.X, source.FrameCoords.Y) * frameSize, frameSize);
         }
 
+        // 着色器参数每设一次都是一次渲染服务器调用，绝大多数帧没变，只在变化时设
         float scale = Mathf.Max(0.0001f, source.GetGlobalTransformWithCanvas().Scale.Abs().X);
-        material.SetShaderParameter("radius", ScreenRadius / scale);
-        material.SetShaderParameter("quad_rect", new Vector4(quad.Position.X, quad.Position.Y, quad.Size.X, quad.Size.Y));
-        material.SetShaderParameter("uv_rect", new Vector4(uv.Position.X, uv.Position.Y, uv.End.X, uv.End.Y));
-        material.SetShaderParameter("uv_flip", new Vector2(source.FlipH ? -1f : 1f, source.FlipV ? -1f : 1f));
+        var parameters = new GlowParameters(
+            ScreenRadius / scale,
+            new Vector4(quad.Position.X, quad.Position.Y, quad.Size.X, quad.Size.Y),
+            new Vector4(uv.Position.X, uv.Position.Y, uv.End.X, uv.End.Y),
+            new Vector2(source.FlipH ? -1f : 1f, source.FlipV ? -1f : 1f));
+        if (link.Applied == parameters)
+        {
+            return;
+        }
+
+        link.Applied = parameters;
+        link.Material.SetShaderParameter("radius", parameters.Radius);
+        link.Material.SetShaderParameter("quad_rect", parameters.QuadRect);
+        link.Material.SetShaderParameter("uv_rect", parameters.UvRect);
+        link.Material.SetShaderParameter("uv_flip", parameters.UvFlip);
+    }
+
+    private readonly record struct GlowParameters(float Radius, Vector4 QuadRect, Vector4 UvRect, Vector2 UvFlip);
+
+    private sealed class GlowLink(Sprite2D source, Sprite2D glow, ShaderMaterial material)
+    {
+        public Sprite2D Source { get; } = source;
+        public Sprite2D Glow { get; } = glow;
+        public ShaderMaterial Material { get; } = material;
+        public GlowParameters? Applied { get; set; }
     }
 
     private void RefreshColor()
@@ -185,11 +285,19 @@ internal sealed partial class CreatureOutlineGlow : Node
             : Color.FromHsv(mean.H, Mathf.Min(1f, mean.S * 1.1f), mean.V * 0.55f);
         float contrastNeed = Mathf.Abs(luminance - 0.5f) < 0.2f ? 0.08f : 0f;
         float alpha = Mathf.Clamp(0.32f + (1f - luminance) * 0.22f + sample.Busyness * 0.5f + contrastNeed, 0.3f, 0.62f);
-        _color = new Color(tint.R, tint.G, tint.B, alpha);
-        foreach ((_, _, ShaderMaterial material) in _glows)
+        var color = new Color(tint.R, tint.G, tint.B, alpha);
+        if (color == _color)
         {
-            material.SetShaderParameter("glow_color", _color);
+            return;  // 新挂上的发光在创建时已经用当前颜色
         }
+
+        _color = color;
+        foreach (GlowLink link in _glows)
+        {
+            link.Material.SetShaderParameter("glow_color", _color);
+        }
+
+        _spineMaterial?.SetShaderParameter("glow_color", _color);
     }
 
     private static TextureRect? FindBackgroundRect()

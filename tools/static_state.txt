@@ -14,6 +14,7 @@
 # run / combat / instance 的子类写 -。类型是 RunScoped 的必须是 run，CombatScoped 的必须是 combat。
 LibraryOfRuina.addons.mega_text.MegaLabelHelper._cachedBbcodeObjects	harmless	cache	ParseBbcode 每次先 Clear 再重填的复用缓冲区
 LibraryOfRuina.content.abnormalities.AddictedEmployee.AddictedEmployee.MoonTextRng	harmless	ui	不设种子的 System.Random，只用来打乱背景月光文字的显示顺序，不参与玩法随机
+LibraryOfRuina.content.abnormalities.Alriune.AlriuneCrownCardPatch._croppedCrown	harmless	cache	第一次给攻击牌挂王冠时裁好的王冠贴图，之后共用；底图被 AssetCache 释放时重新加载
 LibraryOfRuina.content.abnormalities.BigBird.BigBirdFilterOverlay._charmedLayer	harmless	ui	EnsureCharmedOverlay 创建滤镜层；StopCharmedOverlay（由 Clear/RefreshForCombat 调用，BigBird.cs:139、BigBirdPowers.cs:98）QueueFree 后置空；只影响画面
 LibraryOfRuina.content.abnormalities.BigBird.BigBirdFilterOverlay._charmedLoop	harmless	ui	EnsureCharmedOverlay 里 LocalOggLoopPlayer.StartLoop 写入；StopCharmedOverlay 停止并置空；只影响循环音效
 LibraryOfRuina.content.abnormalities.CosmicFragment.CosmicFragmentEpiphanyCard._cosmicFragmentUpgradeInProgress	harmless	scope	UpgradeFromCosmicFragment 里 try/finally 置 true，结束后还原为 previous；是升级期间的作用域标记
@@ -123,6 +124,7 @@ LibraryOfRuina.core.settings.LibraryRunInjectionGuard._lobbyHostInjected	harmles
 LibraryOfRuina.core.settings.LibraryRunSettings._pendingLobbyCarrier	harmless	net	TakeLobbyCarrier 写入；AttachToNewRun 取走；OnRunCleaningUp（RunLifecycle 第一步）清空；开局载体交接，按种子配对
 LibraryOfRuina.features.creatureglow.CreatureOutlineGlow.ImageCache	harmless	cache	按贴图实例 id 缓存解压后的背景图，用来取怪物身后的平均色；最多留两张，只影响发光颜色
 LibraryOfRuina.features.creatureglow.CreatureOutlineGlow._shader	harmless	cache	首次挂发光节点时编译的外发光着色器，之后共用
+LibraryOfRuina.features.creatureglow.CreatureOutlineGlow._spineShader	harmless	cache	首次给 Spine 身体开外发光时编译的着色器，之后共用
 LibraryOfRuina.features.ftue.FtueGuard.AbnormalityEncounterNames	harmless	cache	静态常量集合，之后只读
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch._targetMethod	harmless	cache	Prepare 反射解析目标方法
 LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch._targetMethod	harmless	cache	Prepare 里由 ResolveTargetMethod 反射解析
@@ -134,6 +136,8 @@ LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._editable
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._enabled	harmless	settings	ReloadLocked 从显示配置文件读取；只控制意图图是否显示
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._lastLoggedEnabled	harmless	log	ReloadLocked 里用于避免重复打日志
 LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._loaded	harmless	cache	ReloadLocked 加载后置 true
+LibraryOfRuina.features.intentgraph.IntentGraphFonts._labelFont	harmless	cache	按当前语言缓存的标签字体，语言变化或字体失效时重建；只影响意图图文字
+LibraryOfRuina.features.intentgraph.IntentGraphFonts._valueFont	harmless	cache	按当前语言缓存的数值字体，语言变化或字体失效时重建；只影响意图图文字
 LibraryOfRuina.features.intentgraph.IntentGraphWorkshopModBridge._panelsField	harmless	cache	EnsurePatched 解析第三方 Intent Graph 的面板表字段后写入，只读不改；只影响意图图面板
 LibraryOfRuina.features.intentgraph.IntentGraphWorkshopModBridge._patchAttempted	harmless	once	EnsurePatched 找到 IntentGraphHost 后置 true，保证只挂一次钩子
 LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController.ActivePanels	harmless	ui	以 NCreature 节点为键的面板表：ShowFor 写入，HideFor 移除；只影响意图图面板

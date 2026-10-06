@@ -43,6 +43,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
 
     private Spec _spec = null!;
     private Node2D _main = null!;
+    private CanvasGroup? _outlineGroup;
     private Node2D[] _ghosts = [];
     private float[] _ghostTimes = [];
     private bool _started;
@@ -113,6 +114,29 @@ internal sealed partial class RuntimeSpineBody : Node2D
         ZIndex = anchor.ZIndex;
         ZAsRelative = anchor.ZAsRelative;
     }
+
+    /// <summary>
+    /// 外轮廓发光（见 CreatureOutlineGlow）：把主体 SpineSprite 放进一个 CanvasGroup，整副骨架先画进离屏缓冲，
+    /// 再由 material 的着色器沿整体轮廓向外发光。各部件分开画时只能各自外扩，所以要整体处理。
+    /// 残影不放进去，不发光。只建一次，之后颜色、半径都改 material 的参数。
+    /// </summary>
+    internal void EnableOutline(ShaderMaterial material, float margin)
+    {
+        if (_outlineGroup != null && IsInstanceValid(_outlineGroup))
+        {
+            return;
+        }
+
+        var group = new CanvasGroup { Name = "OutlineGroup", Material = material, FitMargin = margin, ClearMargin = margin };
+        int index = _main.GetIndex();
+        RemoveChild(_main);
+        AddChild(group);
+        MoveChild(group, index);
+        group.AddChild(_main);
+        _outlineGroup = group;
+    }
+
+    internal bool HasOutline => _outlineGroup != null && IsInstanceValid(_outlineGroup);
 
     /// <summary>
     /// 出场时把外观各形态的骨架先读进缓存（见 <see cref="LoadData"/>），战斗中换形态时不再现读。
