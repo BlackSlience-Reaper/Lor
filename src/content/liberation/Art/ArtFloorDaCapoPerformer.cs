@@ -77,7 +77,7 @@ public sealed class ArtFloorDaCapoPerformer : LorMonsterModel
                     "ART_FLOOR_DA_CAPO_PERFORMER.variant3.name"),
                 ArtFloorDaCapoPerformerVariant.Fourth => L10NMonsterLookup(
                     "ART_FLOOR_DA_CAPO_PERFORMER.variant4.name"),
-                _ => L10NMonsterLookup("ART_FLOOR_DA_CAPO_PERFORMER.variant.name")
+                _ => L10NMonsterLookup("ART_FLOOR_DA_CAPO_PERFORMER.name")
             };
         }
     }

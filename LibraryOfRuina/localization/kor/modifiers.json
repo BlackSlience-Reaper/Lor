@@ -1,4 +1,6 @@
 {
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.title": "Library of Ruina 내부 리스너",
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.description": "이번 등반에서 완전히 개방한 층을 기록합니다.",
   "SPECIAL_GUEST_RUN_STATE.title": "특별 손님 내부 상태",
   "SPECIAL_GUEST_RUN_STATE.description": "특별 손님의 해금, 소모, 무대, 스토리 및 추첨 상태를 저장합니다.",
   "LIBRARY_RUN_SETTINGS.title": "폐허 도서관 도전 설정",

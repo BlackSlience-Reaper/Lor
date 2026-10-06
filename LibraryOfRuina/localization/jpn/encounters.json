@@ -1,4 +1,10 @@
 {
+  "ALRIUNE_STRONG.title": "アルリウネ",
+  "ALRIUNE_STRONG.loss": "あなたは{encounter}に敗れた……",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.title": "カーリーの接待",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]で倒れた。",
+  "CRYING_CHILDREN_ENCOUNTER.title": "泣く子",
+  "CRYING_CHILDREN_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]の接待で倒れた。",
   "ADDICTED_EMPLOYEE_STRONG.loss": "あなたはずっと{encounter}敗北......",
   "ADDICTED_EMPLOYEE_STRONG.title": "取り憑かれた職員",
   "ADDICTED_EMPLOYEE_WEAK.loss": "あなたはずっと{encounter}敗北......",

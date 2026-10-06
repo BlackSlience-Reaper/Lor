@@ -1,4 +1,10 @@
 {
+  "ALRIUNE_STRONG.title": "Alriune",
+  "ALRIUNE_STRONG.loss": "You were defeated by {encounter}...",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.title": "Reception of Kali",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.loss": "{character} fell during the [gold]{encounter}[/gold].",
+  "CRYING_CHILDREN_ENCOUNTER.title": "The Crying Children",
+  "CRYING_CHILDREN_ENCOUNTER.loss": "{character} fell during the reception of [gold]{encounter}[/gold].",
   "ADDICTED_EMPLOYEE_STRONG.loss": "You were defeated by {encounter}...",
   "ADDICTED_EMPLOYEE_STRONG.title": "Addicted Employee",
   "ADDICTED_EMPLOYEE_WEAK.loss": "You were defeated by {encounter}...",

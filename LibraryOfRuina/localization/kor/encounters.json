@@ -1,4 +1,10 @@
 {
+  "ALRIUNE_STRONG.title": "알리우네",
+  "ALRIUNE_STRONG.loss": "당신은 {encounter}에게 패배했다…",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.title": "칼리 접대",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.loss": "{character}이(가) [gold]{encounter}[/gold] 중 쓰러졌다.",
+  "CRYING_CHILDREN_ENCOUNTER.title": "우는 아이",
+  "CRYING_CHILDREN_ENCOUNTER.loss": "{character}이(가) [gold]{encounter}[/gold] 접대 중 쓰러졌다.",
   "ADDICTED_EMPLOYEE_STRONG.loss": "당신은{encounter}패배했다…",
   "ADDICTED_EMPLOYEE_STRONG.title": "홀린 직원",
   "ADDICTED_EMPLOYEE_WEAK.loss": "당신은{encounter}패배했다…",
