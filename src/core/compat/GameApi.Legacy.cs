@@ -33,6 +33,12 @@ internal static partial class GameApi
     internal static decimal ModifyDamage(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, out IEnumerable<AbstractModel> modifiers) => Hook.ModifyDamage(runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, out modifiers);
     // 伤害预览按 Hook.ModifyDamage 的实际参数表解释执行；旧版没有 cardPlay 参数。
     internal static object?[] ModifyDamageHookArguments(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, object modifiers) => [runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, modifiers];
+
+    // 0.107.1 的原版伤害修正没有 CardPlay；基础库接口仍保留完整参数。
+    internal static object?[] IncomingDamageModifierArguments(string method, object?[] arguments) =>
+        method is "ModifyDamageAdditive" or "ModifyDamageMultiplicative" or "ModifyDamageCap"
+            ? arguments[..^1] : arguments;
+
     internal static StringName Confirm => MegaInput.accept;
     internal static void ActivateEvoke(DarkOrb orb, Creature target) { } // 旧版激发没有此通知。
     // 旧版没有 TriggerPassive，回合钩子直接调各球的 Passive。
