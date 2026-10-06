@@ -408,6 +408,8 @@ public sealed class PunishingBird : LorMonsterModel, ITargetedMonsterAttackProvi
 
 public abstract class ForestKeeperBirdBase : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const string TextureRoot = "res://images/monsters/forest_keeper_bird/";
     internal const string IdleTexturePath = TextureRoot + "idle.png";
     internal const string HitTexturePath = TextureRoot + "hit.png";

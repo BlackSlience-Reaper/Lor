@@ -1,0 +1,17 @@
+boss_nf_forgotten_sword_normal.webp
+size:1999,861
+filter:Linear,Linear
+NormalSlash/body
+bounds:0,0,482,644
+Normal/body
+bounds:484,0,94,346
+NormalBlunt/body
+bounds:580,0,929,344
+NormalGuard/body
+bounds:1511,0,238,308
+NormalEvade/body
+bounds:1751,0,246,286
+NormalHit/body
+bounds:0,646,365,215
+NormalPierce/body
+bounds:367,646,619,153

@@ -4,9 +4,25 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.History;
 
+/// <summary>
+/// 工蜂的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。异想体蜂后的工蜂同一套图，共用这副骨架。
+/// </summary>
 public partial class HistoryFloorWorkerBeeCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "history_floor",
+        "worker_bee",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Attack2"] = "attack2",
+            ["Defend"] = "dodge",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(HistoryFloorWorkerBee))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -76f), new(0.44f, 0.44f), -82f, -184f, 82f, 8f, new(0f, -82f), new(0f, -224f))

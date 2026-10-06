@@ -44,9 +44,32 @@ public sealed partial class OzmaCreatureVisuals
     }
 }
 
+/// <summary>
+/// 南瓜头杰克的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），
+/// 休眠、苏醒两个形态各一副骨架，加载失败时退回逐帧换图。"Awake" 触发先切到苏醒形态再播，
+/// 所以苏醒动作在苏醒那副骨架里（先显示趴着的样子再站起来）。
+/// </summary>
 public sealed partial class OzmaJackCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["Awake"] = "awake",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec DormantSpine = LayeredBossSpine.Create(
+        "ozma", "ozma_jack_dormant", "hurt", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec AwakeSpine = LayeredBossSpine.Create(
+        "ozma", "ozma_jack_awake", "hurt", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => DormantSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [DormantSpine, AwakeSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == AwakeVariant ? AwakeSpine : DormantSpine;
+
     [MonsterVisual(typeof(OzmaJack))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -8f), new(0.48f, 0.48f), -98f, -125f, 98f, 12f, new(0f, -108f), new(0f, -264f))

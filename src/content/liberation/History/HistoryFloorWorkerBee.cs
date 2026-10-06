@@ -4,6 +4,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -19,6 +20,8 @@ namespace LibraryOfRuina.content.liberation.History;
 
 public sealed class HistoryFloorWorkerBee : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string GuardQueenMoveId = "GUARD_QUEEN";
     private const string CarryLarvaMoveId = "CARRY_LARVA";
     private const string NutrientMixMoveId = "NUTRIENT_MIX";

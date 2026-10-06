@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -20,6 +21,8 @@ namespace LibraryOfRuina.content.liberation.Natural;
 
 public sealed class NaturalFloorForgottenSword : NaturalFloorDespairMonster
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private static readonly string[] Ids = ["HOLLOW_PRIDE", "FADED_TRUST", "SWORD_OF_GRIEF", "TEAR_EDGE_SWORD",
         "PIERCING_HEART_SWORD", "RENDING_HEART_SWORD", "RUINING_HEART_SWORD", "FALSE_DEATH_HIDDEN", "FALSE_DEATH"];
 

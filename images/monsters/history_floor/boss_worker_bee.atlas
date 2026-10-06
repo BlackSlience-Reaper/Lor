@@ -1,0 +1,13 @@
+boss_worker_bee.webp
+size:1171,266
+filter:Linear,Linear
+Attack/body
+bounds:0,0,260,266
+Dodge/body
+bounds:262,0,187,242
+Default/body
+bounds:451,0,212,220
+Attack2/body
+bounds:665,0,261,192
+Hit/body
+bounds:928,0,241,155

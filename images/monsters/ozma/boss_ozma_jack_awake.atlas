@@ -1,0 +1,9 @@
+boss_ozma_jack_awake.webp
+size:488,184
+filter:Linear,Linear
+Awake/body
+bounds:0,0,179,184
+Hit/body
+bounds:181,0,178,181
+Dormant/body
+bounds:361,0,125,98

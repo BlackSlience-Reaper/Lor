@@ -1,0 +1,11 @@
+boss_forest_keeper_bird.webp
+size:1808,385
+filter:Linear,Linear
+Slash/body
+bounds:0,0,582,385
+Thrust/body
+bounds:584,0,550,280
+Hit/body
+bounds:1136,0,324,254
+Default/body
+bounds:1462,0,344,250
