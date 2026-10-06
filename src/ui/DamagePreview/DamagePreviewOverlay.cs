@@ -1,6 +1,4 @@
-using MegaCrit.Sts2.Core.GameActions;
-using MegaCrit.Sts2.Core.Entities.Actions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -15,6 +13,7 @@ using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Localization;
@@ -459,7 +458,8 @@ internal sealed partial class DamagePreviewOverlay : Control
             || RunManager.Instance.ActionExecutor.IsRunning
             || _combat.Players.Any(CombatManager.Instance.IsExecutingCardOrPotionEffect);
         _untilIncomingRefresh -= delta;
-        // 战斗动作、生命、格挡与能力变化才使缓存失效，静止画面不再每秒模拟五遍。
+        // 一次模拟要把全场监听者（各玩家全部牌堆、遗物、能力）解释一遍，开销随卡组与人数增长：
+        // 只有战斗动作、生命、格挡、能力变化标脏后才重算，并且两次之间至少隔 RefreshInterval。
         bool refresh = _incomingDirty && !isResolving && _untilIncomingRefresh <= 0;
         if (refresh)
         {

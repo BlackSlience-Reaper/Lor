@@ -8,6 +8,7 @@ using LibraryLib.Hooks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -142,8 +143,26 @@ internal static class IncomingDamagePreviewCalculator
                     continue;
                 }
 
-                // 已知攻击逐次推进，单个监听者失败由查询聚合器局部处理。
-                SimulateAttack(simulation, enemy, attack, ordinaryTargets, targets);
+                // 已知攻击逐次推进，单个监听者失败由查询聚合器局部处理。聚合器之外的意外异常只隔离这一次攻击：
+                // 已结算的命中保留，受击者标为不完整，至少显示“?”，不当成没有来袭伤害，也不影响其他敌人
+                try
+                {
+                    SimulateAttack(simulation, enemy, attack, ordinaryTargets, targets);
+                }
+                catch (Exception error) when (error is not OutOfMemoryException)
+                {
+                    foreach (Creature target in targets)
+                    {
+                        if (simulation.TryGetState(target, out IncomingDamageTargetState? state))
+                        {
+                            state!.HasIncomingDamage = true;
+                            state.IsPartial = true;
+                        }
+                    }
+
+                    LorLog.InfoOnce("IncomingPreview.AttackFailed:" + enemy.Monster.GetType().FullName,
+                        $"[LibraryOfRuina.IncomingPreview] Partial preview: attack of {enemy.Monster.GetType().FullName} failed: {error.Message}");
+                }
             }
         }
     }

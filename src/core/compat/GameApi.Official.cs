@@ -27,6 +27,7 @@ internal static partial class GameApi
     internal static CardPlay? CardPlayCompat(this AttackCommand command) => command.CardPlay;
     internal static Task LoseBlock(PlayerChoiceContext context, Creature target, decimal amount, Creature? remover) => CreatureCmd.LoseBlock(context, target, amount, remover);
     internal static bool IsDirectionalNavigation(NControllerManager? manager) => manager?.IsUsingDirectionalNavigation == true;
+    internal static Rng CloneRng(Rng rng) => new(rng.ToSerializable());
     internal static ulong FallbackSeed(string label) => MegaCrit.Sts2.Core.Helpers.StringHelper.GetDeterministicHashCode(label);
     internal static bool HasHibernate(Creature creature) => creature.HasPower<HibernatePower>();
     internal static Rng CreateRng(ulong seed, string label) => new Rng(seed, label);

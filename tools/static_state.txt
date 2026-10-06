@@ -272,8 +272,13 @@ LibraryOfRuina.patches.RoomIconPathCustomOverride.PropertiesByType	harmless	cach
 LibraryOfRuina.patches.VanillaIntentDisplayPatch.NativeLayouts	instance	-	以意图容器节点为弱键：首次刷新意图时（CreatureLayout 入口最前）记下原生布局，只读；原版风格画法据此还原默认画法运行时出牌改过的容器间距与尺寸
 LibraryOfRuina.patches.visuals.AttackAnimationHitSuppression.ActiveAttackAnimations	combat	-	攻击动画进行中的生物计数，攻击命令完成时释放；只影响受击动画
 LibraryOfRuina.patches.visuals.MonsterVisualCatalog.ValidatedModelAssetPathIds	harmless	cache	ValidateModelAssetPaths 记录已校验过的 ID
+LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace.Icons	harmless	cache	按资源路径缓存图标文本与存在性
 LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace._current	harmless	scope	构造函数压入当前 trace，Dispose 还原为 _previous；伤害预览说明
+LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewHookReader.Parameters	harmless	cache	按方法缓存参数元数据
 LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewHookReader.Plans	harmless	cache	缓存方法 IL、跳转与局部变量布局；只存不可变元数据，跨战斗复用
+LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewHookReader.VirtualMethods	harmless	cache	按运行时类型和方法缓存虚调用/接口分派，保留 call 的基类实现
+LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation.ListenerMethods	harmless	cache	按类型和钩子名缓存监听者方法
+LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation.QueryMethods	harmless	cache	按类型、钩子和接口缓存数值查询覆写
 LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation.ReportedUnsupportedHooks	harmless	log	RecordUnsupportedHook 首次遇到某个不支持的钩子方法时加入并记一条日志；只防重复日志，不影响预览结果
 LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation._current	harmless	scope	Enter 写入模拟上下文，Dispose 还原为 previous；只在同步预览计算期间存在
 LibraryOfRuina.ui.DamagePreview.RolandDicePreviewModifiers._getPreview	harmless	cache	首次调用时 BindPreview 绑定委托
@@ -281,8 +286,3 @@ LibraryOfRuina.ui.DamagePreview.RolandDicePreviewModifiers._initialized	harmless
 LibraryOfRuina.ui.LibraryHealthBarForecastFeature._initialized	harmless	once	Initialize 执行后置 true
 LibraryOfRuina.ui.LibraryHealthBarLockForegroundPatch.VisibilitySnapshots	instance	-	以 NHealthBar 为弱键：CaptureForecastContainers 写入可见性快照，RestoreForecastContainers 还原后移除
 LibraryOfRuina.ui.scene_transitions.LorexSceneTransitionController._activeReveal	harmless	ui	PlayRevealAsync/PlayPreparedRevealAsync 写入；完成后或 WaitForActiveRevealAsync 中置空；只影响转场
-LibraryOfRuina.ui.DamagePreview.DamagePreviewTrace.Icons	harmless	cache	按资源路径缓存图标文本与存在性
-LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewHookReader.VirtualMethods	harmless	cache	按运行时类型和方法缓存虚调用/接口分派，保留 call 的基类实现
-LibraryOfRuina.ui.DamagePreview.IncomingDamagePreviewHookReader.Parameters	harmless	cache	按方法缓存参数元数据
-LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation.ListenerMethods	harmless	cache	按类型和钩子名缓存监听者方法
-LibraryOfRuina.ui.DamagePreview.IncomingDamageSimulation.QueryMethods	harmless	cache	按类型、钩子和接口缓存数值查询覆写

@@ -196,6 +196,16 @@ internal sealed partial class IncomingDamageSimulation
 
     internal void RecordUnsupportedHook(AbstractModel source, MethodInfo method, string reason)
     {
+        MarkPartial(source);
+        if (ReportedUnsupportedHooks.Add(method))
+        {
+            Log.Info($"[LibraryOfRuina.IncomingPreview] Partial preview: unsupported hook {source.GetType().FullName}.{method.Name}: {reason}");
+        }
+    }
+
+    /// <summary>来源钩子没能准确结算：标在它影响的目标上；找不到对应目标（敌方或攻击者一侧）时所有目标都不确定。</summary>
+    internal void MarkPartial(AbstractModel source)
+    {
         Creature? affected = AffectedCreature ?? source switch
         {
             PowerModel power => power.Owner,
@@ -208,9 +218,13 @@ internal sealed partial class IncomingDamageSimulation
         {
             state!.IsPartial = true;
         }
-        if (ReportedUnsupportedHooks.Add(method))
+        else
         {
-            Log.Info($"[LibraryOfRuina.IncomingPreview] Partial preview: unsupported hook {source.GetType().FullName}.{method.Name}: {reason}");
+            // 敌方或攻击者一侧的钩子（回合结束加力量等）失败时，每个目标的来袭伤害都可能偏低
+            foreach (IncomingDamageTargetState target in States)
+            {
+                target.IsPartial = true;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using LibraryLib.Combat;
 using LibraryLib.Hooks;
@@ -16,7 +17,7 @@ namespace LibraryOfRuina.ui.DamagePreview;
 
 internal sealed partial class IncomingDamageSimulation
 {
-    private static readonly Dictionary<(Type Type, string Name, int Count, Type? Contract), MethodInfo?> QueryMethods = [];
+    private static readonly Dictionary<(Type Type, string Name, int Count, Type? Contract), (MethodInfo? Method, bool SignatureDrift)> QueryMethods = [];
 
     internal Creature? AffectedCreature { get; set; }
 
@@ -297,16 +298,28 @@ internal sealed partial class IncomingDamageSimulation
             else if (name is "ShouldClearBlock" or "ShouldDie")
             {
                 result = true;
-                foreach (AbstractModel listener in ActiveListeners(includeRun))
+                // 原版 Hook.ShouldDie 全部放行后还要再问一轮 ShouldDieLate（蜥蜴尾巴只覆写后者）
+                string[] rounds = name == "ShouldDie"
+                    ? [nameof(AbstractModel.ShouldDie), nameof(AbstractModel.ShouldDieLate)]
+                    : [name];
+                foreach (string round in rounds)
                 {
-                    if (!EvaluateQueryModel(listener, name, [target], true))
+                    foreach (AbstractModel listener in ActiveListeners(includeRun))
                     {
-                        result = false;
-                        if (Read("preventer") is IncomingDamagePreviewHookReader.Reference output)
+                        if (!EvaluateQueryModel(listener, round, [target], true))
                         {
-                            output.Value = listener;
-                        }
+                            result = false;
+                            if (Read("preventer") is IncomingDamagePreviewHookReader.Reference output)
+                            {
+                                output.Value = listener;
+                            }
 
+                            break;
+                        }
+                    }
+
+                    if (result is false)
+                    {
                         break;
                     }
                 }
@@ -370,14 +383,15 @@ internal sealed partial class IncomingDamageSimulation
         }
 
         var key = (source.GetType(), name, args.Length, contract);
-        if (!QueryMethods.TryGetValue(key, out MethodInfo? method))
+        if (!QueryMethods.TryGetValue(key, out (MethodInfo? Method, bool SignatureDrift) entry))
         {
+            MethodInfo? resolved = null;
             if (contract != null)
             {
                 InterfaceMapping map = source.GetType().GetInterfaceMap(contract);
                 int index = Array.FindIndex(map.InterfaceMethods, candidate => candidate.Name == name
                     && candidate.GetParameters().Length == args.Length);
-                method = index >= 0 ? map.TargetMethods[index] : null;
+                resolved = index >= 0 ? map.TargetMethods[index] : null;
             }
             else
             {
@@ -385,22 +399,36 @@ internal sealed partial class IncomingDamageSimulation
                 {
                     if (candidate.Name == name && candidate.GetParameters().Length == args.Length)
                     {
-                        method = candidate;
+                        resolved = candidate;
                         break;
                     }
                 }
             }
 
+            // 钩子名靠拼接、按参数个数匹配：AbstractModel 上有同名钩子却没有这个参数个数，说明原版改了签名，
+            // 照常返回默认值会悄悄漏掉修正，要标成不完整。同名钩子都不存在则是该游戏版本没有这一步，原版也不会调用
+            bool drift = resolved == null && contract == null
+                && typeof(AbstractModel).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .Any(candidate => candidate.Name == name);
+
             // 基类和默认接口的空实现不需要解释与事务快照。
-            if (method?.DeclaringType == typeof(AbstractModel) || method?.DeclaringType?.IsInterface == true)
+            if (resolved?.DeclaringType == typeof(AbstractModel) || resolved?.DeclaringType?.IsInterface == true)
             {
-                method = null;
+                resolved = null;
             }
 
-            QueryMethods[key] = method;
+            QueryMethods[key] = entry = (resolved, drift);
         }
 
-        if (method == null)
+        if (entry.SignatureDrift)
+        {
+            MarkPartial(source);
+            LorLog.InfoOnce("IncomingPreview.SignatureDrift:" + name + "/" + args.Length,
+                $"[LibraryOfRuina.IncomingPreview] Partial preview: no {name} overload takes {args.Length} arguments");
+            return fallback;
+        }
+
+        if (entry.Method is not { } method)
         {
             return fallback;
         }

@@ -27,6 +27,8 @@ internal static partial class GameApi
     internal static CardPlay? CardPlayCompat(this AttackCommand command) => null;
     internal static Task LoseBlock(PlayerChoiceContext context, Creature target, decimal amount, Creature? remover) => CreatureCmd.LoseBlock(target, amount);
     internal static bool IsDirectionalNavigation(NControllerManager? manager) => manager?.IsUsingController == true;
+    // 旧版没有 SerializableRng：按种子重建再快进到同一计数（开销与计数成正比，一局内也只是几千到几万步）
+    internal static Rng CloneRng(Rng rng) => new(rng.Seed, rng.Counter);
     internal static ulong FallbackSeed(string label) => unchecked((uint)MegaCrit.Sts2.Core.Helpers.StringHelper.GetDeterministicHashCode(label));
     internal static bool HasHibernate(Creature creature) => false;
     internal static Rng CreateRng(ulong seed, string label) => new Rng(unchecked((uint)seed), label);

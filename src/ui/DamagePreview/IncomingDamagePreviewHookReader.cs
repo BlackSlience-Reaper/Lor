@@ -1,3 +1,4 @@
+using LibraryOfRuina.core.compat;
 using MegaCrit.Sts2.Core.Random;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using System;
@@ -111,7 +112,7 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             pair => SnapshotCollection(pair.Value), ReferenceEqualityComparer.Instance);
         var ambientBefore = new Dictionary<object, object?>(_ambientValues, ReferenceEqualityComparer.Instance);
         var rngsBefore = _previewRngs.Count == 0 ? null : _previewRngs.ToDictionary(
-            static pair => pair.Key, static pair => pair.Value.ToSerializable());
+            static pair => pair.Key, static pair => GameApi.CloneRng(pair.Value));
         Action? restore = isQuery ? null : simulation.CaptureState();
         AbstractModel? previous = _source;
         int previousRemaining = _remaining;
@@ -162,7 +163,7 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             {
                 foreach (var entry in rngsBefore)
                 {
-                    _previewRngs[entry.Key] = new Rng(entry.Value);
+                    _previewRngs[entry.Key] = entry.Value;
                 }
             }
 
@@ -276,7 +277,7 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             // 从快照创建独立 RNG，预览的随机选择绝不推进真实 RunRng。
             if (!_previewRngs.TryGetValue(rng, out Rng? previewRng))
             {
-                _previewRngs[rng] = previewRng = new Rng(rng.ToSerializable());
+                _previewRngs[rng] = previewRng = GameApi.CloneRng(rng);
             }
 
             return InvokeTrusted(method, previewRng, arguments);
