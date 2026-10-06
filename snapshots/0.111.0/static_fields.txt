@@ -1,3 +1,4 @@
+mutable	LibraryOfRuina.content.abnormalities.Alriune.AlriuneCrownCardPatch._croppedCrown	Godot.AtlasTexture
 mutable	LibraryOfRuina.content.abnormalities.BigBird.BigBirdFilterOverlay._charmedLayer	Godot.CanvasLayer
 mutable	LibraryOfRuina.content.abnormalities.BigBird.BigBirdFilterOverlay._charmedLoop	LibraryOfRuina.framework.audio.LocalOggLoopPlayer+LoopHandle
 mutable	LibraryOfRuina.content.abnormalities.CosmicFragment.CosmicFragmentEpiphanyCard._cosmicFragmentUpgradeInProgress	System.Boolean
@@ -63,6 +64,7 @@ mutable	LibraryOfRuina.core.settings.LibraryOfRuinaSettings._runtimeSideEffectsE
 mutable	LibraryOfRuina.core.settings.LibraryRunInjectionGuard._lobbyHostInjected	System.Nullable`1[System.Boolean]
 mutable	LibraryOfRuina.core.settings.LibraryRunSettings._pendingLobbyCarrier	LibraryOfRuina.core.settings.LibraryRunSettings+PendingCarrier
 mutable	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow._shader	Godot.Shader
+mutable	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow._spineShader	Godot.Shader
 mutable	LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch._targetMethod	System.Reflection.MethodBase
 mutable	LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch._targetMethod	System.Reflection.MethodBase
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphConfigRepository._configLoaded	System.Boolean
@@ -71,6 +73,8 @@ mutable	LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._enabled	System.Boolean
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._lastLoggedEnabled	System.Boolean
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphDisplayConfigRepository._loaded	System.Boolean
+mutable	LibraryOfRuina.features.intentgraph.IntentGraphFonts._labelFont	System.Nullable`1[System.ValueTuple`2[System.String,Godot.Font]]
+mutable	LibraryOfRuina.features.intentgraph.IntentGraphFonts._valueFont	System.Nullable`1[System.ValueTuple`2[System.String,Godot.Font]]
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphWorkshopModBridge._panelsField	System.Reflection.FieldInfo
 mutable	LibraryOfRuina.features.intentgraph.IntentGraphWorkshopModBridge._patchAttempted	System.Boolean
 mutable	LibraryOfRuina.features.intentgraph.MonsterIntentGraphOverlayController._fallbackHoverTipTexture	Godot.Texture2D
@@ -1723,10 +1727,14 @@ readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.Col
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.FindBackgroundRect	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.FindTextureRect	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.RefreshColor	Godot.StringName
-readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.Sync	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.RefreshSpineRadius	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.SpineMargin	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.SpineMaterial	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName._Process	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._color	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._sinceRefresh	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._spineMaterial	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._spineRadius	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._visuals	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow.ImageCache	System.Collections.Generic.Dictionary`2[System.UInt64,Godot.Image]
 readonly	LibraryOfRuina.features.ftue.FtueGuard.AbnormalityEncounterNames	System.Collections.Generic.HashSet`1[System.String]
@@ -1969,6 +1977,7 @@ readonly	LibraryOfRuina.framework.relics.AbnormalityPageRewardResumePatch.Restor
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.AlignTo	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.Current	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.CurrentAnimation	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.EnableOutline	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.HideGhosts	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.HoldHurt	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.NewSprite	Godot.StringName
@@ -1977,17 +1986,20 @@ readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.Play	Godot
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayAttack	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayLoop	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayOnce	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.SetOutlineMargin	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.Smooth	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.State	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.SyncGhosts	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.SyncHoldHurt	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName._Process	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName.HasOutline	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._attackIndex	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._currentAttack	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._ghostTimes	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._ghosts	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._holdingHurt	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._main	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._outlineGroup	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+PropertyName._started	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody.DataCache	System.Collections.Generic.List`1[System.ValueTuple`3[System.String,System.Single,Godot.GodotObject]]
 readonly	LibraryOfRuina.framework.visuals.SceneAnimatedCreatureVisuals+MethodName.ApplyFallbackIdlePose	Godot.StringName

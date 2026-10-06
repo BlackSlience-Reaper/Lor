@@ -11,6 +11,28 @@ internal static class AlriuneCrownCardPatch
 {
     private const string OverlayName = "AlriuneCrownOverlay";
 
+    // 去掉透明边的王冠贴图。所有卡牌（含原版牌）都会走这个补丁，裁剪框要 GetImage 从显存读回整张贴图才能算，
+    // 只在第一次算；之后每张新攻击牌共用这一份
+    private static AtlasTexture? _croppedCrown;
+
+    private static AtlasTexture? CroppedCrown()
+    {
+        if (_croppedCrown is { Atlas: { } atlas } && GodotTextureSafety.IsValid(atlas))
+        {
+            return _croppedCrown;
+        }
+
+        Texture2D? texture = ResourceLoader.Load<Texture2D>(AlriuneAssets.CrownOverlay);
+        if (!GodotTextureSafety.IsValid(texture))
+        {
+            return null;
+        }
+
+        using Image pixels = texture!.GetImage();
+        _croppedCrown = new AtlasTexture { Atlas = texture, Region = pixels.GetUsedRect() };
+        return _croppedCrown;
+    }
+
     [HarmonyPostfix]
     private static void Postfix(NCard __instance)
     {
@@ -29,16 +51,14 @@ internal static class AlriuneCrownCardPatch
         {
             return;
         }
-        Texture2D? texture = ResourceLoader.Load<Texture2D>(AlriuneAssets.CrownOverlay);
-        if (!GodotTextureSafety.IsValid(texture))
+        if (CroppedCrown() is not { } crown)
         {
             return;
         }
-        using Image pixels = texture!.GetImage();
         AlriuneCrownCardOverlay overlay = new()
         {
             Name = OverlayName,
-            Texture = new AtlasTexture { Atlas = texture, Region = pixels.GetUsedRect() },
+            Texture = crown,
             MouseFilter = Control.MouseFilterEnum.Ignore,
             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
             StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,

@@ -43,6 +43,7 @@ internal sealed partial class RuntimeSpineBody : Node2D
 
     private Spec _spec = null!;
     private Node2D _main = null!;
+    private CanvasGroup? _outlineGroup;
     private Node2D[] _ghosts = [];
     private float[] _ghostTimes = [];
     private bool _started;
@@ -112,6 +113,41 @@ internal sealed partial class RuntimeSpineBody : Node2D
         Scale = anchor.Scale * new Vector2(anchor.FlipH ? -1f : 1f, 1f);
         ZIndex = anchor.ZIndex;
         ZAsRelative = anchor.ZAsRelative;
+    }
+
+    /// <summary>
+    /// 外轮廓发光（见 CreatureOutlineGlow）：把主体 SpineSprite 放进一个 CanvasGroup，整副骨架先画进离屏缓冲，
+    /// 再由 material 的着色器沿整体轮廓向外发光。各部件分开画时只能各自外扩，所以要整体处理。
+    /// 残影不放进去，不发光。只建一次，之后颜色、半径都改 material 的参数，边距见 <see cref="SetOutlineMargin"/>。
+    /// margin 是 CanvasGroup 在骨架已变换的包围框外扩出的离屏范围，不随骨架缩放换算。
+    /// </summary>
+    internal void EnableOutline(ShaderMaterial material, float margin)
+    {
+        if (_outlineGroup != null && IsInstanceValid(_outlineGroup))
+        {
+            SetOutlineMargin(margin);
+            return;
+        }
+
+        var group = new CanvasGroup { Name = "OutlineGroup", Material = material, FitMargin = margin, ClearMargin = margin };
+        int index = _main.GetIndex();
+        RemoveChild(_main);
+        AddChild(group);
+        MoveChild(group, index);
+        group.AddChild(_main);
+        _outlineGroup = group;
+    }
+
+    internal bool HasOutline => _outlineGroup != null && IsInstanceValid(_outlineGroup);
+
+    /// <summary>发光半径变了（窗口或渲染目标尺寸变化）时同步离屏范围，范围不够发光会被裁掉。</summary>
+    internal void SetOutlineMargin(float margin)
+    {
+        if (_outlineGroup != null && IsInstanceValid(_outlineGroup) && !Mathf.IsEqualApprox(_outlineGroup.FitMargin, margin))
+        {
+            _outlineGroup.FitMargin = margin;
+            _outlineGroup.ClearMargin = margin;
+        }
     }
 
     /// <summary>
