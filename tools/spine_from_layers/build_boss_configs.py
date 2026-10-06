@@ -610,6 +610,36 @@ BOSSES["nf_forgotten_sword_despair"] = _rigid(
     layers="nf_forgotten_sword", base="Despair")
 BOSSES["nf_forgotten_sword_dead"] = _rigid({}, {"hurt": ("hurt", "Dead")}, layers="nf_forgotten_sword", base="Dead")
 
+# 第四批：硬壳的虫、鸟和南瓜头
+# 蜂后：坐在裙状的身体上不动，只有待机图的四片翅膀（sprite_layers.py 抠出、画在身体后面）绕翅根扇；
+# 左右两侧相位差半拍，像同时往外张。施法在外观里就是防御图
+BOSSES["queen_bee"] = _rigid(
+    {"Default.body": {"rotate": [0.5, 1, 0.0]}},
+    {"defend": ("guard", "Defend", "brace"), "cast": ("skill", "Defend"), "hurt": ("hurt", "Hit")},
+    preview_on_origin=True,
+    weapons=[{"layers": [f"wing_{n}"], "pivot": p, "raise": 0, "idle": {"rotate": [a, 3, ph]}}
+             for n, p, a, ph in (("ul", [-72, 92], 7.0, 0.0), ("ur", [98, 102], 7.0, 0.5),
+                                 ("ll", [-122, -48], 5.0, 0.08), ("lr", [178, -43], 5.0, 0.58))])
+# 工蜂（历史层、异想体共用）：站着的大虫，待机绕脚下轻晃；两种攻击都是冲上前
+BOSSES["worker_bee"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"attack": ("attack", "Attack", "dash"), "attack2": ("attack", "Attack2", "dash"),
+     "dodge": ("guard", "Dodge", "hop"), "hurt": ("hurt", "Hit")},
+    preview_on_origin=True)
+# 守林鸟（左右两只同一外观）：一团黑羽毛，突刺冲上前、斩击踏一步。骨架照原图朝左，游戏里随贴图 Flip() 镜像
+BOSSES["forest_keeper_bird"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"thrust": ("attack", "Thrust", "dash"), "slash": ("attack", "Slash", "step"), "hurt": ("hurt", "Hit")})
+# 杰克（南瓜头）：休眠、苏醒两张待机各一副。"Awake" 触发先切形态再播（SpineSpriteAttackCreatureVisuals.PlaySpineTrigger），
+# 所以苏醒动作放在苏醒那副里：先显示趴着的一团，再站起来
+BOSSES["ozma_jack_dormant"] = _rigid(
+    {"Dormant.body": {"rotate": [0.6, 1, 0.0]}},
+    {"hurt": ("hurt", "Hit")}, layers="ozma_jack", base="Dormant")
+BOSSES["ozma_jack_awake"] = _rigid(
+    {"Awake.body": {"rotate": [1.2, 1, 0.0]}},
+    {"awake": ("timeline", {"frames": [[0, "Dormant"], [0.25, "Awake"]], "length": 0.5}, "step"),
+     "hurt": ("hurt", "Hit")}, layers="ozma_jack", base="Awake")
+
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
 for _e in range(1, 6):

@@ -1,10 +1,10 @@
 {
- "name": "boss_nf_forgotten_sword_dead",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/nf_forgotten_sword",
+ "name": "boss_ozma_jack_dormant",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/ozma_jack",
  "texture_scale": 0.6,
  "origin": [
-  -2.0,
-  12.0
+  0.0,
+  -14.0
  ],
  "skin_tint": [
   1.0,
@@ -12,29 +12,57 @@
   1.0
  ],
  "fps": 30,
- "setup_motion": "Dead",
+ "setup_motion": "Dormant",
  "motions": {
-  "Dead": {
-   "source": "Dead",
+  "Dormant": {
+   "source": "Dormant",
    "bones": {
     "body": {
      "at": [
-      40.6,
+      14.1,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      40.6,
-      286.7
+      14.1,
+      110.3
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -2.0,
-      349.2
+      -0.5,
+      138.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Hit": {
+   "source": "Hit",
+   "bones": {
+    "body": {
+     "at": [
+      -21.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -21.8,
+      214.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -42.5,
+      267.1
      ]
     }
    },
@@ -49,20 +77,26 @@
    "show": [
     [
      0,
-     "Dead",
+     "Dormant",
      0
     ]
    ],
    "osc": {
-    "Dead.body": {},
-    "Dead.head": {
+    "Dormant.body": {
+     "rotate": [
+      0.6,
+      1,
+      0.0
+     ]
+    },
+    "Dormant.head": {
      "rotate": [
       1.8,
       1,
       0.15
      ]
     },
-    "Dead.hair": {
+    "Dormant.hair": {
      "rotate": [
       1.2,
       1,
@@ -76,12 +110,12 @@
    "show": [
     [
      0,
-     "Dead",
+     "Hit",
      0
     ],
     [
      0.4,
-     "Dead",
+     "Dormant",
      0
     ]
    ],
@@ -112,7 +146,7 @@
       ]
      ]
     },
-    "Dead.body": {
+    "Hit.body": {
      "rotate": [
       [
        0,
@@ -129,7 +163,7 @@
       ]
      ]
     },
-    "Dead.head": {
+    "Hit.head": {
      "rotate": [
       [
        0,
@@ -146,7 +180,7 @@
       ]
      ]
     },
-    "Dead.hair": {
+    "Hit.hair": {
      "rotate": [
       [
        0,
@@ -170,12 +204,12 @@
    "show": [
     [
      0,
-     "Dead",
+     "Dormant",
      0
     ]
    ],
    "keys": {
-    "Dead.body": {
+    "Dormant.body": {
      "rotate": [
       [
        0,
@@ -192,7 +226,7 @@
       ]
      ]
     },
-    "Dead.head": {
+    "Dormant.head": {
      "rotate": [
       [
        0,
@@ -209,7 +243,7 @@
       ]
      ]
     },
-    "Dead.hair": {
+    "Dormant.hair": {
      "rotate": [
       [
        0,

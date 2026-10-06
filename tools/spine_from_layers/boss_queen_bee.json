@@ -1,10 +1,11 @@
 {
- "name": "boss_nf_forgotten_sword_despair",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/nf_forgotten_sword",
+ "name": "boss_queen_bee",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/queen_bee",
  "texture_scale": 0.6,
+ "preview_on_origin": true,
  "origin": [
-  -12.0,
-  -201.0
+  0.0,
+  -512.0
  ],
  "skin_tint": [
   1.0,
@@ -12,29 +13,89 @@
   1.0
  ],
  "fps": 30,
- "setup_motion": "Despair",
+ "setup_motion": "Default",
  "motions": {
-  "Despair": {
-   "source": "Despair",
+  "Default": {
+   "source": "Default",
    "bones": {
     "body": {
      "at": [
-      30.7,
+      55.0,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      30.7,
-      525.7
+      55.0,
+      229.9
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -12.0,
-      693.2
+      0.0,
+      383.2
+     ]
+    },
+    "weapon": {
+     "parent": "body",
+     "at": [
+      -72,
+      92
+     ]
+    },
+    "weapon2": {
+     "parent": "body",
+     "at": [
+      98,
+      102
+     ]
+    },
+    "weapon3": {
+     "parent": "body",
+     "at": [
+      -122,
+      -48
+     ]
+    },
+    "weapon4": {
+     "parent": "body",
+     "at": [
+      178,
+      -43
+     ]
+    }
+   },
+   "assign": {
+    "body": "body",
+    "wing_ul": "weapon",
+    "wing_ur": "weapon2",
+    "wing_ll": "weapon3",
+    "wing_lr": "weapon4"
+   }
+  },
+  "Defend": {
+   "source": "Defend",
+   "bones": {
+    "body": {
+     "at": [
+      52.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      52.2,
+      144.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      7.0,
+      277.6
      ]
     }
    },
@@ -42,27 +103,27 @@
     "body": "body"
    }
   },
-  "DespairAttack": {
-   "source": "DespairAttack",
+  "Hit": {
+   "source": "Hit",
    "bones": {
     "body": {
      "at": [
-      88.1,
+      81.4,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      88.1,
-      477.9
+      81.4,
+      260.1
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -4.0,
-      588.9
+      32.5,
+      418.4
      ]
     }
    },
@@ -77,212 +138,78 @@
    "show": [
     [
      0,
-     "Despair",
+     "Default",
      0
     ]
    ],
    "osc": {
-    "Despair.body": {
+    "Default.body": {
      "rotate": [
-      1.6,
+      0.5,
       1,
-      0.3
+      0.0
      ]
     },
-    "Despair.head": {
+    "Default.head": {
      "rotate": [
       1.8,
       1,
       0.15
      ]
     },
-    "Despair.hair": {
+    "Default.hair": {
      "rotate": [
       1.2,
       1,
       0.4
      ]
     },
-    "move": {
-     "y": [
-      7,
-      1,
+    "Default.weapon": {
+     "rotate": [
+      7.0,
+      3,
       0.0
      ]
-    }
-   }
-  },
-  "attack": {
-   "duration": 1.05,
-   "show": [
-    [
-     0,
-     "Despair",
-     0
-    ],
-    [
-     0.15,
-     "DespairAttack",
-     0
-    ],
-    [
-     0.75,
-     "Despair",
-     0
-    ]
-   ],
-   "keys": {
-    "Despair.body": {
+    },
+    "Default.weapon2": {
      "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       -4,
-       "out"
-      ],
-      [
-       0.75,
-       -4
-      ],
-      [
-       1.05,
-       0
-      ]
+      7.0,
+      3,
+      0.5
      ]
     },
-    "Despair.head": {
+    "Default.weapon3": {
      "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       3,
-       "out"
-      ],
-      [
-       0.75,
-       0
-      ],
-      [
-       1.05,
-       0
-      ]
+      5.0,
+      3,
+      0.08
      ]
     },
-    "DespairAttack.body": {
-     "x": [
-      [
-       0.15,
-       12
-      ],
-      [
-       0.3,
-       -12,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ],
+    "Default.weapon4": {
      "rotate": [
-      [
-       0.15,
-       -3
-      ],
-      [
-       0.3,
-       2,
-       "out"
-      ],
-      [
-       0.5,
-       0
-      ]
-     ]
-    },
-    "DespairAttack.head": {
-     "rotate": [
-      [
-       0.15,
-       -5
-      ],
-      [
-       0.32,
-       4,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ]
-    },
-    "DespairAttack.hair": {
-     "rotate": [
-      [
-       0.15,
-       -4
-      ],
-      [
-       0.36,
-       5,
-       "out"
-      ],
-      [
-       0.6,
-       0
-      ]
-     ]
-    },
-    "move": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       0
-      ],
-      [
-       0.3,
-       -70,
-       "out"
-      ],
-      [
-       0.75,
-       -70
-      ],
-      [
-       1.05,
-       0
-      ]
+      5.0,
+      3,
+      0.58
      ]
     }
    }
   },
-  "guard": {
+  "defend": {
    "duration": 0.8,
    "show": [
     [
      0,
-     "Despair",
+     "Defend",
      0
     ],
     [
      0.55,
-     "Despair",
+     "Default",
      0
     ]
    ],
    "keys": {
-    "Despair.body": {
+    "Defend.body": {
      "x": [
       [
        0,
@@ -299,7 +226,7 @@
       ]
      ]
     },
-    "Despair.head": {
+    "Defend.head": {
      "rotate": [
       [
        0.0,
@@ -316,7 +243,7 @@
       ]
      ]
     },
-    "Despair.hair": {
+    "Defend.hair": {
      "rotate": [
       [
        0.0,
@@ -356,17 +283,91 @@
     }
    }
   },
+  "cast": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.1,
+     "Defend",
+     0
+    ],
+    [
+     0.9,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {},
+    "Defend.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Defend.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Defend.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    }
+   }
+  },
   "hurt": {
    "duration": 0.65,
    "show": [
     [
      0,
-     "Despair",
+     "Hit",
      0
     ],
     [
      0.4,
-     "Despair",
+     "Default",
      0
     ]
    ],
@@ -397,7 +398,7 @@
       ]
      ]
     },
-    "Despair.body": {
+    "Hit.body": {
      "rotate": [
       [
        0,
@@ -414,7 +415,7 @@
       ]
      ]
     },
-    "Despair.head": {
+    "Hit.head": {
      "rotate": [
       [
        0,
@@ -431,7 +432,7 @@
       ]
      ]
     },
-    "Despair.hair": {
+    "Hit.hair": {
      "rotate": [
       [
        0,
@@ -455,12 +456,12 @@
    "show": [
     [
      0,
-     "Despair",
+     "Default",
      0
     ]
    ],
    "keys": {
-    "Despair.body": {
+    "Default.body": {
      "rotate": [
       [
        0,
@@ -477,7 +478,7 @@
       ]
      ]
     },
-    "Despair.head": {
+    "Default.head": {
      "rotate": [
       [
        0,
@@ -494,7 +495,7 @@
       ]
      ]
     },
-    "Despair.hair": {
+    "Default.hair": {
      "rotate": [
       [
        0,
@@ -508,6 +509,74 @@
       [
        1.2,
        8
+      ]
+     ]
+    },
+    "Default.weapon": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       0,
+       "out"
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    },
+    "Default.weapon2": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       0,
+       "out"
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    },
+    "Default.weapon3": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       0,
+       "out"
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    },
+    "Default.weapon4": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.7,
+       0,
+       "out"
+      ],
+      [
+       1.2,
+       0
       ]
      ]
     }

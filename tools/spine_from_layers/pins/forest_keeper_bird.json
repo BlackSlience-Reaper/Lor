@@ -1,0 +1,24 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   481,
+   318
+  ],
+  "Hit": [
+   466,
+   327
+  ],
+  "Slash": [
+   456,
+   500
+  ],
+  "Thrust": [
+   456,
+   372
+  ]
+ },
+ "sizes": {}
+}
