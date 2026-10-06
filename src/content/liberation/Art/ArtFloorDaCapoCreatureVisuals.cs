@@ -58,8 +58,17 @@ public sealed partial class ArtFloorDaCapoCreatureVisuals : SpineSpriteAttackCre
     }
 }
 
-public sealed partial class ArtFloorFirstPerformerCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 第一演奏者：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，只平移、转动），加载失败时退回贴图。
+/// 只有一张待机图，动作只有待机轻晃和受击。
+/// </summary>
+public sealed partial class ArtFloorFirstPerformerCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "art_floor", "first_performer", "hurt", new Dictionary<string, string>());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ArtFloorFirstPerformer))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -188f), new(0.64f, 0.64f), -88f, -354f, 88f, -10f, new(0f, -185f), new(0f, -382f))

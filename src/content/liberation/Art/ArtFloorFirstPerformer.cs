@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -12,6 +13,8 @@ namespace LibraryOfRuina.content.liberation.Art;
 
 public sealed class ArtFloorFirstPerformer : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string SilentMoveId = "SILENT_PERFORMANCE";
     private const int StaggerResistanceMax = 40;
 

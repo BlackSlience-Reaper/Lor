@@ -5,6 +5,7 @@ using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -30,6 +31,8 @@ public enum ArtFloorDaCapoPerformerVariant
 
 public sealed class ArtFloorDaCapoPerformer : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string LogTag = "LibraryOfRuina.ArtFloorDaCapoPerformer";
     private const string PerformMoveId = "PERFORM";
     private const string HiddenMoveId = "SILENT_CLIMAX";
