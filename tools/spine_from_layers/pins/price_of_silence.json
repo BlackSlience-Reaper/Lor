@@ -1,0 +1,15 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   354,
+   825
+  ],
+  "Special": [
+   354,
+   845
+  ]
+ }
+}

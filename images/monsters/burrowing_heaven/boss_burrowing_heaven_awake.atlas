@@ -1,0 +1,13 @@
+boss_burrowing_heaven_awake.webp
+size:2024,1013
+filter:Linear,Linear
+Special/body
+bounds:0,0,769,635
+Attack/body
+bounds:771,0,809,432
+Awake/body
+bounds:1582,0,440,421
+Guard/body
+bounds:0,637,400,376
+Hit/body
+bounds:402,637,547,223

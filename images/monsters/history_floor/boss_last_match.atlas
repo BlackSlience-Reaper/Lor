@@ -1,0 +1,11 @@
+boss_last_match.webp
+size:1379,398
+filter:Linear,Linear
+Hit/body
+bounds:0,0,182,398
+Attack/body
+bounds:184,0,524,331
+Default/body
+bounds:710,0,338,175
+Cast/body
+bounds:1050,0,327,116

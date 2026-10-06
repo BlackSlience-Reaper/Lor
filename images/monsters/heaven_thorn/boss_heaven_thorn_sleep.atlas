@@ -1,0 +1,11 @@
+boss_heaven_thorn_sleep.webp
+size:1218,335
+filter:Linear,Linear
+Sleep/body
+bounds:0,0,110,335
+Attack/body
+bounds:112,0,470,309
+Guard/body
+bounds:584,0,275,265
+Hit/body
+bounds:861,0,355,201

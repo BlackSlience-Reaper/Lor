@@ -1,0 +1,11 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": true,
+ "points": {
+  "Default": [
+   512,
+   1046
+  ]
+ }
+}

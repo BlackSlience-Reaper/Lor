@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -24,6 +25,8 @@ public sealed class HistoryFloorLastMatch : CounterIntentMonsterModel
     private const int EmberBurn = 2;
 
     public override int DefaultChaoResistance => 25;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultChaoResistanceData => new()
     {

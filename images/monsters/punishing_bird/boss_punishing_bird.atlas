@@ -1,0 +1,11 @@
+boss_punishing_bird.webp
+size:400,238
+filter:Linear,Linear
+Punish/body
+bounds:0,0,208,238
+Peck/body
+bounds:210,0,76,74
+Hit/body
+bounds:288,0,68,49
+Default/body
+bounds:358,0,40,48

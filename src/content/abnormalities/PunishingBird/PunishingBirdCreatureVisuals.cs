@@ -6,8 +6,24 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.PunishingBird;
 
-public sealed partial class PunishingBirdCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 惩戒鸟的外观：鸟本体的 Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐高度），
+/// 加载失败时退回逐帧换图。笼子、锁链是 <see cref="AddCageLayer"/> 另挂的节点，不进骨架，掉笼、断链照旧。
+/// </summary>
+public sealed partial class PunishingBirdCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "punishing_bird",
+        "punishing_bird",
+        "peck",
+        new Dictionary<string, string>
+        {
+            ["Peck"] = "peck",
+            ["Punish"] = "punish",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(PunishingBird))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -12f), new(2.2f, 2.2f), -246f, -388f, 241f, 16f, new(0f, -190f), new(-90f, -435f))

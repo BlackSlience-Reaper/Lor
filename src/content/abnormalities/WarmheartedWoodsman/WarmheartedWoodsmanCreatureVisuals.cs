@@ -6,9 +6,35 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.abnormalities.WarmheartedWoodsman;
 
+/// <summary>
+/// 热心的樵夫的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐、动作不转身体），
+/// 加载失败时退回下面的逐帧换图。无心、有心两张待机各一副骨架。原来动作图只有待机的 0.725 倍，骨架里放大回同大。
+/// </summary>
 public sealed partial class WarmheartedWoodsmanCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["AttackBlunt"] = "blunt",
+        ["AttackSlash"] = "slash",
+        ["LoggingFinal"] = "logging",
+        ["Guard"] = "guard",
+        ["Cast"] = "guard",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec EmptySpine = LayeredBossSpine.Create(
+        "warmhearted_woodsman", "woodsman_empty", "blunt", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec WarmSpine = LayeredBossSpine.Create(
+        "warmhearted_woodsman", "woodsman_warm", "blunt", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => EmptySpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [EmptySpine, WarmSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == WarmVariant ? WarmSpine : EmptySpine;
+
     [MonsterVisual(typeof(WarmheartedWoodsman))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -8f), new(0.87f, 0.87f), -190f, -430f, 190f, 16f, new(0f, -190f), new(0f, -455f))
@@ -107,9 +133,22 @@ public sealed partial class WarmheartedWoodsmanCreatureVisuals
     }
 }
 
+/// <summary>樵夫的树：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，绕根部慢慢摇），加载失败时退回贴图。</summary>
 public sealed partial class WoodsmanTreeCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "warmhearted_woodsman",
+        "woodsman_tree",
+        "guard",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(WoodsmanTree))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -10f), new(0.36f, 0.36f), -190f, -419f, 185f, 13f, new(0f, -200f), new(0f, -455f))

@@ -2,7 +2,6 @@
  "name": "boss_price_of_silence",
  "layers_dir": "~/.local/share/LibraryOfRuina-layers/price_of_silence",
  "texture_scale": 0.6,
- "preview_on_origin": true,
  "origin": [
   0.0,
   -4.0
@@ -48,22 +47,22 @@
    "bones": {
     "body": {
      "at": [
-      13.0,
+      94.2,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      13.0,
-      668.2
+      94.2,
+      686.1
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -32.1,
-      826.6
+      49.0,
+      844.4
      ]
     }
    },

@@ -1,0 +1,23 @@
+{
+ "mode": "pin_y",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   32,
+   43
+  ],
+  "Hit": [
+   44,
+   45
+  ],
+  "Peck": [
+   96,
+   85
+  ],
+  "Punish": [
+   291,
+   204
+  ]
+ }
+}

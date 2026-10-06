@@ -6,9 +6,32 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.abnormalities.BurrowingHeaven;
 
+/// <summary>
+/// 渗透天堂的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按根部标注点对齐、动作不转身体），
+/// 加载失败时退回下面的逐帧换图。醒着、睡着两张待机各一副骨架。
+/// </summary>
 public sealed partial class BurrowingHeavenCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["Special"] = "special",
+        ["Guard"] = "guard",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec AwakeSpine = LayeredBossSpine.Create(
+        "burrowing_heaven", "burrowing_heaven_awake", "attack", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec SleepSpine = LayeredBossSpine.Create(
+        "burrowing_heaven", "burrowing_heaven_sleep", "attack", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => AwakeSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [AwakeSpine, SleepSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == SleepVariant ? SleepSpine : AwakeSpine;
+
     [MonsterVisual(typeof(BurrowingHeaven))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -18f), new(0.58f, 0.58f), -196f, -390f, 207f, 12f, new(0f, -170f), new(0f, -430f))
