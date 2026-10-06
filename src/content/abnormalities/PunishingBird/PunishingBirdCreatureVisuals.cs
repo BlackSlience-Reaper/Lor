@@ -366,8 +366,24 @@ public sealed partial class PunishingBirdCreatureVisuals : SpineSpriteAttackCrea
     }
 }
 
-public sealed partial class ForestKeeperBirdCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 守林鸟（左右两只）的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。骨架照原图朝左，建立时随待机贴图的 Flip() 镜像成朝右。
+/// </summary>
+public sealed partial class ForestKeeperBirdCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "forest_keeper_bird",
+        "forest_keeper_bird",
+        "thrust",
+        new Dictionary<string, string>
+        {
+            ["Thrust"] = "thrust",
+            ["Slash"] = "slash",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ForestKeeperBirdLeft))]
     [MonsterVisual(typeof(ForestKeeperBirdRight))]
     internal static readonly CreatureVisualLayout Layout = new(

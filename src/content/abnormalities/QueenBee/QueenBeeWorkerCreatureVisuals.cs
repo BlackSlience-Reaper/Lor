@@ -5,9 +5,15 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.QueenBee;
 
+/// <summary>
+/// 蜂后召来的工蜂：骨架与历史层工蜂共用（<see cref="HistoryFloorWorkerBeeCreatureVisuals.Spine"/>），
+/// 加载失败时退回逐帧换图。转身朝向蜂后时骨架要跟着贴图重新对齐，才会一起镜像。
+/// </summary>
 public sealed partial class QueenBeeWorkerCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal override RuntimeSpineBody.Spec SpineSpec => HistoryFloorWorkerBeeCreatureVisuals.Spine;
+
     [MonsterVisual(typeof(QueenBeeWorker))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -76f), new(0.54f, 0.54f), -94f, -167f, 63f, 9f, new(0f, -82f), new(0f, -224f))
@@ -22,11 +28,13 @@ public sealed partial class QueenBeeWorkerCreatureVisuals
     public void FaceQueen()
     {
         SetSpriteFlipH(true);
+        RealignSpineBody();
     }
 
     public void FacePlayers()
     {
         SetSpriteFlipH(false);
+        RealignSpineBody();
     }
 
     private static SpriteVisualProfile BuildProfile()

@@ -8,6 +8,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -22,6 +23,8 @@ namespace LibraryOfRuina.content.abnormalities.QueenBee;
 
 public sealed class QueenBeeWorker : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string GuardQueenMoveId = "QUEEN_BEE_WORKER_GUARD_QUEEN";
     private const string CarryLarvaMoveId = "QUEEN_BEE_WORKER_CARRY_LARVA";
     private const string NutrientMixMoveId = "QUEEN_BEE_WORKER_NUTRIENT_MIX";

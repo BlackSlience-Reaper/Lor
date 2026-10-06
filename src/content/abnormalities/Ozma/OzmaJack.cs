@@ -4,6 +4,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -26,6 +27,8 @@ public enum JackDirection
 
 public sealed class OzmaJack : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string HiddenMoveId = "UNKNOWN";
 
     internal const string TextureRoot = OzmaAssets.OzmaMonsterRoot;

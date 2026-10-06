@@ -24,9 +24,10 @@ PINS = Path(__file__).resolve().parent / "pins"
 SPRITES = {
     # 外观 ForgottenKnightSwordCreatureVisuals：三个形态，攻击帧 Nudge(-46, -10)。
     # 打击、斩击、突刺三张图里的剑画得只有待机的约一半（打击、斩击剑柄头到剑尖约 190 像素，待机约 350；突刺按剑柄比例约 0.5），
-    # 换姿势时剑忽大忽小，fix 放大回去；招架、受击与待机同大。绝望形态整套比另两个形态大约 1.27 倍，形态内一致，没动
+    # 换姿势时剑忽大忽小，fix 先粗略放大回去；最终大小按标注页的“尺寸两端”（剑柄头到剑尖）标定，
+    # 三个形态都对到普通待机的剑长（绝望形态原图大约 1.22 倍，也一起缩回）
     "forgotten_sword": {
-        "scale": 0.54, "anchor": "visible_bottom",
+        "scale": 0.54, "anchor": "visible_bottom", "size_like": {"TeardropBlunt": "NormalBlunt"},
         "idles": {"Normal": "forgotten_knight_sword/normal_idle.png", "Teardrop": "forgotten_knight_sword/teardrop_idle.png",
                   "Despair": "forgotten_knight_sword/despair_idle.png"},
         "poses": {
@@ -182,6 +183,36 @@ SPRITES = {
                            "poses": {**{f"Normal{a}": ["normal", a, 0] for a in ("Blunt", "Pierce", "Slash", "Guard", "Evade", "Hit")},
                                      **{f"Teardrop{a}": ["teardrop", a, 0] for a in ("Blunt", "Pierce", "Slash", "Guard", "Evade", "Hit")},
                                      "DespairAttack": ["despair", "Attack", 0]}},
+    # ---- 第四批 ----
+    # QueenBeeCreatureVisuals：Centered，布局 0.46；施法用的是防御图（cast.png 没被用到）
+    "queen_bee": {"scale": 0.46, "anchor": "center",
+                  "idles": {"Default": "queen_bee/idle.png"},
+                  # 待机的四片翅膀（灰白、在身体后面）抠成单独的层，各绕翅根扇动
+                  "cutouts": {"Default": [
+                      {"name": f"wing_{n}", "ellipse": e, "away": 8, "min_lum": 0, "behind": True}
+                      for n, e in (("ul", [320, 345, 130, 125]), ("ur", [770, 345, 145, 130]),
+                                   ("ll", [310, 565, 85, 85]), ("lr", [785, 560, 110, 90]))]},
+                  "poses": {"Defend": {"image": "queen_bee/defend.png"}, "Hit": {"image": "queen_bee/hit.png"}}},
+    # HistoryFloorWorkerBeeCreatureVisuals：Centered，待机 0.44；两种攻击是 Lunge、Scale(0.50)（Nudge 是冲刺终点，不算摆放）。
+    # 异想体版 QueenBeeWorkerCreatureVisuals 同一套图，只是闪避、受击按布局 0.54 画，比待机大 1.23 倍；两版共用这副骨架
+    "worker_bee": {"scale": 0.44, "anchor": "center",
+                   "idles": {"Default": "history_floor/worker_bee_idle.png"},
+                   "poses": {"Attack": {"image": "history_floor/worker_bee_attack.png", "frame_scale": 0.50},
+                             "Attack2": {"image": "history_floor/worker_bee_attack2.png", "frame_scale": 0.50},
+                             "Dodge": {"image": "history_floor/worker_bee_dodge.png"},
+                             "Hit": {"image": "history_floor/worker_bee_hit.png"}}},
+    # ForestKeeperBirdCreatureVisuals（左右两只同一外观）：全部 Scale(0.594)，变体 Flip() 连动作图一起左右翻（游戏里朝右）。
+    # 骨架照原图朝左做，游戏里 RuntimeSpineBody.AlignTo 照待机贴图的 FlipH 镜像；标注页给的是翻过的图，
+    # points_flipped 把标注点镜像回原图坐标
+    "forest_keeper_bird": {"scale": 0.594, "anchor": "visible_bottom", "points_flipped": True,
+                           "idles": {"Default": "forest_keeper_bird/idle.png"},
+                           "poses": {"Thrust": {"image": "forest_keeper_bird/thrust.png"},
+                                     "Slash": {"image": "forest_keeper_bird/slash.png"},
+                                     "Hit": {"image": "forest_keeper_bird/hit.png"}}},
+    # OzmaJackCreatureVisuals：休眠、苏醒两个形态，受击图两形态共用
+    "ozma_jack": {"scale": 0.48, "anchor": "visible_bottom",
+                  "idles": {"Dormant": "ozma/jack_dormant.png", "Awake": "ozma/jack_awake.png"},
+                  "poses": {"Hit": {"image": "ozma/jack_hit.png"}}},
 }
 
 
@@ -290,7 +321,9 @@ def build(name, spec):
             root_scales[motion] = e["root_scale"]
         # 尺寸标定（标注页的“尺寸两端”）：同一件东西在各张图里画得大小不一时，每张标两个端点（剑柄头到剑尖），
         # 以第一个标了的姿势为准，其余姿势绕图中心缩放到同样长
-        seg = (ann or {}).get("sizes", {}).get(motion)
+        # size_like：没标的姿势照搬构图相同的另一张图的线段（历史层剑的泪滴、普通打击图同尺寸同构图）
+        sizes = (ann or {}).get("sizes", {})
+        seg = sizes.get(motion) or sizes.get(spec.get("size_like", {}).get(motion))
         if seg:
             length = float(np.hypot(seg[1][0] - seg[0][0], seg[1][1] - seg[0][1])) * k
             if size_ref is None:
@@ -305,6 +338,8 @@ def build(name, spec):
         # pin 横纵都对齐，pin_y 只对高度。点来自标注页（pins/<名字>.json），没有标注时用配置里的 pin，
         # 或 pin_y: dark_bottom（最低的暗色像素：大鸟的爪尖；可见底边可能是低垂的提灯光晕，不能用它对）
         pt = points.get(motion)
+        if pt is not None and spec.get("points_flipped"):
+            pt = [Image.open(e["src"]).width - pt[0], pt[1]]
         if pt is None and mode == "pin_y" and spec.get("pin_y") == "dark_bottom" and not ann:
             a = np.asarray(im).astype(np.float32)
             rows = np.nonzero(((a[..., 3] > 200) & (a[..., :3].max(-1) < 70)).any(axis=1))[0]
@@ -327,19 +362,28 @@ def build(name, spec):
             yy, xx = np.mgrid[0:H, 0:W]
             inside = ((xx - ex) / rx) ** 2 + ((yy - ey) / ry) ** 2 <= 1
             lum = arr[..., :3].max(-1)
-            # 椭圆里够亮的像素从身体上去掉；box（部件本体，含暗色框线）整块去掉
-            take = inside & (lum >= c["min_lum"]) & (arr[..., 3] > 0)
+            sat = lum - arr[..., :3].min(-1)
+            if "away" in c:
+                # 长在高饱和身体旁边的灰白薄片（蜂后的翅膀）：椭圆里离身体（饱和度 ≥ sat 的不透明像素）
+                # 超过 away 像素的都算部件，连同翅膀的半透明填充、脉络和黑色描边；身体自己的描边贴着黄红色，留在身体上
+                from scipy import ndimage
+                solid = (sat >= c.get("sat", 80)) & (arr[..., 3] > 200)
+                near = ndimage.binary_dilation(solid, iterations=c["away"])
+                take = inside & (arr[..., 3] > 0) & ~near
+            else:
+                # 椭圆里够亮的像素从身体上去掉；box（部件本体，含暗色框线）整块去掉
+                take = inside & (lum >= c["min_lum"]) & (arr[..., 3] > 0)
             box = np.zeros_like(take)
             if "box" in c:
                 bx0, by0, bx1, by1 = c["box"]
                 # box 里只取部件本身（有色或暗的像素），不取淡色光晕，否则光晕重画后会叠出一块方形
-                sat = lum - arr[..., :3].min(-1)
                 box = ((xx >= bx0) & (xx <= bx1) & (yy >= by0) & (yy <= by1) & (arr[..., 3] > 0)
                        & ((sat >= 80) | (lum < 200)))
             part = arr.copy()
             part[..., 3] = np.where(take | box, arr[..., 3], 0)
-            rest = arr.copy()
-            rest[..., 3] = np.where(take | box, 0, arr[..., 3])
+            # 多个部件时身体要累计挖掉每一块
+            rest = np.asarray(body).astype(np.float32)
+            rest[..., 3] = np.where(take | box, 0, rest[..., 3])
             body = Image.fromarray(rest.astype(np.uint8), "RGBA")
             part_im = Image.fromarray(part.astype(np.uint8), "RGBA")
             if "glow" in c:
@@ -354,7 +398,9 @@ def build(name, spec):
                 glow.alpha_composite(Image.fromarray(only_box.astype(np.uint8), "RGBA"))
                 part_im = glow
             part_im.save(out / motion / f"{c['name']}.png")
-            layers.append({"name": c["name"], "type": 9, "order": 10 + i, "center": [cx, cy]})
+            # behind：部件画在身体后面（翅膀根部藏在身体后，扇动时不露出断口）
+            layers.append({"name": c["name"], "type": 9, "order": (-10 + i) if c.get("behind") else 10 + i,
+                           "center": [cx, cy]})
         body.save(out / motion / "body.png")
         layers.insert(0, {"name": "body", "type": 2, "order": 1, "center": [cx, cy]})
         for l in layers:

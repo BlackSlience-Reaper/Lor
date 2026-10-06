@@ -1,0 +1,17 @@
+boss_queen_bee.webp
+size:1744,543
+filter:Linear,Linear
+Hit/body
+bounds:0,0,419,543
+Default/body
+bounds:421,0,436,526
+Defend/body
+bounds:859,0,388,455
+Default/wing_ur
+bounds:1249,0,164,131
+Default/wing_ul
+bounds:1415,0,137,130
+Default/wing_ll
+bounds:1554,0,72,91
+Default/wing_lr
+bounds:1628,0,114,86

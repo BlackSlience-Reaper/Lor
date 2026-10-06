@@ -1,0 +1,20 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Awake": [
+   152,
+   275
+  ],
+  "Dormant": [
+   106,
+   132
+  ],
+  "Hit": [
+   192,
+   269
+  ]
+ },
+ "sizes": {}
+}

@@ -1,0 +1,17 @@
+boss_nf_forgotten_sword_teardrop.webp
+size:2004,1123
+filter:Linear,Linear
+TeardropSlash/body
+bounds:0,0,514,645
+TeardropPierce/body
+bounds:516,0,620,551
+TeardropBlunt/body
+bounds:1138,0,864,476
+TeardropEvade/body
+bounds:0,647,430,476
+TeardropGuard/body
+bounds:432,647,425,472
+Teardrop/body
+bounds:859,647,426,470
+TeardropHit/body
+bounds:1287,647,425,470

@@ -1,0 +1,28 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   302,
+   308
+  ],
+  "Attack2": [
+   301,
+   259
+  ],
+  "Default": [
+   269,
+   357
+  ],
+  "Dodge": [
+   175,
+   393
+  ],
+  "Hit": [
+   323,
+   246
+  ]
+ },
+ "sizes": {}
+}

@@ -141,6 +141,64 @@ internal sealed partial class NaturalFloorTearEdgeVisuals : NaturalFloorDespairV
 [MonsterVisual(typeof(NaturalFloorForgottenSword), ScenePath = NaturalFloorForgottenSwordVisuals.ScenePath)]
 internal sealed partial class NaturalFloorForgottenSwordVisuals : NaturalFloorDespairVisuals
 {
+    // 整块的 Spine 身体按动画库各一副（tools/spine_from_layers/sprite_layers.py 按场景摆放、按标注页的剑长统一大小），
+    // 加载失败时退回场景动画。普通、泪滴库的招架和复活施法都是防御图；绝望库三种攻击都是攻击图，其余是待机图；
+    // 倒下（假死）库只有一张受击图
+    private static Dictionary<string, string> FormTriggers() => new()
+    {
+        ["Blunt"] = "blunt",
+        ["Pierce"] = "pierce",
+        ["Slash"] = "slash",
+        ["Guard"] = "guard",
+        ["Cast"] = "guard",
+        ["Evade"] = "evade",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation", "nf_forgotten_sword_normal", "slash", FormTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec TeardropSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation", "nf_forgotten_sword_teardrop", "slash", FormTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec DespairSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nf_forgotten_sword_despair",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Blunt"] = "attack",
+            ["Pierce"] = "attack",
+            ["Slash"] = "attack",
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+            ["Evade"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec DeadSpine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nf_forgotten_sword_dead",
+        "hurt",
+        new Dictionary<string, string>
+        {
+            ["Blunt"] = "hurt",
+            ["Pierce"] = "hurt",
+            ["Slash"] = "hurt",
+            ["Guard"] = "hurt",
+            ["Cast"] = "hurt",
+            ["Evade"] = "hurt",
+        });
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [NormalSpine, TeardropSpine, DespairSpine, DeadSpine];
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) => library switch
+    {
+        "teardrop" => TeardropSpine,
+        "despair" => DespairSpine,
+        "dead" => DeadSpine,
+        _ => NormalSpine,
+    };
+
     private bool _healthBarHiddenForFalseDeath;
     private bool _healthBarWasVisible;
 

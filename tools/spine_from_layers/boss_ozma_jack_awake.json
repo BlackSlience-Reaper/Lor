@@ -1,0 +1,423 @@
+{
+ "name": "boss_ozma_jack_awake",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/ozma_jack",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -0.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Awake",
+ "motions": {
+  "Awake": {
+   "source": "Awake",
+   "bones": {
+    "body": {
+     "at": [
+      19.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      19.9,
+      219.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -1.0,
+      272.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Dormant": {
+   "source": "Dormant",
+   "bones": {
+    "body": {
+     "at": [
+      14.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      14.1,
+      110.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -0.5,
+      138.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Hit": {
+   "source": "Hit",
+   "bones": {
+    "body": {
+     "at": [
+      -21.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -21.8,
+      214.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -42.5,
+      267.1
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Awake",
+     0
+    ]
+   ],
+   "osc": {
+    "Awake.body": {
+     "rotate": [
+      1.2,
+      1,
+      0.0
+     ]
+    },
+    "Awake.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Awake.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "awake": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "Dormant",
+     0
+    ],
+    [
+     0.25,
+     "Awake",
+     0
+    ],
+    [
+     0.5,
+     "Awake",
+     0
+    ]
+   ],
+   "keys": {
+    "Dormant.body": {
+     "x": [
+      [
+       0,
+       8
+      ],
+      [
+       0.125,
+       -6,
+       "out"
+      ],
+      [
+       0.25,
+       0
+      ]
+     ]
+    },
+    "Dormant.head": {
+     "rotate": [
+      [
+       0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ]
+     ]
+    },
+    "Dormant.hair": {
+     "rotate": [
+      [
+       0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ]
+     ]
+    },
+    "Awake.body": {
+     "x": [
+      [
+       0.25,
+       8
+      ],
+      [
+       0.375,
+       -6,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Awake.head": {
+     "rotate": [
+      [
+       0.25,
+       -5
+      ],
+      [
+       0.42000000000000004,
+       4,
+       "out"
+      ]
+     ]
+    },
+    "Awake.hair": {
+     "rotate": [
+      [
+       0.25,
+       -4
+      ],
+      [
+       0.45999999999999996,
+       5,
+       "out"
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -25,
+       "out"
+      ],
+      [
+       0.5,
+       -25
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Hit",
+     0
+    ],
+    [
+     0.4,
+     "Awake",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Hit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Hit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Hit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Awake",
+     0
+    ]
+   ],
+   "keys": {
+    "Awake.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Awake.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Awake.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}
