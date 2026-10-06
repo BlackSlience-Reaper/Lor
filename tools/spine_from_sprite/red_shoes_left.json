@@ -150,19 +150,6 @@
     ]
    }
   },
-  "die": {
-   "type": "die",
-   "duration": 1.6,
-   "rest_height": 30.0,
-   "body_rotate": -40.0,
-   "body_x": 10.0,
-   "world_angles": {
-    "armL": [
-     175.0,
-     190.0
-    ]
-   }
-  },
   "cast": {
    "type": "joint_pose",
    "duration": 1.35,

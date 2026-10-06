@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -16,9 +15,6 @@ namespace LibraryOfRuina.content.abnormalities.SpiderBud;
 
 public sealed class SpiderBudSmallSpider : CounterIntentMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, SpiderBudSmallSpiderCreatureVisuals.DeathSeconds);
-
     private const string AttackMoveId = "SHARP_FANGS";
     private const string WebMoveId = "SLENDER_WEB";
 

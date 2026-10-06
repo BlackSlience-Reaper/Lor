@@ -10,7 +10,6 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -38,9 +37,6 @@ internal enum GalaxyFriendInitialMove
 
 public sealed class GalaxyFriend : LorMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, GalaxyFriendCreatureVisuals.DeathSeconds);
-
     public const string IdleTexturePath = GalaxyChildAssets.GalaxyFriendIdleTexture;
     public const string AttackTexturePath = GalaxyChildAssets.GalaxyFriendAttackTexture;
     public const string HitTexturePath = GalaxyChildAssets.GalaxyFriendHitTexture;
@@ -591,7 +587,6 @@ public sealed class GalaxyFriend : LorMonsterModel
             .Cast<GalaxyFriend>()
             .ToArray() ?? [];
     }
-
 
     // The presentation helpers below run inside death hooks and right before the Parting Tears
     // state writes; they are guarded so a local node/resource failure cannot skip those writes.

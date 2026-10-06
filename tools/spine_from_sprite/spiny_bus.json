@@ -161,14 +161,6 @@
     "fade_in": 0.04,
     "fade_out": 0.1
    }
-  },
-  "die": {
-   "type": "die",
-   "duration": 1.6,
-   "rest_height": 95.0,
-   "body_rotate": -75.0,
-   "body_x": 10.0,
-   "world_angles": {}
   }
  }
 }

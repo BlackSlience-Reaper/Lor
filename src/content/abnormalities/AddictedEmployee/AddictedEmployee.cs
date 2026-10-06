@@ -9,7 +9,6 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -33,9 +32,6 @@ internal enum AddictedEmployeeInitialMove
 
 public sealed class AddictedEmployee : LorMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, AddictedEmployeeCreatureVisuals.DeathSeconds);
-
     private static readonly string[] NormalBackgroundTextLineKeys =
     [
         "ADDICTED_EMPLOYEE.backgroundText.normal.0",

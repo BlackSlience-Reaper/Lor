@@ -95,7 +95,8 @@ class Rig:
 
     def build_bones(self):
         body = self.cfg["body"]
-        self.add_bone("body", "root", self.sk(body["center"]))
+        # bone：身体骨头（转轴）另放时用，蒙皮椭圆仍按 center/radii
+        self.add_bone("body", "root", self.sk(body.get("bone", body["center"])))
         # 椭圆部件（头、群体里的每一只……）：骨头放在 bone 点（例如翅根，扇翅时以它为轴），蒙皮区域是 center/radii 椭圆
         self.parts = self.cfg.get("parts", {})
         for name, part in self.parts.items():
@@ -171,17 +172,64 @@ class Rig:
                 # 该层只跟一根没有蒙皮区域的骨头走（例如躯干层跟 body）：所有顶点全权重给它
                 regions = {n: (lambda p: 0.0) for n in allowed}
 
+        # 骨架标注页（rigs/<名字>.json）圈的范围：圈内只跟那根骨头走（硬），或只和同一条肢体的相邻段过渡（可弯）；
+        # 圈过范围的骨头不再按距离去拉圈外的像素。范围边缘 seam 像素内线性过渡，免得接缝撕开
+        rig_regions = {n: polys for n, polys in self.cfg.get("rig_regions", {}).items()
+                       if allowed is None or n in allowed}
+        seam = self.cfg.get("rig_seam", 6)
+        hard = self.cfg.get("rig_hard", {})
+
+        def signed_dist(q, polys):
+            best_out, inside = math.inf, False
+            for poly in polys:
+                n = len(poly)
+                for i in range(n):
+                    (x1, y1), (x2, y2) = poly[i], poly[(i + 1) % n]
+                    best_out = min(best_out, seg_dist(q, (x1, y1), (x2, y2)))
+                    if (y1 > q[1]) != (y2 > q[1]) and q[0] < (x2 - x1) * (q[1] - y1) / (y2 - y1) + x1:
+                        inside = not inside
+            return best_out if inside else -best_out
+
+        def auto_weights(p, names=None):
+            dists = {name: dist(p) for name, dist in regions.items() if names is None or name in names}
+            for name, (a, b) in segments.items():
+                if names is None or name in names:
+                    dists[name] = seg_dist(p, a, b)
+            if not dists:
+                return {}
+            dmin = min(dists.values())
+            return {n: math.exp(-((d - dmin) ** 2) / (2 * sigma * sigma))
+                    for n, d in dists.items() if d - dmin < 3 * sigma}
+
+        free = (set(regions) | set(segments)) - set(rig_regions)
         index = {b["name"]: i for i, b in enumerate(self.bones)}
         vertex_data, uvs = [], []
         dominant = []
         for px, py in verts:
             p = self.sk((px, py))
-            dists = {name: dist(p) for name, dist in regions.items()}
-            for name, (a, b) in segments.items():
-                dists[name] = seg_dist(p, a, b)
-            dmin = min(dists.values())
-            weights = {n: math.exp(-((d - dmin) ** 2) / (2 * sigma * sigma))
-                       for n, d in dists.items() if d - dmin < 3 * sigma}
+            weights = auto_weights(p, free if free else None)
+            if rig_regions:
+                total = sum(weights.values()) or 1.0
+                weights = {n: w / total for n, w in weights.items()}
+                best, h = None, 0.0
+                for name, polys in rig_regions.items():
+                    d = signed_dist((px, py), polys)
+                    v = (1.0 if d >= 0 else 0.0) if seam <= 0 else clamp01((d + seam) / (2 * seam))
+                    if v > h:
+                        best, h = name, v
+                if best is not None:
+                    if hard.get(best, True):
+                        own = {best: 1.0}
+                    else:
+                        limb = next((l for l in self.limbs if best.startswith(l) and best[len(l):].isdigit()), None)
+                        own = auto_weights(p, {n for n in segments if limb and n.startswith(limb)} or {best})
+                        t = sum(own.values()) or 1.0
+                        own = {n: w / t for n, w in own.items()}
+                    weights = {n: w * (1 - h) for n, w in weights.items()}
+                    for n, w in own.items():
+                        weights[n] = weights.get(n, 0.0) + w * h
+                if not weights:
+                    weights = {next(iter(rig_regions)): 1.0}
             top = sorted(weights.items(), key=lambda kv: -kv[1])[:3]
             total = sum(w for _, w in top)
             top = [(n, w / total) for n, w in top if w / total > 0.02]
@@ -374,7 +422,11 @@ class Animator:
                     "y": round(o.get("bob", 0.0) * math.sin(ph + ph0), 3)})
             if o.get("rotate"):
                 ch["rotate"] = pkeys(lambda ph, o=o, ph0=ph0: {"value": round(o["rotate"] * math.sin(ph + ph0 - 0.5), 3)})
-            if o.get("flap"):
+            if o.get("flap_rotate"):
+                # 扇翅改成绕翅根来回转（度），形状不变；翅膀在身体左边和右边的方向相反，两侧对称
+                ch["rotate"] = pkeys(lambda ph, o=o, ph0=ph0: {
+                    "value": round(o["flap_rotate"] * (0.5 - 0.5 * math.cos(o.get("flap_cycles", 4) * ph + ph0)), 3)})
+            elif o.get("flap"):
                 ch["scale"] = pkeys(lambda ph, o=o, ph0=ph0: {
                     "x": round(1 - o["flap"] * (0.5 - 0.5 * math.cos(o.get("flap_cycles", 4) * ph + ph0)), 4), "y": 1.0})
             if ch:
@@ -1017,6 +1069,35 @@ def align_swap(pose, rig, cfg):
 
 # ---------------------------------------------------------------- 主流程
 
+def apply_rig_annotation(cfg, path):
+    """骨架标注页读回的 rigs/<名字>.json：拖过的转轴、关节写回配置；圈的范围、软硬、接缝交给 build_mesh；
+    flapRotate 把待机的伸缩扇翅换成绕翅根转动（幅度按原伸缩比例 × 45 度，翅膀在身体左侧和右侧方向相反）。"""
+    if not path.exists():
+        return {}
+    ann = json.loads(path.read_text(encoding="utf-8"))
+    for key, pos in ann.get("pivots", {}).items():
+        if key == "body":
+            cfg["body"]["bone"] = pos
+        elif key in cfg.get("parts", {}):
+            cfg["parts"][key]["bone"] = pos
+        elif "@" in key:
+            limb, k = key.split("@")
+            if limb in cfg.get("limbs", {}) and int(k) < len(cfg["limbs"][limb]):
+                cfg["limbs"][limb][int(k)] = pos
+    cfg["rig_regions"] = ann.get("regions", {})
+    cfg["rig_hard"] = ann.get("hard", {})
+    cfg["rig_seam"] = ann.get("seam", 6)
+    if ann.get("flapRotate"):
+        body_x = cfg["body"].get("bone", cfg["body"]["center"])[0]
+        for a in cfg.get("animations", {}).values():
+            for name, o in a.get("parts", {}).items() if a.get("type") == "idle" else ():
+                if o.get("flap"):
+                    part = cfg["parts"].get(name, {})
+                    side = -1 if part.get("center", [body_x])[0] < body_x else 1
+                    o["flap_rotate"] = round(o.pop("flap") * 45 * side, 2)
+    return ann
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("config")
@@ -1032,6 +1113,7 @@ def main():
         for key in ("fx", "swap"):
             if key in anim:
                 anim[key]["source"] = str((cfg_path.parent / anim[key]["source"]).resolve())
+    rig_ann = apply_rig_annotation(cfg, cfg_path.parent / "rigs" / f"{cfg.get('name', cfg_path.stem)}.json")
 
     rig = Rig(cfg, out_dir)
     rig.build_bones()
@@ -1142,6 +1224,12 @@ def main():
         if "swap" in p:
             animator.add_pose(data["animations"][anim_name], p["swap"])
 
+    if rig_ann.get("noSquash"):
+        # 去掉整体伸缩：身体、肢体、部件骨头的缩放时间轴全删（待机呼吸、受击压扁），特效与换图姿势的缩放保留
+        for a in data["animations"].values():
+            for bone, tl in a.get("bones", {}).items():
+                if not bone.startswith(("fx", "pose_")):
+                    tl.pop("scale", None)
     (out_dir / f"{name}.spine-json").write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
     (out_dir / f"{name}.atlas").write_text(atlas, encoding="utf-8")
     print(f"{name}: bones={len(data['bones'])} verts={rig.vertex_count} tris={tri_count} "

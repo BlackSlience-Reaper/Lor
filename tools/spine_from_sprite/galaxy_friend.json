@@ -306,20 +306,6 @@
     "off": 0.42,
     "fade_out": 0.1
    }
-  },
-  "die": {
-   "type": "die",
-   "duration": 1.6,
-   "rest_height": 62.0,
-   "body_rotate": -5.0,
-   "body_x": 6.0,
-   "world_angles": {
-    "armL": [
-     205.0,
-     200.0,
-     190.0
-    ]
-   }
   }
  }
 }

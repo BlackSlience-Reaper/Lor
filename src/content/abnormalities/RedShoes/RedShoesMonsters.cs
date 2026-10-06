@@ -25,9 +25,6 @@ namespace LibraryOfRuina.content.abnormalities.RedShoes;
 
 public sealed class RedShoesLeft : CounterIntentMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, RedShoesLeftCreatureVisuals.DeathSeconds);
-
     private const string BloodThirstMoveId = "BLOOD_THIRST";
     private const string DesireMoveId = "DESIRE";
 
@@ -198,9 +195,6 @@ public sealed class RedShoesLeft : CounterIntentMonsterModel
 
 public sealed class RedShoesRight : CounterIntentMonsterModel, ITargetedMonsterAttackProvider
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, RedShoesRightCreatureVisuals.DeathSeconds);
-
     private const string DesireBurstMoveId = "DESIRE_BURST";
     private const string ObsessionMoveId = "OBSESSION";
 

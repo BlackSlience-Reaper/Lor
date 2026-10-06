@@ -6,7 +6,6 @@ using LibraryOfRuina.features.moontext;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -25,9 +24,6 @@ namespace LibraryOfRuina.content.abnormalities.SpinyBus;
 
 public sealed class SpinyBus : LorMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, SpinyBusCreatureVisuals.DeathSeconds);
-
     // 每段都等到 Spine 换图后的命中：小头爆炸三段交替两种攻击，每段都是一次新动画（见 SpinyBusCreatureVisuals）
     private const float SegmentDelaySeconds = SpinyBusCreatureVisuals.AttackImpactSeconds;
 

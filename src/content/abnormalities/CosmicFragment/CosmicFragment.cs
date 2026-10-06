@@ -6,7 +6,6 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
-using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -26,9 +25,6 @@ namespace LibraryOfRuina.content.abnormalities.CosmicFragment;
 
 public sealed class CosmicFragment : LorMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, CosmicFragmentCreatureVisuals.DeathSeconds);
-
     public const string IdleTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_idle.png";
     public const string AttackTexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_attack.png";
     public const string Attack2TexturePath = "res://images/monsters/cosmic_fragment/cosmic_fragment_attack2.png";
