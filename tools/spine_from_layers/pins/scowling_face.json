@@ -1,0 +1,24 @@
+{
+ "mode": "pin_y",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Damaged": [
+   379,
+   472
+  ],
+  "Default": [
+   174,
+   357
+  ],
+  "Hit": [
+   522,
+   425
+  ],
+  "Move": [
+   168,
+   324
+  ]
+ },
+ "sizes": {}
+}

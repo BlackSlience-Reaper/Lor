@@ -1,0 +1,11 @@
+boss_judgement_bird.webp
+size:663,322
+filter:Linear,Linear
+Hit/body
+bounds:0,0,118,322
+Default/body
+bounds:120,0,167,291
+Guard/body
+bounds:289,0,155,289
+Attack/body
+bounds:446,0,215,265

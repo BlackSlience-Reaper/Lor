@@ -1,0 +1,24 @@
+{
+ "mode": "pin_y",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   530,
+   316
+  ],
+  "Default": [
+   151,
+   165
+  ],
+  "Evade": [
+   756,
+   206
+  ],
+  "Ranged": [
+   335,
+   176
+  ]
+ },
+ "sizes": {}
+}

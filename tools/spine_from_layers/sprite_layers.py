@@ -213,6 +213,45 @@ SPRITES = {
     "ozma_jack": {"scale": 0.48, "anchor": "visible_bottom",
                   "idles": {"Dormant": "ozma/jack_dormant.png", "Awake": "ozma/jack_awake.png"},
                   "poses": {"Hit": {"image": "ozma/jack_hit.png"}}},
+    # ---- 第五批 ----
+    # ScowlingFaceCreatureVisuals：布局 0.30；各图的人物不在图中间，AnchorX 把每张图的人物横坐标对到待机图的（idle_anchor_x），
+    # GroundToIdle 按可见底边对齐（同 visible_bottom）
+    "scowling_face": {"scale": 0.30, "anchor": "visible_bottom", "idle_anchor_x": 256,
+                      "idles": {"Default": "social_floor_liberation/scowling_face/default.png"},
+                      "poses": {"Move": {"image": "social_floor_liberation/scowling_face/move.png", "anchor_x": 235},
+                                "Damaged": {"image": "social_floor_liberation/scowling_face/damaged.png", "anchor_x": 444},
+                                "Hit": {"image": "social_floor_liberation/scowling_face/hit.png", "anchor_x": 604}}},
+    # BloodBatCreatureVisuals（异想体与语言层的血蝙蝠同一外观）：全部按 0.78
+    "blood_bat": {"scale": 0.78, "anchor": "visible_bottom",
+                  "idles": {"Default": "nosferatu/blood_bat_idle.png"},
+                  "poses": {"Ranged": {"image": "nosferatu/blood_bat_ranged.png"},
+                            "Attack": {"image": "nosferatu/blood_bat_attack.png"},
+                            "Evade": {"image": "nosferatu/blood_bat_evade.png"}}},
+    # TheFourthMatchFlameCreatureVisuals：Centered，布局 0.38；攻击是 Lunge、Scale(0.42)
+    "fourth_match": {"scale": 0.38, "anchor": "center",
+                     "idles": {"Default": "the_fourth_match_flame.png"},
+                     "poses": {"Attack": {"image": "the_fourth_match_flame_attack.webp", "frame_scale": 0.42},
+                               "Hit": {"image": "the_fourth_match_flame_hit.webp"}}},
+    # 以下原来是场景动画。文学层强化小蜘蛛各姿势缩放不一（待机 0.55、攻击 0.4~0.43、施法 0.6、受击 0.45），
+    # 照场景摆放，大小靠标注页的尺寸两端统一
+    "lf_small_spider": {"scene": "literature_floor_enhanced_small_spider.tscn", "ref_library": "enhanced_small_spider",
+                        "libraries": {"enhanced_small_spider": "literature_floor_enhanced_small_spider_animations.tres"},
+                        "idles": {"Default": "enhanced_small_spider"},
+                        "poses": {"Move": ["enhanced_small_spider", "Attack", 0],
+                                  "Attack": ["enhanced_small_spider", "Attack", 1],
+                                  "Cast": ["enhanced_small_spider", "Cast", 0],
+                                  "Hit": ["enhanced_small_spider", "Hit", 0]}},
+    # 审判鸟、逃亡鸟：动画库嵌在场景文件里
+    "judgement_bird": {"scene": "judgement_bird.tscn", "ref_library": "default",
+                       "libraries": {"default": "judgement_bird.tscn"},
+                       "idles": {"Default": "default"},
+                       "poses": {"Attack": ["default", "Attack", 0], "Guard": ["default", "Guard", 0],
+                                 "Hit": ["default", "Hit", 0]}},
+    "escaped_bird": {"scene": "escaped_bird.tscn", "ref_library": "default",
+                     "libraries": {"default": "escaped_bird.tscn"},
+                     "idles": {"Default": "default"},
+                     "poses": {"AttackOne": ["default", "AttackOne", 0], "AttackTwo": ["default", "AttackTwo", 0],
+                               "Hit": ["default", "Hit", 0]}},
 }
 
 
@@ -290,6 +329,10 @@ def sprite_placements(spec):
             cx, cy = nx / s, -ny / s + (vb - H / 2)
         else:
             cx, cy = nx / s, -ny / s
+        if "anchor_x" in p:
+            # AnchorX：动作图的人物横坐标（原图像素）对到待机图的 idle_anchor_x；待机图本身仍居中摆放
+            idle_w = Image.open(M / next(iter(spec["idles"].values()))).width
+            cx += (spec["idle_anchor_x"] - idle_w / 2) - (p["anchor_x"] - Image.open(M / p["image"]).width / 2) * k
         yield {"motion": motion, "idle": bool(p.get("idle")), "im": im, "k": k, "src": M / p["image"], "cx": cx, "cy": cy,
                "origin": origin, "root_scale": None, "pin": p.get("pin")}
 

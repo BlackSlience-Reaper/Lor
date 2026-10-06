@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -27,6 +28,8 @@ namespace LibraryOfRuina.content.abnormalities.JudgementBird;
 
 public sealed class JudgementBird : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const int LowMinHp = 450;
     internal const int LowMaxHp = 460;
     internal const int HighMinHp = 550;
@@ -521,6 +524,8 @@ public sealed class JudgementBird : LorMonsterModel
 
 public sealed class EscapedBird : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const int LowMinHp = 190;
     internal const int LowMaxHp = 193;
     internal const int HighMinHp = 197;

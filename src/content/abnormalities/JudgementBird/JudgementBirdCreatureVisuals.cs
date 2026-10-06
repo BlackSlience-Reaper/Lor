@@ -7,6 +7,18 @@ namespace LibraryOfRuina.content.abnormalities.JudgementBird;
 internal sealed partial class JudgementBirdCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放），加载失败时退回场景动画。触发名先经 NormalizeTriggerName
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "judgement_bird",
+        "judgement_bird",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     private const string AnimationLibrary = "default";
 
     internal const string ScenePath =
@@ -37,6 +49,22 @@ internal sealed partial class JudgementBirdCreatureVisuals :
 internal sealed partial class EscapedBirdCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（飘着；各姿势按标注点对齐高度），加载失败时退回场景动画。
+    // 攻击、尖叫先经 NormalizeTriggerName 轮换成一、二两种
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "escaped_bird",
+        "escaped_bird",
+        "attack_one",
+        new Dictionary<string, string>
+        {
+            ["AttackOne"] = "attack_one",
+            ["AttackTwo"] = "attack_two",
+            ["ScreamOne"] = "scream_one",
+            ["ScreamTwo"] = "scream_two",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     private const string AnimationLibrary = "default";
     private int _attackCursor;
     private int _screamCursor;

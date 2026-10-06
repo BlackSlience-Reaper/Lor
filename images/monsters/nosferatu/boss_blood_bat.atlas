@@ -1,0 +1,11 @@
+boss_blood_bat.webp
+size:1811,340
+filter:Linear,Linear
+Attack/body
+bounds:0,0,629,340
+Evade/body
+bounds:631,0,571,223
+Ranged/body
+bounds:1204,0,335,211
+Default/body
+bounds:1541,0,268,130

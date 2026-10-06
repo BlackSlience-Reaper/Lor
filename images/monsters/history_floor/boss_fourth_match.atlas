@@ -1,0 +1,9 @@
+boss_fourth_match.webp
+size:1076,398
+filter:Linear,Linear
+Hit/body
+bounds:0,0,182,398
+Attack/body
+bounds:184,0,550,347
+Default/body
+bounds:736,0,338,175

@@ -1,0 +1,11 @@
+boss_escaped_bird.webp
+size:1765,427
+filter:Linear,Linear
+AttackTwo/body
+bounds:0,0,568,427
+AttackOne/body
+bounds:570,0,532,392
+Hit/body
+bounds:1104,0,268,271
+Default/body
+bounds:1374,0,389,205

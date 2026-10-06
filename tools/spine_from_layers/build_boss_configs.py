@@ -640,6 +640,36 @@ BOSSES["ozma_jack_awake"] = _rigid(
     {"awake": ("timeline", {"frames": [[0, "Dormant"], [0.25, "Awake"]], "length": 0.5}, "step"),
      "hurt": ("hurt", "Hit")}, layers="ozma_jack", base="Awake")
 
+# 第五批：飘着的、细腿的、硬壳的小怪
+_FLOAT = {"move": {"y": [6, 1, 0.0]}, "Default.body": {"rotate": [1.5, 1, 0.25]}}
+# 怒视的面庞：绿烟里的骷髅，飘着；攻击、移动、眩晕都是移动图冲上前，受伤、受击各一张
+BOSSES["scowling_face"] = _rigid(
+    _FLOAT, {"move": ("attack", "Move", "dash"), "damaged": ("hurt", "Damaged"), "hurt": ("hurt", "Hit")})
+# 血蝙蝠（异想体、语言层同一外观）：攻击在远程、扑咬两张间轮换；施法与受击都是闪避图
+BOSSES["blood_bat"] = _rigid(
+    {"move": {"y": [8, 1, 0.0]}, "Default.body": {"rotate": [2.0, 1, 0.25]}},
+    {"ranged": ("attack", "Ranged", "recoil"), "attack": ("attack", "Attack", "dash"),
+     "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Evade")})
+# 第四根火柴：火柴棍做的四脚兽，攻击冲上前
+BOSSES["fourth_match"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"attack": ("attack", "Attack", "dash"), "hurt": ("hurt", "Hit")}, preview_on_origin=True)
+# 文学层强化小蜘蛛：攻击照场景动画先移动图、0.18 秒换攻击图，共 0.55 秒
+BOSSES["lf_small_spider"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"attack": ("timeline", {"frames": [[0, "Move"], [0.18, "Attack"]], "length": 0.55}, "dash"),
+     "cast": ("skill", "Cast"), "hurt": ("hurt", "Hit")})
+# 审判鸟：细长腿站着，待机只微微晃
+BOSSES["judgement_bird"] = _rigid(
+    {"Default.body": {"rotate": [0.8, 1, 0.0]}},
+    {"attack": ("attack", "Attack", "step"), "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Hit")})
+# 逃亡鸟：一团黑羽毛飘着；两种攻击、两种尖叫（尖叫用攻击图原地浮起）轮换
+BOSSES["escaped_bird"] = _rigid(
+    _FLOAT,
+    {"attack_one": ("attack", "AttackOne", "dash"), "attack_two": ("attack", "AttackTwo", "dash"),
+     "scream_one": ("skill", "AttackOne", "rise"), "scream_two": ("skill", "AttackTwo", "rise"),
+     "hurt": ("hurt", "Hit")})
+
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
 for _e in range(1, 6):

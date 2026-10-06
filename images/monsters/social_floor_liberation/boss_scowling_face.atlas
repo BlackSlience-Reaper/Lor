@@ -1,0 +1,11 @@
+boss_scowling_face.webp
+size:1836,566
+filter:Linear,Linear
+Hit/body
+bounds:0,0,566,566
+Damaged/body
+bounds:568,0,400,451
+Move/body
+bounds:970,0,554,364
+Default/body
+bounds:1526,0,308,304
