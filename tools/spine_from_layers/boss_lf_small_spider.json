@@ -1,0 +1,548 @@
+{
+ "name": "boss_lf_small_spider",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/lf_small_spider",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  23.7
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Default",
+ "motions": {
+  "Default": {
+   "source": "Default",
+   "bones": {
+    "body": {
+     "at": [
+      43.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      43.7,
+      251.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.5,
+      303.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Attack": {
+   "source": "Attack",
+   "bones": {
+    "body": {
+     "at": [
+      24.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      24.9,
+      265.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -11.2,
+      359.6
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Cast": {
+   "source": "Cast",
+   "bones": {
+    "body": {
+     "at": [
+      116.0,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      116.0,
+      216.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      93.5,
+      274.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Hit": {
+   "source": "Hit",
+   "bones": {
+    "body": {
+     "at": [
+      270.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      270.4,
+      377.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      246.9,
+      458.7
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Move": {
+   "source": "Move",
+   "bones": {
+    "body": {
+     "at": [
+      154.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      154.2,
+      367.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      128.6,
+      443.7
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "osc": {
+    "Default.body": {
+     "rotate": [
+      1.0,
+      1,
+      0.0
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "attack": {
+   "duration": 0.85,
+   "show": [
+    [
+     0,
+     "Move",
+     0
+    ],
+    [
+     0.18,
+     "Attack",
+     0
+    ],
+    [
+     0.55,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Move.body": {
+     "x": [
+      [
+       0,
+       8
+      ],
+      [
+       0.09,
+       -6,
+       "out"
+      ],
+      [
+       0.18,
+       0
+      ]
+     ]
+    },
+    "Move.head": {
+     "rotate": [
+      [
+       0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ]
+     ]
+    },
+    "Move.hair": {
+     "rotate": [
+      [
+       0,
+       -4
+      ]
+     ]
+    },
+    "Attack.body": {
+     "x": [
+      [
+       0.18,
+       8
+      ],
+      [
+       0.32999999999999996,
+       -6,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Attack.head": {
+     "rotate": [
+      [
+       0.18,
+       -5
+      ],
+      [
+       0.35,
+       4,
+       "out"
+      ]
+     ]
+    },
+    "Attack.hair": {
+     "rotate": [
+      [
+       0.18,
+       -4
+      ],
+      [
+       0.39,
+       5,
+       "out"
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -70,
+       "out"
+      ],
+      [
+       0.55,
+       -70
+      ],
+      [
+       0.8500000000000001,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "cast": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.1,
+     "Cast",
+     0
+    ],
+    [
+     0.9,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {},
+    "Cast.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Cast.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Cast.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Hit",
+     0
+    ],
+    [
+     0.4,
+     "Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Hit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Hit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Hit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

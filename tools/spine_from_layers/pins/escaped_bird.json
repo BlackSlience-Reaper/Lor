@@ -1,0 +1,24 @@
+{
+ "mode": "pin_y",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "AttackOne": [
+   334,
+   356
+  ],
+  "AttackTwo": [
+   509,
+   378
+  ],
+  "Default": [
+   322,
+   159
+  ],
+  "Hit": [
+   333,
+   305
+  ]
+ },
+ "sizes": {}
+}
