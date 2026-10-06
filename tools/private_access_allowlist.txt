@@ -12,7 +12,6 @@ patches/GroupAttackEnemyTurnPriorityPatch.cs	GroupAttackEnemyTurnPriorityPatch.P
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.ResolveWithPolicyTraceMethod	AccessTools.Method	本模组方法（nameof），Transpiler 替换的调用目标
 ui/DamagePreview/DamagePreviewTrace.cs	DamagePreviewTracePatch.Transpiler	AccessTools.Method	本模组方法 DamagePreviewTrace.Record（nameof），Transpiler 插入的调用目标
 core/localization/PowerInlineIconSizing.cs	MeasureInlineDimensionsPatch.Transpiler	AccessTools.Method	Godot 公开方法 Texture2D.GetSize 与本模组方法（nameof），Transpiler 的匹配与替换目标
-ui/DamagePreview/IncomingDamagePreviewCalculator.cs	IncomingDamagePreviewCalculator.SimulateEnemyAttacks	AccessTools.Method	本模组方法（nameof），受伤预览解释执行的来源标记
 
 # Public members looked up by name on a runtime type.
 content/abnormalities/SongMachine/SingingMachineEvent.cs	SingingMachineEvent.IsUpgradeable	.GetProperty	探测卡牌的公开“可升级”成员，各版本名字不同

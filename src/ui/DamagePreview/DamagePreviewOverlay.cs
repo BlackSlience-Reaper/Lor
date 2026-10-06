@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Localization;
@@ -64,6 +65,12 @@ internal sealed partial class DamagePreviewOverlay : Control
     private IReadOnlyDictionary<Creature, IncomingDamagePreviewResult> _incomingResults =
         new Dictionary<Creature, IncomingDamagePreviewResult>();
     private double _untilIncomingRefresh;
+    private bool _incomingDirty = true;
+    private ActionExecutor? _actionExecutor;
+    private readonly HashSet<Creature> _observedCreatures = [];
+    private readonly HashSet<PowerModel> _observedPowers = [];
+    private static readonly IReadOnlyDictionary<Creature, IncomingDamagePreviewResult> EmptyIncomingResults =
+        new Dictionary<Creature, IncomingDamagePreviewResult>();
     private bool _reportedIncomingError;
     private CardModel? _lastCard;
     private LibraryCreature? _lastTarget;
@@ -91,6 +98,142 @@ internal sealed partial class DamagePreviewOverlay : Control
         Name = "LibraryDamagePreviewOverlay";
     }
 
+    public override void _EnterTree()
+    {
+        _actionExecutor = RunManager.Instance.ActionExecutor;
+        _actionExecutor.AfterActionExecuted += OnActionExecuted;
+        _combat.CreaturesChanged += OnCreaturesChanged;
+        CombatManager.Instance.TurnStarted += OnTurnStarted;
+        ObserveCreatures();
+    }
+
+    public override void _ExitTree()
+    {
+        if (_actionExecutor != null)
+        {
+            _actionExecutor.AfterActionExecuted -= OnActionExecuted;
+            _actionExecutor = null;
+        }
+
+        _combat.CreaturesChanged -= OnCreaturesChanged;
+        CombatManager.Instance.TurnStarted -= OnTurnStarted;
+        foreach (Creature creature in _observedCreatures)
+        {
+            ObserveCreature(creature, false);
+        }
+
+        foreach (PowerModel power in _observedPowers)
+        {
+            power.DisplayAmountChanged -= MarkIncomingDirty;
+        }
+
+        _observedCreatures.Clear();
+        _observedPowers.Clear();
+    }
+
+    private void OnActionExecuted(GameAction action) => MarkIncomingDirty();
+
+    private void OnTurnStarted(CombatState combat)
+    {
+        if (ReferenceEquals(combat, _combat))
+        {
+            MarkIncomingDirty();
+        }
+    }
+
+    private void OnCreaturesChanged(ICombatState combat)
+    {
+        ObserveCreatures();
+        MarkIncomingDirty();
+    }
+
+    private void ObserveCreatures()
+    {
+        foreach (Creature removed in _observedCreatures.Where(creature => !_combat.ContainsCreature(creature)).ToArray())
+        {
+            ObserveCreature(removed, false);
+            _observedCreatures.Remove(removed);
+            foreach (PowerModel power in removed.Powers)
+            {
+                OnPowerRemoved(power);
+            }
+        }
+
+        foreach (Creature creature in _combat.Creatures)
+        {
+            if (_observedCreatures.Add(creature))
+            {
+                ObserveCreature(creature, true);
+                foreach (PowerModel power in creature.Powers)
+                {
+                    OnPowerApplied(power);
+                }
+            }
+        }
+    }
+
+    private void ObserveCreature(Creature creature, bool subscribe)
+    {
+        if (subscribe)
+        {
+            creature.CurrentHpChanged += OnCreatureValueChanged;
+            creature.BlockChanged += OnCreatureValueChanged;
+            creature.MaxHpChanged += OnCreatureValueChanged;
+            creature.PowerApplied += OnPowerApplied;
+            creature.PowerRemoved += OnPowerRemoved;
+            creature.PowerIncreased += OnPowerIncreased;
+            creature.PowerDecreased += OnPowerDecreased;
+            if (creature is LibraryCreature library)
+            {
+                library.CurrentChaoValueChanged += OnCreatureValueChanged;
+                library.MaxChaoValueChanged += OnCreatureValueChanged;
+            }
+        }
+        else
+        {
+            creature.CurrentHpChanged -= OnCreatureValueChanged;
+            creature.BlockChanged -= OnCreatureValueChanged;
+            creature.MaxHpChanged -= OnCreatureValueChanged;
+            creature.PowerApplied -= OnPowerApplied;
+            creature.PowerRemoved -= OnPowerRemoved;
+            creature.PowerIncreased -= OnPowerIncreased;
+            creature.PowerDecreased -= OnPowerDecreased;
+            if (creature is LibraryCreature library)
+            {
+                library.CurrentChaoValueChanged -= OnCreatureValueChanged;
+                library.MaxChaoValueChanged -= OnCreatureValueChanged;
+            }
+        }
+    }
+
+    private void OnCreatureValueChanged(int before, int after) => MarkIncomingDirty();
+
+    private void OnPowerIncreased(PowerModel power, int amount, bool silent) => MarkIncomingDirty();
+
+    private void OnPowerDecreased(PowerModel power, bool silent) => MarkIncomingDirty();
+
+    private void OnPowerApplied(PowerModel power)
+    {
+        if (_observedPowers.Add(power))
+        {
+            power.DisplayAmountChanged += MarkIncomingDirty;
+        }
+
+        MarkIncomingDirty();
+    }
+
+    private void OnPowerRemoved(PowerModel power)
+    {
+        if (_observedPowers.Remove(power))
+        {
+            power.DisplayAmountChanged -= MarkIncomingDirty;
+        }
+
+        MarkIncomingDirty();
+    }
+
+    private void MarkIncomingDirty() => _incomingDirty = true;
+
     public override void _Input(InputEvent input)
     {
         if (input is InputEventKey { Pressed: true, Echo: false, Keycode: Key.Alt }
@@ -104,6 +247,7 @@ internal sealed partial class DamagePreviewOverlay : Control
             };
             _untilRefresh = 0;
             _untilIncomingRefresh = 0;
+            _incomingDirty = true;
         }
 
         if (IsDetailed && input is InputEventMouseButton { Pressed: true } mouse
@@ -293,11 +437,19 @@ internal sealed partial class DamagePreviewOverlay : Control
     private void UpdateIncomingTips(NCombatRoom? room, double delta)
     {
         _incomingRects.Clear();
+        // 关闭显示同时停止模拟；保留缓存以便 Alt 能重新打开预览。
+        if (_mode == PreviewMode.Off)
+        {
+            HideIncoming();
+            return;
+        }
+
         if (room == null || !CombatManager.Instance.IsInProgress || CombatManager.Instance.IsEnding
             || _combat.CurrentSide != CombatSide.Player
             || room.Ui.Hand.IsInCardSelection || room.Ui.Hand.PeekButton.IsPeeking)
         {
-            _incomingResults = new Dictionary<Creature, IncomingDamagePreviewResult>();
+            _incomingResults = EmptyIncomingResults;
+            _incomingDirty = true;
             HideIncoming();
             return;
         }
@@ -305,30 +457,31 @@ internal sealed partial class DamagePreviewOverlay : Control
         bool isResolving = CombatManager.Instance.PlayerActionsDisabled
             || RunManager.Instance.ActionExecutor.IsRunning
             || _combat.Players.Any(CombatManager.Instance.IsExecutingCardOrPotionEffect);
-        bool refresh = !isResolving && (_untilIncomingRefresh -= delta) <= 0;
+        _untilIncomingRefresh -= delta;
+        // 一次模拟要把全场监听者（各玩家全部牌堆、遗物、能力）解释一遍，开销随卡组与人数增长：
+        // 只有战斗动作、生命、格挡、能力变化标脏后才重算，并且两次之间至少隔 RefreshInterval。
+        bool refresh = _incomingDirty && !isResolving && _untilIncomingRefresh <= 0;
         if (refresh)
         {
             _untilIncomingRefresh = RefreshInterval;
             _incomingResults = CalculateIncoming();
+            _incomingDirty = false;
         }
 
-        if (_mode == PreviewMode.Off)
+        if (refresh)
         {
-            HideIncoming();
-            return;
-        }
-
-        foreach ((Creature creature, PreviewTip existing) in _incomingTips.ToArray())
-        {
-            if (!_incomingResults.ContainsKey(creature))
+            foreach ((Creature creature, PreviewTip existing) in _incomingTips.ToArray())
             {
-                existing.Root.Hide();
-            }
+                if (!_incomingResults.ContainsKey(creature))
+                {
+                    existing.Root.Hide();
+                }
 
-            if (!_combat.ContainsCreature(creature))
-            {
-                existing.Root.QueueFree();
-                _incomingTips.Remove(creature);
+                if (!_combat.ContainsCreature(creature))
+                {
+                    existing.Root.QueueFree();
+                    _incomingTips.Remove(creature);
+                }
             }
         }
 
@@ -357,10 +510,11 @@ internal sealed partial class DamagePreviewOverlay : Control
                 tip.Label.Text = content;
             }
 
-            tip.Label.AutowrapMode = IsDetailed ? TextServer.AutowrapMode.WordSmart : TextServer.AutowrapMode.Off;
-            tip.Label.FitContent = false;
-            tip.Label.AddThemeFontSizeOverride("normal_font_size", TextSize);
-            tip.Label.AddThemeFontSizeOverride("bold_font_size", TextSize);
+            var wrap = IsDetailed ? TextServer.AutowrapMode.WordSmart : TextServer.AutowrapMode.Off;
+            if (tip.Label.AutowrapMode != wrap)
+            {
+                tip.Label.AutowrapMode = wrap;
+            }
             tip.Root.Show();
             LayoutIncomingTip(tip, hpBar);
         }
@@ -384,7 +538,7 @@ internal sealed partial class DamagePreviewOverlay : Control
 
         try
         {
-            return IncomingDamagePreviewCalculator.Calculate(_combat, localPlayer, targets);
+            return IncomingDamagePreviewCalculator.Calculate(_combat, localPlayer, targets, IsDetailed);
         }
         catch (Exception error)
         {
@@ -534,6 +688,23 @@ internal sealed partial class DamagePreviewOverlay : Control
     /// <summary>按当前模式排版文字与提示并返回缩放后的面板尺寸。</summary>
     private Vector2 SizeTip(PreviewTip tip, Rect2 safe, bool showHint, float minimumWidth)
     {
+        if (tip.LastText != tip.Label.Text || tip.LastSafeSize != safe.Size
+            || tip.LastDetailed != IsDetailed || tip.LastShowHint != showHint)
+        {
+            tip.LastText = tip.Label.Text;
+            tip.LastSafeSize = safe.Size;
+            tip.LastDetailed = IsDetailed;
+            tip.LastShowHint = showHint;
+            // 给 Godot 两帧完成宽度变化后的文字排版，随后复用尺寸。
+            tip.LayoutFrames = 2;
+        }
+
+        if (tip.LayoutFrames == 0)
+        {
+            return tip.ScaledSize;
+        }
+
+        tip.LayoutFrames--;
         tip.Hint.Visible = showHint;
         float hintWidth = showHint ? tip.Hint.GetCombinedMinimumSize().X : 0f;
         float textWidth;
@@ -578,7 +749,8 @@ internal sealed partial class DamagePreviewOverlay : Control
         // 极窄窗口下连原版背景的最小边框都容纳不下时，整体缩放到安全区。
         float scale = Math.Min(1f, Math.Min(safe.Size.X / Math.Max(1f, size.X), safe.Size.Y / Math.Max(1f, size.Y)));
         tip.Root.Scale = Vector2.One * scale;
-        return size * scale;
+        tip.ScaledSize = size * scale;
+        return tip.ScaledSize;
     }
 
     private PreviewTip CreateTip()
@@ -602,6 +774,9 @@ internal sealed partial class DamagePreviewOverlay : Control
         label.AddThemeFontOverride("normal_font", ResourceLoader.Load<Font>(SharedAssets.KreonRegularGlyphSpaceOneResource));
         label.AddThemeFontOverride("bold_font", ResourceLoader.Load<Font>(SharedAssets.KreonBoldGlyphSpaceOneResource));
         label.AddThemeConstantOverride("line_separation", 4);
+        label.AddThemeFontSizeOverride("normal_font_size", TextSize);
+        label.AddThemeFontSizeOverride("bold_font_size", TextSize);
+        label.FitContent = false;
         // 使用独立内容区域直接布局，避免容器的延迟排序让文字与背景尺寸错位。
         Node originalTextColumn = label.GetParent();
         var body = new Control { MouseFilter = MouseFilterEnum.Ignore };
@@ -650,5 +825,18 @@ internal sealed partial class DamagePreviewOverlay : Control
         }
     }
 
-    private sealed record PreviewTip(Control Root, MegaRichTextLabel Label, MegaLabel Hint, Control Body);
+    private sealed record PreviewTip(Control Root, MegaRichTextLabel Label, MegaLabel Hint, Control Body)
+    {
+        internal string? LastText { get; set; }
+
+        internal Vector2 LastSafeSize { get; set; }
+
+        internal bool LastDetailed { get; set; }
+
+        internal bool LastShowHint { get; set; }
+
+        internal int LayoutFrames { get; set; }
+
+        internal Vector2 ScaledSize { get; set; }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -31,18 +31,21 @@ internal sealed class DamagePreviewTrace : IDisposable
 
     private readonly DamagePreviewTrace? _previous;
     private readonly decimal _baseValue;
+    private readonly bool _captureDetails;
+    private static readonly Dictionary<string, string> Icons = [];
 
     internal string Formula { get; private set; }
 
     internal decimal Value { get; private set; }
 
-    internal DamagePreviewTrace(decimal value, string source)
+    internal DamagePreviewTrace(decimal value, string source, bool captureDetails = true)
     {
         _previous = _current;
-        _current = this;
+        _current = captureDetails ? this : null;
         _baseValue = value;
+        _captureDetails = captureDetails;
         Value = value;
-        Formula = $"{source}{CompareNumber(value, value)}";
+        Formula = captureDetails ? $"{source}{CompareNumber(value, value)}" : "";
     }
 
     public void Dispose()
@@ -75,8 +78,15 @@ internal sealed class DamagePreviewTrace : IDisposable
     internal static string Tint(string text, Color color) =>
         $"[color=#{color.ToHtml(false)}]{text}[/color]";
 
-    internal static string Icon(string path) =>
-        ResourceLoader.Exists(path) ? $"[img width=24 height=24]{path}[/img]" : "◇";
+    internal static string Icon(string path)
+    {
+        if (!Icons.TryGetValue(path, out string? icon))
+        {
+            Icons[path] = icon = ResourceLoader.Exists(path) ? $"[img width=24 height=24]{path}[/img]" : "◇";
+        }
+
+        return icon;
+    }
 
     internal static string Name(object source) => source switch
     {
@@ -190,15 +200,23 @@ internal sealed class DamagePreviewTrace : IDisposable
 
     internal void Add(decimal amount, string source)
     {
-        Formula = $"({Formula}{(amount < 0m ? "-" : "+")}{source}{Tint(Number(Math.Abs(amount)), ComparisonColor(amount, 0m))})";
+        if (_captureDetails)
+        {
+            Formula = $"({Formula}{(amount < 0m ? "-" : "+")}{source}{Tint(Number(Math.Abs(amount)), ComparisonColor(amount, 0m))})";
+        }
+
         Value += amount;
     }
 
     internal void Multiply(decimal multiplier, string source, string? multiplierText = null)
     {
-        string factor = multiplierText
-            ?? Tint($"{Number(multiplier * 100m)}%", ComparisonColor(multiplier, 1m));
-        Formula = $"{Formula} * {source}{factor}";
+        if (_captureDetails)
+        {
+            string factor = multiplierText
+                ?? Tint($"{Number(multiplier * 100m)}%", ComparisonColor(multiplier, 1m));
+            Formula = $"{Formula} * {source}{factor}";
+        }
+
         Value *= multiplier;
     }
 
@@ -209,7 +227,11 @@ internal sealed class DamagePreviewTrace : IDisposable
             return;
         }
 
-        Formula = $"({Formula}) -> {source}{CompareNumber(value, _baseValue)}";
+        if (_captureDetails)
+        {
+            Formula = $"({Formula}) -> {source}{CompareNumber(value, _baseValue)}";
+        }
+
         Value = value;
     }
 

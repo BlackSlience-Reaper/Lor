@@ -1,3 +1,6 @@
+using LibraryOfRuina.core.compat;
+using MegaCrit.Sts2.Core.Random;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,14 +25,27 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
     private const int RecursionLimit = 48;
     // 一次完整预测最多解释的指令数，防止复杂钩子阻塞每帧 UI。
     private const int TotalInstructionBudget = 250000;
-    private static readonly Dictionary<MethodBase, List<CodeInstruction>> Instructions = [];
-    private readonly Dictionary<(object Owner, FieldInfo Field), object?> _fields = [];
+    // 回合副作用最多占用一半预算，保留数值查询预算，避免无关卡牌回调挤掉已知攻击。
+    private const int EffectInstructionBudget = TotalInstructionBudget / 2;
+    private static readonly Dictionary<MethodBase, MethodPlan> Plans = [];
+    private static readonly Dictionary<(Type Type, MethodInfo Method), MethodInfo> VirtualMethods = [];
+    private static readonly Dictionary<MethodBase, ParameterInfo[]> Parameters = [];
+    private readonly Dictionary<(object Owner, FieldInfo Field), object?> _fields = new(FieldKeyComparer.Instance);
+    private readonly Dictionary<object, HashSet<FieldInfo>> _fieldsByOwner = new(ReferenceEqualityComparer.Instance);
     private readonly Dictionary<object, object> _collections = new(ReferenceEqualityComparer.Instance);
     private readonly Dictionary<object, object?> _ambientValues = new(ReferenceEqualityComparer.Instance);
+    private readonly HashSet<object> _ownedCollections = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<Rng, Rng> _previewRngs = new(ReferenceEqualityComparer.Instance);
+    private readonly PlayerChoiceContext _previewChoiceContext = new ThrowingPlayerChoiceContext();
     private int _remaining;
     private int _totalRemaining = TotalInstructionBudget;
+    private int _effectRemaining = EffectInstructionBudget;
     private int _depth;
     private AbstractModel? _source;
+    private bool _isReadingQuery;
+    private Dictionary<(object Owner, FieldInfo Field), (bool Exists, object? Value)>? _queryWrites;
+
+    internal bool IsReadingQuery => _isReadingQuery;
 
     internal sealed class Reference(Func<object?> read, Action<object?> write)
     {
@@ -67,14 +83,42 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
     internal bool TryInvoke(AbstractModel source, MethodInfo method, params object?[] arguments)
         => TryExecute(source, method, () => Invoke(method, source, arguments));
 
-    internal bool TryExecute(AbstractModel source, MethodInfo method, Action action)
+    internal bool TryExecute(AbstractModel source, MethodInfo method, Action action, bool isQuery = false)
     {
-        var fieldsBefore = new Dictionary<(object, FieldInfo), object?>(_fields);
-        var collectionsBefore = _collections.ToDictionary(static pair => pair.Key,
-            static pair => CopyCollection(pair.Value), ReferenceEqualityComparer.Instance);
+        if (_totalRemaining <= 0 || !isQuery && !_isReadingQuery && _effectRemaining <= 0)
+        {
+            simulation.RecordUnsupportedHook(source, method, "Preview instruction budget exhausted");
+            return false;
+        }
+
+        var fieldsBefore = isQuery ? null : new Dictionary<(object, FieldInfo), object?>(_fields, FieldKeyComparer.Instance);
+        var previousWrites = _queryWrites;
+        if (isQuery)
+        {
+            _queryWrites = new(FieldKeyComparer.Instance);
+        }
+        var copiedCollections = isQuery ? null : new Dictionary<object, object>(ReferenceEqualityComparer.Instance);
+        object SnapshotCollection(object collection)
+        {
+            if (!copiedCollections!.TryGetValue(collection, out object? copy))
+            {
+                copiedCollections[collection] = copy = CopyCollection(collection);
+            }
+
+            return copy;
+        }
+
+        var collectionsBefore = isQuery ? null : _collections.ToDictionary(static pair => pair.Key,
+            pair => SnapshotCollection(pair.Value), ReferenceEqualityComparer.Instance);
         var ambientBefore = new Dictionary<object, object?>(_ambientValues, ReferenceEqualityComparer.Instance);
-        Action restore = simulation.CaptureState();
+        var rngsBefore = _previewRngs.Count == 0 ? null : _previewRngs.ToDictionary(
+            static pair => pair.Key, static pair => GameApi.CloneRng(pair.Value));
+        Action? restore = isQuery ? null : simulation.CaptureState();
         AbstractModel? previous = _source;
+        int previousRemaining = _remaining;
+        int startingTotal = _totalRemaining;
+        bool previousQuery = _isReadingQuery;
+        _isReadingQuery = isQuery || previousQuery;
         _source = source;
         _remaining = InstructionBudget;
         try
@@ -84,16 +128,27 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
         }
         catch (Exception error) when (error is not OutOfMemoryException and not AccessViolationException)
         {
-            _fields.Clear();
-            foreach (var entry in fieldsBefore)
+            if (fieldsBefore != null)
             {
-                _fields.Add(entry.Key, entry.Value);
+                _fields.Clear();
+                foreach (var entry in fieldsBefore)
+                {
+                    _fields.Add(entry.Key, entry.Value);
+                }
             }
 
-            _collections.Clear();
-            foreach (var entry in collectionsBefore)
+            if (collectionsBefore != null)
             {
-                _collections.Add(entry.Key, entry.Value);
+                _collections.Clear();
+                foreach (var entry in collectionsBefore)
+                {
+                    _collections.Add(entry.Key, entry.Value);
+                }
+
+                foreach (object copy in collectionsBefore.Values)
+                {
+                    _collections.TryAdd(copy, copy);
+                }
             }
 
             _ambientValues.Clear();
@@ -102,17 +157,46 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                 _ambientValues.Add(entry.Key, entry.Value);
             }
 
-            restore();
+            restore?.Invoke();
+            _previewRngs.Clear();
+            if (rngsBefore != null)
+            {
+                foreach (var entry in rngsBefore)
+                {
+                    _previewRngs[entry.Key] = entry.Value;
+                }
+            }
+
             simulation.RecordUnsupportedHook(source, method, error.Message);
             return false;
         }
         finally
         {
             _source = previous;
+            _isReadingQuery = previousQuery;
+            if (isQuery)
+            {
+                foreach (var entry in _queryWrites!)
+                {
+                    if (entry.Value.Exists)
+                    {
+                        _fields[entry.Key] = entry.Value.Value;
+                    }
+                    else
+                    {
+                        _fields.Remove(entry.Key);
+                    }
+                }
+            }
+
+            _queryWrites = previousWrites;
+            // 嵌套的 Cmd/后置回调共享外层预算，返回后恢复外层剩余量。
+            _remaining = previous == null ? previousRemaining
+                : Math.Max(0, previousRemaining - (startingTotal - _totalRemaining));
         }
     }
 
-    internal object? Invoke(MethodBase method, object? instance, object?[] arguments)
+    internal object? Invoke(MethodBase method, object? instance, object?[] arguments, bool dispatchVirtual = true)
     {
         if (method.DeclaringType?.FullName?.StartsWith("System.Nullable`", StringComparison.Ordinal) == true)
         {
@@ -120,9 +204,12 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             switch (method.Name)
             {
                 case "get_HasValue": return value != null;
-                case "get_Value": return value ?? throw new InvalidOperationException("Nullable object must have a value.");
-                case "GetValueOrDefault": return value ?? arguments.FirstOrDefault()
-                    ?? DefaultValue(method.DeclaringType.GetGenericArguments()[0]);
+                case "get_Value":
+                    return Coerce(value ?? throw new InvalidOperationException("Nullable object must have a value."),
+                        method.DeclaringType.GetGenericArguments()[0]);
+                case "GetValueOrDefault":
+                    return Coerce(value ?? arguments.FirstOrDefault()
+                        ?? DefaultValue(method.DeclaringType.GetGenericArguments()[0]), method.DeclaringType.GetGenericArguments()[0]);
                 case ".ctor" when instance is Reference reference:
                     reference.Value = Dereference(arguments[0]);
                     return null;
@@ -130,33 +217,102 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
         }
 
         instance = Dereference(instance);
-        if (method is MethodInfo { IsVirtual: true } virtualMethod && instance != null)
+        // IL 的 call（尤其 base 调用）保持声明实现，只有 callvirt 才重新分派。
+        if (dispatchVirtual && method is MethodInfo { IsVirtual: true } virtualMethod && instance != null)
         {
-            MethodInfo? implementation;
-            if (virtualMethod.DeclaringType == typeof(LibraryLib.Models.ILibraryAbstractModel))
+            var key = (instance.GetType(), virtualMethod);
+            if (!VirtualMethods.TryGetValue(key, out MethodInfo? implementation))
             {
-                // LibraryLib 1.3.4 使用默认接口方法，必须按接口映射找到实际效果。
-                InterfaceMapping mapping = instance.GetType().GetInterfaceMap(virtualMethod.DeclaringType);
-                int index = Array.IndexOf(mapping.InterfaceMethods, virtualMethod);
-                implementation = index >= 0 ? mapping.TargetMethods[index] : null;
+                if (IsSystemCollection(instance.GetType()))
+                {
+                    implementation = virtualMethod;
+                }
+                else if (virtualMethod.DeclaringType?.IsInterface == true)
+                {
+                    InterfaceMapping mapping = instance.GetType().GetInterfaceMap(virtualMethod.DeclaringType);
+                    MethodInfo definition = virtualMethod.IsGenericMethod ? virtualMethod.GetGenericMethodDefinition() : virtualMethod;
+                    int index = Array.IndexOf(mapping.InterfaceMethods, definition);
+                    implementation = index >= 0 ? mapping.TargetMethods[index] : virtualMethod;
+                }
+                else
+                {
+                    MethodInfo definition = virtualMethod.GetBaseDefinition();
+                    implementation = instance.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        .FirstOrDefault(candidate => candidate.GetBaseDefinition() == definition) ?? virtualMethod;
+                }
+
+                if (implementation.IsGenericMethodDefinition && virtualMethod.IsGenericMethod)
+                {
+                    implementation = implementation.MakeGenericMethod(virtualMethod.GetGenericArguments());
+                }
+
+                VirtualMethods[key] = implementation;
             }
-            else
-            {
-                MethodInfo definition = virtualMethod.GetBaseDefinition();
-                implementation = instance.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .FirstOrDefault(candidate => candidate.GetBaseDefinition() == definition);
-            }
-            if (implementation != null)
-            {
-                method = implementation.IsGenericMethodDefinition && virtualMethod.IsGenericMethod
-                    ? implementation.MakeGenericMethod(virtualMethod.GetGenericArguments())
-                    : implementation;
-            }
+
+            method = implementation;
         }
 
         string name = method.Name;
         Type? type = method.DeclaringType;
-        object?[] values = arguments.Select(Dereference).ToArray();
+        if (type != null && typeof(PlayerChoiceContext).IsAssignableFrom(type)
+            && name is "PushModel" or "PopModel")
+        {
+            // 预测不进入真实动作/选择栈；null choiceContext 同样允许这两个纯上下文操作。
+            return null;
+        }
+
+        if (type != null && typeof(ArgumentException).IsAssignableFrom(type)
+            && method.IsStatic && name.StartsWith("ThrowIf", StringComparison.Ordinal))
+        {
+            return InvokeTrusted(method, instance, arguments);
+        }
+
+        if (instance is Rng rng && method.Name is "NextInt" or "NextFloat" or "NextDouble" or "NextBool" or "NextItem")
+        {
+            if (_isReadingQuery)
+            {
+                throw new UnsupportedHookException(method);
+            }
+
+            // 从快照创建独立 RNG，预览的随机选择绝不推进真实 RunRng。
+            if (!_previewRngs.TryGetValue(rng, out Rng? previewRng))
+            {
+                _previewRngs[rng] = previewRng = GameApi.CloneRng(rng);
+            }
+
+            return InvokeTrusted(method, previewRng, arguments);
+        }
+
+        if (type?.FullName is "System.Threading.Lock" or "System.Threading.Lock+Scope" or "System.Threading.Monitor")
+        {
+            return name switch
+            {
+                "EnterScope" => new PreviewLockScope(),
+                "get_IsHeldByCurrentThread" or "IsEntered" => true,
+                _ => null
+            };
+        }
+        // 数值 Hook 的 trace transpiler 已由 Invoke 返回处记录，预览中无需再次解释表现记录器。
+        if (type == typeof(DamagePreviewTrace) && name == nameof(DamagePreviewTrace.Record))
+        {
+            return null;
+        }
+
+        ParameterInfo[] argumentTypes = GetParameters(method);
+        object?[] values = new object?[arguments.Length];
+        for (int i = 0; i < arguments.Length; i++)
+        {
+            // IL 中 enum/bool 使用整数栈槽，在进入命令模拟前恢复声明类型。
+            values[i] = argumentTypes[i].ParameterType.IsByRef ? arguments[i]
+                : Coerce(Dereference(arguments[i]), argumentTypes[i].ParameterType);
+            if (values[i] == null && typeof(PlayerChoiceContext).IsAssignableFrom(argumentTypes[i].ParameterType))
+            {
+                values[i] = _previewChoiceContext;
+            }
+        }
+
+        // 方法体读取同一套已规范化的参数，包括无交互的预览 choiceContext。
+        arguments = values;
         if (simulation.TryInterpretCommand(method, instance, values, _source, out object? commandResult))
         {
             return method is MethodInfo info && typeof(Task).IsAssignableFrom(info.ReturnType)
@@ -224,6 +380,11 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
 
         // 任何场景/UI 调用、日志及动画音效均不进入真实宿主。
         string fullName = type?.FullName ?? "";
+        if (method is MethodInfo visualQuery && typeof(Godot.GodotObject).IsAssignableFrom(visualQuery.ReturnType))
+        {
+            return null;
+        }
+
         if (fullName.StartsWith("System.Threading.AsyncLocal`", StringComparison.Ordinal) && instance != null)
         {
             if (name == "set_Value")
@@ -278,9 +439,23 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             return ((IEnumerable)GetCollection(sequence)).GetEnumerator();
         }
 
+        if (instance is Array array)
+        {
+            if (name == "get_Count")
+            {
+                return array.Length;
+            }
+
+            if (name == "get_Item")
+            {
+                return array.GetValue(Convert.ToInt32(values[0]));
+            }
+        }
+
         if (type == typeof(decimal) || type == typeof(Math) || type == typeof(MathF)
             || type == typeof(Convert) || type == typeof(string) || type == typeof(Enum)
             || type == typeof(Type) || type == typeof(RuntimeTypeHandle)
+            || instance is Type && name.StartsWith("get_", StringComparison.Ordinal)
             || type?.IsPrimitive == true
             || fullName.StartsWith("System.Nullable`", StringComparison.Ordinal))
         {
@@ -291,9 +466,17 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             && (instance == null || IsSystemCollection(instance.GetType())))
         {
             object? collection = instance == null ? null : GetCollection(instance);
+            if (_isReadingQuery && collection != null && !_ownedCollections.Contains(collection)
+                && !name.StartsWith("get_", StringComparison.Ordinal)
+                && name is not ("Contains" or "ContainsKey" or "TryGetValue" or "GetEnumerator"))
+            {
+                throw new UnsupportedHookException(method);
+            }
             if (instance != null && ReferenceEquals(instance, collection)
+                && !_ownedCollections.Contains(instance)
                 && !_collections.Any(pair => !ReferenceEquals(pair.Key, pair.Value) && ReferenceEquals(pair.Value, instance))
-                && name is not ("get_Count" or "get_Item" or "Contains" or "ContainsKey" or "TryGetValue"))
+                && !name.StartsWith("get_", StringComparison.Ordinal)
+                && name is not ("Contains" or "ContainsKey" or "TryGetValue"))
             {
                 throw new UnsupportedHookException(method);
             }
@@ -350,10 +533,15 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
 
             object? previousResult = _asyncResult;
             _asyncResult = null;
-            Execute(AccessTools.Method(stateType, "MoveNext"), state, []);
-            object? result = _asyncResult;
-            _asyncResult = previousResult;
-            return new PreviewTask(result);
+            try
+            {
+                Execute(AccessTools.Method(stateType, "MoveNext"), state, []);
+                return new PreviewTask(_asyncResult);
+            }
+            finally
+            {
+                _asyncResult = previousResult;
+            }
         }
 
         object? evaluated = Execute(method, instance, arguments);
@@ -380,62 +568,28 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
 
         try
         {
-            if (!Instructions.TryGetValue(method, out List<CodeInstruction>? code))
+            if (!Plans.TryGetValue(method, out MethodPlan? plan))
             {
                 if (method.GetMethodBody() == null)
                 {
                     throw new UnsupportedHookException(method);
                 }
 
-                code = PatchProcessor.GetOriginalInstructions(method);
-                Instructions.Add(method, code);
+                plan = CreatePlan(method);
+                Plans.Add(method, plan);
             }
 
-            var labels = new Dictionary<Label, int>();
-            var exceptionStack = new Stack<(int Start, int Finally)>();
-            var finallyRegions = new List<(int Start, int Finally, int End)>();
-            for (int i = 0; i < code.Count; i++)
-            {
-                foreach (Label label in code[i].labels)
-                {
-                    labels[label] = i;
-                }
-
-                foreach (ExceptionBlock block in code[i].blocks)
-                {
-                    switch (block.blockType)
-                    {
-                        case ExceptionBlockType.BeginExceptionBlock:
-                            exceptionStack.Push((i, -1));
-                            break;
-                        case ExceptionBlockType.BeginFinallyBlock:
-                        {
-                            var region = exceptionStack.Pop();
-                            exceptionStack.Push((region.Start, i));
-                            break;
-                        }
-                        case ExceptionBlockType.EndExceptionBlock:
-                        {
-                            var region = exceptionStack.Pop();
-                            if (region.Finally >= 0)
-                            {
-                                finallyRegions.Add((region.Start, region.Finally, i));
-                            }
-
-                            break;
-                        }
-                    }
-                }
-            }
+            List<CodeInstruction> code = plan.Code;
+            Dictionary<Label, int> labels = plan.Labels;
+            List<(int Start, int Finally, int End)> finallyRegions = plan.FinallyRegions;
 
             object?[] args = method.IsStatic ? supplied : new[] { instance }.Concat(supplied).ToArray();
-            object?[] locals = method.GetMethodBody()!.LocalVariables
-                .Select(static local => DefaultValue(local.LocalType)).ToArray();
+            object?[] locals = plan.LocalTypes.Select(DefaultValue).ToArray();
             var stack = new Stack<object?>();
             var pendingLeaves = new Stack<Queue<int>>();
             for (int pc = 0; pc < code.Count; pc++)
             {
-                if (--_remaining < 0 || --_totalRemaining < 0)
+                if (--_remaining < 0 || --_totalRemaining < 0 || !_isReadingQuery && --_effectRemaining < 0)
                 {
                     throw new UnsupportedHookException(method);
                 }
@@ -499,7 +653,7 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                     case "stobj": case "stind.ref": case "stind.i4": case "stind.i8":
                     {
                         object? value = stack.Pop();
-                        ((Reference)stack.Pop()!).Value = value;
+                        ((Reference)stack.Pop()!).Value = value is IList or IDictionary ? GetCollection(value) : value;
                         break;
                     }
                     case "ldind.ref": case "ldind.i4": case "ldind.i8": stack.Push(Dereference(stack.Pop())); break;
@@ -518,7 +672,7 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                     case "call": case "callvirt": case "newobj":
                     {
                         MethodBase called = (MethodBase)operand!;
-                        object?[] parameters = new object?[called.GetParameters().Length];
+                        object?[] parameters = new object?[GetParameters(called).Length];
                         for (int i = parameters.Length - 1; i >= 0; i--)
                         {
                             parameters[i] = stack.Pop();
@@ -529,7 +683,12 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                         if (op == "newobj")
                         {
                             Type constructed = called.DeclaringType!;
-                            if (typeof(Delegate).IsAssignableFrom(constructed))
+                            if (typeof(Godot.GodotObject).IsAssignableFrom(constructed))
+                            {
+                                // 预览只模拟战斗值，场景对象由真实战斗创建。
+                                result = null;
+                            }
+                            else if (typeof(Delegate).IsAssignableFrom(constructed))
                             {
                                 result = new PreviewDelegate(parameters[0], (MethodInfo)parameters[1]!);
                             }
@@ -553,6 +712,8 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                             {
                                 result = RuntimeHelpers.GetUninitializedObject(constructed);
                                 Invoke(called, result, parameters);
+                                // 新闭包/记录对象属于预览，初始化其字段，供原生集合的 Equals/枚举读取。
+                                MaterializeFields(result);
                             }
                             else
                             {
@@ -571,11 +732,16 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                                 _asyncResult = parameters.FirstOrDefault();
                             }
 
-                            result = Invoke(called, receiver, parameters);
+                            result = Invoke(called, receiver, parameters, dispatchVirtual: op == "callvirt");
                         }
 
                         if (op == "newobj" || called is MethodInfo { ReturnType: var returnType } && returnType != typeof(void))
                         {
+                            if (op == "newobj" && result != null && IsSystemCollection(result.GetType()))
+                            {
+                                OwnCollection(result);
+                            }
+
                             stack.Push(result);
                         }
 
@@ -667,7 +833,13 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                     case "conv.i8": case "conv.u8": stack.Push((long)Convert.ToDecimal(stack.Pop())); break;
                     case "conv.r4": stack.Push(Convert.ToSingle(stack.Pop())); break;
                     case "conv.r8": case "conv.r.un": stack.Push(Convert.ToDouble(stack.Pop())); break;
-                    case "newarr": stack.Push(Array.CreateInstance((Type)operand!, Convert.ToInt32(stack.Pop()))); break;
+                    case "newarr":
+                    {
+                        Array array = Array.CreateInstance((Type)operand!, Convert.ToInt32(stack.Pop()));
+                        OwnCollection(array);
+                        stack.Push(array);
+                        break;
+                    }
                     case "ldlen": stack.Push(((Array)stack.Pop()!).Length); break;
                     case "ldelem.ref": case "ldelem.i4": case "ldelem":
                     {
@@ -679,7 +851,7 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                     {
                         object? value = stack.Pop();
                         int index = Convert.ToInt32(stack.Pop());
-                        ((Array)GetCollection(stack.Pop()!)).SetValue(value, index);
+                        ((Array)GetCollection(stack.Pop()!)).SetValue(MaterializeValue(value), index);
                         break;
                     }
                     case "ret":
@@ -717,12 +889,31 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
 
     private void WriteField(object? owner, FieldInfo field, object? value)
     {
+        // 数值查询只读取战斗模型，允许局部结构体/闭包字段，拒绝写入真实模型的模拟状态。
+        if (_isReadingQuery && (owner is AbstractModel or Creature || ReferenceEquals(owner, simulation.Combat)))
+        {
+            throw new InvalidOperationException($"A preview query cannot write {field.DeclaringType?.FullName}.{field.Name}");
+        }
+
         if (simulation.TryWritePreviewField(owner, field, Dereference(value)))
         {
             return;
         }
 
-        _fields[(owner ?? field.DeclaringType!, field)] = Dereference(value);
+        var key = (owner ?? field.DeclaringType!, field);
+        if (_queryWrites != null && !_queryWrites.ContainsKey(key))
+        {
+            bool exists = _fields.TryGetValue(key, out object? before);
+            _queryWrites[key] = (exists, before);
+        }
+
+        _fields[key] = Dereference(value);
+        if (!_fieldsByOwner.TryGetValue(key.Item1, out HashSet<FieldInfo>? fields))
+        {
+            _fieldsByOwner[key.Item1] = fields = [];
+        }
+
+        fields.Add(field);
     }
 
     private object GetCollection(object original)
@@ -737,7 +928,18 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
         return copy;
     }
 
+    private void OwnCollection(object collection)
+    {
+        _ownedCollections.Add(collection);
+        _collections.TryAdd(collection, collection);
+    }
+
     private static bool IsSystemCollection(Type type) => type.IsArray
+        || type == typeof(PreviewOrderedSequence)
+        // C# 编译器生成的只读集合构造器只保存元素；允许在新实例上执行，以保留真实枚举语义。
+        || type.Assembly == typeof(CardModel).Assembly
+            && (type.Name.Contains("z__ReadOnly", StringComparison.Ordinal)
+                || type.DeclaringType?.Name.Contains("z__ReadOnly", StringComparison.Ordinal) == true)
         || type.Assembly == typeof(List<>).Assembly
             && (type.Namespace?.StartsWith("System.Collections", StringComparison.Ordinal) == true
                 || type.FullName == "System.ArrayEnumerator"
@@ -811,12 +1013,51 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
         {
             object?[] result = values.ToArray();
             Array array = Array.CreateInstance(element, result.Length);
+            OwnCollection(array);
             for (int i = 0; i < result.Length; i++)
             {
-                array.SetValue(result[i], i);
+                array.SetValue(MaterializeValue(result[i]), i);
             }
 
             return array;
+        }
+
+        if (name is "OrderBy" or "OrderByDescending" or "ThenBy" or "ThenByDescending")
+        {
+            PreviewOrderedSequence? previous = name.StartsWith("Then", StringComparison.Ordinal)
+                ? arguments[0] as PreviewOrderedSequence : null;
+            bool descending = name.EndsWith("Descending", StringComparison.Ordinal);
+            bool[] directions = previous == null ? [descending] : [.. previous.Descending, descending];
+            var keys = new object?[items.Length][];
+            for (int i = 0; i < items.Length; i++)
+            {
+                object? key = Evaluate(items[i]);
+                if (key != null && key.GetType().Namespace != "System" && !key.GetType().IsEnum)
+                {
+                    throw new UnsupportedHookException(method);
+                }
+
+                keys[i] = previous == null ? [key] : [.. previous.Keys[i], key];
+            }
+
+            int Compare(int left, int right)
+            {
+                for (int key = 0; key < directions.Length; key++)
+                {
+                    int comparison = Comparer<object?>.Default.Compare(keys[left][key], keys[right][key]);
+                    if (comparison != 0)
+                    {
+                        return directions[key] ? -Math.Sign(comparison) : Math.Sign(comparison);
+                    }
+                }
+
+                return left.CompareTo(right);
+            }
+
+            int[] order = Enumerable.Range(0, items.Length).ToArray();
+            Array.Sort(order, Compare);
+            return new PreviewOrderedSequence(order.Select(index => items[index]).ToArray(),
+                order.Select(index => keys[index]).ToArray(), directions);
         }
 
         return name switch
@@ -829,14 +1070,30 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             "Select" => Pack(items.Select(Evaluate)),
             "Concat" => Pack(items.Concat(((IEnumerable)arguments[1]!).Cast<object?>())),
             "Distinct" => Pack(items.Distinct()),
+            "Reverse" => Pack(items.Reverse()),
+            "Take" => Pack(items.Take(Convert.ToInt32(arguments[1]))),
+            "Skip" => Pack(items.Skip(Convert.ToInt32(arguments[1]))),
             "Any" => arguments.Length == 1 ? items.Length > 0 : items.Any(item => Truthy(Evaluate(item))),
             "All" => items.All(item => Truthy(Evaluate(item))),
             "Count" => arguments.Length == 1 ? items.Length : items.Count(item => Truthy(Evaluate(item))),
             "FirstOrDefault" => arguments.Length == 1 ? items.FirstOrDefault() : items.FirstOrDefault(item => Truthy(Evaluate(item))),
             "First" => arguments.Length == 1 ? items.First() : items.First(item => Truthy(Evaluate(item))),
+            "LastOrDefault" => arguments.Length == 1 ? items.LastOrDefault() : items.LastOrDefault(item => Truthy(Evaluate(item))),
+            "Last" => arguments.Length == 1 ? items.Last() : items.Last(item => Truthy(Evaluate(item))),
+            "ElementAt" => items[Convert.ToInt32(arguments[1])],
+            "ElementAtOrDefault" => items.ElementAtOrDefault(Convert.ToInt32(arguments[1])),
             "Sum" => items.Sum(item => Convert.ToDecimal(arguments.Length == 1 ? item : Evaluate(item))),
             _ => throw new UnsupportedHookException(method)
         };
+    }
+
+    private sealed class PreviewOrderedSequence(object?[] items, object?[][] keys, bool[] descending) : IEnumerable
+    {
+        internal object?[][] Keys { get; } = keys;
+
+        internal bool[] Descending { get; } = descending;
+
+        public IEnumerator GetEnumerator() => items.GetEnumerator();
     }
 
     private object? InvokeTrusted(MethodBase method, object? instance, object?[] arguments)
@@ -850,14 +1107,18 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
                 value = GetCollection(value);
             }
 
-            return Coerce(value, parameters[index].ParameterType);
+            return Coerce(MaterializeValue(value), parameters[index].ParameterType);
         }).ToArray();
         object? result = method.Invoke(instance, values);
+        if (result != null && method.Name is "ToArray" or "ToList" && IsSystemCollection(result.GetType()))
+        {
+            OwnCollection(result);
+        }
         for (int i = 0; i < arguments.Length; i++)
         {
             if (arguments[i] is Reference reference)
             {
-                reference.Value = values[i];
+                reference.Value = values[i] is IList or IDictionary ? GetCollection(values[i]!) : values[i];
             }
         }
 
@@ -885,7 +1146,116 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
             ? Convert.ChangeType(value, type) : value;
     }
 
+    private object? MaterializeValue(object? value)
+    {
+        if (value != null && value.GetType().IsValueType)
+        {
+            // 装箱值是独立副本，写回本地字段后，数组/List 的值复制才保留解释后的内容。
+            MaterializeFields(value);
+        }
+
+        return value;
+    }
+
+    private void MaterializeFields(object value)
+    {
+        if (!_fieldsByOwner.TryGetValue(value, out HashSet<FieldInfo>? fields))
+        {
+            return;
+        }
+
+        foreach (FieldInfo field in fields)
+        {
+            if (_fields.TryGetValue((value, field), out object? fieldValue))
+            {
+                field.SetValue(value, Coerce(fieldValue, field.FieldType));
+            }
+        }
+    }
+
+    private sealed class FieldKeyComparer : IEqualityComparer<(object Owner, FieldInfo Field)>
+    {
+        internal static readonly FieldKeyComparer Instance = new();
+
+        public bool Equals((object Owner, FieldInfo Field) left, (object Owner, FieldInfo Field) right) =>
+            ReferenceEquals(left.Owner, right.Owner) && left.Field.Equals(right.Field);
+
+        public int GetHashCode((object Owner, FieldInfo Field) value) =>
+            HashCode.Combine(RuntimeHelpers.GetHashCode(value.Owner), value.Field);
+    }
+
     private static object? Dereference(object? value) => value is Reference reference ? reference.Value : value;
+
+    private static ParameterInfo[] GetParameters(MethodBase method)
+    {
+        if (!Parameters.TryGetValue(method, out ParameterInfo[]? parameters))
+        {
+            Parameters[method] = parameters = method.GetParameters();
+        }
+
+        return parameters;
+    }
+
+    private sealed record MethodPlan(List<CodeInstruction> Code, Dictionary<Label, int> Labels,
+        List<(int Start, int Finally, int End)> FinallyRegions, Type[] LocalTypes);
+
+    private static MethodPlan CreatePlan(MethodBase method)
+    {
+        // 使用当前 transpiler 结果，保留本模组与基础库对查询路径的修正。
+        List<CodeInstruction> code = PatchProcessor.GetCurrentInstructions(method);
+        var labels = new Dictionary<Label, int>();
+        var exceptionStack = new Stack<(int Start, int Finally)>();
+        var finallyRegions = new List<(int Start, int Finally, int End)>();
+        for (int i = 0; i < code.Count; i++)
+        {
+            foreach (Label label in code[i].labels)
+            {
+                labels[label] = i;
+            }
+
+            foreach (ExceptionBlock block in code[i].blocks)
+            {
+                switch (block.blockType)
+                {
+                    case ExceptionBlockType.BeginExceptionBlock:
+                        exceptionStack.Push((i, -1));
+                        break;
+                    case ExceptionBlockType.BeginFinallyBlock:
+                    {
+                        var region = exceptionStack.Pop();
+                        exceptionStack.Push((region.Start, i));
+                        break;
+                    }
+                    case ExceptionBlockType.EndExceptionBlock:
+                    {
+                        var region = exceptionStack.Pop();
+                        if (region.Finally >= 0)
+                        {
+                            finallyRegions.Add((region.Start, region.Finally, i));
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        var localTypes = method.GetMethodBody()!.LocalVariables.Select(static local => local.LocalType).ToList();
+        foreach (CodeInstruction instruction in code)
+        {
+            if (instruction.operand is LocalBuilder local)
+            {
+                while (localTypes.Count <= local.LocalIndex)
+                {
+                    localTypes.Add(typeof(object));
+                }
+
+                localTypes[local.LocalIndex] = local.LocalType;
+            }
+        }
+
+        return new MethodPlan(code, labels, finallyRegions, localTypes.ToArray());
+    }
 
     private static int LocalIndex(object? operand) => operand is LocalBuilder local
         ? local.LocalIndex : Convert.ToInt32(operand);
@@ -957,7 +1327,17 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
         };
     }
 
-    private static object? DefaultValue(Type type) => type != typeof(void) && type.IsValueType ? Activator.CreateInstance(type) : null;
+    private sealed class PreviewLockScope;
+
+    private static object? DefaultValue(Type type)
+    {
+        if (type == typeof(System.Threading.Lock.Scope))
+        {
+            return new PreviewLockScope();
+        }
+
+        return type != typeof(void) && type.IsValueType ? Activator.CreateInstance(type) : null;
+    }
 
     private static object? DefaultReturn(MethodBase method)
     {

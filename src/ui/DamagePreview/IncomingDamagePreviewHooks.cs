@@ -29,15 +29,26 @@ internal sealed partial class IncomingDamageSimulation
     private readonly HashSet<CardModel> _exhaustedCards = [];
     private static readonly HashSet<MethodInfo> ReportedUnsupportedHooks = [];
     private IncomingDamagePreviewHookReader? _hookReader;
+    private readonly AbstractModel[] _listeners;
+    private readonly AbstractModel[] _runListeners;
+    private static readonly Dictionary<(Type Type, string Name), MethodInfo?> ListenerMethods = [];
+    // 原版 PowerCmd.Decrement 每次减少一层，缓冲等多次命中能力沿用该规则。
+    private const int PowerDecrementOffset = -1;
+    // 预览末尾进入下一次玩家回合，回合编号按原版增加一次。
+    private const int NextPlayerTurnOffset = 1;
+    private bool _isNextPlayerTurn;
 
     internal IncomingDamagePreviewHookReader HookReader => _hookReader ??= new(this);
 
     internal CombatSide PreviewSide { get; private set; } = CombatSide.Player;
 
-    internal bool IsPartial { get; private set; }
-
-    private static string SourceIcon(AbstractModel? source)
+    private string SourceIcon(AbstractModel? source)
     {
+        if (!CaptureDetails)
+        {
+            return "";
+        }
+
         string icon = source == null ? "" : DamagePreviewTrace.Name(source);
         return icon is "◇" or "◆" ? "" : icon;
     }
@@ -48,13 +59,18 @@ internal sealed partial class IncomingDamageSimulation
     internal object? EvaluateHook(Type hookType, string name, params object?[] args)
     {
         MethodInfo method = IncomingDamagePreviewHookReader.ResolveHookOverload(hookType, name, args);
+        if (TryEvaluateQuery(method, args, out object? result))
+        {
+            return result;
+        }
+
         return HookReader.Invoke(method, null, args);
     }
 
     internal static IncomingDamagePreviewHookReader.Reference OutputReference(Action<object?> write) => new(() => null, write);
 
-    internal IEnumerable<AbstractModel> ActiveListeners() =>
-        Combat.IterateHookListeners()
+    internal IEnumerable<AbstractModel> ActiveListeners(bool includeRun = false) =>
+        (includeRun ? _runListeners : _listeners)
             .Where(model => model is not PowerModel power || !_removedPowers.Contains(power))
             .Where(model => model is not LibraryPowerModeModel mode
                 || mode.SourcePower != null && !_removedPowers.Contains(mode.SourcePower))
@@ -69,9 +85,14 @@ internal sealed partial class IncomingDamageSimulation
     {
         foreach (AbstractModel listener in ActiveListeners().ToArray())
         {
-            MethodInfo? method = AccessTools.Method(listener.GetType(), name,
-                typeof(AbstractModel).GetMethods().First(candidate => candidate.Name == name).GetParameters()
-                    .Select(static parameter => parameter.ParameterType).ToArray());
+            var key = (listener.GetType(), name);
+            if (!ListenerMethods.TryGetValue(key, out MethodInfo? method))
+            {
+                method = AccessTools.Method(listener.GetType(), name,
+                    typeof(AbstractModel).GetMethods().First(candidate => candidate.Name == name).GetParameters()
+                        .Select(static parameter => parameter.ParameterType).ToArray());
+                ListenerMethods[key] = method;
+            }
             if (method != null && method.DeclaringType != typeof(AbstractModel))
             {
                 HookReader.TryInvoke(listener, method, arguments);
@@ -82,6 +103,7 @@ internal sealed partial class IncomingDamageSimulation
     internal void SimulateTurnEnd(CombatSide side, IReadOnlyList<Creature> participants, bool before)
     {
         PreviewSide = side;
+        IsEnemyTurn = side == CombatSide.Enemy;
         string[] methods = before
             ? [nameof(AbstractModel.BeforeSideTurnEndVeryEarly), nameof(AbstractModel.BeforeSideTurnEndEarly), nameof(AbstractModel.BeforeSideTurnEnd)]
             : [nameof(AbstractModel.AfterSideTurnEnd), nameof(AbstractModel.AfterSideTurnEndLate)];
@@ -94,9 +116,15 @@ internal sealed partial class IncomingDamageSimulation
     internal void SimulateTurnStart(CombatSide side, IReadOnlyList<Creature> participants)
     {
         PreviewSide = side;
+        IsEnemyTurn = side == CombatSide.Enemy;
         foreach (IncomingDamageTargetState state in States)
         {
             state.HpLostThisSide = 0;
+        }
+
+        if (side == CombatSide.Player)
+        {
+            _isNextPlayerTurn = true;
         }
 
         SimulateHooks(nameof(AbstractModel.BeforeSideTurnStart), null, side, participants, Combat);
@@ -168,10 +196,35 @@ internal sealed partial class IncomingDamageSimulation
 
     internal void RecordUnsupportedHook(AbstractModel source, MethodInfo method, string reason)
     {
-        IsPartial = true;
+        MarkPartial(source);
         if (ReportedUnsupportedHooks.Add(method))
         {
             Log.Info($"[LibraryOfRuina.IncomingPreview] Partial preview: unsupported hook {source.GetType().FullName}.{method.Name}: {reason}");
+        }
+    }
+
+    /// <summary>来源钩子没能准确结算：标在它影响的目标上；找不到对应目标（敌方或攻击者一侧）时所有目标都不确定。</summary>
+    internal void MarkPartial(AbstractModel source)
+    {
+        Creature? affected = AffectedCreature ?? source switch
+        {
+            PowerModel power => power.Owner,
+            CardModel card => card.Owner.Creature,
+            RelicModel relic => relic.Owner.Creature,
+            MonsterModel monster => monster.Creature,
+            _ => null
+        };
+        if (affected != null && TryGetState(affected, out IncomingDamageTargetState? state))
+        {
+            state!.IsPartial = true;
+        }
+        else
+        {
+            // 敌方或攻击者一侧的钩子（回合结束加力量等）失败时，每个目标的来袭伤害都可能偏低
+            foreach (IncomingDamageTargetState target in States)
+            {
+                target.IsPartial = true;
+            }
         }
     }
 
@@ -296,12 +349,17 @@ internal sealed partial class IncomingDamageSimulation
     internal bool TryInterpretCommand(MethodBase method, object? instance, object?[] args, AbstractModel? source, out object? result)
     {
         result = null;
+        if (TryEvaluateQuery(method, args, out result))
+        {
+            return true;
+        }
+
         Type? type = method.DeclaringType;
         string name = method.Name;
         if (name is "IterateHookListeners" or "IterateCombatHookListeners"
             && (instance is IRunState or CombatState || type == typeof(Hook)))
         {
-            result = ActiveListeners().ToArray();
+            result = ActiveListeners(instance is IRunState).ToArray();
             return true;
         }
 
@@ -314,6 +372,26 @@ internal sealed partial class IncomingDamageSimulation
         if (instance is Creature owner && name == "get_Powers")
         {
             result = ActivePowers(owner);
+            return true;
+        }
+
+        if (instance is Creature powerOwner && method.IsGenericMethod && name is "GetPower" or "HasPower")
+        {
+            Type powerType = method.GetGenericArguments()[0];
+            PowerModel? active = ActivePowers(powerOwner).FirstOrDefault(powerType.IsInstanceOfType);
+            result = name == "HasPower" ? active != null : active;
+            return true;
+        }
+
+        if (instance is IRunState && name == "get_Players")
+        {
+            result = Combat.Players;
+            return true;
+        }
+
+        if (instance is MegaCrit.Sts2.Core.Entities.Players.PlayerCombatState playerCombat && name == "get_TurnNumber")
+        {
+            result = playerCombat.TurnNumber + (_isNextPlayerTurn ? NextPlayerTurnOffset : 0);
             return true;
         }
 
@@ -331,8 +409,15 @@ internal sealed partial class IncomingDamageSimulation
                 case "get_Block": result = preview!.Block; return true;
                 case "get_IsAlive": result = preview!.Hp > 0; return true;
                 case "get_IsDead": result = preview!.Hp <= 0; return true;
+                case "get_HpLostThisSide": result = preview!.HpLostThisSide; return true;
+                case "get_HpLostSinceOwnerTurnStart": result = preview!.HpLostSinceOwnerTurnStart; return true;
                 case "GetHpPercentRemaining": result = (double)preview!.Hp / targetState.MaxHp; return true;
             }
+        }
+
+        if (HookReader.IsReadingQuery && type is not null && type.Name.EndsWith("Cmd", StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException("A preview query cannot execute combat commands");
         }
 
         if ((type == typeof(CreatureCmd) || type == typeof(LibraryCreatureCmd)) && name == nameof(CreatureCmd.Damage))
@@ -421,11 +506,12 @@ internal sealed partial class IncomingDamageSimulation
             return true;
         }
 
-        if (type == typeof(PowerCmd) && name == "ModifyAmount")
+        if (type == typeof(PowerCmd) && name is "ModifyAmount" or "Decrement")
         {
             PowerModel power = args.OfType<PowerModel>().First();
             int before = _powerAmounts.GetValueOrDefault(power, power.Amount);
-            decimal offset = Convert.ToDecimal(args[Array.FindIndex(method.GetParameters(), parameter => parameter.Name == "offset")]);
+            decimal offset = name == "Decrement" ? PowerDecrementOffset
+                : Convert.ToDecimal(args[Array.FindIndex(method.GetParameters(), parameter => parameter.Name == "offset")]);
             Creature? applier = args.Length > 3 ? args[3] as Creature : null;
             CardModel? card = args.Length > 4 ? args[4] as CardModel : null;
             decimal modified = ModifyPowerOffset(power, power.Owner, offset, applier, card);
@@ -473,7 +559,15 @@ internal sealed partial class IncomingDamageSimulation
                     powers.Add(power);
                 }
 
-                _powerAmounts[power] = _powerAmounts.GetValueOrDefault(power, power.Amount) + amount;
+                Creature? applier = parameters.Any(static parameter => parameter.Name == "applier") ? Read("applier") as Creature : null;
+                CardModel? card = parameters.Any(static parameter => parameter.Name == "cardSource") ? Read("cardSource") as CardModel : null;
+                decimal modifiedAmount = ModifyPowerOffset(power, creatureTarget, amount, applier, card);
+                _powerAmounts[power] = _powerAmounts.GetValueOrDefault(power, power.Amount) + (int)modifiedAmount;
+                if ((int)modifiedAmount != 0)
+                {
+                    SimulateHooks(nameof(AbstractModel.AfterPowerAmountChanged), null, power, modifiedAmount, applier, card);
+                }
+
                 applied.Add(power);
             }
 

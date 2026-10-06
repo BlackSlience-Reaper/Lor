@@ -8,6 +8,7 @@ using LibraryLib.Hooks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.interop;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -64,9 +65,10 @@ internal static class IncomingDamagePreviewCalculator
     internal static IReadOnlyDictionary<Creature, IncomingDamagePreviewResult> Calculate(
         CombatState combat,
         Creature? localPlayer,
-        IReadOnlyList<Creature> targets)
+        IReadOnlyList<Creature> targets,
+        bool captureDetails = true)
     {
-        var simulation = new IncomingDamageSimulation(combat, targets);
+        var simulation = new IncomingDamageSimulation(combat, targets, captureDetails);
         using (IncomingDamageSimulation.Enter(simulation))
         {
             Creature[] playerParticipants = combat.Players.Select(static player => player.Creature).ToArray();
@@ -93,9 +95,9 @@ internal static class IncomingDamagePreviewCalculator
         var results = new Dictionary<Creature, IncomingDamagePreviewResult>();
         foreach (IncomingDamageTargetState state in simulation.States)
         {
-            if (targets.Contains(state.Creature) && (state.HasIncomingDamage || simulation.IsPartial))
+            if (targets.Contains(state.Creature) && state.HasIncomingDamage)
             {
-                results[state.Creature] = BuildResult(state, simulation.IsPartial);
+                results[state.Creature] = BuildResult(state, state.IsPartial);
             }
         }
 
@@ -106,9 +108,10 @@ internal static class IncomingDamagePreviewCalculator
     {
         bool isLethal = !isPartial && state.Hp <= 0;
         string blocked = DamagePreviewTrace.Tint(state.Blocked.ToString(), StsColors.blue);
-        string hpLoss = HpLossText(state.HpLoss);
+        // 未知结果不能伪装成精确的零伤害。
+        string hpLoss = isPartial && state.HpLoss == 0 ? "?" : HpLossText(state.HpLoss);
         string lethal = isLethal ? LethalIcon : "";
-        string partial = isPartial ? " ?" : "";
+        string partial = isPartial && state.HpLoss > 0 ? " ?" : "";
         string summary = $"{BlockIcon}{blocked}\n{HeartIcon}{hpLoss}{lethal}{partial}";
         string total = $"= {BlockIcon}{blocked} {HeartIcon}{hpLoss}{lethal}{partial}";
         string details = string.Join("\n", state.Details.Append(total));
@@ -140,9 +143,26 @@ internal static class IncomingDamagePreviewCalculator
                     continue;
                 }
 
-                simulation.HookReader.TryExecute(enemy.Monster,
-                    AccessTools.Method(typeof(IncomingDamagePreviewCalculator), nameof(SimulateAttack)),
-                    () => SimulateAttack(simulation, enemy, attack, ordinaryTargets, targets));
+                // 已知攻击逐次推进，单个监听者失败由查询聚合器局部处理。聚合器之外的意外异常只隔离这一次攻击：
+                // 已结算的命中保留，受击者标为不完整，至少显示“?”，不当成没有来袭伤害，也不影响其他敌人
+                try
+                {
+                    SimulateAttack(simulation, enemy, attack, ordinaryTargets, targets);
+                }
+                catch (Exception error) when (error is not OutOfMemoryException)
+                {
+                    foreach (Creature target in targets)
+                    {
+                        if (simulation.TryGetState(target, out IncomingDamageTargetState? state))
+                        {
+                            state!.HasIncomingDamage = true;
+                            state.IsPartial = true;
+                        }
+                    }
+
+                    LorLog.InfoOnce("IncomingPreview.AttackFailed:" + enemy.Monster.GetType().FullName,
+                        $"[LibraryOfRuina.IncomingPreview] Partial preview: attack of {enemy.Monster.GetType().FullName} failed: {error.Message}");
+                }
             }
         }
     }
@@ -168,8 +188,8 @@ internal static class IncomingDamagePreviewCalculator
 
         // 原版攻击命中 Library 生物时，单体按打击、多目标按斩击结算抗性（与基础库执行时判定一致）。
         LibraryDamageType type = targets.Count > 1 ? LibraryDamageType.Slash : LibraryDamageType.Blunt;
-        string header = DamagePreviewTrace.Tint(enemy.Name, StsColors.gold);
-        var headerAdded = new HashSet<IncomingDamageTargetState>();
+        string header = simulation.CaptureDetails ? DamagePreviewTrace.Tint(enemy.Name, StsColors.gold) : "";
+        var headerAdded = simulation.CaptureDetails ? new HashSet<IncomingDamageTargetState>() : null;
         for (int hit = 0; hit < hits; hit++)
         {
             if (simulation.TryGetState(enemy, out IncomingDamageTargetState? enemyState) && enemyState!.IsDown)
@@ -186,14 +206,23 @@ internal static class IncomingDamagePreviewCalculator
                     continue;
                 }
 
-                if (headerAdded.Add(state))
+                if (headerAdded != null && headerAdded.Add(state))
                 {
                     state.Details.Add(header);
                 }
 
-                IncomingHitOutcome outcome = simulation.ResolveHit(
-                    state, amount, ValueProp.Move, enemy, null, type, "", applyDamageHooks);
-                simulation.DispatchDamageCallbacks(state, outcome, ValueProp.Move, enemy, null);
+                Creature? previousTarget = simulation.AffectedCreature;
+                simulation.AffectedCreature = receiver;
+                try
+                {
+                    IncomingHitOutcome outcome = simulation.ResolveHit(
+                        state, amount, ValueProp.Move, enemy, null, type, "", applyDamageHooks);
+                    simulation.DispatchDamageCallbacks(state, outcome, ValueProp.Move, enemy, null);
+                }
+                finally
+                {
+                    simulation.AffectedCreature = previousTarget;
+                }
             }
         }
     }
@@ -239,18 +268,21 @@ internal sealed class IncomingDamageTargetState
 
     internal bool HasIncomingDamage { get; set; }
 
+    internal bool IsPartial { get; set; }
+
     internal bool IsDown => Hp <= 0;
 
     internal List<string> Details { get; } = [];
 
-    internal IncomingDamageTargetState Snapshot()
-    {
-        var snapshot = new IncomingDamageTargetState(Creature);
-        snapshot.Restore(this);
-        return snapshot;
-    }
+    internal readonly record struct Checkpoint(int Block, int Hp, int ChaoValue, bool IsChaoed,
+        int Blocked, int HpLoss, int HpLostThisSide, int HpLostSinceOwnerTurnStart,
+        bool HasIncomingDamage, bool IsPartial, int DetailCount);
 
-    internal void Restore(IncomingDamageTargetState snapshot)
+    internal Checkpoint Snapshot() =>
+        new(Block, Hp, ChaoValue, IsChaoed, Blocked, HpLoss, HpLostThisSide,
+            HpLostSinceOwnerTurnStart, HasIncomingDamage, IsPartial, Details.Count);
+
+    internal void Restore(Checkpoint snapshot)
     {
         Block = snapshot.Block;
         Hp = snapshot.Hp;
@@ -261,8 +293,12 @@ internal sealed class IncomingDamageTargetState
         HpLostThisSide = snapshot.HpLostThisSide;
         HpLostSinceOwnerTurnStart = snapshot.HpLostSinceOwnerTurnStart;
         HasIncomingDamage = snapshot.HasIncomingDamage;
-        Details.Clear();
-        Details.AddRange(snapshot.Details);
+        IsPartial = snapshot.IsPartial;
+        // 明细只追加，事务保存长度即可，避免每个 Hook 复制完整的多段伤害文本。
+        if (Details.Count > snapshot.DetailCount)
+        {
+            Details.RemoveRange(snapshot.DetailCount, Details.Count - snapshot.DetailCount);
+        }
     }
 }
 
@@ -278,10 +314,13 @@ internal sealed partial class IncomingDamageSimulation
     private readonly Dictionary<Creature, IncomingDamageTargetState> _states = [];
     private readonly Dictionary<Creature, int> _redirectHp = [];
 
-    internal IncomingDamageSimulation(CombatState combat, IReadOnlyList<Creature> targets)
+    internal IncomingDamageSimulation(CombatState combat, IReadOnlyList<Creature> targets, bool captureDetails)
     {
         Combat = combat;
         Run = combat.RunState;
+        CaptureDetails = captureDetails;
+        _listeners = combat.IterateHookListeners().ToArray();
+        _runListeners = Run.IterateHookListeners(combat).ToArray();
         foreach (Creature target in combat.Creatures.Concat(targets).Distinct())
         {
             _states[target] = new IncomingDamageTargetState(target);
@@ -295,6 +334,8 @@ internal sealed partial class IncomingDamageSimulation
     internal IRunState Run { get; }
 
     internal bool IsEnemyTurn { get; private set; }
+
+    internal bool CaptureDetails { get; }
 
     internal IEnumerable<IncomingDamageTargetState> States => _states.Values;
 
@@ -333,7 +374,7 @@ internal sealed partial class IncomingDamageSimulation
         int before = state.Block;
         state.Block = (int)Math.Min(state.Block + modified, 999999999m);
         int gained = state.Block - before;
-        if (gained > 0)
+        if (gained > 0 && CaptureDetails)
         {
             state.Details.Add($"{source}{IncomingDamagePreviewCalculator.BlockIcon}+{DamagePreviewTrace.CompareNumber(gained, amount)}");
         }
@@ -368,7 +409,7 @@ internal sealed partial class IncomingDamageSimulation
         decimal blocked;
         int hpLoss;
         IReadOnlyList<MegaCrit.Sts2.Core.Entities.Creatures.DamageResult> redirectedResults;
-        using (var trace = new DamagePreviewTrace(amount, source))
+        using (var trace = new DamagePreviewTrace(amount, source, CaptureDetails))
         {
             decimal damage = amount;
             if (applyDamageHooks)
@@ -418,7 +459,10 @@ internal sealed partial class IncomingDamageSimulation
             hpLoss = ResolveHpLoss(state, unblocked, props, dealer, cardSource, pipelineType, libraryPipeline, trace,
                 out redirectedResults);
             trace.Set(hpLoss, "");
-            state.Details.Add(trace.RenderResult(IncomingDamagePreviewCalculator.HpLossText(hpLoss)));
+            if (CaptureDetails)
+            {
+                state.Details.Add(trace.RenderResult(IncomingDamagePreviewCalculator.HpLossText(hpLoss)));
+            }
         }
 
         state.Blocked += (int)blocked;
@@ -564,7 +608,10 @@ internal sealed partial class IncomingDamageSimulation
         {
             state.IsChaoed = true;
             // 本次命中使其混乱：在该命中条目末尾标记混乱图标。
-            state.Details[^1] += $" {IncomingDamagePreviewCalculator.StaggerIcon}";
+            if (CaptureDetails && state.Details.Count > 0)
+            {
+                state.Details[^1] += $" {IncomingDamagePreviewCalculator.StaggerIcon}";
+            }
         }
     }
 

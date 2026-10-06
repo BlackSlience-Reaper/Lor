@@ -27,12 +27,20 @@ internal static partial class GameApi
     internal static CardPlay? CardPlayCompat(this AttackCommand command) => null;
     internal static Task LoseBlock(PlayerChoiceContext context, Creature target, decimal amount, Creature? remover) => CreatureCmd.LoseBlock(target, amount);
     internal static bool IsDirectionalNavigation(NControllerManager? manager) => manager?.IsUsingController == true;
+    // 旧版没有 SerializableRng：按种子重建再快进到同一计数（开销与计数成正比，一局内也只是几千到几万步）
+    internal static Rng CloneRng(Rng rng) => new(rng.Seed, rng.Counter);
     internal static ulong FallbackSeed(string label) => unchecked((uint)MegaCrit.Sts2.Core.Helpers.StringHelper.GetDeterministicHashCode(label));
     internal static bool HasHibernate(Creature creature) => false;
     internal static Rng CreateRng(ulong seed, string label) => new Rng(unchecked((uint)seed), label);
     internal static decimal ModifyDamage(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, out IEnumerable<AbstractModel> modifiers) => Hook.ModifyDamage(runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, out modifiers);
     // 伤害预览按 Hook.ModifyDamage 的实际参数表解释执行；旧版没有 cardPlay 参数。
     internal static object?[] ModifyDamageHookArguments(IRunState runState, ICombatState? combatState, Creature? target, Creature? dealer, decimal damage, ValueProp props, CardModel? cardSource, CardPlay? cardPlay, ModifyDamageHookType modifyDamageHookType, CardPreviewMode previewMode, object modifiers) => [runState, combatState, target, dealer, damage, props, cardSource, modifyDamageHookType, previewMode, modifiers];
+
+    // 0.107.1 的原版伤害修正没有 CardPlay；基础库接口仍保留完整参数。
+    internal static object?[] IncomingDamageModifierArguments(string method, object?[] arguments) =>
+        method is "ModifyDamageAdditive" or "ModifyDamageMultiplicative" or "ModifyDamageCap"
+            ? arguments[..^1] : arguments;
+
     internal static StringName Confirm => MegaInput.accept;
     internal static void ActivateEvoke(DarkOrb orb, Creature target) { } // 旧版激发没有此通知。
     // 旧版没有 TriggerPassive，回合钩子直接调各球的 Passive。
