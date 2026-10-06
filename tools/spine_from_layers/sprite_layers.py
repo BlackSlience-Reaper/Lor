@@ -341,7 +341,8 @@ def scene_placements(spec):
         tlx, tly = (ox, oy) if not shot["centered"] else (ox - W0 / 2, oy - H0 / 2)
         px, py = shot["position"]
         center = (px + (tlx + W0 / 2) * sc, py + (tly + H0 / 2) * sc)
-        k = sc / ref_scale * fix
+        # library_fix：整个动画库的图都画小了（微笑的尸山二、三阶段里一阶段那团只有一半大），该库的待机和动作一起放大
+        k = sc / ref_scale * fix * spec.get("library_fix", {}).get(lib, 1.0)
         origin = None
         if idle:
             bottom = (px + (tlx + W0 / 2) * sc, py + (tly + H0) * sc)
