@@ -5,9 +5,31 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.abnormalities.BurrowingHeaven;
 
+/// <summary>
+/// 天堂之刺的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按根部标注点对齐、动作不转身体），
+/// 加载失败时退回下面的逐帧换图。醒着、睡着两张待机各一副骨架。
+/// </summary>
 public sealed partial class HeavenThornCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["Guard"] = "guard",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec AwakeSpine = LayeredBossSpine.Create(
+        "heaven_thorn", "heaven_thorn_awake", "attack", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec SleepSpine = LayeredBossSpine.Create(
+        "heaven_thorn", "heaven_thorn_sleep", "attack", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => AwakeSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [AwakeSpine, SleepSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == SleepVariant ? SleepSpine : AwakeSpine;
+
     [MonsterVisual(typeof(HeavenThorn))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -8f), new(0.48f, 0.48f), -95f, -291f, 104f, -4f, new(0f, -118f), new(0f, -315f))

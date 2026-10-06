@@ -104,9 +104,26 @@ public sealed partial class BigBirdCreatureVisuals
     }
 }
 
+/// <summary>
+/// 眼珠儿鸟的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，按脚对齐、动作不转身体），
+/// 加载失败时退回下面的逐帧换图。闪避往后跳一下。
+/// </summary>
 public sealed partial class EyeballBirdCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "eyeball_bird",
+        "eyeball_bird",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Thrust"] = "attack",
+            ["Evade"] = "evade",
+            ["Dodge"] = "evade",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(EyeballBird))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 13f), new(0.56f, 0.56f), -74f, -209f, 118f, 11f, new(0f, -96f), new(0f, -238f))

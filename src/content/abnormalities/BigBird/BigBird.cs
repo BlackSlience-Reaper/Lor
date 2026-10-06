@@ -543,6 +543,8 @@ public sealed class EyeballBird : LorMonsterModel
 
     public override int DefaultChaoResistance => 110;
 
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {
         Slash = LibraryResistanceLevel.Endure,

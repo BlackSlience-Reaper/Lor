@@ -1,0 +1,11 @@
+boss_heaven_thorn_awake.webp
+size:1366,309
+filter:Linear,Linear
+Attack/body
+bounds:0,0,470,309
+Awake/body
+bounds:472,0,258,308
+Guard/body
+bounds:732,0,275,265
+Hit/body
+bounds:1009,0,355,201

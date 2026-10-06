@@ -1,0 +1,15 @@
+boss_time_trace.webp
+size:1614,242
+filter:Linear,Linear
+AttackSlash/body
+bounds:0,0,317,242
+Hit/body
+bounds:319,0,178,193
+Default/body
+bounds:499,0,197,189
+Guard/body
+bounds:698,0,193,182
+AttackThrust/body
+bounds:893,0,338,165
+AttackBlunt/body
+bounds:1233,0,379,148

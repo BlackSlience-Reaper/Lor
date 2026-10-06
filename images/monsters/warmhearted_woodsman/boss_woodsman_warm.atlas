@@ -1,0 +1,15 @@
+boss_woodsman_warm.webp
+size:1898,377
+filter:Linear,Linear
+LoggingFinal/body
+bounds:0,0,455,377
+AttackSlash/body
+bounds:457,0,288,304
+AttackBlunt/body
+bounds:747,0,484,245
+Guard/body
+bounds:1233,0,139,211
+Warm/body
+bounds:1374,0,262,201
+Hit/body
+bounds:1638,0,258,190

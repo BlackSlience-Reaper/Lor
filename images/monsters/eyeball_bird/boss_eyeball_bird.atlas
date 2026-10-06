@@ -1,0 +1,11 @@
+boss_eyeball_bird.webp
+size:817,211
+filter:Linear,Linear
+Evade/body
+bounds:0,0,213,211
+Default/body
+bounds:215,0,191,205
+Attack/body
+bounds:408,0,190,193
+Hit/body
+bounds:600,0,215,167

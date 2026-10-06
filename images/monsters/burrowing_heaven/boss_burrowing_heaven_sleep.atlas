@@ -1,0 +1,13 @@
+boss_burrowing_heaven_sleep.webp
+size:1984,945
+filter:Linear,Linear
+Special/body
+bounds:0,0,769,635
+Attack/body
+bounds:771,0,809,432
+Guard/body
+bounds:1582,0,400,376
+Sleep/body
+bounds:0,637,547,308
+Hit/body
+bounds:549,637,547,223
