@@ -1,0 +1,13 @@
+boss_lf_small_spider.webp
+size:1305,323
+filter:Linear,Linear
+Attack/body
+bounds:0,0,310,323
+Hit/body
+bounds:312,0,202,279
+Move/body
+bounds:516,0,220,260
+Cast/body
+bounds:738,0,193,201
+Default/body
+bounds:933,0,370,178

@@ -4,6 +4,7 @@ using LibraryOfRuina.content.liberation.History;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -15,6 +16,8 @@ namespace LibraryOfRuina.content.abnormalities.ScorchedGirl;
 
 public sealed class TheFourthMatchFlame : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private int EmberDamage => 
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 8, 5);
 

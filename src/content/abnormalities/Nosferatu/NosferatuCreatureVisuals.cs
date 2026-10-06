@@ -141,9 +141,24 @@ public partial class NosferatuCreatureVisuals
     }
 }
 
+/// <summary>
+/// 血蝙蝠（异想体、语言层）：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，飘着；各姿势按标注点对齐高度），
+/// 加载失败时退回逐帧换图。攻击照原来在远程、扑咬两张间轮换；施法、受击都是闪避图。
+/// </summary>
 public partial class BloodBatCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "nosferatu",
+        "blood_bat",
+        "ranged",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "evade",
+        }) with { AttackCycle = ["ranged", "attack"] };
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(BloodBat))]
     [MonsterVisual(typeof(LanguageFloorBloodBat))]
     internal static readonly CreatureVisualLayout Layout = new(

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
@@ -11,6 +12,8 @@ namespace LibraryOfRuina.content.liberation.Social;
 
 public sealed class ScowlingFace : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public const int BaseHp = 50;
     public const int ChaoResistance = 50;
     private const string HiddenMoveId = "SCOWLING_FACE_HIDDEN";

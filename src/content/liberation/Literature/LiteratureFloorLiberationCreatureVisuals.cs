@@ -161,6 +161,18 @@ internal sealed partial class
     LiteratureFloorEnhancedSmallSpiderCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（按标注点对齐）；攻击照场景动画先移动图、0.18 秒换攻击图。加载失败时退回场景动画
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "lf_small_spider",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "cast",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LiteratureFloorAssets.EnhancedSmallSpiderScene;
 

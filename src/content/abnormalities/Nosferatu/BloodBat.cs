@@ -6,6 +6,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -19,6 +20,8 @@ namespace LibraryOfRuina.content.abnormalities.Nosferatu;
 
 public abstract class NosferatuBloodBatBase : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     protected const string ThirstMoveId = "THIRST";
     protected const string VampirismMoveId = "VAMPIRISM";
     protected const string DeepFangsMoveId = "DEEP_FANGS";
