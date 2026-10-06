@@ -6,6 +6,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -25,6 +26,9 @@ namespace LibraryOfRuina.content.specialguests.Rnfmabj;
 /// </summary>
 public abstract class RnfmabjMonsterBase : SpecialGuestMonsterBase
 {
+    /// <summary>死亡动画时长；不会移出战斗的死亡（手的假死）返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string CompositeMoveId = "RNFMABJ_COMPOSITE";
     private const string RouterMoveId = "RNFMABJ_ROUTER";
     private const string HiddenMoveId = "RNFMABJ_HIDDEN";

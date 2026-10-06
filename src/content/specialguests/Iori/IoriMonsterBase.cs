@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LibraryLib.Hooks;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -30,6 +31,9 @@ namespace LibraryOfRuina.content.specialguests.Iori;
 public abstract partial class IoriMonsterBase :
     SpecialGuestMonsterBase, LibraryOfRuina.infra.helpers.IFinalHpLossClamp, ILibraryAbstractModel
 {
+    /// <summary>死亡动画时长；不会移出战斗的死亡返回 0，见 <see cref="LayeredBossSpine.DeathLength"/>。</summary>
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const string RouterMoveId = "IORI_ROUTER";
     internal const string CompositeMoveId = "IORI_COMPOSITE";
     internal const string HiddenMoveId = "IORI_HIDDEN";

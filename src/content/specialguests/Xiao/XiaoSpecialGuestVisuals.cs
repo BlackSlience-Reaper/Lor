@@ -13,6 +13,28 @@ namespace LibraryOfRuina.content.specialguests.Xiao;
 internal abstract partial class XiaoSceneCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // Spine 身体见 LayeredBossSpine（原版分层，tools/spine_from_layers 的 xiao_distort / xiao_ego / miris）：
+    // 触发名与场景动画同名，各对一段动画；"Hit" 是受击，"Attack" 没有对应的场景动画，骨架里按斩击播
+    internal static Dictionary<string, string> SpineTriggers(params string[] skills)
+    {
+        var triggers = new Dictionary<string, string>
+        {
+            ["Slash"] = "slash",
+            ["Penetrate"] = "penetrate",
+            ["Strike"] = "strike",
+            ["Move"] = "move",
+            ["Guard"] = "guard",
+            ["Evade"] = "evade",
+            ["Wounded"] = "wounded",
+        };
+        foreach (string skill in skills)
+        {
+            triggers[skill] = skill.ToLowerInvariant();
+        }
+
+        return triggers;
+    }
+
     protected override string NormalizeTriggerName(string triggerName) =>
         triggerName switch
         {
@@ -29,13 +51,35 @@ internal sealed partial class XiaoStageOneCreatureVisuals :
     internal const string ScenePath =
         "res://scenes/creature_visuals/xiao_stage_one.tscn";
 
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "special_guests", "xiao_distort", "slash", SpineTriggers("S1", "S2"));
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() =>
         XiaoAnimationContract.StageOneLibrary;
 }
 
 internal sealed partial class MirisCreatureVisuals :
-    SpriteAttackCreatureVisuals
+    SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "special_guests", "miris", "slash", SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
+    // 换图外观的触发名原样交给骨架：Hit、Damaged 是受击（"Hit" 由骨架自己认），Block、Dodge 与 Guard、Evade 同图；
+    // 米里斯没有移动图，骨架里也没有移动动画
+    private static Dictionary<string, string> SpineTriggers()
+    {
+        Dictionary<string, string> triggers = XiaoSceneCreatureVisuals.SpineTriggers("S1", "S2");
+        triggers.Remove("Move");
+        triggers["Damaged"] = "hurt";
+        triggers["Block"] = "guard";
+        triggers["Dodge"] = "evade";
+        return triggers;
+    }
+
     internal static readonly SpriteVisualProfile Profile =
         XiaoGuestVisualProfile.Build(
             "res://images/special_guests/xiao/monsters/miris/",
@@ -66,6 +110,11 @@ internal sealed partial class XiaoEgoCreatureVisuals :
 {
     internal const string ScenePath =
         "res://scenes/creature_visuals/xiao_ego.tscn";
+
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "special_guests", "xiao_ego", "slash", SpineTriggers("S1", "S2", "S3", "S4", "S5", "Special"));
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
 
     protected override string ResolveCurrentAnimationLibrary() =>
         XiaoAnimationContract.StageTwoLibrary;
