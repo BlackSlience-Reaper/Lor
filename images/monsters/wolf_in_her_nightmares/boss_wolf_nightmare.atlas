@@ -1,0 +1,13 @@
+boss_wolf_nightmare.webp
+size:1728,291
+filter:Linear,Linear
+Howl/body
+bounds:0,0,323,291
+Default/body
+bounds:325,0,437,182
+Hit/body
+bounds:764,0,223,181
+Slash/body
+bounds:989,0,357,149
+Thrust/body
+bounds:1348,0,378,125

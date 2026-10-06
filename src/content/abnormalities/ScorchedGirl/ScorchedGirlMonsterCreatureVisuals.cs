@@ -4,8 +4,16 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.ScorchedGirl;
 
-public partial class ScorchedGirlMonsterCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 焦化少女：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），加载失败时退回逐帧换图。
+/// </summary>
+public partial class ScorchedGirlMonsterCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "scorched_girl", "scorched_girl", "attack", new Dictionary<string, string>());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ScorchedGirlMonster))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(10f, -98f), new(0.52f, 0.52f), -124f, -218f, 124f, 8f, new(10f, -98f), new(-20f, -286f))

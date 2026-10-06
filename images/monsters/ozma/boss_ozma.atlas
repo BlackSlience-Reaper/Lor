@@ -1,0 +1,15 @@
+boss_ozma.webp
+size:1725,905
+filter:Linear,Linear
+Sorrow/body
+bounds:0,0,592,502
+Pain/body
+bounds:594,0,512,466
+Attack/body
+bounds:1108,0,615,424
+Guard/body
+bounds:0,504,522,401
+Hit/body
+bounds:524,504,506,384
+Default/body
+bounds:1032,504,543,373

@@ -1,0 +1,17 @@
+boss_spear_apostle.webp
+size:1708,820
+filter:Linear,Linear
+S2/body
+bounds:0,0,274,527
+S3/body
+bounds:276,0,346,527
+S1/body
+bounds:624,0,521,461
+Default/body
+bounds:1147,0,531,307
+Guard/body
+bounds:0,529,505,291
+Hit/body
+bounds:507,529,505,283
+Pierce/body
+bounds:1014,529,692,271

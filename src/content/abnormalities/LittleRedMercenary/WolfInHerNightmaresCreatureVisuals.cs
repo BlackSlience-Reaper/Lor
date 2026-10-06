@@ -8,6 +8,20 @@ namespace LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 internal sealed partial class WolfInHerNightmaresCreatureVisuals
     : SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（按标注点对齐；斩击、突刺图照场景按 0.48 倍、其余 0.6 倍），加载失败时退回场景动画
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "wolf_in_her_nightmares",
+        "wolf_nightmare",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Slash"] = "slash",
+            ["Thrust"] = "thrust",
+            ["Howl"] = "howl",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LittleRedMercenaryAssets.WolfInHerNightmaresScene;
 

@@ -5,9 +5,30 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace LibraryOfRuina.content.abnormalities.Ozma;
 
+/// <summary>
+/// 奥兹玛：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），加载失败时退回逐帧换图。
+/// 生命之粉、悲伤的停留时长照原来的换图。
+/// </summary>
 public sealed partial class OzmaCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "ozma",
+        "ozma",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Guard"] = "guard",
+            ["Block"] = "guard",
+            ["Cast"] = "guard",
+            ["LifePowder"] = "pain",
+            ["Pain"] = "pain",
+            ["SpecialAttack"] = "pain",
+            ["Sorrow"] = "sorrow",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(Ozma))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -8f), new(0.48f, 0.48f), -196f, -382f, 196f, 16f, new(0f, -184f), new(20f, -414f))

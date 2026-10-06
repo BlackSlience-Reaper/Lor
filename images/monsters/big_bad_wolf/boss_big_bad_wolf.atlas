@@ -1,0 +1,13 @@
+boss_big_bad_wolf.webp
+size:1630,445
+filter:Linear,Linear
+Slash/body
+bounds:0,0,442,445
+Normal/body
+bounds:444,0,214,310
+Swallowed/body
+bounds:660,0,252,284
+Hit/body
+bounds:914,0,267,242
+Strike/body
+bounds:1183,0,445,230

@@ -6,6 +6,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -21,6 +22,8 @@ namespace LibraryOfRuina.content.abnormalities.RoadHome;
 
 public sealed class ScaredyCat : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const string HowlMoveId = "SCAREDY_CAT_HOWL";
     internal const string PurrMoveId = "SCAREDY_CAT_PURR";
     internal const string GrowlMoveId = "SCAREDY_CAT_GROWL";

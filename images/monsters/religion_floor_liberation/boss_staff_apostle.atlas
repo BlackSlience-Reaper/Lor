@@ -1,0 +1,17 @@
+boss_staff_apostle.webp
+size:2044,766
+filter:Linear,Linear
+S3/body
+bounds:0,0,331,481
+S2/body
+bounds:333,0,274,480
+S1/body
+bounds:609,0,485,430
+Default/body
+bounds:1096,0,484,307
+Guard/body
+bounds:1582,0,460,291
+Hit/body
+bounds:0,483,460,283
+Attack/body
+bounds:462,483,523,282

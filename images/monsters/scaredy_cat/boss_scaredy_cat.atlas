@@ -1,0 +1,13 @@
+boss_scaredy_cat.webp
+size:1778,561
+filter:Linear,Linear
+Slash/body
+bounds:0,0,300,343
+Hit/body
+bounds:302,0,290,304
+Ranged/body
+bounds:594,0,671,290
+Strike/body
+bounds:1267,0,509,221
+Normal/body
+bounds:0,345,277,216

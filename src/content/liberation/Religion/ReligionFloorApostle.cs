@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Saves.Runs;
@@ -11,6 +12,8 @@ namespace LibraryOfRuina.content.liberation.Religion;
 
 public abstract class ReligionFloorApostle : ReligionFloorMonster
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     [SavedProperty]
     public bool IsFakeDead { get; private set; }
 

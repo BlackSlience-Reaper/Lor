@@ -11,6 +11,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -36,6 +37,8 @@ namespace LibraryOfRuina.content.abnormalities.BigBadWolf;
 
 public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string Root = "res://images/monsters/big_bad_wolf/";
     public const string IdleTexturePath = Root + "idle.png";
     public const string HitTexturePath = Root + "hit.png";
