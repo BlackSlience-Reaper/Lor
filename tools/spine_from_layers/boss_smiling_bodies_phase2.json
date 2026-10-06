@@ -1,0 +1,512 @@
+{
+ "name": "boss_smiling_bodies_phase2",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/smiling_bodies",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  1.4
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Phase2",
+ "motions": {
+  "Phase2": {
+   "source": "Phase2",
+   "bones": {
+    "body": {
+     "at": [
+      60.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      60.9,
+      388.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -1.0,
+      476.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Phase2Absorb": {
+   "source": "Phase2Absorb",
+   "bones": {
+    "body": {
+     "at": [
+      59.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      59.8,
+      356.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -11.0,
+      481.6
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Phase2Hit": {
+   "source": "Phase2Hit",
+   "bones": {
+    "body": {
+     "at": [
+      38.3,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      38.3,
+      381.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -23.0,
+      470.6
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Phase2Scream": {
+   "source": "Phase2Scream",
+   "bones": {
+    "body": {
+     "at": [
+      76.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      76.1,
+      744.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -8.0,
+      950.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Phase2",
+     0
+    ]
+   ],
+   "osc": {
+    "Phase2.body": {
+     "rotate": [
+      0.6,
+      1,
+      0.0
+     ]
+    },
+    "Phase2.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Phase2.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "absorb": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Phase2",
+     0
+    ],
+    [
+     0.1,
+     "Phase2Absorb",
+     0
+    ],
+    [
+     0.9,
+     "Phase2",
+     0
+    ]
+   ],
+   "keys": {
+    "Phase2.body": {},
+    "Phase2Absorb.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Phase2Absorb.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Phase2Absorb.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Phase2Hit",
+     0
+    ],
+    [
+     0.4,
+     "Phase2",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Phase2Hit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Phase2Hit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Phase2Hit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "scream": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Phase2",
+     0
+    ],
+    [
+     0.1,
+     "Phase2Scream",
+     0
+    ],
+    [
+     0.9,
+     "Phase2",
+     0
+    ]
+   ],
+   "keys": {
+    "Phase2.body": {},
+    "Phase2Scream.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Phase2Scream.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Phase2Scream.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Phase2",
+     0
+    ]
+   ],
+   "keys": {
+    "Phase2.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Phase2.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Phase2.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

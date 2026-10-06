@@ -3,8 +3,23 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.Leticia;
 
-public partial class LittleWitchFriendCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 小魔女的朋友（异想体战）：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，整图只平移转动，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。
+/// </summary>
+public partial class LittleWitchFriendCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "leticia",
+        "little_witch_friend",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "cast",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(LittleWitchFriend))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -94f), new(0.43f, 0.43f), -126f, -202f, 126f, 8f, new(0f, -98f), new(0f, -242f));

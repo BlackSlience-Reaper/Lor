@@ -9,6 +9,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -28,6 +29,8 @@ namespace LibraryOfRuina.content.reverberation.CryingChildren;
 
 public abstract class CryingChildMonsterBase : SpecialGuestMonsterBase
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private MoveState? _action;
     private AbstractIntent[]? _intents;
 

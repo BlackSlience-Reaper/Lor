@@ -44,6 +44,27 @@ internal static class CryingChildrenAssets
 [MonsterVisual(typeof(ReverberationPhilip), ScenePath = CryingChildrenAssets.PhilipScene)]
 internal sealed partial class ReverberationPhilipVisuals : SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐）只给普通库，加载失败时退回场景动画；
+    // 第三阶段的燃烧库没有骨架，退回场景动画。普通库的特殊招式在场景里就是待机图，不映射
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "crying_children",
+        "rev_philip",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Slash"] = "slash",
+            ["Pierce"] = "pierce",
+            ["Strike"] = "strike",
+            ["Guard"] = "guard",
+            ["Ranged"] = "ranged",
+            ["Evade"] = "evade",
+        });
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine];
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == "normal" ? NormalSpine : null;
+
     protected override string ResolveCurrentAnimationLibrary() =>
         (GetParent() as NCreature)?.Entity?.Monster is ReverberationPhilip { Phase: 3 }
             ? "burning" : "normal";
@@ -52,5 +73,20 @@ internal sealed partial class ReverberationPhilipVisuals : SceneAnimatedCreature
 [MonsterVisual(typeof(UnspeakingChild), ScenePath = CryingChildrenAssets.ChildScene)]
 internal sealed partial class UnspeakingChildVisuals : SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐），加载失败时退回场景动画。
+    // 打击、防御、远程、特殊在场景里就是待机图，不映射
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "crying_children",
+        "unspeaking_child",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Slash"] = "slash",
+            ["Pierce"] = "pierce",
+            ["Evade"] = "evade",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() => "normal";
 }

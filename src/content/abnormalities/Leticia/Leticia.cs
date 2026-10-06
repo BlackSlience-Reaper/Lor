@@ -7,6 +7,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
@@ -26,6 +27,8 @@ namespace LibraryOfRuina.content.abnormalities.Leticia;
 
 public sealed class Leticia : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string SendGiftMoveId = "SEND_GIFT";
     private const string DontGetHurtMoveId = "DONT_GET_HURT";
     private const string HaveFunMoveId = "HAVE_FUN";

@@ -29,6 +29,8 @@ namespace LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 
 public sealed class LittleRedRidingHoodedMercenary : LorMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private static readonly string[] NormalBackgroundTextLineKeys =
     [
         "LITTLE_RED_RIDING_HOODED_MERCENARY.backgroundText.normal.0",

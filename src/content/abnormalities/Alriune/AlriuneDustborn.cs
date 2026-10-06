@@ -5,6 +5,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -23,6 +24,8 @@ namespace LibraryOfRuina.content.abnormalities.Alriune;
 
 public sealed class AlriuneDustborn : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const int AllMovesMask = 0b111; // 人偶：一轮包含三种招式，各占一个标志位。
 
     [SavedProperty]

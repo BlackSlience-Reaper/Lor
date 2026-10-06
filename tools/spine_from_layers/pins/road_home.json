@@ -1,0 +1,36 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   663,
+   564
+  ],
+  "Attack2": [
+   428,
+   570
+  ],
+  "Attack3": [
+   362,
+   630
+  ],
+  "Confused": [
+   183,
+   452
+  ],
+  "Dodge": [
+   139,
+   498
+  ],
+  "Hit": [
+   153,
+   554
+  ],
+  "Normal": [
+   122,
+   544
+  ]
+ },
+ "sizes": {}
+}

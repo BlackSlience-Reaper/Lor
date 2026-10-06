@@ -9,11 +9,13 @@
 用法：build_boss_configs.py <输出目录> [名字...]
 """
 import json
+import re
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from build_guest_configs import rig_motion  # noqa: E402
+from sprite_layers import SPRITES as SPRITES8  # noqa: E402
 
 LAYERS = Path.home() / ".local/share/LibraryOfRuina-layers"
 
@@ -721,6 +723,76 @@ BOSSES["dustborn"] = _rigid(
     {"Default.body": {"rotate": [1.0, 1, 0.0]}},
     {"pierce": ("attack", "Pierce", "dash"), "slash": ("attack", "Slash", "step"), "dodge": ("guard", "Dodge", "hop"),
      "hurt": ("hurt", "Hit")})
+# 第八批：剩下没有动画的整图怪物（人形也照做，只平移、转动不缩放）。动作按姿势名归类：
+# 受击 hurt；防御、招架往后顶；闪避往后跳；开枪、远程、呼唤后坐；施法类原地浮起；斩击踏一步；其余攻击冲上前
+_SKILL_WORDS = ("Special", "Cast", "Absorb", "Scream", "Sit", "Vomit", "Mental", "Prepare", "Victory", "FireBlack", "FireWhite")
+
+
+def _auto_anims(poses, prefix=""):
+    anims = {}
+    for p in poses:
+        if prefix and not p.startswith(prefix):
+            continue
+        short = p[len(prefix):] or p
+        name = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", short).lower()
+        if short.endswith("Hit"):
+            anims["hurt" if short == "Hit" else name] = ("hurt", p)
+        elif "Guard" in short or "Parry" in short:
+            anims[name] = ("guard", p, "brace")
+        elif "Evade" in short or "Dodge" in short:
+            anims[name] = ("guard", p, "hop")
+        elif any(w in short for w in _SKILL_WORDS):
+            anims[name] = ("skill", p, "rise")
+        elif any(w in short for w in ("Fire", "Ranged", "Voice")):
+            anims[name] = ("attack", p, "recoil")
+        elif "Slash" in short:
+            anims[name] = ("attack", p, "step")
+        else:
+            anims[name] = ("attack", p, "dash")
+    return anims
+
+
+def _batch8(name, base="Default", prefix="", sway=1.0, **kw):
+    anims = _auto_anims(SPRITES8[name]["poses"], prefix)
+    anims.setdefault("hurt", ("hurt", base))  # 没有受击图的就在待机姿势上晃
+    return _rigid({f"{base}.body": {"rotate": [sway, 1, 0.0]}}, anims, layers=name, base=base, **kw)
+
+
+for _n, _kw in {"despair_knight": None, "funeral_butterflies": {"preview_on_origin": True},
+                "leticia": {"preview_on_origin": True}, "little_witch_friend": {"preview_on_origin": True},
+                "little_red": {"preview_on_origin": True}, "road_home": None, "melting_corpse": {},
+                "lang_melting_corpse": {}, "hf_fluttering_mass": {"preview_on_origin": True}, "alriune": {},
+                "alriune_dustborn": {}, "blue_star_follower": {}, "gear_follower": {}, "eileen": {}, "unspeaking_child": {},
+                "green_stem_hermit": {}, "nf_green_stem_hermit": {}, "wrath_servant": {}, "lf_little_witch_friend": {},
+                "rev_philip": None}.items():
+    if _kw is not None:
+        BOSSES[_n] = _batch8(_n, **_kw)
+# 多形态：每个形态（待机图）一副骨架，只带该形态自己的姿势
+for _f in ("Normal", "StabbedOne", "StabbedTwo", "StabbedThree", "Despair"):
+    # 绝望骑士：只有五张待机图，换形态时切骨架；受击就在当前形态上晃
+    BOSSES[f"despair_knight_{_f.lower()}"] = _rigid({f"{_f}.body": {"rotate": [0.8, 1, 0.0]}}, {"hurt": ("hurt", _f)},
+                                                   layers="despair_knight", base=_f)
+for _f in ("Normal", "Bloodfiend"):
+    BOSSES[f"nosferatu_{_f.lower()}"] = _batch8("nosferatu", base=_f, prefix=_f)
+for _f in ("Human", "Snake"):
+    BOSSES[f"queen_of_hatred_{_f.lower()}"] = _batch8("queen_of_hatred", base=_f, prefix=_f, preview_on_origin=True)
+for _f in ("Normal", "Confused"):
+    # 归家的路途：混乱形态也用同一套攻击、闪避图
+    BOSSES[f"road_home_{_f.lower()}"] = _batch8("road_home", base=_f)
+BOSSES["rev_philip"] = _batch8("rev_philip", base="Normal")
+for _f in ("Phase1", "Phase2", "Phase3"):
+    BOSSES[f"smiling_bodies_{_f.lower()}"] = _batch8("smiling_bodies", base=_f, prefix=_f, sway=0.6)
+# 愤怒侍从的特殊招式是三段各自发的触发（WithAttackerAnim("SpecialS1/2/3", 0.6)），每段一张图、停 0.6 秒；
+# 胜利演出等 2 秒
+BOSSES["wrath_servant"]["anims"].update({f"special_s{i}": ("attack", f"SpecialS{i}", "step") for i in (1, 2, 3)})
+BOSSES["wrath_servant"]["holds"] = {"special_s1": 0.6, "special_s2": 0.6, "special_s3": 0.6, "victory": 2.0}
+# 信徒的呼唤照场景 0.4 秒从蓄力图换到释放图，共 0.8 秒；自爆只用释放图，停 1.2 秒
+BOSSES["blue_star_follower"]["anims"].pop("voice_attack1")
+BOSSES["blue_star_follower"]["anims"].pop("voice_attack2")
+BOSSES["blue_star_follower"]["anims"]["voice_attack"] = (
+    "timeline", {"frames": [[0, "VoiceAttack1"], [0.4, "VoiceAttack2"]], "length": 0.8}, "step")
+BOSSES["blue_star_follower"]["anims"]["self_destruct"] = ("skill", "VoiceAttack2", "rise")
+BOSSES["blue_star_follower"]["holds"] = {"self_destruct": 1.2}
 # 宗教层三位使徒：只做普通库，假死（dead 库）退回场景动画。特殊招式照场景 0、1、2 秒换 s1、s2、s3，共 3 秒
 for _a, _attacks in (("scythe", {"slash": ("attack", "Slash", "dash"), "strike": ("attack", "Strike", "step")}),
                      ("spear", {"pierce": ("attack", "Pierce", "dash")}),

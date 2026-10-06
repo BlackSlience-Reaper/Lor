@@ -33,6 +33,8 @@ namespace LibraryOfRuina.content.abnormalities.QueenOfHatred;
 
 public sealed class QueenOfHatred : CounterIntentMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const float LocalSfxVolumeScale = 0.85f;
     private static readonly float LocalSfxVolumeDb = Mathf.LinearToDb(LocalSfxVolumeScale);
 

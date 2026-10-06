@@ -1,0 +1,13 @@
+boss_queen_of_hatred_human.webp
+size:1086,255
+filter:Linear,Linear
+HumanAttack1/body
+bounds:0,0,329,255
+HumanAttack2/body
+bounds:331,0,194,195
+HumanHit/body
+bounds:527,0,190,176
+HumanAttack3/body
+bounds:719,0,209,174
+Human/body
+bounds:930,0,154,161

@@ -5,6 +5,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -16,6 +17,8 @@ namespace LibraryOfRuina.content.liberation.Language;
 
 public sealed class LanguageFloorMeltingCorpse : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public const string MoanMoveId = "MOAN";
     public const int MoanHits = 2;
     private const float AttackAnimDelaySeconds = 0.35f;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Commands;
@@ -19,6 +20,8 @@ namespace LibraryOfRuina.content.liberation.Natural;
 
 public sealed class NaturalFloorGreenStemHermit : NaturalFloorWrathMonster
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private static readonly string[] Ids = ["GET_AWAY_AND_HUFF", "STAY_PUT_AND_HUFF", "MY_FRIEND", "RISE_UP"];
 
     protected override string[] MoveIds => Ids;

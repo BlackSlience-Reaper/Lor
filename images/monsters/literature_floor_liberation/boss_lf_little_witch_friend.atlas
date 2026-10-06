@@ -1,0 +1,11 @@
+boss_lf_little_witch_friend.webp
+size:1274,335
+filter:Linear,Linear
+Attack/body
+bounds:0,0,333,335
+Hit/body
+bounds:335,0,253,267
+Cast/body
+bounds:590,0,334,169
+Default/body
+bounds:926,0,346,163

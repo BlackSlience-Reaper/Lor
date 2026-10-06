@@ -73,6 +73,22 @@ internal static class BlueStarAltarAnimationContract
 internal sealed partial class BlueStarFollowerCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐），加载失败时退回场景动画。触发名先经 NormalizeTriggerName；
+    // 听见声音照场景 0.4 秒从蓄力图换到释放图；自爆只用释放图（与场景自爆同图）
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "blue_star_follower",
+        "blue_star_follower",
+        "basic_attack",
+        new Dictionary<string, string>
+        {
+            [BlueStarFollowerAnimationContract.BasicAttackAnimation] = "basic_attack",
+            [BlueStarFollowerAnimationContract.VoiceAttackAnimation] = "voice_attack",
+            [BlueStarFollowerAnimationContract.SelfDestructAnimation] = "self_destruct",
+            [BlueStarFollowerAnimationContract.GuardAnimation] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         BlueStarAssets.BlueStarFollowerScene;
     internal const string AnimationsPath =

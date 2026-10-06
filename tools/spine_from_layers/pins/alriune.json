@@ -1,0 +1,24 @@
+{
+ "mode": "none",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   140,
+   362
+  ],
+  "Default": [
+   140,
+   357
+  ],
+  "Guard": [
+   405,
+   356
+  ],
+  "Hit": [
+   193,
+   363
+  ]
+ },
+ "sizes": {}
+}

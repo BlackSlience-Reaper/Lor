@@ -1,0 +1,32 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "CoffinAttack": [
+   1038,
+   509
+  ],
+  "CoffinPrepare": [
+   233,
+   508
+  ],
+  "Default": [
+   211,
+   506
+  ],
+  "FireBlack": [
+   890,
+   504
+  ],
+  "FireWhite": [
+   1009,
+   502
+  ],
+  "Hit": [
+   224,
+   484
+  ]
+ },
+ "sizes": {}
+}

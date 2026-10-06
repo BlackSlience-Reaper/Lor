@@ -1,0 +1,24 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   273,
+   381
+  ],
+  "Cast": [
+   255,
+   268
+  ],
+  "Default": [
+   285,
+   255
+  ],
+  "Hit": [
+   192,
+   421
+  ]
+ },
+ "sizes": {}
+}

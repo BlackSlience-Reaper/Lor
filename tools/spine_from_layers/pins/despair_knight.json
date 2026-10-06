@@ -1,0 +1,28 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Despair": [
+   164,
+   433
+  ],
+  "Normal": [
+   120,
+   404
+  ],
+  "StabbedOne": [
+   188,
+   400
+  ],
+  "StabbedThree": [
+   211,
+   430
+  ],
+  "StabbedTwo": [
+   186,
+   432
+  ]
+ },
+ "sizes": {}
+}

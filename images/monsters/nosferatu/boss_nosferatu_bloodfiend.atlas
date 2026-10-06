@@ -1,0 +1,17 @@
+boss_nosferatu_bloodfiend.webp
+size:1588,635
+filter:Linear,Linear
+BloodfiendSlash/body
+bounds:0,0,433,355
+BloodfiendGroupAttack/body
+bounds:435,0,470,341
+BloodfiendHit/body
+bounds:907,0,335,286
+Bloodfiend/body
+bounds:1244,0,342,284
+BloodfiendPierce/body
+bounds:0,357,535,278
+BloodfiendStrike/body
+bounds:537,357,524,270
+BloodfiendGuard/body
+bounds:1063,357,246,250

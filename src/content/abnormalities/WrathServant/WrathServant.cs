@@ -5,6 +5,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -30,6 +31,8 @@ namespace LibraryOfRuina.content.abnormalities.WrathServant;
 /// </summary>
 public sealed class WrathServant : LorMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string UuughMoveId = "UUUGH";
     private const string AaahMoveId = "AAAH";
     private const string AaaahMoveId = "AAAAH";

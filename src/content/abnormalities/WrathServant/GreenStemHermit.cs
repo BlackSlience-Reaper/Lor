@@ -5,6 +5,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -32,6 +33,8 @@ namespace LibraryOfRuina.content.abnormalities.WrathServant;
 /// </summary>
 public sealed class GreenStemHermit : CounterIntentMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string GetAwayMoveId = "GET_AWAY";
     private const string HuffMoveId = "HUFF";
     private const string StayPutMoveId = "STAY_PUT";

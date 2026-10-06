@@ -1,0 +1,15 @@
+boss_funeral_butterflies.webp
+size:1769,638
+filter:Linear,Linear
+CoffinAttack/body
+bounds:0,0,676,328
+CoffinPrepare/body
+bounds:678,0,194,312
+Default/body
+bounds:874,0,251,310
+FireBlack/body
+bounds:1127,0,640,308
+FireWhite/body
+bounds:0,330,710,308
+Hit/body
+bounds:712,330,255,296

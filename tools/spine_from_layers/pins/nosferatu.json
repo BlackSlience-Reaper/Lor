@@ -1,0 +1,56 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Bloodfiend": [
+   213,
+   414
+  ],
+  "BloodfiendGroupAttack": [
+   486,
+   486
+  ],
+  "BloodfiendGuard": [
+   244,
+   370
+  ],
+  "BloodfiendHit": [
+   228,
+   389
+  ],
+  "BloodfiendPierce": [
+   618,
+   376
+  ],
+  "BloodfiendSlash": [
+   466,
+   453
+  ],
+  "BloodfiendStrike": [
+   593,
+   377
+  ],
+  "Normal": [
+   180,
+   481
+  ],
+  "NormalAttack": [
+   558,
+   498
+  ],
+  "NormalGroupAttack": [
+   477,
+   638
+  ],
+  "NormalGuard": [
+   301,
+   546
+  ],
+  "NormalHit": [
+   193,
+   468
+  ]
+ },
+ "sizes": {}
+}

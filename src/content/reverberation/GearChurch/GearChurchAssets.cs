@@ -70,11 +70,54 @@ internal static class GearChurchAssets
 [MonsterVisual(typeof(ReverberationEileen), ScenePath = GearChurchAssets.EileenScene)]
 internal sealed partial class ReverberationEileenVisuals : SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐），加载失败时退回场景动画。和场景一样：施法用特殊一的图，昏迷用受击图
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "gear_church",
+        "eileen",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Slash"] = "slash",
+            ["Pierce"] = "pierce",
+            ["Strike"] = "strike",
+            ["Guard"] = "guard",
+            ["Evade"] = "evade",
+            ["Ranged"] = "ranged",
+            ["SpecialOne"] = "special_one",
+            ["SpecialTwo"] = "special_two",
+            ["Cast"] = "special_one",
+            ["Stun"] = "hurt",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() => "normal";
 }
 
 [MonsterVisual(typeof(GearChurchFollower), ScenePath = GearChurchAssets.FollowerScene)]
 internal sealed partial class GearChurchFollowerVisuals : SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐），加载失败时退回场景动画。和场景一样：
+    // 远程用特殊二的图，特殊一和施法用防御图，昏迷用受击图
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "gear_church",
+        "gear_follower",
+        "slash",
+        new Dictionary<string, string>
+        {
+            ["Slash"] = "slash",
+            ["Pierce"] = "pierce",
+            ["Strike"] = "strike",
+            ["Guard"] = "guard",
+            ["Evade"] = "evade",
+            ["Ranged"] = "special_two",
+            ["SpecialOne"] = "guard",
+            ["SpecialTwo"] = "special_two",
+            ["Cast"] = "guard",
+            ["Stun"] = "hurt",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() => "normal";
 }

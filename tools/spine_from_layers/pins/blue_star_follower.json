@@ -1,0 +1,32 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "BasicAttack": [
+   434,
+   498
+  ],
+  "Default": [
+   175,
+   446
+  ],
+  "Guard": [
+   281,
+   480
+  ],
+  "Hit": [
+   193,
+   445
+  ],
+  "VoiceAttack1": [
+   391,
+   778
+  ],
+  "VoiceAttack2": [
+   298,
+   593
+  ]
+ },
+ "sizes": {}
+}

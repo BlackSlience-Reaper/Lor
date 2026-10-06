@@ -1,0 +1,9 @@
+boss_hf_fluttering_mass.webp
+size:1273,537
+filter:Linear,Linear
+Attack/body
+bounds:0,0,596,537
+Hit/body
+bounds:598,0,342,384
+Default/body
+bounds:942,0,329,377

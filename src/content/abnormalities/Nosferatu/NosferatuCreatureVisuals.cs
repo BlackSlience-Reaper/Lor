@@ -5,9 +5,42 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.Nosferatu;
 
+/// <summary>
+/// 诺斯费拉图：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，整图只平移转动，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。平常、血魔两个形态各一副骨架；血魔形态的攻击照原来在重击、穿刺、斩击三张间轮换。
+/// </summary>
 public partial class NosferatuCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "nosferatu",
+        "nosferatu_normal",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Special"] = "group_attack",
+            ["SpecialAttack"] = "group_attack",
+            ["Cast"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec BloodfiendSpine = LayeredBossSpine.Create(
+        "nosferatu",
+        "nosferatu_bloodfiend",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["Special"] = "group_attack",
+            ["SpecialAttack"] = "group_attack",
+            ["Cast"] = "guard",
+        }) with { AttackCycle = ["strike", "pierce", "slash"] };
+
+    internal override RuntimeSpineBody.Spec SpineSpec => NormalSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine, BloodfiendSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == BloodfiendVariant ? BloodfiendSpine : NormalSpine;
+
     [MonsterVisual(typeof(Nosferatu))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -128f), new(0.72f, 0.72f), -160f, -360f, 157f, 12f, new(0f, -150f), new(0f, -395f))

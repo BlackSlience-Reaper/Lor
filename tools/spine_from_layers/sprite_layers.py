@@ -308,6 +308,218 @@ SPRITES = {
                                   "S1": ["normal", "Special", 0], "S2": ["normal", "Special", 1],
                                   "S3": ["normal", "Special", 2]}}
        for a, attacks in (("scythe", ("Slash", "Strike")), ("spear", ("Pierce",)), ("staff", ("Attack",)))},
+    # ---- 第八批（换图外观：绝望骑士、亡蝶葬仪、蕾蒂希娅、小魔女的朋友、小红帽雇佣兵、诺斯费拉图）----
+    # DespairKnightCreatureVisuals：未 Centered → visible_bottom；Variant 没写 Scale，用布局 0.77（布局位置 (0, 6)，五个 Variant 都没 At，同一位置）。
+    # 五个形态（普通、刺入一/二/三把剑、绝望），各只有一张待机图；Cast、Hit、Despair 触发都换成当前形态自己的待机图，没有单独的动作帧，poses 为空
+    "despair_knight": {"scale": 0.77, "anchor": "visible_bottom",
+                       "idles": {"Normal": "despair_knight/idle.png", "StabbedOne": "despair_knight/stabbed_1.png",
+                                 "StabbedTwo": "despair_knight/stabbed_2.png", "StabbedThree": "despair_knight/stabbed_3.png",
+                                 "Despair": "despair_knight/despair.png"},
+                       "poses": {}},
+    # FuneralOfTheDeadButterfliesCreatureVisuals：Centered → center，布局 0.58，一个形态；所有帧无 Nudge/Scale。
+    # 黑火（fire_black）由 Attack、AttackBlack 两个触发共用，只列一次；白火 AttackWhite、棺材准备 Cast、棺材攻击 CoffinAttack、受击 Hit。
+    # 黑火、白火、棺材攻击三张图很宽（人物在右侧，左边是飞出的蝴蝶/横倒的棺材），按图中心摆放时人物会偏到右边——这就是游戏里的样子，照搬。
+    # 目录里的 white_filter.png（1920x1080 的全屏白色滤镜）不是人物姿势，profile 也没引用（代码用的是 images/vfx/funeral_white_filter_overlay.png），不列
+    "funeral_butterflies": {"scale": 0.58, "anchor": "center",
+                            "idles": {"Default": "funeral_of_the_dead_butterflies/idle.png"},
+                            "poses": {"FireBlack": {"image": "funeral_of_the_dead_butterflies/fire_black.png"},
+                                      "FireWhite": {"image": "funeral_of_the_dead_butterflies/fire_white.png"},
+                                      "CoffinPrepare": {"image": "funeral_of_the_dead_butterflies/coffin_prepare.png"},
+                                      "CoffinAttack": {"image": "funeral_of_the_dead_butterflies/coffin_attack.png"},
+                                      "Hit": {"image": "funeral_of_the_dead_butterflies/hit.png"}}},
+    # LeticiaCreatureVisuals：Centered → center，布局 0.63，一个形态；攻击是 Lunge、Scale(0.58)（Nudge(24, -126) 是冲刺终点，不写）；
+    # 防御图给 Cast 用，受击 Hit
+    "leticia": {"scale": 0.63, "anchor": "center",
+                "idles": {"Default": "leticia/leticia_idle.png"},
+                "poses": {"Attack": {"image": "leticia/leticia_attack.png", "frame_scale": 0.58},
+                          "Guard": {"image": "leticia/leticia_guard.png"},
+                          "Hit": {"image": "leticia/leticia_hit.png"}}},
+    # LittleWitchFriendCreatureVisuals（异想体版）：Centered → center，布局 0.43，一个形态；攻击是 Lunge、Scale(0.54)
+    # （Nudge(20, -102) 是冲刺终点，不写）；施法 Cast、受击 Hit
+    "little_witch_friend": {"scale": 0.43, "anchor": "center",
+                            "idles": {"Default": "leticia/little_witch_friend_idle.png"},
+                            # 攻击图里的眼球和待机图原图一样大，却按 0.54 倍画（待机 0.43），显示成 1.25 倍：fix 缩回
+                            "poses": {"Attack": {"image": "leticia/little_witch_friend_attack.png", "frame_scale": 0.54, "fix": 0.8},
+                                      "Cast": {"image": "leticia/little_witch_friend_cast.png"},
+                                      "Hit": {"image": "leticia/little_witch_friend_hit.png"}}},
+    # LittleRedMercenaryCreatureVisuals：Centered → center，一个形态。待机 At(-8, -130)、Scale(-0.74, 0.74)、AnchorX(76)、IdleOnly；
+    # 动作帧仍画在布局位置 (0, -138)，受击图没给 Scale，按布局 0.71 → attack_scale 0.71、attack_offset [0, -8]
+    # （横向差由 AnchorX 对齐吸收，所以 x 写 0；纵向动作帧比待机高 8）。
+    # 攻击（attack_1/2，Scale 0.76）、远程（fire_1~4，Scale 0.58）是 Lunge + Cycle，Nudge 是冲刺终点不写；各帧 AnchorX 照抄。
+    # 受击帧没写 AnchorX，但 Variant 有 AnchorX，游戏里按受击图中心（宽 202 → 101）对到待机的 76，所以 anchor_x 写 101。
+    # 不确定：缩放 X 是负数（不是 Flip()），游戏里平时整只左右镜像，进入“无法平息的愤怒”时 FacePlayers 再 FlipH 翻回原图朝向；
+    # 这里按原图坐标摆放（各缩放取绝对值），points_flipped 按平时的镜像外观设 True，需确认标注页是否该显示翻过的图
+    "little_red": {"scale": 0.74, "attack_scale": 0.71, "attack_offset": [0, -8], "anchor": "center",
+                   "points_flipped": True, "idle_anchor_x": 76,
+                   "idles": {"Default": "little_red_mercenary/idle.png"},
+                   "poses": {"Attack1": {"image": "little_red_mercenary/attack_1.png", "frame_scale": 0.76, "anchor_x": 274},
+                             "Attack2": {"image": "little_red_mercenary/attack_2.png", "frame_scale": 0.76, "anchor_x": 438},
+                             "Fire1": {"image": "little_red_mercenary/fire_1.png", "frame_scale": 0.58, "anchor_x": 570},
+                             "Fire2": {"image": "little_red_mercenary/fire_2.png", "frame_scale": 0.58, "anchor_x": 614},
+                             "Fire3": {"image": "little_red_mercenary/fire_3.png", "frame_scale": 0.58, "anchor_x": 525},
+                             "Fire4": {"image": "little_red_mercenary/fire_4.png", "frame_scale": 0.58, "anchor_x": 1297},
+                             "Hit": {"image": "little_red_mercenary/hit.png", "anchor_x": 101}}},
+    # NosferatuCreatureVisuals：未 Centered → visible_bottom。普通、血魔两个形态，Variant 的 Scale 都不是 IdleOnly（待机和动作帧同缩放）：
+    # 普通 0.72（= 布局），血魔 0.76 → 血魔待机与血魔帧都写 frame_scale 0.76；两形态都没 At，同一位置。
+    # 所有动作帧都 ForVariant，姿势名加形态前缀；普通的群体攻击由 Special、SpecialAttack 共用，血魔同理；
+    # 血魔 Attack 在打击、突刺、斩击三张间轮换，各列一项
+    "nosferatu": {"scale": 0.72, "anchor": "visible_bottom",
+                  "idles": {"Normal": "nosferatu/nosferatu_idle.png",
+                            "Bloodfiend": {"image": "nosferatu/nosferatu_bloodfiend_idle.png", "frame_scale": 0.76}},
+                  "poses": {"NormalAttack": {"image": "nosferatu/nosferatu_attack.png"},
+                            "NormalGroupAttack": {"image": "nosferatu/nosferatu_group_attack.png"},
+                            "NormalGuard": {"image": "nosferatu/nosferatu_guard.png"},
+                            "NormalHit": {"image": "nosferatu/nosferatu_hit.png"},
+                            "BloodfiendStrike": {"image": "nosferatu/nosferatu_bloodfiend_strike.png", "frame_scale": 0.76},
+                            "BloodfiendPierce": {"image": "nosferatu/nosferatu_bloodfiend_pierce.png", "frame_scale": 0.76},
+                            "BloodfiendSlash": {"image": "nosferatu/nosferatu_bloodfiend_slash.png", "frame_scale": 0.76},
+                            "BloodfiendGroupAttack": {"image": "nosferatu/nosferatu_bloodfiend_group_attack.png", "frame_scale": 0.76},
+                            "BloodfiendGuard": {"image": "nosferatu/nosferatu_bloodfiend_guard.png", "frame_scale": 0.76},
+                            "BloodfiendHit": {"image": "nosferatu/nosferatu_bloodfiend_hit.png", "frame_scale": 0.76}}},
+    # ---- 第八批（换图外观：憎恶皇后、归家的路途、溶解的死尸两版、历史层精灵畸块）----
+    # QueenOfHatredCreatureVisuals：Centered，布局 (0, -118)、0.84；人形、蛇形两个形态，待机都是 At(0, -118).Scale(x).IdleOnly()
+    # （人形 0.84 = 布局，蛇形 0.54，写在 Snake 待机的 frame_scale）。攻击三张一组是 Lunge（Nudge(24, -118) 是冲刺终点，不写），
+    # 人形 Scale(0.68)、蛇形 Scale(0.58)；受击没给 Scale，两形态都按布局 0.84 画。
+    # 不确定：蛇形受击图（683x327）按 0.84 画，比蛇形待机（0.54）大约 1.56 倍，原来换图时就会明显变大，是否要 fix 待定
+    "queen_of_hatred": {
+        "scale": 0.84, "anchor": "center",
+        "idles": {"Human": "queen_of_hatred.webp",
+                  "Snake": {"image": "queen_of_hatred_snake.webp", "frame_scale": 0.54}},
+        "poses": {
+            # 人形攻击图按 0.68 画（人形待机 0.84），头部匹配显示成 0.82 倍：fix 1.22；蛇形受击按 0.84 画（蛇形待机 0.54），fix 0.64
+            "HumanAttack1": {"image": "queen_of_hatred_attack_1.webp", "frame_scale": 0.68, "fix": 1.22},
+            "HumanAttack2": {"image": "queen_of_hatred_attack_2.webp", "frame_scale": 0.68, "fix": 1.22},
+            "HumanAttack3": {"image": "queen_of_hatred_attack_3.webp", "frame_scale": 0.68, "fix": 1.22},
+            "HumanHit": {"image": "queen_of_hatred_hit.webp"},
+            "SnakeAttack1": {"image": "queen_of_hatred_snake_attack_1.webp", "frame_scale": 0.58},
+            "SnakeAttack2": {"image": "queen_of_hatred_snake_attack_2.webp", "frame_scale": 0.58},
+            "SnakeAttack3": {"image": "queen_of_hatred_snake_attack_3.webp", "frame_scale": 0.58},
+            "SnakeHit": {"image": "queen_of_hatred_snake_hit.webp", "fix": 0.64},
+        },
+    },
+    # RoadHomeCreatureVisuals：可见底边锚点，布局 0.60，Variant 都没给 Scale/At；普通、混乱（Stunned/Confused 切过去）两个形态。
+    # 动作帧都不分形态、都没 Nudge/Scale；闪避图共用于 Hide、Guard、Cast，攻击3 图共用于 Attack3、BadWizard
+    "road_home": {
+        "scale": 0.60, "anchor": "visible_bottom",
+        "idles": {"Normal": "road_home/idle.png", "Confused": "road_home/confused.png"},
+        "poses": {"Attack": {"image": "road_home/attack.png"}, "Attack2": {"image": "road_home/attack_2.png"},
+                  "Attack3": {"image": "road_home/attack_3.png"}, "Dodge": {"image": "road_home/dodge.png"},
+                  "Hit": {"image": "road_home/hit.png"}},
+    },
+    # MeltingCorpseCreatureVisuals（异想体版）：可见底边锚点，布局 0.28，一个形态；Moan/Spawn/Hit 都换回待机图本身，没有动作帧
+    "melting_corpse": {
+        "scale": 0.28, "anchor": "visible_bottom",
+        "idles": {"Default": "smiling_bodies/melting_corpse_idle.png"}, "poses": {},
+    },
+    # LanguageFloorMeltingCorpseCreatureVisuals（语言层版）：可见底边锚点，布局 0.28，一个形态；
+    # 唯一的动作帧是 Moan 触发的攻击图，没 Nudge/Scale。语言层攻击图与异想体版待机图逐字节相同（sha1 一致），
+    # 语言层待机图是另一张；两版布局都是 0.28，可考虑共用骨架
+    "lang_melting_corpse": {
+        "scale": 0.28, "anchor": "visible_bottom",
+        "idles": {"Default": "language_floor_liberation/smiling_face/melting_corpse_idle.png"},
+        "poses": {"Attack": {"image": "language_floor_liberation/smiling_face/melting_corpse_attack.png"}},
+    },
+    # HistoryFloorFlutteringMassCreatureVisuals：Centered，布局 (0, -92)、0.3116；待机 At(0, -92).Scale(0.3116).IdleOnly() 与布局相同。
+    # 攻击是 Lunge（Nudge(20, -92) 是冲刺终点，不写），Scale(0.3116) 同待机故不写 frame_scale；受击按布局画。一个形态
+    "hf_fluttering_mass": {
+        "scale": 0.3116, "anchor": "center",
+        "idles": {"Default": "history_floor/fluttering/mass_idle.png"},
+        "poses": {"Attack": {"image": "history_floor/fluttering/mass_attack.png"},
+                  "Hit": {"image": "history_floor/fluttering/mass_hit.png"}},
+    },
+    # ---- 第八批（场景动画：爱娜温与生于尘土之人、信徒、齿轮信徒、艾琳、菲利普、不言之子、青林隐士两版、愤怒侍从、文学层小魔女的朋友、微笑的尸山）----
+    # AlriuneCreatureVisuals：动画库 default 嵌在 alriune.tscn（另一个 "" 库只有 RESET）；全部 1.28 倍、居中贴图；一个形态。
+    # 攻击动画 Attack 用 ranged.png；Cast/Block 归到 Guard；Dead 与 Hit 共用 hit.png（Dead 横向差 12 像素，只列 Hit）
+    "alriune": {"scene": "alriune.tscn", "ref_library": "default",
+                "libraries": {"default": "alriune.tscn"},
+                "idles": {"Default": "default"},
+                "poses": {"Attack": ["default", "Attack", 0], "Guard": ["default", "Guard", 0],
+                          "Hit": ["default", "Hit", 0]}},
+    # AlriuneDustbornCreatureVisuals：动画库 default 嵌在 alriune_dustborn.tscn；全部 0.83 倍、居中；一个形态。
+    # Attack 触发归到 Pierce，Cast/Block 归到 Dodge；Dead 与 Hit 共用 hit.png（位置略不同，只列 Hit）
+    "alriune_dustborn": {"scene": "alriune_dustborn.tscn", "ref_library": "default",
+                         "libraries": {"default": "alriune_dustborn.tscn"},
+                         "idles": {"Default": "default"},
+                         "poses": {a: ["default", a, 0] for a in ("Pierce", "Slash", "Hit", "Dodge")}},
+    # BlueStarFollowerCreatureVisuals：库 follower（blue_star_follower_animations.tres），全部 0.48 倍、居中；一个形态。
+    # VoiceAttack 依次换 voice_attack_1（0 秒）、voice_attack_2（0.4 秒）两张；SelfDestruct 也用 voice_attack_2
+    # （纵向差 4 像素，只列一次）；Attack 触发归到 BasicAttack，Cast/Block 归到 Guard
+    "blue_star_follower": {"scene": "blue_star_follower.tscn", "ref_library": "follower",
+                           "libraries": {"follower": "blue_star_follower_animations.tres"},
+                           "idles": {"Default": "follower"},
+                           "poses": {"BasicAttack": ["follower", "BasicAttack", 0],
+                                     "VoiceAttack1": ["follower", "VoiceAttack", 0],
+                                     "VoiceAttack2": ["follower", "VoiceAttack", 1],
+                                     "Guard": ["follower", "Guard", 0], "Hit": ["follower", "Hit", 0]}},
+    # GearChurchFollowerVisuals：库 normal 嵌在 gear_church_follower.tscn，全部 0.65 倍、不居中（offset 定左上角）；一个形态。
+    # 共用：Attack=Slash；SpecialOne、Cast=Guard；Stun、Die=Hit；Ranged=SpecialTwo（位置都相同）。贴图在 images/reverberation/gear_church
+    "gear_follower": {"scene": "gear_church_follower.tscn", "ref_library": "normal",
+                      "libraries": {"normal": "gear_church_follower.tscn"},
+                      "idles": {"Default": "normal"},
+                      "poses": {a: ["normal", a, 0]
+                                for a in ("Slash", "Pierce", "Strike", "Guard", "Hit", "Evade", "SpecialTwo")}},
+    # ReverberationEileenVisuals：库 normal 嵌在 reverberation_eileen.tscn（另有只含 RESET 的 "" 库），全部 0.64 倍、不居中；一个形态。
+    # 共用：Attack=Slash；Cast 用 special_one（横向差 27 像素，只列 SpecialOne）；Stun、Die 用 hit（Stun 横向差 20，只列 Hit）
+    "eileen": {"scene": "reverberation_eileen.tscn", "ref_library": "normal",
+               "libraries": {"normal": "reverberation_eileen.tscn"},
+               "idles": {"Default": "normal"},
+               "poses": {a: ["normal", a, 0] for a in ("Slash", "Pierce", "Strike", "Guard", "Hit", "Evade",
+                                                       "Ranged", "SpecialOne", "SpecialTwo")}},
+    # ReverberationPhilipVisuals：按阶段换库，第三阶段 burning、其余 normal，两库都嵌在 reverberation_philip.tscn 且动作同名；
+    # scene_poses 取文件里后定义的 normal，这里只做 normal 一个形态。burning 形态（burning_*.png 九张）没做：
+    # 仓库里的 crying_children_burning_animations.tres 没被引用、位置也和场景里嵌的不一样，不能拿来替代。
+    # 全部 0.65 倍、不居中。Attack 与 Slash 同图（位置差 5 像素，只列 Slash）；Special 用待机图换了位置，不列
+    "rev_philip": {"scene": "reverberation_philip.tscn", "ref_library": "normal",
+                   "libraries": {"normal": "reverberation_philip.tscn"},
+                   "idles": {"Normal": "normal"},
+                   "poses": {a: ["normal", a, 0]
+                             for a in ("Slash", "Pierce", "Strike", "Guard", "Ranged", "Hit", "Evade")}},
+    # UnspeakingChildVisuals：库 normal 嵌在 unspeaking_child.tscn，全部 0.58 倍、不居中；一个形态。
+    # Attack=Slash；Strike、Guard、Ranged、Special 都只显示待机图，不列
+    "unspeaking_child": {"scene": "unspeaking_child.tscn", "ref_library": "normal",
+                         "libraries": {"normal": "unspeaking_child.tscn"},
+                         "idles": {"Default": "normal"},
+                         "poses": {a: ["normal", a, 0] for a in ("Slash", "Pierce", "Hit", "Evade")}},
+    # GreenStemHermitCreatureVisuals（异想体）：库 main（green_stem_hermit_animations.tres），全部 0.901 倍、不居中；一个形态。
+    # Attack 触发归到 AttackThrust，Cast 归到 AttackReach，Dead 归到 Hit
+    "green_stem_hermit": {"scene": "green_stem_hermit.tscn", "ref_library": "main",
+                          "libraries": {"main": "green_stem_hermit_animations.tres"},
+                          "idles": {"Default": "main"},
+                          "poses": {a: ["main", a, 0] for a in ("AttackReach", "AttackGround", "AttackThrust", "Hit")}},
+    # NaturalFloorHermitVisuals（自然层青林隐士，在 NaturalFloorWrathVisuals.cs）：库 main
+    # （natural_floor_green_stem_hermit_animations.tres），同一套图另加 MentalAttack（natural_floor_liberation/green_stem_hermit/mental.png），
+    # 全部 0.901 倍、不居中，动作位置与异想体版不同；一个形态
+    "nf_green_stem_hermit": {"scene": "natural_floor_green_stem_hermit.tscn", "ref_library": "main",
+                             "libraries": {"main": "natural_floor_green_stem_hermit_animations.tres"},
+                             "idles": {"Default": "main"},
+                             "poses": {a: ["main", a, 0] for a in ("AttackReach", "AttackGround", "AttackThrust",
+                                                                   "MentalAttack", "Hit")}},
+    # WrathServantCreatureVisuals：库 main（wrath_servant_animations.tres），动作 1.08 倍、不居中；一个形态。
+    # Victory（胜利演出）换成人形的 special.png，按 0.49 倍画（k≈0.45），是另一种画法的人物，不确定是否要并进同一副骨架
+    "wrath_servant": {"scene": "wrath_servant.tscn", "ref_library": "main",
+                      "libraries": {"main": "wrath_servant_animations.tres"},
+                      "idles": {"Default": "main"},
+                      "poses": {a: ["main", a, 0] for a in ("AttackStrike", "AttackSlash", "AttackSlash2", "SpecialS1",
+                                                            "SpecialS2", "SpecialS3", "Hit", "Victory")}},
+    # LiteratureFloorLittleWitchFriendCreatureVisuals：库 friend（literature_floor_little_witch_friend_animations.tres），
+    # 居中贴图；待机、施法、受击 0.43 倍，攻击 0.54 倍（k≈1.26，原图人物是否本就画得小没核对，大小靠标注页尺寸两端统一）；
+    # 一个形态。Attack 与 AttackAlt 同一张图（横向差 32 像素，只列 Attack）
+    "lf_little_witch_friend": {"scene": "literature_floor_little_witch_friend.tscn", "ref_library": "friend",
+                               "libraries": {"friend": "literature_floor_little_witch_friend_animations.tres"},
+                               "idles": {"Default": "friend"},
+                               # 攻击图按 0.54 画（待机 0.43），眼球显示成 1.25 倍：第 4 项 fix 0.8 缩回
+                               "poses": {"Attack": ["friend", "Attack", 0, 0.8], "Cast": ["friend", "Cast", 0], "Hit": ["friend", "Hit", 0]}},
+    # SmilingBodiesCreatureVisuals：按阶段换库 phase_1 / phase_2 / phase_3（各一个 .tres），三个形态，参照库取默认的 phase_2；
+    # 全部 0.72 倍、不居中。各库的 Phase（转阶段）只显示该库待机图，不列
+    # 二、三阶段的图里一阶段那团只有一半大（模板匹配 0.50），同按 0.72 画就整体缩小了；应该是一阶段再长出一块：两个库整体放大 2 倍
+    "smiling_bodies": {"scene": "smiling_bodies.tscn", "ref_library": "phase_2", "library_fix": {"phase_2": 2.0, "phase_3": 2.0},
+                       "libraries": {f"phase_{i}": f"smiling_bodies_phase_{i}_animations.tres" for i in (1, 2, 3)},
+                       "idles": {"Phase1": "phase_1", "Phase2": "phase_2", "Phase3": "phase_3"},
+                       "poses": {"Phase1Absorb": ["phase_1", "Absorb", 0], "Phase1Hit": ["phase_1", "Hit", 0],
+                                 "Phase2Absorb": ["phase_2", "Absorb", 0], "Phase2Hit": ["phase_2", "Hit", 0],
+                                 "Phase2Scream": ["phase_2", "Scream", 0],
+                                 "Phase3Absorb": ["phase_3", "Absorb", 0], "Phase3Hit": ["phase_3", "Hit", 0],
+                                 "Phase3Sit": ["phase_3", "Sit", 0], "Phase3Vomit": ["phase_3", "Vomit", 0]}},
 }
 
 

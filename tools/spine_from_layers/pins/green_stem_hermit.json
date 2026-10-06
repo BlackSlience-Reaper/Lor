@@ -1,0 +1,28 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "AttackGround": [
+   308,
+   408
+  ],
+  "AttackReach": [
+   189,
+   342
+  ],
+  "AttackThrust": [
+   318,
+   416
+  ],
+  "Default": [
+   120,
+   342
+  ],
+  "Hit": [
+   90,
+   303
+  ]
+ },
+ "sizes": {}
+}

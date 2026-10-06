@@ -1,0 +1,15 @@
+boss_road_home_normal.webp
+size:1941,723
+filter:Linear,Linear
+Attack/body
+bounds:0,0,516,417
+Attack3/body
+bounds:518,0,466,411
+Attack2/body
+bounds:986,0,546,389
+Hit/body
+bounds:1534,0,245,344
+Normal/body
+bounds:1781,0,158,331
+Dodge/body
+bounds:0,419,199,304
