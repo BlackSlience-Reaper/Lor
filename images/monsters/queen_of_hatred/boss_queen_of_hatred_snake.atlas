@@ -1,0 +1,13 @@
+boss_queen_of_hatred_snake.webp
+size:1133,181
+filter:Linear,Linear
+SnakeAttack2/body
+bounds:0,0,214,181
+SnakeAttack1/body
+bounds:216,0,251,178
+SnakeAttack3/body
+bounds:469,0,205,174
+Snake/body
+bounds:676,0,191,162
+SnakeHit/body
+bounds:869,0,262,125

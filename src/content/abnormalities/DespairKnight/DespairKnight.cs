@@ -11,6 +11,7 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -28,6 +29,8 @@ namespace LibraryOfRuina.content.abnormalities.DespairKnight;
 
 public sealed class DespairKnight : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public const string MoveId = "SHELTERING_UNKNOWN";
     public const string GrantTeardropMoveId = "GRANT_TEARDROP";
     public const int TeardropFalseDeathHpLossPercent = 10;

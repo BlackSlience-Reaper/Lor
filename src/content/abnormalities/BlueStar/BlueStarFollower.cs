@@ -7,6 +7,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -23,6 +24,8 @@ namespace LibraryOfRuina.content.abnormalities.BlueStar;
 
 public sealed class BlueStarFollower : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public const int RequiredFollowerCount = 3;
     public const int MaxHp = 200;
     public const int MaxChao = 100;

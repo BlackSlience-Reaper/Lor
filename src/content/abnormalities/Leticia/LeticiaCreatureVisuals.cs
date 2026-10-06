@@ -4,8 +4,23 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.Leticia;
 
-public partial class LeticiaCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 蕾蒂希娅：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，整图只平移转动，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。施法照原来换防御姿势。
+/// </summary>
+public partial class LeticiaCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "leticia",
+        "leticia",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(Leticia))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -124f), new(0.63f, 0.63f), -92f, -287f, 92f, 8f, new(0f, -126f), new(0f, -330f))

@@ -1,0 +1,15 @@
+boss_blue_star_follower.webp
+size:1789,471
+filter:Linear,Linear
+VoiceAttack1/body
+bounds:0,0,363,471
+VoiceAttack2/body
+bounds:365,0,344,383
+BasicAttack/body
+bounds:711,0,379,302
+Guard/body
+bounds:1092,0,286,291
+Default/body
+bounds:1380,0,224,271
+Hit/body
+bounds:1606,0,181,270

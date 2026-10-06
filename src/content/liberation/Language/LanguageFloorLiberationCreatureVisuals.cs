@@ -424,9 +424,24 @@ public sealed partial class LanguageFloorSmilingFaceCreatureVisuals : SpineSprit
     }
 }
 
+/// <summary>
+/// 溶解的死尸（语言层）的外观：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，整图只平移转动，
+/// 各姿势按标注点对齐），加载失败时退回下面的逐帧换图。
+/// </summary>
 public sealed partial class LanguageFloorMeltingCorpseCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "language_floor_liberation",
+        "lang_melting_corpse",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Moan"] = "attack",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(LanguageFloorMeltingCorpse))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, 5f), new(0.28f, 0.28f), -105f, -150f, 105f, 10f, new(0f, -60f), new(0f, -190f));

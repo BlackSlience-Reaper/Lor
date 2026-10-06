@@ -1,0 +1,7 @@
+boss_lang_melting_corpse.webp
+size:1218,312
+filter:Linear,Linear
+Default/body
+bounds:0,0,607,312
+Attack/body
+bounds:609,0,607,257

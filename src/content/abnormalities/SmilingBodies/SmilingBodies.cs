@@ -39,6 +39,8 @@ public enum SmilingBodiesPhase
 
 public sealed class SmilingBodies : LorMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     public const int MaxCorpseCount = 1;
 
     public const string AbsorbMoveId = "ABSORB";

@@ -1,0 +1,11 @@
+boss_leticia.webp
+size:1086,281
+filter:Linear,Linear
+Default/body
+bounds:0,0,162,281
+Guard/body
+bounds:164,0,431,261
+Attack/body
+bounds:597,0,286,239
+Hit/body
+bounds:885,0,199,214

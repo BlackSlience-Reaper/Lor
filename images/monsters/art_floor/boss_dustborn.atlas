@@ -1,0 +1,13 @@
+boss_dustborn.webp
+size:1350,320
+filter:Linear,Linear
+Slash/body
+bounds:0,0,338,320
+Dodge/body
+bounds:340,0,304,289
+Default/body
+bounds:646,0,144,286
+Hit/body
+bounds:792,0,232,284
+Pierce/body
+bounds:1026,0,322,279

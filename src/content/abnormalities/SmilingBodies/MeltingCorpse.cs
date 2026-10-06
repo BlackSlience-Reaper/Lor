@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -14,6 +15,8 @@ namespace LibraryOfRuina.content.abnormalities.SmilingBodies;
 
 public sealed class MeltingCorpse : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string MoanMoveId = "MOAN";
     private const int MoanBaseDamage = 1;
     private const int MoanHighAscensionDamage = 2;

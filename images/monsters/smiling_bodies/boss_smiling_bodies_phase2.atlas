@@ -1,0 +1,11 @@
+boss_smiling_bodies_phase2.webp
+size:1860,1012
+filter:Linear,Linear
+Phase2Scream/body
+bounds:0,0,721,706
+Phase2Absorb/body
+bounds:723,0,607,430
+Phase2Hit/body
+bounds:1332,0,526,305
+Phase2/body
+bounds:0,708,530,304

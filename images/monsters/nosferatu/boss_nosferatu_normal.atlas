@@ -1,0 +1,13 @@
+boss_nosferatu_normal.webp
+size:1545,389
+filter:Linear,Linear
+NormalGroupAttack/body
+bounds:0,0,389,389
+NormalGuard/body
+bounds:391,0,278,331
+NormalAttack/body
+bounds:671,0,436,304
+Normal/body
+bounds:1109,0,211,293
+NormalHit/body
+bounds:1322,0,221,286

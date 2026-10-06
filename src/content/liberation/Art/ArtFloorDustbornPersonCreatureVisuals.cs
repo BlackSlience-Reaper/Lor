@@ -4,8 +4,25 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.Art;
 
-public sealed partial class ArtFloorDustbornPersonCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 生于尘土之人：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，整图只平移转动，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。怪物只发突刺、斩击、闪避三种触发，"Attack" 兜底播突刺。
+/// </summary>
+public sealed partial class ArtFloorDustbornPersonCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "art_floor",
+        "dustborn",
+        "pierce",
+        new Dictionary<string, string>
+        {
+            ["Pierce"] = "pierce",
+            ["Slash"] = "slash",
+            ["Dodge"] = "dodge",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(ArtFloorDustbornPerson))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -80f), new(0.50f, 0.50f), -116f, -260f, 116f, 10f, new(0f, -112f), new(0f, -375f))

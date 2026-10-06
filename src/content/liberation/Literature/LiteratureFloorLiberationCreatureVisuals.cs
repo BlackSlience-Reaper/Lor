@@ -95,6 +95,20 @@ internal static class LiteratureFloorGiftBoxAnimationContract
 internal sealed partial class LiteratureFloorLittleWitchFriendCreatureVisuals :
     SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐），加载失败时退回场景动画。
+    // 连击交替发的 AttackAlt 在场景里也是攻击图，同样播攻击
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "lf_little_witch_friend",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["AttackAlt"] = "attack",
+            ["Cast"] = "cast",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath =
         LiteratureFloorAssets.LittleWitchFriendScene;
 

@@ -6,6 +6,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -22,6 +23,8 @@ namespace LibraryOfRuina.content.abnormalities.Alriune;
 
 public sealed class Alriune : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     [SavedProperty]
     public int CycleStep { get; set; }
 

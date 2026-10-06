@@ -4,9 +4,42 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.RoadHome;
 
+/// <summary>
+/// 归家的路途：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，整图只平移转动，各姿势按标注点对齐），
+/// 加载失败时退回逐帧换图。普通、混乱两个形态各一副骨架。
+/// </summary>
 public sealed partial class RoadHomeCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["Attack2"] = "attack2",
+        ["Attack3"] = "attack3",
+        ["BadWizard"] = "attack3",
+        ["Hide"] = "dodge",
+        ["Guard"] = "dodge",
+        ["Cast"] = "dodge",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "road_home",
+        "road_home_normal",
+        "attack",
+        SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec ConfusedSpine = LayeredBossSpine.Create(
+        "road_home",
+        "road_home_confused",
+        "attack",
+        SpineTriggers());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => NormalSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine, ConfusedSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == ConfusedVariant ? ConfusedSpine : NormalSpine;
+
     [MonsterVisual(typeof(RoadHome))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -18f), new(0.60f, 0.60f), -155f, -360f, 155f, 14f, new(0f, -170f), new(0f, -390f))

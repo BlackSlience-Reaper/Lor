@@ -8,6 +8,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -25,6 +26,8 @@ namespace LibraryOfRuina.content.abnormalities.RoadHome;
 
 public sealed class RoadHome : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const string HideAndSeekMoveId = "ROAD_HOME_HIDE_AND_SEEK";
     internal const string PatternOneMoveId = "ROAD_HOME_PATTERN_ONE";
     internal const string PatternTwoMoveId = "ROAD_HOME_PATTERN_TWO";

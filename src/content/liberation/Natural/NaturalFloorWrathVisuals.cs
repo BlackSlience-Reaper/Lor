@@ -52,6 +52,21 @@ internal sealed partial class NaturalFloorBlindRageVisuals : SceneAnimatedCreatu
 [MonsterVisual(typeof(NaturalFloorGreenStemHermit), ScenePath = NaturalFloorHermitVisuals.ScenePath)]
 internal sealed partial class NaturalFloorHermitVisuals : SceneAnimatedCreatureVisuals
 {
+    // 整块的 Spine 身体（照场景摆放，各姿势按标注点对齐），加载失败时退回场景动画。触发名先经 NormalizeTriggerName
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "natural_floor_liberation",
+        "nf_green_stem_hermit",
+        "attack_thrust",
+        new Dictionary<string, string>
+        {
+            ["AttackReach"] = "attack_reach",
+            ["AttackGround"] = "attack_ground",
+            ["AttackThrust"] = "attack_thrust",
+            ["MentalAttack"] = "mental_attack",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     internal const string ScenePath = NaturalFloorAssets.GreenStemHermitScene;
     internal static readonly IReadOnlyList<string> AssetPaths =
     [

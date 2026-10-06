@@ -10,6 +10,7 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -26,6 +27,8 @@ namespace LibraryOfRuina.content.abnormalities.FuneralOfTheDeadButterflies;
 
 public sealed class FuneralOfTheDeadButterflies : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const int MaxSummonedButterflies = 4;
     private const float AnimationDurationScale = 2.25f;
     private const string Move1Id = "FUNERAL_GUNFIRE";

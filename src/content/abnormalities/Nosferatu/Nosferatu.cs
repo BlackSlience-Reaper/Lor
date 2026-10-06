@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -29,6 +30,8 @@ namespace LibraryOfRuina.content.abnormalities.Nosferatu;
 
 public sealed class Nosferatu : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string GracefulRestMoveId = "GRACEFUL_REST";
     private const string ElegantDinnerMoveId = "ELEGANT_DINNER";
     private const string ThirstMoveId = "THIRST";

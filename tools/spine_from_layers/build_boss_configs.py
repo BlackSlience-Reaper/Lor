@@ -782,10 +782,17 @@ for _f in ("Normal", "Confused"):
 BOSSES["rev_philip"] = _batch8("rev_philip", base="Normal")
 for _f in ("Phase1", "Phase2", "Phase3"):
     BOSSES[f"smiling_bodies_{_f.lower()}"] = _batch8("smiling_bodies", base=_f, prefix=_f, sway=0.6)
-# 愤怒侍从的特殊招式三张图连着换
-BOSSES["wrath_servant"]["anims"]["special"] = ("seq", ["SpecialS1", "SpecialS2", "SpecialS3"], "step")
-for _k in ("special_s1", "special_s2", "special_s3"):
-    BOSSES["wrath_servant"]["anims"].pop(_k, None)
+# 愤怒侍从的特殊招式是三段各自发的触发（WithAttackerAnim("SpecialS1/2/3", 0.6)），每段一张图、停 0.6 秒；
+# 胜利演出等 2 秒
+BOSSES["wrath_servant"]["anims"].update({f"special_s{i}": ("attack", f"SpecialS{i}", "step") for i in (1, 2, 3)})
+BOSSES["wrath_servant"]["holds"] = {"special_s1": 0.6, "special_s2": 0.6, "special_s3": 0.6, "victory": 2.0}
+# 信徒的呼唤照场景 0.4 秒从蓄力图换到释放图，共 0.8 秒；自爆只用释放图，停 1.2 秒
+BOSSES["blue_star_follower"]["anims"].pop("voice_attack1")
+BOSSES["blue_star_follower"]["anims"].pop("voice_attack2")
+BOSSES["blue_star_follower"]["anims"]["voice_attack"] = (
+    "timeline", {"frames": [[0, "VoiceAttack1"], [0.4, "VoiceAttack2"]], "length": 0.8}, "step")
+BOSSES["blue_star_follower"]["anims"]["self_destruct"] = ("skill", "VoiceAttack2", "rise")
+BOSSES["blue_star_follower"]["holds"] = {"self_destruct": 1.2}
 # 宗教层三位使徒：只做普通库，假死（dead 库）退回场景动画。特殊招式照场景 0、1、2 秒换 s1、s2、s3，共 3 秒
 for _a, _attacks in (("scythe", {"slash": ("attack", "Slash", "dash"), "strike": ("attack", "Strike", "step")}),
                      ("spear", {"pierce": ("attack", "Pierce", "dash")}),

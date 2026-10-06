@@ -7,6 +7,7 @@ using LibraryOfRuina.framework.encounters;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -27,6 +28,8 @@ public enum ArtFloorDustbornSide
 
 public sealed class ArtFloorDustbornPerson : LorMonsterModel, ILiberationPhaseBoss
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const int Phase = 5;
     private const string FlowerBushMoveId = "FLOWER_BUSH";
     private const string MindCrackMoveId = "MIND_CRACK";

@@ -1,0 +1,13 @@
+boss_unspeaking_child.webp
+size:1465,605
+filter:Linear,Linear
+Slash/body
+bounds:0,0,520,605
+Default/body
+bounds:522,0,232,204
+Evade/body
+bounds:756,0,232,204
+Pierce/body
+bounds:990,0,244,204
+Hit/body
+bounds:1236,0,227,200

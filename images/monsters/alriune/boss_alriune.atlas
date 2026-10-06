@@ -1,0 +1,11 @@
+boss_alriune.webp
+size:1358,242
+filter:Linear,Linear
+Guard/body
+bounds:0,0,448,242
+Hit/body
+bounds:450,0,324,237
+Attack/body
+bounds:776,0,289,235
+Default/body
+bounds:1067,0,289,232

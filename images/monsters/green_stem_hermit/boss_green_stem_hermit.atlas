@@ -1,0 +1,13 @@
+boss_green_stem_hermit.webp
+size:983,296
+filter:Linear,Linear
+AttackGround/body
+bounds:0,0,276,296
+AttackThrust/body
+bounds:278,0,266,252
+Default/body
+bounds:546,0,158,208
+AttackReach/body
+bounds:706,0,157,208
+Hit/body
+bounds:865,0,116,192

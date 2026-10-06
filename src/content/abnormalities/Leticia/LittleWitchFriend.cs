@@ -5,6 +5,7 @@ using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -27,6 +28,8 @@ internal enum LittleWitchFriendInitialMove
 
 public sealed class LittleWitchFriend : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string MoveOneId = "GLITCH_FLUTTER";
     private const string MoveTwoId = "BROKEN_LAUGHTER";
     private const string MoveThreeId = "SNATCH_GIFT";
