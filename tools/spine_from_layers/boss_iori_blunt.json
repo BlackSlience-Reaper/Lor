@@ -1,0 +1,2681 @@
+{
+ "name": "boss_iori_blunt",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/iori",
+ "texture_scale": 0.6,
+ "origin": [
+  -36.0,
+  -269.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "ThePurpleTearH_Default",
+ "motions": {
+  "ThePurpleTearH_Default": {
+   "source": "ThePurpleTearH_Default",
+   "bones": {
+    "body": {
+     "at": [
+      -8.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -8.5,
+      329.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -19.0,
+      444.0
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Skin": "body",
+    "Body3": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head"
+   }
+  },
+  "ThePurpleTearH_Hit": {
+   "source": "ThePurpleTearH_Hit",
+   "bones": {
+    "body": {
+     "at": [
+      -94.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -94.8,
+      235.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -105.0,
+      347.8
+     ]
+    }
+   },
+   "assign": {
+    "Effect": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head",
+    "Body": "body",
+    "Skin": "body",
+    "Front_Hair2": "hair",
+    "Body2": "body"
+   }
+  },
+  "ThePurpleTearJ_S1": {
+   "source": "ThePurpleTearJ_S1",
+   "bones": {
+    "body": {
+     "at": [
+      -26.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -26.1,
+      238.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -36.5,
+      354.5
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Skin": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head",
+    "Effect": "body"
+   }
+  },
+  "ThePurpleTearJ_Slash": {
+   "source": "ThePurpleTearJ_Slash",
+   "bones": {
+    "body": {
+     "at": [
+      -69.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -69.1,
+      248.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -79.5,
+      364.5
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Skin": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head",
+    "Effect": "body"
+   }
+  },
+  "ThePurpleTearZ_S1": {
+   "source": "ThePurpleTearZ_S1",
+   "bones": {
+    "body": {
+     "at": [
+      -91.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -91.2,
+      236.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -101.5,
+      348.8
+     ]
+    }
+   },
+   "assign": {
+    "Shadow": "body",
+    "Body": "body",
+    "Skin": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Fron_acce": "body",
+    "Body2": "body",
+    "Front_Hair2": "hair",
+    "Body3": "body"
+   }
+  },
+  "ThePurpleTearZ_S2": {
+   "source": "ThePurpleTearZ_S2",
+   "bones": {
+    "body": {
+     "at": [
+      -109.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -109.2,
+      236.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -119.5,
+      348.8
+     ]
+    }
+   },
+   "assign": {
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head",
+    "Body": "body",
+    "Skin": "body",
+    "Front_Hair2": "hair",
+    "Body2": "body",
+    "Effect": "body"
+   }
+  },
+  "ThePurpleTear_Damaged": {
+   "source": "ThePurpleTear_Damaged",
+   "bones": {
+    "body": {
+     "at": [
+      47.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      47.5,
+      326.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      37.0,
+      442.5
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Skin": "body",
+    "Body3": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_acce": "head",
+    "Front_Hair": "hair",
+    "Body4": "body",
+    "Skin2": "body"
+   }
+  },
+  "ThePurpleTear_Evade": {
+   "source": "ThePurpleTear_Evade",
+   "bones": {
+    "body": {
+     "at": [
+      86.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      86.5,
+      313.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      76.0,
+      429.5
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Skin": "body",
+    "Body3": "body",
+    "Shadow_S": "head",
+    "Head": "head",
+    "Face": "head",
+    "Front_acce": "head",
+    "Front_Hair": "hair",
+    "Shadow": "head"
+   }
+  },
+  "ThePurpleTear_Guard": {
+   "source": "ThePurpleTear_Guard",
+   "bones": {
+    "body": {
+     "at": [
+      27.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      27.5,
+      308.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      17.0,
+      425.2
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Skin_1": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_acce": "head",
+    "Front_Hair": "hair",
+    "Body3": "body",
+    "Skin": "body"
+   }
+  },
+  "ThePurpleTear_Hit": {
+   "source": "ThePurpleTear_Hit",
+   "bones": {
+    "body": {
+     "at": [
+      -145.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -145.9,
+      232.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -156.0,
+      346.2
+     ]
+    }
+   },
+   "assign": {
+    "Effect": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head",
+    "Body": "body",
+    "Skin": "body",
+    "Front_Hair2": "hair",
+    "Body2": "body"
+   }
+  },
+  "ThePurpleTear_Penetrate": {
+   "source": "ThePurpleTear_Penetrate",
+   "bones": {
+    "body": {
+     "at": [
+      -100.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -100.8,
+      235.1
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -111.0,
+      348.5
+     ]
+    }
+   },
+   "assign": {
+    "Head": "head",
+    "Face": "head",
+    "Front_Hair": "hair",
+    "Front_acce": "head",
+    "Body": "body",
+    "Skin": "body",
+    "Front_Hair2": "hair",
+    "Body2": "body",
+    "Effect": "body"
+   }
+  },
+  "ThePurpleTear_Slash": {
+   "source": "ThePurpleTear_Slash",
+   "bones": {
+    "body": {
+     "at": [
+      -69.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -69.1,
+      291.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -79.5,
+      408.2
+     ]
+    }
+   },
+   "assign": {
+    "Body": "body",
+    "Back_Hair": "hair",
+    "Body2": "body",
+    "Effect": "body",
+    "Skin": "body",
+    "Head": "head",
+    "Face": "head",
+    "Front_acce": "head",
+    "Front_Hair": "hair"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "osc": {
+    "ThePurpleTearH_Default.body": {
+     "sy": [
+      0.008,
+      1,
+      0.0
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "ThePurpleTearH_Default.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "slash": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTear_Slash",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Slash.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Slash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Slash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "slash_s1": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearJ_S1",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_S1.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_S1.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_S1.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "pierce": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTear_Penetrate",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Penetrate.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Penetrate.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Penetrate.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "pierce_s1": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearZ_S1",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S1.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S1.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S1.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "pierce_s2": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearZ_S2",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S2.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S2.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S2.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "blunt": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearH_Hit",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "blunt_stance": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearH_Hit",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "phantom_dance_slash_a": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearJ_S1",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_S1.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_S1.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_S1.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "phantom_dance_blunt": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearH_Hit",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Hit.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "phantom_dance_pierce": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearZ_S2",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S2.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S2.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearZ_S2.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "phantom_dance_slash_b": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.15,
+     "ThePurpleTearJ_Slash",
+     0
+    ],
+    [
+     0.75,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_Slash.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_Slash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTearJ_Slash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "stance_change": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ],
+    [
+     0.1,
+     "ThePurpleTear_Hit",
+     0
+    ],
+    [
+     0.9,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.1,
+       0.97,
+       "out"
+      ],
+      [
+       0.9,
+       0.97
+      ],
+      [
+       1.2,
+       1
+      ]
+     ]
+    },
+    "ThePurpleTear_Hit.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Hit.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Hit.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "guard": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "ThePurpleTear_Guard",
+     0
+    ],
+    [
+     0.55,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTear_Guard.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Guard.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Guard.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       12,
+       "out"
+      ],
+      [
+       0.55,
+       6
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "evade": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "ThePurpleTear_Evade",
+     0
+    ],
+    [
+     0.55,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTear_Evade.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Evade.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Evade.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       45,
+       "out"
+      ],
+      [
+       0.55,
+       45
+      ],
+      [
+       0.8,
+       0
+      ]
+     ],
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       18,
+       "out"
+      ],
+      [
+       0.2,
+       0,
+       "in"
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "ThePurpleTear_Damaged",
+     0
+    ],
+    [
+     0.4,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Damaged.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Damaged.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "ThePurpleTear_Damaged.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "ThePurpleTearH_Default",
+     0
+    ]
+   ],
+   "keys": {
+    "ThePurpleTearH_Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ],
+     "sy": [
+      [
+       0,
+       1
+      ],
+      [
+       0.9,
+       0.96,
+       "out"
+      ],
+      [
+       1.2,
+       0.96
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "ThePurpleTearH_Default.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

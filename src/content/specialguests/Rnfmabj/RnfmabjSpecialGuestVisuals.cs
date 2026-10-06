@@ -108,6 +108,37 @@ internal sealed partial class RnfmabjCreatureVisuals :
         base._Ready();
     }
 
+    // Spine 身体见 LayeredBossSpine（场景整图照着地点标注做成整块，只平移转动）：分离、合体两个库各一副。
+    // 换形态的触发先在 NormalizeTriggerName 里改 _isUnited，再由新形态的骨架播 split / union
+    internal static readonly RuntimeSpineBody.Spec DistortSpine = LayeredBossSpine.Create(
+        "special_guests",
+        "rnfmabj_distort",
+        "twisted_blade",
+        new Dictionary<string, string>
+        {
+            ["TwistedBlade"] = "twisted_blade",
+            ["Move"] = "move",
+            ["Guard"] = "guard",
+            ["Split"] = "split",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec UnionSpine = LayeredBossSpine.Create(
+        "special_guests",
+        "rnfmabj_union",
+        "twisted_blade",
+        new Dictionary<string, string>
+        {
+            ["TwistedBlade"] = "twisted_blade",
+            ["Move"] = "move",
+            ["Guard"] = "guard",
+            ["Union"] = "union",
+        });
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [DistortSpine, UnionSpine];
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == "union" ? UnionSpine : DistortSpine;
+
     protected override string ResolveCurrentAnimationLibrary() =>
         _isUnited ? "union" : "distort";
 
@@ -131,6 +162,25 @@ internal sealed partial class RnfmabjCreatureVisuals :
 internal sealed partial class RnfmabjHandCreatureVisuals :
     RnfmabjSceneCreatureVisuals
 {
+    // Spine 身体同本体；左手由 MotionRoot 横向镜像，骨架挂在同一父节点下跟着镜像。
+    // 合体时整只隐藏、假死时半透明照旧作用在外观根节点上，骨架一起受影响
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "special_guests",
+        "rnfmabj_hand",
+        "punch",
+        new Dictionary<string, string>
+        {
+            ["Punch"] = "punch",
+            ["MultiPunch"] = "multi_punch",
+            ["Palm"] = "palm",
+            ["Brand"] = "brand",
+            ["Lock"] = "lock",
+            ["Move"] = "move",
+            ["Guard"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() => "hand";
 
     internal void SetAvailability(bool isUnited, bool isFakeDead)

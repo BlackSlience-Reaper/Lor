@@ -520,6 +520,24 @@ SPRITES = {
                                  "Phase2Scream": ["phase_2", "Scream", 0],
                                  "Phase3Absorb": ["phase_3", "Absorb", 0], "Phase3Hit": ["phase_3", "Hit", 0],
                                  "Phase3Sit": ["phase_3", "Sit", 0], "Phase3Vomit": ["phase_3", "Vomit", 0]}},
+    # 特殊来宾 Rnfmabj（颜）：原版分层每个动作只有整图（另带一层特效），照整图做。
+    # RnfmabjCreatureVisuals：库 distort（分离）/ union（合体）各一个 .tres，按 _isUnited 换库，各一副骨架。
+    # 场景的 AttackVisuals 缩放是 (0.8737, 1)，横向被压扁；原版各动作同尺寸，这里按纵向 1 倍放回（fix 1/0.8737）。
+    # Hit/Die 共用 Damaged 图（位置差几像素，只列 Hit）；Guard 用 Evade 图；TwistedBlade 与 Move 同图同位置；
+    # 合体的 Move 就是待机图，TwistedBlade 用 Guard 图（纵向差 23 像素，只列 Guard）。BladeVfx/WaveVfx 在动画里一直隐藏
+    "rnfmabj": {"scene": "rnfmabj.tscn", "ref_library": "distort",
+                "libraries": {"distort": "rnfmabj_distort_animations.tres", "union": "rnfmabj_union_animations.tres"},
+                "idles": {"Default": "distort", "Union": "union"},
+                "poses": {"Hit": ["distort", "Hit", 0, 1.1446], "Guard": ["distort", "Guard", 0, 1.1446],
+                          "Move": ["distort", "Move", 0, 1.1446],
+                          "UnionHit": ["union", "Hit", 0, 1.1446], "UnionGuard": ["union", "Guard", 0, 1.1446]}},
+    # RnfmabjHandCreatureVisuals：库 hand；左手由 MotionRoot 横向镜像（骨架挂在同一父节点下，跟着镜像）。
+    # Punch/MultiPunch 共用 Penetrate 图（位置差 79 像素，各列一次）；Die 与 Hit 共用 Damaged 图（只列 Hit）
+    "rnfmabj_hand": {"scene": "rnfmabj_hand.tscn", "ref_library": "hand",
+                     "libraries": {"hand": "rnfmabj_hand_animations.tres"},
+                     "idles": {"Default": "hand"},
+                     "poses": {a: ["hand", a, 0] for a in ("Brand", "Guard", "Hit", "Lock", "Move", "MultiPunch",
+                                                           "Palm", "Punch")}},
 }
 
 

@@ -92,6 +92,50 @@ internal sealed partial class IoriCreatureVisuals
     internal static readonly Vector2 StandardFrameCharacterOrigin =
         new(768f, 900f);
 
+    // Spine 身体见 LayeredBossSpine（原版紫泪五个架势预制体的分层）：四个架势的动画库各一副骨架，待机是该架势的站姿，
+    // 换架势时（RefreshStance 发 Idle）按库切换。触发名与场景动画同名，"Hit" 是受击
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        ["Slash"] = "slash",
+        ["SlashS1"] = "slash_s1",
+        ["Pierce"] = "pierce",
+        ["PierceS1"] = "pierce_s1",
+        ["PierceS2"] = "pierce_s2",
+        ["Blunt"] = "blunt",
+        ["BluntStance"] = "blunt_stance",
+        ["PhantomDanceSlashA"] = "phantom_dance_slash_a",
+        ["PhantomDanceBlunt"] = "phantom_dance_blunt",
+        ["PhantomDancePierce"] = "phantom_dance_pierce",
+        ["PhantomDanceSlashB"] = "phantom_dance_slash_b",
+        ["StanceChange"] = "stance_change",
+        ["Guard"] = "guard",
+        ["Evade"] = "evade",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec SlashSpine = LayeredBossSpine.Create(
+        "special_guests", "iori_slash", "slash", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec PierceSpine = LayeredBossSpine.Create(
+        "special_guests", "iori_pierce", "pierce", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec BluntSpine = LayeredBossSpine.Create(
+        "special_guests", "iori_blunt", "blunt", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec DefenseSpine = LayeredBossSpine.Create(
+        "special_guests", "iori_defense", "slash", SpineTriggers());
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs =>
+        [SlashSpine, PierceSpine, BluntSpine, DefenseSpine];
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library switch
+        {
+            IoriAnimationContract.PierceLibrary => PierceSpine,
+            IoriAnimationContract.BluntLibrary => BluntSpine,
+            IoriAnimationContract.DefenseLibrary => DefenseSpine,
+            _ => SlashSpine,
+        };
+
     protected override string ResolveCurrentAnimationLibrary() =>
         IoriAnimationContract.LibraryForStance(ResolveStance());
 

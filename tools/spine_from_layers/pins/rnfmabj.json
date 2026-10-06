@@ -1,0 +1,36 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   269,
+   962
+  ],
+  "Guard": [
+   486,
+   660
+  ],
+  "Hit": [
+   275,
+   645
+  ],
+  "Move": [
+   942,
+   863
+  ],
+  "Union": [
+   762,
+   915
+  ],
+  "UnionGuard": [
+   772,
+   855
+  ],
+  "UnionHit": [
+   830,
+   834
+  ]
+ },
+ "sizes": {}
+}

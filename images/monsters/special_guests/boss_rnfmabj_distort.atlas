@@ -1,0 +1,11 @@
+boss_rnfmabj_distort.webp
+size:1944,490
+filter:Linear,Linear
+Move/body
+bounds:0,0,687,490
+Default/body
+bounds:689,0,323,444
+Hit/body
+bounds:1014,0,340,432
+Guard/body
+bounds:1356,0,586,428
