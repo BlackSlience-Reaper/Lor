@@ -1,10 +1,10 @@
 {
- "name": "boss_price_of_silence",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/price_of_silence",
+ "name": "boss_eyeball_bird",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/eyeball_bird",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -4.0
+  -1.0
  ],
  "skin_tint": [
   1.0,
@@ -19,22 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      38.3,
+      22.3,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      38.3,
-      670.8
+      22.3,
+      259.8
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      825.7
+      319.6
      ]
     }
    },
@@ -42,27 +42,83 @@
     "body": "body"
    }
   },
-  "Special": {
-   "source": "Special",
+  "Attack": {
+   "source": "Attack",
    "bones": {
     "body": {
      "at": [
-      94.2,
+      22.2,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      94.2,
-      686.1
+      22.2,
+      244.5
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      49.0,
-      844.4
+      0.0,
+      300.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Evade": {
+   "source": "Evade",
+   "bones": {
+    "body": {
+     "at": [
+      24.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      24.9,
+      268.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      330.1
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Hit": {
+   "source": "Hit",
+   "bones": {
+    "body": {
+     "at": [
+      25.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      25.1,
+      214.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      0.0,
+      263.6
      ]
     }
    },
@@ -84,7 +140,7 @@
    "osc": {
     "Default.body": {
      "rotate": [
-      1.4,
+      1.2,
       1,
       0.0
      ]
@@ -105,7 +161,7 @@
     }
    }
   },
-  "special": {
+  "attack": {
    "duration": 1.05,
    "show": [
     [
@@ -115,7 +171,7 @@
     ],
     [
      0.15,
-     "Special",
+     "Attack",
      0
     ],
     [
@@ -125,27 +181,7 @@
     ]
    ],
    "keys": {
-    "Default.body": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       -4,
-       "out"
-      ],
-      [
-       0.75,
-       -4
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    },
+    "Default.body": {},
     "Default.head": {
      "rotate": [
       [
@@ -167,7 +203,7 @@
       ]
      ]
     },
-    "Special.body": {
+    "Attack.body": {
      "x": [
       [
        0.15,
@@ -182,24 +218,9 @@
        0.55,
        0
       ]
-     ],
-     "rotate": [
-      [
-       0.15,
-       -3
-      ],
-      [
-       0.3,
-       2,
-       "out"
-      ],
-      [
-       0.5,
-       0
-      ]
      ]
     },
-    "Special.head": {
+    "Attack.head": {
      "rotate": [
       [
        0.15,
@@ -216,7 +237,7 @@
       ]
      ]
     },
-    "Special.hair": {
+    "Attack.hair": {
      "rotate": [
       [
        0.15,
@@ -244,16 +265,125 @@
        0
       ],
       [
-       0.27,
-       -25,
+       0.3,
+       -70,
        "out"
       ],
       [
        0.75,
-       -25
+       -70
       ],
       [
        1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "evade": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "Evade",
+     0
+    ],
+    [
+     0.55,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Evade.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "Evade.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Evade.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       45,
+       "out"
+      ],
+      [
+       0.55,
+       45
+      ],
+      [
+       0.8,
+       0
+      ]
+     ],
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       18,
+       "out"
+      ],
+      [
+       0.2,
+       0,
+       "in"
+      ],
+      [
+       0.8,
        0
       ]
      ]
@@ -265,7 +395,7 @@
    "show": [
     [
      0,
-     "Default",
+     "Hit",
      0
     ],
     [
@@ -301,24 +431,8 @@
       ]
      ]
     },
-    "Default.body": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.08,
-       -6,
-       "out"
-      ],
-      [
-       0.4,
-       0
-      ]
-     ]
-    },
-    "Default.head": {
+    "Hit.body": {},
+    "Hit.head": {
      "rotate": [
       [
        0,
@@ -335,7 +449,7 @@
       ]
      ]
     },
-    "Default.hair": {
+    "Hit.hair": {
      "rotate": [
       [
        0,
@@ -364,23 +478,7 @@
     ]
    ],
    "keys": {
-    "Default.body": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.9,
-       3,
-       "out"
-      ],
-      [
-       1.2,
-       3
-      ]
-     ]
-    },
+    "Default.body": {},
     "Default.head": {
      "rotate": [
       [

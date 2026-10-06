@@ -513,6 +513,56 @@ BOSSES["forsaken_murderer"] = {
     "anims": {"attack": ("attack", "Attack", "dash"), "hurt": ("hurt", "Hit")},
 }
 
+# 第二批整图怪物。站在地上的（樵夫、眼珠儿鸟、最后的火柴、渗透天堂、天堂之刺）按脚对齐、动作不转身体（no_tilt），
+# 待机只绕脚下微微晃；悬空的时间的痕迹、蹲在笼里的惩戒鸟可以上下浮
+BOSSES["time_trace"] = {
+    "prefix": "", "origin": [0.0, -5.0], "rigid": True, "weapons": [],
+    "idle": {"move": {"y": [6, 1, 0.0]}, "Default.body": {"rotate": [1.5, 1, 0.3]}},
+    "anims": {"blunt": ("attack", "AttackBlunt", "dash"), "thrust": ("attack", "AttackThrust", "dash"),
+              "slash": ("attack", "AttackSlash", "step"), "guard": ("guard", "Guard", "brace"),
+              "hurt": ("hurt", "Hit"), "stun": ("hurt", "Hit")},
+    "holds": {"stun": 0.8},
+}
+_WOODSMAN_ANIMS = {"blunt": ("attack", "AttackBlunt", "dash"), "slash": ("attack", "AttackSlash", "step"),
+                   "logging": ("attack", "LoggingFinal", "step"), "guard": ("guard", "Guard", "brace"),
+                   "hurt": ("hurt", "Hit")}
+for _base in ("Empty", "Warm"):
+    # 热心的樵夫：没有心、有心两张待机各一副
+    BOSSES[f"woodsman_{_base.lower()}"] = {
+        "layers": "woodsman", "prefix": "", "base": _base, "origin": [0.0, 0.0], "rigid": True, "no_tilt": True,
+        "weapons": [], "idle": {f"{_base}.body": {"rotate": [0.8, 1, 0.0]}}, "anims": _WOODSMAN_ANIMS,
+    }
+BOSSES["woodsman_tree"] = {
+    "prefix": "", "origin": [0.0, 0.0], "rigid": True, "no_tilt": True, "weapons": [],
+    "idle": {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    "anims": {"guard": ("guard", "Default", "brace"), "hurt": ("hurt", "Default")},
+}
+BOSSES["eyeball_bird"] = {
+    "prefix": "", "origin": [0.0, -1.0], "rigid": True, "no_tilt": True, "weapons": [],
+    "idle": {"Default.body": {"rotate": [1.2, 1, 0.0]}},
+    "anims": {"attack": ("attack", "Attack", "dash"), "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Hit")},
+}
+BOSSES["punishing_bird"] = {
+    "prefix": "", "origin": [0.0, 0.0], "rigid": True, "weapons": [],
+    "idle": {"move": {"y": [4, 1, 0.0]}, "Default.body": {"rotate": [2.0, 1, 0.25]}},
+    "anims": {"peck": ("attack", "Peck", "dash"), "punish": ("attack", "Punish", "step"), "hurt": ("hurt", "Hit")},
+}
+BOSSES["last_match"] = {
+    "prefix": "", "origin": [0.0, 0.0], "rigid": True, "no_tilt": True, "weapons": [],
+    "idle": {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    "anims": {"attack": ("attack", "Attack", "dash"), "cast": ("skill", "Cast"), "hurt": ("hurt", "Hit")},
+}
+for _name, _anims in (("burrowing_heaven", {"attack": ("attack", "Attack", "step"), "special": ("skill", "Special"),
+                                            "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Hit")}),
+                      ("heaven_thorn", {"attack": ("attack", "Attack", "step"), "guard": ("guard", "Guard", "brace"),
+                                        "hurt": ("hurt", "Hit")})):
+    for _base in ("Awake", "Sleep"):
+        # 渗透天堂、天堂之刺：醒着、睡着两张待机各一副，待机绕根部慢慢摇
+        BOSSES[f"{_name}_{_base.lower()}"] = {
+            "layers": _name, "prefix": "", "base": _base, "origin": [0.0, 0.0], "rigid": True, "no_tilt": True,
+            "weapons": [], "idle": {f"{_base}.body": {"rotate": [1.2, 1, 0.0]}}, "anims": _anims,
+        }
+
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
 for _e in range(1, 6):
@@ -696,6 +746,14 @@ def main():
             continue
         src_dir = spec.get("layers", name)
         info = json.loads((LAYERS / src_dir / "layers.json").read_text())
+        ref_path = LAYERS / src_dir / "pin_ref.json"
+        if ref_path.exists():
+            # 标注页的动作开关（sprite_layers.py 写出）：“动作不转身体”覆盖 no_tilt，“当转轴”把身体转轴放到参照点
+            ref = json.loads(ref_path.read_text())
+            if "noTilt" in ref:
+                spec = {**spec, "no_tilt": ref["noTilt"]}
+            if ref.get("pivot") and ref.get("ref"):
+                spec = {**spec, "pivot": ref["ref"]}
         used = set()
         for _, p, *_ in spec["anims"].values():
             used.update([f[1] for f in p["frames"]] if isinstance(p, dict) else p if isinstance(p, list) else [p])

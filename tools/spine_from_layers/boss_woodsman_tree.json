@@ -1,10 +1,10 @@
 {
- "name": "boss_price_of_silence",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/price_of_silence",
+ "name": "boss_woodsman_tree",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/woodsman_tree",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -4.0
+  0.0
  ],
  "skin_tint": [
   1.0,
@@ -19,50 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      38.3,
+      69.4,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      38.3,
-      670.8
+      69.4,
+      840.3
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      825.7
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Special": {
-   "source": "Special",
-   "bones": {
-    "body": {
-     "at": [
-      94.2,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      94.2,
-      686.1
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      49.0,
-      844.4
+      1033.1
      ]
     }
    },
@@ -84,7 +56,7 @@
    "osc": {
     "Default.body": {
      "rotate": [
-      1.4,
+      1.0,
       1,
       0.0
      ]
@@ -105,8 +77,8 @@
     }
    }
   },
-  "special": {
-   "duration": 1.05,
+  "guard": {
+   "duration": 0.8,
    "show": [
     [
      0,
@@ -114,34 +86,25 @@
      0
     ],
     [
-     0.15,
-     "Special",
-     0
-    ],
-    [
-     0.75,
+     0.55,
      "Default",
      0
     ]
    ],
    "keys": {
     "Default.body": {
-     "rotate": [
+     "x": [
       [
        0,
        0
       ],
       [
-       0.15,
-       -4,
+       0.08,
+       8,
        "out"
       ],
       [
-       0.75,
-       -4
-      ],
-      [
-       1.05,
+       0.35,
        0
       ]
      ]
@@ -149,86 +112,33 @@
     "Default.head": {
      "rotate": [
       [
-       0,
-       0
-      ],
-      [
-       0.15,
-       3,
-       "out"
-      ],
-      [
-       0.75,
-       0
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    },
-    "Special.body": {
-     "x": [
-      [
-       0.15,
-       12
-      ],
-      [
-       0.3,
-       -12,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ],
-     "rotate": [
-      [
-       0.15,
-       -3
-      ],
-      [
-       0.3,
-       2,
-       "out"
-      ],
-      [
-       0.5,
-       0
-      ]
-     ]
-    },
-    "Special.head": {
-     "rotate": [
-      [
-       0.15,
+       0.0,
        -5
       ],
       [
-       0.32,
+       0.17,
        4,
        "out"
       ],
       [
-       0.55,
+       0.4,
        0
       ]
      ]
     },
-    "Special.hair": {
+    "Default.hair": {
      "rotate": [
       [
-       0.15,
+       0.0,
        -4
       ],
       [
-       0.36,
+       0.21,
        5,
        "out"
       ],
       [
-       0.6,
+       0.45,
        0
       ]
      ]
@@ -240,20 +150,16 @@
        0
       ],
       [
-       0.15,
-       0
-      ],
-      [
-       0.27,
-       -25,
+       0.08,
+       12,
        "out"
       ],
       [
-       0.75,
-       -25
+       0.55,
+       6
       ],
       [
-       1.05,
+       0.8,
        0
       ]
      ]
@@ -301,23 +207,7 @@
       ]
      ]
     },
-    "Default.body": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.08,
-       -6,
-       "out"
-      ],
-      [
-       0.4,
-       0
-      ]
-     ]
-    },
+    "Default.body": {},
     "Default.head": {
      "rotate": [
       [
@@ -364,23 +254,7 @@
     ]
    ],
    "keys": {
-    "Default.body": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.9,
-       3,
-       "out"
-      ],
-      [
-       1.2,
-       3
-      ]
-     ]
-    },
+    "Default.body": {},
     "Default.head": {
      "rotate": [
       [

@@ -1,0 +1,27 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": true,
+ "points": {
+  "Attack": [
+   594,
+   499
+  ],
+  "Awake": [
+   237,
+   502
+  ],
+  "Guard": [
+   223,
+   401
+  ],
+  "Hit": [
+   358,
+   298
+  ],
+  "Sleep": [
+   129,
+   548
+  ]
+ }
+}

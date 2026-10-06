@@ -7,6 +7,7 @@
 - center（Profile.Centered()）：贴图中心落在 Position + Nudge。
 Nudge 是父节点单位，除以贴图缩放换成待机像素；Lunge 招式不用 Nudge。帧另给 Scale 时按 帧缩放/待机缩放 缩放贴图。
 骨架原点要放在该形态待机贴图的矩形底边中点（RuntimeSpineBody.AlignTo），打印在 origins 里，填进 build_boss_configs。
+对齐点标注见 pins/：标注页 https://claude.ai/artifact/XpeiYUEg1JKXCgBk9EibZb 读回的 {mode, pivot, noTilt, points}。
 用法：sprite_layers.py [名字...]"""
 import json
 import sys
@@ -17,6 +18,8 @@ from PIL import Image
 
 M = Path(__file__).resolve().parents[2] / "images/monsters"
 LAYERS = Path.home() / ".local/share/LibraryOfRuina-layers"
+# 标注页（怪物着地点标注）读回的对齐点、对齐方式与动作开关，一个怪物一份
+PINS = Path(__file__).resolve().parent / "pins"
 
 SPRITES = {
     # 外观 ForgottenKnightSwordCreatureVisuals：三个形态，攻击帧 Nudge(-46, -10)。
@@ -74,6 +77,66 @@ SPRITES = {
         "poses": {"Attack": {"image": "forsaken_murderer_attack.webp", "frame_scale": 0.33, "pin": [750, 652]},
                   "Hit": {"image": "forsaken_murderer_hit.webp", "pin": [30, 693]}},
     },
+    # ---- 第二批 ----
+    # TimeTraceCreatureVisuals：悬空持镰的影子
+    "time_trace": {
+        "scale": 1.24, "anchor": "visible_bottom",
+        "idles": {"Default": "time_trace/idle.png"},
+        "poses": {"AttackBlunt": {"image": "time_trace/attack_blunt.png"},
+                  "AttackThrust": {"image": "time_trace/attack_thrust.png"},
+                  "AttackSlash": {"image": "time_trace/attack_slash.png"},
+                  "Hit": {"image": "time_trace/hit.png"}, "Guard": {"image": "time_trace/guard.png"}},
+    },
+    # WarmheartedWoodsmanCreatureVisuals：两张待机按 Scale(1.2).IdleOnly() 画在原点，动作图按布局 0.87 倍、(0, -8)。
+    # 动作图里的樵夫因此只有待机的 0.725 倍，换姿势忽大忽小：fix 1.38 放大回去，横向 Nudge 跟着放大；脚按 pin_y 对齐
+    "woodsman": {
+        "scale": 1.2, "attack_scale": 0.87, "attack_offset": [0, -8], "anchor": "visible_bottom",
+        "pin_y": "dark_bottom",
+        "idles": {"Empty": "warmhearted_woodsman/idle_empty.png", "Warm": "warmhearted_woodsman/idle_warm.png"},
+        "poses": {"AttackBlunt": {"image": "warmhearted_woodsman/attack_blunt.png", "nudge": [124, 35], "fix": 1.38},
+                  "AttackSlash": {"image": "warmhearted_woodsman/attack_slash.png", "nudge": [-14, 35], "fix": 1.38},
+                  "LoggingFinal": {"image": "warmhearted_woodsman/logging_final.png", "nudge": [-262, 145], "fix": 1.38},
+                  "Hit": {"image": "warmhearted_woodsman/hit.png", "fix": 1.38},
+                  "Guard": {"image": "warmhearted_woodsman/guard.png", "fix": 1.38}},
+    },
+    "woodsman_tree": {
+        "scale": 0.36, "anchor": "visible_bottom", "pin_y": "dark_bottom",
+        "idles": {"Default": "warmhearted_woodsman/tree.png"}, "poses": {},
+    },
+    # BigBird 文件里的 EyeballBirdCreatureVisuals
+    "eyeball_bird": {
+        "scale": 0.56, "anchor": "visible_bottom", "pin_y": "dark_bottom",
+        "idles": {"Default": "eyeball_bird/idle.png"},
+        "poses": {"Attack": {"image": "eyeball_bird/attack.png"}, "Evade": {"image": "eyeball_bird/evade.png"},
+                  "Hit": {"image": "eyeball_bird/hit.png"}},
+    },
+    # PunishingBirdCreatureVisuals：鸟本体 At(-90, -290)、Scale(1)，动作图同样位置缩放（笼子、锁链是外观另挂的节点，不进骨架）
+    "punishing_bird": {
+        "scale": 1.0, "anchor": "visible_bottom",
+        "idles": {"Default": "punishing_bird/idle.png"},
+        "poses": {"Peck": {"image": "punishing_bird/peck.png"}, "Punish": {"image": "punishing_bird/punish.png"},
+                  "Hit": {"image": "punishing_bird/hit.png"}},
+    },
+    # HistoryFloorLastMatchCreatureVisuals：攻击是 Lunge、Scale(0.40)
+    "last_match": {
+        "scale": 0.38, "anchor": "visible_bottom", "pin_y": "dark_bottom",
+        "idles": {"Default": "history_floor/last_match.webp"},
+        "poses": {"Attack": {"image": "history_floor/last_match_attack.png", "frame_scale": 0.40},
+                  "Cast": {"image": "history_floor/last_match_cast.png"},
+                  "Hit": {"image": "history_floor/last_match_hit.png"}},
+    },
+    "burrowing_heaven": {
+        "scale": 0.58, "anchor": "visible_bottom", "pin_y": "dark_bottom",
+        "idles": {"Awake": "burrowing_heaven/idle_awake.png", "Sleep": "burrowing_heaven/idle_sleep.png"},
+        "poses": {"Attack": {"image": "burrowing_heaven/attack.png"}, "Hit": {"image": "burrowing_heaven/hit.png"},
+                  "Special": {"image": "burrowing_heaven/special.png"}, "Guard": {"image": "burrowing_heaven/guard.png"}},
+    },
+    "heaven_thorn": {
+        "scale": 0.48, "anchor": "visible_bottom", "pin_y": "dark_bottom",
+        "idles": {"Awake": "heaven_thorn/idle_awake.png", "Sleep": "heaven_thorn/idle_sleep.png"},
+        "poses": {"Attack": {"image": "heaven_thorn/attack.png"}, "Hit": {"image": "heaven_thorn/hit.png"},
+                  "Guard": {"image": "heaven_thorn/guard.png"}},
+    },
 }
 
 
@@ -90,12 +153,24 @@ def build(name, spec):
     info = {}
     origins = {}
     pin_ref = None
-    pin_y_ref = None
     poses = {**{k: {**(v if isinstance(v, dict) else {"image": v}), "idle": True} for k, v in spec["idles"].items()},
              **spec["poses"]}
+    ann_path = PINS / f"{name}.json"
+    ann = json.loads(ann_path.read_text()) if ann_path.exists() else None
+    if ann:
+        mode, points = ann["mode"], ann["points"]
+    else:
+        points = {m: p["pin"] for m, p in poses.items() if "pin" in p}
+        mode = "pin" if points else ("pin_y" if spec.get("pin_y") else "none")
     for motion, p in poses.items():
         im = Image.open(M / p["image"]).convert("RGBA")
-        k0 = p.get("frame_scale", s) / s
+        # 待机贴图另给了缩放（Variant.Scale(...).IdleOnly()）时，动作贴图仍按外观布局的缩放、位置画：attack_scale、attack_offset
+        if p.get("idle"):
+            k0 = p.get("frame_scale", s) / s
+        else:
+            k0 = p.get("frame_scale", spec.get("attack_scale", s)) / s
+            off = spec.get("attack_offset", [0, 0])
+            p = {**p, "nudge": [p.get("nudge", [0, 0])[0] + off[0], p.get("nudge", [0, 0])[1] + off[1]]}
         k = k0 * p.get("fix", 1.0)
         if p.get("idle"):
             # 骨架原点对齐的是游戏里没放大的那张待机贴图（RuntimeSpineBody.AlignTo），原点按它算
@@ -114,22 +189,22 @@ def build(name, spec):
             cx, cy = nx / s, -ny / s + (vb - H / 2)
         else:
             cx, cy = nx / s, -ny / s
-        if spec.get("pin_y") == "dark_bottom":
-            # 只对高度：各姿势最低的暗色像素（大鸟的爪尖）落在同一高度。可见底边可能是低垂的提灯光晕，不能用它对
+        # 对齐点（原图像素）：第一个有点的姿势（待机图排在前面）定下参照点，其余姿势把自己的点对到这一点。
+        # pin 横纵都对齐，pin_y 只对高度。点来自标注页（pins/<名字>.json），没有标注时用配置里的 pin，
+        # 或 pin_y: dark_bottom（最低的暗色像素：大鸟的爪尖；可见底边可能是低垂的提灯光晕，不能用它对）
+        pt = points.get(motion)
+        if pt is None and mode == "pin_y" and spec.get("pin_y") == "dark_bottom" and not ann:
             a = np.asarray(im).astype(np.float32)
             rows = np.nonzero(((a[..., 3] > 200) & (a[..., :3].max(-1) < 70)).any(axis=1))[0]
-            py = rows[-1] + 1 - H / 2
-            if pin_y_ref is None:
-                pin_y_ref = cy - py
-            else:
-                cy = pin_y_ref + py
-        if "pin" in p:
-            # pin（原图像素）：第一个带 pin 的待机图定下参照点，其余带 pin 的姿势把自己的 pin 对到这一点
-            px, py = p["pin"][0] * k - W / 2, p["pin"][1] * k - H / 2
+            pt = [W / 2 / k, (rows[-1] + 1) / k]
+        if pt is not None and mode in ("pin", "pin_y"):
+            px, py = pt[0] * k - W / 2, pt[1] * k - H / 2
             if pin_ref is None:
                 pin_ref = (cx + px, cy - py)
-            else:
+            elif mode == "pin":
                 cx, cy = pin_ref[0] - px, pin_ref[1] + py
+            else:
+                cy = pin_ref[1] + py
         (out / motion).mkdir(exist_ok=True)
         layers = []
         body = im.copy()
@@ -176,7 +251,10 @@ def build(name, spec):
         info[motion] = {"layers": layers, "composite_origin": [round(W / 2 - cx, 2), round(cy + H / 2, 2)]}
         im.save(out / f"{motion}.composite.png")
     (out / "layers.json").write_text(json.dumps(info, ensure_ascii=False, indent=1))
-    print(name, "origins", json.dumps(origins))
+    # 参照点在骨架坐标里的位置：标注勾了“当转轴”时 build_boss_configs 把身体转轴放在这里
+    (out / "pin_ref.json").write_text(json.dumps({"mode": mode, "ref": [round(v, 2) for v in pin_ref] if pin_ref else None,
+                                                  **({"pivot": ann["pivot"], "noTilt": ann["noTilt"]} if ann else {})}))
+    print(name, "origins", json.dumps(origins), "mode", mode, "ref", pin_ref and [round(v, 1) for v in pin_ref])
 
 
 def main():

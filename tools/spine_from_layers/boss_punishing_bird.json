@@ -1,10 +1,10 @@
 {
- "name": "boss_price_of_silence",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/price_of_silence",
+ "name": "boss_punishing_bird",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/punishing_bird",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -4.0
+  0.0
  ],
  "skin_tint": [
   1.0,
@@ -19,22 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      38.3,
+      4.6,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      38.3,
-      670.8
+      4.6,
+      61.0
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      825.7
+      75.0
      ]
     }
    },
@@ -42,27 +42,83 @@
     "body": "body"
    }
   },
-  "Special": {
-   "source": "Special",
+  "Hit": {
+   "source": "Hit",
    "bones": {
     "body": {
      "at": [
-      94.2,
+      7.9,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      94.2,
-      686.1
+      7.9,
+      62.8
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      49.0,
-      844.4
+      0.0,
+      76.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Peck": {
+   "source": "Peck",
+   "bones": {
+    "body": {
+     "at": [
+      4.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      4.8,
+      90.5
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -4.0,
+      112.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Punish": {
+   "source": "Punish",
+   "bones": {
+    "body": {
+     "at": [
+      25.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      25.2,
+      106.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      1.0,
+      176.2
      ]
     }
    },
@@ -84,9 +140,9 @@
    "osc": {
     "Default.body": {
      "rotate": [
-      1.4,
+      2.0,
       1,
-      0.0
+      0.25
      ]
     },
     "Default.head": {
@@ -102,10 +158,17 @@
       1,
       0.4
      ]
+    },
+    "move": {
+     "y": [
+      4,
+      1,
+      0.0
+     ]
     }
    }
   },
-  "special": {
+  "peck": {
    "duration": 1.05,
    "show": [
     [
@@ -115,7 +178,7 @@
     ],
     [
      0.15,
-     "Special",
+     "Peck",
      0
     ],
     [
@@ -167,7 +230,7 @@
       ]
      ]
     },
-    "Special.body": {
+    "Peck.body": {
      "x": [
       [
        0.15,
@@ -199,7 +262,7 @@
       ]
      ]
     },
-    "Special.head": {
+    "Peck.head": {
      "rotate": [
       [
        0.15,
@@ -216,7 +279,162 @@
       ]
      ]
     },
-    "Special.hair": {
+    "Peck.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "punish": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "Punish",
+     0
+    ],
+    [
+     0.75,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Punish.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Punish.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Punish.hair": {
      "rotate": [
       [
        0.15,
@@ -265,7 +483,7 @@
    "show": [
     [
      0,
-     "Default",
+     "Hit",
      0
     ],
     [
@@ -301,7 +519,7 @@
       ]
      ]
     },
-    "Default.body": {
+    "Hit.body": {
      "rotate": [
       [
        0,
@@ -318,7 +536,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Hit.head": {
      "rotate": [
       [
        0,
@@ -335,7 +553,7 @@
       ]
      ]
     },
-    "Default.hair": {
+    "Hit.hair": {
      "rotate": [
       [
        0,

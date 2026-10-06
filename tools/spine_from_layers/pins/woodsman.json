@@ -1,0 +1,35 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": true,
+ "points": {
+  "AttackBlunt": [
+   434,
+   376
+  ],
+  "AttackSlash": [
+   404,
+   450
+  ],
+  "Empty": [
+   100,
+   326
+  ],
+  "Guard": [
+   160,
+   351
+  ],
+  "Hit": [
+   344,
+   288
+  ],
+  "LoggingFinal": [
+   737,
+   419
+  ],
+  "Warm": [
+   341,
+   286
+  ]
+ }
+}
