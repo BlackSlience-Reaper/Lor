@@ -10,7 +10,9 @@ namespace LibraryOfRuina.features.intentgraph;
 /// 意图图的字体，与 Intent Graph（Chaofan）相同：数值用 Kreon 粗体；标签也用 Kreon 粗体，
 /// 简繁中文时拉丁字母仍用 Kreon、汉字接当前语言的粗体字体，其余需要换字体的语言整段用当前语言的粗体字体。
 /// 图是直接画的（DrawString），不经过 MegaLabel，所以按语言换字体要在这里自己做。
-/// 按语言缓存：意图图面板开着时每 0.15 秒重建一次，每次新建 FontVariation 会让字形与排版缓存跟着重建；切换语言后按新语言重建。
+/// 按语言缓存：重建渲染模型时量字宽（MonsterStateMachineHoverTipFeature.TryBuild，运行时缓存未命中才走）和每个图节点
+/// 第一次绘制时都会要一份字体，共用同一份可以省掉各自新建 FontVariation 与它的字形缓存。语言变化后这里返回新字体，
+/// 但已经建好的图节点自己持有字体字段，要到下次新建节点才换上。
 /// </summary>
 internal static class IntentGraphFonts
 {

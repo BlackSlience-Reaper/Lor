@@ -1730,6 +1730,7 @@ readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.Fin
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.FindTextureRect	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.RefreshColor	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.RefreshSpineRadius	Godot.StringName
+readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.SpineMargin	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName.SpineMaterial	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+MethodName._Process	Godot.StringName
 readonly	LibraryOfRuina.features.creatureglow.CreatureOutlineGlow+PropertyName._color	Godot.StringName
@@ -1987,6 +1988,7 @@ readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.Play	Godot
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayAttack	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayLoop	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.PlayOnce	Godot.StringName
+readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.SetOutlineMargin	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.Smooth	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.State	Godot.StringName
 readonly	LibraryOfRuina.framework.visuals.RuntimeSpineBody+MethodName.SyncGhosts	Godot.StringName

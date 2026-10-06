@@ -96,6 +96,7 @@ internal sealed partial class CreatureOutlineGlow : Node
 
     private ShaderMaterial? _spineMaterial;
     private float _spineRadius = -1f;
+    private readonly List<RuntimeSpineBody> _spineBodies = [];
 
     private readonly List<GlowLink> _glows = [];
     private NCreatureVisuals _visuals = null!;
@@ -142,8 +143,9 @@ internal sealed partial class CreatureOutlineGlow : Node
                 // 动画效果开着时贴图都藏着，换成整副骨架发光；各形态的骨架共用一份 material
                 if (!body.HasOutline)
                 {
-                    float bodyScale = Mathf.Max(0.0001f, body.GetGlobalTransformWithCanvas().Scale.Abs().X);
-                    body.EnableOutline(SpineMaterial(), ScreenRadius * 2f / bodyScale);
+                    ShaderMaterial material = SpineMaterial();
+                    body.EnableOutline(material, SpineMargin());
+                    _spineBodies.Add(body);
                 }
 
                 continue;
@@ -201,8 +203,18 @@ internal sealed partial class CreatureOutlineGlow : Node
         {
             _spineRadius = radius;
             _spineMaterial.SetShaderParameter("radius", radius);
+            _spineBodies.RemoveAll(static body => !GodotObject.IsInstanceValid(body));
+            float margin = SpineMargin();
+            foreach (RuntimeSpineBody body in _spineBodies)
+            {
+                body.SetOutlineMargin(margin);
+            }
         }
     }
+
+    // CanvasGroup 的离屏范围要盖住采样半径。边距按渲染像素还是画布单位算取决于引擎的画布变换，
+    // 两者只差窗口缩放比例，取两种换算里较大的再留余量，宁可多画一点也不让光被裁掉
+    private float SpineMargin() => Mathf.Max(_spineRadius, ScreenRadius) * 1.5f + 2f;
 
     private static void Sync(GlowLink link)
     {

@@ -321,6 +321,11 @@ internal sealed partial class EnemyCardIntentVisualNode : Control
         _owner = owner;
         _card.Model = spec.CreateDisplayCardForIntent(intent, _targets, owner);
         WireCardVisuals(_card, spec.Id);
+        // 提示只在进入悬停时生成；鼠标停着不动时节点被复用，要按新数据重新显示（原版 ShowHoverTips 会先收起旧的）
+        if (_isHovered)
+        {
+            ShowCardHoverTips();
+        }
     }
 
     public override void _Process(double delta)
