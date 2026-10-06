@@ -1,0 +1,48 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Human": [
+   79,
+   256
+  ],
+  "HumanAttack1": [
+   442,
+   358
+  ],
+  "HumanAttack2": [
+   247,
+   255
+  ],
+  "HumanAttack3": [
+   246,
+   281
+  ],
+  "HumanHit": [
+   110,
+   249
+  ],
+  "Snake": [
+   215,
+   414
+  ],
+  "SnakeAttack1": [
+   355,
+   422
+  ],
+  "SnakeAttack2": [
+   182,
+   433
+  ],
+  "SnakeAttack3": [
+   204,
+   415
+  ],
+  "SnakeHit": [
+   432,
+   209
+  ]
+ },
+ "sizes": {}
+}

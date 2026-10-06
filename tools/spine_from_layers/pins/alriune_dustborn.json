@@ -1,0 +1,28 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   133,
+   464
+  ],
+  "Dodge": [
+   408,
+   465
+  ],
+  "Hit": [
+   235,
+   461
+  ],
+  "Pierce": [
+   406,
+   453
+  ],
+  "Slash": [
+   401,
+   514
+  ]
+ },
+ "sizes": {}
+}

@@ -1,0 +1,238 @@
+{
+ "name": "boss_despair_knight_despair",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/despair_knight",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -0.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Despair",
+ "motions": {
+  "Despair": {
+   "source": "Despair",
+   "bones": {
+    "body": {
+     "at": [
+      3.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      3.2,
+      343.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -27.0,
+      423.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Despair",
+     0
+    ]
+   ],
+   "osc": {
+    "Despair.body": {
+     "rotate": [
+      0.8,
+      1,
+      0.0
+     ]
+    },
+    "Despair.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Despair.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "Despair",
+     0
+    ],
+    [
+     0.4,
+     "Despair",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "Despair.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "Despair.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "Despair.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Despair",
+     0
+    ]
+   ],
+   "keys": {
+    "Despair.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Despair.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Despair.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

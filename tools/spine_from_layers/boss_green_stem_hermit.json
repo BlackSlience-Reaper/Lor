@@ -1,6 +1,6 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_green_stem_hermit",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/green_stem_hermit",
  "texture_scale": 0.6,
  "origin": [
   0.0,
@@ -19,22 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      16.8,
+      18.4,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      18.4,
+      264.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      446.2
+      325.3
      ]
     }
    },
@@ -42,27 +42,83 @@
     "body": "body"
    }
   },
-  "Dodge": {
-   "source": "Dodge",
+  "AttackGround": {
+   "source": "AttackGround",
    "bones": {
     "body": {
      "at": [
-      -108.6,
+      -57.3,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -108.6,
-      362.8
+      -57.3,
+      294.7
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -144.0,
-      446.9
+      -89.5,
+      381.1
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "AttackReach": {
+   "source": "AttackReach",
+   "bones": {
+    "body": {
+     "at": [
+      -51.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -51.2,
+      264.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -69.5,
+      325.3
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "AttackThrust": {
+   "source": "AttackThrust",
+   "bones": {
+    "body": {
+     "at": [
+      -76.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -76.4,
+      320.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -107.5,
+      393.8
      ]
     }
    },
@@ -75,78 +131,22 @@
    "bones": {
     "body": {
      "at": [
-      -7.0,
+      9.1,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -7.0,
-      359.4
+      9.1,
+      232.0
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -34.0,
-      442.4
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Pierce": {
-   "source": "Pierce",
-   "bones": {
-    "body": {
-     "at": [
-      -90.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -90.5,
-      355.6
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -128.0,
-      436.9
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Slash": {
-   "source": "Slash",
-   "bones": {
-    "body": {
-     "at": [
-      -68.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -68.5,
-      398.4
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -108.0,
-      491.7
+      -4.5,
+      288.0
      ]
     }
    },
@@ -189,7 +189,7 @@
     }
    }
   },
-  "pierce": {
+  "attack_reach": {
    "duration": 1.05,
    "show": [
     [
@@ -199,7 +199,7 @@
     ],
     [
      0.15,
-     "Pierce",
+     "AttackReach",
      0
     ],
     [
@@ -251,7 +251,7 @@
       ]
      ]
     },
-    "Pierce.body": {
+    "AttackReach.body": {
      "x": [
       [
        0.15,
@@ -283,7 +283,7 @@
       ]
      ]
     },
-    "Pierce.head": {
+    "AttackReach.head": {
      "rotate": [
       [
        0.15,
@@ -300,7 +300,7 @@
       ]
      ]
     },
-    "Pierce.hair": {
+    "AttackReach.hair": {
      "rotate": [
       [
        0.15,
@@ -344,7 +344,7 @@
     }
    }
   },
-  "slash": {
+  "attack_ground": {
    "duration": 1.05,
    "show": [
     [
@@ -354,7 +354,7 @@
     ],
     [
      0.15,
-     "Slash",
+     "AttackGround",
      0
     ],
     [
@@ -406,7 +406,7 @@
       ]
      ]
     },
-    "Slash.body": {
+    "AttackGround.body": {
      "x": [
       [
        0.15,
@@ -438,7 +438,7 @@
       ]
      ]
     },
-    "Slash.head": {
+    "AttackGround.head": {
      "rotate": [
       [
        0.15,
@@ -455,7 +455,7 @@
       ]
      ]
     },
-    "Slash.hair": {
+    "AttackGround.hair": {
      "rotate": [
       [
        0.15,
@@ -483,13 +483,13 @@
        0
       ],
       [
-       0.27,
-       -25,
+       0.3,
+       -70,
        "out"
       ],
       [
        0.75,
-       -25
+       -70
       ],
       [
        1.05,
@@ -499,68 +499,130 @@
     }
    }
   },
-  "dodge": {
-   "duration": 0.8,
+  "attack_thrust": {
+   "duration": 1.05,
    "show": [
     [
      0,
-     "Dodge",
+     "Default",
      0
     ],
     [
-     0.55,
+     0.15,
+     "AttackThrust",
+     0
+    ],
+    [
+     0.75,
      "Default",
      0
     ]
    ],
    "keys": {
-    "Dodge.body": {
-     "x": [
+    "Default.body": {
+     "rotate": [
       [
        0,
        0
       ],
       [
-       0.08,
-       8,
+       0.15,
+       -4,
        "out"
       ],
       [
-       0.35,
+       0.75,
+       -4
+      ],
+      [
+       1.05,
        0
       ]
      ]
     },
-    "Dodge.head": {
+    "Default.head": {
      "rotate": [
       [
-       0.0,
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "AttackThrust.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "AttackThrust.head": {
+     "rotate": [
+      [
+       0.15,
        -5
       ],
       [
-       0.17,
+       0.32,
        4,
        "out"
       ],
       [
-       0.4,
+       0.55,
        0
       ]
      ]
     },
-    "Dodge.hair": {
+    "AttackThrust.hair": {
      "rotate": [
       [
-       0.0,
+       0.15,
        -4
       ],
       [
-       0.21,
+       0.36,
        5,
        "out"
       ],
       [
-       0.45,
+       0.6,
        0
       ]
      ]
@@ -573,35 +635,19 @@
       ],
       [
        0.15,
-       45,
-       "out"
-      ],
-      [
-       0.55,
-       45
-      ],
-      [
-       0.8,
-       0
-      ]
-     ],
-     "y": [
-      [
-       0,
        0
       ],
       [
-       0.08,
-       18,
+       0.3,
+       -70,
        "out"
       ],
       [
-       0.2,
-       0,
-       "in"
+       0.75,
+       -70
       ],
       [
-       0.8,
+       1.05,
        0
       ]
      ]

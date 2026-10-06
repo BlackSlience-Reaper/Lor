@@ -1,0 +1,238 @@
+{
+ "name": "boss_despair_knight_stabbedtwo",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/despair_knight",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -0.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "StabbedTwo",
+ "motions": {
+  "StabbedTwo": {
+   "source": "StabbedTwo",
+   "bones": {
+    "body": {
+     "at": [
+      -13.6,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -13.6,
+      344.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -44.5,
+      423.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "StabbedTwo",
+     0
+    ]
+   ],
+   "osc": {
+    "StabbedTwo.body": {
+     "rotate": [
+      0.8,
+      1,
+      0.0
+     ]
+    },
+    "StabbedTwo.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "StabbedTwo.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "StabbedTwo",
+     0
+    ],
+    [
+     0.4,
+     "StabbedTwo",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "StabbedTwo.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "StabbedTwo.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "StabbedTwo.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "StabbedTwo",
+     0
+    ]
+   ],
+   "keys": {
+    "StabbedTwo.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "StabbedTwo.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "StabbedTwo.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,56 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Phase1": [
+   270,
+   477
+  ],
+  "Phase1Absorb": [
+   432,
+   498
+  ],
+  "Phase1Hit": [
+   292,
+   465
+  ],
+  "Phase2": [
+   227,
+   241
+  ],
+  "Phase2Absorb": [
+   264,
+   252
+  ],
+  "Phase2Hit": [
+   236,
+   238
+  ],
+  "Phase2Scream": [
+   310,
+   500
+  ],
+  "Phase3": [
+   325,
+   277
+  ],
+  "Phase3Absorb": [
+   376,
+   274
+  ],
+  "Phase3Hit": [
+   319,
+   270
+  ],
+  "Phase3Sit": [
+   497,
+   374
+  ],
+  "Phase3Vomit": [
+   780,
+   476
+  ]
+ },
+ "sizes": {}
+}

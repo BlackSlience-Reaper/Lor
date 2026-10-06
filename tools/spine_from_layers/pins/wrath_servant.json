@@ -1,0 +1,44 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "AttackSlash": [
+   297,
+   313
+  ],
+  "AttackSlash2": [
+   324,
+   300
+  ],
+  "AttackStrike": [
+   449,
+   240
+  ],
+  "Default": [
+   180,
+   217
+  ],
+  "Hit": [
+   152,
+   241
+  ],
+  "SpecialS1": [
+   356,
+   313
+  ],
+  "SpecialS2": [
+   400,
+   292
+  ],
+  "SpecialS3": [
+   554,
+   429
+  ],
+  "Victory": [
+   144,
+   499
+  ]
+ },
+ "sizes": {}
+}

@@ -1,6 +1,6 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_nf_green_stem_hermit",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/nf_green_stem_hermit",
  "texture_scale": 0.6,
  "origin": [
   0.0,
@@ -19,22 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      16.8,
+      18.4,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      18.4,
+      264.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      446.2
+      325.3
      ]
     }
    },
@@ -42,27 +42,83 @@
     "body": "body"
    }
   },
-  "Dodge": {
-   "source": "Dodge",
+  "AttackGround": {
+   "source": "AttackGround",
    "bones": {
     "body": {
      "at": [
-      -108.6,
+      -57.3,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -108.6,
-      362.8
+      -57.3,
+      296.7
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -144.0,
-      446.9
+      -89.5,
+      383.1
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "AttackReach": {
+   "source": "AttackReach",
+   "bones": {
+    "body": {
+     "at": [
+      -49.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -49.2,
+      264.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -67.5,
+      325.3
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "AttackThrust": {
+   "source": "AttackThrust",
+   "bones": {
+    "body": {
+     "at": [
+      -73.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -73.4,
+      320.2
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -104.5,
+      393.8
      ]
     }
    },
@@ -75,22 +131,22 @@
    "bones": {
     "body": {
      "at": [
-      -7.0,
+      12.1,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -7.0,
-      359.4
+      12.1,
+      233.0
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -34.0,
-      442.4
+      -1.5,
+      289.0
      ]
     }
    },
@@ -98,55 +154,27 @@
     "body": "body"
    }
   },
-  "Pierce": {
-   "source": "Pierce",
+  "MentalAttack": {
+   "source": "MentalAttack",
    "bones": {
     "body": {
      "at": [
-      -90.5,
+      -22.6,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -90.5,
-      355.6
+      -22.6,
+      262.1
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -128.0,
-      436.9
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Slash": {
-   "source": "Slash",
-   "bones": {
-    "body": {
-     "at": [
-      -68.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -68.5,
-      398.4
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -108.0,
-      491.7
+      -36.5,
+      322.4
      ]
     }
    },
@@ -189,7 +217,7 @@
     }
    }
   },
-  "pierce": {
+  "attack_reach": {
    "duration": 1.05,
    "show": [
     [
@@ -199,7 +227,7 @@
     ],
     [
      0.15,
-     "Pierce",
+     "AttackReach",
      0
     ],
     [
@@ -251,7 +279,7 @@
       ]
      ]
     },
-    "Pierce.body": {
+    "AttackReach.body": {
      "x": [
       [
        0.15,
@@ -283,7 +311,7 @@
       ]
      ]
     },
-    "Pierce.head": {
+    "AttackReach.head": {
      "rotate": [
       [
        0.15,
@@ -300,7 +328,7 @@
       ]
      ]
     },
-    "Pierce.hair": {
+    "AttackReach.hair": {
      "rotate": [
       [
        0.15,
@@ -344,7 +372,7 @@
     }
    }
   },
-  "slash": {
+  "attack_ground": {
    "duration": 1.05,
    "show": [
     [
@@ -354,7 +382,7 @@
     ],
     [
      0.15,
-     "Slash",
+     "AttackGround",
      0
     ],
     [
@@ -406,7 +434,7 @@
       ]
      ]
     },
-    "Slash.body": {
+    "AttackGround.body": {
      "x": [
       [
        0.15,
@@ -438,7 +466,7 @@
       ]
      ]
     },
-    "Slash.head": {
+    "AttackGround.head": {
      "rotate": [
       [
        0.15,
@@ -455,7 +483,7 @@
       ]
      ]
     },
-    "Slash.hair": {
+    "AttackGround.hair": {
      "rotate": [
       [
        0.15,
@@ -483,13 +511,13 @@
        0
       ],
       [
-       0.27,
-       -25,
+       0.3,
+       -70,
        "out"
       ],
       [
        0.75,
-       -25
+       -70
       ],
       [
        1.05,
@@ -499,68 +527,130 @@
     }
    }
   },
-  "dodge": {
-   "duration": 0.8,
+  "attack_thrust": {
+   "duration": 1.05,
    "show": [
     [
      0,
-     "Dodge",
+     "Default",
      0
     ],
     [
-     0.55,
+     0.15,
+     "AttackThrust",
+     0
+    ],
+    [
+     0.75,
      "Default",
      0
     ]
    ],
    "keys": {
-    "Dodge.body": {
-     "x": [
+    "Default.body": {
+     "rotate": [
       [
        0,
        0
       ],
       [
-       0.08,
-       8,
+       0.15,
+       -4,
        "out"
       ],
       [
-       0.35,
+       0.75,
+       -4
+      ],
+      [
+       1.05,
        0
       ]
      ]
     },
-    "Dodge.head": {
+    "Default.head": {
      "rotate": [
       [
-       0.0,
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "AttackThrust.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "AttackThrust.head": {
+     "rotate": [
+      [
+       0.15,
        -5
       ],
       [
-       0.17,
+       0.32,
        4,
        "out"
       ],
       [
-       0.4,
+       0.55,
        0
       ]
      ]
     },
-    "Dodge.hair": {
+    "AttackThrust.hair": {
      "rotate": [
       [
-       0.0,
+       0.15,
        -4
       ],
       [
-       0.21,
+       0.36,
        5,
        "out"
       ],
       [
-       0.45,
+       0.6,
        0
       ]
      ]
@@ -573,35 +663,114 @@
       ],
       [
        0.15,
-       45,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "mental_attack": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.1,
+     "MentalAttack",
+     0
+    ],
+    [
+     0.9,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {},
+    "MentalAttack.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "MentalAttack.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "MentalAttack.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
        "out"
       ],
       [
        0.55,
-       45
-      ],
-      [
-       0.8,
        0
       ]
-     ],
+     ]
+    },
+    "move": {
      "y": [
       [
        0,
        0
       ],
       [
-       0.08,
-       18,
+       0.35,
+       14,
        "out"
       ],
       [
-       0.2,
-       0,
-       "in"
+       0.9,
+       14
       ],
       [
-       0.8,
+       1.2,
        0
       ]
      ]

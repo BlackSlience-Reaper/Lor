@@ -1,0 +1,48 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   189,
+   649
+  ],
+  "Evade": [
+   170,
+   641
+  ],
+  "Guard": [
+   450,
+   648
+  ],
+  "Hit": [
+   229,
+   656
+  ],
+  "Pierce": [
+   509,
+   650
+  ],
+  "Ranged": [
+   189,
+   654
+  ],
+  "Slash": [
+   786,
+   754
+  ],
+  "SpecialOne": [
+   354,
+   748
+  ],
+  "SpecialTwo": [
+   377,
+   760
+  ],
+  "Strike": [
+   370,
+   645
+  ]
+ },
+ "sizes": {}
+}

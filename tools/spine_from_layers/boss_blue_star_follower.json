@@ -1,10 +1,10 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_blue_star_follower",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/blue_star_follower",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -0.0
+  1.1
  ],
  "skin_tint": [
   1.0,
@@ -19,22 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      16.8,
+      26.2,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      26.2,
+      345.7
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      446.2
+      424.8
      ]
     }
    },
@@ -42,27 +42,55 @@
     "body": "body"
    }
   },
-  "Dodge": {
-   "source": "Dodge",
+  "BasicAttack": {
+   "source": "BasicAttack",
    "bones": {
     "body": {
      "at": [
-      -108.6,
+      -86.3,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -108.6,
-      362.8
+      -86.3,
+      385.4
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -144.0,
-      446.9
+      -130.5,
+      473.6
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Guard": {
+   "source": "Guard",
+   "bones": {
+    "body": {
+     "at": [
+      -21.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -21.1,
+      371.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -54.5,
+      456.8
      ]
     }
    },
@@ -75,22 +103,22 @@
    "bones": {
     "body": {
      "at": [
-      -7.0,
+      -33.4,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -7.0,
-      359.4
+      -33.4,
+      345.2
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -34.0,
-      442.4
+      -54.5,
+      424.0
      ]
     }
    },
@@ -98,27 +126,27 @@
     "body": "body"
    }
   },
-  "Pierce": {
-   "source": "Pierce",
+  "VoiceAttack1": {
+   "source": "VoiceAttack1",
    "bones": {
     "body": {
      "at": [
-      -90.5,
+      -57.1,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -90.5,
-      355.6
+      -57.1,
+      598.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -128.0,
-      436.9
+      -99.5,
+      736.0
      ]
     }
    },
@@ -126,27 +154,27 @@
     "body": "body"
    }
   },
-  "Slash": {
-   "source": "Slash",
+  "VoiceAttack2": {
+   "source": "VoiceAttack2",
    "bones": {
     "body": {
      "at": [
-      -68.5,
+      17.2,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -68.5,
-      398.4
+      17.2,
+      448.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -108.0,
-      491.7
+      -23.0,
+      560.2
      ]
     }
    },
@@ -189,7 +217,7 @@
     }
    }
   },
-  "pierce": {
+  "basic_attack": {
    "duration": 1.05,
    "show": [
     [
@@ -199,7 +227,7 @@
     ],
     [
      0.15,
-     "Pierce",
+     "BasicAttack",
      0
     ],
     [
@@ -251,7 +279,7 @@
       ]
      ]
     },
-    "Pierce.body": {
+    "BasicAttack.body": {
      "x": [
       [
        0.15,
@@ -283,7 +311,7 @@
       ]
      ]
     },
-    "Pierce.head": {
+    "BasicAttack.head": {
      "rotate": [
       [
        0.15,
@@ -300,7 +328,7 @@
       ]
      ]
     },
-    "Pierce.hair": {
+    "BasicAttack.hair": {
      "rotate": [
       [
        0.15,
@@ -344,7 +372,7 @@
     }
    }
   },
-  "slash": {
+  "voice_attack1": {
    "duration": 1.05,
    "show": [
     [
@@ -354,7 +382,7 @@
     ],
     [
      0.15,
-     "Slash",
+     "VoiceAttack1",
      0
     ],
     [
@@ -406,7 +434,7 @@
       ]
      ]
     },
-    "Slash.body": {
+    "VoiceAttack1.body": {
      "x": [
       [
        0.15,
@@ -438,7 +466,7 @@
       ]
      ]
     },
-    "Slash.head": {
+    "VoiceAttack1.head": {
      "rotate": [
       [
        0.15,
@@ -455,7 +483,7 @@
       ]
      ]
     },
-    "Slash.hair": {
+    "VoiceAttack1.hair": {
      "rotate": [
       [
        0.15,
@@ -483,13 +511,13 @@
        0
       ],
       [
-       0.27,
-       -25,
+       0.22999999999999998,
+       16,
        "out"
       ],
       [
        0.75,
-       -25
+       0
       ],
       [
        1.05,
@@ -499,12 +527,167 @@
     }
    }
   },
-  "dodge": {
+  "voice_attack2": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Default",
+     0
+    ],
+    [
+     0.15,
+     "VoiceAttack2",
+     0
+    ],
+    [
+     0.75,
+     "Default",
+     0
+    ]
+   ],
+   "keys": {
+    "Default.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Default.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "VoiceAttack2.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "VoiceAttack2.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "VoiceAttack2.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.22999999999999998,
+       16,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "guard": {
    "duration": 0.8,
    "show": [
     [
      0,
-     "Dodge",
+     "Guard",
      0
     ],
     [
@@ -514,7 +697,7 @@
     ]
    ],
    "keys": {
-    "Dodge.body": {
+    "Guard.body": {
      "x": [
       [
        0,
@@ -531,7 +714,7 @@
       ]
      ]
     },
-    "Dodge.head": {
+    "Guard.head": {
      "rotate": [
       [
        0.0,
@@ -548,7 +731,7 @@
       ]
      ]
     },
-    "Dodge.hair": {
+    "Guard.hair": {
      "rotate": [
       [
        0.0,
@@ -572,33 +755,13 @@
        0
       ],
       [
-       0.15,
-       45,
+       0.08,
+       12,
        "out"
       ],
       [
        0.55,
-       45
-      ],
-      [
-       0.8,
-       0
-      ]
-     ],
-     "y": [
-      [
-       0,
-       0
-      ],
-      [
-       0.08,
-       18,
-       "out"
-      ],
-      [
-       0.2,
-       0,
-       "in"
+       6
       ],
       [
        0.8,

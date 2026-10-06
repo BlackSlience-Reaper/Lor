@@ -1,10 +1,10 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_nosferatu_normal",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/nosferatu",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -0.0
+  -1.0
  ],
  "skin_tint": [
   1.0,
@@ -12,141 +12,141 @@
   1.0
  ],
  "fps": 30,
- "setup_motion": "Default",
+ "setup_motion": "Normal",
  "motions": {
-  "Default": {
-   "source": "Default",
+  "Normal": {
+   "source": "Normal",
    "bones": {
     "body": {
      "at": [
-      16.8,
+      24.6,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      24.6,
+      372.9
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
+      458.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalAttack": {
+   "source": "NormalAttack",
+   "bones": {
+    "body": {
+     "at": [
+      -69.6,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -69.6,
+      385.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -120.5,
+      474.3
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalGroupAttack": {
+   "source": "NormalGroupAttack",
+   "bones": {
+    "body": {
+     "at": [
+      -103.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -103.1,
+      491.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -148.5,
+      605.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalGuard": {
+   "source": "NormalGuard",
+   "bones": {
+    "body": {
+     "at": [
+      -33.1,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -33.1,
+      422.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -65.5,
+      519.5
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "NormalHit": {
+   "source": "NormalHit",
+   "bones": {
+    "body": {
+     "at": [
+      20.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      20.8,
+      362.7
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -5.0,
       446.2
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Dodge": {
-   "source": "Dodge",
-   "bones": {
-    "body": {
-     "at": [
-      -108.6,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -108.6,
-      362.8
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -144.0,
-      446.9
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Hit": {
-   "source": "Hit",
-   "bones": {
-    "body": {
-     "at": [
-      -7.0,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -7.0,
-      359.4
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -34.0,
-      442.4
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Pierce": {
-   "source": "Pierce",
-   "bones": {
-    "body": {
-     "at": [
-      -90.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -90.5,
-      355.6
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -128.0,
-      436.9
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Slash": {
-   "source": "Slash",
-   "bones": {
-    "body": {
-     "at": [
-      -68.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -68.5,
-      398.4
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -108.0,
-      491.7
      ]
     }
    },
@@ -161,26 +161,26 @@
    "show": [
     [
      0,
-     "Default",
+     "Normal",
      0
     ]
    ],
    "osc": {
-    "Default.body": {
+    "Normal.body": {
      "rotate": [
       1.0,
       1,
       0.0
      ]
     },
-    "Default.head": {
+    "Normal.head": {
      "rotate": [
       1.8,
       1,
       0.15
      ]
     },
-    "Default.hair": {
+    "Normal.hair": {
      "rotate": [
       1.2,
       1,
@@ -189,27 +189,27 @@
     }
    }
   },
-  "pierce": {
+  "attack": {
    "duration": 1.05,
    "show": [
     [
      0,
-     "Default",
+     "Normal",
      0
     ],
     [
      0.15,
-     "Pierce",
+     "NormalAttack",
      0
     ],
     [
      0.75,
-     "Default",
+     "Normal",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Normal.body": {
      "rotate": [
       [
        0,
@@ -230,7 +230,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Normal.head": {
      "rotate": [
       [
        0,
@@ -251,7 +251,7 @@
       ]
      ]
     },
-    "Pierce.body": {
+    "NormalAttack.body": {
      "x": [
       [
        0.15,
@@ -283,7 +283,7 @@
       ]
      ]
     },
-    "Pierce.head": {
+    "NormalAttack.head": {
      "rotate": [
       [
        0.15,
@@ -300,7 +300,7 @@
       ]
      ]
     },
-    "Pierce.hair": {
+    "NormalAttack.hair": {
      "rotate": [
       [
        0.15,
@@ -344,27 +344,27 @@
     }
    }
   },
-  "slash": {
+  "group_attack": {
    "duration": 1.05,
    "show": [
     [
      0,
-     "Default",
+     "Normal",
      0
     ],
     [
      0.15,
-     "Slash",
+     "NormalGroupAttack",
      0
     ],
     [
      0.75,
-     "Default",
+     "Normal",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Normal.body": {
      "rotate": [
       [
        0,
@@ -385,7 +385,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Normal.head": {
      "rotate": [
       [
        0,
@@ -406,7 +406,7 @@
       ]
      ]
     },
-    "Slash.body": {
+    "NormalGroupAttack.body": {
      "x": [
       [
        0.15,
@@ -438,7 +438,7 @@
       ]
      ]
     },
-    "Slash.head": {
+    "NormalGroupAttack.head": {
      "rotate": [
       [
        0.15,
@@ -455,7 +455,7 @@
       ]
      ]
     },
-    "Slash.hair": {
+    "NormalGroupAttack.hair": {
      "rotate": [
       [
        0.15,
@@ -483,13 +483,13 @@
        0
       ],
       [
-       0.27,
-       -25,
+       0.3,
+       -70,
        "out"
       ],
       [
        0.75,
-       -25
+       -70
       ],
       [
        1.05,
@@ -499,22 +499,22 @@
     }
    }
   },
-  "dodge": {
+  "guard": {
    "duration": 0.8,
    "show": [
     [
      0,
-     "Dodge",
+     "NormalGuard",
      0
     ],
     [
      0.55,
-     "Default",
+     "Normal",
      0
     ]
    ],
    "keys": {
-    "Dodge.body": {
+    "NormalGuard.body": {
      "x": [
       [
        0,
@@ -531,7 +531,7 @@
       ]
      ]
     },
-    "Dodge.head": {
+    "NormalGuard.head": {
      "rotate": [
       [
        0.0,
@@ -548,7 +548,7 @@
       ]
      ]
     },
-    "Dodge.hair": {
+    "NormalGuard.hair": {
      "rotate": [
       [
        0.0,
@@ -572,33 +572,13 @@
        0
       ],
       [
-       0.15,
-       45,
+       0.08,
+       12,
        "out"
       ],
       [
        0.55,
-       45
-      ],
-      [
-       0.8,
-       0
-      ]
-     ],
-     "y": [
-      [
-       0,
-       0
-      ],
-      [
-       0.08,
-       18,
-       "out"
-      ],
-      [
-       0.2,
-       0,
-       "in"
+       6
       ],
       [
        0.8,
@@ -613,12 +593,12 @@
    "show": [
     [
      0,
-     "Hit",
+     "NormalHit",
      0
     ],
     [
      0.4,
-     "Default",
+     "Normal",
      0
     ]
    ],
@@ -649,7 +629,7 @@
       ]
      ]
     },
-    "Hit.body": {
+    "NormalHit.body": {
      "rotate": [
       [
        0,
@@ -666,7 +646,7 @@
       ]
      ]
     },
-    "Hit.head": {
+    "NormalHit.head": {
      "rotate": [
       [
        0,
@@ -683,7 +663,7 @@
       ]
      ]
     },
-    "Hit.hair": {
+    "NormalHit.hair": {
      "rotate": [
       [
        0,
@@ -707,12 +687,12 @@
    "show": [
     [
      0,
-     "Default",
+     "Normal",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Normal.body": {
      "rotate": [
       [
        0,
@@ -729,7 +709,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Normal.head": {
      "rotate": [
       [
        0,
@@ -746,7 +726,7 @@
       ]
      ]
     },
-    "Default.hair": {
+    "Normal.hair": {
      "rotate": [
       [
        0,

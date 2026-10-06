@@ -1,10 +1,10 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_lf_little_witch_friend",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/lf_little_witch_friend",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -0.0
+  82.6
  ],
  "skin_tint": [
   1.0,
@@ -19,22 +19,22 @@
    "bones": {
     "body": {
      "at": [
-      16.8,
+      40.3,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      40.3,
+      290.0
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
       0.0,
-      446.2
+      337.6
      ]
     }
    },
@@ -42,27 +42,55 @@
     "body": "body"
    }
   },
-  "Dodge": {
-   "source": "Dodge",
+  "Attack": {
+   "source": "Attack",
    "bones": {
     "body": {
      "at": [
-      -108.6,
+      39.1,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -108.6,
-      362.8
+      39.1,
+      349.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -144.0,
-      446.9
+      0.2,
+      447.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Cast": {
+   "source": "Cast",
+   "bones": {
+    "body": {
+     "at": [
+      59.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      59.5,
+      300.6
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      20.5,
+      350.0
      ]
     }
    },
@@ -75,78 +103,22 @@
    "bones": {
     "body": {
      "at": [
-      -7.0,
+      45.0,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -7.0,
-      359.4
+      45.0,
+      412.9
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -34.0,
-      442.4
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Pierce": {
-   "source": "Pierce",
-   "bones": {
-    "body": {
-     "at": [
-      -90.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -90.5,
-      355.6
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -128.0,
-      436.9
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Slash": {
-   "source": "Slash",
-   "bones": {
-    "body": {
-     "at": [
-      -68.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -68.5,
-      398.4
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -108.0,
-      491.7
+      15.5,
+      490.8
      ]
     }
    },
@@ -189,7 +161,7 @@
     }
    }
   },
-  "pierce": {
+  "attack": {
    "duration": 1.05,
    "show": [
     [
@@ -199,7 +171,7 @@
     ],
     [
      0.15,
-     "Pierce",
+     "Attack",
      0
     ],
     [
@@ -251,7 +223,7 @@
       ]
      ]
     },
-    "Pierce.body": {
+    "Attack.body": {
      "x": [
       [
        0.15,
@@ -283,7 +255,7 @@
       ]
      ]
     },
-    "Pierce.head": {
+    "Attack.head": {
      "rotate": [
       [
        0.15,
@@ -300,7 +272,7 @@
       ]
      ]
     },
-    "Pierce.hair": {
+    "Attack.hair": {
      "rotate": [
       [
        0.15,
@@ -344,8 +316,8 @@
     }
    }
   },
-  "slash": {
-   "duration": 1.05,
+  "cast": {
+   "duration": 1.2,
    "show": [
     [
      0,
@@ -353,83 +325,44 @@
      0
     ],
     [
-     0.15,
-     "Slash",
+     0.1,
+     "Cast",
      0
     ],
     [
-     0.75,
+     0.9,
      "Default",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
-     "rotate": [
+    "Default.body": {},
+    "Cast.body": {
+     "y": [
       [
-       0,
+       0.1,
        0
       ],
       [
-       0.15,
-       -4,
+       0.30000000000000004,
+       6,
        "out"
       ],
       [
-       0.75,
-       -4
-      ],
-      [
-       1.05,
+       0.9,
        0
       ]
      ]
     },
-    "Default.head": {
+    "Cast.head": {
      "rotate": [
       [
-       0,
-       0
+       0.1,
+       -5
       ],
       [
-       0.15,
-       3,
-       "out"
-      ],
-      [
-       0.75,
-       0
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    },
-    "Slash.body": {
-     "x": [
-      [
-       0.15,
-       12
-      ],
-      [
-       0.3,
-       -12,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ],
-     "rotate": [
-      [
-       0.15,
-       -3
-      ],
-      [
-       0.3,
-       2,
+       0.27,
+       4,
        "out"
       ],
       [
@@ -438,15 +371,15 @@
       ]
      ]
     },
-    "Slash.head": {
+    "Cast.hair": {
      "rotate": [
       [
-       0.15,
-       -5
+       0.1,
+       -4
       ],
       [
-       0.32,
-       4,
+       0.31,
+       5,
        "out"
       ],
       [
@@ -455,153 +388,23 @@
       ]
      ]
     },
-    "Slash.hair": {
-     "rotate": [
-      [
-       0.15,
-       -4
-      ],
-      [
-       0.36,
-       5,
-       "out"
-      ],
-      [
-       0.6,
-       0
-      ]
-     ]
-    },
     "move": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       0
-      ],
-      [
-       0.27,
-       -25,
-       "out"
-      ],
-      [
-       0.75,
-       -25
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    }
-   }
-  },
-  "dodge": {
-   "duration": 0.8,
-   "show": [
-    [
-     0,
-     "Dodge",
-     0
-    ],
-    [
-     0.55,
-     "Default",
-     0
-    ]
-   ],
-   "keys": {
-    "Dodge.body": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.08,
-       8,
-       "out"
-      ],
-      [
-       0.35,
-       0
-      ]
-     ]
-    },
-    "Dodge.head": {
-     "rotate": [
-      [
-       0.0,
-       -5
-      ],
-      [
-       0.17,
-       4,
-       "out"
-      ],
-      [
-       0.4,
-       0
-      ]
-     ]
-    },
-    "Dodge.hair": {
-     "rotate": [
-      [
-       0.0,
-       -4
-      ],
-      [
-       0.21,
-       5,
-       "out"
-      ],
-      [
-       0.45,
-       0
-      ]
-     ]
-    },
-    "move": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       45,
-       "out"
-      ],
-      [
-       0.55,
-       45
-      ],
-      [
-       0.8,
-       0
-      ]
-     ],
      "y": [
       [
        0,
        0
       ],
       [
-       0.08,
-       18,
+       0.35,
+       14,
        "out"
       ],
       [
-       0.2,
-       0,
-       "in"
+       0.9,
+       14
       ],
       [
-       0.8,
+       1.2,
        0
       ]
      ]

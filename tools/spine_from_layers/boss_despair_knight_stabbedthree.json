@@ -1,0 +1,238 @@
+{
+ "name": "boss_despair_knight_stabbedthree",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/despair_knight",
+ "texture_scale": 0.6,
+ "origin": [
+  0.0,
+  -0.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "StabbedThree",
+ "motions": {
+  "StabbedThree": {
+   "source": "StabbedThree",
+   "bones": {
+    "body": {
+     "at": [
+      -21.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -21.5,
+      342.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -54.5,
+      421.8
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "StabbedThree",
+     0
+    ]
+   ],
+   "osc": {
+    "StabbedThree.body": {
+     "rotate": [
+      0.8,
+      1,
+      0.0
+     ]
+    },
+    "StabbedThree.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "StabbedThree.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "StabbedThree",
+     0
+    ],
+    [
+     0.4,
+     "StabbedThree",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "StabbedThree.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "StabbedThree.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "StabbedThree.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "StabbedThree",
+     0
+    ]
+   ],
+   "keys": {
+    "StabbedThree.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "StabbedThree.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "StabbedThree.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

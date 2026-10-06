@@ -1,0 +1,28 @@
+{
+ "mode": "pin_y",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   156,
+   149
+  ],
+  "Evade": [
+   157,
+   151
+  ],
+  "Hit": [
+   119,
+   138
+  ],
+  "Pierce": [
+   166,
+   153
+  ],
+  "Slash": [
+   620,
+   384
+  ]
+ },
+ "sizes": {}
+}

@@ -1,10 +1,10 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_road_home_confused",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/road_home",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -0.0
+  -4.0
  ],
  "skin_tint": [
   1.0,
@@ -12,29 +12,113 @@
   1.0
  ],
  "fps": 30,
- "setup_motion": "Default",
+ "setup_motion": "Confused",
  "motions": {
-  "Default": {
-   "source": "Default",
+  "Confused": {
+   "source": "Confused",
    "bones": {
     "body": {
      "at": [
-      16.8,
+      -11.2,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      -11.2,
+      351.2
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      0.0,
-      446.2
+      -33.0,
+      431.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Attack": {
+   "source": "Attack",
+   "bones": {
+    "body": {
+     "at": [
+      -180.3,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -180.3,
+      406.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -240.5,
+      528.6
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Attack2": {
+   "source": "Attack2",
+   "bones": {
+    "body": {
+     "at": [
+      81.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      81.2,
+      423.9
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      17.5,
+      537.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "Attack3": {
+   "source": "Attack3",
+   "bones": {
+    "body": {
+     "at": [
+      70.8,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      70.8,
+      475.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      16.5,
+      595.2
      ]
     }
    },
@@ -47,22 +131,22 @@
    "bones": {
     "body": {
      "at": [
-      -108.6,
+      41.2,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -108.6,
-      362.8
+      41.2,
+      385.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -144.0,
-      446.9
+      18.0,
+      474.3
      ]
     }
    },
@@ -75,78 +159,22 @@
    "bones": {
     "body": {
      "at": [
-      -7.0,
+      70.1,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -7.0,
-      359.4
+      70.1,
+      425.9
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -34.0,
-      442.4
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Pierce": {
-   "source": "Pierce",
-   "bones": {
-    "body": {
-     "at": [
-      -90.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -90.5,
-      355.6
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -128.0,
-      436.9
-     ]
-    }
-   },
-   "assign": {
-    "body": "body"
-   }
-  },
-  "Slash": {
-   "source": "Slash",
-   "bones": {
-    "body": {
-     "at": [
-      -68.5,
-      0.0
-     ]
-    },
-    "head": {
-     "parent": "body",
-     "at": [
-      -68.5,
-      398.4
-     ]
-    },
-    "hair": {
-     "parent": "head",
-     "at": [
-      -108.0,
-      491.7
+      41.5,
+      526.2
      ]
     }
    },
@@ -161,26 +189,26 @@
    "show": [
     [
      0,
-     "Default",
+     "Confused",
      0
     ]
    ],
    "osc": {
-    "Default.body": {
+    "Confused.body": {
      "rotate": [
       1.0,
       1,
       0.0
      ]
     },
-    "Default.head": {
+    "Confused.head": {
      "rotate": [
       1.8,
       1,
       0.15
      ]
     },
-    "Default.hair": {
+    "Confused.hair": {
      "rotate": [
       1.2,
       1,
@@ -189,27 +217,27 @@
     }
    }
   },
-  "pierce": {
+  "attack": {
    "duration": 1.05,
    "show": [
     [
      0,
-     "Default",
+     "Confused",
      0
     ],
     [
      0.15,
-     "Pierce",
+     "Attack",
      0
     ],
     [
      0.75,
-     "Default",
+     "Confused",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Confused.body": {
      "rotate": [
       [
        0,
@@ -230,7 +258,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Confused.head": {
      "rotate": [
       [
        0,
@@ -251,7 +279,7 @@
       ]
      ]
     },
-    "Pierce.body": {
+    "Attack.body": {
      "x": [
       [
        0.15,
@@ -283,7 +311,7 @@
       ]
      ]
     },
-    "Pierce.head": {
+    "Attack.head": {
      "rotate": [
       [
        0.15,
@@ -300,7 +328,7 @@
       ]
      ]
     },
-    "Pierce.hair": {
+    "Attack.hair": {
      "rotate": [
       [
        0.15,
@@ -344,27 +372,27 @@
     }
    }
   },
-  "slash": {
+  "attack2": {
    "duration": 1.05,
    "show": [
     [
      0,
-     "Default",
+     "Confused",
      0
     ],
     [
      0.15,
-     "Slash",
+     "Attack2",
      0
     ],
     [
      0.75,
-     "Default",
+     "Confused",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Confused.body": {
      "rotate": [
       [
        0,
@@ -385,7 +413,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Confused.head": {
      "rotate": [
       [
        0,
@@ -406,7 +434,7 @@
       ]
      ]
     },
-    "Slash.body": {
+    "Attack2.body": {
      "x": [
       [
        0.15,
@@ -438,7 +466,7 @@
       ]
      ]
     },
-    "Slash.head": {
+    "Attack2.head": {
      "rotate": [
       [
        0.15,
@@ -455,7 +483,7 @@
       ]
      ]
     },
-    "Slash.hair": {
+    "Attack2.hair": {
      "rotate": [
       [
        0.15,
@@ -483,13 +511,168 @@
        0
       ],
       [
-       0.27,
-       -25,
+       0.3,
+       -70,
        "out"
       ],
       [
        0.75,
-       -25
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "attack3": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Confused",
+     0
+    ],
+    [
+     0.15,
+     "Attack3",
+     0
+    ],
+    [
+     0.75,
+     "Confused",
+     0
+    ]
+   ],
+   "keys": {
+    "Confused.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Confused.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Attack3.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Attack3.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "Attack3.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
       ],
       [
        1.05,
@@ -509,7 +692,7 @@
     ],
     [
      0.55,
-     "Default",
+     "Confused",
      0
     ]
    ],
@@ -618,7 +801,7 @@
     ],
     [
      0.4,
-     "Default",
+     "Confused",
      0
     ]
    ],
@@ -707,12 +890,12 @@
    "show": [
     [
      0,
-     "Default",
+     "Confused",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Confused.body": {
      "rotate": [
       [
        0,
@@ -729,7 +912,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Confused.head": {
      "rotate": [
       [
        0,
@@ -746,7 +929,7 @@
       ]
      ]
     },
-    "Default.hair": {
+    "Confused.hair": {
      "rotate": [
       [
        0,

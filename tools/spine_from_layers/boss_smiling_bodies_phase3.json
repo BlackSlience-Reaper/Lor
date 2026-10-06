@@ -1,10 +1,10 @@
 {
- "name": "boss_dustborn",
- "layers_dir": "~/.local/share/LibraryOfRuina-layers/dustborn",
+ "name": "boss_smiling_bodies_phase3",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/smiling_bodies",
  "texture_scale": 0.6,
  "origin": [
   0.0,
-  -0.0
+  1.4
  ],
  "skin_tint": [
   1.0,
@@ -12,29 +12,29 @@
   1.0
  ],
  "fps": 30,
- "setup_motion": "Default",
+ "setup_motion": "Phase3",
  "motions": {
-  "Default": {
-   "source": "Default",
+  "Phase3": {
+   "source": "Phase3",
    "bones": {
     "body": {
      "at": [
-      16.8,
+      57.5,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      16.8,
-      362.9
+      57.5,
+      443.6
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      0.0,
-      446.2
+      -28.0,
+      544.4
      ]
     }
    },
@@ -42,27 +42,27 @@
     "body": "body"
    }
   },
-  "Dodge": {
-   "source": "Dodge",
+  "Phase3Absorb": {
+   "source": "Phase3Absorb",
    "bones": {
     "body": {
      "at": [
-      -108.6,
+      5.7,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -108.6,
-      362.8
+      5.7,
+      395.3
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -144.0,
-      446.9
+      -86.0,
+      527.3
      ]
     }
    },
@@ -70,27 +70,27 @@
     "body": "body"
    }
   },
-  "Hit": {
-   "source": "Hit",
+  "Phase3Hit": {
+   "source": "Phase3Hit",
    "bones": {
     "body": {
      "at": [
-      -7.0,
+      51.3,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -7.0,
-      359.4
+      51.3,
+      432.9
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -34.0,
-      442.4
+      -32.0,
+      531.3
      ]
     }
    },
@@ -98,27 +98,27 @@
     "body": "body"
    }
   },
-  "Pierce": {
-   "source": "Pierce",
+  "Phase3Sit": {
+   "source": "Phase3Sit",
    "bones": {
     "body": {
      "at": [
-      -90.5,
+      -105.5,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -90.5,
-      355.6
+      -105.5,
+      548.3
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -128.0,
-      436.9
+      -213.0,
+      714.9
      ]
     }
    },
@@ -126,27 +126,27 @@
     "body": "body"
    }
   },
-  "Slash": {
-   "source": "Slash",
+  "Phase3Vomit": {
+   "source": "Phase3Vomit",
    "bones": {
     "body": {
      "at": [
-      -68.5,
+      -657.5,
       0.0
      ]
     },
     "head": {
      "parent": "body",
      "at": [
-      -68.5,
-      398.4
+      -657.5,
+      715.7
      ]
     },
     "hair": {
      "parent": "head",
      "at": [
-      -108.0,
-      491.7
+      -767.0,
+      909.3
      ]
     }
    },
@@ -161,26 +161,26 @@
    "show": [
     [
      0,
-     "Default",
+     "Phase3",
      0
     ]
    ],
    "osc": {
-    "Default.body": {
+    "Phase3.body": {
      "rotate": [
-      1.0,
+      0.6,
       1,
       0.0
      ]
     },
-    "Default.head": {
+    "Phase3.head": {
      "rotate": [
       1.8,
       1,
       0.15
      ]
     },
-    "Default.hair": {
+    "Phase3.hair": {
      "rotate": [
       1.2,
       1,
@@ -189,419 +189,95 @@
     }
    }
   },
-  "pierce": {
-   "duration": 1.05,
+  "absorb": {
+   "duration": 1.2,
    "show": [
     [
      0,
-     "Default",
+     "Phase3",
      0
     ],
     [
-     0.15,
-     "Pierce",
+     0.1,
+     "Phase3Absorb",
      0
     ],
     [
-     0.75,
-     "Default",
+     0.9,
+     "Phase3",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
-     "rotate": [
+    "Phase3.body": {},
+    "Phase3Absorb.body": {
+     "y": [
       [
-       0,
+       0.1,
        0
       ],
       [
-       0.15,
-       -4,
+       0.30000000000000004,
+       6,
        "out"
       ],
       [
-       0.75,
-       -4
-      ],
-      [
-       1.05,
+       0.9,
        0
       ]
      ]
     },
-    "Default.head": {
+    "Phase3Absorb.head": {
      "rotate": [
       [
-       0,
-       0
-      ],
-      [
-       0.15,
-       3,
-       "out"
-      ],
-      [
-       0.75,
-       0
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    },
-    "Pierce.body": {
-     "x": [
-      [
-       0.15,
-       12
-      ],
-      [
-       0.3,
-       -12,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ],
-     "rotate": [
-      [
-       0.15,
-       -3
-      ],
-      [
-       0.3,
-       2,
-       "out"
-      ],
-      [
-       0.5,
-       0
-      ]
-     ]
-    },
-    "Pierce.head": {
-     "rotate": [
-      [
-       0.15,
+       0.1,
        -5
-      ],
-      [
-       0.32,
-       4,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ]
-    },
-    "Pierce.hair": {
-     "rotate": [
-      [
-       0.15,
-       -4
-      ],
-      [
-       0.36,
-       5,
-       "out"
-      ],
-      [
-       0.6,
-       0
-      ]
-     ]
-    },
-    "move": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       0
-      ],
-      [
-       0.3,
-       -70,
-       "out"
-      ],
-      [
-       0.75,
-       -70
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    }
-   }
-  },
-  "slash": {
-   "duration": 1.05,
-   "show": [
-    [
-     0,
-     "Default",
-     0
-    ],
-    [
-     0.15,
-     "Slash",
-     0
-    ],
-    [
-     0.75,
-     "Default",
-     0
-    ]
-   ],
-   "keys": {
-    "Default.body": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       -4,
-       "out"
-      ],
-      [
-       0.75,
-       -4
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    },
-    "Default.head": {
-     "rotate": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       3,
-       "out"
-      ],
-      [
-       0.75,
-       0
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    },
-    "Slash.body": {
-     "x": [
-      [
-       0.15,
-       12
-      ],
-      [
-       0.3,
-       -12,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ],
-     "rotate": [
-      [
-       0.15,
-       -3
-      ],
-      [
-       0.3,
-       2,
-       "out"
-      ],
-      [
-       0.5,
-       0
-      ]
-     ]
-    },
-    "Slash.head": {
-     "rotate": [
-      [
-       0.15,
-       -5
-      ],
-      [
-       0.32,
-       4,
-       "out"
-      ],
-      [
-       0.55,
-       0
-      ]
-     ]
-    },
-    "Slash.hair": {
-     "rotate": [
-      [
-       0.15,
-       -4
-      ],
-      [
-       0.36,
-       5,
-       "out"
-      ],
-      [
-       0.6,
-       0
-      ]
-     ]
-    },
-    "move": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       0
       ],
       [
        0.27,
-       -25,
-       "out"
-      ],
-      [
-       0.75,
-       -25
-      ],
-      [
-       1.05,
-       0
-      ]
-     ]
-    }
-   }
-  },
-  "dodge": {
-   "duration": 0.8,
-   "show": [
-    [
-     0,
-     "Dodge",
-     0
-    ],
-    [
-     0.55,
-     "Default",
-     0
-    ]
-   ],
-   "keys": {
-    "Dodge.body": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.08,
-       8,
-       "out"
-      ],
-      [
-       0.35,
-       0
-      ]
-     ]
-    },
-    "Dodge.head": {
-     "rotate": [
-      [
-       0.0,
-       -5
-      ],
-      [
-       0.17,
        4,
        "out"
       ],
       [
-       0.4,
+       0.5,
        0
       ]
      ]
     },
-    "Dodge.hair": {
+    "Phase3Absorb.hair": {
      "rotate": [
       [
-       0.0,
+       0.1,
        -4
       ],
       [
-       0.21,
+       0.31,
        5,
        "out"
       ],
       [
-       0.45,
+       0.55,
        0
       ]
      ]
     },
     "move": {
-     "x": [
-      [
-       0,
-       0
-      ],
-      [
-       0.15,
-       45,
-       "out"
-      ],
-      [
-       0.55,
-       45
-      ],
-      [
-       0.8,
-       0
-      ]
-     ],
      "y": [
       [
        0,
        0
       ],
       [
-       0.08,
-       18,
+       0.35,
+       14,
        "out"
       ],
       [
-       0.2,
-       0,
-       "in"
+       0.9,
+       14
       ],
       [
-       0.8,
+       1.2,
        0
       ]
      ]
@@ -613,12 +289,12 @@
    "show": [
     [
      0,
-     "Hit",
+     "Phase3Hit",
      0
     ],
     [
      0.4,
-     "Default",
+     "Phase3",
      0
     ]
    ],
@@ -649,7 +325,7 @@
       ]
      ]
     },
-    "Hit.body": {
+    "Phase3Hit.body": {
      "rotate": [
       [
        0,
@@ -666,7 +342,7 @@
       ]
      ]
     },
-    "Hit.head": {
+    "Phase3Hit.head": {
      "rotate": [
       [
        0,
@@ -683,7 +359,7 @@
       ]
      ]
     },
-    "Hit.hair": {
+    "Phase3Hit.hair": {
      "rotate": [
       [
        0,
@@ -702,17 +378,207 @@
     }
    }
   },
+  "sit": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Phase3",
+     0
+    ],
+    [
+     0.1,
+     "Phase3Sit",
+     0
+    ],
+    [
+     0.9,
+     "Phase3",
+     0
+    ]
+   ],
+   "keys": {
+    "Phase3.body": {},
+    "Phase3Sit.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Phase3Sit.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Phase3Sit.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "vomit": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Phase3",
+     0
+    ],
+    [
+     0.1,
+     "Phase3Vomit",
+     0
+    ],
+    [
+     0.9,
+     "Phase3",
+     0
+    ]
+   ],
+   "keys": {
+    "Phase3.body": {},
+    "Phase3Vomit.body": {
+     "y": [
+      [
+       0.1,
+       0
+      ],
+      [
+       0.30000000000000004,
+       6,
+       "out"
+      ],
+      [
+       0.9,
+       0
+      ]
+     ]
+    },
+    "Phase3Vomit.head": {
+     "rotate": [
+      [
+       0.1,
+       -5
+      ],
+      [
+       0.27,
+       4,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "Phase3Vomit.hair": {
+     "rotate": [
+      [
+       0.1,
+       -4
+      ],
+      [
+       0.31,
+       5,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.35,
+       14,
+       "out"
+      ],
+      [
+       0.9,
+       14
+      ],
+      [
+       1.2,
+       0
+      ]
+     ]
+    }
+   }
+  },
   "die": {
    "duration": 1.2,
    "show": [
     [
      0,
-     "Default",
+     "Phase3",
      0
     ]
    ],
    "keys": {
-    "Default.body": {
+    "Phase3.body": {
      "rotate": [
       [
        0,
@@ -729,7 +595,7 @@
       ]
      ]
     },
-    "Default.head": {
+    "Phase3.head": {
      "rotate": [
       [
        0,
@@ -746,7 +612,7 @@
       ]
      ]
     },
-    "Default.hair": {
+    "Phase3.hair": {
      "rotate": [
       [
        0,
