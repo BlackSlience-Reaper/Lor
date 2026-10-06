@@ -1,4 +1,6 @@
 {
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.title": "废墟图书馆内部监听",
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.description": "记录本局楼层完全解放的进度。",
   "SPECIAL_GUEST_RUN_STATE.title": "特殊来宾内部状态",
   "SPECIAL_GUEST_RUN_STATE.description": "保存特殊来宾的解锁、消费、舞台、剧情与抽取状态。",
   "LIBRARY_RUN_SETTINGS.title": "废墟图书馆本局设置",

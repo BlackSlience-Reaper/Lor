@@ -1,4 +1,10 @@
 {
+  "ALRIUNE_STRONG.title": "爱娜温",
+  "ALRIUNE_STRONG.loss": "你被{encounter}击败了……",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.title": "卡莉接待",
+  "KALI_SPECIAL_GUEST_ENCOUNTER.loss": "{character}倒在了[gold]{encounter}[/gold]中。",
+  "CRYING_CHILDREN_ENCOUNTER.title": "哭泣之子",
+  "CRYING_CHILDREN_ENCOUNTER.loss": "{character}倒在了[gold]{encounter}[/gold]的接待中。",
   "ADDICTED_EMPLOYEE_STRONG.loss": "你被{encounter}击败了……",
   "ADDICTED_EMPLOYEE_STRONG.title": "着魔的职员",
   "ADDICTED_EMPLOYEE_WEAK.loss": "你被{encounter}击败了……",

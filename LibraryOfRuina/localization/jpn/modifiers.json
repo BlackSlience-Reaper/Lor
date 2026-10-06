@@ -1,4 +1,6 @@
 {
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.title": "Library of Ruina 内部リスナー",
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.description": "今回の挑戦で完全解放した階を記録する。",
   "SPECIAL_GUEST_RUN_STATE.title": "特別ゲスト内部状態",
   "SPECIAL_GUEST_RUN_STATE.description": "特別ゲストのアンロック、消費、ステージ、ストーリー、抽選の各状態を保存する。",
   "LIBRARY_RUN_SETTINGS.title": "Library of Ruina 冒険設定",

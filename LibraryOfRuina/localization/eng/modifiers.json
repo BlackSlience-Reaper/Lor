@@ -1,4 +1,6 @@
 {
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.title": "Library of Ruina Internal Listener",
+  "LIBRARY_OF_RUINA_HOOK_LISTENER.description": "Records fully liberated floors during this run.",
   "SPECIAL_GUEST_RUN_STATE.title": "Special Guest Internal State",
   "SPECIAL_GUEST_RUN_STATE.description": "Stores Special Guest unlock, consumption, stage, story, and draw states.",
   "LIBRARY_RUN_SETTINGS.title": "Library of Ruina Run Settings",
