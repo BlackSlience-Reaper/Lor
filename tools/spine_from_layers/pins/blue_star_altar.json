@@ -1,15 +1,15 @@
 {
- "mode": "pin",
+ "mode": "none",
  "pivot": false,
  "noTilt": false,
  "points": {
   "Default": [
-   354,
-   825
+   256,
+   700
   ],
-  "Special": [
-   354,
-   845
+  "Nova": [
+   255,
+   699
   ]
  },
  "sizes": {}

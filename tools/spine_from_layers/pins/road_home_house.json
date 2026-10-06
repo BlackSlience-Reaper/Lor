@@ -1,11 +1,11 @@
 {
- "mode": "pin",
+ "mode": "none",
  "pivot": false,
- "noTilt": true,
+ "noTilt": false,
  "points": {
   "Default": [
-   512,
-   1046
+   355,
+   537
   ]
  },
  "sizes": {}

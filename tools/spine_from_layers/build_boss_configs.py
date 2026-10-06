@@ -563,6 +563,53 @@ for _name, _anims in (("burrowing_heaven", {"attack": ("attack", "Attack", "step
             "weapons": [], "idle": {f"{_base}.body": {"rotate": [1.2, 1, 0.0]}}, "anims": _anims,
         }
 
+# 第三批：硬物和僵硬的人偶。原点、各形态缩放读 sprite_layers.py 写出的 pin_ref.json（origin: "auto"），
+# 对齐点、转轴、是否转身体读标注页（pins/）；选了“不钉”的标注点不用
+def _rigid(idle, anims, **kw):
+    return {"prefix": "", "origin": "auto", "rigid": True, "weapons": [], "idle": idle, "anims": anims, **kw}
+
+
+BOSSES["emerald_crystal"] = _rigid({"Default.body": {"rotate": [1.2, 1, 0.0]}, "move": {"y": [4, 1, 0.25]}},
+                                   {"attack": ("attack", "Default", "step"), "guard": ("guard", "Default", "brace"),
+                                    "hurt": ("hurt", "Default")})
+BOSSES["shining_happiness"] = _rigid({"Default.body": {"rotate": [1.5, 1, 0.0]}, "move": {"y": [5, 1, 0.25]}},
+                                     {"hurt": ("hurt", "Default")})
+BOSSES["nf_shining_happiness"] = _rigid({"Default.body": {"rotate": [1.5, 1, 0.0]}, "move": {"y": [5, 1, 0.25]}},
+                                        {"hurt": ("hurt", "Default")})
+BOSSES["road_home_house"] = _rigid({"Default.body": {"rotate": [0.6, 1, 0.0]}},
+                                   {"guard": ("guard", "Default", "brace"), "hurt": ("hurt", "Default")})
+BOSSES["vine_barrier"] = _rigid({"Default.body": {"rotate": [1.4, 1, 0.0]}},
+                                {"guard": ("guard", "Default", "brace"), "hurt": ("hurt", "Default")},
+                                preview_on_origin=True)
+for _n in ("hermit_staff", "nf_hermit_staff"):
+    BOSSES[_n] = _rigid({"Default.body": {"rotate": [1.2, 1, 0.0]}},
+                        {"attack": ("attack", "Attack", "step"), "hurt": ("hurt", "Hit")})
+for _n in ("gift_box", "lf_gift_box"):
+    BOSSES[_n] = _rigid({"Default.body": {"rotate": [1.5, 1, 0.0]}}, preview_on_origin=_n == "gift_box", anims=
+                        {"attack": ("attack", "Attack", "dash"), "cast": ("skill", "Cast"), "hurt": ("hurt", "Hit"),
+                         # 文学层的自爆照场景动画：施法 → 0.32 秒攻击 → 0.62 秒受击，共 0.9 秒
+                         "self_destruct": ("timeline", {"frames": [[0, "Cast"], [0.32, "Attack"], [0.62, "Hit"]],
+                                                        "length": 0.9}, "dash")})
+for _base in ("Default", "Nova"):
+    # 蓝星祭坛：普通、新星两个动画库各一副；石台很重，待机几乎不动
+    BOSSES["blue_star_altar" + ("" if _base == "Default" else "_nova")] = _rigid(
+        {f"{_base}.body": {"rotate": [0.3, 1, 0.0]}},
+        {"nova": ("skill", "Nova"), "hurt": ("hurt", _base)}, layers="blue_star_altar", base=_base)
+# 自然层遗忘骑士之剑：普通、泪滴、绝望、倒下四个动画库各一副；绝望库所有动作都用攻击图或待机图，倒下库只有一张
+_NF_SWORD = {"normal": "Normal", "teardrop": "Teardrop"}
+for _lib, _p in _NF_SWORD.items():
+    BOSSES[f"nf_forgotten_sword_{_lib}"] = _rigid(
+        {"move": {"y": [7, 1, 0.0]}, f"{_p}.body": {"rotate": [1.6, 1, 0.3]}},
+        {"slash": ("attack", f"{_p}Slash", "step"), "blunt": ("attack", f"{_p}Blunt", "dash"),
+         "pierce": ("attack", f"{_p}Pierce", "dash"), "guard": ("guard", f"{_p}Guard", "brace"),
+         "evade": ("guard", f"{_p}Evade", "hop"), "hurt": ("hurt", f"{_p}Hit")},
+        layers="nf_forgotten_sword", base=_p)
+BOSSES["nf_forgotten_sword_despair"] = _rigid(
+    {"move": {"y": [7, 1, 0.0]}, "Despair.body": {"rotate": [1.6, 1, 0.3]}},
+    {"attack": ("attack", "DespairAttack", "dash"), "guard": ("guard", "Despair", "brace"), "hurt": ("hurt", "Despair")},
+    layers="nf_forgotten_sword", base="Despair")
+BOSSES["nf_forgotten_sword_dead"] = _rigid({}, {"hurt": ("hurt", "Dead")}, layers="nf_forgotten_sword", base="Dead")
+
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
 for _e in range(1, 6):
@@ -754,6 +801,10 @@ def main():
                 spec = {**spec, "no_tilt": ref["noTilt"]}
             if ref.get("pivot") and ref.get("ref"):
                 spec = {**spec, "pivot": ref["ref"]}
+            if spec.get("origin") == "auto":
+                base_pose = spec.get("base", "Default")
+                spec = {**spec, "origin": ref["origins"][base_pose],
+                        **({"root_scale": ref["root_scales"][base_pose]} if base_pose in ref.get("root_scales", {}) else {})}
         used = set()
         for _, p, *_ in spec["anims"].values():
             used.update([f[1] for f in p["frames"]] if isinstance(p, dict) else p if isinstance(p, list) else [p])

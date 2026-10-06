@@ -137,6 +137,51 @@ SPRITES = {
         "poses": {"Attack": {"image": "heaven_thorn/attack.png"}, "Hit": {"image": "heaven_thorn/hit.png"},
                   "Guard": {"image": "heaven_thorn/guard.png"}},
     },
+    # ---- 第三批：硬物 ----
+    "emerald_crystal": {"scale": 0.38, "anchor": "visible_bottom",
+                        "idles": {"Default": "social_floor_liberation/emerald_crystal/default.png"}, "poses": {}},
+    "shining_happiness": {"scale": 0.50, "anchor": "visible_bottom",
+                          "idles": {"Default": "king_of_greed/shining_happiness.png"}, "poses": {}},
+    "road_home_house": {"scale": 0.62, "anchor": "visible_bottom", "idles": {"Default": "road_home/house.png"}, "poses": {}},
+    # HistoryFloorVineBarrierCreatureVisuals：Centered，待机 At(0, -88)、Scale(0.4)，只有一张
+    "vine_barrier": {"scale": 0.4, "anchor": "center",
+                     "idles": {"Default": "history_floor/emerald_bough/vine_barrier_idle.png"}, "poses": {}},
+    # HermitStaffCreatureVisuals：待机 Scale(0.515)（不是 IdleOnly，动作图同样 0.515）
+    "hermit_staff": {"scale": 0.515, "anchor": "visible_bottom",
+                     "idles": {"Default": "hermit_staff/idle.png"},
+                     "poses": {"Attack": {"image": "hermit_staff/attack.png"}, "Hit": {"image": "hermit_staff/hit.png"}}},
+    # SurpriseGiftBoxCreatureVisuals：Centered；攻击是 Lunge，终点在 Nudge(23.4, -106.6)、Scale(0.65)
+    "gift_box": {"scale": 0.806, "anchor": "center",
+                 "idles": {"Default": "leticia/surprise_gift_box_idle.png"},
+                 # 攻击图里的人偶和待机图原图一样大，却按 0.65 倍画（待机 0.806），出招时缩成八成：fix 放大回去
+                 "poses": {"Attack": {"image": "leticia/surprise_gift_box_attack.png", "nudge": [23.4, -106.6], "frame_scale": 0.65,
+                                      "fix": 1.24},
+                           "Cast": {"image": "leticia/surprise_gift_box_cast.png"},
+                           "Hit": {"image": "leticia/surprise_gift_box_hit.png"}}},
+    # 以下原来是场景动画：摆放读场景（scene_placements）
+    "nf_hermit_staff": {"scene": "natural_floor_hermit_staff.tscn", "ref_library": "main",
+                        "libraries": {"main": "natural_floor_hermit_staff_animations.tres"},
+                        "idles": {"Default": "main"},
+                        "poses": {"Attack": ["main", "Attack", 0], "Hit": ["main", "Hit", 0]}},
+    "nf_shining_happiness": {"scene": "natural_floor_shining_happiness.tscn", "ref_library": "happiness",
+                             "libraries": {"happiness": "natural_floor_shining_happiness_animations.tres"},
+                             "idles": {"Default": "happiness"}, "poses": {}},
+    "lf_gift_box": {"scene": "literature_floor_surprise_gift_box.tscn", "ref_library": "main",
+                    "libraries": {"main": "literature_floor_surprise_gift_box_animations.tres"},
+                    "idles": {"Default": "main"},
+                    "poses": {"Attack": ["main", "Attack", 0, 1.24], "Cast": ["main", "Cast", 0], "Hit": ["main", "Hit", 0]}},
+    "blue_star_altar": {"scene": "blue_star_altar.tscn", "ref_library": "normal",
+                        "libraries": {"normal": "blue_star_altar_normal_animations.tres",
+                                      "nova": "blue_star_altar_nova_animations.tres"},
+                        "idles": {"Default": "normal", "Nova": "nova"}, "poses": {}},
+    # 自然层遗忘骑士之剑：普通、泪滴、绝望、倒下四个动画库（倒下只有一张受击图），泪滴库按 1 倍画、其余 0.5 倍
+    "nf_forgotten_sword": {"scene": "natural_floor_forgotten_sword.tscn", "ref_library": "normal",
+                           "libraries": {f: f"natural_floor_forgotten_sword_{f}_animations.tres"
+                                         for f in ("normal", "teardrop", "despair", "dead")},
+                           "idles": {"Normal": "normal", "Teardrop": "teardrop", "Despair": "despair", "Dead": "dead"},
+                           "poses": {**{f"Normal{a}": ["normal", a, 0] for a in ("Blunt", "Pierce", "Slash", "Guard", "Evade", "Hit")},
+                                     **{f"Teardrop{a}": ["teardrop", a, 0] for a in ("Blunt", "Pierce", "Slash", "Guard", "Evade", "Hit")},
+                                     "DespairAttack": ["despair", "Attack", 0]}},
 }
 
 
@@ -146,22 +191,46 @@ def visible_bottom(im):
     return float(rows[-1] + 1) if len(rows) else float(im.height)
 
 
-def build(name, spec):
-    out = LAYERS / name
-    out.mkdir(parents=True, exist_ok=True)
+def scene_placements(spec):
+    """原来是场景动画的怪物：按场景里每个动作那张贴图的 position / offset / scale 摆放（scene_poses.py 读出）。
+    坐标单位是 ref 动画库待机贴图的像素；每个动画库的待机图定一副骨架的原点（它的矩形底边中点，AlignTo 对齐的点）。
+    poses: {动作名: [动画库, 动画, 第几张]}；idles: {动作名: 动画库}（该库的 Idle）。"""
+    from scene_poses import poses as read_scene  # noqa: PLC0415
+    R = M.parents[1]
+    tscn = R / "scenes/creature_visuals" / spec["scene"]
+    libs = read_scene(tscn, [R / "scenes/creature_visuals" / f for f in spec["libraries"].values()])
+    lib_of = {lib: libs[Path(f).stem] for lib, f in spec["libraries"].items()}
+    ref_scale = lib_of[spec["ref_library"]]["Idle"][0]["scale"][0]
+    # poses 的第 4 项（可选）是尺寸修正：原图里的人物和待机图同样大，场景却给了更小的缩放时放大回去
+    entries = [(m, lib, "Idle", 0, True, 1.0) for m, lib in spec["idles"].items()]
+    entries += [(m, v[0], v[1], v[2], False, v[3] if len(v) > 3 else 1.0) for m, v in spec["poses"].items()]
+    for motion, lib, anim, i, idle, fix in entries:
+        shot = lib_of[lib][anim][i]
+        src = R / shot["texture"].replace("res://", "")
+        im = Image.open(src).convert("RGBA")
+        W0, H0 = im.size
+        sc = shot["scale"][0]
+        ox, oy = shot["offset"]
+        # Sprite2D：不居中时贴图左上角在 offset，居中时贴图中心在 offset；整体再乘 scale、加 position
+        tlx, tly = (ox, oy) if not shot["centered"] else (ox - W0 / 2, oy - H0 / 2)
+        px, py = shot["position"]
+        center = (px + (tlx + W0 / 2) * sc, py + (tly + H0 / 2) * sc)
+        k = sc / ref_scale * fix
+        origin = None
+        if idle:
+            bottom = (px + (tlx + W0 / 2) * sc, py + (tly + H0) * sc)
+            origin = [round(bottom[0] / ref_scale, 1), round(-bottom[1] / ref_scale, 1)]
+        if k != 1.0:
+            im = im.resize((round(W0 * k), round(H0 * k)), Image.LANCZOS)
+        yield {"motion": motion, "idle": idle, "im": im, "k": k, "src": src, "cx": center[0] / ref_scale,
+               "cy": -center[1] / ref_scale, "origin": origin, "root_scale": round(ref_scale / sc, 4) if idle else None}
+
+
+def sprite_placements(spec):
+    """换图外观（SpriteAttackCreatureVisuals）的摆放规则，见文件开头。"""
     s = spec["scale"]
-    info = {}
-    origins = {}
-    pin_ref = None
     poses = {**{k: {**(v if isinstance(v, dict) else {"image": v}), "idle": True} for k, v in spec["idles"].items()},
              **spec["poses"]}
-    ann_path = PINS / f"{name}.json"
-    ann = json.loads(ann_path.read_text()) if ann_path.exists() else None
-    if ann:
-        mode, points = ann["mode"], ann["points"]
-    else:
-        points = {m: p["pin"] for m, p in poses.items() if "pin" in p}
-        mode = "pin" if points else ("pin_y" if spec.get("pin_y") else "none")
     for motion, p in poses.items():
         im = Image.open(M / p["image"]).convert("RGBA")
         # 待机贴图另给了缩放（Variant.Scale(...).IdleOnly()）时，动作贴图仍按外观布局的缩放、位置画：attack_scale、attack_offset
@@ -172,14 +241,15 @@ def build(name, spec):
             off = spec.get("attack_offset", [0, 0])
             p = {**p, "nudge": [p.get("nudge", [0, 0])[0] + off[0], p.get("nudge", [0, 0])[1] + off[1]]}
         k = k0 * p.get("fix", 1.0)
+        origin = None
         if p.get("idle"):
             # 骨架原点对齐的是游戏里没放大的那张待机贴图（RuntimeSpineBody.AlignTo），原点按它算
             raw = Image.open(M / p["image"]).convert("RGBA")
             if k0 != 1.0:
                 raw = raw.resize((round(raw.width * k0), round(raw.height * k0)), Image.LANCZOS)
             rH = raw.height
-            origins[motion] = ([0.0, round(-(rH - visible_bottom(raw)), 1)] if spec["anchor"] == "visible_bottom"
-                               else [0.0, round(-rH / 2, 1)])
+            origin = ([0.0, round(-(rH - visible_bottom(raw)), 1)] if spec["anchor"] == "visible_bottom"
+                      else [0.0, round(-rH / 2, 1)])
         if k != 1.0:
             im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
         nx, ny = p.get("nudge", [0, 0])
@@ -189,6 +259,48 @@ def build(name, spec):
             cx, cy = nx / s, -ny / s + (vb - H / 2)
         else:
             cx, cy = nx / s, -ny / s
+        yield {"motion": motion, "idle": bool(p.get("idle")), "im": im, "k": k, "src": M / p["image"], "cx": cx, "cy": cy,
+               "origin": origin, "root_scale": None, "pin": p.get("pin")}
+
+
+def build(name, spec):
+    out = LAYERS / name
+    out.mkdir(parents=True, exist_ok=True)
+    info = {}
+    origins = {}
+    root_scales = {}
+    size_ref = None
+    pin_ref = None
+    placed = list(scene_placements(spec) if "scene" in spec else sprite_placements(spec))
+    ann_path = PINS / f"{name}.json"
+    ann = json.loads(ann_path.read_text()) if ann_path.exists() else None
+    if ann:
+        mode, points = ann["mode"], ann["points"]
+    else:
+        points = {e["motion"]: e["pin"] for e in placed if e.get("pin")}
+        mode = "pin" if points else ("pin_y" if spec.get("pin_y") else "none")
+    for e in placed:
+        motion, im, k, cx, cy = e["motion"], e["im"], e["k"], e["cx"], e["cy"]
+        W, H = im.size
+        if e["origin"] is not None:
+            origins[motion] = e["origin"]
+        if e["root_scale"] not in (None, 1.0):
+            # 这个动画库的待机贴图与参照库缩放不同（自然层遗忘骑士之剑泪滴形态 1 倍、其余 0.5 倍）：
+            # 骨架单位要等于它自己待机贴图的像素，整体乘 root_scale
+            root_scales[motion] = e["root_scale"]
+        # 尺寸标定（标注页的“尺寸两端”）：同一件东西在各张图里画得大小不一时，每张标两个端点（剑柄头到剑尖），
+        # 以第一个标了的姿势为准，其余姿势绕图中心缩放到同样长
+        seg = (ann or {}).get("sizes", {}).get(motion)
+        if seg:
+            length = float(np.hypot(seg[1][0] - seg[0][0], seg[1][1] - seg[0][1])) * k
+            if size_ref is None:
+                size_ref = length
+            elif length > 1:
+                f = size_ref / length
+                if abs(f - 1) > 0.005:
+                    im = im.resize((max(1, round(W * f)), max(1, round(H * f))), Image.LANCZOS)
+                    k *= f
+                    W, H = im.size
         # 对齐点（原图像素）：第一个有点的姿势（待机图排在前面）定下参照点，其余姿势把自己的点对到这一点。
         # pin 横纵都对齐，pin_y 只对高度。点来自标注页（pins/<名字>.json），没有标注时用配置里的 pin，
         # 或 pin_y: dark_bottom（最低的暗色像素：大鸟的爪尖；可见底边可能是低垂的提灯光晕，不能用它对）
@@ -197,6 +309,7 @@ def build(name, spec):
             a = np.asarray(im).astype(np.float32)
             rows = np.nonzero(((a[..., 3] > 200) & (a[..., :3].max(-1) < 70)).any(axis=1))[0]
             pt = [W / 2 / k, (rows[-1] + 1) / k]
+        # “不钉”时标的点不起作用（用户定的：不钉就保持原样）
         if pt is not None and mode in ("pin", "pin_y"):
             px, py = pt[0] * k - W / 2, pt[1] * k - H / 2
             if pin_ref is None:
@@ -251,10 +364,13 @@ def build(name, spec):
         info[motion] = {"layers": layers, "composite_origin": [round(W / 2 - cx, 2), round(cy + H / 2, 2)]}
         im.save(out / f"{motion}.composite.png")
     (out / "layers.json").write_text(json.dumps(info, ensure_ascii=False, indent=1))
-    # 参照点在骨架坐标里的位置：标注勾了“当转轴”时 build_boss_configs 把身体转轴放在这里
-    (out / "pin_ref.json").write_text(json.dumps({"mode": mode, "ref": [round(v, 2) for v in pin_ref] if pin_ref else None,
+    # 参照点在骨架坐标里的位置：标注勾了“当转轴”时 build_boss_configs 把身体转轴放在这里；
+    # 各待机的原点与 root_scale 供配置写 "origin": "auto"
+    (out / "pin_ref.json").write_text(json.dumps({"mode": mode, "ref": [round(float(v), 2) for v in pin_ref] if pin_ref else None,
+                                                  "origins": origins, "root_scales": root_scales,
                                                   **({"pivot": ann["pivot"], "noTilt": ann["noTilt"]} if ann else {})}))
-    print(name, "origins", json.dumps(origins), "mode", mode, "ref", pin_ref and [round(v, 1) for v in pin_ref])
+    print(name, "origins", json.dumps(origins), "root_scales", root_scales, "mode", mode,
+          "ref", pin_ref and [round(float(v), 1) for v in pin_ref])
 
 
 def main():
