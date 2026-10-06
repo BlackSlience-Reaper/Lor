@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/boss_mimicry_2.webp-20f6ada648e9dddfe4b505e38
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

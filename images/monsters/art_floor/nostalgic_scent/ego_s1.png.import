@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/ego_s1.png-35924a1578f540f7e7376b8162a23cef.c
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

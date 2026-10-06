@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/boss_ozma_jack_awake.webp-8c03e4d1ab65fc05fd6
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

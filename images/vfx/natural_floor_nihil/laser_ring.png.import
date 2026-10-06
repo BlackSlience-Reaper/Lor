@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/laser_ring.png-2dc1c0d9ec6ad3bca84d0ed2342f55
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
