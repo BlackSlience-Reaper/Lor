@@ -708,6 +708,19 @@ BOSSES["wolf_nightmare"] = _rigid(
     {"Default.body": {"rotate": [1.0, 1, 0.0]}},
     {"slash": ("attack", "Slash", "dash"), "thrust": ("attack", "Thrust", "dash"), "howl": ("skill", "Howl", "rise"),
      "hurt": ("hurt", "Hit")})
+# 第七批：艺术层的雕像式人形，只平移、转动。第一演奏者只有一张图，只做待机轻晃和受击
+BOSSES["first_performer"] = _rigid(
+    {"Default.body": {"rotate": [0.6, 1, 0.0]}}, {"hurt": ("hurt", "Default")}, preview_on_origin=True)
+for _i in range(1, 5):
+    # Da Capo 的四种演奏者：攻击踏一步，防御（乐谱环）往后顶
+    BOSSES[f"dacapo_performer_{_i}"] = _rigid(
+        {"Default.body": {"rotate": [0.6, 1, 0.25 * _i]}},
+        {"attack": ("attack", "Attack", "step"), "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Hit")})
+# 生于尘土之人：突刺冲上前、斩击踏一步、闪避往后跳
+BOSSES["dustborn"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"pierce": ("attack", "Pierce", "dash"), "slash": ("attack", "Slash", "step"), "dodge": ("guard", "Dodge", "hop"),
+     "hurt": ("hurt", "Hit")})
 # 宗教层三位使徒：只做普通库，假死（dead 库）退回场景动画。特殊招式照场景 0、1、2 秒换 s1、s2、s3，共 3 秒
 for _a, _attacks in (("scythe", {"slash": ("attack", "Slash", "dash"), "strike": ("attack", "Strike", "step")}),
                      ("spear", {"pierce": ("attack", "Pierce", "dash")}),

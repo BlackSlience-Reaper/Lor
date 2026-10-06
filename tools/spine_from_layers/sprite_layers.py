@@ -278,6 +278,21 @@ SPRITES = {
     "ozma": {"scale": 0.48, "anchor": "visible_bottom",
              "idles": {"Default": "ozma/ozma_idle.png"},
              "poses": {f: {"image": f"ozma/ozma_{f.lower()}.png"} for f in ("Attack", "Guard", "Pain", "Sorrow", "Hit")}},
+    # ---- 第七批：艺术层的雕像式人形 ----
+    # ArtFloorFirstPerformerCreatureVisuals：Centered，布局 0.64，只有一张待机图
+    "first_performer": {"scale": 0.64, "anchor": "center",
+                        "idles": {"Default": "art_floor/first_performer.png"}, "poses": {}},
+    # ArtFloorDaCapoPerformerCreatureVisuals：四种演奏者各一套（待机、攻击、防御、受击），全部按布局 0.48
+    **{f"dacapo_performer_{i}": {"scale": 0.48, "anchor": "visible_bottom",
+                                 "idles": {"Default": f"art_floor/dacapo_performers/performer_{i}_idle.png"},
+                                 "poses": {p: {"image": f"art_floor/dacapo_performers/performer_{i}_{p.lower()}.png"}
+                                           for p in ("Attack", "Guard", "Hit")}}
+       for i in range(1, 5)},
+    # ArtFloorDustbornPersonCreatureVisuals：布局 0.50
+    "dustborn": {"scale": 0.50, "anchor": "visible_bottom",
+                 "idles": {"Default": "art_floor/nostalgic_scent/dustborn_idle.png"},
+                 "poses": {p: {"image": f"art_floor/nostalgic_scent/dustborn_{p.lower()}.png"}
+                           for p in ("Pierce", "Slash", "Hit", "Dodge")}},
     # 以下原来是场景动画。噩梦中的狼：待机、嚎叫、受击 0.6 倍，斩击、突刺 0.48 倍（照场景，大小靠尺寸两端统一）
     "wolf_nightmare": {"scene": "wolf_in_her_nightmares.tscn", "ref_library": "wolf",
                        "libraries": {"wolf": "wolf_in_her_nightmares_animations.tres"},

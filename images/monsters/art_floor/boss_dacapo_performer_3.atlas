@@ -1,0 +1,11 @@
+boss_dacapo_performer_3.webp
+size:646,299
+filter:Linear,Linear
+Attack/body
+bounds:0,0,134,299
+Guard/body
+bounds:136,0,196,278
+Hit/body
+bounds:334,0,207,278
+Default/body
+bounds:543,0,101,272
