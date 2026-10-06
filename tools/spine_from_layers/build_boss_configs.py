@@ -369,6 +369,36 @@ BOSSES = {
                   "field_of_corpses": ("timeline", {"frames": [[0, "S1"], [0.7, "S2"]], "length": 1.4}, "dash"),
                   "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"), "hurt": ("hurt", "Damaged")},
     },
+    # 特殊来宾邵：第一阶段（扭曲，stage_1 库）与 E.G.O（stage_2 库）各一副；米里斯是贴图外观。三者的模组贴图
+    # 都是原版合成图原尺寸（0.99 倍），只有邵 E.G.O 的闪避图缩成了一半，骨架里照原版尺寸。模组的 Strike 是原版
+    # Hit 姿势；受击（Hit、Wounded）都用原版 Damaged；移动模组用待机图，这里换成原版 Move 姿势
+    "xiao_distort": {
+        "prefix": "XiaoDistort_", "origin": [-176.9, -83.4], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "penetrate": ("attack", "Penetrate", "dash"),
+                  "strike": ("attack", "Hit", "dash"), "s1": ("attack", "S1", "dash"), "s2": ("attack", "S2", "dash"),
+                  "move": ("attack", "Move", "dash"), "guard": ("guard", "Guard", "brace"),
+                  "evade": ("guard", "Evade", "hop"), "wounded": ("hurt", "Damaged"), "hurt": ("hurt", "Damaged")},
+    },
+    "xiao_ego": {
+        "prefix": "XiaoEgo_", "origin": [-28.2, -75.5],
+        # 背后的火环、胡须状火焰单独成层，待机时微微胀缩
+        "weapons": [{"layers": ["Body_2"], "pivot": [43, 367], "raise": 0,
+                     "idle": {"sx": [0.025, 2, 0.0], "sy": [0.025, 2, 0.5]}},
+                    {"layers": ["Front_acce_3"], "pivot": [16, 420], "raise": 0, "idle": {"rotate": [2.5, 1, 0.3]}}],
+        "anims": {"slash": ("attack", "Slash", "step"), "penetrate": ("attack", "Penetrate", "dash"),
+                  "strike": ("attack", "Hit", "dash"), "s1": ("attack", "S1", "dash"), "s2": ("attack", "S2", "dash"),
+                  "s3": ("attack", "S3", "step"), "s4": ("attack", "S4", "step"), "s5": ("attack", "S5", "dash"),
+                  "special": ("skill", "Special", "rise"), "move": ("attack", "Move", "dash"),
+                  "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"),
+                  "wounded": ("hurt", "Damaged"), "hurt": ("hurt", "Damaged")},
+    },
+    "miris": {
+        "prefix": "Miris_", "origin": [-45.4, 3.6], "weapons": [],
+        "anims": {"slash": ("attack", "Slash", "step"), "penetrate": ("attack", "Penetrate", "dash"),
+                  "strike": ("attack", "Hit", "dash"), "s1": ("attack", "S1", "dash"), "s2": ("attack", "S2", "step"),
+                  "guard": ("guard", "Guard", "brace"), "evade": ("guard", "Evade", "hop"),
+                  "wounded": ("hurt", "Damaged"), "hurt": ("hurt", "Damaged")},
+    },
     # 文学层黑天鹅的兄弟：一到五哥共用一套原版人物（无表情），六哥是带笑的另一套；攻击、受击在原版都是整图，
     # 只有待机分了腿、身体、头。模组里一到五哥沉睡/倒下时显示的带黏液待机图不走骨骼（见外观类）
     "swan_bro": {
@@ -782,6 +812,23 @@ for _f in ("Normal", "Confused"):
 BOSSES["rev_philip"] = _batch8("rev_philip", base="Normal")
 for _f in ("Phase1", "Phase2", "Phase3"):
     BOSSES[f"smiling_bodies_{_f.lower()}"] = _batch8("smiling_bodies", base=_f, prefix=_f, sway=0.6)
+# 特殊来宾 Rnfmabj：分离、合体两个库各一副，切换时（Split / Union 触发先换库）在新形态的待机姿势上浮起；
+# 扭曲之刃分离时用移动图冲上前、合体时用防御图；手的锁定是打字机姿势
+BOSSES["rnfmabj_distort"] = _rigid(
+    {"Default.body": {"rotate": [0.8, 1, 0.0]}},
+    {"twisted_blade": ("attack", "Move", "dash"), "move": ("attack", "Move", "dash"),
+     "guard": ("guard", "Guard", "hop"), "split": ("skill", "Default", "rise"), "hurt": ("hurt", "Hit")},
+    layers="rnfmabj", base="Default")
+BOSSES["rnfmabj_union"] = _rigid(
+    {"Union.body": {"rotate": [0.6, 1, 0.0]}},
+    {"twisted_blade": ("attack", "UnionGuard", "dash"), "move": ("attack", "Union", "dash"),
+     "guard": ("guard", "UnionGuard", "brace"), "union": ("skill", "Union", "rise"), "hurt": ("hurt", "UnionHit")},
+    layers="rnfmabj", base="Union")
+BOSSES["rnfmabj_hand"] = _rigid(
+    {"Default.body": {"rotate": [1.2, 1, 0.0]}, "move": {"y": [5, 1, 0.25]}},
+    {"punch": ("attack", "Punch", "dash"), "multi_punch": ("attack", "MultiPunch", "dash"),
+     "palm": ("attack", "Palm", "step"), "brand": ("attack", "Brand", "dash"), "lock": ("skill", "Lock", "rise"),
+     "move": ("attack", "Move", "dash"), "guard": ("guard", "Guard", "brace"), "hurt": ("hurt", "Hit")})
 # 愤怒侍从的特殊招式是三段各自发的触发（WithAttackerAnim("SpecialS1/2/3", 0.6)），每段一张图、停 0.6 秒；
 # 胜利演出等 2 秒
 BOSSES["wrath_servant"]["anims"].update({f"special_s{i}": ("attack", f"SpecialS{i}", "step") for i in (1, 2, 3)})
@@ -802,6 +849,48 @@ for _a, _attacks in (("scythe", {"slash": ("attack", "Slash", "dash"), "strike":
         {**_attacks, "guard": ("guard", "Guard", "brace"), "cast": ("skill", "S1"), "wake": ("skill", "S2", "rise"),
          "special": ("timeline", {"frames": [[0, "S1"], [1.0, "S2"], [2.0, "S3"]], "length": 3.0}, "step"),
          "hurt": ("hurt", "Hit")})
+
+# 特殊来宾伊織（紫泪）：原版按架势分五个预制体（普通、G 防御、H 打击、J 斩击、Z 突刺），导出后合进同一个分层目录
+# iori（同名动作取普通架势的）。模组场景按架势分四个动画库，各库的待机与部分触发用的贴图不同，所以每个库一副骨架，
+# 待机就是该架势的站姿；原点是该库待机贴图（1536×1152 画布）底边中点。触发 → 模组贴图 → 原版动作照场景动画库
+_IORI_POSE = {
+    "blunt": "ThePurpleTear_Hit", "blunt_stance_blunt": "ThePurpleTearH_Hit", "evade": "ThePurpleTear_Evade",
+    "guard": "ThePurpleTear_Guard", "guard_pierce": "ThePurpleTearZ_Guard", "guard_slash": "ThePurpleTearJ_Guard",
+    "hit": "ThePurpleTear_Damaged", "pierce": "ThePurpleTear_Penetrate", "pierce_stance_s1": "ThePurpleTearZ_S1",
+    "pierce_stance_s2": "ThePurpleTearZ_S2", "slash": "ThePurpleTear_Slash", "slash_stance_s1": "ThePurpleTearJ_S1",
+    "slash_stance_slash": "ThePurpleTearJ_Slash",
+    "idle_slash": "ThePurpleTearJ_Default", "idle_pierce": "ThePurpleTearZ_Default",
+    "idle_blunt": "ThePurpleTearH_Default", "idle_defense": "ThePurpleTearG_Default",
+}
+_IORI_COMMON = {"Blunt": "blunt", "BluntStance": "blunt_stance_blunt", "Evade": "evade", "Guard": "guard", "Hit": "hit",
+                "PhantomDanceBlunt": "blunt_stance_blunt", "PhantomDancePierce": "pierce_stance_s2",
+                "PhantomDanceSlashA": "slash_stance_s1", "PhantomDanceSlashB": "slash_stance_slash",
+                "Pierce": "pierce", "PierceS1": "pierce_stance_s1", "PierceS2": "pierce_stance_s2", "Slash": "slash",
+                "SlashS1": "slash_stance_s1", "StanceChange": "slash"}
+_IORI_LIBS = {
+    "slash": ([-69.0, -328.0], {"Guard": "guard_slash", "Idle": "idle_slash", "Slash": "slash_stance_slash"}),
+    "pierce": ([-60.0, -266.0], {"Guard": "guard_pierce", "Idle": "idle_pierce", "Pierce": "pierce_stance_s1",
+                                 "StanceChange": "pierce"}),
+    "blunt": ([-36.0, -269.0], {"Blunt": "blunt_stance_blunt", "Idle": "idle_blunt", "StanceChange": "blunt"}),
+    "defense": ([-31.0, -280.0], {"Idle": "idle_defense"}),
+}
+# 触发 → （动画名，动作类型，位移）；Hit 是受击
+_IORI_ANIMS = {"Slash": ("slash", "attack", "step"), "SlashS1": ("slash_s1", "attack", "step"),
+               "Pierce": ("pierce", "attack", "dash"), "PierceS1": ("pierce_s1", "attack", "dash"),
+               "PierceS2": ("pierce_s2", "attack", "dash"), "Blunt": ("blunt", "attack", "dash"),
+               "BluntStance": ("blunt_stance", "attack", "dash"),
+               "PhantomDanceSlashA": ("phantom_dance_slash_a", "attack", "dash"),
+               "PhantomDanceBlunt": ("phantom_dance_blunt", "attack", "dash"),
+               "PhantomDancePierce": ("phantom_dance_pierce", "attack", "dash"),
+               "PhantomDanceSlashB": ("phantom_dance_slash_b", "attack", "dash"),
+               "StanceChange": ("stance_change", "skill", "rise"), "Guard": ("guard", "guard", "brace"),
+               "Evade": ("evade", "guard", "hop"), "Hit": ("hurt", "hurt", None)}
+for _lib, (_origin, _over) in _IORI_LIBS.items():
+    _frames = {**_IORI_COMMON, **_over}
+    BOSSES[f"iori_{_lib}"] = {
+        "layers": "iori", "prefix": "", "base": _IORI_POSE[_frames["Idle"]], "origin": _origin, "weapons": [],
+        "anims": {n: (k, _IORI_POSE[_frames[t]], *([s] if s else [])) for t, (n, k, s) in _IORI_ANIMS.items()},
+    }
 
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
