@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/greed_slash.png-377e9b9039fc4fc433c615cd8c377
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.85
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
