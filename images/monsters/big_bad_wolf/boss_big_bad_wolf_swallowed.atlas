@@ -1,0 +1,11 @@
+boss_big_bad_wolf_swallowed.webp
+size:1439,446
+filter:Linear,Linear
+SwallowedSlash/body
+bounds:0,0,441,446
+Swallowed/body
+bounds:443,0,252,284
+SwallowedHit/body
+bounds:697,0,293,236
+SwallowedStrike/body
+bounds:992,0,445,230

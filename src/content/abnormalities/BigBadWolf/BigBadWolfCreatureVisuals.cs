@@ -4,9 +4,44 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.BigBadWolf;
 
+/// <summary>
+/// 大坏狼：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），加载失败时退回逐帧换图。
+/// 普通、吞下两个形态各一副骨架。换形态的触发先切形态再播，所以吐出（切回普通）的动作在普通那副里。
+/// </summary>
 public sealed partial class BigBadWolfCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "big_bad_wolf",
+        "big_bad_wolf",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["Strike"] = "strike",
+            ["Slash"] = "slash",
+            ["Swallow"] = "swallow",
+            ["Spit"] = "spit",
+            ["Eat"] = "spit",
+            ["ClearSwallowed"] = "spit",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec SwallowedSpine = LayeredBossSpine.Create(
+        "big_bad_wolf",
+        "big_bad_wolf_swallowed",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["Strike"] = "strike",
+            ["Slash"] = "slash",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => NormalSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine, SwallowedSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == SwallowedVariant ? SwallowedSpine : NormalSpine;
+
     [MonsterVisual(typeof(BigBadWolf))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -178f), new(0.72f, 0.72f), -150f, -370f, 150f, 10f, new(0f, -178f), new(0f, -405f))

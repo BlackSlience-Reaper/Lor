@@ -7,6 +7,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.interop;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -25,6 +26,8 @@ namespace LibraryOfRuina.content.abnormalities.RoadHome;
 
 public sealed class ScaredyCatCompanion : LorMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     internal const string BlockMoveId = "SCAREDY_CAT_COMPANION_BLOCK";
     internal const string AttackMoveId = "SCAREDY_CAT_COMPANION_ATTACK";
     private const string RouterStateId = "SCAREDY_CAT_COMPANION_ROUTER";

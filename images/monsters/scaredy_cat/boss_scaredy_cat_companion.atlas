@@ -1,0 +1,7 @@
+boss_scaredy_cat_companion.webp
+size:433,180
+filter:Linear,Linear
+CompanionHit/body
+bounds:0,0,223,180
+Companion/body
+bounds:225,0,206,119

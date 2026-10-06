@@ -670,6 +670,54 @@ BOSSES["escaped_bird"] = _rigid(
      "scream_one": ("skill", "AttackOne", "rise"), "scream_two": ("skill", "AttackTwo", "rise"),
      "hurt": ("hurt", "Hit")})
 
+# 第六批。换形态的触发先切形态再播（SpineSpriteAttackCreatureVisuals.PlaySpineTrigger），
+# 所以“吐出来”之类回到普通形态的动作放在普通那副里
+# 大坏狼：普通、吞下两副；吞下（不切形态）和吐出（切回普通）在普通那副里闪一下吞下的样子
+BOSSES["big_bad_wolf"] = _rigid(
+    {"Normal.body": {"rotate": [1.0, 1, 0.0]}},
+    {"strike": ("attack", "Strike", "dash"), "slash": ("attack", "Slash", "step"),
+     "swallow": ("skill", "Swallowed"), "spit": ("skill", "Swallowed"), "hurt": ("hurt", "Hit")},
+    layers="big_bad_wolf", base="Normal", preview_on_origin=True)
+BOSSES["big_bad_wolf_swallowed"] = _rigid(
+    {"Swallowed.body": {"rotate": [1.0, 1, 0.0]}},
+    {"strike": ("attack", "SwallowedStrike", "dash"), "slash": ("attack", "SwallowedSlash", "step"),
+     "hurt": ("hurt", "SwallowedHit")},
+    layers="big_bad_wolf", base="Swallowed", preview_on_origin=True)
+# 胆小的猫咪：普通、同伴（归家的路途被打败后）两副；闪避、防御、施法原来就是待机图，这里原地往后顶。
+# 同伴那副也给归家的路途里的同伴猫咪（ScaredyCatCompanion）用，它没有攻击图，攻击时整只冲上前
+BOSSES["scaredy_cat"] = _rigid(
+    {"Normal.body": {"rotate": [1.0, 1, 0.0]}},
+    {"strike": ("attack", "Strike", "dash"), "slash": ("attack", "Slash", "step"),
+     "ranged": ("attack", "Ranged", "recoil"), "guard": ("guard", "Normal", "brace"), "hurt": ("hurt", "Hit")},
+    layers="scaredy_cat", base="Normal")
+BOSSES["scaredy_cat_companion"] = _rigid(
+    {"Companion.body": {"rotate": [1.5, 1, 0.0]}},
+    {"attack": ("attack", "Companion", "dash"), "guard": ("guard", "Companion", "brace"),
+     "hurt": ("hurt", "CompanionHit")},
+    layers="scaredy_cat", base="Companion")
+BOSSES["scorched_girl"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"attack": ("attack", "Attack", "dash"), "hurt": ("hurt", "Hit")}, preview_on_origin=True)
+# 奥兹玛：大裙摆坐着，待机几乎不动；生命之粉（痛苦图）、悲伤停留时长照原来的换图
+BOSSES["ozma"] = _rigid(
+    {"Default.body": {"rotate": [0.5, 1, 0.0]}},
+    {"attack": ("attack", "Attack", "step"), "guard": ("guard", "Guard", "brace"), "pain": ("skill", "Pain"),
+     "sorrow": ("skill", "Sorrow"), "hurt": ("hurt", "Hit")},
+    holds={"pain": 0.92, "sorrow": 1.05})
+BOSSES["wolf_nightmare"] = _rigid(
+    {"Default.body": {"rotate": [1.0, 1, 0.0]}},
+    {"slash": ("attack", "Slash", "dash"), "thrust": ("attack", "Thrust", "dash"), "howl": ("skill", "Howl", "rise"),
+     "hurt": ("hurt", "Hit")})
+# 宗教层三位使徒：只做普通库，假死（dead 库）退回场景动画。特殊招式照场景 0、1、2 秒换 s1、s2、s3，共 3 秒
+for _a, _attacks in (("scythe", {"slash": ("attack", "Slash", "dash"), "strike": ("attack", "Strike", "step")}),
+                     ("spear", {"pierce": ("attack", "Pierce", "dash")}),
+                     ("staff", {"attack": ("attack", "Attack", "dash")})):
+    BOSSES[f"{_a}_apostle"] = _rigid(
+        {"move": {"y": [5, 1, 0.0]}, "Default.body": {"rotate": [1.0, 1, 0.25]}},
+        {**_attacks, "guard": ("guard", "Guard", "brace"), "cast": ("skill", "S1"), "wake": ("skill", "S2", "rise"),
+         "special": ("timeline", {"frames": [[0, "S1"], [1.0, "S2"], [2.0, "S3"]], "length": 3.0}, "step"),
+         "hurt": ("hurt", "Hit")})
+
 # 异想体今天也很害羞：原版每个动作的 5 层是 5 种表情的全身整图叠在一起（1 怒 … 5 笑，与模组表情编号一致），
 # 没有身体部件。每种表情一副骨架、只留该表情那层，动作只靠整体位移和倾斜
 for _e in range(1, 6):

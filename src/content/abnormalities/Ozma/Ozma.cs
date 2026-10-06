@@ -9,6 +9,7 @@ using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
 using LibraryOfRuina.framework.powers;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Combat;
@@ -41,6 +42,8 @@ public enum OzmaMode
 
 public sealed class Ozma : LorMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     // 遗忘：单人时全队需累计击中真杰克的基础次数；联机时先乘以人数，再乘以对应人数倍率。
     internal const int RequiredTrueJackHits = 8;
 

@@ -252,6 +252,47 @@ SPRITES = {
                      "idles": {"Default": "default"},
                      "poses": {"AttackOne": ["default", "AttackOne", 0], "AttackTwo": ["default", "AttackTwo", 0],
                                "Hit": ["default", "Hit", 0]}},
+    # ---- 第六批 ----
+    # BigBadWolfCreatureVisuals：Centered，布局 0.72；普通、吞下两个形态，各有打击、斩击、受击
+    "big_bad_wolf": {"scale": 0.72, "anchor": "center",
+                     "idles": {"Normal": "big_bad_wolf/idle.png", "Swallowed": "big_bad_wolf/swallow.png"},
+                     "poses": {"Strike": {"image": "big_bad_wolf/strike.png"}, "Slash": {"image": "big_bad_wolf/slash.png"},
+                               "Hit": {"image": "big_bad_wolf/hit.png"},
+                               "SwallowedStrike": {"image": "big_bad_wolf/swallowed_strike.png"},
+                               "SwallowedSlash": {"image": "big_bad_wolf/swallowed_slash.png"},
+                               "SwallowedHit": {"image": "big_bad_wolf/swallowed_hit.png"}}},
+    # ScaredyCatCreatureVisuals：布局 0.88；归家的路途被打败后换成同伴形态（companion 两张）
+    "scaredy_cat": {"scale": 0.88, "anchor": "visible_bottom",
+                    "idles": {"Normal": "scaredy_cat/idle.png", "Companion": "scaredy_cat/companion_idle.png"},
+                    "poses": {"Strike": {"image": "scaredy_cat/attack_strike.png"},
+                              "Slash": {"image": "scaredy_cat/attack_slash.png"},
+                              "Ranged": {"image": "scaredy_cat/attack_ranged.png"},
+                              "Hit": {"image": "scaredy_cat/hit.png"},
+                              "CompanionHit": {"image": "scaredy_cat/companion_hit.png"}}},
+    # ScorchedGirlMonsterCreatureVisuals：Centered，布局 0.52；攻击是 Lunge、Scale(0.56)
+    "scorched_girl": {"scale": 0.52, "anchor": "center",
+                      "idles": {"Default": "scorched_girl_monster.png"},
+                      "poses": {"Attack": {"image": "scorched_girl_monster_attack.webp", "frame_scale": 0.56},
+                                "Hit": {"image": "scorched_girl_monster_hit.webp"}}},
+    # OzmaCreatureVisuals：布局 0.48
+    "ozma": {"scale": 0.48, "anchor": "visible_bottom",
+             "idles": {"Default": "ozma/ozma_idle.png"},
+             "poses": {f: {"image": f"ozma/ozma_{f.lower()}.png"} for f in ("Attack", "Guard", "Pain", "Sorrow", "Hit")}},
+    # 以下原来是场景动画。噩梦中的狼：待机、嚎叫、受击 0.6 倍，斩击、突刺 0.48 倍（照场景，大小靠尺寸两端统一）
+    "wolf_nightmare": {"scene": "wolf_in_her_nightmares.tscn", "ref_library": "wolf",
+                       "libraries": {"wolf": "wolf_in_her_nightmares_animations.tres"},
+                       "idles": {"Default": "wolf"},
+                       "poses": {a: ["wolf", a, 0] for a in ("Slash", "Thrust", "Howl", "Hit")}},
+    # 宗教层三位使徒：动画库嵌在场景里（normal、dead 同名动作，scene_poses 取后定义的 normal）；
+    # 特殊招式按 0、1、2 秒依次换 s1、s2、s3
+    **{f"{a}_apostle": {"scene": f"religion_floor_{a}_apostle.tscn", "ref_library": "normal",
+                        "libraries": {"normal": f"religion_floor_{a}_apostle.tscn"},
+                        "idles": {"Default": "normal"},
+                        "poses": {**{p: ["normal", p, 0] for p in attacks},
+                                  "Guard": ["normal", "Guard", 0], "Hit": ["normal", "Hit", 0],
+                                  "S1": ["normal", "Special", 0], "S2": ["normal", "Special", 1],
+                                  "S3": ["normal", "Special", 2]}}
+       for a, attacks in (("scythe", ("Slash", "Strike")), ("spear", ("Pierce",)), ("staff", ("Attack",)))},
 }
 
 

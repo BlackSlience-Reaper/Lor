@@ -66,9 +66,48 @@ public sealed partial class RoadHomeCreatureVisuals
     }
 }
 
+/// <summary>
+/// 胆小的猫咪：Spine 身体见 <see cref="LayeredBossSpine"/>（模组贴图做成整块，各姿势按标注点对齐），加载失败时退回逐帧换图。
+/// 普通、同伴（归家的路途被打败后）两个形态各一副骨架；同伴那副也给 <see cref="ScaredyCatCompanionCreatureVisuals"/> 用。
+/// </summary>
 public partial class ScaredyCatCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "scaredy_cat",
+        "scaredy_cat",
+        "strike",
+        new Dictionary<string, string>
+        {
+            ["AttackStrike"] = "strike",
+            ["AttackSlash"] = "slash",
+            ["Ranged"] = "ranged",
+            ["Dodge"] = "guard",
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+        });
+
+    internal static readonly RuntimeSpineBody.Spec CompanionSpine = LayeredBossSpine.Create(
+        "scaredy_cat",
+        "scaredy_cat_companion",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["AttackStrike"] = "attack",
+            ["AttackSlash"] = "attack",
+            ["Ranged"] = "attack",
+            ["Dodge"] = "guard",
+            ["Guard"] = "guard",
+            ["Cast"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => NormalSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine, CompanionSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) =>
+        variantKey == DefeatedVariant ? CompanionSpine : NormalSpine;
+
     [MonsterVisual(typeof(ScaredyCat))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -12f), new(0.88f, 0.88f), -211f, -304f, 213f, 12f, new(0f, -126f), new(0f, -332f))
@@ -204,9 +243,16 @@ public sealed partial class RoadHomeHouseCreatureVisuals
     }
 }
 
+/// <summary>归家的路途里的同伴猫咪：两个形态的贴图都是同伴图，只用同伴那副骨架。</summary>
 public sealed partial class ScaredyCatCompanionCreatureVisuals
     : ScaredyCatCreatureVisuals
 {
+    internal override RuntimeSpineBody.Spec SpineSpec => CompanionSpine;
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [CompanionSpine];
+
+    internal override RuntimeSpineBody.Spec SpineSpecFor(string? variantKey) => CompanionSpine;
+
     [MonsterVisual(typeof(ScaredyCatCompanion))]
     internal new static readonly CreatureVisualLayout Layout = new(
         new(-20f, 12f), new(-0.52f, 0.52f), -118f, -246f, 118f, 12f, new(0f, -112f), new(0f, -170f))

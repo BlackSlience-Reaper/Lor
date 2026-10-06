@@ -8,6 +8,7 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.relics;
+using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.infra.helpers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -24,6 +25,8 @@ namespace LibraryOfRuina.content.abnormalities.ScorchedGirl;
 
 public sealed class ScorchedGirlMonster : CounterIntentMonsterModel
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private static readonly string[] BattleStartLines =
     {
         "SCORCHED_GIRL_MONSTER.dialogue.battleStart.0",

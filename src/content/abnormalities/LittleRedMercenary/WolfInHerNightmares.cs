@@ -28,6 +28,8 @@ namespace LibraryOfRuina.content.abnormalities.LittleRedMercenary;
 
 public sealed class WolfInHerNightmares : CounterIntentMonsterModel, ITargetedMonsterAttackProvider
 {
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
+
     private const string CruelClawsMoveId = "CRUEL_CLAWS";
     private const string BloodstainedHuntMoveId = "BLOODSTAINED_HUNT";
     private const string FerociousFangsMoveId = "FEROCIOUS_FANGS";

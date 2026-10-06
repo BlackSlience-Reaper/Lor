@@ -1,0 +1,9 @@
+boss_scorched_girl.webp
+size:625,253
+filter:Linear,Linear
+Attack/body
+bounds:0,0,205,253
+Default/body
+bounds:207,0,208,242
+Hit/body
+bounds:417,0,206,236
