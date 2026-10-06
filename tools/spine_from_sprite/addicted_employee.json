@@ -344,20 +344,6 @@
         24.0
       ],
       "flash": 0.45
-    },
-    "die": {
-      "type": "die",
-      "duration": 1.6,
-      "rest_height": 78.0,
-      "body_rotate": -80.0,
-      "body_x": 40.0,
-      "world_angles": {
-        "armL": [
-          200.0,
-          190.0,
-          185.0
-        ]
-      }
     }
   }
 }

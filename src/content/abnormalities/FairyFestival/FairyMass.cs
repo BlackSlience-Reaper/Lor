@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
-using LibraryOfRuina.framework.visuals;
 using LibraryOfRuina.patches;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -23,9 +22,6 @@ public enum FairyMassVariant
 
 public sealed class FairyMass : CounterIntentMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, FairyMassCreatureVisuals.DeathSeconds);
-
     private const string WingbeatMoveId = "WINGBEAT";
     private const string GluttonyMoveId = "GLUTTONY";
 

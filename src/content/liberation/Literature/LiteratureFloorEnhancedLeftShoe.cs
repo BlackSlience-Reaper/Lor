@@ -6,7 +6,6 @@ using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
-using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -20,9 +19,6 @@ namespace LibraryOfRuina.content.liberation.Literature;
 public sealed class LiteratureFloorEnhancedLeftShoe :
     LorMonsterModel
 {
-    // Spine 身体的死亡动画由 SpineSpriteDeathAnimPatch 补发；设了时长原版才会等动画播完再溶解
-    public override float DeathAnimLengthOverride => AnimationEffects.DeathLength(this, RedShoesLeftCreatureVisuals.DeathSeconds);
-
     public const string WhisperingDesireMoveId = "WHISPERING_DESIRE";
     public const string HiddenDesireMoveId = "HIDDEN_DESIRE";
     public const int WhisperingDesireHits = 2;

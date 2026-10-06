@@ -212,31 +212,6 @@
     "fade_in": 0.04,
     "fade_out": 0.1
    }
-  },
-  "die": {
-   "type": "die",
-   "duration": 1.6,
-   "rest_height": 115.0,
-   "body_rotate": -25.0,
-   "body_x": 10.0,
-   "world_angles": {
-    "legL": [
-     185.0,
-     195.0
-    ],
-    "legFL": [
-     205.0,
-     200.0
-    ],
-    "legFR": [
-     335.0,
-     340.0
-    ],
-    "legR": [
-     355.0,
-     345.0
-    ]
-   }
   }
  }
 }

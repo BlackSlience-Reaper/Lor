@@ -27,9 +27,6 @@ public partial class HappyTeddyCreatureVisuals : SpineSpriteAttackCreatureVisual
     /// <summary>示爱后续各段的等待，秒。三拳约在 0.3、0.5、0.7 秒落下，和往前顶的时刻对齐，都在出拳姿势里（0.88 秒后才换回）。</summary>
     internal const float FollowUpHitSeconds = 0.2f;
 
-    /// <summary>死亡动画时长，秒；原版等它播完再做溶解消失。</summary>
-    internal const float DeathSeconds = 1.6f;
-
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
     private static readonly RuntimeSpineBody.Spec Spine = new(
@@ -38,7 +35,8 @@ public partial class HappyTeddyCreatureVisuals : SpineSpriteAttackCreatureVisual
         IdleAnimation: "idle",
         AttackAnimation: "attack",
         HurtAnimation: "hurt",
-        DeathAnimation: "die",
+        // 不做死亡动画：死时保持当前姿势，原版立即溶解（整体向后倒的死亡动画观感不好，去掉了）
+        DeathAnimation: null,
         DefaultMix: 0.12f,
         HurtHoldSeconds: 0.1f,
         Ghosts: null,

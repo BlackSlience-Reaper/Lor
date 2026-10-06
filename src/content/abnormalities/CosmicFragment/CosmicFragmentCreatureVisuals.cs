@@ -25,9 +25,6 @@ public sealed partial class CosmicFragmentCreatureVisuals : SpineSpriteAttackCre
     /// </summary>
     internal const float EchoFollowUpSeconds = 0.2f;
 
-    /// <summary>死亡动画时长，秒；原版等它播完再做溶解消失。</summary>
-    internal const float DeathSeconds = 1.6f;
-
     internal override RuntimeSpineBody.Spec SpineSpec => Spine;
 
     private static readonly RuntimeSpineBody.Spec Spine = new(
@@ -36,7 +33,8 @@ public sealed partial class CosmicFragmentCreatureVisuals : SpineSpriteAttackCre
         IdleAnimation: "idle",
         AttackAnimation: "attack",
         HurtAnimation: "hurt",
-        DeathAnimation: "die",
+        // 不做死亡动画：死时保持当前姿势，原版立即溶解（整体向后倒的死亡动画观感不好，去掉了）
+        DeathAnimation: null,
         DefaultMix: 0.12f,
         HurtHoldSeconds: 0.1f,
         Ghosts: null,

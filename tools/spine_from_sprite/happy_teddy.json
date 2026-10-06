@@ -22,7 +22,6 @@
            "timing": {"wind": [0.0, 0.12], "dash_out": [0.12, 0.3], "dash_back": [0.6, 0.85]}},
   "hurt": {"type": "hurt", "duration": 0.6, "knockback": 22.0, "tilt": -10.0, "flash": 0.45,
            "swap": {"source": "../../images/monsters/happy_teddy_hit.webp", "page": "happy_teddy_spine_hurt.png",
-                    "anchor": [212, 230], "on": 0.0, "off": 0.42, "fade_out": 0.1}},
-  "die": {"type": "die", "duration": 1.6, "rest_height": 48.0, "body_rotate": -75.0, "body_x": 20.0, "world_angles": {}}
+                    "anchor": [212, 230], "on": 0.0, "off": 0.42, "fade_out": 0.1}}
  }
 }
