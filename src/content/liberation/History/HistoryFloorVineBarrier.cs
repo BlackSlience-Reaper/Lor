@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -22,6 +23,8 @@ public sealed class HistoryFloorVineBarrier : LorMonsterModel
     private const int ThornsAmount = 2;
 
     public override int DefaultChaoResistance => 70;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultChaoResistanceData => new()
     {

@@ -1,0 +1,1077 @@
+{
+ "name": "boss_nf_forgotten_sword_teardrop",
+ "layers_dir": "~/.local/share/LibraryOfRuina-layers/nf_forgotten_sword",
+ "texture_scale": 0.6,
+ "root_scale": 0.5,
+ "origin": [
+  -17.0,
+  -100.0
+ ],
+ "skin_tint": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "fps": 30,
+ "setup_motion": "Teardrop",
+ "motions": {
+  "Teardrop": {
+   "source": "Teardrop",
+   "bones": {
+    "body": {
+     "at": [
+      32.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      32.7,
+      499.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -17.0,
+      637.0
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "TeardropBlunt": {
+   "source": "TeardropBlunt",
+   "bones": {
+    "body": {
+     "at": [
+      -115.2,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -115.2,
+      587.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -216.0,
+      726.4
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "TeardropEvade": {
+   "source": "TeardropEvade",
+   "bones": {
+    "body": {
+     "at": [
+      62.7,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      62.7,
+      523.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      13.0,
+      660.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "TeardropGuard": {
+   "source": "TeardropGuard",
+   "bones": {
+    "body": {
+     "at": [
+      -2.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -2.4,
+      543.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -52.0,
+      680.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "TeardropHit": {
+   "source": "TeardropHit",
+   "bones": {
+    "body": {
+     "at": [
+      -34.4,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -34.4,
+      623.8
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -84.0,
+      761.0
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "TeardropPierce": {
+   "source": "TeardropPierce",
+   "bones": {
+    "body": {
+     "at": [
+      79.9,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      79.9,
+      533.3
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      18.0,
+      670.9
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  },
+  "TeardropSlash": {
+   "source": "TeardropSlash",
+   "bones": {
+    "body": {
+     "at": [
+      -11.5,
+      0.0
+     ]
+    },
+    "head": {
+     "parent": "body",
+     "at": [
+      -11.5,
+      700.4
+     ]
+    },
+    "hair": {
+     "parent": "head",
+     "at": [
+      -71.0,
+      887.2
+     ]
+    }
+   },
+   "assign": {
+    "body": "body"
+   }
+  }
+ },
+ "animations": {
+  "idle": {
+   "duration": 2.4,
+   "show": [
+    [
+     0,
+     "Teardrop",
+     0
+    ]
+   ],
+   "osc": {
+    "Teardrop.body": {
+     "rotate": [
+      1.6,
+      1,
+      0.3
+     ]
+    },
+    "Teardrop.head": {
+     "rotate": [
+      1.8,
+      1,
+      0.15
+     ]
+    },
+    "Teardrop.hair": {
+     "rotate": [
+      1.2,
+      1,
+      0.4
+     ]
+    },
+    "move": {
+     "y": [
+      7,
+      1,
+      0.0
+     ]
+    }
+   }
+  },
+  "slash": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Teardrop",
+     0
+    ],
+    [
+     0.15,
+     "TeardropSlash",
+     0
+    ],
+    [
+     0.75,
+     "Teardrop",
+     0
+    ]
+   ],
+   "keys": {
+    "Teardrop.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Teardrop.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "TeardropSlash.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "TeardropSlash.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "TeardropSlash.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.27,
+       -25,
+       "out"
+      ],
+      [
+       0.75,
+       -25
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "blunt": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Teardrop",
+     0
+    ],
+    [
+     0.15,
+     "TeardropBlunt",
+     0
+    ],
+    [
+     0.75,
+     "Teardrop",
+     0
+    ]
+   ],
+   "keys": {
+    "Teardrop.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Teardrop.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "TeardropBlunt.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "TeardropBlunt.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "TeardropBlunt.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "pierce": {
+   "duration": 1.05,
+   "show": [
+    [
+     0,
+     "Teardrop",
+     0
+    ],
+    [
+     0.15,
+     "TeardropPierce",
+     0
+    ],
+    [
+     0.75,
+     "Teardrop",
+     0
+    ]
+   ],
+   "keys": {
+    "Teardrop.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       -4,
+       "out"
+      ],
+      [
+       0.75,
+       -4
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "Teardrop.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       3,
+       "out"
+      ],
+      [
+       0.75,
+       0
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    },
+    "TeardropPierce.body": {
+     "x": [
+      [
+       0.15,
+       12
+      ],
+      [
+       0.3,
+       -12,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ],
+     "rotate": [
+      [
+       0.15,
+       -3
+      ],
+      [
+       0.3,
+       2,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    },
+    "TeardropPierce.head": {
+     "rotate": [
+      [
+       0.15,
+       -5
+      ],
+      [
+       0.32,
+       4,
+       "out"
+      ],
+      [
+       0.55,
+       0
+      ]
+     ]
+    },
+    "TeardropPierce.hair": {
+     "rotate": [
+      [
+       0.15,
+       -4
+      ],
+      [
+       0.36,
+       5,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       0
+      ],
+      [
+       0.3,
+       -70,
+       "out"
+      ],
+      [
+       0.75,
+       -70
+      ],
+      [
+       1.05,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "guard": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "TeardropGuard",
+     0
+    ],
+    [
+     0.55,
+     "Teardrop",
+     0
+    ]
+   ],
+   "keys": {
+    "TeardropGuard.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "TeardropGuard.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "TeardropGuard.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       12,
+       "out"
+      ],
+      [
+       0.55,
+       6
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "evade": {
+   "duration": 0.8,
+   "show": [
+    [
+     0,
+     "TeardropEvade",
+     0
+    ],
+    [
+     0.55,
+     "Teardrop",
+     0
+    ]
+   ],
+   "keys": {
+    "TeardropEvade.body": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       8,
+       "out"
+      ],
+      [
+       0.35,
+       0
+      ]
+     ]
+    },
+    "TeardropEvade.head": {
+     "rotate": [
+      [
+       0.0,
+       -5
+      ],
+      [
+       0.17,
+       4,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "TeardropEvade.hair": {
+     "rotate": [
+      [
+       0.0,
+       -4
+      ],
+      [
+       0.21,
+       5,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.15,
+       45,
+       "out"
+      ],
+      [
+       0.55,
+       45
+      ],
+      [
+       0.8,
+       0
+      ]
+     ],
+     "y": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       18,
+       "out"
+      ],
+      [
+       0.2,
+       0,
+       "in"
+      ],
+      [
+       0.8,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "hurt": {
+   "duration": 0.65,
+   "show": [
+    [
+     0,
+     "TeardropHit",
+     0
+    ],
+    [
+     0.4,
+     "Teardrop",
+     0
+    ]
+   ],
+   "flash": [
+    0.0,
+    0.22,
+    [
+     1.0,
+     0.6,
+     0.6
+    ]
+   ],
+   "keys": {
+    "move": {
+     "x": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       20,
+       "out"
+      ],
+      [
+       0.6,
+       0
+      ]
+     ]
+    },
+    "TeardropHit.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.08,
+       -6,
+       "out"
+      ],
+      [
+       0.4,
+       0
+      ]
+     ]
+    },
+    "TeardropHit.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.1,
+       -8,
+       "out"
+      ],
+      [
+       0.45,
+       0
+      ]
+     ]
+    },
+    "TeardropHit.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.14,
+       -10,
+       "out"
+      ],
+      [
+       0.5,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "die": {
+   "duration": 1.2,
+   "show": [
+    [
+     0,
+     "Teardrop",
+     0
+    ]
+   ],
+   "keys": {
+    "Teardrop.body": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       3,
+       "out"
+      ],
+      [
+       1.2,
+       3
+      ]
+     ]
+    },
+    "Teardrop.head": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.8,
+       16,
+       "out"
+      ],
+      [
+       1.2,
+       16
+      ]
+     ]
+    },
+    "Teardrop.hair": {
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.9,
+       8,
+       "out"
+      ],
+      [
+       1.2,
+       8
+      ]
+     ]
+    }
+   }
+  }
+ }
+}

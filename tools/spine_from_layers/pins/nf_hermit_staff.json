@@ -1,0 +1,20 @@
+{
+ "mode": "pin",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Attack": [
+   419,
+   508
+  ],
+  "Default": [
+   156,
+   364
+  ],
+  "Hit": [
+   115,
+   359
+  ]
+ },
+ "sizes": {}
+}

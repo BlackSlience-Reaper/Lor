@@ -3,9 +3,17 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.WrathServant;
 
+/// <summary>
+/// 隐士之杖（木偶）：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，各姿势按标注点对齐），加载失败时退回逐帧换图。
+/// </summary>
 public sealed partial class HermitStaffCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "hermit_staff", "hermit_staff", "attack", new Dictionary<string, string>());
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(HermitStaff))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -100f), new(0.46f, 0.46f), -90f, -220f, 90f, 8f, new(0f, -100f), new(0f, -250f));

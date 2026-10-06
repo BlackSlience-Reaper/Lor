@@ -1,0 +1,9 @@
+boss_hermit_staff.webp
+size:717,315
+filter:Linear,Linear
+Attack/body
+bounds:0,0,319,315
+Hit/body
+bounds:321,0,193,226
+Default/body
+bounds:516,0,199,223

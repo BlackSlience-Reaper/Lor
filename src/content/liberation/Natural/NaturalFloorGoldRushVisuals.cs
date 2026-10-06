@@ -107,6 +107,12 @@ internal sealed partial class NaturalFloorHappinessVisuals : SceneAnimatedCreatu
 {
     internal const string ScenePath = NaturalFloorAssets.ShiningHappinessScene;
 
+    // 整块的 Spine 身体（待机轻浮慢摇），加载失败时退回场景动画
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "natural_floor_liberation", "nf_shining_happiness", "hurt", new Dictionary<string, string>());
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() => "happiness";
 
     protected override string NormalizeTriggerName(string name) => name == "Dead" ? "Hit" : name;

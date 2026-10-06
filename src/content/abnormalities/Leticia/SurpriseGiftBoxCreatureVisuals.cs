@@ -3,8 +3,23 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.abnormalities.Leticia;
 
-public partial class SurpriseGiftBoxCreatureVisuals : SpriteAttackCreatureVisuals
+/// <summary>
+/// 惊喜礼盒（红色人偶）：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，各姿势按标注点对齐），加载失败时退回逐帧换图。
+/// 原来攻击图按 0.65 倍画、比待机小一圈，骨架里放大到和待机同大。
+/// </summary>
+public partial class SurpriseGiftBoxCreatureVisuals : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "leticia",
+        "gift_box",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "cast",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(SurpriseGiftBox))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -98.8f), new(0.806f, 0.806f), -72.8f, -235f, 72.8f, 10.4f, new(0f, -106.6f), new(0f, -306.8f));

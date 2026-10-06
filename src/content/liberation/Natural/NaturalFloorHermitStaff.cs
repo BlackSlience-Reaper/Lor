@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.intents;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Commands;
@@ -38,6 +39,8 @@ public sealed class NaturalFloorHermitStaff : NaturalFloorWrathMonster
             90); // 初始体力上限：ToughEnemies 进阶。
 
     public override int DefaultChaoResistance => 80; // 初始混乱抗性。
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

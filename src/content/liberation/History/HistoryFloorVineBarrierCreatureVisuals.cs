@@ -4,9 +4,22 @@ using LibraryOfRuina.patches.visuals;
 
 namespace LibraryOfRuina.content.liberation.History;
 
+/// <summary>藤蔓壁垒：Spine 身体见 <see cref="LayeredBossSpine"/>（整块，待机慢慢摇），加载失败时退回贴图。</summary>
 public partial class HistoryFloorVineBarrierCreatureVisuals
-    : SpriteAttackCreatureVisuals
+    : SpineSpriteAttackCreatureVisuals
 {
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "history_floor",
+        "vine_barrier",
+        "guard",
+        new Dictionary<string, string>
+        {
+            ["Defend"] = "guard",
+            ["Cast"] = "guard",
+        });
+
+    internal override RuntimeSpineBody.Spec SpineSpec => Spine;
+
     [MonsterVisual(typeof(HistoryFloorVineBarrier))]
     internal static readonly CreatureVisualLayout Layout = new(
         new(0f, -88f), new(0.40f, 0.40f), -94f, -198f, 94f, 8f, new(0f, -92f), new(0f, -236f))

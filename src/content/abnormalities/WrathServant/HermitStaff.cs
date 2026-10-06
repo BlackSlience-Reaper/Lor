@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LibraryOfRuina.framework.audio;
 using LibraryOfRuina.framework.intents;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Helpers;
@@ -43,6 +44,8 @@ public sealed class HermitStaff : LorMonsterModel, ITargetedMonsterAttackProvide
         AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 98, 72);
 
     public override int DefaultChaoResistance => 70;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => new()
     {

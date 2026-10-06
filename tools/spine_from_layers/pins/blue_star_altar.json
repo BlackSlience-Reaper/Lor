@@ -1,0 +1,16 @@
+{
+ "mode": "none",
+ "pivot": false,
+ "noTilt": false,
+ "points": {
+  "Default": [
+   256,
+   700
+  ],
+  "Nova": [
+   255,
+   699
+  ]
+ },
+ "sizes": {}
+}

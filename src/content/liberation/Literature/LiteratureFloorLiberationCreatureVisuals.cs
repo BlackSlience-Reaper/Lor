@@ -60,6 +60,20 @@ internal sealed partial class LiteratureFloorGiftBoxCreatureVisuals :
     internal const string ScenePath =
         LiteratureFloorAssets.SurpriseGiftBoxScene;
 
+    // 整块的 Spine 身体（按标注点对齐；攻击图在场景里缩小了，骨架里放大回与待机同大）；
+    // 自爆照场景动画的换图时刻：施法 → 0.32 秒攻击 → 0.62 秒受击。加载失败时退回场景动画
+    internal static readonly RuntimeSpineBody.Spec Spine = LayeredBossSpine.Create(
+        "literature_floor_liberation",
+        "lf_gift_box",
+        "attack",
+        new Dictionary<string, string>
+        {
+            ["Cast"] = "cast",
+            ["SelfDestruct"] = "self_destruct",
+        });
+
+    internal override RuntimeSpineBody.Spec? SpineSpec => Spine;
+
     protected override string ResolveCurrentAnimationLibrary() =>
         LiteratureFloorGiftBoxAnimationContract.Library;
 }

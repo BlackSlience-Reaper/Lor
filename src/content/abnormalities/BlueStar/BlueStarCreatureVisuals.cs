@@ -25,6 +25,23 @@ internal sealed partial class BlueStarAltarCreatureVisuals :
 
     private bool _novaIdle;
 
+    // 普通、新星两个动画库各一副整块的 Spine 身体（石台待机几乎不动），加载失败时退回场景动画
+    private static Dictionary<string, string> SpineTriggers() => new()
+    {
+        [BlueStarAltarAnimationContract.NovaAnimation] = "nova",
+    };
+
+    internal static readonly RuntimeSpineBody.Spec NormalSpine = LayeredBossSpine.Create(
+        "blue_star_altar", "blue_star_altar", "nova", SpineTriggers());
+
+    internal static readonly RuntimeSpineBody.Spec NovaSpine = LayeredBossSpine.Create(
+        "blue_star_altar", "blue_star_altar_nova", "nova", SpineTriggers());
+
+    internal override IEnumerable<RuntimeSpineBody.Spec> AllSpineSpecs => [NormalSpine, NovaSpine];
+
+    internal override RuntimeSpineBody.Spec? SpineSpecFor(string library) =>
+        library == BlueStarAltarAnimationContract.NovaLibrary ? NovaSpine : NormalSpine;
+
     protected override string ResolveCurrentAnimationLibrary() =>
         _novaIdle
             ? BlueStarAltarAnimationContract.NovaLibrary

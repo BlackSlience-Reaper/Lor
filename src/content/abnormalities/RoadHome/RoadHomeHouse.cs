@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.monsters;
+using LibraryOfRuina.framework.visuals;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
@@ -23,6 +24,8 @@ public sealed class RoadHomeHouse : LorMonsterModel
     public override int MaxInitialHp => 290;
 
     public override int DefaultChaoResistance => 220;
+
+    public override float DeathAnimLengthOverride => LayeredBossSpine.DeathLength(this);
 
     public override LibraryCreatureResistanceData.Resistance? DefaultPhysicalResistanceData => NormalResistance();
 
