@@ -324,7 +324,6 @@ patch	LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunMod
 patch	LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch
 patch	LibraryOfRuina.features.ftue.LibraryOfRuinaNeowFtuePatch
 patch	LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch
-patch	LibraryOfRuina.core.compat.MainMenuIncompatibleModNoticePatch
 patch	LibraryOfRuina.core.compat.MadokaLongbowSavePatch
 patch	LibraryOfRuina.core.compat.MadokaLongbowRestorePatch
 ally-provider	LibraryOfRuina.content.abnormalities.WrathServant.WrathServantAllyTurnProvider

@@ -91,8 +91,6 @@ LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBgmController._activeT
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBgmController._loop	harmless	ui	Start 写入；Stop 停止并置空；只影响 BGM
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBgmController._stageTwoForced	harmless	ui	ForceStageTwo 置 true；EnsureStageOne（小阶段一战斗开始时）置 false；Stop 不复位；只影响选曲
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestRegistration._initialized	harmless	once	Initialize 注册完后置 true，之后不复位
-LibraryOfRuina.core.compat.IncompatibleModGuard.BlockingMods	harmless	cache	DetectBlockingMods 启动时检测并填充（先 Clear）
-LibraryOfRuina.core.compat.IncompatibleModGuard.noticeShown	harmless	ui	ShowNoticeOnce 弹出不兼容提示后置 true，之后不复位
 LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat.ReleasedCards	instance	-	按 RelicModel 挂载的存档状态（SavedAttachedState）：Capture 写入，Restore 读取；随遗物实例与存档走
 LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat._releasedCardsField	harmless	cache	ResolveCounterField 用 ??= 做反射缓存
 LibraryOfRuina.core.compat.RunLobbyEventsCompat._disconnected	harmless	net	Register（由 StoryReadySynchronizer.EnsureRegistered 调用）写入并订阅；Unregister 退订并置空

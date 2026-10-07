@@ -149,7 +149,6 @@ LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestCreateVisualsPatch	Pre
 LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestEventGradientPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Events.NEventLayout), "SetEvent")
 LibraryOfRuina.core.compat.MadokaLongbowRestorePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.RelicModel), "FromSerializable")
 LibraryOfRuina.core.compat.MadokaLongbowSavePatch	Prefix	Prefix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Saves.Runs.SavedProperties), "FromInternal")
-LibraryOfRuina.core.compat.MainMenuIncompatibleModNoticePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
 LibraryOfRuina.core.localization.PowerIconLocalizationPatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch(typeof(MegaCrit.Sts2.Core.Localization.LocTable), "GetRawText")
 LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch	Postfix	Postfix	returns=System.Void	target=HarmonyPatch()
 LibraryOfRuina.core.localization.PowerInlineIconSizing+MatchRenderedFontSizePatch	TargetMethods	TargetMethods	returns=System.Collections.Generic.IEnumerable`1[System.Reflection.MethodBase]	target=HarmonyPatch()
