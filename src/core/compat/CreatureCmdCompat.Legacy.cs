@@ -24,7 +24,7 @@ internal static partial class CreatureCmdCompat
         decimal amount,
         ValueProp props,
         CardModel? cardSource)
-        => CreatureCmd.Damage(choiceContext, target, amount, props, cardSource);
+        => CreatureCmd.Damage(choiceContext, target, amount, props, cardSource?.Owner.Creature, cardSource);
 
     public static Task<IEnumerable<DamageResult>> Damage(
         PlayerChoiceContext choiceContext,
@@ -98,7 +98,7 @@ internal static partial class CreatureCmdCompat
         DamageVar damageVar,
         Creature? dealer,
         CardModel? cardSource)
-        => CreatureCmd.Damage(choiceContext, targets, damageVar, dealer, cardSource);
+        => CreatureCmd.Damage(choiceContext, targets ?? [], damageVar, dealer, cardSource);
 
     public static Task<IEnumerable<DamageResult>> Damage(
         PlayerChoiceContext choiceContext,
@@ -107,7 +107,7 @@ internal static partial class CreatureCmdCompat
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
-        => CreatureCmd.Damage(choiceContext, targets, damageVar, dealer, cardSource);
+        => CreatureCmd.Damage(choiceContext, targets ?? [], damageVar, dealer, cardSource);
 
     public static Task<IEnumerable<DamageResult>> Damage(
         PlayerChoiceContext choiceContext,
@@ -116,7 +116,7 @@ internal static partial class CreatureCmdCompat
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource)
-        => CreatureCmd.Damage(choiceContext, targets, amount, props, dealer, cardSource);
+        => CreatureCmd.Damage(choiceContext, targets ?? [], amount, props, dealer, cardSource);
 
     public static Task<IEnumerable<DamageResult>> Damage(
         PlayerChoiceContext choiceContext,
@@ -126,7 +126,7 @@ internal static partial class CreatureCmdCompat
         Creature? dealer,
         CardModel? cardSource,
         CardPlay? cardPlay)
-        => CreatureCmd.Damage(choiceContext, targets, amount, props, dealer, cardSource);
+        => CreatureCmd.Damage(choiceContext, targets ?? [], amount, props, dealer, cardSource);
 }
 
 #endif
