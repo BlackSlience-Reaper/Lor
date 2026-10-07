@@ -3,6 +3,7 @@ global using LibraryLib.Commands;
 global using LibraryLib.Localization;
 global using LibraryLib.Localization.LibraryDynamicVars;
 global using LibraryLib.Models;
+global using LibraryPowerModel = LibraryLib.Models.DynamicPowerModel;
 global using LibraryLib.Powers;
 global using LibraryLib.Utils;
 global using LibraryLib.Utils.RelicRightClick;
