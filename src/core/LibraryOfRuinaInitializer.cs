@@ -55,21 +55,17 @@ public static class LibraryOfRuinaInitializer
         }
 
         var harmony = new Harmony(LibraryPatcher.HarmonyId);
-        bool blockedByIncompatibleMod = false;
         if (!report.RunAll(
             [
                 new("Settings", true, static () => ExtSettingsRegistry.Register("LibraryOfRuina", new LibraryOfRuinaSettings())),
                 new("SfxMixer", false, LibrarySfxMixer.Initialize),
-                new("IncompatibleModGuard", true, () => blockedByIncompatibleMod = IncompatibleModGuard.DetectBlockingMods()),
             ]))
         {
             report.LogSummary("gameplay initialization was skipped");
             report.RethrowRequiredFailure();
         }
 
-        // 检测到已知不兼容模组时与关闭“启用废墟图书馆内容”走同一条路径：不改动玩家的设置值，
-        // 仅本次启动不注入内容，并由 MainMenuIncompatibleModNoticePatch 在主菜单弹窗说明。
-        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled || blockedByIncompatibleMod)
+        if (!LibraryOfRuinaSettings.MonsterExtensionEnabled)
         {
             // 联机时与注入内容的一端混用会分叉；未注入也要装上诊断补丁，发现不一致就退出开局或读档。
             report.RunAll(
@@ -122,7 +118,6 @@ public static class LibraryOfRuinaInitializer
         harmony.CreateClassProcessor(typeof(InjectSettingsScreenModConfigPatch)).Patch();
         harmony.CreateClassProcessor(typeof(SettingsScreenModConfigVisibilityPatch)).Patch();
         harmony.CreateClassProcessor(typeof(MainMenuShowPendingSettingsErrorsPatch)).Patch();
-        harmony.CreateClassProcessor(typeof(MainMenuIncompatibleModNoticePatch)).Patch();
         harmony.CreateClassProcessor(typeof(NGameQuitExtSettingsSavePatch)).Patch();
     }
 

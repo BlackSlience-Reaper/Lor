@@ -248,7 +248,6 @@ HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen.NGameOverScr
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Nodes.Screens.MainMenu.NMainMenu), "_Ready")
   Postfix LibraryOfRuina.patches.MainMenuShowPendingSettingsErrorsPatch.Postfix
   Postfix LibraryOfRuina.infra.patching.LibraryPatchReportPatch.Postfix
-  Postfix LibraryOfRuina.core.compat.MainMenuIncompatibleModNoticePatch.Postfix
   Postfix LibraryOfRuina.framework.audio.MainMenuBgmReadyPatch.Postfix
 HarmonyPatch(typeof(MegaCrit.Sts2.Core.Rewards.RewardsSet), "WithRewardsFromRoom")
   Postfix LibraryOfRuina.content.abnormalities.LittleRedMercenary.LittleRedMercenaryRewardPatch.Postfix

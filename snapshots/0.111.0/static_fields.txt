@@ -43,7 +43,6 @@ mutable	LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBgmController.
 mutable	LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBgmController._loop	LibraryOfRuina.framework.audio.LocalOggLoopPlayer+LoopHandle
 mutable	LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestBgmController._stageTwoForced	System.Boolean
 mutable	LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestRegistration._initialized	System.Boolean
-mutable	LibraryOfRuina.core.compat.IncompatibleModGuard.noticeShown	System.Boolean
 mutable	LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat._releasedCardsField	System.Reflection.FieldInfo
 mutable	LibraryOfRuina.core.compat.RunLobbyEventsCompat._disconnected	System.Action`1[System.UInt64]
 mutable	LibraryOfRuina.core.compat.RunLobbyEventsCompat._localDisconnected	System.Action
@@ -1559,8 +1558,6 @@ readonly	LibraryOfRuina.content.specialguests.Xiao.XiaoSpecialGuestRegistration.
 readonly	LibraryOfRuina.content.specialguests.Xiao.XiaoStageOneCreatureVisuals+MethodName.ResolveCurrentAnimationLibrary	Godot.StringName
 readonly	LibraryOfRuina.content.specialguests.Xiao.XiaoStageOneCreatureVisuals.Spine	LibraryOfRuina.framework.visuals.RuntimeSpineBody+Spec
 readonly	LibraryOfRuina.core.compat.CardPileCmdCompat.FailedAddResult	MegaCrit.Sts2.Core.Entities.Cards.CardPileAddResult
-readonly	LibraryOfRuina.core.compat.IncompatibleModBlacklist.Entries	System.Collections.Generic.IReadOnlyList`1[LibraryOfRuina.core.compat.IncompatibleModBlacklist+Entry]
-readonly	LibraryOfRuina.core.compat.IncompatibleModGuard.BlockingMods	System.Collections.Generic.List`1[LibraryOfRuina.core.compat.IncompatibleModGuard+BlockingMod]
 readonly	LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat.ReleasedCards	STS2RitsuLib.Utils.SavedAttachedState`2[MegaCrit.Sts2.Core.Models.RelicModel,System.String]
 readonly	LibraryOfRuina.core.compat.NCreatureCompat.AnimHideIntentDouble	System.Reflection.MethodInfo
 readonly	LibraryOfRuina.core.compat.NCreatureCompat.AnimHideIntentFloat	System.Reflection.MethodInfo

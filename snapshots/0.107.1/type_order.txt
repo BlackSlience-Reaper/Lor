@@ -324,7 +324,6 @@ LibraryOfRuina.features.secondascension.LibrarySecondAscensionCustomRunModifierL
 LibraryOfRuina.features.ftue.LibraryOfRuinaEncounterTrackerPatch
 LibraryOfRuina.features.ftue.LibraryOfRuinaNeowFtuePatch
 LibraryOfRuina.features.ftue.LibraryOfRuinaRewardsFtuePatch
-LibraryOfRuina.core.compat.MainMenuIncompatibleModNoticePatch
 LibraryOfRuina.core.compat.MadokaLongbowSavePatch
 LibraryOfRuina.core.compat.MadokaLongbowRestorePatch
 LibraryOfRuina.content.abnormalities.WrathServant.WrathServantAllyTurnProvider
@@ -1029,8 +1028,6 @@ LibraryOfRuina.core.compat.CardPileCmdCompat
 LibraryOfRuina.core.compat.CombatManagerTurnMethodCompat
 LibraryOfRuina.core.compat.CreatureCmdCompat
 LibraryOfRuina.core.compat.GameApi
-LibraryOfRuina.core.compat.IncompatibleModBlacklist
-LibraryOfRuina.core.compat.IncompatibleModGuard
 LibraryOfRuina.core.compat.LocalContextCompat
 LibraryOfRuina.core.compat.MadokaLongbowSavedStateCompat
 LibraryOfRuina.core.compat.NCreatureCompat
@@ -2600,8 +2597,6 @@ LibraryOfRuina.core.networking.LibraryNetwork+TemporaryMapTransitionPayload
 LibraryOfRuina.core.networking.LibraryNetwork+StoryBarrierPayload
 LibraryOfRuina.core.localization.PowerNameMap+Entry
 LibraryOfRuina.core.compat.CardPileCmdCompat+PendingPreview
-LibraryOfRuina.core.compat.IncompatibleModBlacklist+Entry
-LibraryOfRuina.core.compat.IncompatibleModGuard+BlockingMod
 LibraryOfRuina.content.specialguests.SpecialGuestEmotionHoverArea+MethodName
 LibraryOfRuina.content.specialguests.SpecialGuestEmotionHoverArea+PropertyName
 LibraryOfRuina.content.specialguests.SpecialGuestEmotionHoverArea+SignalName
