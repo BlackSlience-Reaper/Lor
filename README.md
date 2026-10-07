@@ -5,7 +5,7 @@
 A Slay the Spire 2 content expansion that adds Library of Ruina-inspired monsters, encounters, bosses, events, page relics, E.G.O. cards, powers, detailed intents and multiplayer-aware balance.
 
 - 作者 / Author: **Natsuki, Reaper**
-- 版本 / Version: v0.23.5（游戏版本 0.107.1 或 ≥ 0.111.0，见 [双版本适配](docs/双版本适配.md)）
+- 版本 / Version: v0.24.0（游戏版本 0.107.1 或 ≥ 0.111.0，见 [双版本适配](docs/双版本适配.md)）
 - 许可 / License: [MIT](LICENSE)（仅覆盖本模组自己的代码与工程文件，第三方素材见下文）
 
 ## 前置模组 / Dependencies
