@@ -334,6 +334,11 @@ internal sealed class LibraryOfRuinaSettings : ExtAutoModSettings
     [SettingsSection("CombatUi")]
     public static bool AnimationEffectsEnabled { get; set; } = true;
 
+    // 只影响本机生命条旁的受伤预览（ui/DamagePreview/DamagePreviewOverlay.cs）：关闭后不显示也不再模拟敌方回合，
+    // 省下联机后期随卡组与人数增长的重算开销。不参与联机比对，局内切换立即生效。
+    [SettingsSection("CombatUi")]
+    public static bool IncomingDamagePreviewEnabled { get; set; } = true;
+
     [SettingsIgnore]
     public static bool MultiplayerScalingEnabled
     {

@@ -5,6 +5,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
@@ -437,6 +438,15 @@ internal sealed partial class DamagePreviewOverlay : Control
     private void UpdateIncomingTips(NCombatRoom? room, double delta)
     {
         _incomingRects.Clear();
+        // 设置里关闭受伤预览时清空结果，Alt 只作用于卡牌预览；重新开启后按最新状态重算。
+        if (!LibraryOfRuinaSettings.IncomingDamagePreviewEnabled)
+        {
+            _incomingResults = EmptyIncomingResults;
+            _incomingDirty = true;
+            HideIncoming();
+            return;
+        }
+
         // 关闭显示同时停止模拟；保留缓存以便 Alt 能重新打开预览。
         if (_mode == PreviewMode.Off)
         {
