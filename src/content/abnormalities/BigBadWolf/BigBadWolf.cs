@@ -18,7 +18,9 @@ using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Ascension;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.GameActions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Logging;
@@ -27,10 +29,12 @@ using MegaCrit.Sts2.Core.Models.Enchantments;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace LibraryOfRuina.content.abnormalities.BigBadWolf;
@@ -437,15 +441,21 @@ public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
             return;
         }
 
-        List<(Player Owner, List<CardModel> Cards)> candidates = GetStealCandidates(targets);
-        if (candidates.Count == 0)
+        Player[] owners = targets
+            .Where(static target => target.IsAlive)
+            .Select(static target => target.Player ?? target.PetOwner)
+            .OfType<Player>()
+            .Distinct()
+            .OrderBy(static owner => owner.NetId)
+            .ToArray();
+        foreach (Player owner in owners)
         {
-            return;
-        }
-
-        foreach ((Player owner, List<CardModel> cards) in candidates)
-        {
-            await StealPendingCard(owner, cards);
+            IReadOnlyList<StealCandidate> candidates = await GetSynchronizedStealCandidates(owner);
+            if (candidates.Count > 0)
+            {
+                int selectedIndex = RunRng.CombatCardGeneration.NextInt(0, candidates.Count);
+                await StealPendingCard(owner, candidates[selectedIndex]);
+            }
         }
 
         if (!HasPendingCard)
@@ -460,43 +470,11 @@ public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
         await CreatureCmd.TriggerAnim(Creature, "Swallowed", 0f);
     }
 
-    private async Task StealPendingCard(Player owner, IReadOnlyList<CardModel> cards)
+    private async Task StealPendingCard(Player owner, StealCandidate candidate)
     {
-        CardModel? cardToSteal = SelectCardToSteal(cards);
-        CardModel? deckCard = cardToSteal?.DeckVersion;
-        if (cardToSteal == null || deckCard == null)
-        {
-            return;
-        }
-
-        if (!IsStealableDeckCard(deckCard, owner))
-        {
-            Log.Warn("[BigBadWolf] skipped swallowing card with invalid deck version: combatCard="
-                + cardToSteal.Id
-                + ", deckCard="
-                + deckCard.Id
-                + ", owner="
-                + owner);
-            return;
-        }
-
-        try
-        {
-            await CardPileCmd.RemoveFromDeck(deckCard, showPreview: false);
-        }
-        catch (Exception exception)
-        {
-            Log.Warn("[BigBadWolf] skipped swallowing card because deck removal failed: combatCard="
-                + cardToSteal.Id
-                + ", deckCard="
-                + deckCard.Id
-                + ", owner="
-                + owner
-                + ", error="
-                + exception);
-            return;
-        }
-
+        CardModel cardToSteal = candidate.CombatCard;
+        CardModel deckCard = candidate.DeckCard;
+        await CardPileCmd.RemoveFromDeck(deckCard, showPreview: false);
         await CardPileCmd.RemoveFromCombat(cardToSteal);
         BigBadWolfSwipePower swipe = (BigBadWolfSwipePower)ModelDb.Power<BigBadWolfSwipePower>().ToMutable();
         swipe.Target = owner.Creature;
@@ -513,33 +491,48 @@ public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
             && owner.RunState.ContainsCard(deckCard);
     }
 
-    private static List<(Player Owner, List<CardModel> Cards)> GetStealCandidates(IEnumerable<Creature> targets)
+    private static async Task<IReadOnlyList<StealCandidate>> GetSynchronizedStealCandidates(Player owner)
     {
-        return targets
-            .Where(static target => target.IsAlive)
-            .Select(static target => target.Player ?? target.PetOwner)
-            .Where(static owner => owner != null)
-            .Distinct()
-            .OrderBy(static owner => owner!.NetId)
-            .Select(static owner => (Owner: owner!, Cards: GetStealableCards(owner!)))
-            .Where(static candidate => candidate.Cards.Count > 0)
-            .ToList();
-    }
-
-    private static List<CardModel> GetStealableCards(Player owner)
-    {
-        return CardPile.GetCards(owner, PileType.Draw, PileType.Discard)
-            .Where(static card => card.DeckVersion != null)
-            .ToList();
-    }
-
-    private CardModel? SelectCardToSteal(IReadOnlyList<CardModel> cards)
-    {
-        if (cards.Count == 0)
+        if (RunManager.Instance.NetService.Type == NetGameType.Singleplayer)
         {
-            return null;
+            return GetStealCandidates(owner);
         }
 
+        // DeckVersion 是本地对象引用。同步拥有者确认的战斗牌 ID 与永久牌组索引，
+        // 包括空候选集；各端在收到同一候选集后才消费战斗 RNG。
+        var synchronizer = RunManager.Instance.PlayerChoiceSynchronizer;
+        uint choiceId = synchronizer.ReserveChoiceId(owner);
+        if (LocalContext.IsMe(owner))
+        {
+            IReadOnlyList<StealCandidate> candidates = GetStealCandidates(owner);
+            var indexes = new List<int>();
+            foreach (StealCandidate candidate in candidates)
+            {
+                indexes.Add(checked((int)NetCombatCard.FromModel(candidate.CombatCard).CombatCardIndex));
+                indexes.Add(checked((int)NetDeckCard.FromModel(candidate.DeckCard).DeckIndex));
+            }
+
+            synchronizer.SyncLocalChoice(owner, choiceId, PlayerChoiceResult.FromIndexes(indexes));
+            return candidates;
+        }
+
+        List<int> received = (await synchronizer.WaitForRemoteChoice(owner, choiceId)).AsIndexes();
+        var resolved = new List<StealCandidate>();
+        for (int index = 0; index < received.Count; index += 2)
+        {
+            CardModel combatCard = NetCombatCardDb.Instance.GetCard(checked((uint)received[index]));
+            CardModel deckCard = owner.Deck.Cards[received[index + 1]];
+            resolved.Add(new StealCandidate(combatCard, deckCard));
+        }
+
+        return resolved;
+    }
+
+    private static IReadOnlyList<StealCandidate> GetStealCandidates(Player owner)
+    {
+        List<CardModel> cards = CardPile.GetCards(owner, PileType.Draw, PileType.Discard)
+            .Where(card => card.DeckVersion is { } deckCard && IsStealableDeckCard(deckCard, owner))
+            .ToList();
         IEnumerable<CardModel> candidates = cards;
         foreach (Func<CardModel, bool> priority in StealPriorities)
         {
@@ -551,7 +544,9 @@ public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
             }
         }
 
-        return RunRng.CombatCardGeneration.NextItem(candidates);
+        return candidates
+            .Select(static card => new StealCandidate(card, card.DeckVersion!))
+            .ToArray();
     }
 
     private bool HasReachedEatenCardLimit()
@@ -741,6 +736,8 @@ public sealed class BigBadWolf : LorMonsterModel, ILibraryAbstractModel
         NCreature? creatureNode = CombatQueries.CreatureNodeOf(this);
         return creatureNode?.Visuals.GetNodeOrNull<Marker2D>("%StolenCardPos");
     }
+
+    private sealed record StealCandidate(CardModel CombatCard, CardModel DeckCard);
 
     private sealed record PendingStolenCard(
         CardModel CombatCard,

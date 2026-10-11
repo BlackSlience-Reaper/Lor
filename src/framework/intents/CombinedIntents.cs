@@ -722,6 +722,7 @@ public sealed class CombinedDefendBuffIntent :
     ICompositeIntent
 {
     private readonly string? _descriptionKey;
+    private readonly Func<int>? _descriptionBadgeAmount;
 
     public CombinedDefendBuffIntent(
         int blockAmount = 0,
@@ -736,6 +737,16 @@ public sealed class CombinedDefendBuffIntent :
             IntentType,
             CompositeIntent.ResolveTargeting(this, Effects),
             Effects);
+    }
+
+    // 仅为说明提供动态数值，不生成效果 badge；爱娜温“秋”的治疗使用此入口。
+    public CombinedDefendBuffIntent(
+        int blockAmount,
+        string? descriptionKey,
+        Func<int> descriptionBadgeAmount)
+        : this(blockAmount, descriptionKey)
+    {
+        _descriptionBadgeAmount = descriptionBadgeAmount;
     }
 
     public IReadOnlyList<IntentBadge> Effects { get; }
@@ -775,6 +786,11 @@ public sealed class CombinedDefendBuffIntent :
         desc.Add("Amount", BlockAmount);
         desc.Add("BlockAmount", BlockAmount);
         BadgedIntentDescription.AddBadgeVariables(desc, Effects);
+        if (_descriptionBadgeAmount != null)
+        {
+            desc.Add("BadgeAmount", _descriptionBadgeAmount());
+        }
+
         return desc;
     }
 }
