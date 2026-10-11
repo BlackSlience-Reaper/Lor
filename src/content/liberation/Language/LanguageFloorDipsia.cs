@@ -243,6 +243,10 @@ public sealed class LanguageFloorDipsia :
         IReadOnlyList<Creature> participants,
         CombatStateLike combatState)
     {
+        // 玩家死亡后其控制能力可能停止接收 Hook；渴血症自行维护节点，
+        // 在变身和本回合行动之前恢复显示，保留原有伤害结算与动画触发。
+        await LiberationPhaseCleanup.RestoreMissingLiveCreatureNode(Creature, combatState);
+
         if (TurnParticipants.IsRoundPlayerTurn(side) && Creature.IsAlive)
         {
             if (!IsTransformed

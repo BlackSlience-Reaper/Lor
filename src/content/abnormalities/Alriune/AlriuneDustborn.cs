@@ -110,8 +110,8 @@ public sealed class AlriuneDustborn : LorMonsterModel
 
     private AbstractIntent[] CreateIntents() =>
     [
-        new CombinedAttackCardDebuffIntent(() => FlowerDamage, null, "ALRIUNE_FLOWER_BUSH.description",
-            IntentBadge.StatusCard<Slimed>(AlriuneNumbers.FlowerBushSlimed)),
+        new SingleAttackIntent(() => FlowerDamage),
+        new DetailedStatusCardIntent<Slimed>(AlriuneNumbers.FlowerBushSlimed, PileType.Draw),
         new BadgedDebuffIntent(IntentBadge.FromPower<WeakPower>(AlriuneNumbers.MindCrackWeak),
             AlriuneNumbers.MindCrackWeak, "ALRIUNE_MIND_CRACK.description"),
         new AlriuneMultiAttackIntent(DespairDamage, AlriuneNumbers.DespairHits, "ALRIUNE_DESPAIR.description"),
@@ -121,10 +121,10 @@ public sealed class AlriuneDustborn : LorMonsterModel
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         AbstractIntent[] intents = CreateIntents();
-        MoveState flower = new("FLOWER_BUSH", FlowerBush, intents[0]);
-        MoveState mind = new("MIND_CRACK", MindCrack, intents[1]);
-        MoveState despair = new("SPREADING_DESPAIR", Despair, intents[2]);
-        MoveState rest = _reviveState = new LibraryPhaseTransitionMoveState("REVIVAL_REST", Revive, intents[3])
+        MoveState flower = new("FLOWER_BUSH", FlowerBush, intents[0], intents[1]);
+        MoveState mind = new("MIND_CRACK", MindCrack, intents[2]);
+        MoveState despair = new("SPREADING_DESPAIR", Despair, intents[3]);
+        MoveState rest = _reviveState = new LibraryPhaseTransitionMoveState("REVIVAL_REST", Revive, intents[4])
         {
             MustPerformOnceBeforeTransitioning = true
         };

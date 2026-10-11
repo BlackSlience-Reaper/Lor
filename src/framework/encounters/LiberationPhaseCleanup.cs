@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using LibraryOfRuina.core.compat;
 using LibraryOfRuina.framework.combat;
+using LibraryOfRuina.infra.lifecycle;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
@@ -17,42 +18,52 @@ internal static class LiberationPhaseCleanup
     public static async Task<IReadOnlyList<Creature>>
         RestoreMissingLiveCreatureNodes(CombatStateLike combatState)
     {
-        NCombatRoom? room = NCombatRoom.Instance;
-        if (room == null)
-        {
-            return [];
-        }
-
         var restored = new List<Creature>();
         foreach (Creature creature in combatState.LivingEnemies()
                      .ToArray())
         {
-            if (room.GetCreatureNode(creature) != null)
+            if (await RestoreMissingLiveCreatureNode(creature, combatState))
             {
-                continue;
+                restored.Add(creature);
             }
-
-            foreach (NCreature staleNode in room.RemovingCreatureNodes
-                         .Where(node => node.Entity == creature)
-                         .ToArray())
-            {
-                NCreatureCompat.AnimHideIntent(staleNode);
-                staleNode.ToggleIsInteractable(on: false);
-                staleNode.Visible = false;
-                staleNode.QueueFreeSafely();
-            }
-
-            room.AddCreature(creature);
-            if (room.GetCreatureNode(creature) is not NCreature restoredNode)
-            {
-                continue;
-            }
-
-            await restoredNode.RefreshIntents();
-            restored.Add(creature);
         }
 
         return restored;
+    }
+
+    public static async Task<bool> RestoreMissingLiveCreatureNode(
+        Creature creature,
+        CombatStateLike combatState)
+    {
+        NCombatRoom? room = NCombatRoom.Instance;
+        // 只恢复当前实战中的存活实体，避免预览副本或上一场战斗的异步续体创建节点。
+        if (room == null
+            || !ReferenceEquals(CurrentCombat.State, combatState)
+            || !creature.IsAlive
+            || !combatState.Enemies.Contains(creature)
+            || room.GetCreatureNode(creature) != null)
+        {
+            return false;
+        }
+
+        foreach (NCreature staleNode in room.RemovingCreatureNodes
+                     .Where(node => node.Entity == creature)
+                     .ToArray())
+        {
+            NCreatureCompat.AnimHideIntent(staleNode);
+            staleNode.ToggleIsInteractable(on: false);
+            staleNode.Visible = false;
+            staleNode.QueueFreeSafely();
+        }
+
+        room.AddCreature(creature);
+        if (room.GetCreatureNode(creature) is not NCreature restoredNode)
+        {
+            return false;
+        }
+
+        await restoredNode.RefreshIntents();
+        return true;
     }
 
     public static async Task RemovePhaseCreatures(
