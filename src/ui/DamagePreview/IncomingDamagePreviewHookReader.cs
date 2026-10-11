@@ -30,6 +30,8 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
     private static readonly Dictionary<MethodBase, MethodPlan> Plans = [];
     private static readonly Dictionary<(Type Type, MethodInfo Method), MethodInfo> VirtualMethods = [];
     private static readonly Dictionary<MethodBase, ParameterInfo[]> Parameters = [];
+    private static readonly Dictionary<(Type Type, string Name, int Count), (MethodInfo Method, Type[] ParameterTypes)[]>
+        HookOverloads = [];
     private readonly Dictionary<(object Owner, FieldInfo Field), object?> _fields = new(FieldKeyComparer.Instance);
     private readonly Dictionary<object, HashSet<FieldInfo>> _fieldsByOwner = new(ReferenceEqualityComparer.Instance);
     private readonly Dictionary<object, object> _collections = new(ReferenceEqualityComparer.Instance);
@@ -59,25 +61,40 @@ internal sealed class IncomingDamagePreviewHookReader(IncomingDamageSimulation s
     /// <summary>同参数数量的目标列表/单体等重载，按实际参数类型选择。</summary>
     internal static MethodInfo ResolveHookOverload(Type type, string name, object?[] arguments)
     {
-        return type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-            .Single(method => method.Name == name && !method.ContainsGenericParameters
-                && method.GetParameters().Length == arguments.Length
-                && method.GetParameters().Select((parameter, index) =>
-                {
-                    Type parameterType = parameter.ParameterType;
-                    object? argument = arguments[index];
-                    if (parameterType.IsByRef)
-                    {
-                        return argument is Reference;
-                    }
+        // 每次命中都要解析多次 Hook 重载；候选按名称与参数个数缓存，避免反复枚举 Hook 类的全部方法。
+        var key = (type, name, arguments.Length);
+        if (!HookOverloads.TryGetValue(key, out (MethodInfo Method, Type[] ParameterTypes)[]? candidates))
+        {
+            candidates = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(method => method.Name == name && !method.ContainsGenericParameters
+                    && method.GetParameters().Length == arguments.Length)
+                .Select(static method => (method, method.GetParameters()
+                    .Select(static parameter => parameter.ParameterType).ToArray()))
+                .ToArray();
+            HookOverloads[key] = candidates;
+        }
 
-                    if (argument == null)
-                    {
-                        return !parameterType.IsValueType || Nullable.GetUnderlyingType(parameterType) != null;
-                    }
+        return candidates.Single(candidate => MatchesArguments(candidate.ParameterTypes, arguments)).Method;
+    }
 
-                    return parameterType.IsInstanceOfType(argument);
-                }).All(static matches => matches));
+    private static bool MatchesArguments(Type[] parameterTypes, object?[] arguments)
+    {
+        for (int index = 0; index < parameterTypes.Length; index++)
+        {
+            Type parameterType = parameterTypes[index];
+            object? argument = arguments[index];
+            bool matches = parameterType.IsByRef
+                ? argument is Reference
+                : argument == null
+                    ? !parameterType.IsValueType || Nullable.GetUnderlyingType(parameterType) != null
+                    : parameterType.IsInstanceOfType(argument);
+            if (!matches)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     internal bool TryInvoke(AbstractModel source, MethodInfo method, params object?[] arguments)

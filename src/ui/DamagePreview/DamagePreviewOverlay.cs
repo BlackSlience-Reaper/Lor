@@ -5,6 +5,7 @@ using Godot;
 using HarmonyLib;
 using LibraryLib.Entities.Creatures;
 using LibraryOfRuina.core.compat;
+using LibraryOfRuina.core.settings;
 using LibraryOfRuina.framework.assets;
 using LibraryOfRuina.framework.combat;
 using LibraryOfRuina.interop;
@@ -39,6 +40,9 @@ internal sealed partial class DamagePreviewOverlay : Control
 {
     // 预览最多每秒重算五次，移动与 Alt 输入仍逐帧响应。
     private const double RefreshInterval = 0.2;
+    // 受伤预览重算的最短间隔不低于单次模拟耗时的这一倍数，上限保证预览不会长时间过期。
+    private const double IncomingCostBackoff = 10;
+    private const double MaximumIncomingRefreshInterval = 2.0;
     private const float TipWidth = 520f;
     private const float DetailedWidth = 720f;
     private const float MaximumDetailedHeight = 500f;
@@ -437,6 +441,15 @@ internal sealed partial class DamagePreviewOverlay : Control
     private void UpdateIncomingTips(NCombatRoom? room, double delta)
     {
         _incomingRects.Clear();
+        // 设置里关闭受伤预览时清空结果，Alt 只作用于卡牌预览；重新开启后按最新状态重算。
+        if (!LibraryOfRuinaSettings.IncomingDamagePreviewEnabled)
+        {
+            _incomingResults = EmptyIncomingResults;
+            _incomingDirty = true;
+            HideIncoming();
+            return;
+        }
+
         // 关闭显示同时停止模拟；保留缓存以便 Alt 能重新打开预览。
         if (_mode == PreviewMode.Off)
         {
@@ -463,9 +476,14 @@ internal sealed partial class DamagePreviewOverlay : Control
         bool refresh = _incomingDirty && !isResolving && _untilIncomingRefresh <= 0;
         if (refresh)
         {
-            _untilIncomingRefresh = RefreshInterval;
+            long started = System.Diagnostics.Stopwatch.GetTimestamp();
             _incomingResults = CalculateIncoming();
             _incomingDirty = false;
+            // 联机时其他玩家的每个动作都会标脏，卡组越大单次模拟越慢：按本次耗时拉长下次重算的间隔，
+            // 把模拟占用的主线程时间压在约 1/IncomingCostBackoff 以内，避免后期战斗持续掉帧。
+            double elapsed = System.Diagnostics.Stopwatch.GetElapsedTime(started).TotalSeconds;
+            _untilIncomingRefresh = Math.Clamp(elapsed * IncomingCostBackoff, RefreshInterval,
+                MaximumIncomingRefreshInterval);
         }
 
         if (refresh)
